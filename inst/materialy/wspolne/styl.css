@@ -1,0 +1,13 @@
+body { color: #222; background: #fff; line-height: 1.65; }
+.main-container { max-width: 1040px; padding-bottom: 3rem; }
+h1, h2, h3 { color: #005c91; line-height: 1.25; }
+h1 { margin-top: 2rem; }
+h2 { border-bottom: 1px solid #d8e6ed; padding-bottom: .4rem; margin-top: 2rem; }
+pre { border: 1px solid #c7d9e3; border-left: 4px solid #0072b2; background: #f5f8fa; }
+blockquote { border-left: 4px solid #d55e00; background: #fff7ef; color: #222; }
+a { color: #005c91; text-decoration: underline; }
+table { width: 100%; }
+th { background: #eef4f8; }
+td, th { padding: .5rem; }
+img { max-width: 100%; }
+@media print { body { font-size: 10pt; } pre { white-space: pre-wrap; } }

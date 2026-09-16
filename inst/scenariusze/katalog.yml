@@ -1,0 +1,622 @@
+wersja: 1.0.0
+scenariusze:
+- id: S01
+  tytul: 'Biblioteka akademicka: dostępność wsparcia w wyszukiwaniu'
+  problem: Instytucja chce ocenić wsparcie biblioteki z perspektywy użytkowników i
+    wskazać uzasadniony kierunek poprawy.
+  konstrukt: pewności wyszukiwania
+  grupy:
+  - konsultacje
+  - bez konsultacji
+  druga_analiza: Spearman
+  pytanie_drugie: 'częstość wizyt a pewność: Spearman'
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.2
+  czas_typowy: 5.0
+  pozycje:
+  - Wiem, jak rozpocząć wyszukiwanie dokumentów.
+  - Potrafię wybrać właściwe źródło informacji.
+  - Czuję się zagubiony podczas wyszukiwania.
+  - Umiem zawęzić zapytanie, gdy wyników jest zbyt wiele.
+  - Potrafię ocenić przydatność znalezionego dokumentu.
+  - Wiem, gdzie szukać pomocy w wyszukiwaniu.
+  pytanie_binarne: Czy udało się znaleźć potrzebny dokument?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S02
+  tytul: 'Katalog biblioteczny: użyteczność wyszukiwania'
+  problem: Instytucja chce ocenić katalog biblioteczny z perspektywy użytkowników
+    i wskazać uzasadniony kierunek poprawy.
+  konstrukt: użyteczności katalogu
+  grupy:
+  - nowi
+  - doświadczeni
+  druga_analiza: tabela krzyżowa
+  pytanie_drugie: grupa × powodzenie znalezienia dokumentu
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.35
+  czas_typowy: 9.0
+  pozycje:
+  - Szybko znajduję pole wyszukiwania w katalogu.
+  - Nazwy filtrów są dla mnie zrozumiałe.
+  - Odczytanie rekordu wymaga ode mnie zgadywania.
+  - Potrafię znaleźć lokalizację dokumentu.
+  - Komunikaty katalogu pomagają mi poprawić zapytanie.
+  - Katalog wspiera wykonanie mojego zadania.
+  pytanie_binarne: Czy udało się znaleźć wskazany dokument?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S03
+  tytul: 'Repozytorium uczelni: znajomość zasad otwartego dostępu'
+  problem: Instytucja chce ocenić informację o otwartym dostępie z perspektywy użytkowników
+    i wskazać uzasadniony kierunek poprawy.
+  konstrukt: znajomości zasad otwartego dostępu
+  grupy:
+  - przeszkoleni
+  - nieprzeszkoleni
+  druga_analiza: Spearman
+  pytanie_drugie: 'częstość korzystania a indeks: korelacja'
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.5
+  czas_typowy: 15.0
+  pozycje:
+  - Rozumiem różnicę między wersją wydawcy a preprintem.
+  - Wiem, gdzie sprawdzić warunki udostępnienia tekstu.
+  - Zasady otwartego dostępu są dla mnie niejasne.
+  - Rozumiem, co określa licencja publikacji.
+  - Potrafię rozpoznać legalne źródło otwartego tekstu.
+  - Wiem, jak uzyskać pomoc w zdeponowaniu publikacji.
+  pytanie_binarne: Czy udało się odnaleźć legalną otwartą wersję tekstu?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S04
+  tytul: 'Biblioteka publiczna: dopasowanie kanału informacji o wydarzeniach'
+  problem: Instytucja chce ocenić informację o wydarzeniach z perspektywy użytkowników
+    i wskazać uzasadniony kierunek poprawy.
+  konstrukt: łatwości dotarcia do informacji
+  grupy:
+  - WWW
+  - media społecznościowe
+  druga_analiza: tabela krzyżowa
+  pytanie_drugie: kanał × udział w wydarzeniu
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.2
+  czas_typowy: 5.0
+  pozycje:
+  - Bez trudności znajduję datę wydarzenia.
+  - Informacja wskazuje miejsce wydarzenia.
+  - Muszę długo szukać warunków uczestnictwa.
+  - Komunikat pozwala sprawdzić aktualność terminu.
+  - Wybrany kanał pozwala mi wrócić do informacji.
+  - Dowiaduję się o zmianach programu na czas.
+  pytanie_binarne: Czy uczestniczyłeś w wydarzeniu?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S05
+  tytul: 'Portal studencki: odnajdywanie procedur administracyjnych'
+  problem: Instytucja chce ocenić portal z procedurami z perspektywy użytkowników
+    i wskazać uzasadniony kierunek poprawy.
+  konstrukt: przejrzystości procedur
+  grupy:
+  - pierwszy rok
+  - kolejny rok
+  druga_analiza: Spearman
+  pytanie_drugie: czas szukania a przejrzystość
+  zmienna_druga: czas_wyszukiwania
+  efekt_grup: 0.35
+  czas_typowy: 9.0
+  pozycje:
+  - Nazwy procedur odpowiadają moim sprawom.
+  - Widzę, od którego kroku rozpocząć sprawę.
+  - Nie wiem, które formularze dotyczą mojej sprawy.
+  - Portal jasno podaje wymagane dokumenty.
+  - Potrafię znaleźć termin realizacji sprawy.
+  - Wiem, do kogo skierować pytanie o procedurę.
+  pytanie_binarne: Czy udało się odnaleźć właściwy formularz?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S06
+  tytul: 'Newsletter instytucji: informacyjne dopasowanie treści'
+  problem: Instytucja chce ocenić newsletter z perspektywy użytkowników i wskazać
+    uzasadniony kierunek poprawy.
+  konstrukt: przydatności newslettera
+  grupy:
+  - regularni
+  - okazjonalni
+  druga_analiza: tabela krzyżowa
+  pytanie_drugie: grupa × wykorzystanie wskazanej informacji
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.5
+  czas_typowy: 15.0
+  pozycje:
+  - Newsletter odpowiada na moje potrzeby informacyjne.
+  - Tytuły wiadomości pomagają wybrać treść.
+  - Większość treści jest dla mnie nieprzydatna.
+  - Linki prowadzą do szczegółowych informacji.
+  - Potrafię wykorzystać informacje z newslettera.
+  - Częstotliwość newslettera pasuje do moich potrzeb.
+  pytanie_binarne: Czy wykorzystałeś informację z newslettera?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S07
+  tytul: 'Archiwum cyfrowe: zrozumiałość opisów zbiorów'
+  problem: Instytucja chce ocenić opisy archiwalne z perspektywy użytkowników i wskazać
+    uzasadniony kierunek poprawy.
+  konstrukt: zrozumiałości opisów archiwalnych
+  grupy:
+  - z doświadczeniem
+  - bez doświadczenia
+  druga_analiza: Spearman
+  pytanie_drugie: częstość użycia a indeks
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.2
+  czas_typowy: 5.0
+  pozycje:
+  - Tytuły opisów wskazują zawartość zbiorów.
+  - Datowanie dokumentów jest dla mnie czytelne.
+  - Nie rozumiem terminów użytych w opisach.
+  - Opis pozwala ocenić znaczenie dokumentu dla mojego zadania.
+  - Rozumiem powiązania między jednostkami archiwalnymi.
+  - Opis jasno wskazuje warunki dostępu.
+  pytanie_binarne: Czy udało się znaleźć opis potrzebnej jednostki?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S08
+  tytul: 'Kolekcja muzealna online: jakość metadanych dla odbiorcy'
+  problem: Instytucja chce ocenić metadane kolekcji z perspektywy użytkowników i wskazać
+    uzasadniony kierunek poprawy.
+  konstrukt: kompletności metadanych
+  grupy:
+  - edukacyjni
+  - hobbystyczni
+  druga_analiza: tabela krzyżowa
+  pytanie_drugie: grupa × znalezienie potrzebnego obiektu
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.35
+  czas_typowy: 9.0
+  pozycje:
+  - Metadane podają autora lub twórcę obiektu.
+  - Metadane pozwalają rozpoznać czas powstania.
+  - Brakuje mi informacji potrzebnych do zrozumienia obiektu.
+  - Opis wyjaśnia kontekst pochodzenia obiektu.
+  - Dane o prawach do wykorzystania są widoczne.
+  - Metadane pomagają znaleźć podobne obiekty.
+  pytanie_binarne: Czy udało się znaleźć potrzebny obiekt?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S09
+  tytul: 'Biuletyn Informacji Publicznej: dostępność informacji urzędowej'
+  problem: Instytucja chce ocenić Biuletyn Informacji Publicznej z perspektywy użytkowników
+    i wskazać uzasadniony kierunek poprawy.
+  konstrukt: łatwości nawigacji
+  grupy:
+  - często
+  - rzadko
+  druga_analiza: Spearman
+  pytanie_drugie: czas szukania a indeks
+  zmienna_druga: czas_wyszukiwania
+  efekt_grup: 0.5
+  czas_typowy: 15.0
+  pozycje:
+  - Potrafię odnaleźć właściwą kategorię informacji.
+  - Nazwy działów BIP są dla mnie zrozumiałe.
+  - Łatwo gubię się w strukturze strony.
+  - Wyszukiwarka prowadzi do potrzebnego dokumentu.
+  - Wiem, jak wrócić do poprzedniej kategorii.
+  - Widzę, gdzie znaleźć aktualną wersję dokumentu.
+  pytanie_binarne: Czy udało się odnaleźć dokument urzędowy?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S10
+  tytul: 'Baza danych badawczych: gotowość do ponownego użycia danych'
+  problem: Instytucja chce ocenić dokumentację danych z perspektywy użytkowników i
+    wskazać uzasadniony kierunek poprawy.
+  konstrukt: użyteczności dokumentacji danych
+  grupy:
+  - z doświadczeniem
+  - bez doświadczenia
+  druga_analiza: tabela krzyżowa
+  pytanie_drugie: grupa × deklaracja ponownego użycia
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.2
+  czas_typowy: 5.0
+  pozycje:
+  - Dokumentacja opisuje znaczenie zmiennych.
+  - Wiem, jakie jednostki zastosowano w zbiorze.
+  - Nie potrafię odczytać kodów brakujących danych.
+  - Dokumentacja wyjaśnia sposób zbierania danych.
+  - Warunki ponownego użycia są zrozumiałe.
+  - Dokumentacja wystarcza do rozpoczęcia analizy.
+  pytanie_binarne: Czy deklarujesz ponowne użycie zbioru danych?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S11
+  tytul: 'Biblioteka: przekazywanie instrukcji korzystania z e-zasobów'
+  problem: Instytucja chce ocenić instrukcję e-zasobów z perspektywy użytkowników
+    i wskazać uzasadniony kierunek poprawy.
+  konstrukt: zrozumiałości instrukcji
+  grupy:
+  - teks
+  - wideo
+  druga_analiza: Spearman
+  pytanie_drugie: czas zapoznania a indeks
+  zmienna_druga: czas_wyszukiwania
+  efekt_grup: 0.35
+  czas_typowy: 9.0
+  pozycje:
+  - Instrukcja jasno wskazuje pierwszy krok.
+  - Rozumiem sposób uzyskania dostępu do e-zasobu.
+  - Instrukcja zawiera dla mnie niejasne kroki.
+  - Przykład pomaga wykonać wyszukiwanie.
+  - Wiem, co zrobić w razie błędu dostępu.
+  - Potrafię powtórzyć czynności po zapoznaniu się z instrukcją.
+  pytanie_binarne: Czy udało się wykonać czynności z instrukcji?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S12
+  tytul: 'Platforma e-learningowa: organizacja materiałów kursu'
+  problem: Instytucja chce ocenić organizację materiałów kursu z perspektywy użytkowników
+    i wskazać uzasadniony kierunek poprawy.
+  konstrukt: odnajdywalności materiałów
+  grupy:
+  - telefon
+  - komputer
+  druga_analiza: tabela krzyżowa
+  pytanie_drugie: grupa × znalezienie wskazanego materiału
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.5
+  czas_typowy: 15.0
+  pozycje:
+  - Widzę, gdzie umieszczono materiały bieżących zajęć.
+  - Nazwy plików pomagają rozpoznać ich treść.
+  - Trudno mi znaleźć materiał po poprzednich zajęciach.
+  - Układ materiałów odpowiada kolejności tematów.
+  - Potrafię odróżnić materiał obowiązkowy od rozszerzenia.
+  - Wiem, gdzie znaleźć instrukcję zadania.
+  pytanie_binarne: Czy udało się znaleźć wskazany materiał?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S13
+  tytul: 'Instytucjonalne FAQ: adekwatność odpowiedzi'
+  problem: Instytucja chce ocenić odpowiedzi FAQ z perspektywy użytkowników i wskazać
+    uzasadniony kierunek poprawy.
+  konstrukt: adekwatności odpowiedzi FAQ
+  grupy:
+  - pierwszy raz
+  - powracający
+  druga_analiza: tabela krzyżowa
+  pytanie_drugie: grupa × rozwiązanie problemu
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.2
+  czas_typowy: 5.0
+  pozycje:
+  - FAQ zawiera pytanie odpowiadające mojej sprawie.
+  - Odpowiedź podaje potrzebne kroki działania.
+  - Odpowiedzi FAQ są zbyt ogólne, aby mi pomóc.
+  - Odpowiedź wskazuje, kiedy zasada nie ma zastosowania.
+  - Linki w odpowiedzi pozwalają sprawdzić szczegóły.
+  - FAQ wyjaśnia, gdzie uzyskać dodatkową pomoc.
+  pytanie_binarne: Czy FAQ pozwoliło rozwiązać problem?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S14
+  tytul: 'Wyszukiwarka instytucji: wsparcie filtrowania wyników'
+  problem: Instytucja chce ocenić filtry wyszukiwarki z perspektywy użytkowników i
+    wskazać uzasadniony kierunek poprawy.
+  konstrukt: kontroli nad wyszukiwaniem
+  grupy:
+  - filtry
+  - bez filtrów
+  druga_analiza: Spearman
+  pytanie_drugie: częstość wyszukiwania a indeks
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.35
+  czas_typowy: 9.0
+  pozycje:
+  - Filtry pozwalają mi ograniczyć wynik do potrzebnego typu.
+  - Rozumiem, jakie wyniki wyklucza wybrany filtr.
+  - Nie wiem, dlaczego filtr zmienił liczbę wyników.
+  - Widzę, które filtry są aktywne.
+  - Potrafię cofnąć nieprzydatny filtr.
+  - Filtry ułatwiają mi znalezienie właściwego dokumentu.
+  pytanie_binarne: Czy udało się znaleźć właściwy dokument?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S15
+  tytul: 'Baza wiedzy organizacji: znajdowanie aktualnych instrukcji'
+  problem: Instytucja chce ocenić instrukcje w bazie wiedzy z perspektywy użytkowników
+    i wskazać uzasadniony kierunek poprawy.
+  konstrukt: zaufania do aktualności instrukcji
+  grupy:
+  - krótki staż
+  - długi staż
+  druga_analiza: Spearman
+  pytanie_drugie: czas wyszukiwania a indeks
+  zmienna_druga: czas_wyszukiwania
+  efekt_grup: 0.5
+  czas_typowy: 15.0
+  pozycje:
+  - Instrukcje pokazują datę ostatniej aktualizacji.
+  - Wiem, która wersja instrukcji obowiązuje.
+  - Podejrzewam, że instrukcje opisują nieaktualne procedury.
+  - Zmiany w instrukcjach są jasno wskazane.
+  - Potrafię ustalić osobę odpowiedzialną za treść.
+  - Ufam aktualności instrukcji przy wykonywaniu zadania.
+  pytanie_binarne: Czy udało się znaleźć aktualną instrukcję?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S16
+  tytul: 'Informacja miejska: spójność kanałów komunikacji'
+  problem: Instytucja chce ocenić komunikaty miejskie z perspektywy użytkowników i
+    wskazać uzasadniony kierunek poprawy.
+  konstrukt: spójności komunikacji
+  grupy:
+  - jeden kanał
+  - wiele kanałów
+  druga_analiza: tabela krzyżowa
+  pytanie_drugie: grupa × napotkanie sprzecznej informacji
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.2
+  czas_typowy: 5.0
+  pozycje:
+  - Różne kanały podają tę samą datę wydarzenia.
+  - Nazwy usług są zgodne między kanałami.
+  - Komunikaty z różnych kanałów sobie przeczą.
+  - Zmiany informacji są widoczne we wszystkich kanałach.
+  - Potrafię rozpoznać aktualny komunikat.
+  - Informacje między kanałami tworzą spójny opis sprawy.
+  pytanie_binarne: Czy napotkałeś sprzeczną informację?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S17
+  tytul: 'Opisy danych w katalogu otwartych danych: czytelność dla odbiorcy'
+  problem: Instytucja chce ocenić opisy otwartych danych z perspektywy użytkowników
+    i wskazać uzasadniony kierunek poprawy.
+  konstrukt: czytelności opisów danych
+  grupy:
+  - zawodowi
+  - niezawodowi
+  druga_analiza: tabela krzyżowa
+  pytanie_drugie: grupa × poprawne rozpoznanie zakresu zbioru
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.35
+  czas_typowy: 9.0
+  pozycje:
+  - Tytuł zbioru wskazuje, czego dotyczą dane.
+  - Opis jasno podaje zasięg terytorialny.
+  - Nie rozumiem jednostek użytych w opisie zbioru.
+  - Opis pozwala ustalić okres objęty danymi.
+  - Definicje zmiennych są zrozumiałe.
+  - Potrafię rozpoznać ograniczenia zastosowania zbioru.
+  pytanie_binarne: Czy poprawnie rozpoznałeś zakres zbioru?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S18
+  tytul: 'Informacja biblioteczna: komunikowanie ograniczeń dostępu'
+  problem: Instytucja chce ocenić zasady dostępu z perspektywy użytkowników i wskazać
+    uzasadniony kierunek poprawy.
+  konstrukt: jasności zasad dostępu
+  grupy:
+  - lokalni
+  - zdalni
+  druga_analiza: tabela krzyżowa
+  pytanie_drugie: grupa × nieudana próba dostępu
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.5
+  czas_typowy: 15.0
+  pozycje:
+  - Rozumiem, kto może korzystać z zasobu.
+  - Informacja podaje wymagany sposób logowania.
+  - Nie wiem, dlaczego dostęp może zostać odrzucony.
+  - Rozumiem różnicę między dostępem lokalnym a zdalnym.
+  - Komunikat wskazuje, jak rozwiązać problem dostępu.
+  - Zasady jasno opisują ograniczenia wykorzystania zasobu.
+  pytanie_binarne: Czy wystąpiła nieudana próba dostępu?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S19
+  tytul: 'System rekomendacji lektur: dopasowanie informacji do potrzeb'
+  problem: Instytucja chce ocenić rekomendacje lektur z perspektywy użytkowników i
+    wskazać uzasadniony kierunek poprawy.
+  konstrukt: trafności rekomendacji
+  grupy:
+  - nowe zainteresowania
+  - stałe zainteresowania
+  druga_analiza: Spearman
+  pytanie_drugie: częstość korzystania a indeks
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.2
+  czas_typowy: 5.0
+  pozycje:
+  - Rekomendowane lektury odpowiadają mojemu tematowi.
+  - Opis rekomendacji wyjaśnia jej związek z moimi potrzebami.
+  - Rekomendacje pomijają istotne dla mnie potrzeby.
+  - Zestaw rekomendacji obejmuje różne przydatne źródła.
+  - Potrafię wybrać lekturę na podstawie rekomendacji.
+  - Rekomendacje pomagają mi poszerzyć poszukiwania.
+  pytanie_binarne: Czy wybrałeś lekturę z rekomendacji?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.
+- id: S20
+  tytul: 'Portal konferencji naukowej: przejrzystość informacji organizacyjnej'
+  problem: Instytucja chce ocenić portal konferencji z perspektywy użytkowników i
+    wskazać uzasadniony kierunek poprawy.
+  konstrukt: przejrzystości informacji organizacyjnej
+  grupy:
+  - pierwszy raz
+  - kolejny raz
+  druga_analiza: tabela krzyżowa
+  pytanie_drugie: grupa × poprawne odnalezienie terminu
+  zmienna_druga: czestosc_korzystania
+  efekt_grup: 0.35
+  czas_typowy: 9.0
+  pozycje:
+  - Łatwo znajduję termin zgłoszenia na konferencję.
+  - Portal jasno podaje warunki uczestnictwa.
+  - Trudno mi ustalić, która informacja jest aktualna.
+  - Program pozwala zaplanować udział.
+  - Informacja o opłatach jest zrozumiała.
+  - Wiem, gdzie skierować pytanie organizacyjne.
+  pytanie_binarne: Czy poprawnie odnalazłeś termin zgłoszenia?
+  kanaly:
+  - strona WWW
+  - e-mail
+  - media społecznościowe
+  - kontakt bezpośredni
+  projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
+  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
+    Kod 99 zamień na NA.
+  ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
+    syntetyczne, nie stanowią dowodu o instytucji.

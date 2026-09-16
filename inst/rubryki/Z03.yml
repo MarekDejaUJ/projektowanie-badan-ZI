@@ -1,0 +1,90 @@
+id: Z03
+version: 1.0.0
+rocznik: 2026-27
+max_points: 10.0
+criteria:
+- id: Z03.1
+  title: Poprawne N, liczebności/odsetki i miary położenia/zróżnicowania z obsługą
+    braków.
+  evidence: Poprawne N, liczebności/odsetki i miary położenia/zróżnicowania z obsługą
+    braków.
+  max_points: 3.0
+  review_mode: mixed
+  learning_outcomes:
+  - W2
+  - U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Jedna miara poprawna; braki psują pozostałe.
+  - points: 1.5
+    observable_description: Miary poprawne dla części zmiennych albo odsetki mają
+      błędny mianownik.
+  - points: 2.25
+    observable_description: Miary i mianowniki poprawne; jedna miara zróżnicowania
+      pominięta.
+  - points: 3.0
+    observable_description: Poprawne N, liczebności/odsetki i miary położenia/zróżnicowania
+      z obsługą braków.
+- id: Z03.2
+  title: Dwa czytelne wykresy dobrane do skal, z osiami, jednostkami i etykietami.
+  evidence: Dwa czytelne wykresy dobrane do skal, z osiami, jednostkami i etykietami.
+  max_points: 3.0
+  review_mode: mixed
+  learning_outcomes:
+  - W3
+  - U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Jeden wykres bez etykiet lub o niewłaściwej skali.
+  - points: 1.5
+    observable_description: Dwa wykresy, lecz jeden nie odpowiada skali danych.
+  - points: 2.25
+    observable_description: Dwa właściwe wykresy; brak jednej jednostki albo etykiety.
+  - points: 3.0
+    observable_description: Dwa czytelne wykresy dobrane do skal, z osiami, jednostkami
+      i etykietami.
+- id: Z03.3
+  title: Uzasadnienie wyboru średniej/mediany lub częstości uwzględnia typ i asymetrię.
+  evidence: Uzasadnienie wyboru średniej/mediany lub częstości uwzględnia typ i asymetrię.
+  max_points: 2.0
+  review_mode: human
+  learning_outcomes: W2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Wymieniono średnią lub medianę bez argumentu.
+  - points: 1.0
+    observable_description: Argument opiera się na skali, lecz pomija asymetrię widoczną
+      w danych.
+  - points: 1.5
+    observable_description: Wybór uzasadniony skalą i asymetrią; brakuje odniesienia
+      do jednej liczby.
+  - points: 2.0
+    observable_description: Uzasadnienie wyboru średniej/mediany lub częstości uwzględnia
+      typ i asymetrię.
+- id: Z03.4
+  title: Własny opis danych odnosi się do liczb, bez wniosków wykraczających poza
+    próbę.
+  evidence: Własny opis danych odnosi się do liczb, bez wniosków wykraczających poza
+    próbę.
+  max_points: 2.0
+  review_mode: human
+  learning_outcomes: U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Opis ogólny bez liczb.
+  - points: 1.0
+    observable_description: Opis częściowo zgodny z liczbami, lecz uogólnia na populację.
+  - points: 1.5
+    observable_description: Własny opis liczbowy w granicach próby; jedno pominięcie
+      zakresu.
+  - points: 2.0
+    observable_description: Własny opis danych odnosi się do liczb, bez wniosków wykraczających
+      poza próbę.

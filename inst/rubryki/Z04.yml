@@ -1,0 +1,89 @@
+id: Z04
+version: 1.0.0
+rocznik: 2026-27
+max_points: 10.0
+criteria:
+- id: Z04.1
+  title: Słownik definiuje pozycje, skale, zakresy, kody braków i pytanie badawcze.
+  evidence: Słownik definiuje pozycje, skale, zakresy, kody braków i pytanie badawcze.
+  max_points: 3.0
+  review_mode: human
+  learning_outcomes:
+  - W1
+  - W2
+  - U1
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Podano nazwy pozycji bez skal i kodowania.
+  - points: 1.5
+    observable_description: Pozycje i skale opisane; braki albo pytanie badawcze niejasne.
+  - points: 2.25
+    observable_description: Słownik i pytanie poprawne; jedna definicja niedoprecyzowana.
+  - points: 3.0
+    observable_description: Słownik definiuje pozycje, skale, zakresy, kody braków
+      i pytanie badawcze.
+- id: Z04.2
+  title: Poprawna rekodacja odwróconej pozycji i jawna reguła indeksu przy brakach.
+  evidence: Poprawna rekodacja odwróconej pozycji i jawna reguła indeksu przy brakach.
+  max_points: 3.0
+  review_mode: mixed
+  learning_outcomes: U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Próba rekodacji, lecz kierunek pozycji nadal błędny.
+  - points: 1.5
+    observable_description: Rekodacja poprawna; indeks nie respektuje minimum odpowiedzi.
+  - points: 2.25
+    observable_description: Rekodacja i minimum poprawne; pominięto uzasadnienie reguły.
+  - points: 3.0
+    observable_description: Poprawna rekodacja odwróconej pozycji i jawna reguła indeksu
+      przy brakach.
+- id: Z04.3
+  title: Pytanie wielokrotnego wyboru ma poprawne liczebności, odsetki i mianownik.
+  evidence: Pytanie wielokrotnego wyboru ma poprawne liczebności, odsetki i mianownik.
+  max_points: 2.0
+  review_mode: mixed
+  learning_outcomes:
+  - W2
+  - U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Liczono wskazania bez mianownika.
+  - points: 1.0
+    observable_description: Liczebności poprawne; procenty odnoszą się do wskazań
+      zamiast respondentów.
+  - points: 1.5
+    observable_description: Liczebności i procenty respondentów poprawne; opis braków
+      niepełny.
+  - points: 2.0
+    observable_description: Pytanie wielokrotnego wyboru ma poprawne liczebności,
+      odsetki i mianownik.
+- id: Z04.4
+  title: Student rozróżnia pojedynczą pozycję porządkową od wyniku złożonego i wskazuje
+    ograniczenie pomiaru.
+  evidence: Student rozróżnia pojedynczą pozycję porządkową od wyniku złożonego i
+    wskazuje ograniczenie pomiaru.
+  max_points: 2.0
+  review_mode: human
+  learning_outcomes:
+  - W2
+  - U1
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Nazwano skalę bez rozróżnienia pozycji i indeksu.
+  - points: 1.0
+    observable_description: Rozróżnienie poprawne; uznano indeks za zwalidowaną skalę.
+  - points: 1.5
+    observable_description: Rozróżnienie i ograniczenie poprawne; brak argumentu o
+      kodowaniu.
+  - points: 2.0
+    observable_description: Student rozróżnia pojedynczą pozycję porządkową od wyniku
+      złożonego i wskazuje ograniczenie pomiaru.

@@ -1,0 +1,95 @@
+id: Z05
+version: 1.0.0
+rocznik: 2026-27
+max_points: 10.0
+criteria:
+- id: Z05.1
+  title: Estymata i przedział dla wskazanej zmiennej są poprawne, z właściwym N.
+  evidence: Estymata i przedział dla wskazanej zmiennej są poprawne, z właściwym N.
+  max_points: 3.0
+  review_mode: mixed
+  learning_outcomes:
+  - U2
+  - U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Estymata bez poprawnego N lub przedziału.
+  - points: 1.5
+    observable_description: Estymata poprawna; błędny błąd standardowy albo granica
+      przedziału.
+  - points: 2.25
+    observable_description: Estymata, N i granice poprawne; pominięty poziom ufności.
+  - points: 3.0
+    observable_description: Estymata i przedział dla wskazanej zmiennej są poprawne,
+      z właściwym N.
+- id: Z05.2
+  title: Bootstrap ma poprawny poziom losowania i powtarzalność; wykres/rezultat odpowiada
+    danych.
+  evidence: Bootstrap ma poprawny poziom losowania i powtarzalność; wykres/rezulta
+    odpowiada danych.
+  max_points: 2.0
+  review_mode: mixed
+  learning_outcomes:
+  - W3
+  - U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Losowano pojedyncze wartości bez odtwarzania próby.
+  - points: 1.0
+    observable_description: Losowanie wierszy poprawne; brak powtarzalności lub zły
+      kwantyl.
+  - points: 1.5
+    observable_description: Bootstrap i kwantyle poprawne; pominięto liczbę replikacji.
+  - points: 2.0
+    observable_description: Bootstrap ma poprawny poziom losowania i powtarzalność;
+      wykres/rezultat odpowiada danych.
+- id: Z05.3
+  title: Własne objaśnienie przedziału nie przypisuje prawdopodobieństwa stałemu parametrowi
+    po obliczeniu.
+  evidence: Własne objaśnienie przedziału nie przypisuje prawdopodobieństwa stałemu
+    parametrowi po obliczeniu.
+  max_points: 3.0
+  review_mode: human
+  learning_outcomes:
+  - W2
+  - U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Przedział utożsamiono z zakresem 95% obserwacji.
+  - points: 1.5
+    observable_description: Opis niepewności częściowy, lecz przypisuje prawdopodobieństwo
+      stałemu parametrowi.
+  - points: 2.25
+    observable_description: Interpretacja częstotliwościowa poprawna; pominięto warunek
+      powtarzania próbkowania.
+  - points: 3.0
+    observable_description: Własne objaśnienie przedziału nie przypisuje prawdopodobieństwa
+      stałemu parametrowi po obliczeniu.
+- id: Z05.4
+  title: Wniosek odróżnia precyzję od znaczenia praktycznego i wskazuje ograniczenie
+    próby.
+  evidence: Wniosek odróżnia precyzję od znaczenia praktycznego i wskazuje ograniczenie
+    próby.
+  max_points: 2.0
+  review_mode: human
+  learning_outcomes: U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Wniosek powtarza estymatę bez oceny precyzji.
+  - points: 1.0
+    observable_description: Precyzja opisana; pominięte ograniczenie lub znaczenie
+      praktyczne.
+  - points: 1.5
+    observable_description: Precyzja, znaczenie i ograniczenie poprawne; niewielka
+      luka uzasadnienia.
+  - points: 2.0
+    observable_description: Wniosek odróżnia precyzję od znaczenia praktycznego i
+      wskazuje ograniczenie próby.

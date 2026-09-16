@@ -1,0 +1,9 @@
+* text=auto eol=lf
+*.pdf binary
+*.png binary
+*.xlsx binary
+*.rds binary
+*.gz binary
+*.zip binary
+*.md whitespace=-blank-at-eol
+*.Rmd whitespace=-blank-at-eol

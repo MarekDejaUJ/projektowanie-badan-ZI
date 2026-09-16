@@ -1,0 +1,172 @@
+id: PROJEKT
+version: 1.0.0
+rocznik: 2026-27
+max_points: 100.0
+criteria:
+- id: A01
+  title: Problem, cel, 1–2 pytania/hipotezy oraz plan populacji/próby są spójne i
+    instytucjonalnie uzasadnione. Rozdzielono plan badania od symulacji.
+  evidence: Problem, cel, 1–2 pytania/hipotezy oraz plan populacji/próby są spójne
+    i instytucjonalnie uzasadnione. Rozdzielono plan badania od symulacji.
+  max_points: 15.0
+  review_mode: human
+  learning_outcomes:
+  - W1
+  - U1
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 3.75
+    observable_description: Problem nazwany bez spójnego pytania i planu próby.
+  - points: 7.5
+    observable_description: Cel i pytania częściowe; pomylono plan realnego badania
+      z symulacją.
+  - points: 11.25
+    observable_description: Spójny plan; jedna luka doboru lub uzasadnienia instytucjonalnego.
+  - points: 15.0
+    observable_description: Problem, cel, 1–2 pytania/hipotezy oraz plan populacji/próby
+      są spójne i instytucjonalnie uzasadnione. Rozdzielono plan badania od symulacji.
+- id: A02
+  title: Operacjonalizacja, krótki kwestionariusz, słownik i zasady pomiaru odpowiadają
+    pytaniom; rekodacja i indeks mają uzasadnienie.
+  evidence: Operacjonalizacja, krótki kwestionariusz, słownik i zasady pomiaru odpowiadają
+    pytaniom; rekodacja i indeks mają uzasadnienie.
+  max_points: 15.0
+  review_mode: mixed
+  learning_outcomes:
+  - W2
+  - U1
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 3.75
+    observable_description: Pozycje wymienione bez kodowania i konstruktu.
+  - points: 7.5
+    observable_description: Pomiar częściowo zgodny; rekodacja, reguła indeksu albo
+      słownik mają błąd.
+  - points: 11.25
+    observable_description: Zgodny pomiar i kodowanie; jedno uzasadnienie ograniczenia
+      niepełne.
+  - points: 15.0
+    observable_description: Operacjonalizacja, krótki kwestionariusz, słownik i zasady
+      pomiaru odpowiadają pytaniom; rekodacja i indeks mają uzasadnienie.
+- id: A03
+  title: Czyszczenie jest jawne i odtwarzalne; reguły braków/duplikatów/odstających
+    uzasadnione, N udokumentowane, manifest zgodny.
+  evidence: Czyszczenie jest jawne i odtwarzalne; reguły braków/duplikatów/odstających
+    uzasadnione, N udokumentowane, manifest zgodny.
+  max_points: 15.0
+  review_mode: mixed
+  learning_outcomes:
+  - W3
+  - U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 3.75
+    observable_description: Dane zmieniono bez odtwarzalnych reguł.
+  - points: 7.5
+    observable_description: Część czyszczenia odtwarzalna; manifest, N albo reguła
+      braków błędne.
+  - points: 11.25
+    observable_description: Jawne i poprawne czyszczenie; jedna reguła niedostatecznie
+      uzasadniona.
+  - points: 15.0
+    observable_description: Czyszczenie jest jawne i odtwarzalne; reguły braków/duplikatów/odstających
+      uzasadnione, N udokumentowane, manifest zgodny.
+- id: A04
+  title: Opis próby i zmiennych oraz 2–3 wykresy są poprawne, czytelne i odpowiadają
+    skalom/pytaniom.
+  evidence: Opis próby i zmiennych oraz 2–3 wykresy są poprawne, czytelne i odpowiadają
+    skalom/pytaniom.
+  max_points: 10.0
+  review_mode: mixed
+  learning_outcomes:
+  - W2
+  - U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 2.5
+    observable_description: Jedna miara lub wykres bez właściwych opisów.
+  - points: 5.0
+    observable_description: Opis częściowy; błąd mianownika lub jeden wykres nie pasuje
+      do skali.
+  - points: 7.5
+    observable_description: Poprawny opis i wykresy; jedna jednostka lub etykieta
+      pominięta.
+  - points: 10.0
+    observable_description: Opis próby i zmiennych oraz 2–3 wykresy są poprawne, czytelne
+      i odpowiadają skalom/pytaniom.
+- id: A05
+  title: Minimum dwie właściwe małe analizy wykonano poprawnie; podano założenia,
+    efekt, niepewność oraz komplet raportowanych statystyk.
+  evidence: Minimum dwie właściwe małe analizy wykonano poprawnie; podano założenia,
+    efekt, niepewność oraz komplet raportowanych statystyk.
+  max_points: 20.0
+  review_mode: mixed
+  learning_outcomes:
+  - U2
+  - U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 5.0
+    observable_description: Jedna próba obliczenia bez uzasadnienia.
+  - points: 10.0
+    observable_description: Jedna poprawna analiza albo dwie z istotnym błędem.
+  - points: 15.0
+    observable_description: Dwie właściwe analizy; niewielkie braki raportowania lub
+      założeń.
+  - points: 20.0
+    observable_description: Minimum dwie właściwe małe analizy wykonano poprawnie;
+      podano założenia, efekt, niepewność oraz komplet raportowanych statystyk.
+- id: A06
+  title: Własne wnioski odpowiadają pytaniom i liczbom; ograniczenia pomiaru/próby/symulacji
+    i rekomendacja są realistyczne, bez nieuprawnionej przyczynowości.
+  evidence: Własne wnioski odpowiadają pytaniom i liczbom; ograniczenia pomiaru/próby/symulacji
+    i rekomendacja są realistyczne, bez nieuprawnionej przyczynowości.
+  max_points: 15.0
+  review_mode: human
+  learning_outcomes:
+  - U1
+  - U3
+  - K2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 3.75
+    observable_description: Wnioski ogólne bez odniesienia do liczb.
+  - points: 7.5
+    observable_description: Część wniosków zgodna; nieuprawniona przyczynowość lub
+      brak ograniczeń symulacji.
+  - points: 11.25
+    observable_description: Własne wnioski zgodne z liczbami; jedno ograniczenie lub
+      rekomendacja niepełne.
+  - points: 15.0
+    observable_description: Własne wnioski odpowiadają pytaniom i liczbom; ograniczenia
+      pomiaru/próby/symulacji i rekomendacja są realistyczne, bez nieuprawnionej przyczynowości.
+- id: A07
+  title: Raport `.md`, kod, słownik, dane i wyniki tworzą odtwarzalną całość; źródła/wersje
+    i instrukcja są kompletne, oddana wersja identyfikowalna.
+  evidence: Raport `.md`, kod, słownik, dane i wyniki tworzą odtwarzalną całość; źródła/wersje
+    i instrukcja są kompletne, oddana wersja identyfikowalna.
+  max_points: 10.0
+  review_mode: mixed
+  learning_outcomes:
+  - W3
+  - K1
+  - K2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 2.5
+    observable_description: Raport lub kod bez spójnych danych i wyników.
+  - points: 5.0
+    observable_description: Część pracy odtwarzalna; brakuje pliku, wersji lub instrukcji.
+  - points: 7.5
+    observable_description: Całość odtwarzalna i identyfikowalna; drobna luka źródła
+      lub wersji.
+  - points: 10.0
+    observable_description: Raport `.md`, kod, słownik, dane i wyniki tworzą odtwarzalną
+      całość; źródła/wersje i instrukcja są kompletne, oddana wersja identyfikowalna.

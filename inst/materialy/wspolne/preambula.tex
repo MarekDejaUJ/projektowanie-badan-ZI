@@ -1,0 +1,35 @@
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{multicol}
+
+\geometry{margin=1.8cm, top=2.5cm, bottom=2cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small Projektowanie badań — 2026/27}
+\lhead{\small Zarządzanie informacją | ISI UJ}
+\cfoot{\thepage}
+
+\titleformat{\section}{\large\bfseries\color{blue!70!black}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}{\small\bfseries\color{gray!70!black}}{\thesubsubsection.}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.5ex}{1ex}
+\titlespacing*{\subsection}{0pt}{1ex}{0.5ex}
+
+\setlist[itemize]{nosep, leftmargin=1.5em}
+\setlist[enumerate]{nosep, leftmargin=1.5em}
+
+\tcbset{boxrule=0.5pt, left=4pt, right=4pt, top=4pt, bottom=4pt, fonttitle=\bfseries\small}
+
+\newtcolorbox{definicja}[1][]{colback=blue!5, colframe=blue!50!black, title={#1}}
+\newtcolorbox{uwagabox}[1][]{colback=orange!10, colframe=orange!70!black, title={#1}}
+\newtcolorbox{wzorbox}[1][]{colback=gray!5, colframe=gray!50!black, title={#1}}
+\newtcolorbox{przykladbox}[1][]{colback=purple!5, colframe=purple!50!black, title={#1}}

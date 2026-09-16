@@ -1,0 +1,88 @@
+id: Z01
+version: 1.0.0
+rocznik: 2026-27
+max_points: 10.0
+criteria:
+- id: Z01.1
+  title: Otwarty lokalny projekt; skrypt wykonuje poprawnie wskazane działania i tworzy
+    nazwane obiekty.
+  evidence: Otwarty lokalny projekt; skrypt wykonuje poprawnie wskazane działania
+    i tworzy nazwane obiekty.
+  max_points: 3.0
+  review_mode: mixed
+  learning_outcomes:
+  - W3
+  - U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Skrypt zaczęty, lecz nie wykonuje działań.
+  - points: 1.5
+    observable_description: Wykonuje część działań; brakuje obiektu lub nazwy.
+  - points: 2.25
+    observable_description: Wszystkie działania działają; pominięto ustawienie projektu.
+  - points: 3.0
+    observable_description: Otwarty lokalny projekt; skrypt wykonuje poprawnie wskazane
+      działania i tworzy nazwane obiekty.
+- id: Z01.2
+  title: Z wektora i tabeli uzyskano wymagany element/kolumnę oraz prosty wynik obliczenia.
+  evidence: Z wektora i tabeli uzyskano wymagany element/kolumnę oraz prosty wynik
+    obliczenia.
+  max_points: 3.0
+  review_mode: mixed
+  learning_outcomes: U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Wskazano dane bez poprawnego odczytu elementu.
+  - points: 1.5
+    observable_description: Poprawny odczyt wektora albo kolumny; obliczenie błędne.
+  - points: 2.25
+    observable_description: Odczyt i obliczenie poprawne; jeden element odpowiedzi
+      pominięty.
+  - points: 3.0
+    observable_description: Z wektora i tabeli uzyskano wymagany element/kolumnę oraz
+      prosty wynik obliczenia.
+- id: Z01.3
+  title: W `.md` poprawnie objaśniono konsolę, skrypt i źródło jednego wyniku.
+  evidence: W `.md` poprawnie objaśniono konsolę, skrypt i źródło jednego wyniku.
+  max_points: 2.0
+  review_mode: human
+  learning_outcomes: W3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Nazwano konsolę lub skrypt bez wyjaśnienia roli.
+  - points: 1.0
+    observable_description: Role wyjaśniono, lecz nie wskazano źródła wyniku.
+  - points: 1.5
+    observable_description: Role i źródło wyniku poprawne; opis pomija sposób ponownego
+      wykonania.
+  - points: 2.0
+    observable_description: W `.md` poprawnie objaśniono konsolę, skrypt i źródło
+      jednego wyniku.
+- id: Z01.4
+  title: Wyniki i pliki należą do własnego repo/ID; student potrafi wskazać potwierdzone
+    SHA oraz status.
+  evidence: Wyniki i pliki należą do własnego repo/ID; student potrafi wskazać potwierdzone
+    SHA oraz status.
+  max_points: 2.0
+  review_mode: mixed
+  learning_outcomes:
+  - W3
+  - K1
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Pliki przygotowane, lecz brak zgodności repo/ID.
+  - points: 1.0
+    observable_description: Własne repo/ID, lecz wskazano tylko lokalny commit.
+  - points: 1.5
+    observable_description: Potwierdzone zdalne SHA; opis statusu niepełny.
+  - points: 2.0
+    observable_description: Wyniki i pliki należą do własnego repo/ID; student potrafi
+      wskazać potwierdzone SHA oraz status.

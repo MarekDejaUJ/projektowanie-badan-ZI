@@ -1,0 +1,18 @@
+Package: badaniaZI
+Type: Package
+Title: Projektowanie Badan i Analiza Danych Ankietowych
+Version: 0.1.0
+Authors@R: person("Marek", "Deja", role = c("aut", "cre"), email = "marek.deja@uj.edu.pl")
+Description: Materialy i narzedzia do ilosciowej czesci kursu projektowania
+    badan na kierunku Zarzadzanie informacja. Zawiera indywidualne dane
+    syntetyczne, instrukcje, rubryki i obsluge pracy lokalnej oraz oddawania
+    zadan przez prywatne repozytoria GitHub.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.3.0)
+Imports: digest, gert, ggplot2, httr2, jsonlite, processx, yaml
+Suggests: knitr, rmarkdown, testthat (>= 3.0.0), remotes, readxl, rstudioapi
+Config/testthat/edition: 3
+URL: https://MarekDejaUJ.github.io/projektowanie-badan-ZI/, https://github.com/MarekDejaUJ/projektowanie-badan-ZI
+BugReports: https://github.com/MarekDejaUJ/projektowanie-badan-ZI/issues
+RoxygenNote: 7.3.3

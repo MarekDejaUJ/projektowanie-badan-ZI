@@ -1,0 +1,61 @@
+---
+title: 'Handout C05 — Niepewność średniej, bootstrap i intuicja permutacji'
+subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
+author: 'Marek Deja'
+date: '2026/27'
+lang: pl-PL
+fontsize: 11pt
+papersize: a4
+geometry: margin=2cm
+---
+
+# C05 — 90 minut
+
+10 min odtworzenie → 20 min estymacja/CI → 20 min bootstrap → 10 min permutacja → 20 min Z05 → 10 min odbiór. Własny indeks z reguł C02/C04, N po wybraniu ważnych wyników.
+
+# Estymata i CI
+
+$s$ opisuje osoby, $SE=s/\sqrt{n}$ niepewność średniej przy niezależnych obserwacjach. CI t: $\bar{x}\pm t_{0{,}975,n-1}SE$. Około 95% przedziałów obejmowałoby parametr przy powtarzaniu właściwego próbkowania; to nie zakres 95% odpowiedzi.
+
+Obliczamy indeks i zachowujemy tylko ważne wyniki. Poziom ufności odczytujemy jawnie, a domyślny test względem zera pomijamy. Odczytaj N, średnią oraz granice.
+
+```{r ci}
+d <- badaniaZI::przygotuj_ankiete(badaniaZI::dane_przykladowe())$dane
+p <- d[, paste0("pozycja_", 1:6)]
+p$pozycja_3 <- badaniaZI::odwroc_pozycje(p$pozycja_3)
+x <- badaniaZI::indeks_ankiety(p, minimum = 5)
+x <- x[!is.na(x)]
+c(n = length(x), srednia = mean(x), se = stats::sd(x) / sqrt(length(x)))
+stats::t.test(x, conf.level = .95)$conf.int
+```
+
+# Bootstrap średniej
+
+Losujemy respondentów ze zwracaniem, zachowując N. B oznacza repliki komputera, nie nowe osoby. Kwantyle 2,5% i 97,5% dają proste przybliżenie percentylowego CI.
+
+```{r bootstrap}
+set.seed(2027)
+B <- 1999
+boot <- replicate(B, mean(x[sample.int(length(x), length(x), replace = TRUE)]))
+stats::quantile(boot, c(.025, .975))
+```
+
+Rekrutacja, jakość pytań i zależność osób nadal wymagają oceny. Więcej replik nie naprawia systematycznego błędu badania. Wąski CI oznacza precyzję w modelu, a nie gwarancję trafnego pomiaru.
+
+# Permutacja — demonstracja
+
+Tasowanie etykiet grup przy zachowanych liczebnościach buduje rozkład zerowy różnicy. Wymienialność wymaga uzasadnienia; brak normalności nie zapewnia jej automatycznie. Dwustronne Monte Carlo: $(1+\#\{|T_b|\geq|T_{obs}|\})/(B+1)$, więc skończona symulacja nie daje p=0. Ta analiza nie jest osobnym wymaganiem Z05.
+
+# Z05 — dowody i rubryka
+
+`analiza.R`, `odpowiedzi.md`, `wyniki/estymacja.csv`, `bootstrap.csv`, `bootstrap.png`. Dwie metody 95%, N, średnia, SD/SE; B=1999, ziarno 2027; histogram replik z N/B/scenariuszem i źródłem syntetycznym. W MD: względne linki, znaczenie CI, B a N, precyzja, znaczenie praktyczne i ograniczenie próby.
+
+3 pkt estymata/CI/N + 2 pkt bootstrap/powtarzalność + 3 pkt własne wyjaśnienie CI + 2 pkt precyzja/ograniczenie. Pełne poziomy: `rubryka("Z05")`. Termin: początek C06. Zapisz, uruchom skrypt od początku, sprawdź, oddaj i odczytaj potwierdzenie funkcjami R.
+
+# Notatki
+
+N: ........... Średnia: ........... SD: ........... SE: ........... CI t: ......................
+
+CI bootstrap: .............................. Dlaczego B nie jest N? ...................................
+
+Ograniczenie próby: ...................................................................................

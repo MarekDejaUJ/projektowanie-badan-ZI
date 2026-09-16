@@ -1,0 +1,54 @@
+---
+title: 'Handout C03 — Opis danych i dwa wykresy'
+subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
+author: 'Marek Deja'
+date: '2026/27'
+lang: pl-PL
+fontsize: 11pt
+papersize: a4
+geometry: margin=2cm
+---
+
+# Plan i dane
+
+10 min start → 20 min miary → 25 min wspólne wykresy → 25 min Z03 → 10 min oddanie. Odtwórz własny projekt przez `rozpocznij_zajecia("C03", ...)`. Dane są syntetyczne; surowego CSV nie zmieniaj.
+
+# Tabela przed wykresem
+
+Liczba osób i liczba ważnych czasów mogą być różne. Obliczamy czas w minutach po regułach C02. Odczytaj medianę i IQR razem ze średnią i SD.
+
+```{r opis}
+dane <- badaniaZI::przygotuj_ankiete(badaniaZI::dane_przykladowe())$dane
+x <- dane$czas_wyszukiwania
+c(N = nrow(dane), wazne = sum(!is.na(x)), braki = sum(is.na(x)),
+  srednia = mean(x, na.rm = TRUE), mediana = median(x, na.rm = TRUE),
+  SD = stats::sd(x, na.rm = TRUE), IQR = stats::IQR(x, na.rm = TRUE))
+```
+
+| Element | Co czytam |
+|---|---|
+| Średnia | wrażliwa na skrajne wartości |
+| Mediana | środek uporządkowanych wartości |
+| SD | rozproszenie w jednostce zmiennej |
+| IQR | Q3 − Q1, środkowe 50% wartości |
+| Odsetek grupy | liczebność / N ważnych grup |
+
+# Dwa wykresy
+
+Histogram: przedziały czasu, kształt/ogon; gęstość nie jest procentem w punkcie. Pudełko: mediana, kwartyle, wąsy 1,5 IQR, punkty do sprawdzenia. Każdy wykres ma nazwy osi, minuty, źródło syntetyczne i N ważnych obserwacji. Punkt poza wąsami nie jest automatycznie błędem.
+
+# Z03 — wymagane wyniki
+
+Własny czas: N/osoby/braki, średnia, mediana, SD, IQR, minimum i maksimum. Grupy: N i procenty z mianownikiem. Zapisz `wyniki/opis.csv`, `histogram.png`, `boxplot.png`; dodaj linki w `odpowiedzi.md`. Własny opis z liczbami, argument za średnią/medianą i ograniczenie do próby.
+
+Ocena: obliczenia/mianowniki 3 pkt; dwa właściwe i czytelne wykresy 3 pkt; uzasadnienie miary 2 pkt; opis i granice wniosku 2 pkt. Pełne poziomy: `rubryka("Z03")`.
+
+Zapis → wykonanie skryptu od początku → `sprawdz_zadanie("Z03")` → `oddaj_zadanie("Z03")` → `status_oddania("Z03")` → wylogowanie R i przeglądarki.
+
+# Notatki
+
+N ważne: .......... Średnia: .......... Mediana: .......... SD: .......... IQR: ..........
+
+Co na histogramie uzasadnia wybór miary? ........................................................
+
+Jakie zdanie wykraczałoby poza dane? ...........................................................

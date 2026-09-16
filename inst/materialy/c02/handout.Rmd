@@ -1,0 +1,62 @@
+---
+title: 'Handout C02 — Import i porządkowanie danych ankietowych'
+subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
+author: 'Marek Deja'
+date: '2026/27'
+lang: pl-PL
+fontsize: 11pt
+papersize: a4
+geometry: margin=2cm
+---
+
+# C02 — plan 90 minut
+
+10 min login/odtworzenie → 20 min import i typy → 25 min wspólne czyszczenie → 25 min Z02 → 10 min wysyłka.
+
+# Kontrola po imporcie
+
+CSV kursu: przecinek jako separator, kropka dziesiętna, UTF-8. Odczytamy tabelę i jej strukturę. Sprawdź N, kolumny i etykiety; identyfikator nie jest miarą ilościową.
+
+```{r import}
+surowe <- badaniaZI::dane_przykladowe()
+dim(surowe)
+str(surowe[, c("id_odpowiedzi", "grupa", "czas_wyszukiwania")])
+```
+
+| Zmienna | Skala i reguła |
+|---|---|
+| grupa | nominalna, etykiety/factor |
+| czas_wyszukiwania | ilościowa, minuty, zakres 0–120 |
+| pozycja_1–6 | porządkowa 1–5 |
+| pozycja_2 = 99 | brak odpowiedzi, nie wysoka ocena |
+| kanal_* = 0 | kanał niezaznaczony, nie brak |
+| NA | wartość nieznana |
+
+# Czyszczenie — kopia danych
+
+Usuń tylko identyczne kopie całych wierszy. Rekoduj opisany w słowniku kod i czas spoza zakresu w konkretnych komórkach. Odczytaj N po czyszczeniu; przy sprzecznym ID wyjaśnij konflikt.
+
+```{r porzadkowanie}
+dane <- surowe[!duplicated(surowe), ]
+k <- !is.na(dane$pozycja_2) & dane$pozycja_2 == 99
+dane$pozycja_2[k] <- NA
+k <- !is.na(dane$czas_wyszukiwania) & (dane$czas_wyszukiwania < 0 | dane$czas_wyszukiwania > 120)
+dane$czas_wyszukiwania[k] <- NA
+nrow(dane)
+```
+
+Zapisz liczby zmian **przed** rekodowaniem. Dziennik rozróżnia wiersze i komórki. Nie zmieniaj `dane/surowe.csv`; eksportuj nowy CSV bez numerów wierszy.
+
+# Z02 — dowody i punkty
+
+Własny import, polskie znaki, N i klasy — 2 pkt. Typy, 99/NA i identyczne duplikaty — 4 pkt. Dziennik reguł/liczb/N i rozróżnienie brak/zero — 2 pkt. `wyczyszczone.csv`, `dziennik.csv` i działający od początku skrypt — 2 pkt.
+
+Pliki: `zadania/z02/analiza.R`, `odpowiedzi.md`, `wyniki/wyczyszczone.csv`, `wyniki/dziennik.csv`. W `.md` wyjaśnij reguły i dodaj względne linki do wyników. Po zapisie uruchom `sprawdz_zadanie("Z02")`, `oddaj_zadanie("Z02")`, `status_oddania("Z02")`; zakończ przez `wyloguj_github()` i wylogowanie przeglądarki.
+
+# Notatki
+
+N przed: .......... N po: .......... Kopie: .......... Kod 99: .......... Czasy: ..........
+
+Dlaczego nie usuwam osoby za jeden brak? ........................................................
+
+Dlaczego klasa liczbowa nie wystarcza do uznania skali za ilościową? ................................

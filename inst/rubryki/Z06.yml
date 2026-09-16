@@ -1,0 +1,88 @@
+id: Z06
+version: 1.0.0
+rocznik: 2026-27
+max_points: 10.0
+criteria:
+- id: Z06.1
+  title: Wybór testu uwzględnia pytanie, skalę, niezależność i projekt, z krótkim
+    uzasadnieniem.
+  evidence: Wybór testu uwzględnia pytanie, skalę, niezależność i projekt, z krótkim
+    uzasadnieniem.
+  max_points: 3.0
+  review_mode: human
+  learning_outcomes: U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Nazwa testu bez uzasadnienia.
+  - points: 1.5
+    observable_description: Skala uwzględniona; niezależność albo projekt pominięte.
+  - points: 2.25
+    observable_description: Dobór pasuje do projektu; jedno założenie nieopisane.
+  - points: 3.0
+    observable_description: Wybór testu uwzględnia pytanie, skalę, niezależność i
+      projekt, z krótkim uzasadnieniem.
+- id: Z06.2
+  title: Poprawna analiza dwóch grup, opis/wykres, efekt i niepewność.
+  evidence: Poprawna analiza dwóch grup, opis/wykres, efekt i niepewność.
+  max_points: 3.0
+  review_mode: mixed
+  learning_outcomes:
+  - U2
+  - U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Obliczono test bez poprawnego opisu grup.
+  - points: 1.5
+    observable_description: Test poprawny; efekt albo przedział błędny.
+  - points: 2.25
+    observable_description: Opis, efekt i przedział poprawne; jeden element wykresu
+      pominięty.
+  - points: 3.0
+    observable_description: Poprawna analiza dwóch grup, opis/wykres, efekt i niepewność.
+- id: Z06.3
+  title: Statystyka, stopnie swobody tam gdzie dotyczą, p, kierunek efektu i N są
+    raportowane poprawnie.
+  evidence: Statystyka, stopnie swobody tam gdzie dotyczą, p, kierunek efektu i N
+    są raportowane poprawnie.
+  max_points: 2.0
+  review_mode: mixed
+  learning_outcomes:
+  - W2
+  - U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Podano p bez statystyki i N.
+  - points: 1.0
+    observable_description: Statystyka i p poprawne; df albo kierunek efektu błędny.
+  - points: 1.5
+    observable_description: Wynik poprawny; pominięto jedno N albo oznaczenie metody.
+  - points: 2.0
+    observable_description: Statystyka, stopnie swobody tam gdzie dotyczą, p, kierunek
+      efektu i N są raportowane poprawnie.
+- id: Z06.4
+  title: Interpretacja własna, zgodna z wynikiem, bez utożsamienia istotności z wagą
+    praktyczną.
+  evidence: Interpretacja własna, zgodna z wynikiem, bez utożsamienia istotności z
+    wagą praktyczną.
+  max_points: 2.0
+  review_mode: human
+  learning_outcomes: U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Wniosek ogranicza się do etykiety istotny/nieistotny.
+  - points: 1.0
+    observable_description: Kierunek poprawny, lecz istotność utożsamiono z wagą praktyczną.
+  - points: 1.5
+    observable_description: Własna interpretacja kierunku i znaczenia poprawna; ograniczenie
+      niepełne.
+  - points: 2.0
+    observable_description: Interpretacja własna, zgodna z wynikiem, bez utożsamienia
+      istotności z wagą praktyczną.

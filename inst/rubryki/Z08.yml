@@ -1,0 +1,90 @@
+id: Z08
+version: 1.0.0
+rocznik: 2026-27
+max_points: 10.0
+criteria:
+- id: Z08.1
+  title: Dobór Pearsona/Spearmana i wykres uwzględnia skale i charakter związku.
+  evidence: Dobór Pearsona/Spearmana i wykres uwzględnia skale i charakter związku.
+  max_points: 3.0
+  review_mode: human
+  learning_outcomes: U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Współczynnik wybrano bez sprawdzenia skal lub wykresu.
+  - points: 1.5
+    observable_description: Skale opisane, ale wybór nie pasuje do widocznego związku.
+  - points: 2.25
+    observable_description: Właściwy wybór i wykres; jedno uzasadnienie pominięte.
+  - points: 3.0
+    observable_description: Dobór Pearsona/Spearmana i wykres uwzględnia skale i charakter
+      związku.
+- id: Z08.2
+  title: Współczynnik, przedział tam gdzie metoda go dostarcza i p obliczone poprawnie;
+    brak fikcyjnych df dla Spearmana.
+  evidence: Współczynnik, przedział tam gdzie metoda go dostarcza i p obliczone poprawnie;
+    brak fikcyjnych df dla Spearmana.
+  max_points: 2.0
+  review_mode: mixed
+  learning_outcomes:
+  - U2
+  - U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Podano współczynnik bez poprawnej liczby par.
+  - points: 1.0
+    observable_description: Współczynnik i p poprawne; fikcyjne df lub przedział.
+  - points: 1.5
+    observable_description: Poprawne statystyki, bez fikcyjnych df; pominięto jedną
+      dostępną granicę CI.
+  - points: 2.0
+    observable_description: Współczynnik, przedział tam gdzie metoda go dostarcza
+      i p obliczone poprawnie; brak fikcyjnych df dla Spearmana.
+- id: Z08.3
+  title: Student czyta nachylenie, jednostki, R² i podstawowy sygnał diagnostyczny
+    prostej regresji.
+  evidence: Student czyta nachylenie, jednostki, R² i podstawowy sygnał diagnostyczny
+    prostej regresji.
+  max_points: 3.0
+  review_mode: human
+  learning_outcomes:
+  - W3
+  - U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Odczytano nazwę współczynnika bez sensu nachylenia.
+  - points: 1.5
+    observable_description: Nachylenie częściowo poprawne; jednostki, R² albo diagnostyka
+      błędne.
+  - points: 2.25
+    observable_description: Nachylenie, jednostki i R² poprawne; opis diagnostyczny
+      niepełny.
+  - points: 3.0
+    observable_description: Student czyta nachylenie, jednostki, R² i podstawowy sygnał
+      diagnostyczny prostej regresji.
+- id: Z08.4
+  title: Interpretacja odróżnia związek, przewidywanie i przyczynowość oraz wskazuje
+    ograniczenie.
+  evidence: Interpretacja odróżnia związek, przewidywanie i przyczynowość oraz wskazuje
+    ograniczenie.
+  max_points: 2.0
+  review_mode: human
+  learning_outcomes: U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Wniosek powtarza współczynnik bez interpretacji.
+  - points: 1.0
+    observable_description: Związek opisano, lecz przewidywanie utożsamiono z przyczyną.
+  - points: 1.5
+    observable_description: Rozróżnienie poprawne; jedno ograniczenie wymaga doprecyzowania.
+  - points: 2.0
+    observable_description: Interpretacja odróżnia związek, przewidywanie i przyczynowość
+      oraz wskazuje ograniczenie.

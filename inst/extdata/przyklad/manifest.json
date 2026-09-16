@@ -1,0 +1,20 @@
+{
+  "id": "demo001",
+  "scenariusz": "S02",
+  "rocznik": "2026-27",
+  "wersja_generatora": "1.0.0",
+  "n": 150,
+  "klucz_wariantu": "f3aa8363f1ceefdab4e79609e117acc09e85ff34949f94eb62fe00350249611d",
+  "seed": 255502390,
+  "rng": ["Mersenne-Twister", "Inversion", "Rejection"],
+  "wersja_R": "4.5.2",
+  "syntetyczne": true,
+  "hash_danych": "5f8f14d16bfc7fc1e3eb39306fa1610dfea065a7068c689ce093e4bb6c7a0c20",
+  "sha256_csv": "78b667b1b3925c6de8f98eb3cc7dfb20622addc0eb692aa1069368264197409f",
+  "sha256_rds": "db8283d4401fe5d8d70910f86789dac0ffd0d2d2ff72f6b774f9d8a332e5d1e9",
+  "arkusz": {
+    "plik": "ankieta.xlsx",
+    "n": 12,
+    "sha256": "2fbf36cf77af01dd0cd3e023f9fc837dd49cc9317e641593ccc4dfb69efd2fa0"
+  }
+}

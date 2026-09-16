@@ -1,0 +1,23 @@
+rocznik: 2026-27
+jednostki:
+- id: C01
+  typ: cwiczenie
+  tytul: R, RStudio i własna przestrzeń pracy
+- id: C02
+  typ: cwiczenie
+  tytul: Import i porządkowanie danych ankietowych
+- id: C03
+  typ: cwiczenie
+  tytul: Opis danych i dwa wykresy
+- id: C04
+  typ: cwiczenie
+  tytul: Pozycje ankiety, indeks i odpowiedzi wielokrotne
+- id: W01
+  typ: wyklad
+  tytul: Pytania, projekty badań i skale pomiarowe
+- id: W02
+  typ: wyklad
+  tytul: Opis danych, jakość i pomiar ankietowy
+- id: C05
+  typ: cwiczenie
+  tytul: Niepewność średniej, bootstrap i intuicja permutacji

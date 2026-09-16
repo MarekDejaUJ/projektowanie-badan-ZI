@@ -1,0 +1,7 @@
+^[.].*
+^_archiwum$
+^docs$
+^tools$
+^[A-Z]{6}[.]md$
+^.*[.]Rproj$
+^.*[.]Rcheck$

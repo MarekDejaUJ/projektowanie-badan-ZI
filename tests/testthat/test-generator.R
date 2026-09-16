@@ -1,0 +1,56 @@
+test_that("warianty są odtwarzalne i nie zmieniają strumienia RNG", {
+  set.seed(813)
+  stan <- .Random.seed
+  a <- generuj_dane("s017", "S03")
+  expect_identical(.Random.seed, stan)
+  expect_identical(a$dane, generuj_dane("s017", "S03")$dane)
+  expect_false(identical(a$dane, generuj_dane("s018", "S03")$dane))
+  expect_true(a$manifest$syntetyczne)
+  expect_match(a$manifest$klucz_wariantu, "^[0-9a-f]{64}$")
+  rm(".Random.seed", envir = .GlobalEnv)
+  invisible(generuj_dane("s017"))
+  expect_false(exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE))
+})
+
+test_that("20 scenariuszy pozwala wykonać wspólny rdzeń dla różnych ID i N", {
+  expect_identical(scenariusze()$id, sprintf("S%02d", 1:20))
+  expect_equal(scenariusz("S04")$grupy[2], "media społecznościowe")
+  expect_false(any(grepl("<U+", scenariusze()$tytul, fixed = TRUE)))
+  for (s in scenariusze()$id) for (n in c(120L, 150L, 180L)) {
+    x <- generuj_dane(paste0("s", n), s, n = n)
+    expect_equal(nrow(x$dane), n, info = s)
+    expect_length(x$scenariusz$pozycje, 6L)
+    y <- przygotuj_ankiete(x$dane)
+    d <- y$dane
+    expect_equal(nrow(d), n - 2L)
+    expect_false(anyDuplicated(d$id_odpowiedzi) > 0)
+    expect_equal(y$dziennik$liczba[4L], 2L)
+    d$pozycja_3 <- odwroc_pozycje(d$pozycja_3)
+    indeks <- indeks_ankiety(d[paste0("pozycja_", 1:6)])
+    expect_true(all(is.na(indeks) | (indeks >= 1 & indeks <= 5)))
+    expect_true(all(table(d$grupa[!is.na(indeks)]) >= 40), info = s)
+    expect_true(all(is.na(d$czas_wyszukiwania) | (d$czas_wyszukiwania >= 0 & d$czas_wyszukiwania <= 120)))
+    expect_true(all(is.na(d$czestosc_korzystania) | d$czestosc_korzystania %in% 1:5))
+    expect_true(all(d$powodzenie %in% 0:1))
+    expect_true(all(vapply(d[paste0("pozycja_", 1:6)], function(z) mean(is.na(z)) >= .02 && mean(is.na(z)) <= .05, logical(1))))
+    expect_true(is.finite(stats::sd(indeks, na.rm = TRUE)))
+  }
+})
+
+test_that("manifest i zapis chronią surową wersję", {
+  x <- generuj_dane("s017")
+  katalog <- tempfile("dane żółte ")
+  on.exit(unlink(katalog, recursive = TRUE))
+  zapisz_dane(x, katalog)
+  manifest <- jsonlite::read_json(file.path(katalog, "manifest.json"))
+  expect_identical(manifest$sha256_csv, digest::digest(file = file.path(katalog, "surowe.csv"), algo = "sha256"))
+  d <- utils::read.csv(file.path(katalog, "surowe.csv"), encoding = "UTF-8", stringsAsFactors = FALSE)
+  expect_equal(d, x$dane)
+  expect_error(zapisz_dane(x, katalog), "istnieje")
+  x$dane$powodzenie[1L] <- 1L - x$dane$powodzenie[1L]
+  expect_error(zapisz_dane(x, tempfile()), "zmieniono")
+  expect_error(generuj_dane("s017", n = 119), "120")
+  expect_error(generuj_dane("s017", "S21"), "scenariusz")
+  expect_error(sprawdz_warianty(c("s017", "s017"), "S01"), "Roster")
+  expect_false(anyDuplicated(sprawdz_warianty(sprintf("s%03d", 1:100), "S01")$seed) > 0)
+})

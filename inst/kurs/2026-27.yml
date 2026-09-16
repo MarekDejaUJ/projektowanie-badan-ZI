@@ -1,0 +1,47 @@
+rocznik: "2026-27"
+tytul: "Projektowanie badań naukowych i analiz instytucjonalnych dla zarządzania informacją"
+kierunek: "Zarządzanie informacją"
+kod: "UJ.WZZINS.21.17306.26"
+zakres_sylabusa: [9, 10, 11, 12, 13, 14, 15]
+cwiczenia: 10
+wyklady: 5
+minuty_spotkania: 90
+egzamin: false
+projekt: "indywidualny ilościowy: plan badania i analiza danych"
+timezone: "Europe/Warsaw"
+wersja_pakietu: "0.1.0"
+wersja_generatora: "1.0.0"
+wersja_rubryk: "1.0.0"
+termin_projektu: "2027-01-27T23:59:59+01:00"
+koniec_zajec: "2027-01-26T10:30:00+01:00"
+ostatni_przedzial_zajec: "2027-01-26 09:45–10:30"
+zasada_terminow_zadan: "nastepne_cwiczenie"
+terminy_zadan:
+  Z10: "2027-01-26T10:30:00+01:00"
+daty_zajec: null
+wagi:
+  zadania: 0.5
+  projekt: 0.5
+progi_ocen:
+  "3.0": 50
+  "3.5": 60
+  "4.0": 70
+  "4.5": 80
+  "5.0": 90
+spoznienia: "Pierwsze oddanie po 27 stycznia jest dozwolone do 10 lutego 2027. Maksymalna ocena za spóźniony projekt wynosi 4,5."
+termin_spozniony: "2027-02-10T23:59:59+01:00"
+potracenie_za_spoznienie: "Bez potrącania punktów rubryki; maksymalna ocena za spóźniony projekt wynosi 4,5."
+maksymalna_ocena_spozniona: 4.5
+poprawki: "Oceniony projekt można poprawiać do końca zimowej sesji poprawkowej, 24 lutego 2027."
+termin_poprawek: "2027-02-24T23:59:59+01:00"
+zaokraglenie: "Procent stosuje się do progów bez zaokrąglania; prezentacja wyniku może mieć dwa miejsca po przecinku."
+laczenie_ocen: "Ocena tej części jest oceną końcową dla studentów wybierających tę realizację. Nie łączy się jej z oceną drugiego prowadzącego."
+adapter: "github"
+organizacja: null
+wlasciciel_repozytoriow: "MarekDejaUJ"
+oauth_client_id: null
+logowanie: "auto"
+zasady_oceny: "Terminy, wagi i zasady poprawek są ogłaszane na platformie UJ."
+zasady_si: "pomoc_w_kodzie"
+opis_si: "Generatywna SI może pomagać w zrozumieniu i poprawianiu kodu. Interpretację wyników i wnioski napisz samodzielnie. Oznacz fragmenty kodu powstałe z jej pomocą i opisz zakres wsparcia. Sprawdź działanie kodu i odwołuj się do rzeczywistych źródeł; odpowiedź modelu nie jest źródłem naukowym. Nie przekazuj danych osobowych ani poświadczeń. Korzystanie z SI nie jest wymagane."
+zrodlo_zasad_si: "https://bip.uj.edu.pl/documents/1384597/159749054/zarz_115_2025.pdf"

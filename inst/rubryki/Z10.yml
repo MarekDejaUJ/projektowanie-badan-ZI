@@ -1,0 +1,97 @@
+id: Z10
+version: 1.0.0
+rocznik: 2026-27
+max_points: 10.0
+criteria:
+- id: Z10.1
+  title: Skrypt wykonuje się od surowych danych do wskazanych wyników w świeżej sesji.
+  evidence: Skrypt wykonuje się od surowych danych do wskazanych wyników w świeżej
+    sesji.
+  max_points: 3.0
+  review_mode: mixed
+  learning_outcomes:
+  - W3
+  - U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Kod wymaga ręcznego przygotowania obiektów.
+  - points: 1.5
+    observable_description: Kod działa częściowo; jeden etap lub ścieżka zależy od
+      poprzedniej sesji.
+  - points: 2.25
+    observable_description: Cały kod działa w świeżej sesji; instrukcja wykonania
+      niepełna.
+  - points: 3.0
+    observable_description: Skrypt wykonuje się od surowych danych do wskazanych wyników
+      w świeżej sesji.
+- id: Z10.2
+  title: '`.md` zawiera komplet wymaganych sekcji i odnośniki do rzeczywistych tabel/wykresów.'
+  evidence: '`.md` zawiera komplet wymaganych sekcji i odnośniki do rzeczywistych
+    tabel/wykresów.'
+  max_points: 2.0
+  review_mode: mixed
+  learning_outcomes:
+  - U1
+  - U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Raport ma nagłówki bez dowodów.
+  - points: 1.0
+    observable_description: Sekcje częściowo wypełnione; odnośnik prowadzi do nieistniejącego
+      wyniku.
+  - points: 1.5
+    observable_description: Sekcje i odnośniki poprawne; jedna tabela niedopisana
+      w tekście.
+  - points: 2.0
+    observable_description: '`.md` zawiera komplet wymaganych sekcji i odnośniki do
+      rzeczywistych tabel/wykresów.'
+- id: Z10.3
+  title: Student poprawił interpretację na podstawie kontroli/rubryki i uzasadnił
+    jedną zmianę.
+  evidence: Student poprawił interpretację na podstawie kontroli/rubryki i uzasadnił
+    jedną zmianę.
+  max_points: 3.0
+  review_mode: human
+  learning_outcomes:
+  - U3
+  - K1
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Wskazano poprawkę bez jej wykonania.
+  - points: 1.5
+    observable_description: Poprawka wykonana, lecz nadal niezgodna z wynikiem albo
+      bez uzasadnienia.
+  - points: 2.25
+    observable_description: Poprawna zmiana z uzasadnieniem; pominięto odniesienie
+      do kryterium.
+  - points: 3.0
+    observable_description: Student poprawił interpretację na podstawie kontroli/rubryki
+      i uzasadnił jedną zmianę.
+- id: Z10.4
+  title: Wersja robocza ma identyfikowalne zdalne SHA i instrukcję odtworzenia zgodną
+    z plikami.
+  evidence: Wersja robocza ma identyfikowalne zdalne SHA i instrukcję odtworzenia
+    zgodną z plikami.
+  max_points: 2.0
+  review_mode: mixed
+  learning_outcomes:
+  - W3
+  - K2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Pliki są lokalne bez potwierdzenia zdalnej wersji.
+  - points: 1.0
+    observable_description: Zdalne SHA podane; instrukcja nie odtwarza wyników.
+  - points: 1.5
+    observable_description: SHA i odtworzenie poprawne; jedna wersja zależności niepodana.
+  - points: 2.0
+    observable_description: Wersja robocza ma identyfikowalne zdalne SHA i instrukcję
+      odtworzenia zgodną z plikami.

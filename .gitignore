@@ -1,0 +1,14 @@
+/.[!.]*/
+!/.github/
+.Rhistory
+.RData
+.Ruserdata
+*.Rcheck/
+*.tar.gz
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*_cache/
+_site/

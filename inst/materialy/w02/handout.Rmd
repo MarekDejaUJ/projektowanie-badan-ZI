@@ -1,0 +1,62 @@
+---
+title: 'Handout W02 — Opis danych, jakość i pomiar ankietowy'
+subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
+author: 'Marek Deja'
+date: '2026/27'
+lang: pl-PL
+fontsize: 11pt
+papersize: a4
+geometry: margin=2cm
+---
+
+# W02 — co zachowuje dobry opis
+
+Jednostka → skala → reguły jakości → N ważne i braki → miary/wykres → ograniczenia. Surowy plik pozostaje bez zmian, a dziennik rozróżnia wiersze i komórki.
+
+# Miary i jednostki
+
+| Miara | Znaczenie |
+|---|---|
+| Średnia $\bar{x}=\sum x_i/n$ | poziom przeciętny, wrażliwy na ekstremum |
+| Mediana | środek uporządkowanego zbioru |
+| Moda | najczęstsza wartość/kategoria, możliwe remisy |
+| SD $s=\sqrt{s^2}$ | rozproszenie w jednostce pomiaru |
+| IQR $Q_3-Q_1$ | szerokość środkowej połowy danych |
+| Zakres | minimum/maksimum, wrażliwe na ekstremum |
+
+SD opisuje osoby, a SE niepewność estymacji. CV wymaga sensownego naturalnego zera i średniej oddalonej od zera. Kurtoza 3 i eksces 0 dla rozkładu normalnego są różnymi konwencjami.
+
+Porównujemy średnią i medianę w małej próbie. Odczytaj oba wyniki i IQR w minutach. Wskaż, jak skrajna wartość wpływa na centrum.
+
+```{r czasy}
+x <- c(2, 3, 4, 5, 36)
+c(srednia = mean(x), mediana = median(x), SD = stats::sd(x),
+  IQR = stats::IQR(x))
+```
+
+# Szeregi, procenty i wykresy
+
+Szereg punktowy — kategorie i N. Przedziałowy — klasy liczbowe. Czasowy — kolejne okresy. Histogram — kształt, pudełko — kwartyle i mediana. Punkty poza wąsami sprawdzamy, bez automatycznego usuwania.
+
+Odsetki: podaj licznik i mianownik. Jednokrotny wybór tworzy rozłączne kategorie, wielokrotny może dać sumę procentów respondentów >100. Gęstość w punkcie nie jest procentem. Asymetrię czytaj na wykresie; średnia bliska medianie nie dowodzi normalności.
+
+# Cztery sposoby pomiaru postaw
+
+| Podejście | Zasada |
+|---|---|
+| Likert | stopnie zgody, pojedyncza pozycja porządkowa, indeks uzasadniony |
+| Bogardus | gotowość do różnych poziomów kontaktu społecznego |
+| Guttman | kumulatywny wzorzec silniejszych/słabszych pozycji |
+| Thurstone | stwierdzenia wcześniej ocenione przez sędziów |
+
+Treść i reguła ważniejsze niż nazwa. Brak ≠ odpowiedź neutralna ≠ negatywna. Alfa nie dowodzi trafności. W kursie: pozycja 3 odwrócona, średni indeks przy minimum 5/6.
+
+# Operacje na danych
+
+Sortowanie — kolejność całych wierszy; ranking — pozycje/remisy; agregacja — podsumowania; transpozycja — zamiana wymiarów. z-score i min–max zmieniają skalę/jednostkę, bez nadawania normalności. CSV nie zachowuje formuł ani wielu arkuszy.
+
+# Notatki
+
+Którą miarę wybiorę dla skośnego czasu i dlaczego? ...............................................
+
+Mianownik mojej tabeli: .................. Jedno ograniczenie pomiaru: ...........................

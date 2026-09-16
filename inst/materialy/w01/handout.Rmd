@@ -1,0 +1,63 @@
+---
+title: 'Handout W01 — Pytania, projekty badań i skale pomiarowe'
+subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
+author: 'Marek Deja'
+date: '2026/27'
+lang: pl-PL
+fontsize: 11pt
+papersize: a4
+geometry: margin=2cm
+---
+
+# W01 — pytanie i zakres dowodu
+
+Problem instytucji → pytanie → jednostka/populacja/próba → pomiar → analiza → ograniczony wniosek. Średnia w próbie jest opisem; wniosek o populacji wymaga projektu i założeń.
+
+# Schematy badań
+
+| Schemat | Kluczowe pytanie |
+|---|---|
+| Obserwacja przekrojowa | Czy cechy współwystępują w danym okresie? |
+| Obserwacja podłużna | Czy wynik zmienia się u tych samych osób? |
+| Interwencja przed/po | Czy zmiana mogła mieć inną przyczynę? |
+| Randomizacja | Czy przydzielono interwencję losowo? |
+| Quasi-eksperyment/naturalny | Co uzasadnia porównywalność i ekspozycję? |
+| Synteza | Czy badania są odpowiednie, porównywalne i dobrej jakości? |
+
+Piramida dowodu zależy od pytania. Randomizacja przydziału i losowanie próby są różnymi operacjami. Duże N nie usuwa selekcji ani błędnego pomiaru.
+
+# Pytanie i hipoteza
+
+„Jak rozkłada się czas znalezienia dokumentu wśród aktywnych użytkowników w semestrze zimowym?” — pytanie opisowe. „Czy indeks dostępności różni się między nowymi i doświadczonymi?” — porównanie. $H_0:\mu_1-\mu_2=0$, $H_1:\mu_1-\mu_2\ne0$. Kierunek alternatywy wybiera się przed wynikiem.
+
+# Skale i jednostki
+
+| Skala | Przykład | Uprawnione relacje |
+|---|---|---|
+| Nominalna | grupa/typ zasobu | równość, liczebności |
+| Porządkowa | pojedyncza pozycja 1–5 | dodatkowo porządek |
+| Przedziałowa | rok kalendarzowy | dodatkowo różnica |
+| Ilorazowa | czas w minutach/liczba pobrań | dodatkowo stosunek i naturalne zero |
+
+Klasa R nie zastępuje skali. Kod kategorii pozostaje etykietą. Indeks wymaga treści, kierunku pozycji i reguły braków.
+
+# Sprawdź na przykładzie
+
+Pięć czasów opisuje małą grupę. Średnia i mediana odpowiadają na różne pytania o centrum. Odczytaj N i jednostkę, a potem wskaż brakującą informację o doborze.
+
+```{r czasy}
+x <- c(6, 9, 4, 12, 8)
+c(N = length(x), srednia = mean(x), mediana = median(x))
+```
+
+# Własny szkic i notatki
+
+Problem: .................................... Populacja/okres: .................................
+
+Jednostka: .................................. Zmienna i skala: ..................................
+
+Pytanie: .................................... Co mogłoby podważyć hipotezę? .....................
+
+Jedno ograniczenie doboru lub pomiaru: ...........................................................
+
+Ocena: zadania 50% (każde 5%), projekt 50%; indywidualny plan i analiza ilościowa, bez egzaminu.

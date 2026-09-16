@@ -1,0 +1,177 @@
+---
+title: 'C05 — Niepewność średniej, bootstrap i intuicja permutacji'
+subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
+author: 'Marek Deja'
+date: '2026/27'
+lang: pl-PL
+fontsize: 11pt
+papersize: a4
+geometry: margin=2cm
+---
+
+# Cel: ile wiemy o średnim wyniku?
+
+Średni indeks dostępności z jednej ankiety jest konkretną liczbą. Gdybyśmy badali inne osoby, wynik mógłby być inny. Na C05 opiszesz tę niepewność dwoma sposobami: przedziałem t dla średniej i prostym bootstrapem. Permutację zobaczysz we wspólnej demonstracji; Z05 nie wymaga osobnego testu ani trzech metod dla tego samego pytania.
+
+| Minuty | Praca |
+|---|---|
+| 0–10 | Odtworzenie projektu i Z05 |
+| 10–30 | Średnia, SE i przedział |
+| 30–50 | Bootstrap wspólnej próby |
+| 50–60 | Intuicja tasowania etykiet |
+| 60–80 | Z05 na własnym wariancie |
+| 80–90 | Zapis, kontrola i odbiór |
+
+# Własna próba i parametr
+
+Pytamy o średni indeks oceny dostępu do informacji w populacji użytkowników określonej w scenariuszu. Obserwacją jest osoba, a nie pojedyncza pozycja kwestionariusza. W kursie indeks 1–5 traktujemy jako przybliżony pomiar ilościowy; warunek minimum pięciu odpowiedzi z sześciu pozostaje ten sam co na C04. Nie zmieniaj go po obejrzeniu przedziału.
+
+Odtwórz projekt przez funkcje logowania i `rozpocznij_zajecia("C05", ...)`. W demonstracji używamy S02; Z05 wymaga Twojego wariantu. Surowego CSV i manifestu nie edytujesz. Każdy wynik odnosi się do danych syntetycznych, a nie do faktycznej ankiety w bibliotece.
+
+Przygotowujemy indeks tymi samymi regułami co na C04. Do estymacji wybieramy osoby z ważnym indeksem, pozostawiając ID i grupę do dalszej demonstracji. Odczytaj liczebność przed i po tym wyborze.
+
+```{r przygotowanie}
+dane <- badaniaZI::przygotuj_ankiete(badaniaZI::dane_przykladowe())$dane
+p <- dane[, paste0("pozycja_", 1:6)]
+p$pozycja_3 <- badaniaZI::odwroc_pozycje(p$pozycja_3)
+dane$indeks <- badaniaZI::indeks_ankiety(p, minimum = 5)
+proba <- dane[!is.na(dane$indeks), ]
+c(osoby_po_czyszczeniu = nrow(dane), wazny_indeks = nrow(proba))
+```
+
+# Estymata i błąd standardowy
+
+Parametr $\mu$ oznacza nieznaną średnią populacji, a $\bar{x}$ średnią obliczoną w próbie. Estymator jest regułą, według której liczymy, a estymata konkretnym wynikiem zastosowania tej reguły. W projekcie nie znamy rzeczywistej populacji: generator daje dane do nauki, a plan badania określa, jak mogłaby wyglądać prawdziwa próba.
+
+Odchylenie standardowe $s$ opisuje różnice między osobami. Błąd standardowy $SE=s/\sqrt{n}$ przy niezależnych obserwacjach opisuje niepewność średniej wynikającą z próbkowania. To różne wielkości, nawet jeśli mają tę samą jednostkę. Gdy $s=0{,}8$ i $n=100$, SE wynosi 0,08 punktu indeksu; osoby nie są przez to podobne do siebie w granicach 0,08.
+
+Obliczamy N, średnią, SD i SE w oddzielnych polach. `length()` dotyczy tylko wybranego wektora ważnych indeksów. Odczytaj jednostkę wyniku i sprawdź, dlaczego SD jest większe niż SE.
+
+```{r estymata}
+wartosci <- proba$indeks
+n <- length(wartosci)
+srednia <- mean(wartosci)
+odchylenie <- stats::sd(wartosci)
+se <- odchylenie / sqrt(n)
+data.frame(n = n, srednia = srednia, sd = odchylenie, se = se)
+```
+
+# Przedział ufności 95%
+
+Oprócz pojedynczej średniej (estymaty punktowej) podajemy **przedział ufności (CI)**. Mówi on: "jeśli pobieralibyśmy próby nieskończenie wiele razy, około 95% wyliczonych z nich przedziałów zawierałoby prawdziwą średnią dla całej populacji użytkowników w określonej populacji".
+
+
+Ten opis ma sens przy określonym modelu próbkowania i spełnionych założeniach. Nie znaczy, że 95% osób mieści się w przedziale ani że po obliczeniu przypisujemy stałej średniej populacji prawdopodobieństwo 95%. Po obejrzeniu danych mamy jeden przedział; własność 95% odnosi się do powtarzania procedury.
+
+Dla niezależnych obserwacji przedział t ma postać $\bar{x}\pm t_{0{,}975,n-1}\,s/\sqrt{n}$. Wartość krytyczna t zależy od liczby stopni swobody $n-1$. Rozkład średniej musi być dostatecznie dobrze przybliżony; duża liczebność nie naprawia zależności osób, systematycznego braku odpowiedzi czy błędnej rekrutacji. W rzeczywistych badaniach klastrowych lub ważonych trzeba odpowiednio zmienić model.
+
+Używamy `t.test()` z archiwalnego przykładu estymacji, aby odczytać przedział. Funkcja zwraca także test względem domyślnego zera, ale Z05 nie stawia pytania o średnią równą zero; odczytujemy tylko estymatę i CI. Porównaj granice z obliczeniem wzoru.
+
+```{r przedzial-t}
+wynik_ci <- stats::t.test(wartosci, conf.level = .95)
+granice_t <- unname(wynik_ci$conf.int)
+granice_t
+srednia + c(-1, 1) * stats::qt(.975, df = n - 1) * se
+```
+
+Wąski przedział oznacza większą precyzję w danym modelu, lecz nie jest dowodem dobrego pomiaru. Można precyzyjnie oszacować wynik źle sformułowanego pytania. Bootstrap również nie usunie takiej wady.
+
+# Bootstrap: nowe próby z obserwowanej próby
+
+Bootstrap losuje ze zwracaniem obserwacje z dostępnej próby. Każda replika ma takie samo N, a ta sama osoba może zostać wylosowana kilka razy. Dla średniej indeksu wybieramy całe osoby z ważnym wynikiem; nie losujemy osobno sześciu odpowiedzi jednej osoby. Dzięki temu poziom losowania odpowiada jednostce analizy.
+
+`sample.int(n, size=n, replace=TRUE)` wybiera numery wierszy. Indeksowanie `wartosci[numery]` odczytuje wyniki wybranych osób, a `replicate()` powtarza obliczenie B razy. Ustalamy ziarno przed symulacją, aby świeży skrypt odtworzył wynik. Odczytaj pierwsze średnie i zauważ, że replika nie jest nową faktycznie zebraną ankietą.
+
+```{r bootstrap}
+set.seed(2027)
+B <- 1999
+srednie_boot <- replicate(B, {
+  numery <- sample.int(n, size = n, replace = TRUE)
+  mean(wartosci[numery])
+})
+head(srednie_boot)
+granice_boot <- unname(stats::quantile(srednie_boot, c(.025, .975)))
+granice_boot
+```
+
+Przedział percentylowy bierze kwantyle 2,5% i 97,5% rozkładu średnich bootstrapowych. Jest prostym przybliżeniem, którego pokrycie zależy od danych i estymatora. Nie jest przedziałem dla 95% indywidualnych odpowiedzi i nie gwarantuje dokładnego poziomu przy każdej skośności czy małej próbie. Liczba B dotyczy powtórzeń komputera; zwiększenie jej nie zwiększa liczby badanych osób.
+
+Tworzymy tabelę dwóch metod z poziomem ufności i N. Wyniki mają wspólny parametr i jednostkę, więc można porównać szerokość przedziałów. Odczytaj, czy różnica granic jest duża względem pełnego zakresu indeksu 1–5; nie wybieraj metody tylko dlatego, że daje wygodniejszy wniosek.
+
+```{r tabela}
+estymacja <- data.frame(metoda = c("t", "bootstrap percentylowy"),
+  n = n, srednia = srednia, dolna = c(granice_t[1], granice_boot[1]),
+  gorna = c(granice_t[2], granice_boot[2]), poziom = .95,
+  B = c(NA, B), ziarno = c(NA, 2027))
+estymacja
+bootstrap <- data.frame(replika = seq_len(B), srednia = srednie_boot)
+```
+
+Histogram pokazuje rozkład średnich replik, a nie surowe odpowiedzi 1–5. Linia ciągła oznacza średnią próby, a dwie przerywane granice percentylowego CI. Odczytaj rozproszenie średnich i porównaj je z SD osób z początku ćwiczenia.
+
+```{r wykres-bootstrap, fig.cap="Syntetyczna ankieta S02; N i B w podtytule. Rozkład średnich bootstrapowych."}
+wykres_boot <- ggplot2::ggplot(bootstrap, ggplot2::aes(x = srednia)) +
+  ggplot2::geom_histogram(bins = 30, fill = badaniaZI::paleta_zi()["primary"],
+    color = "white") +
+  ggplot2::geom_vline(xintercept = srednia, linewidth = .7) +
+  ggplot2::geom_vline(xintercept = granice_boot, linetype = "dashed",
+    color = badaniaZI::paleta_zi()["accent"]) +
+  ggplot2::labs(title = "Średnie z prób bootstrapowych",
+    subtitle = paste("N =", n, "osób; B =", B, "replik"),
+    x = "Średnia indeksu (punkty 1–5)", y = "Liczba replik") +
+  badaniaZI::theme_zi()
+wykres_boot
+```
+
+# Permutacja: inny cel losowania
+
+Bootstrap pokazuje zmienność estymaty wokół danych, które zaobserwowaliśmy. Permutacja etykiet dwóch grup buduje rozkład zerowy statystyki przy założeniu ich wymienialności. To nie jest ten sam rozkład ani automatyczny sposób naprawy dowolnych naruszeń założeń testu t. W obserwacyjnej ankiecie wymienialność wymaga uzasadnienia; sam brak normalności jej nie zapewnia.
+
+Dla tej demonstracji przyjmujemy mocną hipotezę identycznych rozkładów wyników w dwóch grupach. Zostawiamy indeksy, tasujemy tylko etykiety i zachowujemy liczebności grup. Tę samą różnicę średnich obliczamy przed i po tasowaniu. W eksperymencie z losowym przydziałem argumentacja opierałaby się na procedurze przydziału; generator nie tworzy takiego rzeczywistego eksperymentu.
+
+Wybieramy stały porządek etykiet, aby znak różnicy był jawny. Każda permutacja przestawia ich kolejność bez zmiany liczby osób. Odczytaj obserwowaną różnicę i odsetek co najmniej tak skrajnych bezwzględnych różnic; poprawka +1 zapobiega raportowaniu p równego zero w symulacji Monte Carlo.
+
+```{r permutacja}
+grupy <- sort(unique(proba$grupa))
+roznica <- function(g) {
+  mean(wartosci[g == grupy[1]]) - mean(wartosci[g == grupy[2]])
+}
+obserwowana <- roznica(proba$grupa)
+set.seed(2028)
+permutacje <- replicate(B, roznica(sample(proba$grupa)))
+p_perm <- (1 + sum(abs(permutacje) >= abs(obserwowana))) / (B + 1)
+data.frame(pierwsza = grupy[1], druga = grupy[2],
+  roznica = obserwowana, p_monte_carlo = p_perm)
+```
+
+Wartość p jest liczona w modelu zerowym dla wybranej statystyki i procedury. Nie oznacza prawdopodobieństwa, że grupy są „takie same”, ani że nowy katalog spowodował obserwowaną różnicę. Z05 wymaga własnego porównania CI, nie raportu z tej demonstracji. Szczegóły hipotez i błędów decyzji są w W03.
+
+# Z05 — estymacja na własnym wariancie
+
+Odczytaj własny CSV, zastosuj reguły C02/C04 i oszacuj średni indeks wszystkich osób z ważnym wynikiem. Podaj N, średnią, SD, SE, CI t 95% i percentylowe CI bootstrapowe. W bootstrapie użyj B=1999 oraz ziarna 2027; zachowaj losowanie respondentów ze zwracaniem. Nie zastępuj indeksu surową pozycją 3 bez rekodacji.
+
+Zapisz `wyniki/estymacja.csv` z dwiema metodami, N, estymatą, granicami, poziomem, B i ziarnem oraz `wyniki/bootstrap.csv` ze średnimi replik. W `wyniki/bootstrap.png` pokaż histogram replik z estymatą i granicami. Podpisz osie, N, B, scenariusz i syntetyczne źródło. W `odpowiedzi.md` połącz te pliki względnymi odnośnikami.
+
+Własnymi słowami wyjaśnij, do czego odnosi się 95%, dlaczego B nie jest N i czym różnią się SD oraz SE. Oceń precyzję w punktach indeksu, opisz możliwe znaczenie praktyczne i jedno ograniczenie planowanej próby. Nie raportuj „95% użytkowników ma wynik w przedziale” ani „bootstrap usuwa błędy ankiety”.
+
+Zapisujemy obliczone obiekty; sama obecność histogramu w panelu Plots nie zapisuje pliku. Skrypt musi odtworzyć oba CSV i PNG od początku. Otwórz pliki w panelu Files i dopiero potem uruchom kontrolę.
+
+```{r zapis, eval=FALSE, purl=FALSE}
+folder <- "zadania/z05/wyniki"
+dir.create(folder, recursive = TRUE, showWarnings = FALSE)
+utils::write.csv(estymacja, file.path(folder, "estymacja.csv"),
+  row.names = FALSE, fileEncoding = "UTF-8")
+utils::write.csv(bootstrap, file.path(folder, "bootstrap.csv"),
+  row.names = FALSE, fileEncoding = "UTF-8")
+ggplot2::ggsave(file.path(folder, "bootstrap.png"), plot = wykres_boot,
+  width = 7, height = 4, dpi = 150)
+```
+
+| Kryterium | Punkty |
+|---|---:|
+| Z05.1 Estymata, N i przedział 95% | 3 |
+| Z05.2 Bootstrap: jednostka losowania, powtarzalność i wynik | 2 |
+| Z05.3 Własne wyjaśnienie CI | 3 |
+| Z05.4 Precyzja, znaczenie praktyczne i ograniczenie próby | 2 |
+
+Pełne poziomy: `rubryka("Z05")`. Wykonaj `sprawdz_zadanie("Z05")`, `oddaj_zadanie("Z05")` i `status_oddania("Z05")`. Termin: początek C06; dokładna data będzie widoczna po ogłoszeniu kalendarza. Wyloguj sesję pakietu i przeglądarkę.

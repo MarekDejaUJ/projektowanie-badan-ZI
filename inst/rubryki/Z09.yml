@@ -1,0 +1,90 @@
+id: Z09
+version: 1.0.0
+rocznik: 2026-27
+max_points: 10.0
+criteria:
+- id: Z09.1
+  title: Indywidualny scenariusz i manifest danych zgodne z ID, rocznikiem i wersją.
+  evidence: Indywidualny scenariusz i manifest danych zgodne z ID, rocznikiem i wersją.
+  max_points: 2.0
+  review_mode: mixed
+  learning_outcomes:
+  - W3
+  - K2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Wybrano scenariusz bez manifestu.
+  - points: 1.0
+    observable_description: Manifest istnieje; ID lub wersja nie odpowiada projektowi.
+  - points: 1.5
+    observable_description: Zgodne ID i wersje; opis syntetyczności niepełny.
+  - points: 2.0
+    observable_description: Indywidualny scenariusz i manifest danych zgodne z ID,
+      rocznikiem i wersją.
+- id: Z09.2
+  title: Problem, pytania i hipotezy są konkretne i pasują do instytucji oraz dostępnych
+    zmiennych.
+  evidence: Problem, pytania i hipotezy są konkretne i pasują do instytucji oraz dostępnych
+    zmiennych.
+  max_points: 3.0
+  review_mode: human
+  learning_outcomes:
+  - W1
+  - U1
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Temat ogólny bez operacyjnego pytania.
+  - points: 1.5
+    observable_description: Pytanie konkretne, lecz hipoteza nie odpowiada dostępnym
+      zmiennym.
+  - points: 2.25
+    observable_description: Spójny problem i pytania; jeden element celu nieprecyzyjny.
+  - points: 3.0
+    observable_description: Problem, pytania i hipotezy są konkretne i pasują do instytucji
+      oraz dostępnych zmiennych.
+- id: Z09.3
+  title: Plan próby i operacjonalizacja/kwestionariusz nadają się do planowanego badania.
+  evidence: Plan próby i operacjonalizacja/kwestionariusz nadają się do planowanego
+    badania.
+  max_points: 3.0
+  review_mode: human
+  learning_outcomes: U1
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.75
+    observable_description: Wymieniono odbiorców bez planu próby i pomiaru.
+  - points: 1.5
+    observable_description: Próba i ankieta częściowe; jedno pytanie nie mierzy konstruktu.
+  - points: 2.25
+    observable_description: Plan i pomiar poprawne; ograniczenie selekcji niepełne.
+  - points: 3.0
+    observable_description: Plan próby i operacjonalizacja/kwestionariusz nadają się
+      do planowanego badania.
+- id: Z09.4
+  title: Plan dwóch analiz jest uzasadniony; pierwszy odtwarzalny wynik i ograniczenie
+    są zapisane.
+  evidence: Plan dwóch analiz jest uzasadniony; pierwszy odtwarzalny wynik i ograniczenie
+    są zapisane.
+  max_points: 2.0
+  review_mode: mixed
+  learning_outcomes:
+  - U2
+  - U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Nazwano jedną analizę bez wyniku.
+  - points: 1.0
+    observable_description: Dwie analizy zaplanowane; brak właściwego pierwszego wyniku
+      albo ograniczenia.
+  - points: 1.5
+    observable_description: Dwie uzasadnione analizy i wynik; jedno uzasadnienie niepełne.
+  - points: 2.0
+    observable_description: Plan dwóch analiz jest uzasadniony; pierwszy odtwarzalny
+      wynik i ograniczenie są zapisane.

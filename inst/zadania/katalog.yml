@@ -1,0 +1,15 @@
+rocznik: "2026-27"
+wersja: "1.0.0"
+zadania:
+  Z01:
+    wyniki: []
+  Z02:
+    wyniki: [wyczyszczone.csv, dziennik.csv]
+  Z03:
+    wyniki: [opis.csv, histogram.png, boxplot.png]
+  Z04:
+    wyniki: [slownik_pomiaru.csv, indeks.csv, kanaly.csv]
+  Z05:
+    wyniki: [estymacja.csv, bootstrap.csv, bootstrap.png]
+  PROJEKT:
+    wyniki: [dziennik.csv, opis.csv, indeks.csv, kanaly.csv, porownanie.csv, druga_analiza.csv, histogram.png, grupy.png]

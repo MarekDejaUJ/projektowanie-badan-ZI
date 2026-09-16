@@ -1,0 +1,92 @@
+id: Z02
+version: 1.0.0
+rocznik: 2026-27
+max_points: 10.0
+criteria:
+- id: Z02.1
+  title: 'Poprawny import: separator, polskie znaki, liczba wierszy/kolumn i kontrola
+    struktury.'
+  evidence: 'Poprawny import: separator, polskie znaki, liczba wierszy/kolumn i kontrola
+    struktury.'
+  max_points: 2.0
+  review_mode: mixed
+  learning_outcomes:
+  - W3
+  - U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Plik odczytany, lecz separator rozdziela dane błędnie.
+  - points: 1.0
+    observable_description: Poprawne kolumny, ale pominięte kodowanie lub kontrola
+      N.
+  - points: 1.5
+    observable_description: Import i N poprawne; jedna kontrola struktury pominięta.
+  - points: 2.0
+    observable_description: 'Poprawny import: separator, polskie znaki, liczba wierszy/kolumn
+      i kontrola struktury.'
+- id: Z02.2
+  title: Naprawiono typy, kody braków i duplikaty bez nieuzasadnionej utraty odpowiedzi.
+  evidence: Naprawiono typy, kody braków i duplikaty bez nieuzasadnionej utraty odpowiedzi.
+  max_points: 4.0
+  review_mode: mixed
+  learning_outcomes:
+  - U2
+  - U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 1.0
+    observable_description: Rozpoczęto naprawy, lecz usunięto nieuzasadnione odpowiedzi.
+  - points: 2.0
+    observable_description: Dwie z trzech kontroli poprawne; typy, braki albo duplikaty
+      nadal błędne.
+  - points: 3.0
+    observable_description: Typy, braki i duplikaty poprawne; drobna luka uzasadnienia.
+  - points: 4.0
+    observable_description: Naprawiono typy, kody braków i duplikaty bez nieuzasadnionej
+      utraty odpowiedzi.
+- id: Z02.3
+  title: Dziennik pokazuje reguły, N przed/po, różnicę między brakiem a zerem.
+  evidence: Dziennik pokazuje reguły, N przed/po, różnicę między brakiem a zerem.
+  max_points: 2.0
+  review_mode: human
+  learning_outcomes:
+  - W2
+  - U3
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: Wymieniono zmianę bez reguły i liczby wierszy.
+  - points: 1.0
+    observable_description: N przed/po poprawne, lecz brak mylony z zerem.
+  - points: 1.5
+    observable_description: Reguły i rozróżnienie brak/zero poprawne; jedna liczba
+      pominięta.
+  - points: 2.0
+    observable_description: Dziennik pokazuje reguły, N przed/po, różnicę między brakiem
+      a zerem.
+- id: Z02.4
+  title: Wyeksportowany CSV i skrypt pozwalają odtworzyć czyszczenie od surowego pliku.
+  evidence: Wyeksportowany CSV i skrypt pozwalają odtworzyć czyszczenie od surowego
+    pliku.
+  max_points: 2.0
+  review_mode: mixed
+  learning_outcomes:
+  - W3
+  - U2
+  levels:
+  - points: 0.0
+    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+  - points: 0.5
+    observable_description: CSV zapisany, lecz skrypt wymaga ręcznych zmian danych.
+  - points: 1.0
+    observable_description: Skrypt działa, ale eksport ma inne kolumny lub nie odtwarza
+      jednej reguły.
+  - points: 1.5
+    observable_description: Odtwarzalny CSV; pominięto krótką instrukcję wykonania.
+  - points: 2.0
+    observable_description: Wyeksportowany CSV i skrypt pozwalają odtworzyć czyszczenie
+      od surowego pliku.
