@@ -22,7 +22,7 @@ oblicz_ocene(
 Lista: stan, wynik procentowy i ocena; przy braku ocen wynik i ocena są NA.
 }
 \description{
-Dziesięć zadań ma jednakową wagę w części zadaniowej. Za spóźniony projek
+Dziesięć zadań ma jednakową wagę w części zadaniowej. Za spóźniony projekt
 maksymalna ocena końcowa wynosi 4,5. Brak punktacji nie oznacza zera.
 }
 \examples{

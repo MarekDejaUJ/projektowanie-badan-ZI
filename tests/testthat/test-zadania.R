@@ -31,7 +31,7 @@ test_that("świeża kontrola zachowuje bibliotekę R i usuwa tokeny z otoczenia"
   k <- tempfile("własne R ")
   biblioteka <- tempfile("biblioteka ")
   dir.create(biblioteka)
-  zmienne <- c("R_LIBS_USER", "GITHUB_PAT", "GH_TOKEN", "GITHUB_TOKEN", "GH_CONFIG_DIR")
+  zmienne <- c("R_LIBS_USER", "GITHUB_PAT", "GH_TOKEN", "GITHUB_TOKEN", "GH_CONFIG_DIR", "R_TESTS")
   stan <- Sys.getenv(zmienne, unset = NA_character_)
   on.exit({
     Sys.unsetenv(zmienne)
@@ -40,7 +40,8 @@ test_that("świeża kontrola zachowuje bibliotekę R i usuwa tokeny z otoczenia"
   }, add = TRUE)
   Sys.setenv(R_LIBS_USER = normalizePath(biblioteka, winslash = "/"),
              GITHUB_PAT = "prywatna_wartosc", GH_TOKEN = "prywatna_wartosc",
-             GITHUB_TOKEN = "prywatna_wartosc", GH_CONFIG_DIR = "konfiguracja_konta")
+             GITHUB_TOKEN = "prywatna_wartosc", GH_CONFIG_DIR = "konfiguracja_konta",
+             R_TESTS = "nieistniejacy-plik")
   utworz_projekt("s019", katalog = k)
   przygotuj_zadanie("Z01", k)
   md <- file.path(k, "zadania/z01/odpowiedzi.md")
@@ -50,7 +51,8 @@ test_that("świeża kontrola zachowuje bibliotekę R i usuwa tokeny z otoczenia"
   kod <- c('stopifnot(all(Sys.getenv(c("GITHUB_PAT", "GH_TOKEN", "GITHUB_TOKEN")) == ""))',
     'stopifnot(dir.exists(Sys.getenv("R_LIBS_USER")))',
     'stopifnot(normalizePath(Sys.getenv("R_LIBS_USER"), winslash="/") %in% .libPaths())',
-    'stopifnot(Sys.getenv("GH_CONFIG_DIR") != "konfiguracja_konta")')
+    'stopifnot(Sys.getenv("GH_CONFIG_DIR") != "konfiguracja_konta")',
+    'stopifnot(Sys.getenv("R_TESTS") == "")')
   writeLines(kod, file.path(k, "zadania/z01/analiza.R"))
   expect_true(sprawdz_zadanie("Z01", k)$ok)
   expect_identical(Sys.getenv("GITHUB_PAT"), "prywatna_wartosc")

@@ -6,7 +6,7 @@
 #' @param id Z01--Z10.
 #' @param katalog Katalog projektu.
 #' @return Lista z repo, SHA, ID odbioru i czasem serwera.
-#' @expor
+#' @export
 #' @examples
 #' \dontrun{ oddaj_zadanie("Z01", "moje-badania") }
 oddaj_zadanie <- function(id, katalog = ".") {
@@ -18,7 +18,7 @@ oddaj_zadanie <- function(id, katalog = ".") {
 #' Oddanie indywidualnego projektu ilościowego
 #' @param katalog Katalog projektu.
 #' @return Pokwitowanie GitHub z SHA i czasem serwera.
-#' @expor
+#' @export
 #' @examples
 #' \dontrun{ oddaj_projekt("moje-badania") }
 oddaj_projekt <- function(katalog = ".") oddaj_prace("PROJEKT", katalog)
@@ -40,7 +40,7 @@ oddaj_prace <- function(id, katalog) {
       paste0(sesja_github$id, "+", sesja_github$login, "@users.noreply.github.com"))
     operacja_git(gert::git_commit(paste("Oddaj", id), author = sygnatura, committer = sygnatura, repo = katalog))
   }
-  sha <- gert::git_info(repo = katalog)$commi
+  sha <- gert::git_info(repo = katalog)$commit
   operacja_git(gert::git_push("origin", refspec = "refs/heads/main:refs/heads/main",
                              password = token_sesji(), force = FALSE, verbose = FALSE, repo = katalog))
   remote <- github_api(paste0("repos/", cfg$repo, "/git/ref/heads/main"))$dane$object$sha
@@ -85,14 +85,14 @@ pokwitowanie <- function(repo, sha, id, odbior) {
 #' @param katalog Katalog projektu.
 #' @param sha Opcjonalne SHA poprzedniego oddania; domyślnie lokalne HEAD.
 #' @return Stan odbioru; wynik kontroli Actions jest osobnym polem.
-#' @expor
+#' @export
 #' @examples
 #' \dontrun{ status_oddania("Z01", "moje-badania") }
 status_oddania <- function(id, katalog = ".", sha = NULL) {
   id <- toupper(id)
   sprawdz_id(id, "zadanie", "^(Z(0[1-9]|10)|PROJEKT)$")
   cfg <- sprawdz_repo(katalog)
-  if (is.null(sha)) sha <- gert::git_info(repo = katalog)$commi
+  if (is.null(sha)) sha <- gert::git_info(repo = katalog)$commit
   sprawdz_id(sha, "sha", "^[0-9a-f]{40}$")
   commit <- github_api(paste0("repos/", cfg$repo, "/commits/", sha), brak_ok = TRUE)$dane
   if (is.null(commit)) return(list(stan = "tylko_lokalnie", zadanie = id, sha = sha))

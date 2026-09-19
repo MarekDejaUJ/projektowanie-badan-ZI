@@ -12,7 +12,7 @@ kolory_zi <- c(
 
 #' Paleta Okabe--Ito dla materiałów kursu
 #' @return Nazwany wektor kolorów.
-#' @expor
+#' @export
 #' @examples
 #' paleta_zi()["primary"]
 paleta_zi <- function() kolory_zi
@@ -20,7 +20,7 @@ paleta_zi <- function() kolory_zi
 #' Styl wykresów kursu
 #' @param base_size Wielkość czcionki w punktach.
 #' @return Obiekt theme z ggplot2.
-#' @expor
+#' @export
 #' @examples
 #' theme_zi()
 theme_zi <- function(base_size = 12) {

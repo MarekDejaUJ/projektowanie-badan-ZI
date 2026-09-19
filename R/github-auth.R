@@ -11,7 +11,7 @@ sesja_github <- new.env(parent = emptyenv())
 #' @param timeout Maksymalna liczba sekund na potwierdzenie.
 #' @param przegladarka Czy otworzyć stronę potwierdzenia.
 #' @return Login konta GitHub, niewidocznie. Token nie jest zwracany.
-#' @expor
+#' @export
 #' @examples
 #' \dontrun{
 #' zaloguj_github()
@@ -37,7 +37,7 @@ zaloguj_github <- function(metoda = c("auto", "device", "gh"), client_id = NULL,
 #' i zakończ sesję R bez zapisywania przestrzeni roboczej.
 #' @param komunikat Czy wyświetlić potwierdzenie.
 #' @return TRUE, niewidocznie.
-#' @expor
+#' @export
 #' @examples
 #' wyloguj_github()
 wyloguj_github <- function(komunikat = TRUE) {
@@ -108,7 +108,7 @@ token_device <- function(client_id, timeout, przegladarka) {
 
 czekaj_device <- function(x, client_id, timeout, post = oauth_post,
                           czekaj = Sys.sleep, zegar = function() as.numeric(Sys.time())) {
-  koniec <- zegar() + timeou
+  koniec <- zegar() + timeout
   interwal <- max(5, x$interval)
   repeat {
     pozostalo <- koniec - zegar()
@@ -117,11 +117,11 @@ czekaj_device <- function(x, client_id, timeout, post = oauth_post,
     y <- post("login/oauth/access_token", client_id = client_id, device_code = x$device_code,
               grant_type = "urn:ietf:params:oauth:grant-type:device_code")
     if (!is.null(y$access_token)) return(y$access_token)
-    if (identical(y$error, "authorization_pending")) nex
+    if (identical(y$error, "authorization_pending")) next
     if (identical(y$error, "slow_down")) {
       interwal <- interwal + 5
       if (interwal > 60) stop("GitHub ograniczy\u0142 logowanie; spr\u00f3buj p\u00f3\u017aniej.", call. = FALSE)
-      nex
+      next
     }
     if (identical(y$error, "access_denied")) stop("Logowanie anulowano na GitHub.", call. = FALSE)
     stop("Kod wygas\u0142 lub logowanie zosta\u0142o odrzucone; zacznij ponownie.", call. = FALSE)
@@ -141,12 +141,12 @@ token_gh <- function(timeout) {
     stdin = "|", stdout = "|", stderr = "|", env = env, cleanup = TRUE)
   on.exit(if (p$is_alive()) p$kill(), add = TRUE)
   p$write_input("n\n\n")
-  koniec <- as.numeric(Sys.time()) + timeou
+  koniec <- as.numeric(Sys.time()) + timeout
   while (p$is_alive()) {
     if (as.numeric(Sys.time()) > koniec) stop("Logowanie przekroczy\u0142o czas; spr\u00f3buj ponownie.", call. = FALSE)
     p$poll_io(250)
     for (tekst in c(p$read_output_lines(), p$read_error_lines())) {
-      if (grepl("(gh[pousr]_|github_pat_)[A-Za-z0-9_]+", tekst)) nex
+      if (grepl("(gh[pousr]_|github_pat_)[A-Za-z0-9_]+", tekst)) next
       message(tekst)
     }
   }

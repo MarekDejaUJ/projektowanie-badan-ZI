@@ -1,6 +1,6 @@
 #' Syntetyczny przykład do wspólnej analizy
 #' @return Surowa tabela ankietowa S02 dla demonstracyjnego ID demo001.
-#' @expor
+#' @export
 #' @examples
 #' head(dane_przykladowe())
 dane_przykladowe <- function() {
@@ -10,7 +10,7 @@ dane_przykladowe <- function() {
 #' Plik przykładowych danych
 #' @param format CSV albo XLSX.
 #' @return Ścieżka do pliku z pakietu.
-#' @expor
+#' @export
 #' @examples
 #' plik_przykladu("csv")
 plik_przykladu <- function(format = c("csv", "xlsx")) {
@@ -20,7 +20,7 @@ plik_przykladu <- function(format = c("csv", "xlsx")) {
 
 #' Katalog materiałów rocznika
 #' @return Tabela jednostek, tytułów i lokalnych ścieżek źródeł.
-#' @expor
+#' @export
 #' @examples
 #' materialy()
 materialy <- function() {
@@ -37,7 +37,7 @@ materialy <- function() {
 #' @param zrodlo lokalne albo pages.
 #' @param otworz Czy uruchomić przeglądarkę lub otworzyć plik.
 #' @return Istniejąca ścieżka lub adres Pages, niewidocznie.
-#' @expor
+#' @export
 #' @examples
 #' \dontrun{ otworz_material("C01") }
 otworz_material <- function(id, format = c("html", "pdf", "Rmd", "R", "tex"),
@@ -60,7 +60,7 @@ otworz_material <- function(id, format = c("html", "pdf", "Rmd", "R", "tex"),
 #' Nie instaluje pakietów ani nie zmienia konfiguracji. LaTeX jest potrzebny
 #' do budowania PDF, lecz nie do wykonywania zadań lub korzystania z gotowych materiałów.
 #' @return Tabela narzędzi, stanów i znaczenia braków.
-#' @expor
+#' @export
 #' @examples
 #' sprawdz_srodowisko()
 sprawdz_srodowisko <- function() {

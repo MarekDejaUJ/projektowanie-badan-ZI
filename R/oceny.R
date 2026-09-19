@@ -1,13 +1,13 @@
 #' Wynik tej realizacji kursu
 #'
-#' Dziesięć zadań ma jednakową wagę w części zadaniowej. Za spóźniony projek
+#' Dziesięć zadań ma jednakową wagę w części zadaniowej. Za spóźniony projekt
 #' maksymalna ocena końcowa wynosi 4,5. Brak punktacji nie oznacza zera.
 #' @param punkty_zadan Dziesięć ocen Z01--Z10 od 0 do 10; NA oznacza brak oceny.
 #' @param punkty_projektu Ocena projektu od 0 do 100 lub NA.
 #' @param spozniony Czy pierwsze kwalifikujące się oddanie projektu było po terminie.
 #' @param konfiguracja Konfiguracja rocznika z wagami i progami.
 #' @return Lista: stan, wynik procentowy i ocena; przy braku ocen wynik i ocena są NA.
-#' @expor
+#' @export
 #' @examples
 #' oblicz_ocene(rep(8, 10), 90)
 #' oblicz_ocene(rep(10, 10), 100, spozniony = TRUE)

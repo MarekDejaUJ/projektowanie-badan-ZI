@@ -9,7 +9,7 @@
 #' @param formularz Wypełniony formularz_oceny().
 #' @param komentarz Ogólna informacja merytoryczna.
 #' @return URL prywatnego komentarza GitHub, niewidocznie.
-#' @expor
+#' @export
 #' @examples
 #' \dontrun{
 #' f <- formularz_oceny("Z01")
@@ -45,14 +45,14 @@ wystaw_ocene <- function(repo, sha, id, formularz, komentarz = "") {
 #' @param katalog Katalog projektu.
 #' @param sha SHA ocenionej pracy; domyślnie lokalne HEAD.
 #' @return Lista ze stanem i oceną, jeśli opublikowano.
-#' @expor
+#' @export
 #' @examples
 #' \dontrun{ pobierz_ocene("Z01", "moje-badania") }
 pobierz_ocene <- function(id, katalog = ".", sha = NULL) {
   id <- toupper(id)
   r <- rubryka(id)
   cfg <- sprawdz_repo(katalog)
-  if (is.null(sha)) sha <- gert::git_info(repo = katalog)$commi
+  if (is.null(sha)) sha <- gert::git_info(repo = katalog)$commit
   sprawdz_id(sha, "sha", "^[0-9a-f]{40}$")
   owner <- strsplit(cfg$repo, "/", fixed = TRUE)[[1]][1L]
   komentarze <- list()
@@ -66,13 +66,13 @@ pobierz_ocene <- function(id, katalog = ".", sha = NULL) {
   oceny <- list()
   for (x in komentarze) {
     if (!identical(tolower(x$user$login), tolower(owner)) || !identical(x$commit_id, sha) ||
-        !startsWith(x$body, "Informacja zwrotna badaniaZI\n\n```json\n")) nex
+        !startsWith(x$body, "Informacja zwrotna badaniaZI\n\n```json\n")) next
     tekst <- sub("^Informacja zwrotna badaniaZI\n\n```json\n", "", x$body)
     tekst <- sub("\n```$", "", tekst)
     o <- tryCatch(jsonlite::fromJSON(tekst), error = function(e) NULL)
-    if (is.null(o) || !identical(o$sha, sha) || !identical(o$zadanie, id) || !identical(o$rubryka, r$version)) nex
+    if (is.null(o) || !identical(o$sha, sha) || !identical(o$zadanie, id) || !identical(o$rubryka, r$version)) next
     poprawna <- tryCatch(sprawdz_ocene(o$kryteria, id), error = function(e) NA_real_)
-    if (is.na(poprawna) || !isTRUE(all.equal(poprawna, o$punkty))) nex
+    if (is.na(poprawna) || !isTRUE(all.equal(poprawna, o$punkty))) next
     oceny[[length(oceny) + 1L]] <- list(stan = "oceniono", ocena = o, czas_serwera = x$updated_at, url = x$html_url)
   }
   if (!length(oceny)) return(list(stan = "nieopublikowana", sha = sha, ocena = NULL))

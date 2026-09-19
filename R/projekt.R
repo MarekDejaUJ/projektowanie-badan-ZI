@@ -5,7 +5,7 @@
 #' @param rocznik Rocznik kursu.
 #' @param repo Oczekiwane prywatne repozytorium jako owner/name, jeśli znane.
 #' @return Ścieżka do projektu RStudio, niewidocznie.
-#' @expor
+#' @export
 #' @examples
 #' katalog <- tempfile("projekt-")
 #' utworz_projekt("s017", "S03", katalog)
@@ -37,6 +37,8 @@ utworz_projekt <- function(id_studenta, scenariusz = "S01", katalog = "moje-bada
              "AlwaysSaveHistory: No", "Encoding: UTF-8", "UseSpacesForTab: Yes", "NumSpacesForTab: 2")
   writeLines(rproj, file.path(tmp, "moje-badania.Rproj"))
   writeLines(c(".Rhistory", ".RData", ".Ruserdata", "/.[!.]*/", "!/.github/"), file.path(tmp, ".gitignore"))
+  writeLines(c("* text=auto eol=lf", "*.csv -text", "*.rds binary", "*.png binary", "*.pdf binary"),
+             file.path(tmp, ".gitattributes"))
   if (!file.rename(tmp, katalog)) stop("Nie mo\u017cna zapisa\u0107 projektu w wybranym katalogu.", call. = FALSE)
   invisible(normalizePath(file.path(katalog, "moje-badania.Rproj"), winslash = "/"))
 }

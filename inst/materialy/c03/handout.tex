@@ -90,7 +90,7 @@
 \makeatletter
 \patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
 \makeatother
-% Allow footnotes in longtable head/foo
+% Allow footnotes in longtable head/foot
 \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
@@ -213,16 +213,16 @@ minutach po regułach C02. Odczytaj medianę i IQR razem ze średnią i SD.
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
-Element & Co czytam
+Element & Co czytam \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
-\endlastfoo
-Średnia & wrażliwa na skrajne wartości
-Mediana & środek uporządkowanych wartości
-SD & rozproszenie w jednostce zmiennej
-IQR & Q3 − Q1, środkowe 50\% wartości
-Odsetek grupy & liczebność / N ważnych grup
+\endlastfoot
+Średnia & wrażliwa na skrajne wartości \\
+Mediana & środek uporządkowanych wartości \\
+SD & rozproszenie w jednostce zmiennej \\
+IQR & Q3 − Q1, środkowe 50\% wartości \\
+Odsetek grupy & liczebność / N ważnych grup \\
 \end{longtable}
 }
 
@@ -238,7 +238,7 @@ ważnych obserwacji. Punkt poza wąsami nie jest automatycznie błędem.
 Własny czas: N/osoby/braki, średnia, mediana, SD, IQR, minimum i
 maksimum. Grupy: N i procenty z mianownikiem. Zapisz
 \texttt{wyniki/opis.csv}, \texttt{histogram.png}, \texttt{boxplot.png};
-dodaj linki w \texttt{odpowiedzi.md}. Własny opis z liczbami, argumen
+dodaj linki w \texttt{odpowiedzi.md}. Własny opis z liczbami, argument
 za średnią/medianą i ograniczenie do próby.
 
 Ocena: obliczenia/mianowniki 3 pkt; dwa właściwe i czytelne wykresy 3

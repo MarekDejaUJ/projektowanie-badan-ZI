@@ -5,7 +5,7 @@
 #' @param id Z01--Z10.
 #' @param konfiguracja Konfiguracja rocznika.
 #' @return Lista: stan, zasada, data ISO 8601 lub NULL i identyfikator kolejnego ćwiczenia.
-#' @expor
+#' @export
 #' @examples
 #' termin_zadania("Z01")
 termin_zadania <- function(id, konfiguracja = konfiguracja_kursu()) {

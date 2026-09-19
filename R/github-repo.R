@@ -3,7 +3,7 @@
 #' @param katalog Nowy katalog lokalny.
 #' @param id_studenta Oczekiwany pseudonim.
 #' @return Ścieżka projektu RStudio, niewidocznie.
-#' @expor
+#' @export
 #' @examples
 #' \dontrun{
 #' pobierz_zadanie("https://github.com/prowadzacy/badania-s017.git", "moje-badania", "s017")
@@ -39,7 +39,7 @@ pobierz_zadanie <- function(repo_url, katalog = "moje-badania", id_studenta) {
 #' @param katalog Katalog lokalny.
 #' @param otworz Czy otworzyć projekt i materiał w IDE/przeglądarce.
 #' @return Lista: projekt i identyfikator ćwiczenia, niewidocznie.
-#' @expor
+#' @export
 #' @examples
 #' \dontrun{
 #' rozpocznij_zajecia("C02", "s017", "https://github.com/prowadzacy/badania-s017.git")

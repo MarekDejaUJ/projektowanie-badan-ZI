@@ -22,7 +22,7 @@ format_liczba_apa <- function(x, digits = 2, zero_wiodace = TRUE) {
     if (!zero_wiodace) {
         out <- sub("^(-?)0\\.", "\\1.", out)
     }
-    ou
+    out
 }
 
 format_df_apa <- function(df) {
@@ -69,7 +69,7 @@ tekst_istotnosci <- function(p, alpha, pozytywny, negatywny) {
 }
 
 #' @rdname wnioski
-#' @expor
+#' @export
 wniosek_one_sample <- function(test_result, alpha = 0.05, efekt = NULL, efekt_label = "*d*") {
     stat <- format_liczba_apa(test_result$statistic, digits = 2)
     df <- format_df_apa(test_result$parameter)
@@ -83,7 +83,7 @@ wniosek_one_sample <- function(test_result, alpha = 0.05, efekt = NULL, efekt_la
 }
 
 #' @rdname wnioski
-#' @expor
+#' @export
 wniosek_ind <- function(test_result, alpha = 0.05, efekt = NULL, efekt_label = "*d*") {
     stat <- format_liczba_apa(test_result$statistic, digits = 2)
     df <- format_df_apa(test_result$parameter)
@@ -97,7 +97,7 @@ wniosek_ind <- function(test_result, alpha = 0.05, efekt = NULL, efekt_label = "
 }
 
 #' @rdname wnioski
-#' @expor
+#' @export
 wniosek_paired <- function(test_result, alpha = 0.05, efekt = NULL, efekt_label = "*d*") {
     stat <- format_liczba_apa(test_result$statistic, digits = 2)
     df <- format_df_apa(test_result$parameter)
@@ -111,7 +111,7 @@ wniosek_paired <- function(test_result, alpha = 0.05, efekt = NULL, efekt_label 
 }
 
 #' @rdname wnioski
-#' @expor
+#' @export
 wniosek_mw <- function(test_result, alpha = 0.05, efekt = NULL, efekt_label = "*r*") {
     stat <- format_liczba_apa(test_result$statistic, digits = 2)
     p <- as.numeric(test_result$p.value)[1]
@@ -123,7 +123,7 @@ wniosek_mw <- function(test_result, alpha = 0.05, efekt = NULL, efekt_label = "*
 }
 
 #' @rdname wnioski
-#' @expor
+#' @export
 wniosek_wilcox <- function(test_result, alpha = 0.05, efekt = NULL, efekt_label = "*r*") {
     stat <- format_liczba_apa(test_result$statistic, digits = 2)
     p <- as.numeric(test_result$p.value)[1]
@@ -135,7 +135,7 @@ wniosek_wilcox <- function(test_result, alpha = 0.05, efekt = NULL, efekt_label 
 }
 
 #' @rdname wnioski
-#' @expor
+#' @export
 wniosek_anova <- function(aov_result, alpha = 0.05, efekt = NULL, efekt_label = "$\\eta^2$") {
     s <- summary(aov_result)[[1]]
     df1 <- format_df_apa(s$Df[1])
@@ -151,7 +151,7 @@ wniosek_anova <- function(aov_result, alpha = 0.05, efekt = NULL, efekt_label = 
 }
 
 #' @rdname wnioski
-#' @expor
+#' @export
 wniosek_kw <- function(kw_result, alpha = 0.05, efekt = NULL, efekt_label = "$\\epsilon^2$") {
     stat <- format_liczba_apa(kw_result$statistic, digits = 2)
     df <- format_df_apa(kw_result$parameter)
@@ -165,7 +165,7 @@ wniosek_kw <- function(kw_result, alpha = 0.05, efekt = NULL, efekt_label = "$\\
 }
 
 #' @rdname wnioski
-#' @expor
+#' @export
 wniosek_chi2 <- function(chi_result, alpha = 0.05, efekt = NULL, efekt_label = "*V* Cramera") {
     stat <- format_liczba_apa(chi_result$statistic, digits = 2)
     df <- format_df_apa(chi_result$parameter)
@@ -185,7 +185,7 @@ wniosek_chi2 <- function(chi_result, alpha = 0.05, efekt = NULL, efekt_label = "
 }
 
 #' @rdname wnioski
-#' @expor
+#' @export
 wniosek_fisher <- function(fisher_result, alpha = 0.05) {
     p <- as.numeric(fisher_result$p.value)[1]
     p_fmt <- format_p_apa(p)
@@ -209,7 +209,7 @@ wniosek_fisher <- function(fisher_result, alpha = 0.05) {
 }
 
 #' @rdname wnioski
-#' @expor
+#' @export
 wniosek_cor <- function(cor_result, alpha = 0.05) {
     metoda <- if (is.null(cor_result$method))
         ""
@@ -236,7 +236,7 @@ wniosek_cor <- function(cor_result, alpha = 0.05) {
 }
 
 #' @rdname wnioski
-#' @expor
+#' @export
 wniosek_reg <- function(lm_result, alpha = 0.05) {
     s <- summary(lm_result)
     if (is.null(s$fstatistic))

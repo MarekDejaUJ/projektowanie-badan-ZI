@@ -1,7 +1,7 @@
 #' Rubryka zadania lub projektu
 #' @param id Z01--Z10 albo PROJEKT; wielkość liter nie ma znaczenia.
 #' @return Lista kryteriów i obserwowalnych poziomów z punktacją.
-#' @expor
+#' @export
 #' @examples
 #' rubryka("Z07")$max_points
 rubryka <- function(id = "PROJEKT") {
@@ -13,7 +13,7 @@ rubryka <- function(id = "PROJEKT") {
 #' Pusty formularz oceny według rubryki
 #' @param id Z01--Z10 albo PROJEKT.
 #' @return Tabela kryteriów z pustymi punktami i komentarzami. Nie zawiera ocen studentów.
-#' @expor
+#' @export
 #' @examples
 #' formularz_oceny("Z01")
 formularz_oceny <- function(id = "PROJEKT") {
@@ -28,7 +28,7 @@ formularz_oceny <- function(id = "PROJEKT") {
 #' @param formularz Wypełniony formularz_oceny().
 #' @param id Identyfikator rubryki.
 #' @return Łączna punktacja; błąd przy niekompletnej lub niedozwolonej ocenie.
-#' @expor
+#' @export
 #' @examples
 #' x <- formularz_oceny("Z01")
 #' x$punkty <- x$maksimum

@@ -90,7 +90,7 @@
 \makeatletter
 \patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
 \makeatother
-% Allow footnotes in longtable head/foo
+% Allow footnotes in longtable head/foot
 \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
@@ -221,17 +221,17 @@ jest miarą ilościową.
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
-Zmienna & Skala i reguła
+Zmienna & Skala i reguła \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
-\endlastfoo
-grupa & nominalna, etykiety/factor
-czas\_wyszukiwania & ilościowa, minuty, zakres 0--120
-pozycja\_1--6 & porządkowa 1--5
-pozycja\_2 = 99 & brak odpowiedzi, nie wysoka ocena
-kanal\_* = 0 & kanał niezaznaczony, nie brak
-NA & wartość nieznana
+\endlastfoot
+grupa & nominalna, etykiety/factor \\
+czas\_wyszukiwania & ilościowa, minuty, zakres 0--120 \\
+pozycja\_1--6 & porządkowa 1--5 \\
+pozycja\_2 = 99 & brak odpowiedzi, nie wysoka ocena \\
+kanal\_* = 0 & kanał niezaznaczony, nie brak \\
+NA & wartość nieznana \\
 \end{longtable}
 }
 

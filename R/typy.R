@@ -1,7 +1,7 @@
 #' Klasy kolumn w R
 #' @param dane Ramka danych.
 #' @return Tabela nazw kolumn, klas R i typów wewnętrznych.
-#' @expor
+#' @export
 #' @examples
 #' tabela_klas_r(data.frame(czas = c(2, 4), grupa = c("A", "B")))
 tabela_klas_r <- function(dane) {

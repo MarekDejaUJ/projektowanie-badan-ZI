@@ -13,14 +13,14 @@ repo_testowe <- function() {
 test_that("aktualizacja przesuwa gałąź, a lokalny commit i rozbieżność zachowuje", {
   k <- repo_testowe()
   on.exit(unlink(k, recursive = TRUE), add = TRUE)
-  pierwsza <- gert::git_info(repo = k)$commi
+  pierwsza <- gert::git_info(repo = k)$commit
   glowna <- gert::git_info(repo = k)$shorthand
   gert::git_branch_create("zdalna", repo = k)
   gert::git_branch_checkout("zdalna", repo = k)
   writeLines("wersja druga", file.path(k, "plik.md"))
   gert::git_add("plik.md", repo = k)
   gert::git_commit("Druga wersja", repo = k)
-  druga <- gert::git_info(repo = k)$commi
+  druga <- gert::git_info(repo = k)$commit
   gert::git_branch_checkout(glowna, repo = k)
   expect_identical(badaniaZI:::aktualizuj_repo_lokalne(k, "zdalna"), druga)
   expect_equal(nrow(gert::git_log(repo = k)), 2)
@@ -28,7 +28,7 @@ test_that("aktualizacja przesuwa gałąź, a lokalny commit i rozbieżność zac
   writeLines("lokalna odpowiedź", file.path(k, "plik.md"))
   gert::git_add("plik.md", repo = k)
   gert::git_commit("Własna praca", repo = k)
-  lokalna <- gert::git_info(repo = k)$commi
+  lokalna <- gert::git_info(repo = k)$commit
   expect_error(badaniaZI:::aktualizuj_repo_lokalne(k, "zdalna"), "lokalne commity")
   gert::git_branch_checkout("zdalna", repo = k)
   writeLines("zdalna odpowiedź", file.path(k, "plik.md"))

@@ -90,7 +90,7 @@
 \makeatletter
 \patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
 \makeatother
-% Allow footnotes in longtable head/foo
+% Allow footnotes in longtable head/foot
 \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
@@ -197,22 +197,22 @@ populacji wymaga projektu i założeń.
   >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
   >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedrigh
-Schema
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedrigh
+\begin{minipage}[b]{\linewidth}\raggedright
+Schemat
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Kluczowe pytanie
-\end{minipage}
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
-\endlastfoo
-Obserwacja przekrojowa & Czy cechy współwystępują w danym okresie?
-Obserwacja podłużna & Czy wynik zmienia się u tych samych osób?
-Interwencja przed/po & Czy zmiana mogła mieć inną przyczynę?
-Randomizacja & Czy przydzielono interwencję losowo?
+\endlastfoot
+Obserwacja przekrojowa & Czy cechy współwystępują w danym okresie? \\
+Obserwacja podłużna & Czy wynik zmienia się u tych samych osób? \\
+Interwencja przed/po & Czy zmiana mogła mieć inną przyczynę? \\
+Randomizacja & Czy przydzielono interwencję losowo? \\
 Quasi-eksperyment/naturalny & Co uzasadnia porównywalność i
-ekspozycję?
-Synteza & Czy badania są odpowiednie, porównywalne i dobrej jakości?
+ekspozycję? \\
+Synteza & Czy badania są odpowiednie, porównywalne i dobrej jakości? \\
 \end{longtable}
 }
 
@@ -236,22 +236,22 @@ wybiera się przed wynikiem.
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedrigh
+\begin{minipage}[b]{\linewidth}\raggedright
 Skala
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedrigh
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Przykład
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedrigh
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Uprawnione relacje
-\end{minipage}
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
-\endlastfoo
-Nominalna & grupa/typ zasobu & równość, liczebności
-Porządkowa & pojedyncza pozycja 1--5 & dodatkowo porządek
-Przedziałowa & rok kalendarzowy & dodatkowo różnica
+\endlastfoot
+Nominalna & grupa/typ zasobu & równość, liczebności \\
+Porządkowa & pojedyncza pozycja 1--5 & dodatkowo porządek \\
+Przedziałowa & rok kalendarzowy & dodatkowo różnica \\
 Ilorazowa & czas w minutach/liczba pobrań & dodatkowo stosunek i
-naturalne zero
+naturalne zero \\
 \end{longtable}
 }
 

@@ -2,7 +2,7 @@
 #' @param id Z01--Z10.
 #' @param katalog Katalog własnego projektu.
 #' @return Ścieżka odpowiedzi Markdown, niewidocznie. Istniejąca praca pozostaje zachowana.
-#' @expor
+#' @export
 #' @examples
 #' k <- tempfile("zadania-")
 #' utworz_projekt("s017", katalog = k)
@@ -39,7 +39,7 @@ przygotuj_zadanie <- function(id, katalog = ".") {
 #' @param katalog Katalog projektu.
 #' @param uruchom Czy wykonać zapisany skrypt (domyślnie tak).
 #' @return Lista: ok, tabela kontroli i jawna lista plików.
-#' @expor
+#' @export
 #' @examples
 #' k <- tempfile("kontrola-")
 #' utworz_projekt("s017", katalog = k)
@@ -105,7 +105,7 @@ sprawdz_zadanie <- function(id, katalog = ".", uruchom = TRUE) {
         c("--vanilla", paste0(folder, "/analiza.R")), wd = tmp,
         env = c("current", GH_TOKEN = "", GITHUB_TOKEN = "", GITHUB_PAT = "",
                 GH_ENTERPRISE_TOKEN = "", GITHUB_ENTERPRISE_TOKEN = "",
-                GH_CONFIG_DIR = file.path(tmp, ".logowanie")),
+                GH_CONFIG_DIR = file.path(tmp, ".logowanie"), R_TESTS = ""),
         timeout = 120000, error_on_status = FALSE), error = function(e) NULL)
       dodaj("wykonanie R", !is.null(r) && r$status == 0L, "Skrypt musi wykona\u0107 si\u0119 od pocz\u0105tku w \u015bwie\u017cej sesji; przy b\u0142\u0119dzie uruchom go w RStudio i popraw komunikat")
       for (p in pliki[startsWith(pliki, paste0(folder, "/wyniki/"))]) {
@@ -138,7 +138,7 @@ pliki_oddania <- function(id, katalog) {
   root <- normalizePath(katalog, winslash = "/", mustWork = TRUE)
   for (p in pliki) {
     full <- file.path(katalog, p)
-    if (!file.exists(full)) nex
+    if (!file.exists(full)) next
     resolved <- normalizePath(full, winslash = "/", mustWork = TRUE)
     if (!startsWith(tolower(resolved), paste0(tolower(root), "/"))) stop("Plik poza projektem.", call. = FALSE)
     link <- Sys.readlink(full)

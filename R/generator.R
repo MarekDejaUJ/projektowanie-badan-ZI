@@ -1,6 +1,6 @@
 #' Katalog scenariuszy projektu
 #' @return Ramka z identyfikatorami, tytułami i drugą analizą.
-#' @expor
+#' @export
 #' @examples
 #' scenariusze()
 scenariusze <- function() {
@@ -13,7 +13,7 @@ scenariusze <- function() {
 #' Szczegóły scenariusza
 #' @param id Identyfikator od S01 do S20.
 #' @return Lista: opis, grupy, pomiar, kwestionariusz i plan analiz.
-#' @expor
+#' @export
 #' @examples
 #' scenariusz("S03")$grupy
 scenariusz <- function(id) {
@@ -32,7 +32,7 @@ scenariusz <- function(id) {
 #' @param rocznik Rocznik kursu.
 #' @param n Liczba wierszy surowych danych, od 120 do 180.
 #' @return Lista z danymi, słownikiem, opisem scenariusza i manifestem.
-#' @expor
+#' @export
 #' @examples
 #' x <- generuj_dane("s017", "S03")
 #' head(x$dane)
@@ -117,7 +117,7 @@ slownik_scenariusza <- function(opis) {
 #' @param dane Wynik generuj_dane().
 #' @param katalog Nowy katalog docelowy; istniejący nie jest nadpisywany.
 #' @return Ścieżka katalogu, niewidocznie.
-#' @expor
+#' @export
 #' @examples
 #' katalog <- tempfile("ankieta-")
 #' zapisz_dane(generuj_dane("s017"), katalog)
@@ -134,7 +134,7 @@ zapisz_dane <- function(dane, katalog) {
   pisz_csv(dane$dane, file.path(tmp, "surowe.csv"))
   pisz_csv(dane$slownik, file.path(tmp, "slownik.csv"))
   saveRDS(dane$dane, file.path(tmp, "surowe.rds"), version = 2)
-  manifest <- dane$manifes
+  manifest <- dane$manifest
   manifest$sha256_csv <- digest::digest(file = file.path(tmp, "surowe.csv"), algo = "sha256")
   manifest$sha256_rds <- digest::digest(file = file.path(tmp, "surowe.rds"), algo = "sha256")
   jsonlite::write_json(manifest, file.path(tmp, "manifest.json"), auto_unbox = TRUE, pretty = TRUE)
@@ -143,7 +143,9 @@ zapisz_dane <- function(dane, katalog) {
 }
 
 pisz_csv <- function(x, plik) {
-  con <- file(plik, open = "wt", encoding = "UTF-8")
+  for (i in seq_along(x)) if (is.character(x[[i]])) x[[i]] <- enc2utf8(x[[i]])
+  # Połączenie binarne zachowuje LF także w Windows; hash nie zależy od checkoutu.
+  con <- file(plik, open = "wb")
   on.exit(close(con), add = TRUE)
   utils::write.table(x, con, sep = ",", dec = ".", row.names = FALSE, na = "NA", eol = "\n")
 }
@@ -153,7 +155,7 @@ pisz_csv <- function(x, plik) {
 #' @param scenariusze Wektor scenariuszy tej samej długości albo jeden scenariusz.
 #' @param rocznik Rocznik.
 #' @return Prywatna tabela kluczy; błąd przy powtórzeniu ID lub kolizji RNG.
-#' @expor
+#' @export
 #' @examples
 #' sprawdz_warianty(c("s001", "s002"), "S01")
 sprawdz_warianty <- function(id, scenariusze, rocznik = "2026-27") {

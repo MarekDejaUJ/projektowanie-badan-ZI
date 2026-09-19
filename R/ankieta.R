@@ -2,7 +2,7 @@
 #' @param x Numeryczne odpowiedzi od min do max, z dopuszczalnym NA.
 #' @param min,max Granice skali.
 #' @return Wektor odwróconych odpowiedzi; braki pozostają brakami.
-#' @expor
+#' @export
 #' @examples
 #' odwroc_pozycje(c(1, 3, 5, NA))
 odwroc_pozycje <- function(x, min = 1, max = 5) {
@@ -18,7 +18,7 @@ odwroc_pozycje <- function(x, min = 1, max = 5) {
 #' @param pozycje Ramka lub macierz numerycznych, już zgodnie ukierunkowanych pozycji.
 #' @param minimum Minimalna liczba ważnych odpowiedzi.
 #' @return Wektor średnich; NA dla zbyt małej liczby odpowiedzi.
-#' @expor
+#' @export
 #' @examples
 #' indeks_ankiety(data.frame(p1 = c(1, NA), p2 = c(3, 5)), minimum = 2)
 indeks_ankiety <- function(pozycje, minimum = 5L) {
@@ -39,7 +39,7 @@ indeks_ankiety <- function(pozycje, minimum = 5L) {
 #' Odsetki odpowiedzi wielokrotnych
 #' @param dane Tabela kolumn 0/1, z dopuszczalnym NA.
 #' @return Liczebności, mianowniki i procent respondentów. Suma procentów może przekraczać 100.
-#' @expor
+#' @export
 #' @examples
 #' odpowiedzi_wielokrotne(data.frame(www = c(1, 0, NA), email = c(1, 1, NA)))
 odpowiedzi_wielokrotne <- function(dane) {
@@ -62,7 +62,7 @@ odpowiedzi_wielokrotne <- function(dane) {
 #' kod 99 w pozycjach ankiety i czas spoza 0--120 minut. Nie oblicza indeksu.
 #' @param dane Surowa tabela z generuj_dane().
 #' @return Lista: dane i dziennik zastosowanych reguł.
-#' @expor
+#' @export
 #' @examples
 #' x <- przygotuj_ankiete(generuj_dane("s017")$dane)
 #' x$dziennik

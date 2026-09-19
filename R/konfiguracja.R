@@ -2,7 +2,7 @@
 #' @param rocznik Rocznik, np. "2026-27".
 #' @param plik Własny plik YAML; domyślnie konfiguracja z pakietu.
 #' @return Lista parametrów rocznika.
-#' @expor
+#' @export
 #' @examples
 #' konfiguracja_kursu()$cwiczenia
 konfiguracja_kursu <- function(rocznik = "2026-27", plik = NULL) {
@@ -22,7 +22,7 @@ czytaj_yaml <- function(plik) {
 #' @param publikacja Czy błędy i brak zasad oceny mają blokować publikację.
 #' Nieogłoszony pełny kalendarz pozostaje jawną informacją do ustalenia.
 #' @return Ramka problemów i ich wagi (blad albo informacja).
-#' @expor
+#' @export
 #' @examples
 #' sprawdz_konfiguracje(konfiguracja_kursu())
 sprawdz_konfiguracje <- function(konfiguracja, publikacja = FALSE) {

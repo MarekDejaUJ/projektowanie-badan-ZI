@@ -19,7 +19,7 @@ data.frame(n = n, srednia = srednia, sd = odchylenie, se = se)
 ## ----przedzial-t--------------------------------------------------------------
 wynik_ci <- stats::t.test(wartosci, conf.level = .95)
 granice_t <- unname(wynik_ci$conf.int)
-granice_
+granice_t
 srednia + c(-1, 1) * stats::qt(.975, df = n - 1) * se
 
 
@@ -32,7 +32,7 @@ srednie_boot <- replicate(B, {
 })
 head(srednie_boot)
 granice_boot <- unname(stats::quantile(srednie_boot, c(.025, .975)))
-granice_boo
+granice_boot
 
 
 ## ----tabela-------------------------------------------------------------------
@@ -55,7 +55,7 @@ wykres_boot <- ggplot2::ggplot(bootstrap, ggplot2::aes(x = srednia)) +
     subtitle = paste("N =", n, "osób; B =", B, "replik"),
     x = "Średnia indeksu (punkty 1–5)", y = "Liczba replik") +
   badaniaZI::theme_zi()
-wykres_boo
+wykres_boot
 
 
 ## ----permutacja---------------------------------------------------------------

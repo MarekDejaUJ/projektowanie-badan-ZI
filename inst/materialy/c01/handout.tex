@@ -90,7 +90,7 @@
 \makeatletter
 \patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
 \makeatother
-% Allow footnotes in longtable head/foo
+% Allow footnotes in longtable head/foot
 \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
@@ -211,18 +211,18 @@ pracy}\label{pojux119cia-do-wspuxf3lnej-pracy}
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
-Zapis & Sens
+Zapis & Sens \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
-\endlastfoo
-\texttt{\textless{}-} & przypisanie wartości do obiektu
-\texttt{c(2,\ 4,\ 6)} & wektor
-\texttt{x{[}2{]}} & drugi elemen
-\texttt{tabela\$czas} & kolumna o nazwie czas
-\texttt{==} & porównanie
-\texttt{NA}, \texttt{is.na(x)} & brak i kontrola braków
-\texttt{mean(x,\ na.rm=TRUE)} & średnia z ważnych wartości
+\endlastfoot
+\texttt{\textless{}-} & przypisanie wartości do obiektu \\
+\texttt{c(2,\ 4,\ 6)} & wektor \\
+\texttt{x{[}2{]}} & drugi element \\
+\texttt{tabela\$czas} & kolumna o nazwie czas \\
+\texttt{==} & porównanie \\
+\texttt{NA}, \texttt{is.na(x)} & brak i kontrola braków \\
+\texttt{mean(x,\ na.rm=TRUE)} & średnia z ważnych wartości \\
 \end{longtable}
 }
 
@@ -233,7 +233,7 @@ w konsoli wskazuje niedokończone polecenie; Esc je przerywa.
 
 \section{Z01 --- 25 minut samodzielnie}\label{z01-25-minut-samodzielnie}
 
-Utwórz \texttt{czasy\ =\ c(6,\ 9,\ 4,\ 12,\ 8)}, odczytaj drugi elemen
+Utwórz \texttt{czasy\ =\ c(6,\ 9,\ 4,\ 12,\ 8)}, odczytaj drugi element
 i średnią. Utwórz trzywierszową \texttt{proby} z id/kanal/czas, odczytaj
 czas i N. Własne wyniki i opis konsoli/skryptu zapisz w \texttt{.md}
 (250--450 słów); kod w \texttt{analiza.R}.
@@ -257,7 +257,7 @@ przeglądarkę.
 \end{Highlighting}
 \end{Shaded}
 
-Brak sieci: zachowaj prywatną kopię przed czyszczeniem. Lokalny commi
+Brak sieci: zachowaj prywatną kopię przed czyszczeniem. Lokalny commit
 nie jest oddaniem. Brak feedbacku nie oznacza zera. Różnica między
 instalacją, logowaniem i otwarciem projektu:
 \ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots..
