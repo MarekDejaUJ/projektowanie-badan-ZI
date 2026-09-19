@@ -31,8 +31,8 @@ organizacji GitHub. Po zalogowaniu do własnego konta wykonuje:
 przygotuj_repo_studenta("s017", "login-studenta", "S02")
 ```
 
-Funkcja umieszcza w repozytorium indywidualne dane, gotowe skrypty, szablony
-raportu i kontrolę oddania. Student przyjmuje zaproszenie przed C01.
+Funkcja umieszcza w repozytorium indywidualne dane, gotowe skrypty i szablony
+raportu. Student przyjmuje zaproszenie przed C01.
 
 ## Praca i materiały
 
@@ -74,8 +74,10 @@ wyloguj_github()
 ```
 
 Pokwitowanie zawiera zdalne SHA i czas serwera. Odbiór, kontrola kodu i ocena
-są osobnymi informacjami. Brak oceny nie oznacza zera punktów. Wyloguj też
-przeglądarkę przed opuszczeniem sali.
+są osobnymi informacjami. Kontrola wykonuje gotowy skrypt w świeżej sesji R
+przed wysłaniem; GitHub przechowuje commit, pokwitowanie i prywatny feedback.
+Brak oceny nie oznacza zera punktów. Wyloguj też przeglądarkę przed
+opuszczeniem sali.
 
 ## Ocena i terminy 2026/27
 

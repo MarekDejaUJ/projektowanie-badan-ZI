@@ -39,11 +39,6 @@ utworz_projekt <- function(id_studenta, scenariusz = "S01", katalog = "moje-bada
   writeLines(c(".Rhistory", ".RData", ".Ruserdata", "/.[!.]*/", "!/.github/"), file.path(tmp, ".gitignore"))
   writeLines(c("* text=auto eol=lf", "*.csv -text", "*.rds binary", "*.png binary", "*.pdf binary"),
              file.path(tmp, ".gitattributes"))
-  workflow <- zasob("szablony", "projekt", "workflow", "sprawdz.yml")
-  if (nzchar(workflow)) {
-    dir.create(file.path(tmp, ".github", "workflows"), recursive = TRUE)
-    file.copy(workflow, file.path(tmp, ".github", "workflows", "sprawdz.yml"))
-  }
   if (!file.rename(tmp, katalog)) stop("Nie mo\u017cna zapisa\u0107 projektu w wybranym katalogu.", call. = FALSE)
   invisible(normalizePath(file.path(katalog, "moje-badania.Rproj"), winslash = "/"))
 }

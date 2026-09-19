@@ -14,5 +14,5 @@ test_that("projekt ma indywidualne dane, konkretne szablony i nie nadpisuje prac
   }
   expect_error(utworz_projekt("s017", "S03", katalog), "istnieje")
   expect_true(file.exists(file.path(katalog, "dane", "manifest.json")))
-  expect_true(file.exists(file.path(katalog, ".github", "workflows", "sprawdz.yml")))
+  expect_false(dir.exists(file.path(katalog, ".github")))
 })
