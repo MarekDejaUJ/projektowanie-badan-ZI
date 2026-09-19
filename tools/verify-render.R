@@ -1,3 +1,4 @@
+sprawdz_render <- function() {
 manifest <- yaml::read_yaml("inst/materialy/manifest.yml")$jednostki
 zakres <- Sys.getenv("RENDER_SCOPE", "smoke")
 pdf <- identical(tolower(Sys.getenv("RENDER_PDF", "false")), "true")
@@ -5,7 +6,7 @@ if (!zakres %in% c("smoke", "full")) stop("RENDER_SCOPE musi mieć wartość smo
 
 ids <- if (zakres == "full") vapply(manifest, `[[`, character(1), "id") else c("C05", "W03")
 out <- tempfile("render-badaniazi-")
-dir.create(out)
+dir.create(out, recursive = TRUE)
 on.exit(unlink(out, recursive = TRUE), add = TRUE)
 css <- normalizePath("inst/materialy/wspolne/styl.css", winslash = "/", mustWork = TRUE)
 preambula <- normalizePath("inst/materialy/wspolne/preambula.tex", winslash = "/", mustWork = TRUE)
@@ -15,7 +16,7 @@ for (id in ids) {
   typ <- manifest[[match(id, vapply(manifest, `[[`, character(1), "id"))]]$typ
   nazwy <- if (typ == "wyklad") c("pelne", "handout") else "pelne"
   katalog_jednostki <- file.path(out, tolower(id))
-  dir.create(katalog_jednostki)
+  dir.create(katalog_jednostki, recursive = TRUE)
   zrodlo_jednostki <- file.path("inst", "materialy", tolower(id))
   pliki_zrodlowe <- list.files(zrodlo_jednostki, pattern = "[.](Rmd|R)$", full.names = TRUE)
   stopifnot(all(file.copy(pliki_zrodlowe, katalog_jednostki, overwrite = TRUE)))
@@ -44,3 +45,6 @@ for (id in ids) {
     cat(id, nazwa, if (pdf) "HTML/PDF" else "HTML", "OK\n")
   }
 }
+}
+
+sprawdz_render()
