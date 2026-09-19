@@ -1,64 +1,22 @@
-## ----kalkulator---------------------------------------------------------------
-# Dodawanie dwóch liczb.
-5 + 3
-
-# Potęgowanie: 2 do czwartej potęgi.
-2^4
-
-# Pierwiastek kwadratowy ze 144.
-sqrt(144)
-
-# Logarytm naturalny z 10.
-log(10)
-
-
-## ----typy-danych--------------------------------------------------------------
-# Liczba: można ją dodawać, odejmować i uśredniać.
-czas <- 12
-class(czas)
-typeof(czas)
-
-# Tekst: opisuje kategorię, ale nie nadaje się do obliczania średniej.
-kanal <- "WWW"
-class(kanal)
-typeof(kanal)
-
-# Wartość logiczna: TRUE albo FALSE.
-czy_www <- kanal == "WWW"
-class(czy_www)
-czy_www
-
-
-## ----obiekty------------------------------------------------------------------
-liczba_dokumentow <- 45
-liczba_dokumentow
-po_dodaniu <- liczba_dokumentow + 5
-po_dodaniu
-
-
-## ----wektory------------------------------------------------------------------
-czasy_szukania <- c(15, 22, 45, 12, 60)
-czasy_szukania[3]
-czasy_szukania + 5
-
-
-## ----warunki------------------------------------------------------------------
-czasy_szukania > 30
-(czasy_szukania > 20) & (czasy_szukania < 50)
-z_brakiem <- c(15, NA, 45)
-is.na(z_brakiem)
-mean(z_brakiem)
-mean(z_brakiem, na.rm = TRUE)
-
-
-## ----tabela-------------------------------------------------------------------
-uzytkownicy <- data.frame(
-  id = c("o001", "o002", "o003"),
-  kanal = c("WWW", "e-mail", "WWW"),
-  czas = c(12, 8, 15)
-)
-uzytkownicy
-str(uzytkownicy)
-nrow(uzytkownicy)
-uzytkownicy$czas
-uzytkownicy[2, "kanal"]
+dane_surowe <- badaniaZI::dane_przykladowe()
+przygotowane <- badaniaZI::przygotuj_ankiete(dane_surowe)
+dane <- przygotowane$dane
+pozycje <- dane[paste0('pozycja_', 1:6)]
+pozycje$pozycja_3 <- badaniaZI::odwroc_pozycje(pozycje$pozycja_3)
+dane$liczba_pozycji <- rowSums(!is.na(pozycje))
+dane$indeks <- badaniaZI::indeks_ankiety(pozycje, minimum = 5L)
+B <- 1999L
+set.seed(202627)
+formatuj_wynik <- function(x) {
+  wynik <- x
+  kolumny_p <- names(wynik)[grepl('^p($|_)', names(wynik))]
+  for (nazwa in kolumny_p) if (is.numeric(wynik[[nazwa]]))
+    wynik[[nazwa]] <- format.pval(wynik[[nazwa]], digits = 3, eps = 0.001)
+  wynik
+}
+tabela_glowna <- head(dane[c('id_odpowiedzi', 'grupa', 'czas_wyszukiwania', 'powodzenie')], 6)
+wynik_glowny <- data.frame(N_surowe = nrow(dane_surowe), N_po = nrow(dane), kolumny = ncol(dane))
+wynik_klasyczny <- tabela_glowna[2, , drop = FALSE]
+wynik_permutacyjny <- data.frame(status = 'nie dotyczy pytania C01')
+efekt <- data.frame(status = 'brak inferencji na C01')
+wykres_glowny <- ggplot2::ggplot(head(dane, 20), ggplot2::aes(x = seq_len(20), y = czas_wyszukiwania)) + ggplot2::geom_point(size = 2, colour = '#0072B2') + ggplot2::labs(x = 'Kolejne rekordy', y = 'Czas [min]', title = 'Pierwsze rekordy zadania') + badaniaZI::theme_zi()

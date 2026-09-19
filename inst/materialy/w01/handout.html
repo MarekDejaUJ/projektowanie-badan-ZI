@@ -12,7 +12,7 @@
 <meta name="author" content="Marek Deja" />
 
 
-<title>Handout W01 — Pytania, projekty badań i skale pomiarowe</title>
+<title>Handout W01 — Od potrzeby informacyjnej do projektu badania</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -155,7 +155,7 @@ window.buildTabsets = function(tocID) {
     var tabContent = $('<div class="tab-content"></div>');
     $(tabs[0]).before(tabContent);
 
-    // build the tabse
+    // build the tabset
     var activeTab = 0;
     tabs.each(function(i) {
 
@@ -177,7 +177,7 @@ window.buildTabsets = function(tocID) {
       id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
       tab.attr('id', id);
 
-      // get the heading element within it, grab it's text, then remove i
+      // get the heading element within it, grab it's text, then remove it
       var heading = tab.find('h' + tabLevel + ':first');
       var headingText = heading.html();
       heading.remove();
@@ -375,10 +375,9 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Handout W01 — Pytania, projekty badań i
-skale pomiarowe</h1>
-<h3 class="subtitle">Zarządzanie informacją — część ilościowa —
-2026/27</h3>
+<h1 class="title toc-ignore">Handout W01 — Od potrzeby informacyjnej do
+projektu badania</h1>
+<h3 class="subtitle">Mapa pojęć, wzorów i pytań</h3>
 <h4 class="author">Marek Deja</h4>
 <h4 class="date">2026/27</h4>
 
@@ -386,137 +385,137 @@ skale pomiarowe</h1>
 
 <div id="TOC">
 <ul>
-<li><a href="#w01-pytanie-i-zakres-dowodu" id="toc-w01-pytanie-i-zakres-dowodu">W01 — pytanie i zakres
-dowodu</a></li>
-<li><a href="#schematy-bada%C5%84" id="toc-schematy-badań">Schematy
-badań</a></li>
-<li><a href="#pytanie-i-hipoteza" id="toc-pytanie-i-hipoteza">Pytanie i
-hipoteza</a></li>
-<li><a href="#skale-i-jednostki" id="toc-skale-i-jednostki">Skale i
-jednostki</a></li>
-<li><a href="#sprawd%C5%BA-na-przyk%C5%82adzie" id="toc-sprawdź-na-przykładzie">Sprawdź na przykładzie</a></li>
-<li><a href="#w%C5%82asny-szkic-i-notatki" id="toc-własny-szkic-i-notatki">Własny szkic i notatki</a></li>
+<li><a href="#pytanie-i-g%C5%82%C3%B3wna-my%C5%9Bl" id="toc-pytanie-i-główna-myśl">1. Pytanie i główna myśl</a>
+<ul>
+<li><a href="#tok-rozumowania" id="toc-tok-rozumowania">Tok
+rozumowania</a></li>
+</ul></li>
+<li><a href="#wz%C3%B3r-i-symbole" id="toc-wzór-i-symbole">2. Wzór i
+symbole</a></li>
+<li><a href="#dwa-tory-i-efekt" id="toc-dwa-tory-i-efekt">3. Dwa tory i
+efekt</a></li>
+<li><a href="#interpretacja-i-pytania" id="toc-interpretacja-i-pytania">4. Interpretacja i pytania</a>
+<ul>
+<li><a href="#dalszy-krok" id="toc-dalszy-krok">Dalszy krok</a></li>
+<li><a href="#literatura" id="toc-literatura">Literatura</a></li>
+</ul></li>
 </ul>
 </div>
 
-<div id="w01-pytanie-i-zakres-dowodu" class="section level1">
-<h1>W01 — pytanie i zakres dowodu</h1>
-<p>Problem instytucji → pytanie → jednostka/populacja/próba → pomiar →
-analiza → ograniczony wniosek. Średnia w próbie jest opisem; wniosek o
-populacji wymaga projektu i założeń.</p>
+<div id="pytanie-i-główna-myśl" class="section level1">
+<h1>1. Pytanie i główna myśl</h1>
+<p><strong>Pytanie:</strong> Czy użytkownicy nowi i doświadczeni różnią
+się samooceną oraz powodzeniem krótkiego zadania w katalogu? Jakiego
+projektu potrzeba, aby opisać różnicę, a jakiego, aby mówić o skutku
+instrukcji?</p>
+<p>Punktem wyjścia nie jest test statystyczny, lecz sytuacja osoby,
+która potrzebuje informacji i działa w określonym środowisku. Projekt
+badania ma połączyć problem instytucji z obserwowalnym zachowaniem,
+samoopisem i decyzją, której wynik ma służyć.</p>
+<div id="tok-rozumowania" class="section level2">
+<h2>Tok rozumowania</h2>
+<ol style="list-style-type: decimal">
+<li>Pytanie i zakres wniosku.<br />
+</li>
+<li>Jednostka, zmienne, skale i braki.<br />
+</li>
+<li>Estymata oraz jednostka.<br />
+</li>
+<li>Niepewność i dwa tory, jeśli dotyczą.<br />
+</li>
+<li>Efekt, ograniczenie i odpowiedź.</li>
+</ol>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="schematy-badań" class="section level1">
-<h1>Schematy badań</h1>
+</div>
+<div id="wzór-i-symbole" class="section level1">
+<h1>2. Wzór i symbole</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>Y</mi><mo>∣</mo><mi>G</mi><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>Y</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mtext mathvariant="normal">oznacza związek, nie automatycznie przyczynę</mtext></mrow><annotation encoding="application/x-tex">P(Y\mid G) \neq P(Y) \quad \text{oznacza związek, nie automatycznie przyczynę}</annotation></semantics></math></p>
 <table>
-<colgroup>
-<col width="50%" />
-<col width="50%" />
-</colgroup>
 <thead>
 <tr class="header">
-<th>Schemat</th>
-<th>Kluczowe pytanie</th>
+<th>Symbol</th>
+<th>Nazwa</th>
+<th>Znaczenie</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Obserwacja przekrojowa</td>
-<td>Czy cechy współwystępują w danym okresie?</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math></td>
+<td>wynik</td>
+<td>indeks, czas albo powodzenie</td>
 </tr>
 <tr class="even">
-<td>Obserwacja podłużna</td>
-<td>Czy wynik zmienia się u tych samych osób?</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math></td>
+<td>grupa/warunek</td>
+<td>dwa poziomy porównania</td>
 </tr>
 <tr class="odd">
-<td>Interwencja przed/po</td>
-<td>Czy zmiana mogła mieć inną przyczynę?</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math></td>
+<td>zmienna towarzysząca</td>
+<td>np. częstość korzystania</td>
 </tr>
 <tr class="even">
-<td>Randomizacja</td>
-<td>Czy przydzielono interwencję losowo?</td>
-</tr>
-<tr class="odd">
-<td>Quasi-eksperyment/naturalny</td>
-<td>Co uzasadnia porównywalność i ekspozycję?</td>
-</tr>
-<tr class="even">
-<td>Synteza</td>
-<td>Czy badania są odpowiednie, porównywalne i dobrej jakości?</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math></td>
+<td>próba</td>
+<td>liczba analizowanych osób</td>
 </tr>
 </tbody>
 </table>
-<p>Piramida dowodu zależy od pytania. Randomizacja przydziału i
-losowanie próby są różnymi operacjami. Duże N nie usuwa selekcji ani
-błędnego pomiaru.</p>
+<p>Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę
+i składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani
+CI zakresu 95% osób.</p>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="pytanie-i-hipoteza" class="section level1">
-<h1>Pytanie i hipoteza</h1>
-<p>„Jak rozkłada się czas znalezienia dokumentu wśród aktywnych
-użytkowników w semestrze zimowym?” — pytanie opisowe. „Czy indeks
-dostępności różni się między nowymi i doświadczonymi?” — porównanie.
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_0:\mu_1-\mu_2=0</annotation></semantics></math>,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>1</mn></msub><mo>:</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_1:\mu_1-\mu_2\ne0</annotation></semantics></math>.
-Kierunek alternatywy wybiera się przed wynikiem.</p>
+<div id="dwa-tory-i-efekt" class="section level1">
+<h1>3. Dwa tory i efekt</h1>
+<p><strong>Tor klasyczny.</strong> Najpierw definiujemy populację, ramę
+doboru, jednostkę, okres odniesienia i kryteria włączenia. Potem
+zapisujemy pytanie w języku zmiennych oraz przewidujemy, jaka estymata
+odpowie na nie bez nadmiarowych procedur.</p>
+<p><strong>Tor permutacyjny/resampling.</strong> Dwa tory analizy
+pojawią się później. Już teraz trzeba rozumieć hipotezę zerową jako
+model braku określonego związku. Permutacja będzie zmieniała tylko ten
+element danych, który reprezentuje związek podlegający testowi.</p>
+<p><strong>Efekt i przedział.</strong> Przed zebraniem danych warto
+nazwać różnicę praktycznie ważną: ile minut, punktów indeksu lub punktów
+procentowych mogłoby zmienić decyzję o usłudze. Dzięki temu p nie stanie
+się jedynym kryterium wniosku.</p>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="skale-i-jednostki" class="section level1">
-<h1>Skale i jednostki</h1>
-<table>
-<colgroup>
-<col width="33%" />
-<col width="33%" />
-<col width="33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Skala</th>
-<th>Przykład</th>
-<th>Uprawnione relacje</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Nominalna</td>
-<td>grupa/typ zasobu</td>
-<td>równość, liczebności</td>
-</tr>
-<tr class="even">
-<td>Porządkowa</td>
-<td>pojedyncza pozycja 1–5</td>
-<td>dodatkowo porządek</td>
-</tr>
-<tr class="odd">
-<td>Przedziałowa</td>
-<td>rok kalendarzowy</td>
-<td>dodatkowo różnica</td>
-</tr>
-<tr class="even">
-<td>Ilorazowa</td>
-<td>czas w minutach/liczba pobrań</td>
-<td>dodatkowo stosunek i naturalne zero</td>
-</tr>
-</tbody>
-</table>
-<p>Klasa R nie zastępuje skali. Kod kategorii pozostaje etykietą. Indeks
-wymaga treści, kierunku pozycji i reguły braków.</p>
+<div id="interpretacja-i-pytania" class="section level1">
+<h1>4. Interpretacja i pytania</h1>
+<p><strong>Przykład.</strong> Biblioteka rozważa krótką instrukcję
+filtrowania. Pytanie opisowe dotyczy aktualnego czasu nowych
+użytkowników. Pytanie porównawcze dotyczy dwóch istniejących grup.
+Pytanie przyczynowe wymaga przydziału instrukcji i wspólnego zadania. Te
+trzy pytania mogą używać podobnej tabeli, ale prowadzą do innego
+wniosku.</p>
+<p><strong>Pułapki.</strong> Najczęstsze błędy to rozpoczynanie od nazwy
+testu, utożsamienie dostępnej próby z populacją, zmiana pytania po
+zobaczeniu p, nazywanie samooceny kompetencją oraz język wpływu w
+badaniu obserwacyjnym.</p>
+<p><strong>Pytanie do pracy.</strong> W zespołach przekształć ogólne
+zdanie „katalog jest trudny” w pytanie opisowe, porównawcze i
+przyczynowe. Dla każdego wskaż jednostkę, zmienne, źródło danych, jedną
+estymatę i ograniczenie.</p>
+<div id="dalszy-krok" class="section level2">
+<h2>Dalszy krok</h2>
+<p>C01 pokaże pojedynczy rekord i przepływ pracy, a C02 odtworzy
+przejście od surowego eksportu do danych analitycznych. W01 dostarcza
+pytania, do których te techniczne czynności mają prowadzić.</p>
 </div>
-<div id="sprawdź-na-przykładzie" class="section level1">
-<h1>Sprawdź na przykładzie</h1>
-<p>Pięć czasów opisuje małą grupę. Średnia i mediana odpowiadają na
-różne pytania o centrum. Odczytaj N i jednostkę, a potem wskaż brakującą
-informację o doborze.</p>
-<pre class="r"><code>x &lt;- c(6, 9, 4, 12, 8)
-c(N = length(x), srednia = mean(x), mediana = median(x))</code></pre>
-<pre><code>##       N srednia mediana
-##     5.0     7.8     8.0</code></pre>
+<div id="literatura" class="section level2">
+<h2>Literatura</h2>
+<ul>
+<li><a href="https://www.informationr.net/tdw/publ/papers/1999JDoc.html">Wilson,
+T.D. (1999). Models in information behaviour research</a>.</li>
+<li><a href="https://doi.org/10.1002/(SICI)1097-4571(199106)42:5%3C361::AID-ASI6%3E3.0.CO;2-%23">Kuhlthau,
+C.C. (1991). Inside the search process</a>.</li>
+<li><a href="https://doi.org/10.1016/0740-8188(95)90048-9">Savolainen,
+R. (1995). Everyday life information seeking</a>.</li>
+</ul>
 </div>
-<div id="własny-szkic-i-notatki" class="section level1">
-<h1>Własny szkic i notatki</h1>
-<p>Problem: ……………………………… Populacja/okres: ……………………………</p>
-<p>Jednostka: ……………………………. Zmienna i skala: …………………………….</p>
-<p>Pytanie: ……………………………… Co mogłoby podważyć hipotezę? …………………</p>
-<p>Jedno ograniczenie doboru lub pomiaru: …………………………………………………..</p>
-<p>Ocena: zadania 50% (każde 5%), projekt 50%; indywidualny plan i
-analiza ilościowa, bez egzaminu.</p>
 </div>
 
 

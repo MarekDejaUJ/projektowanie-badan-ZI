@@ -4,8 +4,10 @@ rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z07.1
-  title: Wybór chi-kwadrat lub Fishera uzasadniony strukturą i liczebnościami.
-  evidence: Wybór chi-kwadrat lub Fishera uzasadniony strukturą i liczebnościami.
+  title: Wybór wyniku klasycznego oraz Monte Carlo uzasadniono strukturą tabeli i
+    liczebnościami oczekiwanymi.
+  evidence: Wybór wyniku klasycznego oraz Monte Carlo uzasadniono strukturą tabeli
+    i liczebnościami oczekiwanymi.
   max_points: 2.0
   review_mode: human
   learning_outcomes: U3
@@ -13,15 +15,15 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.5
-    observable_description: Wybrano test bez kontroli tabeli.
+    observable_description: Nazwano test bez kontroli tabeli.
   - points: 1.0
-    observable_description: Sprawdzono N, lecz pominięto liczebności oczekiwane lub
+    observable_description: Sprawdzono N, lecz pominięto oczekiwane liczebności albo
       niezależność.
   - points: 1.5
-    observable_description: Wybór poprawny; jedno uzasadnienie niepełne.
+    observable_description: Oba tory są właściwe; jedno uzasadnienie jest niepełne.
   - points: 2.0
-    observable_description: Wybór chi-kwadrat lub Fishera uzasadniony strukturą i
-      liczebnościami.
+    observable_description: Wybór wyniku klasycznego oraz Monte Carlo uzasadniono
+      strukturą tabeli i liczebnościami oczekiwanymi.
 - id: Z07.2
   title: Tabela liczebności i odsetków ma poprawne mianowniki, sumy i podpisy.
   evidence: Tabela liczebności i odsetków ma poprawne mianowniki, sumy i podpisy.
@@ -43,8 +45,9 @@ criteria:
     observable_description: Tabela liczebności i odsetków ma poprawne mianowniki,
       sumy i podpisy.
 - id: Z07.3
-  title: Test i miara związku są poprawnie obliczone oraz odczytane.
-  evidence: Test i miara związku są poprawnie obliczone oraz odczytane.
+  title: Poprawnie odczytano chi-kwadrat, df, p, p Monte Carlo, V Cramera i jego przedział.
+  evidence: Poprawnie odczytano chi-kwadrat, df, p, p Monte Carlo, V Cramera i jego
+    przedział.
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -54,13 +57,15 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.75
-    observable_description: Próba testu bez poprawnej tabeli wejściowej.
+    observable_description: Podano wynik bez poprawnej tabeli wejściowej.
   - points: 1.5
-    observable_description: Test poprawny; V błędne albo odczytane jako kierunek zależności.
+    observable_description: Oba p są obecne; V lub jego przedział odczytano błędnie.
   - points: 2.25
-    observable_description: Test i V poprawne; brakuje jednej statystyki w zapisie.
+    observable_description: Komplet statystyk obu torów jest poprawny; brakuje jednego
+      symbolu albo B.
   - points: 3.0
-    observable_description: Test i miara związku są poprawnie obliczone oraz odczytane.
+    observable_description: Poprawnie odczytano chi-kwadrat, df, p, p Monte Carlo,
+      V Cramera i jego przedział.
 - id: Z07.4
   title: Wykres/wniosek określa kierunek wzorca i nie przypisuje przyczynowości.
   evidence: Wykres/wniosek określa kierunek wzorca i nie przypisuje przyczynowości.

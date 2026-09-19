@@ -4,10 +4,10 @@ rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z01.1
-  title: Otwarty lokalny projekt; skrypt wykonuje poprawnie wskazane działania i tworzy
-    nazwane obiekty.
-  evidence: Otwarty lokalny projekt; skrypt wykonuje poprawnie wskazane działania
-    i tworzy nazwane obiekty.
+  title: Gotowy skrypt uruchomiono od początku; zapisany wynik potwierdza właściwy
+    projekt i dane.
+  evidence: Gotowy skrypt uruchomiono od początku; zapisany wynik potwierdza właściwy
+    projekt i dane.
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -17,18 +17,21 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.75
-    observable_description: Skrypt zaczęty, lecz nie wykonuje działań.
+    observable_description: Uruchomiono fragment bez zapisanego wyniku.
   - points: 1.5
-    observable_description: Wykonuje część działań; brakuje obiektu lub nazwy.
+    observable_description: Powstał wynik, lecz nie odpowiada własnemu projektowi
+      albo danym.
   - points: 2.25
-    observable_description: Wszystkie działania działają; pominięto ustawienie projektu.
+    observable_description: Gotowy skrypt i wynik są poprawne; pominięto jedno potwierdzenie
+      projektu.
   - points: 3.0
-    observable_description: Otwarty lokalny projekt; skrypt wykonuje poprawnie wskazane
-      działania i tworzy nazwane obiekty.
+    observable_description: Gotowy skrypt uruchomiono od początku; zapisany wynik
+      potwierdza właściwy projekt i dane.
 - id: Z01.2
-  title: Z wektora i tabeli uzyskano wymagany element/kolumnę oraz prosty wynik obliczenia.
-  evidence: Z wektora i tabeli uzyskano wymagany element/kolumnę oraz prosty wynik
-    obliczenia.
+  title: Z gotowego wyniku poprawnie odczytano wiersz, kolumnę, wartość, jednostkę
+    i N.
+  evidence: Z gotowego wyniku poprawnie odczytano wiersz, kolumnę, wartość, jednostkę
+    i N.
   max_points: 3.0
   review_mode: mixed
   learning_outcomes: U2
@@ -36,15 +39,14 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.75
-    observable_description: Wskazano dane bez poprawnego odczytu elementu.
+    observable_description: Wskazano tabelę bez poprawnego odczytu wartości.
   - points: 1.5
-    observable_description: Poprawny odczyt wektora albo kolumny; obliczenie błędne.
+    observable_description: Odczytano wartość, lecz pomylono jednostkę albo N.
   - points: 2.25
-    observable_description: Odczyt i obliczenie poprawne; jeden element odpowiedzi
-      pominięty.
+    observable_description: Odczyt jest poprawny; jeden element źródła wyniku pominięto.
   - points: 3.0
-    observable_description: Z wektora i tabeli uzyskano wymagany element/kolumnę oraz
-      prosty wynik obliczenia.
+    observable_description: Z gotowego wyniku poprawnie odczytano wiersz, kolumnę,
+      wartość, jednostkę i N.
 - id: Z01.3
   title: W `.md` poprawnie objaśniono konsolę, skrypt i źródło jednego wyniku.
   evidence: W `.md` poprawnie objaśniono konsolę, skrypt i źródło jednego wyniku.

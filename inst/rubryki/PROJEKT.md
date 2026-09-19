@@ -56,15 +56,15 @@ Opis próby i zmiennych oraz 2–3 wykresy są poprawne, czytelne i odpowiadają
 
 ## A05 — 20 pkt
 
-Minimum dwie właściwe małe analizy wykonano poprawnie; podano założenia, efekt, niepewność oraz komplet raportowanych statystyk.
+Dwie właściwe analizy zawierają tor klasyczny i permutacyjny, efekt, przedział, N oraz komplet statystyk.
 
 | Punkty | Obserwowalny dowód |
 |---:|---|
 | 0 | Brak dowodu lub wynik nie realizuje kryterium. |
-| 5 | Jedna próba obliczenia bez uzasadnienia. |
-| 10 | Jedna poprawna analiza albo dwie z istotnym błędem. |
-| 15 | Dwie właściwe analizy; niewielkie braki raportowania lub założeń. |
-| 20 | Minimum dwie właściwe małe analizy wykonano poprawnie; podano założenia, efekt, niepewność oraz komplet raportowanych statystyk. |
+| 5 | Jedna analiza bez efektu i odpowiadającego toru. |
+| 10 | Jedna analiza jest kompletna albo w obu brakuje wersji permutacyjnej lub przedziału. |
+| 15 | Dwie analizy mają oba tory i efekty; pozostaje niewielka luka raportowania. |
+| 20 | Dwie właściwe analizy zawierają tor klasyczny i permutacyjny, efekt, przedział, N oraz komplet statystyk. |
 
 ## A06 — 15 pkt
 
@@ -80,12 +80,12 @@ Własne wnioski odpowiadają pytaniom i liczbom; ograniczenia pomiaru/próby/sym
 
 ## A07 — 10 pkt
 
-Raport `.md`, kod, słownik, dane i wyniki tworzą odtwarzalną całość; źródła/wersje i instrukcja są kompletne, oddana wersja identyfikowalna.
+Raport `.md`, gotowy skrypt z parametrami, słownik, dane i wyniki tworzą odtwarzalną, identyfikowalną całość.
 
 | Punkty | Obserwowalny dowód |
 |---:|---|
 | 0 | Brak dowodu lub wynik nie realizuje kryterium. |
-| 2.5 | Raport lub kod bez spójnych danych i wyników. |
-| 5 | Część pracy odtwarzalna; brakuje pliku, wersji lub instrukcji. |
-| 7.5 | Całość odtwarzalna i identyfikowalna; drobna luka źródła lub wersji. |
-| 10 | Raport `.md`, kod, słownik, dane i wyniki tworzą odtwarzalną całość; źródła/wersje i instrukcja są kompletne, oddana wersja identyfikowalna. |
+| 2.5 | Raport lub gotowy skrypt nie zgadza się z danymi i wynikami. |
+| 5 | Część pracy jest odtwarzalna; brakuje pliku, parametru, wersji lub instrukcji. |
+| 7.5 | Całość jest odtwarzalna; pozostaje drobna luka źródła albo wersji. |
+| 10 | Raport `.md`, gotowy skrypt z parametrami, słownik, dane i wyniki tworzą odtwarzalną, identyfikowalną całość. |

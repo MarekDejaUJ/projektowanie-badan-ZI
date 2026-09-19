@@ -99,10 +99,10 @@ criteria:
     observable_description: Opis próby i zmiennych oraz 2–3 wykresy są poprawne, czytelne
       i odpowiadają skalom/pytaniom.
 - id: A05
-  title: Minimum dwie właściwe małe analizy wykonano poprawnie; podano założenia,
-    efekt, niepewność oraz komplet raportowanych statystyk.
-  evidence: Minimum dwie właściwe małe analizy wykonano poprawnie; podano założenia,
-    efekt, niepewność oraz komplet raportowanych statystyk.
+  title: Dwie właściwe analizy zawierają tor klasyczny i permutacyjny, efekt, przedział,
+    N oraz komplet statystyk.
+  evidence: Dwie właściwe analizy zawierają tor klasyczny i permutacyjny, efekt, przedział,
+    N oraz komplet statystyk.
   max_points: 20.0
   review_mode: mixed
   learning_outcomes:
@@ -112,15 +112,16 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 5.0
-    observable_description: Jedna próba obliczenia bez uzasadnienia.
+    observable_description: Jedna analiza bez efektu i odpowiadającego toru.
   - points: 10.0
-    observable_description: Jedna poprawna analiza albo dwie z istotnym błędem.
+    observable_description: Jedna analiza jest kompletna albo w obu brakuje wersji
+      permutacyjnej lub przedziału.
   - points: 15.0
-    observable_description: Dwie właściwe analizy; niewielkie braki raportowania lub
-      założeń.
+    observable_description: Dwie analizy mają oba tory i efekty; pozostaje niewielka
+      luka raportowania.
   - points: 20.0
-    observable_description: Minimum dwie właściwe małe analizy wykonano poprawnie;
-      podano założenia, efekt, niepewność oraz komplet raportowanych statystyk.
+    observable_description: Dwie właściwe analizy zawierają tor klasyczny i permutacyjny,
+      efekt, przedział, N oraz komplet statystyk.
 - id: A06
   title: Własne wnioski odpowiadają pytaniom i liczbom; ograniczenia pomiaru/próby/symulacji
     i rekomendacja są realistyczne, bez nieuprawnionej przyczynowości.
@@ -147,10 +148,10 @@ criteria:
     observable_description: Własne wnioski odpowiadają pytaniom i liczbom; ograniczenia
       pomiaru/próby/symulacji i rekomendacja są realistyczne, bez nieuprawnionej przyczynowości.
 - id: A07
-  title: Raport `.md`, kod, słownik, dane i wyniki tworzą odtwarzalną całość; źródła/wersje
-    i instrukcja są kompletne, oddana wersja identyfikowalna.
-  evidence: Raport `.md`, kod, słownik, dane i wyniki tworzą odtwarzalną całość; źródła/wersje
-    i instrukcja są kompletne, oddana wersja identyfikowalna.
+  title: Raport `.md`, gotowy skrypt z parametrami, słownik, dane i wyniki tworzą
+    odtwarzalną, identyfikowalną całość.
+  evidence: Raport `.md`, gotowy skrypt z parametrami, słownik, dane i wyniki tworzą
+    odtwarzalną, identyfikowalną całość.
   max_points: 10.0
   review_mode: mixed
   learning_outcomes:
@@ -161,12 +162,13 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 2.5
-    observable_description: Raport lub kod bez spójnych danych i wyników.
+    observable_description: Raport lub gotowy skrypt nie zgadza się z danymi i wynikami.
   - points: 5.0
-    observable_description: Część pracy odtwarzalna; brakuje pliku, wersji lub instrukcji.
+    observable_description: Część pracy jest odtwarzalna; brakuje pliku, parametru,
+      wersji lub instrukcji.
   - points: 7.5
-    observable_description: Całość odtwarzalna i identyfikowalna; drobna luka źródła
-      lub wersji.
+    observable_description: Całość jest odtwarzalna; pozostaje drobna luka źródła
+      albo wersji.
   - points: 10.0
-    observable_description: Raport `.md`, kod, słownik, dane i wyniki tworzą odtwarzalną
-      całość; źródła/wersje i instrukcja są kompletne, oddana wersja identyfikowalna.
+    observable_description: Raport `.md`, gotowy skrypt z parametrami, słownik, dane
+      i wyniki tworzą odtwarzalną, identyfikowalną całość.

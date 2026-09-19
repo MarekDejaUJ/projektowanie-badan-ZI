@@ -4,9 +4,10 @@ rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z10.1
-  title: Skrypt wykonuje się od surowych danych do wskazanych wyników w świeżej sesji.
-  evidence: Skrypt wykonuje się od surowych danych do wskazanych wyników w świeżej
-    sesji.
+  title: Gotowy skrypt z dozwolonymi parametrami odtwarza wyniki od surowych danych
+    w świeżej sesji.
+  evidence: Gotowy skrypt z dozwolonymi parametrami odtwarza wyniki od surowych danych
+    w świeżej sesji.
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -16,16 +17,15 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.75
-    observable_description: Kod wymaga ręcznego przygotowania obiektów.
+    observable_description: Uruchomiono tylko fragment lub zmieniono wnętrze procedury.
   - points: 1.5
-    observable_description: Kod działa częściowo; jeden etap lub ścieżka zależy od
-      poprzedniej sesji.
+    observable_description: Skrypt działa częściowo; jeden parametr lub wynik zależy
+      od poprzedniej sesji.
   - points: 2.25
-    observable_description: Cały kod działa w świeżej sesji; instrukcja wykonania
-      niepełna.
+    observable_description: Cały gotowy tok działa; instrukcja odtworzenia jest niepełna.
   - points: 3.0
-    observable_description: Skrypt wykonuje się od surowych danych do wskazanych wyników
-      w świeżej sesji.
+    observable_description: Gotowy skrypt z dozwolonymi parametrami odtwarza wyniki
+      od surowych danych w świeżej sesji.
 - id: Z10.2
   title: '`.md` zawiera komplet wymaganych sekcji i odnośniki do rzeczywistych tabel/wykresów.'
   evidence: '`.md` zawiera komplet wymaganych sekcji i odnośniki do rzeczywistych
@@ -50,10 +50,10 @@ criteria:
     observable_description: '`.md` zawiera komplet wymaganych sekcji i odnośniki do
       rzeczywistych tabel/wykresów.'
 - id: Z10.3
-  title: Student poprawił interpretację na podstawie kontroli/rubryki i uzasadnił
-    jedną zmianę.
-  evidence: Student poprawił interpretację na podstawie kontroli/rubryki i uzasadnił
-    jedną zmianę.
+  title: Interpretacja obu torów została poprawiona według rubryki i zawiera efekt,
+    niepewność oraz ograniczenie.
+  evidence: Interpretacja obu torów została poprawiona według rubryki i zawiera efekt,
+    niepewność oraz ograniczenie.
   max_points: 3.0
   review_mode: human
   learning_outcomes:
@@ -63,16 +63,16 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.75
-    observable_description: Wskazano poprawkę bez jej wykonania.
+    observable_description: Wskazano poprawkę bez odczytu obu torów.
   - points: 1.5
-    observable_description: Poprawka wykonana, lecz nadal niezgodna z wynikiem albo
-      bez uzasadnienia.
+    observable_description: Poprawka obejmuje oba p, lecz efekt, przedział albo ograniczenie
+      nadal jest błędne.
   - points: 2.25
-    observable_description: Poprawna zmiana z uzasadnieniem; pominięto odniesienie
-      do kryterium.
+    observable_description: Interpretacja jest poprawna; uzasadnienie jednej zmiany
+      wymaga doprecyzowania.
   - points: 3.0
-    observable_description: Student poprawił interpretację na podstawie kontroli/rubryki
-      i uzasadnił jedną zmianę.
+    observable_description: Interpretacja obu torów została poprawiona według rubryki
+      i zawiera efekt, niepewność oraz ograniczenie.
 - id: Z10.4
   title: Wersja robocza ma identyfikowalne zdalne SHA i instrukcję odtworzenia zgodną
     z plikami.

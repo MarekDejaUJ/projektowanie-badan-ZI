@@ -50,3 +50,53 @@ jobs:
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: source("tools/verify-install.R", encoding = "UTF-8")
+
+  render-smoke:
+    runs-on: ${{ matrix.os }}
+    name: Render smoke / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: release
+          use-public-rspm: true
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          needs: website
+      - name: Zainstaluj bieżący pakiet
+        shell: Rscript {0}
+        run: install.packages(".", repos = NULL, type = "source")
+      - name: Render reprezentatywnego ćwiczenia i wykładu
+        shell: Rscript {0}
+        run: source("tools/verify-render.R", encoding = "UTF-8")
+
+  render-full-linux:
+    runs-on: ubuntu-latest
+    name: Pełny render HTML/PDF / Linux
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: release
+          use-public-rspm: true
+      - uses: r-lib/actions/setup-tinytex@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          needs: website
+      - name: Zainstaluj bieżący pakiet
+        shell: Rscript {0}
+        run: install.packages(".", repos = NULL, type = "source")
+      - name: Render wszystkich materiałów
+        shell: Rscript {0}
+        env:
+          RENDER_SCOPE: full
+          RENDER_PDF: 'true'
+        run: source("tools/verify-render.R", encoding = "UTF-8")

@@ -11,7 +11,8 @@ przez `analiza.R`. Nie wklejaj wszystkich komunikatów konsoli.
 
 W `wyniki` zapisz tabele `dziennik.csv`, `opis.csv`, `indeks.csv`, `kanaly.csv`,
 `porownanie.csv`, `druga_analiza.csv` oraz wykresy `histogram.png` i `grupy.png`.
-Możesz dołączyć dodatkowy wykres rozrzutu lub inne wyniki opisane w tekście.
+Gotowy skrypt zapisuje także `druga_analiza.png`: wykres rozrzutu albo odsetki
+w tabeli, zależnie od scenariusza.
 
 ## 1. Problem instytucji i cel
 
@@ -63,18 +64,20 @@ Tabela lub wykres ma podpis i odwołanie w tekście.
 
 Uzasadnij test przez pytanie, skalę i niezależność. Podaj N grup, średnie
 lub odpowiednie miary, kierunek i wielkość różnicy, przedział ufności,
-statystykę, stopnie swobody, jeśli dotyczą metody, oraz p. Wyjaśnij znaczenie
-praktyczne w jednostkach indeksu. Brak istotności nie dowodzi braku różnicy.
+statystykę, stopnie swobody, jeśli dotyczą metody, p klasyczne i p z tasowania
+etykiet. Podaj liczbę losowań. Wyjaśnij znaczenie praktyczne w jednostkach
+indeksu. Brak istotności nie dowodzi braku różnicy.
 
 [UZUPELNIJ]
 
 ## 7. Druga analiza
 
 Wykonaj analizę wskazaną w scenariuszu. Dla korelacji podaj wykres, N par,
-metodę, współczynnik, p i dostępny przedział; nie twórz fikcyjnych df dla
-Spearmana. Dla tabeli podaj liczebności, odsetki w grupach, warunki wyboru
-chi-kwadrat/Fishera, wynik testu i V Cramera. Kierunek związku odczytaj
-z danych. Wyjaśnij, jak wynik odpowiada drugiemu pytaniu.
+metodę, współczynnik, p klasyczne, p z tasowania i dostępny przedział; nie twórz
+fikcyjnych df dla Spearmana. Dla tabeli podaj liczebności, odsetki w grupach,
+warunki wyboru chi-kwadrat/Fishera, wynik klasyczny, p Monte Carlo i V Cramera
+z przedziałem. Kierunek związku odczytaj z danych. Wyjaśnij, jak wynik odpowiada
+drugiemu pytaniu.
 
 [UZUPELNIJ]
 
@@ -90,9 +93,10 @@ rzeczywistych danych; symulacja nie uzasadnia decyzji o instytucji.
 ## 9. Źródła, wersje i odtworzenie
 
 Podaj wykorzystane źródła z odnośnikami, wersję R, pakietu i generatora.
-Napisz, jak otworzyć projekt RStudio i uruchomić zapisany `analiza.R`
-w świeżej sesji oraz gdzie powstają wyniki. Nie wymagaj ręcznego
-przygotowania obiektów w konsoli. Oddanie identyfikuje pokwitowanie
+Napisz, jak otworzyć projekt RStudio i uruchomić gotowy `analiza.R`
+z dozwolonymi parametrami w świeżej sesji oraz gdzie powstają wyniki. Nie
+przepisuj procedur ani nie wymagaj ręcznego przygotowania obiektów w konsoli.
+Oddanie identyfikuje pokwitowanie
 zdalnego SHA; nie wpisuj tego SHA do pliku, który tworzyłby nowy commit.
 Jeśli SI pomagała w zrozumieniu lub poprawieniu kodu, oznacz użyte fragmenty
 i opisz zakres pomocy. Interpretacja wyników i wnioski są własną pracą.

@@ -1,0 +1,75 @@
+---
+title: 'Handout W03 — Losowość, estymacja i dwa tory wnioskowania'
+subtitle: 'Mapa pojęć, wzorów i pytań'
+author: 'Marek Deja'
+date: '2026/27'
+lang: pl-PL
+fontsize: 11pt
+papersize: a4
+geometry: margin=2cm
+---
+
+# 1. Pytanie i główna myśl
+
+**Pytanie:** Jak precyzyjnie oszacowano średnią samoocenę i czy odległość od punktu neutralnego jest skrajna w modelu zerowym?
+
+Estymata jest wynikiem jednej próby, a parametr dotyczy populacji zdefiniowanej przez projekt. Wnioskowanie nie usuwa ograniczeń doboru; porządkuje losową niepewność pod określonym modelem.
+
+## Tok rozumowania
+
+1. Pytanie i zakres wniosku.  
+2. Jednostka, zmienne, skale i braki.  
+3. Estymata oraz jednostka.  
+4. Niepewność i dwa tory, jeśli dotyczą.  
+5. Efekt, ograniczenie i odpowiedź.
+
+\newpage
+
+# 2. Wzór i symbole
+
+$$SE=\frac{s}{\sqrt{N}}, \quad t=\frac{\bar{x}-\mu_0}{SE}, \quad p_{perm}=\frac{1+\#(|T^*|\geq|T_{obs}|)}{B+1}$$
+
+| Symbol | Nazwa | Znaczenie |
+|---|---|---|
+| $SE$ | błąd standardowy | zmienność estymaty |
+| $t$ | statystyka | odległość od H0 w SE |
+| $T^*$ | statystyka losowa | wynik po tasowaniu |
+| $B$ | replikacje | liczba losowań |
+
+Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę i składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani CI zakresu 95% osób.
+
+\newpage
+
+# 3. Dwa tory i efekt
+
+**Tor klasyczny.** 
+Tor klasyczny korzysta z rozkładu teoretycznego i założeń. Raportuje estymatę, CI, statystykę, df i p. Decyzja p<alpha jest regułą procedury, a nie miarą wartości badania ani prawdopodobieństwem H0.
+
+**Tor permutacyjny/resampling.** 
+Tor permutacyjny zachowuje dane, lecz niszczy określony związek: zmienia znaki odchyleń, tasuje etykiety grup lub jedną zmienną. Statystyka musi być taka sama jak ta, której skrajność oceniamy. Dodanie 1 do licznika i mianownika zapobiega p=0.
+
+**Efekt i przedział.** 
+Efekt w naturalnej jednostce odpowiada na pytanie praktyczne, efekt standaryzowany ułatwia porównanie, a CI pokazuje precyzję. Wynik może być istotny i mały albo nieistotny i zgodny z efektami ważnymi praktycznie.
+
+\newpage
+
+# 4. Interpretacja i pytania
+
+**Przykład.** 
+Średni indeks 3,24 przy N=146 może być o 0,24 punktu wyższy od 3. Test t pyta o skrajność takiej różnicy względem SE, zmiana znaków o jej skrajność przy symetrycznym zerowym układzie odchyleń, a bootstrap o stabilność średniej między próbami empirycznymi.
+
+**Pułapki.** 
+Błędy to: p jako prawdopodobieństwo H0, CI jako zakres 95% osób, bootstrap jako test zerowy, wybór mniejszego z dwóch p, pominięcie efektu oraz twierdzenie o reprezentatywności na podstawie małego SE.
+
+**Pytanie do pracy.** 
+Ułóż w poprawnej kolejności osiem elementów wyniku: N, estymata, jednostka, CI, statystyka, df, p klasyczne, p permutacyjne. Następnie wyjaśnij rozbieżność obu torów bez uznawania jednego za automatycznie prawdziwy.
+
+## Dalszy krok
+
+C05 zastosuje t, CI, bootstrap i zmianę znaków. W04 przeniesie tę logikę do porównania grup i tabel kategorii.
+
+## Literatura
+
+- Efron & Tibshirani. An Introduction to the Bootstrap.
+- Good. Permutation, Parametric and Bootstrap Tests of Hypotheses.
+- Materiały kursowe zestawiają klasyczne i permutacyjne wnioskowanie.

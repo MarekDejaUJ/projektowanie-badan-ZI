@@ -24,8 +24,8 @@ criteria:
     observable_description: Wybór testu uwzględnia pytanie, skalę, niezależność i
       projekt, z krótkim uzasadnieniem.
 - id: Z06.2
-  title: Poprawna analiza dwóch grup, opis/wykres, efekt i niepewność.
-  evidence: Poprawna analiza dwóch grup, opis/wykres, efekt i niepewność.
+  title: Poprawnie odczytano opis dwóch grup, wykres, różnicę, Hedges g i przedział.
+  evidence: Poprawnie odczytano opis dwóch grup, wykres, różnicę, Hedges g i przedział.
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -35,19 +35,21 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.75
-    observable_description: Obliczono test bez poprawnego opisu grup.
+    observable_description: Podano wynik bez poprawnego opisu grup.
   - points: 1.5
-    observable_description: Test poprawny; efekt albo przedział błędny.
+    observable_description: Opis grup jest poprawny; efekt albo przedział odczytano
+      błędnie.
   - points: 2.25
-    observable_description: Opis, efekt i przedział poprawne; jeden element wykresu
-      pominięty.
+    observable_description: Opis, efekt i przedział są poprawne; jeden element wykresu
+      pominięto.
   - points: 3.0
-    observable_description: Poprawna analiza dwóch grup, opis/wykres, efekt i niepewność.
+    observable_description: Poprawnie odczytano opis dwóch grup, wykres, różnicę,
+      Hedges g i przedział.
 - id: Z06.3
-  title: Statystyka, stopnie swobody tam gdzie dotyczą, p, kierunek efektu i N są
-    raportowane poprawnie.
-  evidence: Statystyka, stopnie swobody tam gdzie dotyczą, p, kierunek efektu i N
-    są raportowane poprawnie.
+  title: Wyniki Welcha i tasowania etykiet zawierają N, t, df, p, p_perm i kierunek
+    efektu.
+  evidence: Wyniki Welcha i tasowania etykiet zawierają N, t, df, p, p_perm i kierunek
+    efektu.
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -57,14 +59,15 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.5
-    observable_description: Podano p bez statystyki i N.
+    observable_description: Podano tylko jedno p bez statystyki i N.
   - points: 1.0
-    observable_description: Statystyka i p poprawne; df albo kierunek efektu błędny.
+    observable_description: Oba tory są obecne; df, znak efektu albo znaczenie permutacji
+      jest błędne.
   - points: 1.5
-    observable_description: Wynik poprawny; pominięto jedno N albo oznaczenie metody.
+    observable_description: Wyniki obu torów są poprawne; pominięto jedno N albo B.
   - points: 2.0
-    observable_description: Statystyka, stopnie swobody tam gdzie dotyczą, p, kierunek
-      efektu i N są raportowane poprawnie.
+    observable_description: Wyniki Welcha i tasowania etykiet zawierają N, t, df,
+      p, p_perm i kierunek efektu.
 - id: Z06.4
   title: Interpretacja własna, zgodna z wynikiem, bez utożsamienia istotności z wagą
     praktyczną.

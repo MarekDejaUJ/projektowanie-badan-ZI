@@ -22,10 +22,10 @@ criteria:
     observable_description: Dobór Pearsona/Spearmana i wykres uwzględnia skale i charakter
       związku.
 - id: Z08.2
-  title: Współczynnik, przedział tam gdzie metoda go dostarcza i p obliczone poprawnie;
-    brak fikcyjnych df dla Spearmana.
-  evidence: Współczynnik, przedział tam gdzie metoda go dostarcza i p obliczone poprawnie;
-    brak fikcyjnych df dla Spearmana.
+  title: Współczynnik, N par, przedział, p klasyczne i p_perm odczytano poprawnie;
+    bez fikcyjnych df.
+  evidence: Współczynnik, N par, przedział, p klasyczne i p_perm odczytano poprawnie;
+    bez fikcyjnych df.
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -37,13 +37,14 @@ criteria:
   - points: 0.5
     observable_description: Podano współczynnik bez poprawnej liczby par.
   - points: 1.0
-    observable_description: Współczynnik i p poprawne; fikcyjne df lub przedział.
+    observable_description: Współczynnik i jedno p są poprawne; brakuje drugiego toru
+      albo przedziału.
   - points: 1.5
-    observable_description: Poprawne statystyki, bez fikcyjnych df; pominięto jedną
-      dostępną granicę CI.
+    observable_description: Oba tory i przedział są poprawne; pominięto B albo jedną
+      granicę.
   - points: 2.0
-    observable_description: Współczynnik, przedział tam gdzie metoda go dostarcza
-      i p obliczone poprawnie; brak fikcyjnych df dla Spearmana.
+    observable_description: Współczynnik, N par, przedział, p klasyczne i p_perm odczytano
+      poprawnie; bez fikcyjnych df.
 - id: Z08.3
   title: Student czyta nachylenie, jednostki, R² i podstawowy sygnał diagnostyczny
     prostej regresji.

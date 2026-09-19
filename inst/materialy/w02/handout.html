@@ -12,7 +12,7 @@
 <meta name="author" content="Marek Deja" />
 
 
-<title>Handout W02 — Opis danych, jakość i pomiar ankietowy</title>
+<title>Handout W02 — Język danych, pomiar i opis</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -155,7 +155,7 @@ window.buildTabsets = function(tocID) {
     var tabContent = $('<div class="tab-content"></div>');
     $(tabs[0]).before(tabContent);
 
-    // build the tabse
+    // build the tabset
     var activeTab = 0;
     tabs.each(function(i) {
 
@@ -177,7 +177,7 @@ window.buildTabsets = function(tocID) {
       id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
       tab.attr('id', id);
 
-      // get the heading element within it, grab it's text, then remove i
+      // get the heading element within it, grab it's text, then remove it
       var heading = tab.find('h' + tabLevel + ':first');
       var headingText = heading.html();
       heading.remove();
@@ -375,10 +375,9 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Handout W02 — Opis danych, jakość i pomiar
-ankietowy</h1>
-<h3 class="subtitle">Zarządzanie informacją — część ilościowa —
-2026/27</h3>
+<h1 class="title toc-ignore">Handout W02 — Język danych, pomiar i
+opis</h1>
+<h3 class="subtitle">Mapa pojęć, wzorów i pytań</h3>
 <h4 class="author">Marek Deja</h4>
 <h4 class="date">2026/27</h4>
 
@@ -386,139 +385,138 @@ ankietowy</h1>
 
 <div id="TOC">
 <ul>
-<li><a href="#w02-co-zachowuje-dobry-opis" id="toc-w02-co-zachowuje-dobry-opis">W02 — co zachowuje dobry
-opis</a></li>
-<li><a href="#miary-i-jednostki" id="toc-miary-i-jednostki">Miary i
-jednostki</a></li>
-<li><a href="#szeregi-procenty-i-wykresy" id="toc-szeregi-procenty-i-wykresy">Szeregi, procenty i wykresy</a></li>
-<li><a href="#cztery-sposoby-pomiaru-postaw" id="toc-cztery-sposoby-pomiaru-postaw">Cztery sposoby pomiaru
-postaw</a></li>
-<li><a href="#operacje-na-danych" id="toc-operacje-na-danych">Operacje
-na danych</a></li>
-<li><a href="#notatki" id="toc-notatki">Notatki</a></li>
+<li><a href="#pytanie-i-g%C5%82%C3%B3wna-my%C5%9Bl" id="toc-pytanie-i-główna-myśl">1. Pytanie i główna myśl</a>
+<ul>
+<li><a href="#tok-rozumowania" id="toc-tok-rozumowania">Tok
+rozumowania</a></li>
+</ul></li>
+<li><a href="#wz%C3%B3r-i-symbole" id="toc-wzór-i-symbole">2. Wzór i
+symbole</a></li>
+<li><a href="#dwa-tory-i-efekt" id="toc-dwa-tory-i-efekt">3. Dwa tory i
+efekt</a></li>
+<li><a href="#interpretacja-i-pytania" id="toc-interpretacja-i-pytania">4. Interpretacja i pytania</a>
+<ul>
+<li><a href="#dalszy-krok" id="toc-dalszy-krok">Dalszy krok</a></li>
+<li><a href="#literatura" id="toc-literatura">Literatura</a></li>
+</ul></li>
 </ul>
 </div>
 
-<div id="w02-co-zachowuje-dobry-opis" class="section level1">
-<h1>W02 — co zachowuje dobry opis</h1>
-<p>Jednostka → skala → reguły jakości → N ważne i braki → miary/wykres →
-ograniczenia. Surowy plik pozostaje bez zmian, a dziennik rozróżnia
-wiersze i komórki.</p>
+<div id="pytanie-i-główna-myśl" class="section level1">
+<h1>1. Pytanie i główna myśl</h1>
+<p><strong>Pytanie:</strong> Jak opisać samoocenę, obserwowany czas,
+powodzenie i wybór kanału tak, aby miara odpowiadała skali i właściwemu
+mianownikowi?</p>
+<p>Ta sama osoba może wysoko oceniać własne kompetencje i jednocześnie
+długo wykonywać zadanie. Pomiar ankietowy oraz obserwacyjny są różnymi
+oknami na zachowanie. Dobry opis nie zaciera tej różnicy i nie sprowadza
+tabeli do jednej średniej.</p>
+<div id="tok-rozumowania" class="section level2">
+<h2>Tok rozumowania</h2>
+<ol style="list-style-type: decimal">
+<li>Pytanie i zakres wniosku.<br />
+</li>
+<li>Jednostka, zmienne, skale i braki.<br />
+</li>
+<li>Estymata oraz jednostka.<br />
+</li>
+<li>Niepewność i dwa tory, jeśli dotyczą.<br />
+</li>
+<li>Efekt, ograniczenie i odpowiedź.</li>
+</ol>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="miary-i-jednostki" class="section level1">
-<h1>Miary i jednostki</h1>
+</div>
+<div id="wzór-i-symbole" class="section level1">
+<h1>2. Wzór i symbole</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>i</mi></msub><mo>=</mo><mfrac><mn>1</mn><msub><mi>m</mi><mi>i</mi></msub></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mn>6</mn></munderover><msubsup><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>*</mo></msubsup><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>m</mi><mi>i</mi></msub><mo>≥</mo><mn>5</mn><mo>;</mo><mspace width="2.0em"></mspace><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>=</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><mo>∑</mo><msub><mi>x</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">I_i=\frac{1}{m_i}\sum_{j=1}^{6}x^{*}_{ij}, \quad m_i\geq5; \qquad \bar{x}=\frac{1}{N}\sum x_i</annotation></semantics></math></p>
 <table>
-<colgroup>
-<col width="50%" />
-<col width="50%" />
-</colgroup>
 <thead>
 <tr class="header">
-<th>Miara</th>
+<th>Symbol</th>
+<th>Nazwa</th>
 <th>Znaczenie</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Średnia
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>=</mo><mo>∑</mo><msub><mi>x</mi><mi>i</mi></msub><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">\bar{x}=\sum x_i/n</annotation></semantics></math></td>
-<td>poziom przeciętny, wrażliwy na ekstremum</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>*</mo></msubsup><annotation encoding="application/x-tex">x^{*}_{ij}</annotation></semantics></math></td>
+<td>pozycja po ukierunkowaniu</td>
+<td>punkty 1–5</td>
 </tr>
 <tr class="even">
-<td>Mediana</td>
-<td>środek uporządkowanego zbioru</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mi>i</mi></msub><annotation encoding="application/x-tex">m_i</annotation></semantics></math></td>
+<td>ważne pozycje osoby</td>
+<td>co najmniej 5</td>
 </tr>
 <tr class="odd">
-<td>Moda</td>
-<td>najczęstsza wartość/kategoria, możliwe remisy</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>i</mi></msub><annotation encoding="application/x-tex">I_i</annotation></semantics></math></td>
+<td>indeks samooceny</td>
+<td>punkty 1–5</td>
 </tr>
 <tr class="even">
-<td>SD
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><msqrt><msup><mi>s</mi><mn>2</mn></msup></msqrt></mrow><annotation encoding="application/x-tex">s=\sqrt{s^2}</annotation></semantics></math></td>
-<td>rozproszenie w jednostce pomiaru</td>
-</tr>
-<tr class="odd">
-<td>IQR
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mn>3</mn></msub><mo>−</mo><msub><mi>Q</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">Q_3-Q_1</annotation></semantics></math></td>
-<td>szerokość środkowej połowy danych</td>
-</tr>
-<tr class="even">
-<td>Zakres</td>
-<td>minimum/maksimum, wrażliwe na ekstremum</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>,</mo><mi>M</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">\bar{x},Me</annotation></semantics></math></td>
+<td>średnia i mediana</td>
+<td>położenie rozkładu</td>
 </tr>
 </tbody>
 </table>
-<p>SD opisuje osoby, a SE niepewność estymacji. CV wymaga sensownego
-naturalnego zera i średniej oddalonej od zera. Kurtoza 3 i eksces 0 dla
-rozkładu normalnego są różnymi konwencjami.</p>
-<p>Porównujemy średnią i medianę w małej próbie. Odczytaj oba wyniki i
-IQR w minutach. Wskaż, jak skrajna wartość wpływa na centrum.</p>
-<pre class="r"><code>x &lt;- c(2, 3, 4, 5, 36)
-c(srednia = mean(x), mediana = median(x), SD = stats::sd(x),
-  IQR = stats::IQR(x))</code></pre>
-<pre><code>##  srednia  mediana       SD      IQR
-## 10.00000  4.00000 14.57738  2.00000</code></pre>
+<p>Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę
+i składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani
+CI zakresu 95% osób.</p>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="szeregi-procenty-i-wykresy" class="section level1">
-<h1>Szeregi, procenty i wykresy</h1>
-<p>Szereg punktowy — kategorie i N. Przedziałowy — klasy liczbowe.
-Czasowy — kolejne okresy. Histogram — kształt, pudełko — kwartyle i
-mediana. Punkty poza wąsami sprawdzamy, bez automatycznego usuwania.</p>
-<p>Odsetki: podaj licznik i mianownik. Jednokrotny wybór tworzy
-rozłączne kategorie, wielokrotny może dać sumę procentów respondentów
-&gt;100. Gęstość w punkcie nie jest procentem. Asymetrię czytaj na
-wykresie; średnia bliska medianie nie dowodzi normalności.</p>
+<div id="dwa-tory-i-efekt" class="section level1">
+<h1>3. Dwa tory i efekt</h1>
+<p><strong>Tor klasyczny.</strong> Opis liczbowy obejmuje N, braki,
+miarę położenia i zróżnicowania. Dla skośnego czasu zestawiamy średnią z
+medianą, SD z IQR oraz histogram. Dla kategorii podajemy liczebność i
+odsetek z jawnym mianownikiem.</p>
+<p><strong>Tor permutacyjny/resampling.</strong> Na etapie pomiaru nie
+używamy testu do naprawiania złych wskaźników. Permutacja odpowie
+później na pytanie o losowy związek przy zachowanych rozkładach.
+Najpierw musi być jasne, co zostało zmierzone i które braki są
+dopuszczalne.</p>
+<p><strong>Efekt i przedział.</strong> Różnica między średnią i medianą
+opisuje asymetrię, SD i IQR zróżnicowanie. Nie są to jeszcze efekty
+przyczynowe. Jednostka miary pozwala ocenić, czy zmiana o dwie minuty
+lub pół punktu jest ważna dla usługi.</p>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="cztery-sposoby-pomiaru-postaw" class="section level1">
-<h1>Cztery sposoby pomiaru postaw</h1>
-<table>
-<colgroup>
-<col width="50%" />
-<col width="50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Podejście</th>
-<th>Zasada</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Likert</td>
-<td>stopnie zgody, pojedyncza pozycja porządkowa, indeks
-uzasadniony</td>
-</tr>
-<tr class="even">
-<td>Bogardus</td>
-<td>gotowość do różnych poziomów kontaktu społecznego</td>
-</tr>
-<tr class="odd">
-<td>Guttman</td>
-<td>kumulatywny wzorzec silniejszych/słabszych pozycji</td>
-</tr>
-<tr class="even">
-<td>Thurstone</td>
-<td>stwierdzenia wcześniej ocenione przez sędziów</td>
-</tr>
-</tbody>
-</table>
-<p>Treść i reguła ważniejsze niż nazwa. Brak ≠ odpowiedź neutralna ≠
-negatywna. Alfa nie dowodzi trafności. W kursie: pozycja 3 odwrócona,
-średni indeks przy minimum 5/6.</p>
+<div id="interpretacja-i-pytania" class="section level1">
+<h1>4. Interpretacja i pytania</h1>
+<p><strong>Przykład.</strong> Wielokrotny wybór kanałów może dać sumę
+odsetków większą niż 100%, ponieważ jedna osoba wybiera kilka opcji.
+Mianownik powinien obejmować osoby z kompletnym zestawem odpowiedzi 0/1.
+Brak w jednym kanale nie jest automatycznie odpowiedzią „nie”.</p>
+<p><strong>Pułapki.</strong> Pułapki obejmują kodowanie braku jako zera,
+odwrócenie pozycji po policzeniu indeksu, średnią z nazw kategorii,
+wykres bez jednostki, opis średniej jako wyniku większości i nazywanie
+kursowego indeksu walidowanym testem.</p>
+<p><strong>Pytanie do pracy.</strong> Oceń cztery zdania z raportu:
+wskaż skalę, mianownik, właściwą miarę oraz brakujące ograniczenie.
+Następnie porównaj, co wnosi indeks samooceny, a co obserwowany czas i
+powodzenie.</p>
+<div id="dalszy-krok" class="section level2">
+<h2>Dalszy krok</h2>
+<p>C03 zbuduje portret próby, a C04 przeprowadzi rekodację i indeks. W03
+doda język niepewności, lecz zachowa rozróżnienie pomiaru od
+wnioskowania.</p>
 </div>
-<div id="operacje-na-danych" class="section level1">
-<h1>Operacje na danych</h1>
-<p>Sortowanie — kolejność całych wierszy; ranking — pozycje/remisy;
-agregacja — podsumowania; transpozycja — zamiana wymiarów. z-score i
-min–max zmieniają skalę/jednostkę, bez nadawania normalności. CSV nie
-zachowuje formuł ani wielu arkuszy.</p>
+<div id="literatura" class="section level2">
+<h2>Literatura</h2>
+<ul>
+<li><a href="https://publications.jrc.ec.europa.eu/repository/handle/JRC128415">European
+Commission JRC (2022). DigComp 2.2</a>.</li>
+<li><a href="https://www.ala.org/acrl/standards/ilframework">Association
+of College and Research Libraries. Framework for Information
+Literacy</a>.</li>
+<li><a href="https://www.webuse.org/pdf/Hargittai-BeyondLogsSurveys2002.pdf">Hargittai,
+E. (2002). Beyond logs and surveys</a>.</li>
+<li><a href="https://ris.utwente.nl/ws/portalfiles/portal/6972069/development.pdf">van
+Deursen, Helsper &amp; Eynon. Internet Skills Scale</a>.</li>
+</ul>
 </div>
-<div id="notatki" class="section level1">
-<h1>Notatki</h1>
-<p>Którą miarę wybiorę dla skośnego czasu i dlaczego?
-………………………………………..</p>
-<p>Mianownik mojej tabeli: ……………… Jedno ograniczenie pomiaru:
-………………………</p>
 </div>
 
 

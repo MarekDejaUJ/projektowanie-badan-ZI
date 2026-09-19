@@ -12,7 +12,7 @@
 <meta name="author" content="Marek Deja" />
 
 
-<title>C05 — Niepewność średniej, bootstrap i intuicja permutacji</title>
+<title>C05 — Niepewność estymaty: przedział, bootstrap i test jednej próby</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -155,7 +155,7 @@ window.buildTabsets = function(tocID) {
     var tabContent = $('<div class="tab-content"></div>');
     $(tabs[0]).before(tabContent);
 
-    // build the tabse
+    // build the tabset
     var activeTab = 0;
     tabs.each(function(i) {
 
@@ -177,7 +177,7 @@ window.buildTabsets = function(tocID) {
       id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
       tab.attr('id', id);
 
-      // get the heading element within it, grab it's text, then remove i
+      // get the heading element within it, grab it's text, then remove it
       var heading = tab.find('h' + tabLevel + ':first');
       var headingText = heading.html();
       heading.remove();
@@ -375,8 +375,8 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">C05 — Niepewność średniej, bootstrap i
-intuicja permutacji</h1>
+<h1 class="title toc-ignore">C05 — Niepewność estymaty: przedział,
+bootstrap i test jednej próby</h1>
 <h3 class="subtitle">Zarządzanie informacją — część ilościowa —
 2026/27</h3>
 <h4 class="author">Marek Deja</h4>
@@ -386,292 +386,495 @@ intuicja permutacji</h1>
 
 <div id="TOC">
 <ul>
-<li><a href="#cel-ile-wiemy-o-%C5%9Brednim-wyniku" id="toc-cel-ile-wiemy-o-średnim-wyniku">Cel: ile wiemy o średnim
-wyniku?</a></li>
-<li><a href="#w%C5%82asna-pr%C3%B3ba-i-parametr" id="toc-własna-próba-i-parametr">Własna próba i parametr</a></li>
-<li><a href="#estymata-i-b%C5%82%C4%85d-standardowy" id="toc-estymata-i-błąd-standardowy">Estymata i błąd
-standardowy</a></li>
-<li><a href="#przedzia%C5%82-ufno%C5%9Bci-95" id="toc-przedział-ufności-95">Przedział ufności 95%</a></li>
-<li><a href="#bootstrap-nowe-pr%C3%B3by-z-obserwowanej-pr%C3%B3by" id="toc-bootstrap-nowe-próby-z-obserwowanej-próby">Bootstrap: nowe próby
-z obserwowanej próby</a></li>
-<li><a href="#permutacja-inny-cel-losowania" id="toc-permutacja-inny-cel-losowania">Permutacja: inny cel
-losowania</a></li>
-<li><a href="#z05-estymacja-na-w%C5%82asnym-wariancie" id="toc-z05-estymacja-na-własnym-wariancie">Z05 — estymacja na własnym
-wariancie</a></li>
+<li><a href="#miejsce-w-opowie%C5%9Bci" id="toc-miejsce-w-opowieści">1.
+Miejsce w opowieści</a></li>
+<li><a href="#scena-badawcza" id="toc-scena-badawcza">2. Scena
+badawcza</a></li>
+<li><a href="#pytanie-jednostka-i-zmienne" id="toc-pytanie-jednostka-i-zmienne">3. Pytanie, jednostka i
+zmienne</a></li>
+<li><a href="#s%C5%82ownik-statystyczny" id="toc-słownik-statystyczny">4. Słownik statystyczny</a></li>
+<li><a href="#wz%C3%B3r-czytany-jak-zdanie" id="toc-wzór-czytany-jak-zdanie">5. Wzór czytany jak zdanie</a></li>
+<li><a href="#gotowy-skrypt-pomocniczy" id="toc-gotowy-skrypt-pomocniczy">6. Gotowy skrypt pomocniczy</a></li>
+<li><a href="#dane-braki-i-mianownik" id="toc-dane-braki-i-mianownik">7.
+Dane, braki i mianownik</a></li>
+<li><a href="#tor-klasyczny" id="toc-tor-klasyczny">8. Tor
+klasyczny</a></li>
+<li><a href="#tor-permutacyjny-lub-decyzja-o-jego-braku" id="toc-tor-permutacyjny-lub-decyzja-o-jego-braku">9. Tor permutacyjny
+lub decyzja o jego braku</a></li>
+<li><a href="#efekt-i-przedzia%C5%82" id="toc-efekt-i-przedział">10.
+Efekt i przedział</a></li>
+<li><a href="#wykres-jako-cz%C4%99%C5%9B%C4%87-argumentu" id="toc-wykres-jako-część-argumentu">11. Wykres jako część
+argumentu</a></li>
+<li><a href="#wynik-czytany-linia-po-linii" id="toc-wynik-czytany-linia-po-linii">12. Wynik czytany linia po
+linii</a></li>
+<li><a href="#b%C5%82%C4%99dy-interpretacji" id="toc-błędy-interpretacji">13. Błędy interpretacji</a></li>
+<li><a href="#pr%C3%B3ba-prowadzona" id="toc-próba-prowadzona">14. Próba
+prowadzona</a></li>
+<li><a href="#zadanie-z05" id="toc-zadanie-z05">15. Zadanie Z05</a></li>
+<li><a href="#rubryka-kontrola-i-dalszy-krok" id="toc-rubryka-kontrola-i-dalszy-krok">16. Rubryka, kontrola i dalszy
+krok</a>
+<ul>
+<li><a href="#%C5%BAr%C3%B3d%C5%82o-kontekstu" id="toc-źródło-kontekstu">Źródło kontekstu</a></li>
+</ul></li>
 </ul>
 </div>
 
-<div id="cel-ile-wiemy-o-średnim-wyniku" class="section level1">
-<h1>Cel: ile wiemy o średnim wyniku?</h1>
-<p>Średni indeks dostępności z jednej ankiety jest konkretną liczbą.
-Gdybyśmy badali inne osoby, wynik mógłby być inny. Na C05 opiszesz tę
-niepewność dwoma sposobami: przedziałem t dla średniej i prostym
-bootstrapem. Permutację zobaczysz we wspólnej demonstracji; Z05 nie
-wymaga osobnego testu ani trzech metod dla tego samego pytania.</p>
+<div id="miejsce-w-opowieści" class="section level1">
+<h1>1. Miejsce w opowieści</h1>
+<p>Średni indeks samooceny w próbie jest jedną liczbą. Uczymy się
+odczytywać, jak bardzo wynik może zmieniać się między próbami i czy
+odległość od punktu odniesienia jest skrajna w modelu zerowym.</p>
+<p><strong>Pytanie przewodnie:</strong> Jaka jest średnia samoocena, jak
+precyzyjnie ją oszacowano i czy różni się od neutralnego punktu 3?</p>
+<p>Rdzeń zajęć trwa 90 minut. Strony oznaczone jako „po zajęciach” służą
+utrwaleniu; podczas spotkania uruchamiamy gotowy kod, czytamy liczby i
+zapisujemy własne wyjaśnienie.</p>
 <table>
 <thead>
 <tr class="header">
-<th>Minuty</th>
+<th align="right">Minuty</th>
 <th>Praca</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>0–10</td>
-<td>Odtworzenie projektu i Z05</td>
+<td align="right">0–10</td>
+<td>Powrót do poprzedniego odcinka i pytanie</td>
 </tr>
 <tr class="even">
-<td>10–30</td>
-<td>Średnia, SE i przedział</td>
+<td align="right">10–30</td>
+<td>Zmienne, wzór i symbole</td>
 </tr>
 <tr class="odd">
-<td>30–50</td>
-<td>Bootstrap wspólnej próby</td>
+<td align="right">30–55</td>
+<td>Gotowe wyniki i dwa tory, jeśli dotyczą</td>
 </tr>
 <tr class="even">
-<td>50–60</td>
-<td>Intuicja tasowania etykiet</td>
+<td align="right">55–80</td>
+<td>Zadanie na indywidualnych danych</td>
 </tr>
 <tr class="odd">
-<td>60–80</td>
-<td>Z05 na własnym wariancie</td>
-</tr>
-<tr class="even">
-<td>80–90</td>
-<td>Zapis, kontrola i odbiór</td>
+<td align="right">80–90</td>
+<td>Kontrola, oddanie i zapowiedź kolejnego kroku</td>
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="własna-próba-i-parametr" class="section level1">
-<h1>Własna próba i parametr</h1>
-<p>Pytamy o średni indeks oceny dostępu do informacji w populacji
-użytkowników określonej w scenariuszu. Obserwacją jest osoba, a nie
-pojedyncza pozycja kwestionariusza. W kursie indeks 1–5 traktujemy jako
-przybliżony pomiar ilościowy; warunek minimum pięciu odpowiedzi z
-sześciu pozostaje ten sam co na C04. Nie zmieniaj go po obejrzeniu
-przedziału.</p>
-<p>Odtwórz projekt przez funkcje logowania i
-<code>rozpocznij_zajecia(&quot;C05&quot;, ...)</code>. W demonstracji używamy S02;
-Z05 wymaga Twojego wariantu. Surowego CSV i manifestu nie edytujesz.
-Każdy wynik odnosi się do danych syntetycznych, a nie do faktycznej
-ankiety w bibliotece.</p>
-<p>Przygotowujemy indeks tymi samymi regułami co na C04. Do estymacji
-wybieramy osoby z ważnym indeksem, pozostawiając ID i grupę do dalszej
-demonstracji. Odczytaj liczebność przed i po tym wyborze.</p>
-<pre class="r"><code>dane &lt;- badaniaZI::przygotuj_ankiete(badaniaZI::dane_przykladowe())$dane
-p &lt;- dane[, paste0(&quot;pozycja_&quot;, 1:6)]
-p$pozycja_3 &lt;- badaniaZI::odwroc_pozycje(p$pozycja_3)
-dane$indeks &lt;- badaniaZI::indeks_ankiety(p, minimum = 5)
-proba &lt;- dane[!is.na(dane$indeks), ]
-c(osoby_po_czyszczeniu = nrow(dane), wazny_indeks = nrow(proba))</code></pre>
-<pre><code>## osoby_po_czyszczeniu         wazny_indeks
-##                  148                  147</code></pre>
+<div id="scena-badawcza" class="section level1">
+<h1>2. Scena badawcza</h1>
+<p>Średni indeks samooceny w próbie jest jedną liczbą. Uczymy się
+odczytywać, jak bardzo wynik może zmieniać się między próbami i czy
+odległość od punktu odniesienia jest skrajna w modelu zerowym.</p>
+<p>Badana osoba wykonuje krótkie zadanie wyszukiwawcze w cyfrowej
+usłudze informacyjnej, a potem odpowiada na sześć pozycji samooceny.
+Rejestrujemy czas i powodzenie jako pomiar obserwacyjny. Częstość
+korzystania, samoocena oraz wybrane kanały są deklaracjami. Rozdzielenie
+tych źródeł jest częścią interpretacji, ponieważ wysoka pewność nie musi
+oznaczać sprawnego wykonania.</p>
+<p>Dane demonstracyjne dotyczą scenariusza S02 i są syntetyczne. Ich
+rozkłady przygotowano do nauki, dlatego nie wolno opisywać nimi realnej
+biblioteki ani użytkowników UJ. Jednostką analizy jest osoba po
+usunięciu identycznych duplikatów. Każdy brak pozostaje brakiem, dopóki
+słownik nie podaje jawnej reguły.</p>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="estymata-i-błąd-standardowy" class="section level1">
-<h1>Estymata i błąd standardowy</h1>
-<p>Parametr
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>
-oznacza nieznaną średnią populacji, a
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>x</mi><mo accent="true">‾</mo></mover><annotation encoding="application/x-tex">\bar{x}</annotation></semantics></math>
-średnią obliczoną w próbie. Estymator jest regułą, według której
-liczymy, a estymata konkretnym wynikiem zastosowania tej reguły. W
-projekcie nie znamy rzeczywistej populacji: generator daje dane do
-nauki, a plan badania określa, jak mogłaby wyglądać prawdziwa próba.</p>
-<p>Odchylenie standardowe
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>
-opisuje różnice między osobami. Błąd standardowy
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi><mo>=</mo><mi>s</mi><mi>/</mi><msqrt><mi>n</mi></msqrt></mrow><annotation encoding="application/x-tex">SE=s/\sqrt{n}</annotation></semantics></math>
-przy niezależnych obserwacjach opisuje niepewność średniej wynikającą z
-próbkowania. To różne wielkości, nawet jeśli mają tę samą jednostkę. Gdy
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">s=0{,}8</annotation></semantics></math>
-i
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">n=100</annotation></semantics></math>,
-SE wynosi 0,08 punktu indeksu; osoby nie są przez to podobne do siebie w
-granicach 0,08.</p>
-<p>Obliczamy N, średnią, SD i SE w oddzielnych polach.
-<code>length()</code> dotyczy tylko wybranego wektora ważnych indeksów.
-Odczytaj jednostkę wyniku i sprawdź, dlaczego SD jest większe niż
-SE.</p>
-<pre class="r"><code>wartosci &lt;- proba$indeks
-n &lt;- length(wartosci)
-srednia &lt;- mean(wartosci)
-odchylenie &lt;- stats::sd(wartosci)
-se &lt;- odchylenie / sqrt(n)
-data.frame(n = n, srednia = srednia, sd = odchylenie, se = se)</code></pre>
-<pre><code>##     n srednia        sd         se
-## 1 147 3.29229 0.7268504 0.05994961</code></pre>
-</div>
-<div id="przedział-ufności-95" class="section level1">
-<h1>Przedział ufności 95%</h1>
-<p>Oprócz pojedynczej średniej (estymaty punktowej) podajemy
-<strong>przedział ufności (CI)</strong>. Mówi on: “jeśli pobieralibyśmy
-próby nieskończenie wiele razy, około 95% wyliczonych z nich przedziałów
-zawierałoby prawdziwą średnią dla całej populacji użytkowników w
-określonej populacji”.</p>
-<p>Ten opis ma sens przy określonym modelu próbkowania i spełnionych
-założeniach. Nie znaczy, że 95% osób mieści się w przedziale ani że po
-obliczeniu przypisujemy stałej średniej populacji prawdopodobieństwo
-95%. Po obejrzeniu danych mamy jeden przedział; własność 95% odnosi się
-do powtarzania procedury.</p>
-<p>Dla niezależnych obserwacji przedział t ma postać
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>±</mo><msub><mi>t</mi><mrow><mn>0</mn><mo>,</mo><mn>975</mn><mo>,</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mspace width="0.167em"></mspace><mi>s</mi><mi>/</mi><msqrt><mi>n</mi></msqrt></mrow><annotation encoding="application/x-tex">\bar{x}\pm t_{0{,}975,n-1}\,s/\sqrt{n}</annotation></semantics></math>.
-Wartość krytyczna t zależy od liczby stopni swobody
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>.
-Rozkład średniej musi być dostatecznie dobrze przybliżony; duża
-liczebność nie naprawia zależności osób, systematycznego braku
-odpowiedzi czy błędnej rekrutacji. W rzeczywistych badaniach klastrowych
-lub ważonych trzeba odpowiednio zmienić model.</p>
-<p>Używamy <code>t.test()</code> z archiwalnego przykładu estymacji, aby
-odczytać przedział. Funkcja zwraca także test względem domyślnego zera,
-ale Z05 nie stawia pytania o średnią równą zero; odczytujemy tylko
-estymatę i CI. Porównaj granice z obliczeniem wzoru.</p>
-<pre class="r"><code>wynik_ci &lt;- stats::t.test(wartosci, conf.level = .95)
-granice_t &lt;- unname(wynik_ci$conf.int)
-granice_t</code></pre>
-<pre><code>## [1] 3.173809 3.410771
-## attr(,&quot;conf.level&quot;)
-## [1] 0.95</code></pre>
-<pre class="r"><code>srednia + c(-1, 1) * stats::qt(.975, df = n - 1) * se</code></pre>
-<pre><code>## [1] 3.173809 3.410771</code></pre>
-<p>Wąski przedział oznacza większą precyzję w danym modelu, lecz nie
-jest dowodem dobrego pomiaru. Można precyzyjnie oszacować wynik źle
-sformułowanego pytania. Bootstrap również nie usunie takiej wady.</p>
-</div>
-<div id="bootstrap-nowe-próby-z-obserwowanej-próby" class="section level1">
-<h1>Bootstrap: nowe próby z obserwowanej próby</h1>
-<p>Bootstrap losuje ze zwracaniem obserwacje z dostępnej próby. Każda
-replika ma takie samo N, a ta sama osoba może zostać wylosowana kilka
-razy. Dla średniej indeksu wybieramy całe osoby z ważnym wynikiem; nie
-losujemy osobno sześciu odpowiedzi jednej osoby. Dzięki temu poziom
-losowania odpowiada jednostce analizy.</p>
-<p><code>sample.int(n, size=n, replace=TRUE)</code> wybiera numery
-wierszy. Indeksowanie <code>wartosci[numery]</code> odczytuje wyniki
-wybranych osób, a <code>replicate()</code> powtarza obliczenie B razy.
-Ustalamy ziarno przed symulacją, aby świeży skrypt odtworzył wynik.
-Odczytaj pierwsze średnie i zauważ, że replika nie jest nową faktycznie
-zebraną ankietą.</p>
-<pre class="r"><code>set.seed(2027)
-B &lt;- 1999
-srednie_boot &lt;- replicate(B, {
-  numery &lt;- sample.int(n, size = n, replace = TRUE)
-  mean(wartosci[numery])
-})
-head(srednie_boot)</code></pre>
-<pre><code>## [1] 3.313152 3.237188 3.231293 3.273016 3.361224 3.245125</code></pre>
-<pre class="r"><code>granice_boot &lt;- unname(stats::quantile(srednie_boot, c(.025, .975)))
-granice_boot</code></pre>
-<pre><code>## [1] 3.173424 3.406587</code></pre>
-<p>Przedział percentylowy bierze kwantyle 2,5% i 97,5% rozkładu średnich
-bootstrapowych. Jest prostym przybliżeniem, którego pokrycie zależy od
-danych i estymatora. Nie jest przedziałem dla 95% indywidualnych
-odpowiedzi i nie gwarantuje dokładnego poziomu przy każdej skośności czy
-małej próbie. Liczba B dotyczy powtórzeń komputera; zwiększenie jej nie
-zwiększa liczby badanych osób.</p>
-<p>Tworzymy tabelę dwóch metod z poziomem ufności i N. Wyniki mają
-wspólny parametr i jednostkę, więc można porównać szerokość przedziałów.
-Odczytaj, czy różnica granic jest duża względem pełnego zakresu indeksu
-1–5; nie wybieraj metody tylko dlatego, że daje wygodniejszy
-wniosek.</p>
-<pre class="r"><code>estymacja &lt;- data.frame(metoda = c(&quot;t&quot;, &quot;bootstrap percentylowy&quot;),
-  n = n, srednia = srednia, dolna = c(granice_t[1], granice_boot[1]),
-  gorna = c(granice_t[2], granice_boot[2]), poziom = .95,
-  B = c(NA, B), ziarno = c(NA, 2027))
-estymacja</code></pre>
-<pre><code>##                   metoda   n srednia    dolna    gorna poziom    B ziarno
-## 1                      t 147 3.29229 3.173809 3.410771   0.95   NA     NA
-## 2 bootstrap percentylowy 147 3.29229 3.173424 3.406587   0.95 1999   2027</code></pre>
-<pre class="r"><code>bootstrap &lt;- data.frame(replika = seq_len(B), srednia = srednie_boot)</code></pre>
-<p>Histogram pokazuje rozkład średnich replik, a nie surowe odpowiedzi
-1–5. Linia ciągła oznacza średnią próby, a dwie przerywane granice
-percentylowego CI. Odczytaj rozproszenie średnich i porównaj je z SD
-osób z początku ćwiczenia.</p>
-<pre class="r"><code>wykres_boot &lt;- ggplot2::ggplot(bootstrap, ggplot2::aes(x = srednia)) +
-  ggplot2::geom_histogram(bins = 30, fill = badaniaZI::paleta_zi()[&quot;primary&quot;],
-    color = &quot;white&quot;) +
-  ggplot2::geom_vline(xintercept = srednia, linewidth = .7) +
-  ggplot2::geom_vline(xintercept = granice_boot, linetype = &quot;dashed&quot;,
-    color = badaniaZI::paleta_zi()[&quot;accent&quot;]) +
-  ggplot2::labs(title = &quot;Średnie z prób bootstrapowych&quot;,
-    subtitle = paste(&quot;N =&quot;, n, &quot;osób; B =&quot;, B, &quot;replik&quot;),
-    x = &quot;Średnia indeksu (punkty 1–5)&quot;, y = &quot;Liczba replik&quot;) +
-  badaniaZI::theme_zi()
-wykres_boot</code></pre>
-<div class="figure">
-<img role="img" aria-label="Syntetyczna ankieta S02; N i B w podtytule. Rozkład średnich bootstrapowych." src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABUAAAAPACAMAAADDuCPrAAACHFBMVEUAAAAAcrIiIiIiIk4iInUiTk4iTnUiTpoidXUidb1AQEBBQWRBQYZBZGRBZIZBZKZBhsROIiJOIk5OTiJOTk5OTnVOdU5OdXVOdZpOdb1OmppOmr1Omt5ZWVlZWXhZWZRZeHhZeJRZeLFZlJRZlLFZlMtkQUFkZEFkZGRkZIZkhsRkpuJ1IiJ1TiJ1Tk51dU51dXV1dZp1db11mpp1mr11mt51vb11vd51vf94WVl4eFl4eHh4eJR4lJR4lLF4lMt4seWGQUGGZEGGZGSGhkGGhqaGpsSGpuKGxOKGxP+UWVmUeFmUeHiUlJSUscuUy+WUy/+aTiKaTk6adU6adXWadZqamk6amnWamr2avZqavb2avd6avf+a3r2a3t6a3v+mZEGmhmSmxOKm4sSm4v+xeFmxlFmxlHixsXixsZSxscuxy+Wx5f+9dSK9dU69dZq9mk69mnW9mpq9mr29vZq9vb29vd693pq93t693v+9///EhkHEhmTEpmTE4uLE4v/E///LlFnLlHjLsZTLy7HL5eXL5f/L///VXgDemk7emnXevXXevZrevb3evd7e3pre3r3e3t7e3v/e/97e///g4ODipmTipobixIbi4v/i///lsXjly5Tly7Hl5cvl5f/l////vXX/xIb/y5T/3pr/3r3/3t7/4qb/4sT/4uL/5bH/5cv/5eX//73//8T//8v//97//+L//+X///+a5vdaAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO2d/aMdR32f6bmWHB0bY9VSbBeJACmiLcgvjRPLSZtg0iR2SENcO4HGLXbeSttEbpUCsRHUOGloLjat4wqFYki4siTTEJwr7z/Ys+8zZ7977szs7O7MzvP8IN2753N2Z+fMPHdfZue8JwMAACfeM3cBAABiBYECADiCQAEAHEGgAACOIFAAAEcQKACAIwgUAMARBAoA4AgCBQBwZEaBHqw27D03XwEAAAYxn0APn8KfABA18wn0AH8CQNzMJtD8ABR/AkDMzCbQA/wJAJHDXXgAAEcQKACAI/MI9LWnT+VjmI7d++wV53Xs52s4c1TghPP6HSgGFqzuNy6AtxLe+M0vDwzMSzGi7Xb3tgAwE3MI9NWTq4a9R1y7TYACPdD8OZlADy+dvG2nH48MzA0ChUiZQaD7Kw3XfhOeQIsDUKVEEwn0tfOr1U4/HhmYHQQKkTK9QA9WWzgaJDyBHmwVaBqBXs+P53f58cjA/CBQiJTJBfqjjxdXPx/d9JbD/NDIeTTTkQKdmnzPtPIgUFMQKETK5AIt+krdnUubuikkOIF2QKCmIFCIlMkFqntv373nINASBAowG/MItJGG0rkvFj/deKC9M3/j6fzVU4+8ob7/tQc2C49tEq1Ai+53oX7p/jfELYkryynHHvVdkq3WffPSPZv/Tz9bL+4WNrvxTB45dl+TqQtw+Kr+3k5diIHu6sTFB9sFf+3Be4prJKc/e0UIdMp945liQNleWzE9eyxuXf0jdrEtg1Kl9V84beqYw0sPrLQPoxZo8SEd635GAIEyj0BX7+8ebRR9+0/KEU4bG2aHTze98P4mfeN8tWjvuW2BXm9e+mllS5UOxZVVLxkI9Bv1wKvjL8mFbQu2yWh6OdGUq37vVl2IAWl14uItgV5vA1U9CAJty61US1NtPXvcv/WywsqrMeVRZPHzbb/VLqj+Ula/fKMdxnZG2ebt/+eFuiiPbtcUQJjMcw1000fu29ZJ3rf3iqOn4pC07JAVdTdUFu6dajpgscqHlMGlhdJUgYorqzAQ6ClFM89JhdWGtjZaKApw7OT2e1t6A+LqxMW6H69rgSLRFWhb7q1dP7Nrj8Wtl6YsTiDKTZc/l14tltTvbv/cHV5UV3Oi3eZxRf4XetsPQEhMLlCl09ZnmSVKvzrT0Vrn1FDtxp2BUaUiW4GKKxMKJLzas269sJ1UqaKtAa/dC5F9AXl14mLNj9u7kturK9D23VvbV+yncnvnWkBbqGJ9F5R9udAuLUtzpq3kUqb7wmr6tgkQONOPA9WOkpQHkdq+nXe0opvtPXolO3yhXlT3s/z08cZT3e53/HNZ9trJNt0KVFxZB1UBDfW6X2zOYFtxNIUtD3CLfekUoDwJVt/b2eJ2oGd1PYuVy8jFj3lRs+z188ce/u03sq2AXu7qydPN+m52Krmzx/LWD+rXD5UPpPh5s0Hl1lB7Bl9+/Le/VK+mKFhnm0zUBXEww5NIB/p5Zn1Nsuzbt5Vn9kV3rXpRI8Kyk1YHJxe3Bar0VOWY6ETfyrrFag3QWVquW9m+VthK0OUGfnS+2cK+/N6WnsCu1XUXK36s76bpdAVal/vwm585pVy1LN/as8fy1ov35a/XF0nyn4sNntDqvRFtWYLtz6rnEwQInTmehVduRhTHHWrfrjqOcneivdCm9PL6F0Wg5fKyy+sCFVe2TXVgvO1W7Yub2qt6WmHVc1U1tC+/t0UO9KyubyvbAj2+fbu/K9CunZRqk/e4b+sXV/qVgnw7+/W6LmraLPLqH7PsYn2U3PMJAoTOPLMx3VDu/mqXFetDNHV8THP9TBuDr/RodbmyuBGouLItqlPQjlq1EYpt39YKqw+0bEP78ntb5EDP6vq2sn0Kv+HYT31JOdTtCLRzgfHmH59vDSbvcd/W64PefFeK22EXmjN4ZVXNgWrPoFTtk221CxA6s80H+vqlexqDtnce6gNA7U5tndGHW28NY+p2v0ag4sq2KDNds6pHr8rKtcJuDQNvCrYvv7dFDvSsrm8r8iXO1V4zmrIT0I6yv/nM1ucg7/HOrVe3r05cLBa2tmwONw/0tXcMri1FoBAPs06o/Fp1INpeVqz7jeg83TdbAu12PxuBijeQmnV3t6kVduu6qn7kay/QntX1bUX1o34bvhop1hFoWwj9TEASaL3HfVuvDjeLbVw4KD6H9npn8+6LK+0qAwKFpTDzjPTl3fSibx0t0B6ZeRBozwXQzEygemawQHtW17cV/aT41fZ4UjuxFwVa3c7bO/3Zv9y6BtrZ476tFz/tPVd+xWq+pdu+3FzvbG6+l8enbV0hUFgKkwv05heeuUcRVdu7uwLd7kQ7T+GPEuiuHlndQpYGH+rb1E/hz4iZOU/hc26Wz0m2fxF6BVrudvHo6/ZNpM4e9229XPuZi60oH32qTVZXnMvjU6mupBpEoBAPUwt0vz0yKmjvinfPirc7ka6KNn+UQI+adqTvBlKzbv3GlX5/uVOuGW8iNdz8woPtLvUKVPH3tkA7e9y39fLH4iGi6lT93pOdz3G/fa+2noO9ez/7YrNNBArxMbVAywErZ/TfuwIVD1S0YUzlWbeRQI+a66f3AmhTXnWb7TAm/UiuZxhT973bG94O9Kyubys9ky21i3sF2j5G1B0HaliotvbaiyzqfpY3lNozeP0zbMYEIFCIlKkFWj3QonWwsnP1OungH55+5MV2pFOpgsPtgfQ7BCqvrEEeQa+92BkEpHfynQPpq/L2D6TvBOwG0isjWw9fv/TASVV9xWJ16GtXoKXYXmit2bPHPVvXR4DW46ja/WyuP19QF6ij95sHUhEoxMdMszGt7stP3W5eUh5JFJxUPKVUzmFR9C7lUc7zivWOEqi8spr+G0jNujdFbB8fbZ+naQp7xKOcbXm3DnJ7AnaPcpaLH80O/1fp4HL80uvnmx1tA+KduvdfaW7GKwLt7HHP1ttnkNpnxdTKVPWqVHf+0Ob/Pt+8gEAhUuacTKSm7CySkxqUSZC6bz1SoPLKKjozemiW2zWZyJne1AV5zduXEfoC8up6FjcVWg0g6iSUgHCdRGXnxB49hWo+FHWOgLYKVb2KO73rEwQInemHMXUMWn0P8Fa/0WdmO9N976nmZsWRApVXVmEg0B9rnz2Vx1NureSMslCZGK5zobI3IK6ub/HF9t2SnLSAVm61Nn/8ZF1ZPXvcW6jKrOpMJOqO7iuv6sUpEAY3IVCIhxnGgR5eUnXWTJ673W+UJ+bbCXbbGYDvv24hUHllJQYCPdGoRp1QWevk6mTDz6lrvtCsv3sbqz8gra5vcX2Ql2tLnbOz2VEloJe72a29n956/rK7x/2FKlevPkyqXg653r1o0k6orE3ijEAhPuYZSP/a09UXSTz8YrOs229efzofFb6nf63E68W3Ptz3UmYl0J6VNbEjBJp/Xchq+ys9tjr5jc/k+3TsvnaPqkk1xC/HODLQXV3v4sPi/afKmQGrqj1277NXhMB2uYvdyr8gpb0l37PHOwql3IzqDtbSZyGpy1N9pUddRAQKkTLzk0jBs/UETgJ43uO+2VsAlgAC3Q0C9bE6JpiHhYJAd4NAh/HqSU7IYcEg0N0gUHeaq8thfyk9gDsIdDcIdOCaOACFJYNAd4NAB64Jf8KSQaC7QaDuXD+/KkecASwVBAoA4AgCBQBwBIECADiCQAEAHEGgAACOIFAAAEcQKACAIwgUAMARBAoA4AgCBQBwBIECADiCQAEAHEGgAACOIFAAAEcQKACAIwgUAMARBAoA4MjkAn3z7Nmf+J/tr2+dPfsJ21X8/a+qayj428fO/ka9ehXrdWsl3Kz1Iwbpmp/79b9x2Jy+N9/7tc2KPvjr37dbYs+7f1DsZPXf3//q2Q8PWh1AmswhUNVKDgKtOr3KRgDeBLpZ/Qf+qPzRUqBnz37g0y6ba/dm80u1oj+yWOICAgXwwCwCrWSXYy/Qd1852xHoK2f9CfSttnjWAlX3zAxtbxo3NisyWeIEAgXwwDwCbQVoLdBCIFsCfUu0yZtnj9afuP6mQIYCrbb87vc+ddbWQ/re5HXz81/Psh/+Qb3QZIkT+mE8AgVwYh6Btl6yFej3HjvbEWh+At8V6FvWNutgJ9CiIHbn1fre5PtRVcYr5U8mS9xAoAAemEOg//KxVjp2Av3hp/Ljr0/pAs1d8B87ArWWmYCtQHOnWZxWb++NovxN6fOlJkvcQKAAHphDoJ9Q7sRvC/Qt/ZLilgPfzO/TbN9EyhX2Zsdc4vHZu8UN7H/xh7Us3v3uzxU3tP9GDhQC/eGvKbe8u1reEqj+qt3evKkUuVyTyRJ1lz/8/e/97Kb4X292rbMnH/iFcl97roHmlxQ+gkoBDJlFoEU3LX+1FOgHfuH723fhN274RNYRqHgCXxzy5Xzo6/Vb9ZtNW4FcO1WmKshugXYO5Oz2Rl1V+bPJkpaNQL9bb6bZtZ49kQWKPwGsmEWgRfcu+76dQP+u6uWKQDe/bfr+tkuUsUgt5bXSs81lR+X38t3bgU0xf/JXtZLsEmh+E2nrRbu9UXeiPIA2WdLyytkPFo78iPqnodmTf6wNfxIFij8B7JhHoO1g9cHjQJszW02g4h34jXA+sDkXf/fPHitf3YQ+9OdZeUO7OADbDhQayg/hvvtY7x19bRhTdWTruDdvtRup7hWZLNH27+yHv16/9KE/zM/j+/ZEEij+BLBkJoHmfbXo/EMFWr1/S6DiHaSNRKqF1U+vKGMr8zV2Arl2ynPy9iVhf5RDzEED6XPtfbpd6yfMlrS80ly2aC9gVDXR2RNBoPmQVPwJYMNMAm2MNFCg9cW7LYG+JR0wKkelzenwh7++K6Bos3fM0NZAeuuRp+re5IeQ+U2eH37+bCVHkyUNbRmV20tvyXsiCBR/Atgyl0ALe31/sEBfaYeX/4aWEI4XlTFG5fik4grlB/7lf/5+X2Dzb31TSFSyvuV3//rz20qz3BvlGuy/bod9HrWku4PqzayePekK9D+cPfsT9lcgAJJmNoFWJ/F2N5Gy6p2d2y66QBVdaG9r1lYFXqm3Uoxj6gaUcaC9Q0K1LW/NlGK5N+0ogA98uq4XkyU1ryhjBVSkPekI1O34GSBtZhNodVY5SKCtFnSBvikdCApn/sXdopJPSAFdO/JQc23L7aQmDntT/Pbdny3HajarNVlS8YpyCXenQD/8fUmgP7lVeAA4ivkEWp7EDxLo1vXHek3yGbxwBLrhe59v3uvhCDQ/rB4k0IbtQfImS1SBbtne4Aj0I/lnMeDpeoAEmVGgxUn8oGugPQLtOVpULnFqVzT/7n98vjxM6wTsroFmXYFa7Y1K9zFNgyXqKfxW1uAaaHlJg5N4AAtmFGhxEv+fRhCoeAbfvcmuDyDa/Cjdha8TvU+5b5/C2z6Ar5Si62uTJS2NQLse7+yJKNC/fYyTeAAb5hRoJcBhA+mbNfU/kV4hjQOttl0KVBwHWjrqrd75i3feRLLbm9Z7P6wuR5osaWn3+832jvqb9Z+Cak8qlcqPcr45fAYrgJSYVaDlzV/fAu25qqg/aFQNoSqGVGZ//alSL9uB4mbMz/9N+2iSvD/1ln84dBjTm+VQ/HfbB59Mlij7Vws0r9gPfHqzB3/3p8qj8T//9fZt/c/C2+4AQMLMKtDyJotvgfbOzbb9qHszjOls9+H4zrPw5TvEZ+FVrO/C9IwDrZaZLGnQh89rFzY2e/LBx9S39czG1P/EFQB0mVeghcJ8C7R3xFFnNqb26zE+9EdSQJnDqHrHUQL9kPVdbHEcaPtQvcmSGvXSxVv6RFP5nrylFrHvKz04iQewYGaBdibEMMBAoH33kuvpPpsFf/35x85qE4RqgXIWzU8dNR9ozQd//s8td6WzN+/+2c/qBTRaUqFd+333z9SpTos9+dt8Tz6tbbYjUJcPBCBZJhdo7LwZ5Smuydz6AGALArXklSjHmiNQgDFAoHa8+wdRXiJEoABjgECtePeVOEeaI1CAMUCgdvyp/ZTJIYBAAcYAgSYBAgUYAwQKAOAIAgUAcASBAgA4gkABABxBoAAAjiBQAABHECgAgCMIFADAEQQKAOAIAgUAcASBAgA4gkABABxBoAAAjiBQAABHECgAgCPLE+i35i6AP/7iL/7C16oWVCtuvOc9UlNPvlpkOtXisSXGi9hYEGjAIFB/IFALEKgEAo0NBOoPBGoBApVAoLGBQP2BQC1AoBIINDYQqD8QqAUIVAKBxgYC9QcCtQCBSiDQ2ECg/kCgFiBQCQQaGwjUHwjUAgQqgUBjA4H6A4FagEAlEGhsIFB/IFALEKgEAk2Y5GsFgVpAtUgg0IRJvlYQqAVUiwQCTZjkawWBWkC1SCDQhEm+VhCoBVSLBAJNmORrBYFaQLVIINCESb5WEKgFVIsEAk2Y5GsFgVpAtUgg0IRJvlYQqAVUiwQCTZjkawWBWkC1SCDQhEm+VhCoBVSLBAJNmORrBYFaQLVIINCESb5WEKgFVIsEAo0NJhPxBwK1gMlEJBBobCBQfyBQCxCoBAKNDQTqDwRqAQKVQKCxgUD9gUAtQKASCDQ2EKg/EKgFCFQCgcYGAvUHArUAgUog0NhAoP5AoBYgUAkEGhsI1B8I1AIEKoFAYwOB+gOBWoBAJRBobCBQfyBQCxCoBAKNDQTqDwRqAQKVQKCxgUD9gUAtQKASCDRhkq8VBGoB1SKBQBMm+VpBoBZQLRIINGGSrxUEagHVIoFAE2YRtfIPjqT/vQjUAqpFAoEmzCJqBYFOBNUigUATZhG1gkAngmqRQKAJs4haQaATQbVIINCEWUStINCJoFokEGjCLKJWEOhEUC0SCDRhFlErCHQiqBYJBJowi6gVBDoRVIsEAk2YRdQKAp0IqkUCgcYGk4noINCJYDIRCQQaGwhUB4FOBAKVQKCxgUB1EOhEIFAJBBobCFQHgU4EApVAoLGBQHUQ6EQgUAkEGhsIVGdagQ7ZWuQgUAkEGhsIVMe/QMfaWuQgUAkEGhsIVAeBTgQClUCgsYFAdRDoRCBQCQQaGwhUx59ATVaEQFsQaIZA4wOB6iDQiUCgEgg0NhCoDgKdCAQqgUATZhG1gkAnYhGtxTsINGEWUSsIdCIW0Vq8g0ATZhG1gkAnYhGtxTsINGEWUSsIdCIW0Vq8g0ATZhG1gkAnYhGtxTsINGEWUSsIdCIW0Vq8g0ATZhG1gkAnYhGtxTsINGEWUSsIdCIW0Vq8g0ATZhG1gkAnYhGtxTsINGEWUSsIdCIW0Vq8g0ATZhG1gkAnYhGtxTsINGEWUSsIdCIW0Vq8g0Bjg8lEdBDoRDCZiAQCjQ0EqoNAJwKBSiDQ2ECgOgh0IhCoBAKNDQSqg0AnAoFKINDYQKA6CHQiEKgEAo0NBKqDQCcCgUog0NhAoDoIdCIQqAQCjQ0EqoNAJwKBSiDQ2ECgOgh0IhCoBAKNDQSqg0AnAoFKINDYQKA6CHQiEKgEAo0NBKqDQCcCgUog0IRZRK0g0IlYRGvxDgJNmEXUCgKdiEW0Fu8g0IRZRK0g0IlYRGvxDgJNmEXUCgKdiEW0Fu8g0IRZRK0g0IlYRGvxDgJNmEXUCgKdiEW0Fu8g0IRZRK0g0IlYRGvxDgJNmEXUCgKdiEW0Fu8g0IRZRK0g0IlYRGvxDgJNmEXUCgKdiEW0Fu8g0IRZRK0g0IlYRGvxDgJNmEXUCgKdiEW0Fu8g0NhgMhEdBDoRTCYigUBjA4HqINCJQKASCDQ2EKgOAp0IBCqBQGMDgeog0IlAoBIINDYQqA4CnQgEKoFAYwOB6iDQiUCgEgg0NhCoDgKdCAQqgUBjA4HqINCJQKASCDQ2EKgOAp0IBCqBQGMDgeog0IlAoBIINDYQqA4CnQgEKoFAYwOB6iDQiUCgEgg0YRZRKwh0IhbRWryDQBNmEbWCQCdiEa3FOwg0YRZRKwh0IhbRWryDQBNmEbWCQCdiEa3FOwg0YRZRKwh0IhbRWryDQBNmEbWCQCdiEa3FOwg0YRZRKwh0IhbRWryDQBNmEbWCQCdiEa3FOwg0YRZRKwh0IhbRWryDQBNmEbWCQCdiEa3FOwg0YRZRKwh0IhbRWryDQBNmEbWCQCdiEa3FOwg0NphMRAeBTgSTiUgg0NhAoDoIdCIQqAQCjQ0EqoNAJwKBSiDQ2ECgOgh0IhCoBAKNDQSqg0AnAoFKINDYQKA6CHQiEKgEAo0NBKqDQCcCgUog0NhAoDoIdCIQqAQCjQ0EqoNAJwKBSiDQ2ECgOgh0IhCoBAKNDQSqg0AnAoFKINDYQKA6CHQiEKgEAk2YRdQKAp2IRbQW7yDQhFlErSDQiVhEa/EOAk2YRdQKAp2IRbQW7yDQhFlErSDQiVhEa/EOAk2YRdQKAp2IRbQW7yDQhFlErSDQiVhEa/EOAk2YRdQKAp2IRbQW7yDQhFlErSDQiVhEa/EOAk2YRdQKAp2IRbQW7yDQhFlErSDQiVhEa/EOAk2YRdQKAp2IRbQW7yDQhFlErSDQiVhEa/EOAo0NJhPRQaATwWQiEgg0NhISqJGtEOhEIFAJBBobCBSBzgIClUCgsYFAEegsIFAJBBobCBSBzgIClUCgsYFAEegsIFAJBBobCBSBzgIClUCgsYFAEegsIFAJBBobCNRBaT2vbARqsybTrS0TBCqBQGMDgToorecVBGoBApVAoLGBQB2U1vMKArUAgUog0NhAoA5K63kFgVqAQCUQaMKEXitD3GgUQqAWhN5a5gGBJkzotTLEjUYhBGpB6K1lHhBowoReK0PcaBRCoBaE3lrmAYEmTOi1MsSNRiEEakHorWUeEGjChF4rQ9xoFEKgFoTeWuYBgSZM6LUyxI1GIQRqQeitZR4QaMKEXitD3GgUQqAWhN5a5gGBJkzotTLEjUYhBGpB6K1lHvwL9Nr6Y+UPt55fl7zvO8Xv3/7oev3eJ4as2h0+fInQa2WIG41CCNSC0FvLPHgX6DuP1wLd/KQK9HL5y90D1u0OH75E6LUyxI1GIQRqQeitZR58C/SdT65rgb59rjr0LLi6vuOJ7NZXm1enhQ9fIvRaGeJGoxACtSD01jIPngX69rl1o8hr6tFmfWB6dX3n15zX7g4fvkTotTLEjUYhBGpB6K1lHrwK9NZX1uu7PlkL9Kp6sHmtEudGpE86rn0IC/rwmUzEQWk9ryBQC5hMRMKrQN8+d8ev3Hq+9ublO36/felqfTh6eZZz+NBVYQECdVBazysI1AIEKuFXoL/0ctYI9J3H7/y9X1yv7/jl6hZSI9A5biOFrgoLEKiD0npeQaAWIFAJ73fhG4EWl0Nz7vqasnRzKKreWpqK0FVhAQJ1UFrPKwjUAgQqMZ5Ar22OPn83y759LjfmToF+CyzYNNu5izAJWbwCnbvqJiKVlng0owi0vt++ORJ9kiNQf3AE6qC0nlc4ArWAI1CJ8Y5AG/KrngjUGwjUQWk9ryBQCxCoxAQCzZWJQL2BQB2U1vMKArUAgUpMJNB29BJ34QeCQB2U1vMKArUAgUpMJVDGgfoCgToorecVBGoBApUYTaCNSMsfeBLJFwjUQWk9ryBQCxCoxHhHoPVd+Gvr/IkknoX3BQJ1UFrPKwjUAgQqMepA+rtezm791bny5P3qes1sTIEReq0McaNRCIFaEHprmYcRr4Feqx5Furu4636L+UCDI/RaGeJGoxACtSD01jIPY95E+sHvnFPnoGdG+tAIvVaGuNEohEAtCL21zAPfiZQwodfKEDcahRCoBaG3lnlAoAkTeq0McaNRCIFaEHprmQcEmjCh18oQNxqFEKgFobeWeUCgCRN6rQxxo1EIgVoQemuZBwSaMKHXyhA3GoUQqAWht5Z5QKAJE3qtDHGjUQiBWhB6a5kHBJowodfKEDcahRCoBaG3lnlAoAkTeq0McaNRCIFaEHprmQcEmjCh18oQNxqFEKgFobeWeUCgscFkIg5K63kFgVrAZCISCDQ2EKiD0npeQaAWIFAJBBobCNRBaT2vIFALEKgEAo0NBOqgtJ5XEKgFCFQCgcYGAnVQWs8rCNQCBCqBQGMDgToorecVBGoBApVAoLGBQB2U1vMKArUAgUog0NhAoA5K63kFgVqAQCUQaGwgUAel9byCQC1AoBIINDYQqIPSel5BoBYgUAkEGhsI1EFpPa8gUAsQqAQCjQ0E6qC0nlcQqAUIVAKBJkzotTLEjUYhBGpB6K1lHhBowoReK0PcaBRCoBaE3lrmAYEmTOi1MsSNRiEEakHorWUeEGjChF4rQ9xoFEKgFoTeWuYBgSZM6LUyxI1GIQRqQeitZR4QaMKEXitD3GgUQqAWhN5a5gGBJkzotTLEjUYhBGpB6K1lHhBowoReK0PcaBRCoBaE3lrmAYEmTOi1MsSNRiEEakHorWUeEGjChF4rQ9xoFEKgFoTeWuYBgSZM6LUyxI1GIQRqQeitZR4QaMKEXitD3GgUQqAWhN5a5gGBxgaTiTgorecVBGoBk4lIINDYQKAOSut5BYFagEAlEGhsIFAHpfW8gkAtQKASCDQ2EKiD0npeQaAWIFAJBBobCNRBaT2vIFALEKgEAo0NBOqgtJ5XEKgFCFQCgcYGAnVQWs8rCNQCBCqBQGMDgToorecVBGoBApVAoLGBQB2U1vMKArUAgUog0NhAoA5K63kFgVqAQCUQaGwgUAel9byCQC1AoBIINDYQqIPSel5BoBYgUAkEmjCh18oQNxqFEKgFobeWeUCgCRN6rQxxo1EIgVoQemuZBwSaMKHXyhA3GoUQqAWht5Z5QKAJE3qtDHGjUQiBWhB6a5kHBJowodfKEDcahRCoBaG3lnlAoAkTeq0McaNRCIFaEHprmQcEmjCh18oQNxqFEKgFobeWeUCgCRN6rQxxo1EIgVoQemuZBwSaMKHXyhA3GoUQqAWht5Z5QKAJE3qtDHGjUQiBWhB6a5kHBJowoVLRwewAACAASURBVNfKEDcahRCoBaG3lnlAoAkTeq0McaNRCIFaEHprmQcEGhvBTybizzFGaxoSQqAWMJmIBAKNDQTqoLSeVxCoBQhUAoHGBgJ1UFrPKwjUAgQqgUBjA4E6KK3nFQRqAQKVQKCxsQyBhhFCoBYgUAkEGhsI1F8IgVqAQCUQaGwgUH8hBGoBApVAoLGBQP2FEKgFCFQCgcYGAvUXQqAWIFAJBBobCNRfCIFagEAlEGhsIFB/IQRqAQKVQKCxgUD9hRCoBQhUAoEmDAJFoObQhyQQaMIgUARqDn1IAoEmDAJFoObQhyQQaMIg0BkF6m9NE0EfkkCgCYNAEag59CEJBJowCBSBmkMfkkCgCYNAEag59CEJBJowCBSBmkMfkkCgCYNAEag59CEJBJowCBSBmkMfkkCgCYNAEag59CEJBJowCBSBmkMfkkCgscFkIv5CCNQCJhORQKCxgUD9hRCoBQhUAoHGBgL1F0KgFiBQCQQaGwjUXwiBWoBAJRBobCBQfyEEagEClUCgsYFA/YUQqAUIVAKBxgYC9RdCoBYgUAkEGhsI1F8IgVqAQCUQaGwgUH8hBGoBApVAoLGBQP2FEKgFCFQCgcYGAvUXQqAWIFAJBBobCNRfCIFagEAlEGjCIFAEag59SAKBJgwCRaDm0IckEGjCIFAEag59SAKBJgwCRaDm0IckEGjCIFAEag59SGKQQG9e8ViSUeHDl0CgCNQc+pCEjUB/9M81YR6+cNuX/RdoHPjwJRAoAjWHPiRhJdCP394a9PDSyRUCjRsEikDNoQ9J2Al01Rj01ZOrFQKNHASKQM2hD0lYCnR1/KX8pxvnVysEGj0IFIGaQx+SsBXo6raXshtPF/pc7d3PTaSoQaAI1Bz6kISNQA8vFtp8sNTn6r6XxiyYX/jwJRAoAjWHPiRhN4zphVVDTPpc1IfPZCL+QgjUAiYTkbAcB7pf6fP4i6OVaBQQqAQCRaDmIFAJ24H0B/nd99WJsYozFghUAoEiUHMQqIT1k0jXC4OeGak4Y4FAJRAoAjUHgUqYCfTwmYcayntI9+Y/Psxd+OlBoP5CCNQCBCphJtBiAFMXxoHOAAL1F0KgFiBQCQQaGwjUXwiBWoBAJRBobCBQfyEEagEClTAU6AOnJE4j0OlBoP5CCNQCBCrBhMqxgUD9hRCoBQhUAoHGBgL1F0KgFiBQCQQaGwjUXwiBWoBAJRBowiBQBGoOfUjC+CbS6S93byVxEyluECgCNYc+JGE8jOm2L3cHMzGMKW4QKAI1hz4kgUATBoEiUHPoQxIINGEQKAI1hz4kYTyZyMNXtClFHmIykfhBoAjUHPqQBHfhEwaBIlBz6EMSCDRhECgCNYc+JIFAEwaBIlBz6EMSCDRhECgCNYc+JMFsTAmDQBGoOfQhCeYDTRgEikDNoQ9JINDYYDIRfyEEagGTiUgg0NhAoP5CCNQCBCph/62cDKSfFwTqL4RALUCgEtyFjw0E6i+EQC1AoBIINDYQqL8QArUAgUog0NhAoP5CIwnUXygkEKiEvUBvfuGZhx7+4hvjFGcsEKgEAkWg5iBQCVuBvnqyugO/9+hYRRoDBCqBQBGoOQhUwk6gh08pg5huj+YePAKVQaAI1BwEKmEn0IvaMNAT4xXLNwhUAoEiUHMQqISVQA8qc56q/r8wYsH8gkAlECgCNQeBSlgJND8APf5i8ePr56M6BEWgEggUgZqDQCVsBJo/0Nle+LzIo5yxg0ARqDn0IQlLge491/x2/SQCjRwEikDNoQ9JWApUUab+W+Dw4UsgUARqDn1IwvIaqH4EyjXQuEGgCNQc+pCE7V34M80vmk1Dhw9fAoEiUHPoQxJWAs3H0b+/vIt0+IIq0+Dhw5dAoAjUHPqQhI1AD795KX+Q8/RDDz10z+b/YxHNCsqHL4FAEag59CEJ22FMkc5Lz4cvgUARqDn0IQkEmjAIFIGaQx+SQKAJg0ARqDn0IQkrgcb77fB8+BIIFIGaQx+SYEb6hEGgCNQc+pAEAo0NJhPxF0KgFjCZiAQCjQ0E6i+EQC1AoBIOAv3LL37xv0Uw9FMDgUogUARqDgKVsBXojafrG+/XY7h5VINAJRAoAjUHgUpYCnS/Hbl0ENFcIghUBIEiUHMQqISdQPeVoZ9MJjIPCNRfCIFagEAlrAR6/WQr0HxikXgOQRGoBAJFoOYgUAkrgeYHoPdfKWdSPrwY0xcbI1AJBIpAzUGgElazMT1VTGFXTUXPV3rMAwL1F0KgFiBQCYev9ND/iwMEKoFAEag5CFQCgcYGAvUXQqAWIFAJ29mYLjTmPOi5Bnpt/bH6x29/dL1+7xPyb9OCQCUQKAI1B4FKWH6p3Oq2lyqB3vi4fBf+nccbgV5eF9wt/TYxCxKoRxAoAjWHPiRh+6Vyq9XpB0+u9v7tg/mPF7qRdz65rgV6dX3HE9mtr1a/679NDR++BAJFoObQhySsv1Ru90zKb59b14qsD0Wvru/82vZvk8OHL4FAEag59CEJuyeRtDnpuw8i3frKen3XJyuBXqtUuVHnk9u/TQ4fvgQCRaDm0IckLJ+FV45Bj7/UefXtc3f8yq3nK4FebS9+fmz7t8nhw5dAoAjUHPqQhPV0djeeLr7S+L4Xhdfe/qWXs0agl1tl3r392+Tw4UsgUARqDn1Iwkqg33j06Gc3a4E2It0cfL7vO/pv9sUcCh++BAJFoObQhyQsH+U8eui8g0C/BYshC8WNRqHgBTr3xwlGGArU6NkjjkDjgSPQ0AUaEvQhCYdHOXeDQOMBgSJQc+hDEpan8EfPoYxA4wGBIlBz6EMSdk8inVztPXvECpW78JUyq7vw6m+Tw4cvgUARqDn0IQkrgd58LZ+S/tS9D1U8LNyUZxzoyDCZiL8QArWAyUQkbGdjOupZzlagPIk0DgjUXwiBWoBAJcYTKM/CjwMC9RdCoBYgUInxBLpx5VqbjWnNbEw+QKD+QgjUAgQqYSXQB07pnN4p0FvaDKC3mA/UDwjUXwiBWoBAJayfhT+KVqDMSD8KCNRfCIFagEAlvAs0TBCoBAJFoOYgUAkEGhsI1F8IgVqAQCUQaGwgUH8hBGoBApVAoLGBQP2FEKgFCFQCgcYGAvUXQqAWIFAJBBobCNRfCIFagEAlEGjCIFAEag59SAKBJgwCRaDm0IckEGjCIFAEag59SAKBJgwCRaDm0IckEGjCIFAEag59SGKIQA//y5HfkBQKfPgSCBSBmkMfkrAU6M1LD5bzMD30wKmTBl8xFwp8+BIIFIGaQx+SsBPowdHzgYYJH74EAkWg5tCHJKwEev0kAl0SCBSBmkMfkrAS6P7WjPS3I9CoQaAI1Bz6kITl98KvVnv3bP45dmrz796FMQvmFz58CQSKQM2hD0nYfifSmSy7uNp7rjidj+cMng9fxLpWJtbH6CEEagF9SMJSoLk69wuN5jeUzoxYML8s6MOfczKRifUxegiBWsBkIhKWAs0POjfHnifK326/MmLJvIJAJRAoAjUHgUo4CLQyZ/VbHCBQCQSKQM1BoBK2N5HOlP9dKE7hEegMIFB/oeAFahSaCAQqYTWM6WI+dOlK/t/eI0+fRKCzgED9hRCoBQhUwkqg+YNIJ5TnkU6MWDC/IFAJBIpAzUGgElYCrc7h8+FMBfEMBEWgEggUgZqDQCXsnoU/fDofx5QdlI903j9aqbyDQCUQKAI1B4FK2E5nd7MYuXTjgdXq2KPjlGgUEKgEAkWg5iBQCSZUjg0E6i+EQC1AoBIINDYQqL8QArUAgUrYC/T1Lzzz0E998Y1xijMWCFQCgSJQcxCohKVADy/VU4LuxXQJdEkC9QgCRaDm0IckLO/CP6XOBhrNk/B8+DIIFIGaQx+SsB4HqhDPOHo+fBEEikDNoQ9JWD+JlHPqJAPplwACRaDm0IckrJ+FP/5i8ePr56M6BOXDl0CgCNQc+pCE7Yz0zYXPw4tMJhI7CBSBmkMfknCYkb4iqu/04MOXQKAI1Bz6kITDhMrib4HDhy+BQBGoOfQhCctroPoRaDwDmfjwJRAoAjWHPiRhexe+/R65i3ypXOwgUARqDn1Iwm4g/QurVfUA0uELUY2k58OXQKAI1Bz6kISZQA+feajk5Gq1d+/m/wdWq9VtL8bzQDwfvgQCRaDm0IckzATazEGvw02kGWAyEX8hBGoBk4lIINDYQKD+QgjUAgQqgUBjA4H6CyFQCxCohKFAHzglcRqBTg8C9RdCoBYgUAlmpI8NBOovhEAtQKASCDQ2EKi/EAK1AIFKuAv08Jtf/FI0A0ERqAQCRaDmIFAJq2fhHzh1qv0iD56FnwcE6i+EQC1AoBK209mt7r/S/oZAZwCB+gshUAsQqIS1QFfHX2p+Q6AzgED9hRCoBQhUwl6g9fdxItB5QKD+QgjUAgQq4SDQ6jQegc4DAvUXQqAWIFAJJ4EWp/EINHoQKAI1hz4kYTsj/W+t6tN4BBo9CBSBmkMfkrD+So9Xq680PoNAoweBIlBz6EMS9t+JdON8adBjfKlc7CBQBGoOfUjC4Uvl8snomY1pCSBQBGoOfUjC6Vs569N4BBo3CBSBmkMfknD7WuPqNB6Bxg0CRaDm0IckHL8XvjyNR6Bxg0ARqDn0IQnLyUTaKZTz03gEGjcIFIGaQx+ScJ/O7uYXmc4uchAoAjWHPiTBhMoJg0ARqDn0IQlrgX6zPOr80W++NEZxxoIPXwKBIlBz6EMSlgK9fn7vueKHg9Xq/nFKNAoL+vCZTMRfCIFawGQiEnYCPcif4Sx+2m9+igIEKoFAEag5CFTCSqDFdEwnih8v5jOKPDdWqbyDQCUQKAI1B4FKWAk0P+xc3Z5fBD18ahXVISgClUCgCNQcBCphI9Dcmnv1t8rdeKpyaRQgUAkEikDNQaASthMqX2h+u85sTLOAQP2FEKgFCFTC8VHOzm+Bg0AlECgCNQeBSrgLlCPQeUCg/kII1AIEKmF7DbS9b7TPNdBZQKD+QgjUAgQqYXUXPh+79P5SmsV0TCfGKpV3EKgEAkWg5iBQCSuBXi8mUj526tSp4gfGgc4BAvUXQqAWIFAJuyeRLq5U4jkARaAiCBSBmoNAJewEWo6fr4jnCuiiBOoRBIpAzaEPSVhOJnJ4qfo6pNXeIxH5kw9fBIEiUHPoQxL284F+8zMPPfTQT31pnOKMBR++BAJFoObQhySYUDlhECgCNYc+JIFAEwaBIlBz6EMSCDRhECgCNYc+JGEm0PL7ODf/6pzmUc6oQaAI1Bz6kIShQIun4Iv5lFV4Fj5uECgCNYc+JIFAEwaBIlBz6EMSCDRhEOgiBGoUmqG1JIGZQA+feejhK/m/Og9HM5aeD18CgSLQEVtLEnAXPmEQKAIdsbUkAQKNDSYT8RdCoENaC5OJZAg0PhCovxACHdJaEGg2QKD5BVGugc4AAvUXQqBDWgsCzQYINL8lz134GUCg/kIIdEhrQaAZAo0PBOovhECHtBYEmiHQ+ECg/kIIdEhrQaAZAo0PBOovhECHtBYEmiHQ+ECg/kIIdEhrQaAZAo0PBOovhECHtBYEmiHQ+ECg/kIIdEhrQaAZAo0PBOovhECHtBYEmiHQ+ECg/kIIdEhrQaAZAk0aBIpAR2wtSYBAEwaBItARW0sSGH8n0jb3MKFy9CBQBDpia0kC4xnpJRBo3CBQBDpia0kCBJowCBSBjthakgCBJgwCRaAjtpYkMP5OJAnmA40bBIpAR2wtScCM9AmDQNMRqFHIb2tJAgSaMAgUgWohv60lCRBowiBQBKqF/LaWJECgCYNAEagW8ttakgCBJgwCRaBayG9rSQIEGhtMJuIvhED1kF1rYTKRDIHGBwL1F0KgesiutSDQDIHGBwL1F0KgesiutSDQDIHGBwL1F0KgesiutSDQDIHGBwL1F0KgesiutSDQDIHGBwL1F0KgesiutSDQDIHGBwL1F0KgesiutSDQDIHGBwL1F0KgesiutSDQDIHGBwL1F0KgesiutSDQDIHGBwL1F0KgesiutSDQDIHGBwL1F0KgesiutSDQDIHGBwL1F0KgesiutSDQDIEmDQJFoFrIb2tJAgSaMAgUgWohv60lCRBowiBQBKqF/LaWJECgCYNAEagW8ttakgCBJgwCRaBayG9rSQIEmjBqrYTYn0cPIVA9ZNxaoAaBJgwCRaBayLi1QA0CTRgEikC1kHFrgRoEmjAIFIFqIePWAjUINGEQKALVQsatBWoQaMIgUASqhYxbC9Qg0IRBoAhUCxm3FqhBoLEx0mQiIfbn0UMIVA8Zt5YCJhPJEGh8IFB/IQSqh4xbSwECzRBofCBQfyEEqoeMW0sBAs0QaHwgUH8hBKqHjFtLAQLNEGh8IFB/IQSqh4xbSwECzRBofCBQfyEEqoeMW0sBAs0QaHwgUH8hBKqHjFtLAQLNEGh8IFB/IQSqh4xbSwECzRBofCBQfyEEqoeMW0sBAs0QaHwgUH8hBKqHjFtLAQLNEGh8IFB/IQSqh4xbSwECzRBofCBQfyEEqoeMW0sBAs0QaNIgUASqhYxbC9Qg0IRBoAhUCxm3FqhBoAmDQBGoFjJuLVCDQBMGgSJQLWTcWqAGgSYMAkWgWsi4tUANAk0YBIpAtZBxa4EaBJowCBSBaiHj1gI1CDRhECgC1ULGrQVqEGjCIFAEqoWMWwvUINCEQaAIVAsZtxaoQaAJg0ARqBYybi1Qg0ATBoEiUC1k3FqgBoHGBpOJ+AshUD1k3FoKmEwkQ6DxgUD9hRCoHjJuLQUINEOg8YFA/YUQqB4ybi0FCDQbVaC3nl+XvO87xe/f/uh6/d4nvKzaGgQqgUARqBYybi0FCDQbVaDvPK4J9HL5y91e1m0LApVAoAhUCxm3lgIEmo0q0LfPVYeeBVfXdzyR3frqev0xLyu3BIFKIFAEqoWMW0sBAs1GFeg19WhzczhamPPq+s6veVm7HQhUAoEiUC1k3FoKEGg2qkCvqgeb1ypxbkT6pJe124FAJRAoAtVCxq2lAIFmowr08h2/3/5ytT4cvTzLOTwClUCgCFQLGbeWAgSajSnQdx6/8/d+cb2+45erW0iNQOe4jYRAJRAoAtVCxq2lAIFmYwr07XPVTfi7vlYMaaoOPK+u1VtLU4FAJRAoAtVCxq2lAIFmYwr02ubo83ez7NvncmPuFOi3wIJNs/W+zizM/jx6CIHqoflbYpyMItD6fvvmSPRJjkCDhCNQBKqFjFsL1EzwKGd+1ROBhggCRaBayLi1QM0EAs2ViUBDBIEiUC1k3FqgZiKBtqOXuAsfDggUgWoh49YCNVMJlHGgAYJAEagWMm4tUDOaQJuT9vIHnkQKEASKQLWQcWuBmvGOQOu78NfW+RNJPAsfIAgUgWoh49YCNaMOpL/r5ezWX50rT96vrtfMxhQYCBSBaiHj1gI1Y87GVD2KdHdx1/0W84EGBwJFoFrIuLVAzZg3kX7wO+fUOeiZkT40ECgC1ULGrQVq+E6khEGgCFQLGbcWqEGgCYNAEagWMm4tUINAY4PZmPyFEKgesoPZmDIEGh8I1F8IgeohOxBohkDjA4H6CyFQPWQHAs0QaHwgUH8hBOoQGqMlxgsCjY2Rmm2IXXX0EAJ1CI3dEuMCgcYGAvUXQqAOobFbYlwg0NhAoP5CCNQhNHZLjAsEGhv2zTbEXhhGCIE6hAa0xAWCQGMDgfoLIVCH0ICWuEAQaGwgUH8hBOoQGtASFwgCjQ0E6i+EQB1CA1riAkGgsYFA/YUQqENoQEtcIAh0+YTYC8MIIVCHEKgg0OUTYi8MI4RAHUKggkCXT4i9MIwQAnUIgQoCXT4h9sIwQgjUIQQqCHT5hNgLwwghUIcQqCDQ5RNiLwwjhEAdQqCCQJdPiL0wjBACdQiBCgJdPiH2wjBCCNQhBCoIdPmE2AvDCCFQhxCoINDlE2IvDCOEQB1CoIJAl0+IvTCMEAJ1CIEKAl0+IfbCMEII1CEEKgg0NphMxF8IgTqEBrTEBYJAYwOB+gshUIfQgJa4QBBobCBQfyEE6hAa0BIXCAKNDQTqL4RAHUIDWuICQaCxgUD9hRCoQ2hAS1wgCDQ2EKi/EAJ1CA1oiQsEgcYGAvUXQqAOoQEtcYEg0NhAoP5CCNQhNKAlLhAEGhsI1F8IgTqEBrTEBYJAYwOB+gshUIfQgJa4QBBobCBQfyEE6hAa0BIXCAKNDQTqL4RAHUIDWuICQaBRE2IHiyiEQB1CoIJAoybEDhZRCIE6hEAFgUZNiB0sohACdQiBCgKNmhA7WEQhBOoQAhUEGjUhdrCIQgjUIQQqCDRqQuxgEYUQqEMIVBBo1ITYwSIKIVCHEKgg0KgJsYNFFEKgDiFQQaBRE2IHiyiEQB1CoIJAoybEDhZRCIE6hEAFgUZNiB0sohACdQiBCgKNmhA7WEQhBOoQAhUEGhvaFA4hdrCIQgjUISS3xFRBoLGBQP2FEKhDSG6JqYJAYwOB+gshUIeQ3BJTBYHGBgL1F0KgDiG5JaYKAo0NBOovhEAdQnJLTBUEGhsI1F8IgTqE5JaYKgg0NhCovxACdQjJLTFVEGhsIFB/IQTqEJJbYqog0NhAoP5CCNQhJLfEVEGgsYFA/YUQqENIbompgkBjA4H6CyFQh5DcElMFgcYGAvUXQqAOIbklpgoCjZoQO1hEIQTqEAIVBBo1IXawiEII1CEEKgg0akLsYBGFEKhDCFQQaNSE2MEiCiFQhxCoINCoCbGDRRRCoA4hUEGgURNiB4sohEAdQqCCQKMmxA4WUQiBOoRABYFGTYgdLKIQAnUIgQoCjZoQO1hEIQTqEAIVBBo1IXawiEII1CEEKgg0akLsYBGFEKhDCFQQaNSE2MEiCiFQhxCoINDYYDIRfyEE6hCSW2KqINDYQKD+QgjUISS3xFRBoLGBQP2FEKhDSG6JqYJAYwOB+gshUIeQ3BJTBYHGBgL1F0KgDiG5JaYKAo0NBOovhECHhDYtsTeUDAg0NhCovxACHRJCoBkCjQ8E6i+EQIeEEGiGQOMDgfoLIdAhIQSaIdD4QKD+Qgh0SAiBZgg0PhCovxACHRJCoBkCjQ8E6i+EQIeEEGiGQCNnrr6zkBACHSuUDAg0akLsOxGFEOhYoWRAoFETYt+JKIRAxwolAwKNmhD7TkQhBDpWKBkQaNSE2HciCiHQsULJgECjJsS+E1EIgY4VSgYEGjUh9p2IQgh0rFAyINCoCbHvRBRCoGOFkgGBRk2IfSeiEAIdK5QMCDRqQuw7EYUQ6FihZECgURNi34kohEDHCiUDAo2aEPtORCEEOlYoGRBobDCZiL8QAh0SYjKRDIHGBwL1F0KgQ0IINEOg8YFA/YUQ6JAQAs0QaHwgUH8hBDokhEAzBBofCNRfCIEOCSHQDIHGBwL1F0KgQ0IINEOg8YFA/YUQ6JAQAs0QaHwgUH8hBDokhEAzBBofCNRfCIEOCSHQDIHGBwL1F0KgQ0IINEOg8YFA/YUQ6JAQAs0QaHwgUH8hBDokhEAzBBo5c/WdhYQQ6FihZECgURNi34kohEDHCiUDAo2aEPtORCEEOlYoGRBo1ITYdyIKIdCxQsmAQKMmxL4TUQiBjhVKBgTqmWmb18TdYmkhBDpWKBkQqGembV4Td4ulhRDoWKFkQKCembZ5TdwtlhZCoGOFkgGBemba5jVxt1haCIGOFUoGBOqZaZvXxN1iaSEEOlYoGRCoZ6ZtXhN3i6WFEOhYoWRAoJ6ZtnlN3C2WFkKgY4WSAYF6ZvTmxWQi/kIIdEiIyUQyBOodozY4ZE1tszXdGiEEOrVAjda0BBCoZ/y1nJ63I1B/IQQ6JIRAMwTqHX8tp+ftCNRfCIEOCSHQDIF6x1/L6Xk7AvUXQqBDQoMFapIJHQTqGaOWM2RNCNRfCIEOCSHQDIF6x6jlDFkTAvUXQqBDQgg0Q6DeMWo5Q9aEQP2FEOiQEALNEKh3/LScHSEE6i+EQIeEEGiGQL3jp+UgUAQafAiBZgjUO35aDgJFoMGHEGiGQL3jp+UgUAQafAiBZgjUO35aDv0ZgRJCoMGAQAkJINCwQ5P1WncQqGembV4Tbm2JIQQadmiyXusOAvXMtM1rwq0tMYRAww5N1mvdQaCembZ5Tbi1JYYQaNihyXqtOwjUM9M2rwm3tsQQAg07NFmvdQeBemba5jXh1pYYQqBhhybrte4gUM9M27wm3NoSQwg07NBkvdYdBOqZaZvXhFtbYgiBhh2arNe6g0A9M23zmnBrSwwh0LBDk/VadxCoZ6ZtXhNubYkhBBp2aLJe6w4C9cy0zWvCrS0xhEDDDk3Wa91BoJ4ZvXkxmYi/EAIdEmIykQyBesdPy0GgCDT4EALNEKh3/LQcBIpAgw8h0AyBesdPy0GgCDT4EALNEKh3/LQcBIpAgw8h0AyBesdPy0GgCDT4EALNEKgNfhoFAg0nhECHhBBohkBt8NMoEGg4IQQ6JIRAMwRqg59GgUDDCSHQISEEmiFQG/w0CgQaTgiBDgkh0AyB2uCnUSDQcEIIdEgIgWYI1AY/jQKBhhNCoENCCDRDoDb4aRRem1doRYoshEDDDvnotSODQM0JsHmFVqTIQgg07JCPXjsyCNScAJtXaEWKLIRAww756LUjg0DNCbB5hVakyEIINOyQj147MgjUnACbV2hFiiyEQMMO+ei1I4NAzQmweYVWpMhCCDTskOmKZmRCgX77o+v1e58YZdXTMGHLoT8jUEIIVOXyuuDuMdY9DRO2HPozAiWEQBWuru94Irv11fX6YyOsfBombDn0ZwRKCIG2vPN4ac6r6zu/5m2lE36UIYYCLFJkIQQadmj6IlkzlUCvVeLciPRJbyuduHJDCwVYpMhCCDTs0PRFsmYqgV6tL35e9ngOP3HlhhYKsEiRhRBo2KHpi2TNVAK93ArU322kiSs3jBCTifgLIdAhoUkmE/GzougFeuv5+sDzPQ6cLAAADhFJREFU6vp93/G++pTYNNu5i7AYNgKduwgRQ0vMwhDot5zwXsZIoNn6A4EOYYkt0Y+LOAINmCU227lAoEOgJWZhHIFOwIKOVz022wXVihuyQJOvFplOtSDQDIHGBwL1BwK1AIFKTHcX/mP1D3M8zLmgPoFA/YFALUCgElGPAzVnQX0CgfoDgVqAQCWifhLJnAX1CQTqDwRqAQKViPpZeHMW1CcQqD8QqAUIVGLC2ZjWM87GtKA+gUD9gUAtQKASkwn01qzzgS6oTyBQfyBQCxCoRCIz0tMnJJKvFQRqAdUiwXciJUzytYJALaBaJBBowiRfKwjUAqpFAoEmTPK1gkAtoFokEGjCJF8rCNQCqkUCgSZM8rWCQC2gWiQQaMIkXysI1AKqRQKBJkzytYJALaBaJBBowiRfKwjUAqpFAoEmTPK1gkAtoFokEGjCJF8rCNQCqkUCgSZM8rWCQC2gWiQQaGwwmYg/EKgFTCYigUBjA4H6A4FagEAlEGhsIFB/IFALEKgEAo0NBOoPBGoBApVAoLGBQP2BQC1AoBIINDYQqD8QqAUIVAKBxgYC9QcCtQCBSiDQ2ECg/kCgFiBQCQQaGwjUHwjUAgQqgUBjA4H6A4FagEAlEGhsIFB/IFALEKgEAo0NBOoPBGoBApVIRKAAABOBQAEAHEGgAACOIFAAAEcQKACAIwgUAMARBAoA4AgCBQBwBIECADiCQAEAHEGgAACOIFAAAEcQKACAIwgUAMARBAoA4AgCBQBwBIECADiyAIHe+sq59fqf/vfuC9fWH5u+NKEg1soPfmez8L1PfGeeIoWAWC29LSgZ+mvg6vruyUsTClKt3Hp+XfK+shfFL9AfPF7uUEeW7zyesEDFWrmqf/YJIlZLbwtKhv4aePtcugIVa+Wdxxcm0M1fhLtezm59db1+Un/hnU8m3CXEWrm2Xv+z/5vd+qt0+4RYLb0tKBn6ayA/3qKxqLXy9jn98CN6gV5b3/H7+f+Xtz7ozZ/OhAUq1kr9y9XqxfQQq6WvBaVDfw3k5yzUyt3aUr0+ohdoawX1L8Otr6zXd30yXYFKtbI5+XhS/yE5xMYit6CU6K2Bdx6/818lK1C5Vq5uSSV6gdbou/n2uTt+ZXMInqxAa0QppCvQGrFa0hVoTacGLq+fTPe4vEavlctbZ29LEejGluoH/fYvvZwh0O1aqXj7XOICFatFrquU6NTAtY06kheoXiubY/Lf+8X1+o5frp26EIH+4Pn1nV/bWoZApVrJ8j+p0tJ0EKulp64SolMD7zy+OdpKXaBbtVLcWsm5q1q4CIFey0cVdFp/6gKVa6VoAynXi1gtfXWVDkINXM7bSdoC7dTKZsEdv5tl3z63mGFMOdfe+082fxK27ywnL1CxVvLhXUlf6xOrpaeuEqJbA9eKdpK4QLdrpT57ay6DLUKgG25d7ozNSV2gWV+tpDqIqUGolp6FSaHXwK3ni1/SFmjW2y7qelmKQIV7AAhUqJXN8WfimsjhLpKIVgPVM5zJC7SnXdT35hcj0O4YDASadWrlB4/jzxzGMYkoNfD2ufJcFYHubiwIdNlsD49d3/nyfIUJBwQqotRAPW9C2nMnFCxaoK0lO38qExZoT61s/HlXyreaxWrZ0YISQayB5AW6u7E0P8QuUPW22JYuExaoXCvvPJ5mV2gRq6W/BaXCrhpI9a/KEY2lflA+foFurHDXy+rArIaUBSrWSuoD6Huqpb8FpcKuGkhXoGKt5CdxL6szmkUv0ObZgOLkdCPNZm9TFqhUK81MhglPUyU2Fm1hkvT2oZQFKtfKtWrh3VUVxS/Q7P99pZ1mHYHWdGuleQotYYHKjUVdmCZ9fShpgcq1Un2rQ51ZgEABAOYBgQIAOIJAAQAcQaAAAI4gUAAARxAoAIAjCBQAwBEEmizXT65WqzNzlwIgZhBoslzc+PPE3IUAiBoEmio/+vhqdfuVuUsBEDUINFX2V6vjX567EABxg0AT5fCp1W34E2AYCBQAwBEECgDgCAJNkcNLp1Ybjt33rPVbDzbv6zv3LwZGXThiBUahXds5fGr48IF8HUeXYff7hTJ8498ZvfuI+3f5yzV57IC7feGCQBNkv+2gx5+zfO8yBLrfvxNGiGW4cd5QyvurnUosakgRaL4xxusGCgJNj4srFcsDsUUIND/GG6QkqQzfOGlYmQer3QI9WOkCzYW7Z/uHDqYBgSbHgeZP2yOxXQL1yagCvTjUSEIZDP8wZNmrJ48Q6P62QPNV88hDmCDQ1Cj6/ur9b2x+fP28/SHoEgQ6/BkCd4Ee/lfFjDIXt1eUb41D0DBBoKlR3KI40/3ZkCUIdH/wJADOAn3t/OoogQq6HF5gGAkEmhqFNDsdvTjqufFvNv+efin//bUH8rv097/RBA4v3bNZ8GgjtqqbF7nTL5YZ1SGvP31P7olT9720taUmJK2hu51uYVp57bcmeu2BfLV7pz97pd3JUjndOzb5i6Whyp+KTe5VBRXeKRS0U4b2tPsfKX+UOn8F2li/QPMSbP3pyOuMxx6CBIGmRmGIzglhLtCf+Xh9TfRH9XFSc9xT3xm+/VVVoJ97Sou1Aj18qjHF9qGTLtCtNXS30y1MI6/CRsXjqG1EMWOvQA+aJYVAf7t6896jPe8UCtopQ2vGMxfbDXbma9kvtnOxU6Tt4h3/zKYejj1SZ4rNDRl2BWOBQJOjvAl//Nkr3YWVINSBiGX/V0fWtAJVuNCkLuir6/R8TaDiGrTtdAtTy+ugiWhrKgy6U6Ct1tR1V0XoEehWqlMGRaAHK03j2t5vYpsj3d0ClQaZMXNWqCDQ5Ggk1R7hVMYrj8HKX/aere4Xt657/5XstZO6QDfvKO+KnGjWfKH+4f7N2l9ddXr+lkC1NQjb6SnMiXI9txXn3cWZ8ueyKpOvaJdAi/eXr5UCzXe72GBx8N0n0G5BtTJs7deZepF+5r1fXCjYLVD1j099pnDEyFGYDQSaHsohzrFKmWWvVU6jy55b99t27uXrtWgKTRSp4qdmuE15xHXzjx8o+3vXFbpo9DUI2+kWppTXDeVKRHvbev/Yw1/Kt7ZLoMpxYSnQ9tj3TL9A9YJ2y6DsfLPF/Z7jxp0C1Y93q9hUt+7AFgSaIK8pJ8rHWwephzvtKW6+dL/tvxdVgbaSLF4VbkQfJVB9DcJ2uoUp3vdjqru6G9kl0FbJZUy5Xrn5sU+gekG7ZVB2vt5A75XLnQItCnD8c/WndGG7zBAUCDRFDl+9Z+ss8WKrLuUUt1aA0uP3VYWc0BZ1BHrzCw+sOq7QBaqvobsdoTDtIVp9dFceUh//bDtmYJdA22uU2jCuaoN9AtUL2i3D9h20Mzvune8+Ar304D3li9dPrrRr0NxFChAEmig3L9UOLXqr0qe37qxsVKCOelSHMe0S6OvPNI42FqiwnW5hFHnVx2TtktPPHj2MSTkdVgWqbtBCoMIRaH2b/2DVc+enqeztvdsSbvuhyGPPYH4QaLoclg4tFLBDoCf6BdqKZkug188rK9glUG0NBgI9oV0krNesLNp7/1HXQHcIdFMVfQLVd1UogyLQ6mJD54miGgS6HBBo0hR3yfOOuVOg6igaI4FWN/pPf/alo66B6mvobqdfoD9eF73gxtMnlYiqwU4JjI9A63f2C1Qtg3r4nb/zjDAgPsu0FSPQ+EGgiaE/hNjoQtGM4ouavmugfQKthx4dfROpK9Dea6DaHqzuVy/bFtz8woOFRPMj6qMEql4DrSqjew30SIFqZVAFWpzDv7rqOYPffQ301QdPnSxfVD4qroGGCgJNjYvqkduBcAQqjNruuwvfI9Bd+topUGE73cLUXmnHPN187el7yj2qB4u27lFuoSsFUAWqbHCTE97ZJ1CtDJrjinP4B3udt1Og+83ns7Vy7sKHCAJNjcKZe8WD5TcvnVx1r4Gqh2gVfeNAjxSoOk5IXVePQIXtdAvTKK52rLKR+lR3a2zq7nGg7QbPiO/cIVDlEFQ7SNwXTshbdgq0WI82tj9jHGi4INDk0OdTrg631D5dDhzfdOHDF/bu/e03mvd0n0TqEWizgjJuLtC+7WiFaeTVnIAX77pv89qNp+QV7X4Sqcn1vHOXQNuLANVfjcM3mp3sffrS/EkkdYwVTyKFCAJNDmXmjVYuWp/WnkjvPJBucA1Un7NZP3TaKdDudrqF0WdCKq54ant0prMLW+7Rx+YrCI/jHyXQpgzNjfl2spHek+7dAlX35oRyVYX57EIEgabH4dOKIe7XnsOpuNH24eMvaUv2/v3HTYYxvVC9e+9nnlptXQncKdDudrqFaeXVnLsre7T301mzyuItf3JSOgZWzvjPVNF6JoDOO3cKtL1+UP3VaAeM9kpyt0CVMVL3q+cE3EMKEQSaIjcvnSqutJ1+pH54Z7tPl/NrHrtva57OR974kZFAs9eLKTwfudK9CbRboJ3tdAuj3Jxu7oFlN6rpR9v5UYoSnH72yvWOQNsZi6vT7nymz7124tLtd+4UqFKGYsLQU4+0e9l3zHiEQPMSnNRK1D8iCmYGgUJy7NfKc5iR35B20mYfHHAGHyoIFJIjt5t642cE/N71GfwleDAWCBTSY1+9ZzWGQF/ddQZvTSN8CA4ECulRfy/8OAKtxiH5u2h5wAFosCBQSJD98gR7TIHuebtrnt+x4gpooCBQSJDcSRfGEug3Vtot9MFcP8kt+GBBoAAAjiBQAABHECgAgCMIFADAEQQKAOAIAgUAcASBAgA4gkABABxBoAAAjiBQAABHECgAgCMIFADAEQQKAOAIAgUAcASBAgA48v8BFPqlwDx8tXYAAAAASUVORK5CYII=" alt="Syntetyczna ankieta S02; N i B w podtytule. Rozkład średnich bootstrapowych." width="100%" />
-<p class="caption">
-Syntetyczna ankieta S02; N i B w podtytule. Rozkład średnich
-bootstrapowych.
-</p>
-</div>
-</div>
-<div id="permutacja-inny-cel-losowania" class="section level1">
-<h1>Permutacja: inny cel losowania</h1>
-<p>Bootstrap pokazuje zmienność estymaty wokół danych, które
-zaobserwowaliśmy. Permutacja etykiet dwóch grup buduje rozkład zerowy
-statystyki przy założeniu ich wymienialności. To nie jest ten sam
-rozkład ani automatyczny sposób naprawy dowolnych naruszeń założeń testu
-t. W obserwacyjnej ankiecie wymienialność wymaga uzasadnienia; sam brak
-normalności jej nie zapewnia.</p>
-<p>Dla tej demonstracji przyjmujemy mocną hipotezę identycznych
-rozkładów wyników w dwóch grupach. Zostawiamy indeksy, tasujemy tylko
-etykiety i zachowujemy liczebności grup. Tę samą różnicę średnich
-obliczamy przed i po tasowaniu. W eksperymencie z losowym przydziałem
-argumentacja opierałaby się na procedurze przydziału; generator nie
-tworzy takiego rzeczywistego eksperymentu.</p>
-<p>Wybieramy stały porządek etykiet, aby znak różnicy był jawny. Każda
-permutacja przestawia ich kolejność bez zmiany liczby osób. Odczytaj
-obserwowaną różnicę i odsetek co najmniej tak skrajnych bezwzględnych
-różnic; poprawka +1 zapobiega raportowaniu p równego zero w symulacji
-Monte Carlo.</p>
-<pre class="r"><code>grupy &lt;- sort(unique(proba$grupa))
-roznica &lt;- function(g) {
-  mean(wartosci[g == grupy[1]]) - mean(wartosci[g == grupy[2]])
-}
-obserwowana &lt;- roznica(proba$grupa)
-set.seed(2028)
-permutacje &lt;- replicate(B, roznica(sample(proba$grupa)))
-p_perm &lt;- (1 + sum(abs(permutacje) &gt;= abs(obserwowana))) / (B + 1)
-data.frame(pierwsza = grupy[1], druga = grupy[2],
-  roznica = obserwowana, p_monte_carlo = p_perm)</code></pre>
-<pre><code>##       pierwsza druga   roznica p_monte_carlo
-## 1 doświadczeni  nowi 0.4382204         5e-04</code></pre>
-<p>Wartość p jest liczona w modelu zerowym dla wybranej statystyki i
-procedury. Nie oznacza prawdopodobieństwa, że grupy są „takie same”, ani
-że nowy katalog spowodował obserwowaną różnicę. Z05 wymaga własnego
-porównania CI, nie raportu z tej demonstracji. Szczegóły hipotez i
-błędów decyzji są w W03.</p>
-</div>
-<div id="z05-estymacja-na-własnym-wariancie" class="section level1">
-<h1>Z05 — estymacja na własnym wariancie</h1>
-<p>Odczytaj własny CSV, zastosuj reguły C02/C04 i oszacuj średni indeks
-wszystkich osób z ważnym wynikiem. Podaj N, średnią, SD, SE, CI t 95% i
-percentylowe CI bootstrapowe. W bootstrapie użyj B=1999 oraz ziarna
-2027; zachowaj losowanie respondentów ze zwracaniem. Nie zastępuj
-indeksu surową pozycją 3 bez rekodacji.</p>
-<p>Zapisz <code>wyniki/estymacja.csv</code> z dwiema metodami, N,
-estymatą, granicami, poziomem, B i ziarnem oraz
-<code>wyniki/bootstrap.csv</code> ze średnimi replik. W
-<code>wyniki/bootstrap.png</code> pokaż histogram replik z estymatą i
-granicami. Podpisz osie, N, B, scenariusz i syntetyczne źródło. W
-<code>odpowiedzi.md</code> połącz te pliki względnymi odnośnikami.</p>
-<p>Własnymi słowami wyjaśnij, do czego odnosi się 95%, dlaczego B nie
-jest N i czym różnią się SD oraz SE. Oceń precyzję w punktach indeksu,
-opisz możliwe znaczenie praktyczne i jedno ograniczenie planowanej
-próby. Nie raportuj „95% użytkowników ma wynik w przedziale” ani
-„bootstrap usuwa błędy ankiety”.</p>
-<p>Zapisujemy obliczone obiekty; sama obecność histogramu w panelu Plots
-nie zapisuje pliku. Skrypt musi odtworzyć oba CSV i PNG od początku.
-Otwórz pliki w panelu Files i dopiero potem uruchom kontrolę.</p>
-<pre class="r"><code>folder &lt;- &quot;zadania/z05/wyniki&quot;
-dir.create(folder, recursive = TRUE, showWarnings = FALSE)
-utils::write.csv(estymacja, file.path(folder, &quot;estymacja.csv&quot;),
-  row.names = FALSE, fileEncoding = &quot;UTF-8&quot;)
-utils::write.csv(bootstrap, file.path(folder, &quot;bootstrap.csv&quot;),
-  row.names = FALSE, fileEncoding = &quot;UTF-8&quot;)
-ggplot2::ggsave(file.path(folder, &quot;bootstrap.png&quot;), plot = wykres_boot,
-  width = 7, height = 4, dpi = 150)</code></pre>
+<div id="pytanie-jednostka-i-zmienne" class="section level1">
+<h1>3. Pytanie, jednostka i zmienne</h1>
+<p>Analizowane zmienne: <strong>indeks samooceny, wartość odniesienia 3,
+N ważnych indeksów</strong>.</p>
+<p>Przed spojrzeniem na wynik odpowiedz głośno na cztery pytania: kto
+jest obserwacją, co jest zmienną, jaka jest skala i w jakiej jednostce
+pojawi się rezultat. Nazwa kolumny jest technicznym adresem; znaczenie
+pochodzi z operacjonalizacji oraz słownika danych.</p>
 <table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Element</th>
+<th>Pytanie kontrolne</th>
+<th>Odpowiedź w tej historii</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Jednostka</td>
+<td>Co zajmuje jeden wiersz?</td>
+<td>jedna osoba i jedno zadanie</td>
+</tr>
+<tr class="even">
+<td>Samoopis</td>
+<td>Co osoba deklaruje?</td>
+<td>pozycje, częstość, kanały</td>
+</tr>
+<tr class="odd">
+<td>Obserwacja</td>
+<td>Co zapisuje procedura?</td>
+<td>czas i powodzenie</td>
+</tr>
+<tr class="even">
+<td>Granica wniosku</td>
+<td>O czym mówią dane?</td>
+<td>o syntetycznej próbie dydaktycznej</td>
+</tr>
+</tbody>
+</table>
+<p>Skala pomiarowa ogranicza sens działań. Dla kategorii liczymy osoby i
+odsetki; dla uporządkowanych odpowiedzi możemy porównywać kolejność; dla
+czasu sens mają różnice i ilorazy. Indeks 1–5 traktujemy w kursie jako
+przybliżoną zmienną ilościową, ale pamiętamy, że powstał z pozycji
+porządkowych. Nazwanie skali przed analizą chroni przed mechanicznym
+wyborem testu.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="słownik-statystyczny" class="section level1">
+<h1>4. Słownik statystyczny</h1>
+<p>Statystyka jest językiem skrótu. Symbol ma nazwę, znaczenie w badaniu
+i jednostkę. Odczytuj wzór zdaniem, zanim podstawisz liczby.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Nazwa</th>
+<th>Znaczenie w przykładzie</th>
+<th>Jednostka</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\mu_0</annotation></semantics></math></td>
+<td>wartość zerowa</td>
+<td>neutralny punkt skali</td>
+<td>punkty</td>
+</tr>
+<tr class="even">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi></mrow><annotation encoding="application/x-tex">SE</annotation></semantics></math></td>
+<td>błąd standardowy</td>
+<td>zmienność średniej między próbami</td>
+<td>punkty</td>
+</tr>
+<tr class="odd">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math></td>
+<td>statystyka testowa</td>
+<td>różnica w jednostkach SE</td>
+<td>bez jednostki</td>
+</tr>
+<tr class="even">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math></td>
+<td>wartość p</td>
+<td>skrajność wyniku przy H0</td>
+<td>odsetek/proporcja</td>
+</tr>
+</tbody>
+</table>
+<p>Wartość p nie jest prawdopodobieństwem prawdziwości hipotezy.
+Przedział nie jest zakresem środkowych 95% obserwacji. Efekt nie jest
+tym samym co istotność. Te trzy rozróżnienia wracają w każdej
+analizie.</p>
+<p><strong>Notatnik pojęć.</strong> Dla każdego symbolu dopisz jedną
+liczbę z gotowego wyniku i przeczytaj ją bez skrótu. Zamiast „t równa
+się” powiedz „obserwowana różnica leży tyle błędów standardowych od
+wartości zerowej”. Zamiast „V równa się” powiedz „znormalizowana siła
+związku w tabeli wynosi”. Taki przekład jest ważniejszy niż pamięciowe
+odtwarzanie wzoru.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="wzór-czytany-jak-zdanie" class="section level1">
+<h1>5. Wzór czytany jak zdanie</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mfrac><mrow><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>−</mo><msub><mi>μ</mi><mn>0</mn></msub></mrow><mrow><mi>s</mi><mi>/</mi><msqrt><mi>N</mi></msqrt></mrow></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>C</mi><mi>I</mi><mo>=</mo><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>±</mo><msup><mi>t</mi><mo>*</mo></msup><mfrac><mi>s</mi><msqrt><mi>N</mi></msqrt></mfrac></mrow><annotation encoding="application/x-tex">t=\frac{\bar{x}-\mu_0}{s/\sqrt{N}}, \qquad CI=\bar{x}\pm t^{*}\frac{s}{\sqrt{N}}</annotation></semantics></math></p>
+<p>Czytamy od lewej do prawej, nazywając licznik, mianownik i jednostkę.
+Znak wyniku ma sens dopiero po ustaleniu kolejności grup lub kierunku
+skali. Jeżeli we wzorze jest N, chodzi o przypadki rzeczywiście użyte w
+danym obliczeniu, a nie automatycznie o wszystkie wiersze surowego
+pliku.</p>
+<p><strong>Ćwiczenie ustne.</strong> Wskaż w formule estymatę, element
+niepewności i punkt odniesienia. Jeżeli dana metoda ich nie ma, powiedz
+to wprost. Następnie przewidź, co stanie się z wynikiem po zwiększeniu
+N, zmianie jednostki albo odwróceniu kolejności grup.</p>
+<p>Czytanie wzoru ma pięć kroków: (1) nazwij wynik po lewej stronie, (2)
+nazwij obserwowane wielkości po prawej, (3) wskaż porównanie lub wartość
+zerową, (4) ustal jednostkę, (5) powiedz, jaka zmiana danych zwiększa
+wynik. Nie wykonujemy ręcznie długich obliczeń. Wzór ma odsłonić logikę
+liczby zwracanej przez gotową funkcję.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="gotowy-skrypt-pomocniczy" class="section level1">
+<h1>6. Gotowy skrypt pomocniczy</h1>
+<p>Pierwszy chunk materiału załadował towarzyszący plik
+<code>analiza.R</code>. Zawiera przygotowanie danych, obiekty i funkcje
+potrzebne na zajęciach. Uruchamiasz kolejne fragmenty i odczytujesz
+wynik. Nie implementujesz testu ani pętli permutacyjnej.</p>
+<pre class="r"><code>wynik_glowny</code></pre>
+<pre><code>##     N srednia         SE   CI_dol  CI_gora
+## 1 147 3.29229 0.05994961 3.173809 3.410771</code></pre>
+<p>W zadaniu indywidualnym analogiczny skrypt powstaje przez
+<code>przygotuj_zadanie()</code>. Wolno zmienić jedynie wartości
+oznaczone komentarzem jako parametry. Dzięki temu przedmiot ocenia
+rozumienie wyniku, a nie biegłość w programowaniu.</p>
+<p>Po zmianie parametru uruchom cały skrypt od początku. Pojedyncze
+obiekty pozostawione w Environment mogą pochodzić ze starszej próby,
+dlatego nie są dowodem odtwarzalności. Zapisany plik w
+<code>wyniki</code> ma powstać ponownie w świeżej sesji. Jeśli nazwa
+zmiennej jest niedozwolona, funkcja zatrzymuje analizę i podaje listę
+dopuszczalnych wartości.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="dane-braki-i-mianownik" class="section level1">
+<h1>7. Dane, braki i mianownik</h1>
+<pre class="r"><code>knitr::kable(head(tabela_glowna, 10), digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">N</th>
+<th align="right">srednia</th>
+<th align="right">SE</th>
+<th align="right">CI_dol</th>
+<th align="right">CI_gora</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">147</td>
+<td align="right">3.292</td>
+<td align="right">0.06</td>
+<td align="right">3.174</td>
+<td align="right">3.411</td>
+</tr>
+</tbody>
+</table>
+<p>Zanim przeczytasz statystykę, ustal N i braki. Dla średniej N oznacza
+ważne liczby. Dla korelacji są to kompletne pary. Dla tabeli jest to
+suma analizowanych komórek. Dla indeksu przypadek musi mieć co najmniej
+pięć odpowiedzi po właściwym ukierunkowaniu.</p>
+<p>Dwa wyniki mogą używać różnych N w tym samym raporcie. Nie jest to
+sprzeczność, jeśli wynika z braków i zostało jawnie opisane. Nie wolno
+dopasowywać reguły braków po zobaczeniu, która wersja daje
+korzystniejsze p.</p>
+<p>Brak może dotyczyć jednej pozycji, całego indeksu albo pary
+zmiennych. Duplikat jest powtórzeniem rekordu, a obserwacja odstająca
+nadal może być prawdziwą obserwacją. Te pojęcia wymagają innych decyzji.
+Dziennik czyszczenia powinien pozwolić odtworzyć, ile elementów zmieniła
+każda reguła i dlaczego wynikowe N jest właściwym mianownikiem.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="tor-klasyczny" class="section level1">
+<h1>8. Tor klasyczny</h1>
+<p>Tor klasyczny używa rozkładu t: podaje średnią, SE, 95% CI, t, df i
+p. Pytanie dotyczy średniej populacyjnej w modelu próbkowania, nie
+prawdopodobieństwa hipotezy.</p>
+<pre class="r"><code>knitr::kable(formatuj_wynik(wynik_klasyczny), digits = 4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">t</th>
+<th align="right">df</th>
+<th align="left">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">4.8756</td>
+<td align="right">146</td>
+<td align="left">&lt;0.001</td>
+</tr>
+</tbody>
+</table>
+<p>Odczytaj wynik bez etykiety „dobry” lub „zły”. Powiedz, jaka estymata
+odpowiada pytaniu, co mierzy statystyka oraz jakie założenie projektu
+ogranicza interpretację. Jeżeli widzisz p, opisz je warunkowo: przy
+modelu zerowym i przyjętej procedurze.</p>
+<p><strong>Karta odczytu toru klasycznego.</strong> Zapisz: (a) nazwę
+metody, (b) N lub liczebności grup, (c) estymatę i jednostkę, (d)
+statystykę wraz z df, jeśli występują, (e) p, (f) jedno założenie.
+Jeżeli metoda na tej stronie nie jest testem, wpisz „nie dotyczy”
+zamiast wymyślać p. Kompletność wyniku jest oceniana oddzielnie od jego
+istotności.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="tor-permutacyjny-lub-decyzja-o-jego-braku" class="section level1">
+<h1>9. Tor permutacyjny lub decyzja o jego braku</h1>
+<p>Tor permutacyjny losowo zmienia znaki odchyleń od 3. W każdym
+losowaniu buduje średnią zgodną z hipotezą zerową. p_perm to udział
+równie lub bardziej skrajnych różnic, z korektą jednego losowania.</p>
+<pre class="r"><code>knitr::kable(formatuj_wynik(wynik_permutacyjny), digits = 4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">roznica</th>
+<th align="left">p_perm</th>
+<th align="right">B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.2923</td>
+<td align="left">&lt;0.001</td>
+<td align="right">1999</td>
+</tr>
+</tbody>
+</table>
+<p>W analizie inferencyjnej liczba B określa rozdzielczość szacowanego
+p. Za każdym razem trzeba powiedzieć, co dokładnie tasowano i jaki
+związek został zerwany. Nazwa „permutacyjny” nie zwalnia z wyjaśnienia
+hipotezy zerowej.</p>
+<p><strong>Karta odczytu toru permutacyjnego.</strong> Uzupełnij zdanie:
+„Przy braku związku lub różnicy wielokrotnie zmieniano znaki, tasowano
+etykiety lub losowano tabele, za każdym razem liczono tę samą
+statystykę, a określony odsetek wyników był co najmniej tak skrajny jak
+obserwowany”. Następnie porównaj wniosek z torem klasycznym bez
+wybierania mniejszego p.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="efekt-i-przedział" class="section level1">
+<h1>10. Efekt i przedział</h1>
+<p>Różnica średniej jest efektem w punktach skali, a d standaryzuje ją
+przez SD. Klasyczny CI opisuje niepewność średniej; percentylowy
+bootstrap sprawdza wrażliwość bez opierania kształtu na wzorze t.</p>
+<pre class="r"><code>knitr::kable(formatuj_wynik(efekt), digits = 4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">roznica_punktow</th>
+<th align="right">d</th>
+<th align="right">boot_CI_dol</th>
+<th align="right">boot_CI_gora</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2.5%</td>
+<td align="right">0.2923</td>
+<td align="right">0.4021</td>
+<td align="right">3.173</td>
+<td align="right">3.4075</td>
+</tr>
+</tbody>
+</table>
+<p>Znaczenie praktyczne oceniamy w kontekście usługi: minuty, punkty
+skali, różnica odsetków albo siła związku. Uniwersalne etykiety
+mały/średni/duży nie zastępują pytania, czy efekt zmienia decyzję
+instytucji i jak precyzyjnie został oszacowany.</p>
+<p>Przedział szeroki obejmuje wiele możliwych wielkości efektu i wymaga
+ostrożniejszego języka. Przedział wąski może nadal koncentrować się
+wokół efektu praktycznie małego. Gdy przedział przecina zero, nie
+zapisujemy automatycznie „brak efektu”; podajemy zakres zgodnych
+wartości i oceniamy, czy obejmuje skutki istotne dla usługi
+informacyjnej.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="wykres-jako-część-argumentu" class="section level1">
+<h1>11. Wykres jako część argumentu</h1>
+<pre class="r"><code>wykres_glowny</code></pre>
+<p><img role="img" aria-label src="data:image/png;base64,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" alt width="100%" /></p>
+<p>Wykres odpowiada na pytanie o położenie, kształt, nakładanie się grup
+lub kierunek związku. Tytuł, osie i jednostki są częścią wyniku. Nie
+wnioskuj o istotności tylko z wyglądu, lecz sprawdź, czy obraz jest
+spójny z tabelą i estymatą.</p>
+<p>Przeczytaj wykres w trzech warstwach. Najpierw opisz elementy
+widoczne bez testu: zakres, skupienie i nietypowe obserwacje. Potem
+połącz je z estymatą w tabeli. Na końcu nazwij rzecz, której wykres nie
+rozstrzyga, np. przyczynowość, błąd pomiaru albo zachowanie wyniku w
+nowej próbie. Nie usuwaj obserwacji tylko dlatego, że psuje prostą
+historię.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="wynik-czytany-linia-po-linii" class="section level1">
+<h1>12. Wynik czytany linia po linii</h1>
+<p>Czytamy kolejno N, średnią, wartość odniesienia, różnicę, SE, CI,
+t(df), p klasyczne, d i p permutacyjne. Zgodność obu p nie zastępuje
+oceny wielkości różnicy.</p>
+<p>Schemat pełnego zdania: „W analizie N osób oszacowano [efekt] w
+[jednostce], 95% CI [dolna; górna]. Statystyka klasyczna wyniosła
+[symbol i df], p=[wartość], a procedura permutacyjna B losowań dała
+p_perm=[wartość]. Wynik opisuje [zakres] i nie rozstrzyga
+[ograniczenie]”.</p>
+<p>Podczas zajęć jedna osoba czyta tabelę, druga sprawdza znak i
+jednostkę, a trzecia wskazuje granicę wniosku. Dopiero po tej kontroli
+zapisujemy odpowiedź do pliku Markdown.</p>
+<p>Dobra interpretacja ma trzy warstwy. Warstwa liczbowa mówi, co
+oszacowano. Warstwa badawcza odpowiada na pytanie o zachowanie
+informacyjne lub wykonanie zadania. Warstwa krytyczna wskazuje, czego
+projekt, pomiar i syntetyczność nie pozwalają stwierdzić. Pominięcie
+którejkolwiek warstwy tworzy tekst technicznie poprawny, lecz
+metodologicznie niepełny.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="błędy-interpretacji" class="section level1">
+<h1>13. Błędy interpretacji</h1>
+<p>Błąd: „z prawdopodobieństwem 95% parametr jest w tym konkretnym
+przedziale”. Poprawnie: „procedura budowania takich przedziałów
+obejmowałaby parametr w 95% powtarzanych prób przy spełnionych
+warunkach”.</p>
+<p>Dodatkowe pułapki: traktowanie braku istotności jako dowodu równości,
+pomijanie N, raportowanie samego p, utożsamienie samooceny z kompetencją
+oraz zamiana obserwacyjnego związku w przyczynę. Poprawa polega na
+dodaniu liczby, jednostki, zakresu i ograniczenia, a nie na bardziej
+stanowczym czasowniku.</p>
+<p>Porównaj dwie konstrukcje: „test wykazał efekt” i „oszacowana różnica
+wyniosła…, a wynik testu był…”. Druga oddziela wielkość od decyzji.
+Podobnie „grupy były takie same” zastępujemy opisem przedziału i
+precyzji. W raporcie nie używamy słowa „trend” jako sposobu ratowania p
+nieco większego od .05; opisujemy rzeczywisty efekt i jego
+niepewność.</p>
+<p><strong>Po zajęciach.</strong> Znajdź w swoim szkicu jedno zdanie
+zawierające „wpływa”, „udowadnia”, „brak różnicy” albo „95% wyników”.
+Przepisz je tak, aby odpowiadało projektowi i rzeczywistemu znaczeniu
+statystyki.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="próba-prowadzona" class="section level1">
+<h1>14. Próba prowadzona</h1>
+<ol style="list-style-type: decimal">
+<li>Otwórz gotowy skrypt i wskaż sekcję parametrów.<br />
+</li>
+<li>Uruchom cały plik bez zmiany dalszej części.<br />
+</li>
+<li>Otwórz zapisany CSV i odnajdź N, estymatę oraz jednostkę.<br />
+</li>
+<li>Jeżeli analiza jest inferencyjna, porównaj p klasyczne i
+permutacyjne.<br />
+</li>
+<li>Odczytaj efekt i przedział.<br />
+</li>
+<li>Napisz jedno zdanie wyniku oraz jedno zdanie ograniczenia.</li>
+</ol>
+<p>Jeżeli skrypt zgłasza błąd, najpierw sprawdź katalog projektu, nazwę
+parametru i dozwoloną wartość. Nie poprawiaj wnętrza funkcji
+statystycznej. Błąd parametru jest informacją o niedozwolonym wyborze, a
+nie zaproszeniem do przepisania procedury.</p>
+<p>Podział czasu próby: 3 minuty na uruchomienie, 4 na odnalezienie
+właściwego CSV, 5 na głośny odczyt tabeli, 5 na szkic interpretacji i 3
+na kontrolę ograniczenia. Jeśli grupa utknie, wraca do pytania,
+jednostki i znaku efektu. Celem jest krótkie, sprawdzalne rozumowanie,
+nie zwiększanie liczby wykonanych poleceń.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="zadanie-z05" class="section level1">
+<h1>15. Zadanie Z05</h1>
+<p>Uruchom Z05 dla indeksu i punktu 3. Odczytaj pełny wynik klasyczny,
+bootstrap i zmianę znaków. Napisz jedno zdanie wyniku zawierające N,
+efekt, CI, t, df oraz oba p i oceń znaczenie praktyczne.</p>
+<p>Przygotuj pliki poleceniem poniżej. Uruchom zapisany
+<code>analiza.R</code>, a następnie uzupełnij wszystkie pola
+<code>[UZUPELNIJ]</code> w <code>odpowiedzi.md</code>. Nie wklejaj kodu
+ani zrzutu całej konsoli.</p>
+<pre class="r"><code>przygotuj_zadanie(&#39;Z05&#39;, katalog = &#39;.&#39;)
+sprawdz_zadanie(&#39;Z05&#39;, katalog = &#39;.&#39;)
+oddaj_zadanie(&#39;Z05&#39;, katalog = &#39;.&#39;)</code></pre>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="rubryka-kontrola-i-dalszy-krok" class="section level1">
+<h1>16. Rubryka, kontrola i dalszy krok</h1>
+<table>
+<colgroup>
+<col width="42%" />
+<col width="57%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>Kryterium</th>
@@ -680,28 +883,45 @@ ggplot2::ggsave(file.path(folder, &quot;bootstrap.png&quot;), plot = wykres_boot
 </thead>
 <tbody>
 <tr class="odd">
-<td>Z05.1 Estymata, N i przedział 95%</td>
+<td>Z05.1: Estymata i przedział dla wskazanej zmiennej są poprawne, z
+właściwym N.</td>
 <td align="right">3</td>
 </tr>
 <tr class="even">
-<td>Z05.2 Bootstrap: jednostka losowania, powtarzalność i wynik</td>
+<td>Z05.2: Poprawnie odczytano bootstrap średniej i permutacyjną zmianę
+znaków, wraz z B i ich odmiennym celem.</td>
 <td align="right">2</td>
 </tr>
 <tr class="odd">
-<td>Z05.3 Własne wyjaśnienie CI</td>
+<td>Z05.3: Wynik klasyczny i permutacyjny zawiera N, efekt, CI, t, df, p
+oraz p_perm i jest poprawnie objaśniony.</td>
 <td align="right">3</td>
 </tr>
 <tr class="even">
-<td>Z05.4 Precyzja, znaczenie praktyczne i ograniczenie próby</td>
+<td>Z05.4: Wniosek odróżnia precyzję od znaczenia praktycznego i
+wskazuje ograniczenie próby.</td>
 <td align="right">2</td>
 </tr>
 </tbody>
 </table>
-<p>Pełne poziomy: <code>rubryka(&quot;Z05&quot;)</code>. Wykonaj
-<code>sprawdz_zadanie(&quot;Z05&quot;)</code>, <code>oddaj_zadanie(&quot;Z05&quot;)</code> i
-<code>status_oddania(&quot;Z05&quot;)</code>. Termin: początek C06; dokładna data
-będzie widoczna po ogłoszeniu kalendarza. Wyloguj sesję pakietu i
-przeglądarkę.</p>
+<p>Automatyczna kontrola sprawdza pliki, parametry, odtwarzalność i
+zgodność eksportu. Prowadzący ocenia dobór języka, odczyt liczb,
+interpretację efektu oraz ograniczenie. Poprawny skrypt bez własnego
+wyjaśnienia nie realizuje zadania.</p>
+<p>Po wysyłce sprawdź <code>status_oddania()</code> i zdalne SHA. Na
+współdzielonym komputerze wywołaj <code>wyloguj_github()</code>, wyloguj
+przeglądarkę i zamknij RStudio bez <code>.RData</code>. Następne
+ćwiczenie rozpoczyna się od pobrania potwierdzonej wersji.</p>
+<div id="źródło-kontekstu" class="section level2">
+<h2>Źródło kontekstu</h2>
+<p>Bootstrap odtwarza proces pobierania próby z empirycznego rozkładu, a
+permutacja buduje rozkład zerowy. Te dwie procedury odpowiadają na różne
+pytania.</p>
+<p>Materiały odwołują się do: Wilsona (1999), Kuhlthau (1991),
+Savolainen (1995), Hargittai (2002), DigComp 2.2, ACRL Framework oraz
+Internet Skills Scale. Są to ramy pojęciowe; dane i pozycje kursowe
+pozostają syntetyczne i dydaktyczne.</p>
+</div>
 </div>
 
 

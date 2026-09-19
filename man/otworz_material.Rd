@@ -15,7 +15,7 @@ otworz_material(
 
 \item{format}{html, pdf, Rmd, R albo tex.}
 
-\item{handout}{Czy otworzyć handout.}
+\item{handout}{Czy otworzyć handout wykładu. Ćwiczenia nie mają handoutów.}
 
 \item{zrodlo}{lokalne albo pages.}
 
@@ -28,5 +28,8 @@ Istniejąca ścieżka lub adres Pages, niewidocznie.
 Dostęp do materiału lokalnego lub Pages
 }
 \examples{
-\dontrun{ otworz_material("C01") }
+\dontrun{
+otworz_material("C01")
+otworz_material("W01", handout = TRUE)
+}
 }

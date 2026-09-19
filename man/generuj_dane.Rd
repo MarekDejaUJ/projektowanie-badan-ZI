@@ -1,6 +1,6 @@
 \name{generuj_dane}
 \alias{generuj_dane}
-\title{Indywidualne syntetyczne dane ankietowe}
+\title{Indywidualne syntetyczne dane ankietowe i obserwacyjne}
 \usage{
 generuj_dane(id, scenariusz = "S01", rocznik = "2026-27", n = 150L)
 }
@@ -18,6 +18,7 @@ Lista z danymi, słownikiem, opisem scenariusza i manifestem.
 }
 \description{
 Dane służą do ćwiczenia analizy, a nie opisania rzeczywistej instytucji.
+Łączą samoocenę z obserwowanym wykonaniem krótkiego zadania wyszukiwawczego.
 Zawierają kontrolowane braki, dwa duplikaty i dwa nietypowe czasy.
 Identyfikator jest pseudonimem przydzielonym na zajęciach, nie numerem albumu.
 }

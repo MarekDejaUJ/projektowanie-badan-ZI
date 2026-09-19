@@ -1,53 +1,22 @@
-## ----import-------------------------------------------------------------------
-surowe <- utils::read.csv(badaniaZI::plik_przykladu("csv"),
-  encoding = "UTF-8", stringsAsFactors = FALSE)
-dim(surowe)
-head(surowe[, c("id_odpowiedzi", "grupa", "czas_wyszukiwania", "pozycja_2")])
-
-
-
-
-## ----struktura----------------------------------------------------------------
-wybrane <- c("id_odpowiedzi", "grupa", "czas_wyszukiwania")
-str(surowe[, c(wybrane, "czestosc_korzystania")])
-badaniaZI::tabela_klas_r(surowe[, wybrane])
-
-
-## ----podsumowanie-------------------------------------------------------------
-summary(surowe[, c("czas_wyszukiwania", "pozycja_2", "czestosc_korzystania")])
-
-
-## ----duplikaty----------------------------------------------------------------
-n_przed <- nrow(surowe)
-liczba_duplikatow <- sum(duplicated(surowe))
-dane <- surowe[!duplicated(surowe), ]
-c(przed = n_przed, po = nrow(dane), kopie = liczba_duplikatow)
-anyDuplicated(dane$id_odpowiedzi)
-
-
-## ----braki--------------------------------------------------------------------
-kod_99 <- !is.na(dane$pozycja_2) & dane$pozycja_2 == 99
-liczba_99 <- sum(kod_99)
-dane$pozycja_2[kod_99] <- NA
-poza_zakresem <- !is.na(dane$czas_wyszukiwania) &
-  (dane$czas_wyszukiwania < 0 | dane$czas_wyszukiwania > 120)
-liczba_czasow <- sum(poza_zakresem)
-dane$czas_wyszukiwania[poza_zakresem] <- NA
-c(kod_99 = liczba_99, czasy_poza_zakresem = liczba_czasow)
-
-
-## ----etykiety-----------------------------------------------------------------
-dane$grupa <- factor(dane$grupa)
-ocena_opis <- factor(dane$pozycja_1, levels = 1:5,
-  labels = c("1 zdecydowanie nie", "2 raczej nie", "3 ani tak, ani nie",
-    "4 raczej tak", "5 zdecydowanie tak"),
-  ordered = TRUE)
-table(ocena_opis, useNA = "ifany")
-
-
-## ----dziennik-----------------------------------------------------------------
-dziennik <- data.frame(
-  regula = c("identyczne kopie", "pozycja_2: 99 na NA", "czas poza 0–120 na NA"),
-  jednostka = c("wiersze", "komórki", "komórki"),
-  liczba = c(liczba_duplikatow, liczba_99, liczba_czasow))
-dziennik
+dane_surowe <- badaniaZI::dane_przykladowe()
+przygotowane <- badaniaZI::przygotuj_ankiete(dane_surowe)
+dane <- przygotowane$dane
+pozycje <- dane[paste0('pozycja_', 1:6)]
+pozycje$pozycja_3 <- badaniaZI::odwroc_pozycje(pozycje$pozycja_3)
+dane$liczba_pozycji <- rowSums(!is.na(pozycje))
+dane$indeks <- badaniaZI::indeks_ankiety(pozycje, minimum = 5L)
+B <- 1999L
+set.seed(202627)
+formatuj_wynik <- function(x) {
+  wynik <- x
+  kolumny_p <- names(wynik)[grepl('^p($|_)', names(wynik))]
+  for (nazwa in kolumny_p) if (is.numeric(wynik[[nazwa]]))
+    wynik[[nazwa]] <- format.pval(wynik[[nazwa]], digits = 3, eps = 0.001)
+  wynik
+}
+tabela_glowna <- przygotowane$dziennik
+wynik_glowny <- data.frame(N_surowe = nrow(dane_surowe), N_analityczne = nrow(dane), braki_czasu = sum(is.na(dane$czas_wyszukiwania)))
+wynik_klasyczny <- przygotowane$dziennik
+wynik_permutacyjny <- data.frame(status = 'permutacja nast\u0119puje po czyszczeniu')
+efekt <- data.frame(zmienione_elementy = sum(przygotowane$dziennik$liczba[2:4]))
+wykres_glowny <- ggplot2::ggplot(dane, ggplot2::aes(x = czas_wyszukiwania)) + ggplot2::geom_histogram(bins = 18, fill = '#56B4E9', colour = 'white') + ggplot2::labs(x = 'Czas [min]', y = 'Liczba os\u00F3b', title = 'Czas po zastosowaniu regu\u0142') + badaniaZI::theme_zi()

@@ -4,9 +4,13 @@ Pakiet `badaniaZI` organizuje część ilościową kursu w roku 2026/27: pracę
 lokalną w RStudio, indywidualne dane syntetyczne, materiały, zadania, rubryki
 oraz oddawanie z konsoli R do prywatnego repozytorium GitHub.
 
-Materiały i pakiet są obecnie przygotowywane. Katalog `materialy()` wskazuje
-jednostki dostępne w zainstalowanej wersji. Wydanie obejmie 5 wykładów i
-10 ćwiczeń po 90 minut, każde z pełną treścią i osobnym handoutem w HTML/PDF.
+Katalog `materialy()` wskazuje jednostki dostępne w zainstalowanej wersji.
+Wydanie obejmuje 5 wykładów i 10 ćwiczeń po 90 minut z pełną treścią HTML/PDF
+i gotowym skryptem R. Każdy zestaw ćwiczeniowy ma 15–20 stron i prowadzi od
+pytania badawczego przez odczyt wyniku do samodzielnej interpretacji.
+Osobne handouty HTML/PDF są przeznaczone dla pięciu wykładów.
+
+Materiały online: <https://MarekDejaUJ.github.io/projektowanie-badan-ZI/>
 
 ## Instalacja na własnym komputerze
 
@@ -19,6 +23,16 @@ remotes::install_github("MarekDejaUJ/projektowanie-badan-ZI",
 ```
 
 Publiczny pakiet można pobrać bez logowania do prywatnej pracy.
+
+Prowadzący przygotowuje zwykłe prywatne repozytorium i zaproszenie bez
+organizacji GitHub. Po zalogowaniu do własnego konta wykonuje:
+
+```r
+przygotuj_repo_studenta("s017", "login-studenta", "S02")
+```
+
+Funkcja umieszcza w repozytorium indywidualne dane, gotowe skrypty, szablony
+raportu i kontrolę oddania. Student przyjmuje zaproszenie przed C01.
 
 ## Praca i materiały
 
@@ -35,19 +49,21 @@ generator i obliczenia działają bez sieci. Gotowe PDF/HTML nie wymagają LaTeX
 
 ## Odtworzenie i oddanie
 
-Przygotuj konto GitHub i 2FA przed C01, przyjmij zaproszenie do własnego
-prywatnego repozytorium i użyj jego adresu. Na czyszczonym komputerze:
+Przygotuj konto GitHub i 2FA przed C01. Przyjmij zaproszenie do zwykłego
+prywatnego repozytorium przygotowanego przez prowadzącego; kurs nie wymaga
+organizacji GitHub. Na czyszczonym komputerze użyj otrzymanego adresu:
 
 ```r
 zaloguj_github()
 rozpocznij_zajecia("C01", "s017",
-  "https://github.com/prowadzacy/badania-s017.git")
+  "https://github.com/MarekDejaUJ/ZI-s017.git")
 ```
 
 Hasło oraz drugi składnik podaje się wyłącznie na stronie GitHub. Logowanie
 z R korzysta z GitHub CLI zainstalowanego w sali; wariant device wymaga
-skonfigurowanej aplikacji. Otwórz główny `.Rproj`, uzupełnij zapisane pliki,
-wykonaj skrypt od początku, a następnie:
+skonfigurowanej aplikacji. Otwórz główny `.Rproj`. W przygotowanym `analiza.R`
+zmieniaj wyłącznie wskazane parametry, wykonaj cały skrypt od początku i
+uzupełnij interpretację w pliku Markdown. Następnie uruchom:
 
 ```r
 sprawdz_zadanie("Z01")

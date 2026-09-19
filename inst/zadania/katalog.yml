@@ -2,7 +2,7 @@ rocznik: "2026-27"
 wersja: "1.0.0"
 zadania:
   Z01:
-    wyniki: []
+    wyniki: [orientacja.csv]
   Z02:
     wyniki: [wyczyszczone.csv, dziennik.csv]
   Z03:
@@ -11,5 +11,15 @@ zadania:
     wyniki: [slownik_pomiaru.csv, indeks.csv, kanaly.csv]
   Z05:
     wyniki: [estymacja.csv, bootstrap.csv, bootstrap.png]
+  Z06:
+    wyniki: [porownanie.csv, permutacja.csv, grupy.png]
+  Z07:
+    wyniki: [tabela.csv, test_kategorie.csv, permutacja.csv, tabela.png]
+  Z08:
+    wyniki: [korelacja.csv, permutacja.csv, regresja.csv, rozrzut.png]
+  Z09:
+    wyniki: [plan_analizy.csv]
+  Z10:
+    wyniki: [kontrola_raportu.csv]
   PROJEKT:
-    wyniki: [dziennik.csv, opis.csv, indeks.csv, kanaly.csv, porownanie.csv, druga_analiza.csv, histogram.png, grupy.png]
+    wyniki: [dziennik.csv, opis.csv, indeks.csv, kanaly.csv, porownanie.csv, druga_analiza.csv, histogram.png, grupy.png, druga_analiza.png]

@@ -1,0 +1,144 @@
+---
+title: 'W03 — Losowość, estymacja i dwa tory wnioskowania'
+subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
+author: 'Marek Deja'
+date: '2026/27'
+lang: pl-PL
+fontsize: 11pt
+papersize: a4
+geometry: margin=2cm
+---
+
+# 1. Odcinek wspólnej opowieści
+
+Estymata jest wynikiem jednej próby, a parametr dotyczy populacji zdefiniowanej przez projekt. Wnioskowanie nie usuwa ograniczeń doboru; porządkuje losową niepewność pod określonym modelem.
+
+**Pytanie wykładu:** Jak precyzyjnie oszacowano średnią samoocenę i czy odległość od punktu neutralnego jest skrajna w modelu zerowym?
+
+| Minuty | Część |
+|---:|---|
+| 0–15 | problem i ramy LIS |
+| 15–35 | projekt, pomiar i symbole |
+| 35–55 | metoda oraz przykład |
+| 55–70 | tor klasyczny i permutacyjny |
+| 70–85 | interpretacja, błędy i dyskusja |
+| 85–90 | most do ćwiczeń |
+
+\newpage
+
+# 2. Dlaczego to jest pytanie LIS
+
+W badaniach LIS próby wygodne i ankiety internetowe są częste. Duże N może dać precyzyjny opis niewłaściwie zdefiniowanej populacji. Dlatego przedział ufności i p czytamy razem z informacją o doborze, brakach i sposobie pomiaru.
+
+Library and information science bada relację osób, informacji, technologii i instytucji. W kursie nie tworzymy wyniku o konkretnej bibliotece. Używamy syntetycznego badania, aby ćwiczyć przejście od konstruktu do wskaźnika oraz od liczby do ostrożnego wniosku.
+
+\newpage
+
+# 3. Pytanie przed metodą
+
+Jak precyzyjnie oszacowano średnią samoocenę i czy odległość od punktu neutralnego jest skrajna w modelu zerowym?
+
+Pytanie powinno wskazywać jednostkę, wynik, porównanie lub związek, populację i okres. Hipoteza dodaje przewidywany kierunek wtedy, gdy ma podstawę teoretyczną. Analiza eksploracyjna też jest dopuszczalna, lecz trzeba ją nazwać i nie przedstawiać późniejszego odkrycia jako wcześniejszej prognozy.
+
+\newpage
+
+# 4. Projekt wyznacza granicę wniosku
+
+Rozkład próbkowania opisuje, jak estymata zmieniałaby się w powtarzanych próbach według tego samego projektu. Błąd standardowy mierzy zmienność estymaty, nie rozrzut pojedynczych osób. Poziom ufności dotyczy procedury budowania przedziałów.
+
+Losowość doboru dotyczy uogólnienia na populację, a losowy przydział warunku wniosku przyczynowego. Dostępna próba nie staje się reprezentatywna przez duże N. Braki, odmowa udziału i samoselekcja mogą zmieniać obraz nawet przy poprawnie wykonanym teście.
+
+\newpage
+
+# 5. Pomiar: samoocena i obserwacja
+
+Bootstrap losuje obserwacje z próby i szacuje niepewność estymaty. Permutacja lub zmiana znaków narzuca hipotezę zerową i tworzy rozkład statystyki przy braku efektu. Nazwy resampling i losowanie nie oznaczają tej samej funkcji.
+
+Wspólny zbiór łączy sześć pozycji, częstość korzystania, kanały, grupę, obserwowany czas i powodzenie zadania. Pozycje są przykładem dydaktycznym. Nie przypisujemy im walidacji ani nie wnioskujemy o całej kompetencji na podstawie jednego zadania.
+
+\newpage
+
+# 6. Wzór jako zdanie
+
+$$SE=\frac{s}{\sqrt{N}}, \quad t=\frac{\bar{x}-\mu_0}{SE}, \quad p_{perm}=\frac{1+\#(|T^*|\geq|T_{obs}|)}{B+1}$$
+
+| Symbol | Nazwa | Znaczenie |
+|---|---|---|
+| $SE$ | błąd standardowy | zmienność estymaty |
+| $t$ | statystyka | odległość od H0 w SE |
+| $T^*$ | statystyka losowa | wynik po tasowaniu |
+| $B$ | replikacje | liczba losowań |
+
+Odczyt wzoru zaczyna się od nazwania wyniku, następnie składników, punktu odniesienia i jednostki. Student nie musi ręcznie odtwarzać algorytmu. Ma rozpoznać, co zwiększa statystykę, co oznacza znak i gdzie w gotowym wyniku znajduje N, efekt oraz niepewność.
+
+\newpage
+
+# 7. Tok analizy
+
+Tor klasyczny korzysta z rozkładu teoretycznego i założeń. Raportuje estymatę, CI, statystykę, df i p. Decyzja p<alpha jest regułą procedury, a nie miarą wartości badania ani prawdopodobieństwem H0.
+
+Kolejność jest stała: pytanie → projekt → pomiar → dane i braki → opis → estymata → niepewność → wniosek → ograniczenie. Przestawienie tej kolejności sprzyja dobieraniu pytania do wyniku i raportowaniu przypadkowej liczby bez znaczenia badawczego.
+
+\newpage
+
+# 8. Przykład prowadzony
+
+Średni indeks 3,24 przy N=146 może być o 0,24 punktu wyższy od 3. Test t pyta o skrajność takiej różnicy względem SE, zmiana znaków o jej skrajność przy symetrycznym zerowym układzie odchyleń, a bootstrap o stabilność średniej między próbami empirycznymi.
+
+Przykład czytamy w trzech warstwach. Warstwa liczbowa nazywa estymatę i jednostkę. Warstwa badawcza odpowiada na pytanie o zachowanie lub usługę. Warstwa krytyczna wskazuje ograniczenie projektu, pomiaru i syntetyczności. Każda z nich jest potrzebna do pełnego wyniku.
+
+\newpage
+
+# 9. Tor klasyczny
+
+Tor klasyczny korzysta z rozkładu teoretycznego i założeń. Raportuje estymatę, CI, statystykę, df i p. Decyzja p<alpha jest regułą procedury, a nie miarą wartości badania ani prawdopodobieństwem H0.
+
+Klasyczny wynik może zawierać statystykę t, chi-kwadrat, r, F lub współczynnik regresji. Stopnie swobody mówią, z jakiego rozkładu odniesienia korzysta procedura. Wartość p opisujemy warunkowo przy H0; nie mierzy ona wielkości efektu, jakości pomiaru ani prawdopodobieństwa powtórzenia wyniku.
+
+\newpage
+
+# 10. Tor permutacyjny i resampling
+
+Tor permutacyjny zachowuje dane, lecz niszczy określony związek: zmienia znaki odchyleń, tasuje etykiety grup lub jedną zmienną. Statystyka musi być taka sama jak ta, której skrajność oceniamy. Dodanie 1 do licznika i mianownika zapobiega p=0.
+
+Bootstrap odtwarza próbki empiryczne, aby ocenić niepewność estymaty. Permutacja narzuca model zerowy przez zmianę znaków, etykiet, par lub tabel. Oba korzystają z losowania komputerowego, ale odpowiadają na inne pytania. Zakres kursu kończy się na zestawieniu tych dwóch torów.
+
+\newpage
+
+# 11. Efekt, przedział i znaczenie
+
+Efekt w naturalnej jednostce odpowiada na pytanie praktyczne, efekt standaryzowany ułatwia porównanie, a CI pokazuje precyzję. Wynik może być istotny i mały albo nieistotny i zgodny z efektami ważnymi praktycznie.
+
+Efekt prowadzimy przed p. Najpierw pytamy o kierunek i wielkość w naturalnej jednostce, potem o standaryzację, a następnie o przedział. Znaczenie praktyczne ustala kontekst instytucji, nie uniwersalna etykieta. Szeroki przedział wymaga języka dopuszczającego różne wielkości.
+
+\newpage
+
+# 12. Jak nie pisać wyniku
+
+Błędy to: p jako prawdopodobieństwo H0, CI jako zakres 95% osób, bootstrap jako test zerowy, wybór mniejszego z dwóch p, pominięcie efektu oraz twierdzenie o reprezentatywności na podstawie małego SE.
+
+Unikamy zdań: „H0 jest prawdziwa”, „95% wyników leży w CI”, „grupy są takie same”, „korelacja pokazuje wpływ” i „V oznacza procent”. Poprawione zdanie zawiera N, estymatę, jednostkę, CI, statystykę, p, efekt i granicę wniosku w zakresie potrzebnym danej metodzie.
+
+\newpage
+
+# 13. Aktywność podczas wykładu
+
+Ułóż w poprawnej kolejności osiem elementów wyniku: N, estymata, jednostka, CI, statystyka, df, p klasyczne, p permutacyjne. Następnie wyjaśnij rozbieżność obu torów bez uznawania jednego za automatycznie prawdziwy.
+
+Odpowiedź przedstawiamy bez uruchamiania nowego testu. Zadaniem jest dobór języka oraz argumentacja. Każda grupa wskazuje także jeden element, którego nie da się rozstrzygnąć z przedstawionych danych i jedną dodatkową informację, która rzeczywiście wzmocniłaby projekt.
+
+\newpage
+
+# 14. Most do ćwiczeń i projektu
+
+C05 zastosuje t, CI, bootstrap i zmianę znaków. W04 przeniesie tę logikę do porównania grup i tabel kategorii.
+
+W projekcie każda liczba ma odpowiadać pytaniu, a każdy wniosek ma odsyłać do zapisanego pliku wyniku. Gotowy kod wyrównuje obciążenie techniczne; samodzielne pozostają wybór dozwolonego parametru, odczyt statystyki, interpretacja i krytyczna ocena.
+
+## Literatura i ramy
+
+- Efron & Tibshirani. An Introduction to the Bootstrap.
+- Good. Permutation, Parametric and Bootstrap Tests of Hypotheses.
+- Materiały kursowe zestawiają klasyczne i permutacyjne wnioskowanie.
+
+Źródła wyznaczają język pojęć. Pozycje, dane i wyniki kursowe są syntetyczne; nie przedstawiamy ich jako rezultatów cytowanych badań.

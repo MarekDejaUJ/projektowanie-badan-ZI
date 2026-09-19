@@ -1,6 +1,6 @@
 ---
-title: 'Handout W01 — Pytania, projekty badań i skale pomiarowe'
-subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
+title: 'Handout W01 — Od potrzeby informacyjnej do projektu badania'
+subtitle: 'Mapa pojęć, wzorów i pytań'
 author: 'Marek Deja'
 date: '2026/27'
 lang: pl-PL
@@ -9,55 +9,67 @@ papersize: a4
 geometry: margin=2cm
 ---
 
-# W01 — pytanie i zakres dowodu
+# 1. Pytanie i główna myśl
 
-Problem instytucji → pytanie → jednostka/populacja/próba → pomiar → analiza → ograniczony wniosek. Średnia w próbie jest opisem; wniosek o populacji wymaga projektu i założeń.
+**Pytanie:** Czy użytkownicy nowi i doświadczeni różnią się samooceną oraz powodzeniem krótkiego zadania w katalogu? Jakiego projektu potrzeba, aby opisać różnicę, a jakiego, aby mówić o skutku instrukcji?
 
-# Schematy badań
+Punktem wyjścia nie jest test statystyczny, lecz sytuacja osoby, która potrzebuje informacji i działa w określonym środowisku. Projekt badania ma połączyć problem instytucji z obserwowalnym zachowaniem, samoopisem i decyzją, której wynik ma służyć.
 
-| Schemat | Kluczowe pytanie |
-|---|---|
-| Obserwacja przekrojowa | Czy cechy współwystępują w danym okresie? |
-| Obserwacja podłużna | Czy wynik zmienia się u tych samych osób? |
-| Interwencja przed/po | Czy zmiana mogła mieć inną przyczynę? |
-| Randomizacja | Czy przydzielono interwencję losowo? |
-| Quasi-eksperyment/naturalny | Co uzasadnia porównywalność i ekspozycję? |
-| Synteza | Czy badania są odpowiednie, porównywalne i dobrej jakości? |
+## Tok rozumowania
 
-Piramida dowodu zależy od pytania. Randomizacja przydziału i losowanie próby są różnymi operacjami. Duże N nie usuwa selekcji ani błędnego pomiaru.
+1. Pytanie i zakres wniosku.  
+2. Jednostka, zmienne, skale i braki.  
+3. Estymata oraz jednostka.  
+4. Niepewność i dwa tory, jeśli dotyczą.  
+5. Efekt, ograniczenie i odpowiedź.
 
-# Pytanie i hipoteza
+\newpage
 
-„Jak rozkłada się czas znalezienia dokumentu wśród aktywnych użytkowników w semestrze zimowym?” — pytanie opisowe. „Czy indeks dostępności różni się między nowymi i doświadczonymi?” — porównanie. $H_0:\mu_1-\mu_2=0$, $H_1:\mu_1-\mu_2\ne0$. Kierunek alternatywy wybiera się przed wynikiem.
+# 2. Wzór i symbole
 
-# Skale i jednostki
+$$P(Y\mid G) \neq P(Y) \quad \text{oznacza związek, nie automatycznie przyczynę}$$
 
-| Skala | Przykład | Uprawnione relacje |
+| Symbol | Nazwa | Znaczenie |
 |---|---|---|
-| Nominalna | grupa/typ zasobu | równość, liczebności |
-| Porządkowa | pojedyncza pozycja 1–5 | dodatkowo porządek |
-| Przedziałowa | rok kalendarzowy | dodatkowo różnica |
-| Ilorazowa | czas w minutach/liczba pobrań | dodatkowo stosunek i naturalne zero |
+| $Y$ | wynik | indeks, czas albo powodzenie |
+| $G$ | grupa/warunek | dwa poziomy porównania |
+| $X$ | zmienna towarzysząca | np. częstość korzystania |
+| $N$ | próba | liczba analizowanych osób |
 
-Klasa R nie zastępuje skali. Kod kategorii pozostaje etykietą. Indeks wymaga treści, kierunku pozycji i reguły braków.
+Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę i składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani CI zakresu 95% osób.
 
-# Sprawdź na przykładzie
+\newpage
 
-Pięć czasów opisuje małą grupę. Średnia i mediana odpowiadają na różne pytania o centrum. Odczytaj N i jednostkę, a potem wskaż brakującą informację o doborze.
+# 3. Dwa tory i efekt
 
-```{r czasy}
-x <- c(6, 9, 4, 12, 8)
-c(N = length(x), srednia = mean(x), mediana = median(x))
-```
+**Tor klasyczny.** 
+Najpierw definiujemy populację, ramę doboru, jednostkę, okres odniesienia i kryteria włączenia. Potem zapisujemy pytanie w języku zmiennych oraz przewidujemy, jaka estymata odpowie na nie bez nadmiarowych procedur.
 
-# Własny szkic i notatki
+**Tor permutacyjny/resampling.** 
+Dwa tory analizy pojawią się później. Już teraz trzeba rozumieć hipotezę zerową jako model braku określonego związku. Permutacja będzie zmieniała tylko ten element danych, który reprezentuje związek podlegający testowi.
 
-Problem: .................................... Populacja/okres: .................................
+**Efekt i przedział.** 
+Przed zebraniem danych warto nazwać różnicę praktycznie ważną: ile minut, punktów indeksu lub punktów procentowych mogłoby zmienić decyzję o usłudze. Dzięki temu p nie stanie się jedynym kryterium wniosku.
 
-Jednostka: .................................. Zmienna i skala: ..................................
+\newpage
 
-Pytanie: .................................... Co mogłoby podważyć hipotezę? .....................
+# 4. Interpretacja i pytania
 
-Jedno ograniczenie doboru lub pomiaru: ...........................................................
+**Przykład.** 
+Biblioteka rozważa krótką instrukcję filtrowania. Pytanie opisowe dotyczy aktualnego czasu nowych użytkowników. Pytanie porównawcze dotyczy dwóch istniejących grup. Pytanie przyczynowe wymaga przydziału instrukcji i wspólnego zadania. Te trzy pytania mogą używać podobnej tabeli, ale prowadzą do innego wniosku.
 
-Ocena: zadania 50% (każde 5%), projekt 50%; indywidualny plan i analiza ilościowa, bez egzaminu.
+**Pułapki.** 
+Najczęstsze błędy to rozpoczynanie od nazwy testu, utożsamienie dostępnej próby z populacją, zmiana pytania po zobaczeniu p, nazywanie samooceny kompetencją oraz język wpływu w badaniu obserwacyjnym.
+
+**Pytanie do pracy.** 
+W zespołach przekształć ogólne zdanie „katalog jest trudny” w pytanie opisowe, porównawcze i przyczynowe. Dla każdego wskaż jednostkę, zmienne, źródło danych, jedną estymatę i ograniczenie.
+
+## Dalszy krok
+
+C01 pokaże pojedynczy rekord i przepływ pracy, a C02 odtworzy przejście od surowego eksportu do danych analitycznych. W01 dostarcza pytania, do których te techniczne czynności mają prowadzić.
+
+## Literatura
+
+- [Wilson, T.D. (1999). Models in information behaviour research](https://www.informationr.net/tdw/publ/papers/1999JDoc.html).
+- [Kuhlthau, C.C. (1991). Inside the search process](https://doi.org/10.1002/(SICI)1097-4571(199106)42:5%3C361::AID-ASI6%3E3.0.CO;2-%23).
+- [Savolainen, R. (1995). Everyday life information seeking](https://doi.org/10.1016/0740-8188(95)90048-9).

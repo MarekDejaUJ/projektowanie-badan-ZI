@@ -1,7 +1,7 @@
 #' Przygotowanie lokalnego zadania
 #' @param id Z01--Z10.
-#' @param katalog Katalog własnego projektu.
-#' @return Ścieżka odpowiedzi Markdown, niewidocznie. Istniejąca praca pozostaje zachowana.
+#' @param katalog Katalog wlasnego projektu.
+#' @return Sciezka odpowiedzi Markdown, niewidocznie. Istniejaca praca pozostaje zachowana.
 #' @export
 #' @examples
 #' k <- tempfile("zadania-")
@@ -18,27 +18,30 @@ przygotuj_zadanie <- function(id, katalog = ".") {
   dir.create(file.path(folder, "wyniki"), recursive = TRUE)
   r <- rubryka(id)
   tekst <- c(paste0("# ", id, " \u2014 odpowiedzi"), "", paste("ID:", cfg$id), paste("Rocznik:", cfg$rocznik), "",
-             "Wykonaj polecenie w \u0107wiczeniu. Zast\u0105p ka\u017cde `[UZUPELNIJ]` w\u0142asnym opisem i liczbami.",
-             "Odpowied\u017a: 250\u2013450 s\u0142\u00f3w bez kodu i tabel. Wyniki zapisuj w podkatalogu `wyniki`.")
+             "Uruchom gotowy `analiza.R`. Zmieniaj wy\u0142\u0105cznie warto\u015bci parametr\u00f3w wskazane w komentarzu.",
+             "Nie przepisuj ani nie rozbudowuj procedury statystycznej. Odczytaj zapisane wyniki i odpowiedz w\u0142asnymi s\u0142owami.",
+             "Odpowied\u017a: 350\u2013650 s\u0142\u00f3w bez kodu. Ka\u017cd\u0105 liczb\u0119 po\u0142\u0105cz z jej znaczeniem dla pytania badawczego.")
   for (k in r$criteria) tekst <- c(tekst, "", paste0("## ", k$id, " \u2014 ", k$max_points, " pkt"), "", k$evidence, "", "[UZUPELNIJ]")
   writeLines(enc2utf8(tekst), file.path(folder, "odpowiedzi.md"), useBytes = TRUE)
-  skrypt <- c(paste0("# ", id, " \u2014 ", cfg$id),
-    "# Otw\u00f3rz g\u0142\u00f3wny projekt RStudio. Zapisz tu kod zadania wykonywany od pocz\u0105tku.",
-    paste0("dir.create(\"zadania/", tolower(id), "/wyniki\", recursive = TRUE, showWarnings = FALSE)"),
-    "stop(\"Uzupe\u0142nij analiz\u0119 zgodnie z poleceniem \u0107wiczenia.\")")
-  writeLines(skrypt, file.path(folder, "analiza.R"))
+  skrypt <- readLines(zasob("szablony", "zadania", id, "analiza.R"),
+                      encoding = "UTF-8", warn = FALSE)
+  wartosci <- c(ID = cfg$id, SCENARIUSZ = cfg$scenariusz, ROCZNIK = cfg$rocznik)
+  for (pole in names(wartosci))
+    skrypt <- gsub(paste0("{{", pole, "}}"), wartosci[[pole]], skrypt, fixed = TRUE)
+  writeLines(enc2utf8(skrypt), file.path(folder, "analiza.R"), useBytes = TRUE)
   invisible(file.path(folder, "odpowiedzi.md"))
 }
 
 #' Lokalna kontrola zadania lub projektu
 #'
-#' Kontrola nie przyznaje punktów za interpretację. Opcjonalne wykonanie skryptu
-#' odbywa się w kopii pracy i świeżym procesie R; wyniki w oryginale muszą być zapisane.
-#' Wykonuj w ten sposób własny kod. Kontrolę prac oddanych wykonuje CI bez poświadczeń kursu.
+#' Kontrola nie przyznaje punktow za interpretacje. Opcjonalne wykonanie skryptu
+#' odbywa sie w kopii pracy i swiezym procesie R; wyniki w oryginale musza byc zapisane.
+#' Wykonuj w ten sposob gotowy skrypt po ustawieniu wskazanych parametrow.
+#' Kontrole prac oddanych wykonuje CI bez poswiadczen kursu.
 #' @param id Z01--Z10 albo PROJEKT.
 #' @param katalog Katalog projektu.
-#' @param uruchom Czy wykonać zapisany skrypt (domyślnie tak).
-#' @return Lista: ok, tabela kontroli i jawna lista plików.
+#' @param uruchom Czy wykonac zapisany skrypt (domyslnie tak).
+#' @return Lista: ok, tabela kontroli i jawna lista plikow.
 #' @export
 #' @examples
 #' k <- tempfile("kontrola-")
@@ -92,11 +95,14 @@ sprawdz_zadanie <- function(id, katalog = ".", uruchom = TRUE) {
   if (file.exists(skrypt)) {
     syntax <- tryCatch({ parse(skrypt, encoding = "UTF-8"); TRUE }, error = function(e) FALSE)
     dodaj("sk\u0142adnia R", syntax, "Popraw sk\u0142adni\u0119 zapisanego skryptu")
+    struktura <- syntax && sprawdz_strukture_analizy(id, skrypt)
+    dodaj("gotowy tok analizy", struktura,
+          "Zachowaj gotowy skrypt; zmieniaj wy\u0142\u0105cznie warto\u015bci w li\u015bcie parametry")
     if (uruchom && syntax && all(kontrole$ok)) {
       tmp <- tempfile("kontrola-pracy-")
       dir.create(tmp)
       on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
-      # Wyniki muszą powstać ponownie, więc nie trafiają do wejścia świeżej sesji.
+      # Wyniki musza powstac ponownie, wiec nie trafiaja do wejscia swiezej sesji.
       for (p in pliki[!startsWith(pliki, paste0(folder, "/wyniki/"))]) {
         dir.create(dirname(file.path(tmp, p)), recursive = TRUE, showWarnings = FALSE)
         file.copy(file.path(katalog, p), file.path(tmp, p))
@@ -122,6 +128,35 @@ sprawdz_zadanie <- function(id, katalog = ".", uruchom = TRUE) {
     }
   }
   list(ok = all(kontrole$ok), kontrole = kontrole, pliki = pliki)
+}
+
+sprawdz_strukture_analizy <- function(id, plik) {
+  wzorzec <- if (id == "PROJEKT") zasob("szablony", "projekt", "analiza.R") else
+    zasob("szablony", "zadania", id, "analiza.R")
+  kandydat <- tryCatch(parse(plik, encoding = "UTF-8"), error = function(e) NULL)
+  referencja <- tryCatch(parse(wzorzec, encoding = "UTF-8"), error = function(e) NULL)
+  if (is.null(kandydat) || is.null(referencja) || length(kandydat) != length(referencja))
+    return(FALSE)
+  znajdz_parametry <- function(x) {
+    which(vapply(as.list(x), function(z)
+      is.call(z) && identical(z[[1L]], as.name("<-")) &&
+        identical(z[[2L]], as.name("parametry")), logical(1)))
+  }
+  ik <- znajdz_parametry(kandydat)
+  ir <- znajdz_parametry(referencja)
+  if (length(ik) != 1L || length(ir) != 1L) return(FALSE)
+  pk <- kandydat[[ik]][[3L]]
+  pr <- referencja[[ir]][[3L]]
+  if (!is.call(pk) || !identical(pk[[1L]], as.name("list")) ||
+      !is.call(pr) || !identical(pr[[1L]], as.name("list"))) return(FALSE)
+  ak <- as.list(pk)[-1L]
+  ar <- as.list(pr)[-1L]
+  if (!identical(names(ak), names(ar)) ||
+      any(!vapply(ak, function(z) is.atomic(z) && length(z) == 1L, logical(1))))
+    return(FALSE)
+  kandydat[[ik]][[3L]] <- quote(list())
+  referencja[[ir]][[3L]] <- quote(list())
+  identical(as.list(kandydat), as.list(referencja))
 }
 
 rscript_bin <- function() {

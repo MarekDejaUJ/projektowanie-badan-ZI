@@ -1,0 +1,257 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  polish,
+  11pt,
+  a4paper,
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\ifLuaTeX
+\usepackage[bidi=basic,shorthands=off]{babel}
+\else
+\usepackage[bidi=default,shorthands=off]{babel}
+\fi
+\ifLuaTeX
+  \usepackage{selnolig} % disable illegal ligatures
+\fi
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{multicol}
+
+\geometry{margin=1.8cm, top=2.5cm, bottom=2cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small Projektowanie badań — 2026/27}
+\lhead{\small Zarządzanie informacją | ISI UJ}
+\cfoot{\thepage}
+
+\titleformat{\section}{\large\bfseries\color{blue!70!black}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}{\small\bfseries\color{gray!70!black}}{\thesubsubsection.}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.5ex}{1ex}
+\titlespacing*{\subsection}{0pt}{1ex}{0.5ex}
+
+\setlist[itemize]{nosep, leftmargin=1.5em}
+\setlist[enumerate]{nosep, leftmargin=1.5em}
+
+\tcbset{boxrule=0.5pt, left=4pt, right=4pt, top=4pt, bottom=4pt, fonttitle=\bfseries\small}
+
+\newtcolorbox{definicja}[1][]{colback=blue!5, colframe=blue!50!black, title={#1}}
+\newtcolorbox{uwagabox}[1][]{colback=orange!10, colframe=orange!70!black, title={#1}}
+\newtcolorbox{wzorbox}[1][]{colback=gray!5, colframe=gray!50!black, title={#1}}
+\newtcolorbox{przykladbox}[1][]{colback=purple!5, colframe=purple!50!black, title={#1}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  pdftitle={Handout W05 --- Korelacja{,} regresja i raport ilościowy},
+  pdfauthor={Marek Deja},
+  pdflang={pl-PL},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Handout W05 --- Korelacja, regresja i raport ilościowy}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Mapa pojęć, wzorów i pytań}
+\author{Marek Deja}
+\date{2026/27}
+
+\begin{document}
+\maketitle
+
+\section{1. Pytanie i główna
+myśl}\label{pytanie-i-gux142uxf3wna-myux15bl}
+
+\textbf{Pytanie:} Czy wyższa samoocena współwystępuje z krótszym czasem
+i jak zmienia się przewidywany czas na jeden punkt indeksu?
+
+Ostatni wykład łączy samoocenę z wykonaniem oraz wynik statystyczny z
+raportem. Korelacja opisuje współzmienność, regresja zapisuje warunkową
+średnią, a żadna z nich sama nie tworzy przyczynowości.
+
+\subsection{Tok rozumowania}\label{tok-rozumowania}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Pytanie i zakres wniosku.\\
+\item
+  Jednostka, zmienne, skale i braki.\\
+\item
+  Estymata oraz jednostka.\\
+\item
+  Niepewność i dwa tory, jeśli dotyczą.\\
+\item
+  Efekt, ograniczenie i odpowiedź.
+\end{enumerate}
+
+\newpage
+
+\section{2. Wzór i symbole}\label{wzuxf3r-i-symbole}
+
+\[r=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum(x_i-\bar{x})^2\sum(y_i-\bar{y})^2}}, \quad \widehat{y}=b_0+b_1x\]
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Symbol & Nazwa & Znaczenie \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(r,\rho\) & korelacja & siła i kierunek związku \\
+\(b_0\) & wyraz wolny & przewidywane y przy x=0 \\
+\(b_1\) & nachylenie & zmiana y na jednostkę x \\
+\(R^2\) & dopasowanie & udział zmienności y \\
+\end{longtable}
+}
+
+Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę i
+składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani
+CI zakresu 95\% osób.
+
+\newpage
+
+\section{3. Dwa tory i efekt}\label{dwa-tory-i-efekt}
+
+\textbf{Tor klasyczny.} Korelacja podaje współczynnik, CI, p i N par.
+Prosta regresja dodaje nachylenie w naturalnej jednostce, jego SE, t i p
+oraz R2. Wyraz wolny może nie mieć praktycznego sensu, jeśli x=0 leży
+poza skalą.
+
+\textbf{Tor permutacyjny/resampling.} Tasowanie y względem x niszczy
+pary, zachowując oba rozkłady. Dla każdej permutacji liczymy ten sam r
+lub rho. p\_perm opisuje skrajność obserwowanego współczynnika przy
+braku związku par.
+
+\textbf{Efekt i przedział.} r/rho jest wielkością efektu, nachylenie
+mówi o jednostkach, a CI o precyzji. R2 nie jest odsetkiem poprawnie
+sklasyfikowanych osób ani częścią związku wyjaśnioną przyczynowo.
+
+\newpage
+
+\section{4. Interpretacja i pytania}\label{interpretacja-i-pytania}
+
+\textbf{Przykład.} rho=−.25 oznacza słabą do umiarkowanej monotoniczną
+tendencję: wraz z wyższą samooceną czas bywa krótszy. Nachylenie −1,4
+min/punkt opisuje liniową zmianę przewidywanego czasu, nie indywidualną
+gwarancję.
+
+\textbf{Pułapki.} Pułapki to przyczynowość z korelacji, ignorowanie
+znaku skali czasu, ekstrapolacja poza 1--5, p bez wykresu, R2 jako
+jakość całego badania, usuwanie punktu wpływowego bez reguły i wybór
+metody po p.
+
+\textbf{Pytanie do pracy.} Odczytaj tabelę korelacji i regresji w
+kolejności N, efekt, CI, statystyka, p, p\_perm, nachylenie i R2. Zapisz
+jedno zdanie wyniku, jedno ograniczenie i warunkową rekomendację dla
+usługi.
+
+\subsection{Dalszy krok}\label{dalszy-krok}
+
+C08 wykona analizę samooceny i czasu. C09 zaplanuje indywidualny
+projekt, a C10 połączy dwa wyniki, ograniczenia, wersje i oddanie w
+spójny raport Markdown.
+
+\subsection{Literatura}\label{literatura}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://www.webuse.org/pdf/Hargittai-BeyondLogsSurveys2002.pdf}{Hargittai,
+  E. (2002). Beyond logs and surveys}.
+\item
+  \href{https://ris.utwente.nl/ws/portalfiles/portal/6972069/development.pdf}{van
+  Deursen, Helsper \& Eynon. Internet Skills Scale}.
+\item
+  \href{https://www.ala.org/acrl/standards/ilframework}{ACRL Framework}
+  oraz
+  \href{https://publications.jrc.ec.europa.eu/repository/handle/JRC128415}{DigComp
+  2.2} jako język konstruktu, nie gotowy test kursowy.
+\end{itemize}
+
+\end{document}

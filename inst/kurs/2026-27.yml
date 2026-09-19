@@ -9,7 +9,7 @@ minuty_spotkania: 90
 egzamin: false
 projekt: "indywidualny ilościowy: plan badania i analiza danych"
 timezone: "Europe/Warsaw"
-wersja_pakietu: "0.1.0"
+wersja_pakietu: "1.0.0"
 wersja_generatora: "1.0.0"
 wersja_rubryk: "1.0.0"
 termin_projektu: "2027-01-27T23:59:59+01:00"

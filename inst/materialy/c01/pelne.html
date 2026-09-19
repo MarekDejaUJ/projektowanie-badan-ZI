@@ -12,7 +12,7 @@
 <meta name="author" content="Marek Deja" />
 
 
-<title>C01 — R, RStudio i własna przestrzeń pracy</title>
+<title>C01 — Od rekordu do wyniku: RStudio i własna przestrzeń pracy</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -155,7 +155,7 @@ window.buildTabsets = function(tocID) {
     var tabContent = $('<div class="tab-content"></div>');
     $(tabs[0]).before(tabContent);
 
-    // build the tabse
+    // build the tabset
     var activeTab = 0;
     tabs.each(function(i) {
 
@@ -177,7 +177,7 @@ window.buildTabsets = function(tocID) {
       id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
       tab.attr('id', id);
 
-      // get the heading element within it, grab it's text, then remove i
+      // get the heading element within it, grab it's text, then remove it
       var heading = tab.find('h' + tabLevel + ':first');
       var headingText = heading.html();
       heading.remove();
@@ -375,8 +375,8 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">C01 — R, RStudio i własna przestrzeń
-pracy</h1>
+<h1 class="title toc-ignore">C01 — Od rekordu do wyniku: RStudio i
+własna przestrzeń pracy</h1>
 <h3 class="subtitle">Zarządzanie informacją — część ilościowa —
 2026/27</h3>
 <h4 class="author">Marek Deja</h4>
@@ -386,293 +386,551 @@ pracy</h1>
 
 <div id="TOC">
 <ul>
-<li><a href="#cel-i-rytm-zaj%C4%99%C4%87" id="toc-cel-i-rytm-zajęć">Cel
-i rytm zajęć</a></li>
-<li><a href="#przygotowanie-konta-przed-zaj%C4%99ciami" id="toc-przygotowanie-konta-przed-zajęciami">Przygotowanie konta przed
-zajęciami</a></li>
-<li><a href="#pocz%C4%85tek-zaj%C4%99%C4%87-w-rstudio" id="toc-początek-zajęć-w-rstudio">Początek zajęć w RStudio</a></li>
-<li><a href="#konsola-skrypt-i-komunikaty" id="toc-konsola-skrypt-i-komunikaty">Konsola, skrypt i komunikaty</a>
+<li><a href="#miejsce-w-opowie%C5%9Bci" id="toc-miejsce-w-opowieści">1.
+Miejsce w opowieści</a></li>
+<li><a href="#scena-badawcza" id="toc-scena-badawcza">2. Scena
+badawcza</a></li>
+<li><a href="#a.-konto-repozytorium-i-logowanie-w-sali" id="toc-a.-konto-repozytorium-i-logowanie-w-sali">2A. Konto,
+repozytorium i logowanie w sali</a></li>
+<li><a href="#pytanie-jednostka-i-zmienne" id="toc-pytanie-jednostka-i-zmienne">3. Pytanie, jednostka i
+zmienne</a></li>
+<li><a href="#s%C5%82ownik-statystyczny" id="toc-słownik-statystyczny">4. Słownik statystyczny</a></li>
+<li><a href="#wz%C3%B3r-czytany-jak-zdanie" id="toc-wzór-czytany-jak-zdanie">5. Wzór czytany jak zdanie</a></li>
+<li><a href="#gotowy-skrypt-pomocniczy" id="toc-gotowy-skrypt-pomocniczy">6. Gotowy skrypt pomocniczy</a></li>
+<li><a href="#dane-braki-i-mianownik" id="toc-dane-braki-i-mianownik">7.
+Dane, braki i mianownik</a></li>
+<li><a href="#tor-klasyczny" id="toc-tor-klasyczny">8. Tor
+klasyczny</a></li>
+<li><a href="#tor-permutacyjny-lub-decyzja-o-jego-braku" id="toc-tor-permutacyjny-lub-decyzja-o-jego-braku">9. Tor permutacyjny
+lub decyzja o jego braku</a></li>
+<li><a href="#efekt-i-przedzia%C5%82" id="toc-efekt-i-przedział">10.
+Efekt i przedział</a></li>
+<li><a href="#wykres-jako-cz%C4%99%C5%9B%C4%87-argumentu" id="toc-wykres-jako-część-argumentu">11. Wykres jako część
+argumentu</a></li>
+<li><a href="#wynik-czytany-linia-po-linii" id="toc-wynik-czytany-linia-po-linii">12. Wynik czytany linia po
+linii</a></li>
+<li><a href="#b%C5%82%C4%99dy-interpretacji" id="toc-błędy-interpretacji">13. Błędy interpretacji</a></li>
+<li><a href="#pr%C3%B3ba-prowadzona" id="toc-próba-prowadzona">14. Próba
+prowadzona</a></li>
+<li><a href="#zadanie-z01" id="toc-zadanie-z01">15. Zadanie Z01</a></li>
+<li><a href="#rubryka-kontrola-i-dalszy-krok" id="toc-rubryka-kontrola-i-dalszy-krok">16. Rubryka, kontrola i dalszy
+krok</a>
 <ul>
-<li><a href="#r-jako-kalkulator" id="toc-r-jako-kalkulator">R jako
-kalkulator</a></li>
-<li><a href="#typy-danych" id="toc-typy-danych">Typy danych</a></li>
-<li><a href="#obiekty-przechowywanie-warto%C5%9Bci" id="toc-obiekty-przechowywanie-wartości">Obiekty: przechowywanie
-wartości</a></li>
-<li><a href="#wektory-kilka-warto%C5%9Bci" id="toc-wektory-kilka-wartości">Wektory: kilka wartości</a></li>
-<li><a href="#warunki-i-braki" id="toc-warunki-i-braki">Warunki i
-braki</a></li>
-<li><a href="#tabela-wiersze-i-kolumny" id="toc-tabela-wiersze-i-kolumny">Tabela: wiersze i kolumny</a></li>
-<li><a href="#pomoc-i-odtwarzanie" id="toc-pomoc-i-odtwarzanie">Pomoc i
-odtwarzanie</a></li>
+<li><a href="#%C5%BAr%C3%B3d%C5%82o-kontekstu" id="toc-źródło-kontekstu">Źródło kontekstu</a></li>
 </ul></li>
-<li><a href="#zadanie-z01-czas-znalezienia-informacji" id="toc-zadanie-z01-czas-znalezienia-informacji">Zadanie Z01 — czas
-znalezienia informacji</a></li>
-<li><a href="#kontrola-oddanie-i-zako%C5%84czenie" id="toc-kontrola-oddanie-i-zakończenie">Kontrola, oddanie i
-zakończenie</a></li>
-<li><a href="#instalacja-na-w%C5%82asnym-komputerze-poza-rdzeniem-zaj%C4%99%C4%87" id="toc-instalacja-na-własnym-komputerze-poza-rdzeniem-zajęć">Instalacja
-na własnym komputerze — poza rdzeniem zajęć</a></li>
-<li><a href="#pytania-do-samokontroli" id="toc-pytania-do-samokontroli">Pytania do samokontroli</a></li>
 </ul>
 </div>
 
-<div id="cel-i-rytm-zajęć" class="section level1">
-<h1>Cel i rytm zajęć</h1>
-<p>Po zajęciach rozróżnisz polecenie, obiekt i wynik, zapiszesz kod w
-skrypcie oraz odczytasz element wektora i kolumnę tabeli. Pobierzesz
-własny projekt, a po pracy otrzymasz potwierdzenie wysyłki. Nie trzeba
-dziś znać testów statystycznych ani poleceń Gita.</p>
+<div id="miejsce-w-opowieści" class="section level1">
+<h1>1. Miejsce w opowieści</h1>
+<p>Pierwsza osoba wykonuje zadanie wyszukiwawcze w katalogu. Łączymy
+zapis obserwacji, odpowiedź ankietową i bezpieczny obieg pracy przez
+prywatne repozytorium.</p>
+<p><strong>Pytanie przewodnie:</strong> Jak odnaleźć obserwację, zmienną
+i wynik w gotowej analizie oraz jak zachować wersję pracy?</p>
+<p>Rdzeń zajęć trwa 90 minut. Strony oznaczone jako „po zajęciach” służą
+utrwaleniu; podczas spotkania uruchamiamy gotowy kod, czytamy liczby i
+zapisujemy własne wyjaśnienie.</p>
 <table>
 <thead>
 <tr class="header">
-<th>Czas</th>
+<th align="right">Minuty</th>
 <th>Praca</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>0–10 min</td>
-<td>Logowanie, pobranie i otwarcie projektu</td>
+<td align="right">0–10</td>
+<td>Powrót do poprzedniego odcinka i pytanie</td>
 </tr>
 <tr class="even">
-<td>10–30 min</td>
-<td>Konsola, skrypt, obiekty i typy</td>
+<td align="right">10–30</td>
+<td>Zmienne, wzór i symbole</td>
 </tr>
 <tr class="odd">
-<td>30–55 min</td>
-<td>Wektory i mała tabela — wspólnie</td>
+<td align="right">30–55</td>
+<td>Gotowe wyniki i dwa tory, jeśli dotyczą</td>
 </tr>
 <tr class="even">
-<td>55–80 min</td>
-<td>Jedno zadanie samodzielne Z01</td>
+<td align="right">55–80</td>
+<td>Zadanie na indywidualnych danych</td>
 </tr>
 <tr class="odd">
-<td>80–90 min</td>
-<td>Kontrola, wysyłka, status i wylogowanie</td>
+<td align="right">80–90</td>
+<td>Kontrola, oddanie i zapowiedź kolejnego kroku</td>
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="przygotowanie-konta-przed-zajęciami" class="section level1">
-<h1>Przygotowanie konta przed zajęciami</h1>
-<p>Otwórz <a href="https://github.com/signup">rejestrację GitHub</a>.
-Wybierz login, podaj e-mail i ustaw hasło na stronie. Potwierdź e-mail.
-Konto osobiste jest bezpłatne; zapamiętaj login, bo nie jest tym samym
-co nazwa projektu RStudio.</p>
-<p>W ustawieniach GitHub wybierz <strong>Password and
-authentication</strong> i skonfiguruj <a href="https://docs.github.com/en/authentication/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication">uwierzytelnianie
-dwuskładnikowe</a>. Sprawdź logowanie i przechowuj kody odzyskiwania na
-własnym urządzeniu. Hasła, tokeny i kody odzyskiwania nie należą do
-raportu ani repozytorium.</p>
-<p>Przekaż login prywatnym kanałem kursu. Otrzymasz pseudonim, np.
-<code>s017</code>, oraz zaproszenie do własnego prywatnego repozytorium.
-Przyjmij je i sprawdź w przeglądarce, czy widzisz repo. Przykładowe ID w
-instrukcji zastąp własnym; nie używaj numeru albumu.</p>
+<div id="scena-badawcza" class="section level1">
+<h1>2. Scena badawcza</h1>
+<p>Pierwsza osoba wykonuje zadanie wyszukiwawcze w katalogu. Łączymy
+zapis obserwacji, odpowiedź ankietową i bezpieczny obieg pracy przez
+prywatne repozytorium.</p>
+<p>Badana osoba wykonuje krótkie zadanie wyszukiwawcze w cyfrowej
+usłudze informacyjnej, a potem odpowiada na sześć pozycji samooceny.
+Rejestrujemy czas i powodzenie jako pomiar obserwacyjny. Częstość
+korzystania, samoocena oraz wybrane kanały są deklaracjami. Rozdzielenie
+tych źródeł jest częścią interpretacji, ponieważ wysoka pewność nie musi
+oznaczać sprawnego wykonania.</p>
+<p>Dane demonstracyjne dotyczą scenariusza S02 i są syntetyczne. Ich
+rozkłady przygotowano do nauki, dlatego nie wolno opisywać nimi realnej
+biblioteki ani użytkowników UJ. Jednostką analizy jest osoba po
+usunięciu identycznych duplikatów. Każdy brak pozostaje brakiem, dopóki
+słownik nie podaje jawnej reguły.</p>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="początek-zajęć-w-rstudio" class="section level1">
-<h1>Początek zajęć w RStudio</h1>
-<p>R wykonuje obliczenia; RStudio jest środowiskiem, w którym edytujesz
-skrypt, oglądasz pliki i odczytujesz wyniki. W sali R i pakiet są już
-zainstalowane. Zapisz pliki na bieżąco: stan pracy i Gita jes
-czyszczony między spotkaniami, więc trwałą kopią jest potwierdzona
-wersja w GitHub.</p>
-<p>Otwórz RStudio. W dolnym panelu <strong>Console</strong> wpisz
-poniższe polecenia, zastępując ID i adres. Logowanie otworzy GitHub lub
-pokaże adres i jednorazowy kod; hasło oraz drugi składnik wpisujesz na
-GitHub. Po potwierdzeniu R pokaże login konta.</p>
+<div id="a.-konto-repozytorium-i-logowanie-w-sali" class="section level1">
+<h1>2A. Konto, repozytorium i logowanie w sali</h1>
+<p>Przed pierwszym spotkaniem załóż osobiste konto przez <a href="https://github.com/signup">github.com/signup</a>, potwierdź adres
+e-mail i włącz uwierzytelnianie dwuskładnikowe w <strong>Settings →
+Password and authentication</strong>. Kody odzyskiwania przechowuj na
+własnym urządzeniu. Przyjmij zaproszenie do zwykłego prywatnego
+repozytorium przygotowanego przez prowadzącego; kurs nie korzysta z
+organizacji. Nie publikuj numeru albumu, danych osobowych, haseł,
+tokenów ani kodów odzyskiwania.</p>
+<p>Komputery w sali są czyszczone, dlatego na początku każdego spotkania
+Git jest pusty. Pakiet <code>badaniaZI</code>, R, RStudio i GitHub CLI
+instaluje informatyk. Logowanie wywołane z konsoli R otwiera
+przeglądarkę lub pokazuje jednorazowy kod. Login, hasło i drugi składnik
+podajesz wyłącznie na stronie GitHub. Konsola R nie prosi o hasło
+GitHub.</p>
 <pre class="r"><code>library(badaniaZI)
 sprawdz_srodowisko()
 zaloguj_github()
-rozpocznij_zajecia(&quot;C01&quot;, id_studenta = &quot;s017&quot;,
-  repo_url = &quot;https://github.com/prowadzacy/badania-s017.git&quot;)</code></pre>
-<p>Pobieranie tworzy nowy katalog <code>moje-badania</code> i otwiera
-projekt <code>.Rproj</code>. Nazwa autora commitów jest ustawiana
-lokalnie dla tego projektu, a nie dla wszystkich użytkowników komputera.
-Na początku kolejnych zajęć wykonasz te same kroki i odzyskasz ostatnią
-wysłaną pracę. Jeśli używasz Positrona, otwórz pobrany katalog i główny
-projekt, a polecenia wykonuj w jego konsoli R.</p>
-<p>Gdy repo nie jest jeszcze dostępne, możesz ćwiczyć lokalnie. Funkcja
-poniżej tworzy nowy projekt i syntetyczne dane; nie nadpisze
-istniejącego katalogu. Otwórz plik <code>.Rproj</code> z utworzonego
-katalogu. Lokalne przygotowanie nie jest potwierdzonym oddaniem.</p>
-<pre class="r"><code>utworz_projekt(&quot;s017&quot;, &quot;S02&quot;, katalog = &quot;moje-badania-lokalnie&quot;)</code></pre>
+rozpocznij_zajecia(&#39;C01&#39;, id_studenta = &#39;s017&#39;,
+  repo_url = &#39;https://github.com/MarekDejaUJ/ZI-s017.git&#39;)</code></pre>
+<p>Na kolejnych zajęciach ta sama funkcja pobiera ostatnią potwierdzoną
+wersję z repozytorium. Otwórz główny plik <code>.Rproj</code>. Po pracy
+uruchom kontrolę, oddanie i status. Dopiero zgodne zdalne SHA potwierdza
+odbiór; lokalny commit nie wystarcza.</p>
+<pre class="r"><code>sprawdz_zadanie(&#39;Z01&#39;, katalog = &#39;.&#39;)
+oddaj_zadanie(&#39;Z01&#39;, katalog = &#39;.&#39;)
+status_oddania(&#39;Z01&#39;, katalog = &#39;.&#39;)
+wyloguj_github()</code></pre>
+<p>Po <code>wyloguj_github()</code> wyloguj także przeglądarkę i zamknij
+RStudio bez zapisywania <code>.RData</code>. Na własnym komputerze
+pakiet instalujesz poleceniem poniżej; w sali nie instalujesz go
+ponownie.</p>
+<pre class="r"><code>remotes::install_github(
+  &#39;MarekDejaUJ/projektowanie-badan-ZI&#39;,
+  dependencies = NA, upgrade = &#39;never&#39;
+)</code></pre>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="konsola-skrypt-i-komunikaty" class="section level1">
-<h1>Konsola, skrypt i komunikaty</h1>
-<p>W konsoli znak <code>&gt;</code> oznacza gotowość na polecenie; nie
-przepisuj go do kodu. Znak <code>+</code> na początku nowej linii
-oznacza, że R czeka na koniec polecenia, np. brakujący nawias albo
-cudzysłów. Klawisz Esc przerywa niedokończone polecenie, aby można je
-było poprawić.</p>
-<p>Otwórz <strong>File → New File → R Script</strong> lub zapisany
-<code>zadania/z01/analiza.R</code>. Uruchamiaj linię skrótem Ctrl+Enter
-(na macOS Cmd+Enter), a zapisuj Ctrl+S/Cmd+S. Tekst po <code>#</code>
-jest komentarzem; nie wykonuje obliczenia. Panel
-<strong>Environment</strong> pokazuje bieżące obiekty,
-<strong>Files</strong> pliki, a <strong>Plots</strong> wykresy.</p>
-<p>Komunikat <code>object &#39;czasy&#39; not found</code> zwykle oznacza, że
-nie wykonano linii tworzącej obiekt albo nazwa została napisana inaczej.
-Zapis skryptu nie wykonuje kodu automatycznie. Pod koniec pracy uruchom
-go od początku, aby sprawdzić kolejność poleceń.</p>
-<div id="r-jako-kalkulator" class="section level2">
-<h2>R jako kalkulator</h2>
-<p>Zaczynamy od najprostszej roli R: kalkulatora. Dzięki temu widać, że
-każde polecenie ma składnię, a wynik pojawia się od razu pod kodem.
-Patrzymy na to, czy R wykonał działanie bez błędu i czy wynik ma sens
-matematyczny.</p>
-<pre class="r"><code># Dodawanie dwóch liczb.
-5 + 3</code></pre>
-<pre><code>## [1] 8</code></pre>
-<pre class="r"><code># Potęgowanie: 2 do czwartej potęgi.
-2^4</code></pre>
-<pre><code>## [1] 16</code></pre>
-<pre class="r"><code># Pierwiastek kwadratowy ze 144.
-sqrt(144)</code></pre>
-<pre><code>## [1] 12</code></pre>
-<pre class="r"><code># Logarytm naturalny z 10.
-log(10)</code></pre>
-<pre><code>## [1] 2.302585</code></pre>
-</div>
-<div id="typy-danych" class="section level2">
-<h2>Typy danych</h2>
-<p>R musi wiedzieć, czy pracuje z liczbą, tekstem czy kategorią. Ten sam
-zapis może wyglądać podobnie dla człowieka, ale dla programu oznaczać
-inny typ danych. Patrzymy na wyniki <code>class()</code> i
-<code>typeof()</code>, bo one mówią, jakie operacje będą możliwe na
-danym obiekcie.</p>
-<pre class="r"><code># Liczba: można ją dodawać, odejmować i uśredniać.
-czas &lt;- 12
-class(czas)</code></pre>
-<pre><code>## [1] &quot;numeric&quot;</code></pre>
-<pre class="r"><code>typeof(czas)</code></pre>
-<pre><code>## [1] &quot;double&quot;</code></pre>
-<pre class="r"><code># Tekst: opisuje kategorię, ale nie nadaje się do obliczania średniej.
-kanal &lt;- &quot;WWW&quot;
-class(kanal)</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code>typeof(kanal)</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code># Wartość logiczna: TRUE albo FALSE.
-czy_www &lt;- kanal == &quot;WWW&quot;
-class(czy_www)</code></pre>
-<pre><code>## [1] &quot;logical&quot;</code></pre>
-<pre class="r"><code>czy_www</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-</div>
-<div id="obiekty-przechowywanie-wartości" class="section level2">
-<h2>Obiekty: przechowywanie wartości</h2>
-<p>W instytucji wracamy do tej samej wartości, np. liczby dokumentów w
-kolekcji. Obiekt pozwala zapisać ją pod nazwą i wykorzystać później.
-Operator <code>&lt;-</code> przypisuje wartość po prawej stronie do
-nazwy po lewej.</p>
-<pre class="r"><code>liczba_dokumentow &lt;- 45
-liczba_dokumentow</code></pre>
-<pre><code>## [1] 45</code></pre>
-<pre class="r"><code>po_dodaniu &lt;- liczba_dokumentow + 5
-po_dodaniu</code></pre>
-<pre><code>## [1] 50</code></pre>
-<blockquote>
-<p><strong>Nazwy:</strong> <code>czasy</code>, <code>Czasy</code> i
-<code>CZASY</code> są różnymi obiektami. Używaj małych liter i
-podkreśleń, bez spacji. Samo przypisanie nie musi drukować wyniku;
-wpisanie nazwy go pokaże.</p>
-</blockquote>
-</div>
-<div id="wektory-kilka-wartości" class="section level2">
-<h2>Wektory: kilka wartości</h2>
-<p>Wektor przechowuje serię wartości tego samego typu, np. czasy
-szukania informacji. Funkcja <code>c()</code> łączy wartości, a nawiasy
-kwadratowe wskazują ich pozycje. Numerowanie zaczyna się od 1; dodanie
-liczby do wektora działa na każdy element.</p>
-<pre class="r"><code>czasy_szukania &lt;- c(15, 22, 45, 12, 60)
-czasy_szukania[3]</code></pre>
-<pre><code>## [1] 45</code></pre>
-<pre class="r"><code>czasy_szukania + 5</code></pre>
-<pre><code>## [1] 20 27 50 17 65</code></pre>
-</div>
-<div id="warunki-i-braki" class="section level2">
-<h2>Warunki i braki</h2>
-<p>Warunek zwraca <code>TRUE</code> albo <code>FALSE</code>, np. czy
-czas przekracza 30 minut. Podwójny znak <code>==</code> porównuje
-wartości; <code>&lt;-</code> tworzy lub zmienia obiekt. <code>NA</code>
-oznacza brak znanej wartości i nie jest zerem.</p>
-<pre class="r"><code>czasy_szukania &gt; 30</code></pre>
-<pre><code>## [1] FALSE FALSE  TRUE FALSE  TRUE</code></pre>
-<pre class="r"><code>(czasy_szukania &gt; 20) &amp; (czasy_szukania &lt; 50)</code></pre>
-<pre><code>## [1] FALSE  TRUE  TRUE FALSE FALSE</code></pre>
-<pre class="r"><code>z_brakiem &lt;- c(15, NA, 45)
-is.na(z_brakiem)</code></pre>
-<pre><code>## [1] FALSE  TRUE FALSE</code></pre>
-<pre class="r"><code>mean(z_brakiem)</code></pre>
-<pre><code>## [1] NA</code></pre>
-<pre class="r"><code>mean(z_brakiem, na.rm = TRUE)</code></pre>
-<pre><code>## [1] 30</code></pre>
-<p>Ostatnie dwa wyniki różnią się, ponieważ pierwszy zachowuje brak, a
-drugi pomija go w obliczeniu. Nie usuwamy tu całej osoby z danych:
-pomijamy tylko nieznaną wartość w określonej operacji. Reguły braków
-przećwiczymy dokładniej w C02.</p>
-</div>
-<div id="tabela-wiersze-i-kolumny" class="section level2">
-<h2>Tabela: wiersze i kolumny</h2>
-<p>Ramka danych przypomina arkusz: wiersz jest obserwacją, kolumna
-zmienną. Tworzymy małą tabelę ręcznie, aby zobaczyć strukturę. Znak
-<code>$</code> odczytuje nazwaną kolumnę, a
-<code>tabela[wiersz, kolumna]</code> wskazuje pozycję w dwóch
-wymiarach.</p>
-<pre class="r"><code>uzytkownicy &lt;- data.frame(
-  id = c(&quot;o001&quot;, &quot;o002&quot;, &quot;o003&quot;),
-  kanal = c(&quot;WWW&quot;, &quot;e-mail&quot;, &quot;WWW&quot;),
-  czas = c(12, 8, 15)
-)
-uzytkownicy</code></pre>
-<pre><code>##     id  kanal czas
-## 1 o001    WWW   12
-## 2 o002 e-mail    8
-## 3 o003    WWW   15</code></pre>
-<pre class="r"><code>str(uzytkownicy)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    3 obs. of  3 variables:
-##  $ id   : chr  &quot;o001&quot; &quot;o002&quot; &quot;o003&quot;
-##  $ kanal: chr  &quot;WWW&quot; &quot;e-mail&quot; &quot;WWW&quot;
-##  $ czas : num  12 8 15</code></pre>
-<pre class="r"><code>nrow(uzytkownicy)</code></pre>
-<pre><code>## [1] 3</code></pre>
-<pre class="r"><code>uzytkownicy$czas</code></pre>
-<pre><code>## [1] 12  8 15</code></pre>
-<pre class="r"><code>uzytkownicy[2, &quot;kanal&quot;]</code></pre>
-<pre><code>## [1] &quot;e-mail&quot;</code></pre>
-<p>Tabela ma trzy wiersze. Kolumna <code>czas</code> jest wektorem
-liczbowym, a <code>kanal</code> wektorem tekstowym. Nie obliczamy
-średniej z nazw kanałów. Później skala pomiarowa pomoże dobrać opis i
-test; klasa R jest informacją techniczną, która nie zastępuje skali.</p>
-</div>
-<div id="pomoc-i-odtwarzanie" class="section level2">
-<h2>Pomoc i odtwarzanie</h2>
-<p>Nie trzeba pamiętać wszystkich argumentów. Wpisz <code>?mean</code> w
-konsoli i sprawdź argument <code>na.rm</code>; nie wpisuj znaku
-zapytania do raportu jako wyniku analizy. Nazwy plików i katalogów
-sprawdzaj w panelu Files. Otwarcie głównego <code>.Rproj</code> ustala
-katalog projektu, więc nie potrzebujesz <code>setwd()</code>.</p>
-<p>Plik <code>.R</code> zawiera kod; <code>.md</code> własne odpowiedzi
-i odnośniki do wyników; <code>.Rmd</code> łączy tekst z wykonywalnym
-kodem i może tworzyć HTML oraz PDF. Gotowe materiały obu formatów są w
-pakiecie i Pages. Do zwykłego zadania nie potrzebujesz LaTeX ani
-renderowania PDF.</p>
-</div>
-</div>
-<div id="zadanie-z01-czas-znalezienia-informacji" class="section level1">
-<h1>Zadanie Z01 — czas znalezienia informacji</h1>
-<p>W pliku <code>zadania/z01/analiza.R</code> utwórz wektor
-<code>czasy</code> z wartościami 6, 9, 4, 12, 8 minut. Odczytaj drugi
-element i oblicz średnią. Utwórz trzywierszową ramkę <code>proby</code>
-z kolumnami <code>id</code>, <code>kanal</code> i <code>czas</code>,
-używając dwóch kanałów WWW/e-mail; odczytaj jej kolumnę
-<code>czas</code> i liczbę wierszy. Usuń instrukcję <code>stop()</code>
-dopiero po uzupełnieniu kodu.</p>
-<p>W <code>odpowiedzi.md</code> wpisz otrzymane liczby i wyjaśnij w
-250–450 słowach różnicę między konsolą a skryptem oraz źródło jednego
-wyniku. Opisz, jak sprawdzisz odbiór własnej pracy i zdalne SHA. Nie
-wpisuj bieżącego SHA do pliku, który sam wchodzi do tego commitu:
-odczytaj je po wysyłce z pokwitowania.</p>
+<div id="pytanie-jednostka-i-zmienne" class="section level1">
+<h1>3. Pytanie, jednostka i zmienne</h1>
+<p>Analizowane zmienne: <strong>identyfikator odpowiedzi, grupa, czas
+wykonania, powodzenie</strong>.</p>
+<p>Przed spojrzeniem na wynik odpowiedz głośno na cztery pytania: kto
+jest obserwacją, co jest zmienną, jaka jest skala i w jakiej jednostce
+pojawi się rezultat. Nazwa kolumny jest technicznym adresem; znaczenie
+pochodzi z operacjonalizacji oraz słownika danych.</p>
 <table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Element</th>
+<th>Pytanie kontrolne</th>
+<th>Odpowiedź w tej historii</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Jednostka</td>
+<td>Co zajmuje jeden wiersz?</td>
+<td>jedna osoba i jedno zadanie</td>
+</tr>
+<tr class="even">
+<td>Samoopis</td>
+<td>Co osoba deklaruje?</td>
+<td>pozycje, częstość, kanały</td>
+</tr>
+<tr class="odd">
+<td>Obserwacja</td>
+<td>Co zapisuje procedura?</td>
+<td>czas i powodzenie</td>
+</tr>
+<tr class="even">
+<td>Granica wniosku</td>
+<td>O czym mówią dane?</td>
+<td>o syntetycznej próbie dydaktycznej</td>
+</tr>
+</tbody>
+</table>
+<p>Skala pomiarowa ogranicza sens działań. Dla kategorii liczymy osoby i
+odsetki; dla uporządkowanych odpowiedzi możemy porównywać kolejność; dla
+czasu sens mają różnice i ilorazy. Indeks 1–5 traktujemy w kursie jako
+przybliżoną zmienną ilościową, ale pamiętamy, że powstał z pozycji
+porządkowych. Nazwanie skali przed analizą chroni przed mechanicznym
+wyborem testu.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="słownik-statystyczny" class="section level1">
+<h1>4. Słownik statystyczny</h1>
+<p>Statystyka jest językiem skrótu. Symbol ma nazwę, znaczenie w badaniu
+i jednostkę. Odczytuj wzór zdaniem, zanim podstawisz liczby.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Nazwa</th>
+<th>Znaczenie w przykładzie</th>
+<th>Jednostka</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math></td>
+<td>numer obserwacji</td>
+<td>osoba wykonująca zadanie</td>
+<td>bez jednostki</td>
+</tr>
+<tr class="even">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mi>i</mi></msub><annotation encoding="application/x-tex">x_i</annotation></semantics></math></td>
+<td>wartość w komórce</td>
+<td>np. czas osoby
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math></td>
+<td>minuty</td>
+</tr>
+<tr class="odd">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math></td>
+<td>liczba obserwacji</td>
+<td>liczba analizowanych osób</td>
+<td>osoby</td>
+</tr>
+</tbody>
+</table>
+<p>Wartość p nie jest prawdopodobieństwem prawdziwości hipotezy.
+Przedział nie jest zakresem środkowych 95% obserwacji. Efekt nie jest
+tym samym co istotność. Te trzy rozróżnienia wracają w każdej
+analizie.</p>
+<p><strong>Notatnik pojęć.</strong> Dla każdego symbolu dopisz jedną
+liczbę z gotowego wyniku i przeczytaj ją bez skrótu. Zamiast „t równa
+się” powiedz „obserwowana różnica leży tyle błędów standardowych od
+wartości zerowej”. Zamiast „V równa się” powiedz „znormalizowana siła
+związku w tabeli wynosi”. Taki przekład jest ważniejszy niż pamięciowe
+odtwarzanie wzoru.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="wzór-czytany-jak-zdanie" class="section level1">
+<h1>5. Wzór czytany jak zdanie</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>=</mo><mrow><mtext mathvariant="normal">wartość zmiennej </mtext><mspace width="0.333em"></mspace></mrow><mi>x</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> dla obserwacji </mtext><mspace width="0.333em"></mspace></mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">x_i = \text{wartość zmiennej } x \text{ dla obserwacji } i</annotation></semantics></math></p>
+<p>Czytamy od lewej do prawej, nazywając licznik, mianownik i jednostkę.
+Znak wyniku ma sens dopiero po ustaleniu kolejności grup lub kierunku
+skali. Jeżeli we wzorze jest N, chodzi o przypadki rzeczywiście użyte w
+danym obliczeniu, a nie automatycznie o wszystkie wiersze surowego
+pliku.</p>
+<p><strong>Ćwiczenie ustne.</strong> Wskaż w formule estymatę, element
+niepewności i punkt odniesienia. Jeżeli dana metoda ich nie ma, powiedz
+to wprost. Następnie przewidź, co stanie się z wynikiem po zwiększeniu
+N, zmianie jednostki albo odwróceniu kolejności grup.</p>
+<p>Czytanie wzoru ma pięć kroków: (1) nazwij wynik po lewej stronie, (2)
+nazwij obserwowane wielkości po prawej, (3) wskaż porównanie lub wartość
+zerową, (4) ustal jednostkę, (5) powiedz, jaka zmiana danych zwiększa
+wynik. Nie wykonujemy ręcznie długich obliczeń. Wzór ma odsłonić logikę
+liczby zwracanej przez gotową funkcję.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="gotowy-skrypt-pomocniczy" class="section level1">
+<h1>6. Gotowy skrypt pomocniczy</h1>
+<p>Pierwszy chunk materiału załadował towarzyszący plik
+<code>analiza.R</code>. Zawiera przygotowanie danych, obiekty i funkcje
+potrzebne na zajęciach. Uruchamiasz kolejne fragmenty i odczytujesz
+wynik. Nie implementujesz testu ani pętli permutacyjnej.</p>
+<pre class="r"><code>wynik_glowny</code></pre>
+<pre><code>##   N_surowe N_po kolumny
+## 1      150  148      17</code></pre>
+<p>W zadaniu indywidualnym analogiczny skrypt powstaje przez
+<code>przygotuj_zadanie()</code>. Wolno zmienić jedynie wartości
+oznaczone komentarzem jako parametry. Dzięki temu przedmiot ocenia
+rozumienie wyniku, a nie biegłość w programowaniu.</p>
+<p>Po zmianie parametru uruchom cały skrypt od początku. Pojedyncze
+obiekty pozostawione w Environment mogą pochodzić ze starszej próby,
+dlatego nie są dowodem odtwarzalności. Zapisany plik w
+<code>wyniki</code> ma powstać ponownie w świeżej sesji. Jeśli nazwa
+zmiennej jest niedozwolona, funkcja zatrzymuje analizę i podaje listę
+dopuszczalnych wartości.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="dane-braki-i-mianownik" class="section level1">
+<h1>7. Dane, braki i mianownik</h1>
+<pre class="r"><code>knitr::kable(head(tabela_glowna, 10), digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">id_odpowiedzi</th>
+<th align="left">grupa</th>
+<th align="right">czas_wyszukiwania</th>
+<th align="right">powodzenie</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">o001</td>
+<td align="left">nowi</td>
+<td align="right">12.1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">o002</td>
+<td align="left">nowi</td>
+<td align="right">10.4</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">o003</td>
+<td align="left">doświadczeni</td>
+<td align="right">5.8</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">o004</td>
+<td align="left">doświadczeni</td>
+<td align="right">16.1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">o005</td>
+<td align="left">doświadczeni</td>
+<td align="right">28.0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">o006</td>
+<td align="left">doświadczeni</td>
+<td align="right">6.3</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>Zanim przeczytasz statystykę, ustal N i braki. Dla średniej N oznacza
+ważne liczby. Dla korelacji są to kompletne pary. Dla tabeli jest to
+suma analizowanych komórek. Dla indeksu przypadek musi mieć co najmniej
+pięć odpowiedzi po właściwym ukierunkowaniu.</p>
+<p>Dwa wyniki mogą używać różnych N w tym samym raporcie. Nie jest to
+sprzeczność, jeśli wynika z braków i zostało jawnie opisane. Nie wolno
+dopasowywać reguły braków po zobaczeniu, która wersja daje
+korzystniejsze p.</p>
+<p>Brak może dotyczyć jednej pozycji, całego indeksu albo pary
+zmiennych. Duplikat jest powtórzeniem rekordu, a obserwacja odstająca
+nadal może być prawdziwą obserwacją. Te pojęcia wymagają innych decyzji.
+Dziennik czyszczenia powinien pozwolić odtworzyć, ile elementów zmieniła
+każda reguła i dlaczego wynikowe N jest właściwym mianownikiem.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="tor-klasyczny" class="section level1">
+<h1>8. Tor klasyczny</h1>
+<p>Na tym etapie tor klasyczny oznacza jawne odczytanie tabeli:
+wskazujemy wiersz, kolumnę, typ i jednostkę. Nie wykonujemy testu, bo
+pytanie nie dotyczy populacji ani losowości.</p>
+<pre class="r"><code>knitr::kable(formatuj_wynik(wynik_klasyczny), digits = 4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">id_odpowiedzi</th>
+<th align="left">grupa</th>
+<th align="right">czas_wyszukiwania</th>
+<th align="right">powodzenie</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">o002</td>
+<td align="left">nowi</td>
+<td align="right">10.4</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>Odczytaj wynik bez etykiety „dobry” lub „zły”. Powiedz, jaka estymata
+odpowiada pytaniu, co mierzy statystyka oraz jakie założenie projektu
+ogranicza interpretację. Jeżeli widzisz p, opisz je warunkowo: przy
+modelu zerowym i przyjętej procedurze.</p>
+<p><strong>Karta odczytu toru klasycznego.</strong> Zapisz: (a) nazwę
+metody, (b) N lub liczebności grup, (c) estymatę i jednostkę, (d)
+statystykę wraz z df, jeśli występują, (e) p, (f) jedno założenie.
+Jeżeli metoda na tej stronie nie jest testem, wpisz „nie dotyczy”
+zamiast wymyślać p. Kompletność wyniku jest oceniana oddzielnie od jego
+istotności.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="tor-permutacyjny-lub-decyzja-o-jego-braku" class="section level1">
+<h1>9. Tor permutacyjny lub decyzja o jego braku</h1>
+<p>Permutacja nie odpowiada na pytanie C01. Tasowanie wartości
+zniszczyłoby związek rekordu z osobą, a nie pomogłoby rozpoznać
+struktury danych. To pierwsza lekcja doboru metody: procedura ma wynikać
+z pytania.</p>
+<pre class="r"><code>knitr::kable(formatuj_wynik(wynik_permutacyjny), digits = 4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">nie dotyczy pytania C01</td>
+</tr>
+</tbody>
+</table>
+<p>W analizie inferencyjnej liczba B określa rozdzielczość szacowanego
+p. Za każdym razem trzeba powiedzieć, co dokładnie tasowano i jaki
+związek został zerwany. Nazwa „permutacyjny” nie zwalnia z wyjaśnienia
+hipotezy zerowej.</p>
+<p><strong>Karta odczytu toru permutacyjnego.</strong> Uzupełnij zdanie:
+„Przy braku związku lub różnicy wielokrotnie zmieniano znaki, tasowano
+etykiety lub losowano tabele, za każdym razem liczono tę samą
+statystykę, a określony odsetek wyników był co najmniej tak skrajny jak
+obserwowany”. Następnie porównaj wniosek z torem klasycznym bez
+wybierania mniejszego p.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="efekt-i-przedział" class="section level1">
+<h1>10. Efekt i przedział</h1>
+<p>W C01 nie ma wielkości efektu ani przedziału. Raportujemy konkretną
+wartość, jej jednostkę i miejsce pochodzenia. Pojęcia efektu i
+niepewności pojawią się od C05.</p>
+<pre class="r"><code>knitr::kable(formatuj_wynik(efekt), digits = 4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">brak inferencji na C01</td>
+</tr>
+</tbody>
+</table>
+<p>Znaczenie praktyczne oceniamy w kontekście usługi: minuty, punkty
+skali, różnica odsetków albo siła związku. Uniwersalne etykiety
+mały/średni/duży nie zastępują pytania, czy efekt zmienia decyzję
+instytucji i jak precyzyjnie został oszacowany.</p>
+<p>Przedział szeroki obejmuje wiele możliwych wielkości efektu i wymaga
+ostrożniejszego języka. Przedział wąski może nadal koncentrować się
+wokół efektu praktycznie małego. Gdy przedział przecina zero, nie
+zapisujemy automatycznie „brak efektu”; podajemy zakres zgodnych
+wartości i oceniamy, czy obejmuje skutki istotne dla usługi
+informacyjnej.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="wykres-jako-część-argumentu" class="section level1">
+<h1>11. Wykres jako część argumentu</h1>
+<pre class="r"><code>wykres_glowny</code></pre>
+<p><img role="img" aria-label src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABUAAAANzCAMAAABf5kIwAAABX1BMVEUAcrIiIiIiIk4iInUiTk4iTnUiTpoidXUidZoidb1AQEBBQWRBQYZBZGRBZIZBZKZBhsROIiJOIk5OTiJOTk5OTnVOdU5OdXVOdZpOdb1Omr1Omt5kQUFkZEFkhsRkpuJ1IiJ1TiJ1Tk51dU51dXV1dZp1mpp1mr11mt51vb11vd51vf+GQUGGZEGGZGSGhqaGpsSGpuKGxOKGxP+aTiKaTk6adSKadU6adXWamk6amnWamr2avb2avd6a3r2a3t6a3v+mZEGmhmSmxOKm4sSm4v+9dSK9dU69dZq9mk69mnW9mpq9vZq9vb29vd693pq93t693v+9/729///EhkHEhmTEpmTE4v/E///emk7emnXevXXevZrevb3e3r3e3t7e3v/e/97e///g4ODipmTipobixIbi4v/i////vXX/xIb/3pr/3r3/3t7/4qb/4sT//73//8T//97//+L///+syWXOAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO3d/38bh33fcYCWvIl2vmiWa7lUmkhx6kyy19Xx5qyNV6ddmdWJPXtWkzCS7UxR01CSFZvi//8YcAfcF+BAvHS4L7jPvZ4/JCJ5xIFvfvj24b5hci5JqmXS9xOQpKGyQCWpJgtUkmqyQCWpJgtUkmqyQCWpJgtUkmqyQCWpJgtUkmqyQCWpJgtUkmqyQCWpJgtUkmqyQCWpJgtUkmqyQCWppg4K9HRacHDttfcfLL5wMv/ElfafQINOm3nKyU9+1MDzaeyxB/i7kPrXdYHOXf4g/cIA/2gtUEm5Pgp0enAn+cIA/2gtUEm5Xgp0+sJn8y8M8I/WApWU66pAX0x3fH754dXpkP9UwxaopBo6LtDz88dX803Q4bFAJeU6L9D0D/zgg/bX2wYLVFKu+wJNd4nODyOV97s9eW++bXrtzd8vP3GcbKk+uTWr2zf/pdAKx/m3nb27fKzz+z98Zf7vS6/+/YPCl3JXNq0mV1zhg+qFCwV6kj7s8ud68tP5+i9df/+Ch7t/a/Zwl2YfLEoufY7Lsks+Kv6XZcOP8OSn15L/BpV/htXH3rTs6SKxdPnXl58u/S6q1yBpVfcFmr6GXy3Qs/eynnh9sWhSQP8n3Wf6Rr7o1z/IHy/593x3wOObec8c/Dh5wMr2qVhNrrjCO9UL5wWa/ndg+WM9ydd/+f0ND5ctc/DBsuROio+RBPNi4VlV/giFJ7X4Sc+rH3vDsmmBZnktP134XVSvQdK6PdkCTVtxYbHsvIAOks3K6Qv/d9mU5Z2oyz5LP5eZ10dl+1StJldc4WfVC2cFenq1+BD3Sus/2vZwB9cWiyXP+6B4WmzxtXfVj7DyucXiVY+9YdnkJ3ij8HxXTymrXoOkCn3uA934R5uW6nHxr/g4+1s/KfzdLz672jTzRwfts7ovs7TC6oXLjb08FLZ6otbR9ocrfnKxubj6Cr7yRzgpfyp9BpWPvWHZtZPK0t9M/ruo/C5JVXo6Cp98uPJHe3D7wfnZL6ZZjeQFNPv4dFkLy7LI/j37C08e8/In82/64ualH/2stOeuULiVq8mVVli98KJA0y2+Fz5Nvy/9KNnRef/qhue/KK756/snhZ+gkM3aK/iqHyH96ec7FL5afVZrj33RstPL/1B+stnvovq7JFXptkDPlueB5ltI8z/apIEWf6l5q6YFtGipZJH5gyxfrc7/nXTOlfzAyMa1pyusXk1ufYVrC6cFmpZMVi3F8wq+vln9/NNvKeycWHtK2X8iLvoRzs8+/7trhf2/6b7a6seuXLa07zbfHV18NVD1XZKq9HMl0srLxuLJQdlxoUUVLP9+j6fFLbl0kZPFAsnnLr9ftfLHhRP3q1eTK62weuHks/+x3J/lY+n5bs3Sw5XKKP3gKFtn9q/Kzb3H1dce5GcgbHrsqmULu6BLn676D0rhy5Kq9FKgi62y7I+2ePgk3xV4XNiuyrcy58teujrNdn0mx+AXx0Qu/fXHKy+BFy/4C5eOrq0mV1ph9cKFnyXrqGTtWRfnrVN6uNNpYaFC5Wab59km9qrSj5D56pc3sybc9NhVy5YWLiy7XqCl75JUpY8CvV7sqPkf7fHqEnkBZX/Ti5fryd/8lePk7z7vnMIDHJTOXUy/sCjK6tWsLHyl9J2rCxd+lqzRqg6SHa0+XHmhvJ2z1/Abd0OUfoTE5z99Zf1JVTx21bLlts23f8sFuvZdkqp0XaDXXv3rT5dfIAWaNcFiczPp0TunSWPkew3Lh6Gvl9eQdQAq0KPzixYu/ixXiivJN97KP9VR5UKFklv+83hafcS7/CPMz+1fe1IbH7ti2XLbVhZo1XdJqtL9aUy55yrQZOmDD06T/53X6AufFfca3nul8N3LIlrZe9hwgS5XvXJ5Z3WBlhcqlNzi4Hu6Zb2e0eoO0PT80+nBq3//5bulJ1Xx2FXLbi/Qyu+SVGV/CnTtAPTKZ5MqOTrO6+b2u6XH/erDW1m3lc7OzxapXs2GFVYvvCjQK8WX5xe+hC8VaNXL7MX+1XTLeu0prf4I6cfJBZhn5QJdf+zKZbcWaPV3SaqyFwVaff+LlQpL/pwv35xmL3hfu7r2XV/96odJ4SSboGtHX7bdZmP9NfeGAr3yoHAC0MUHkUoH57OFil9KV3QyrXoFX/0jrN4HYMNjVy67tUCrv0tSlb0o0OolVrcBs0tk7uQvpdfP+8nbZHXv4eYnUrXC6oWzzxauYi+fOLRyGtPy06VTjdL6LV6G+WL1K/i1HyG/IKvwiBseu3LZrQVa/V2SquxFgRYr6PQ/vfrmJ8nCqwVaPAN0eeLS4vz8Lz68dbVYIPNFiqefp6pXk6tovNWFT6ue8kUn0h+VHnxx5eVx6Zlle1vXqmr9RyjsOvhF/j3Vj129LCrQte+SVGUvCnSxpTW/fvBefqXnaoEur0EqXtVeuJI+PX/pi5uL7686/bxyNbnyCisXzo/XnOSlddGlnNnDFS63vFnuxeJ/GEoqfoS0Hv/yQXao/M7mx75g2W0FuvZdkqrsR4GWbnxUXUDn2abaUeHfd/I1FN1ZuydG8rnK1aw8frbCyoXzAk1b+0rl+u9UPNz6Yf2jlRWtvYKv+BHWftK1+5bkn65edluBbliDpAr7UaAr96MrtMLR6gOV7omx3GhbqZqj9U8VDrdsrIaqw/4rCxfOGDrNn8zKyo4qH654ruq10vGvk8LPtZZP+UcoPshfXJ2WD/esPHb1stsKdMMaJFXYkwIt3pH44Hb6qbUCXdwDqXBX0OyPu3hDzvT7Kwu0ajW51RVWLFwo0OImaOmGyh9seLj8RsWvPy4V6OOq/QkbfoSs3w5+nF3JuumxK5fdeh7ohjVIWrcvBXp+/sV783PhD17N7gmyfiZm9Zt5pO6/l9xJ+NJr7z/IH3ytQCtWs/LwpRWuLVw8Z714KtOsQv9uvv5L1z+58OHmb6Nx/dPzcoFWXL5+wY9wf3666/y9O4oHzDc8dsWy269E2rQGSas6KFBtUXVjE0kDYIH2b9v5qZL2lAXau3vF0+olDYgF2qtsN6eHaqQBskB7lZ116QaoNEAWaK9O7U9pwCzQXj2+OU1PPpI0QBaoJNVkgUpSTRaoJNVkgUpSTRaoJNVkgUpSTRaoJNVkgUpSTRaoJNVkgUpSTRaoJNVkgUpSTRaoJNVkgUpSTRaoJNVkgfbvD30/gWEwJsSYkKZiskD758gjxoQYE2KBxuHII8aEGBNigcbhyCPGhBgTYoHG4cgjxoQYE2KBxuHII8aEGBNigcbhyCPGhBgTYoHG4cgjxoQYE2KBxuHII8aEGBNigcbhyCPGhBgTYoHG4cgjxoQYE2KBxuHII8aEGBNigcbhyCPGhBgTYoHG4cgjxoQYE2KBxuHII8aEGBNigcbhyCPGhBgTYoHG4cgjxoQYE2KBxuHII8aEGBNigcbhyCPGhBgTYoHG4cgjxoQYE2KBxuHII8aEGBNigcbhyCPGhBgTYoHG4cgjxoQYE2KBxuHII8aEGBNigcbhyCPGhBgTYoHG4cgjxoQYE2KBxuHII8aEGBNigQYxSfX9NAbAZkCMCbFAY5hMbFDIZkCMCbFAQ5hMbFDKZkCMCbFAQ7BAOZsBMSbEAo1gMrFBMZsBMSbEAo3AAn0ONgNiTIgFGsDEAn0ONgNiTIgFGoEF+hxsBsSYEAs0Agv0OdgMiDEhFmgI9idnMyDGhFigIVignM2AGBNigcZgf2I2A2JMiAUahP1J2QyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHI48YkyIMSEWaByOPGJMiDEhFmgcjjxiTIgxIRZoHMMa+Umq+xUPK6beGBNigcYxqJGfTPpq0EHF1B9jQizQOIY08pNJbw06pJh6ZEyIBRrHkEbeAt13xoRYoHEMaOQnk/4adEAx9cmYEAs0jgGNvAW694wJsUDjGM7ITyzQvWdMiAUax4BG3gLde8aEWKBxDGjkLdC9Z0yIBRrHkEbeo/D7zpgQCzSOIY28BbrvjAmxQOMY1Mh7JdKeMybEAo1jWCPvtfD7zZgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJqRuTJNUo89lj1mgcdgMiDEhNWOaTMbVoBZoHDYDYkxIvZgmk5E1qAUah82AGBNigSIWaBw2A2JMSK2YJpOxNagFGofNgBgTYoEiFmgcNgNiTEidmCYWaF3jSGu/2QyIMSFugSIWaBw2A2JMiAWKWKBx2AyIMSEehUcs0DhsBsSYEAsUsUDjsBkQY0K8EgmxQOOwGRBjQrwWHrFA47AZEGNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJsUDjcOQRY0KMCem9QP/8jzcOD7/1zp8WH/7xe/OPGnpSI+PII8aEGBPSd4E+PEx9J23Qu+lH323oWY2LI48YE2JMSM8F+ujw8K/+/fzZv91IO/Ph4UvvnD/79eHh9xt6WqPiyCPGhBgT0nOB3l1sbM6a85/Pz795K23Oh4cv/7ah5zUmjjxiTIgxIf0W6Kwxf1L4x6NFcWaf1vNw5BFjQowJ6Xsf6EJamQ+XOz/v+hq+BkceMSbEmJA9KdCnN+YFejcvUA8jPT9HHjEmxJiQPSnQZK/ns58vNzwfLo/K6zk48ogxIcaE7EeBzjZAZ9V5YYH+QZKCaLRAv3k7KUy3QHfjNgNiTIgxIfuwBTorzvlJTBbojhx5xJgQY0L2oEBn259Jf1qgO3LkEWNCjAnpv0D//NaiPwtnL3kUvg5HHjEmxJiQ3gv06Y3Dl3+z+Lfnge7EkUeMCTEmpO8CnfXnt7PLNr0SaSeOPGJMiDEhPRforCoLezu9Fn4njjxiTIgxIT0X6EpVPjw89G5MtTnyiDEhxoT0fjORzLwzn3k/0B048ogxIcaE9FugT2+UC9Q70u/CkUeMCTEmpO+DSGqOI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyO/3STV99MYAKcJsUDjcOS3mkxsUMhpQizQOBz5bSYTG5RymhALNA5HfhsLlHOaEAs0Dkd+i8nEBsWcJsQCjcOR38ICfQ5OE2KBxuHIX2xigT4HpwmxQOMYzcjXrUAL9DmMZpp2Y4HGMZaRr92BFuhzGMs07cgCjWMkI79DCdqf3EimaVcWaBwjGXkLtBMjmaZdWaBxjGPkd3odbn9i45imnVmgcYxj5HfbkWl/UuOYpp1ZoHGMYuR3PxdpFDHtzpgQCzSOcYy8BdoNY0Is0DjGMfIWaDeMCbFA4xjJyO96KH0kMe3KmBALNI6RjLwF2gljQizQOMYy8jueizSWmHZkTIgFGsdoRn63c5FGE9NujAmxQONw5BFjQowJsUDjcOQRY0KMCbFA43DkEWNCjAmxQONw5BFjQowJaa1Azz7/aLOPHzS0WhU48ogxIcaEtFagX/9gutkLnzW0WhU48ogxIcaEWKBxOPKIMSHGhFigcTjyiDEhxoS0W6CXrq17xQJtiSOPGBNiTEirBVrZkxu/oB058ogxIcaEWKBxOPKIMSHGhFigcTjyiDEhxoS0eh5o5emeG7+gHTnyiDEhxoR4JVIcjjxiTIgxIRZoHI48YkyIMSEdFOjZl17E2QlHHjEmxJiQ1gv07D1Poe+II48YE2JMSNsFevau1yB1xZFHjAkxJqTtAj3xIs7OOPKIMSHGhLRcoKsboBZoixx5xJgQY0JaLtD5WfMHt7/0yFEXHHnEmBBjQjoo0DsNrUJbOPKIMSHGhLT/Et4X7V1x5BFjQowJafsg0rEF2hlHHjEmxJiQtgv0dDo9amgV2sKRR4wJMSak9RPpj6fT2w2tQxdz5BFjQowJaXsf6Oe/ujqdTq9de+2N1I88IN8aRx4xJsSYkA6OwnseaEccecSYEGNCLNA4HHnEmBBjQizQOBx5xJgQY0LaLtBbK+/J+aoF2hpHHjEmxJgQb6gchyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTEh77wt/a37AyINIHXLkEWNCjAlpr0B/MD9lydOYOuTII8aEGBNigcbhyCPGhBgTYoHG4cgjxoQYE9JagZ79dH7jkNn/lnkzkfY48kgPMU1S3a94B04T4lH4OBx5pPuYJpMBNqjThFigcTjySOcxTSZDbFCnCbFA43DkEQsUcZqQTgr07MvM7xtan9Y58kjXMU0mg2xQpwlpv0B/d9Wj8NhOf2aOPGKBIk4T0sV7Ilmg1G5/Z4480nFMEws0sg7eldMCpXb8Q3PkEbdAEacJaftN5d61QDkLtAsWKOI0IR28pcfB9Y9yH3si/Ua7/qU58ohH4RGnCemgQO80tIrwLNBOWKCI04S0/xLeF+3QzkcbHHnEK5EQpwlp+yDS8fTgg4ZWEZ4F2gmvhUecJqTtAn18dXrF3Z6MBdoJY0KMCWn9PNCT6fTSm594JRLhUfguGBNiTEjrBfr1TU9joizQLhgTYkxI2wW6ekdlC/Qiux1tcOQRY0KMCWm7QE88kf557HS0wZFHjAkxJsQrkeJw5BFjQowJ6eJKpDc/9nZ2XXDkEWNCjAlpv0A9D7QrjjxiTIgxIV6JFIcjjxgTYkxI+weR3ALtiiOPGBNiTEgHpzF5JVJHHHnEmBBjQlo/kf50fiXSRx5E6oAjjxgTYkxI2weRbl3zNKauOPKIMSHGhHRwGpMF2hFHHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmJC2DyJ99WWZB5Ha48gjxoQYE9L6UXh1xpFHjAkxJqS9Av1q0+bmxi9oN448YkyIMSGtFeh872flDs+NX9COHHnEmBBjQizQOBx5xJgQY0Is0DgcecSYEGNCWi3Qg9feWPfDqxZoOxx5xJgQY0JaLdCNLNA2OPKIMSHGhFigcTjyiDEhxoRYoHE48ogxIcaEtFagZz+t2P+59CNvEdoCRx4xJsSYEK9EisORR4wJMSbEAo3DkUeMCTEmxAKNw5FHjAkxJsQCjcORR4wJMSbEAo3DkUeMCTEmxAKNw5FHjAkxJsQCjcORR4wJMSbEAo3DkUeMCTEmxAKNw5FHjAkxJsQCjcORR4wJMSbEAo3DkUeMCTEmxAKNw5FHjAkxJqTDAvWt5FrmyCPGhBgT0n6Bnv0yuXfdyXQ6PXi/obWpiiOPGBNiTEjrBfr46vTOedqfM3caWp0qOPKIMSHGhLRdoPP7Kh/lt1f2TsotcuQRY0KMCWm7QE9nrfnig+T/EkcNrU/rHHnEmBBjQtou0ONZab7+IPm/H3/x7nR6paH1aZ0jjxgTYkxIywV69m72Cn726v3x1fnWqFriyCPGhBgT0nKBzprz4IPkSNJ823P2kTtB2+PII8aEGBPSfoHOK/NkutwQtUDb48gjxoQYE9JNgR5PlxuiFmh7HHnEmBBjQjrYB3pnuQt03qPuA22PI48YE2JMSAdH4S//bNai0yvnX9yaehS+TY48YkyIMSFdnAeaXoM03xj1UqQ2OfKIMSHGhLRdoGltJi/dj6e+gm+VI48YE2JMSOvXwj+5Oe/Py58lG6OXPYTUIkceMSbEmJAO7sZ0/4033p9veD6+et3tzzY58ogxIcaEeEPlOBx5xJgQY0Is0DgcecSYEGNCOi7Qs//tXtDWOPKIMSHGhLRfoF99+MNrc6++ceuaVyK1yZFHjAkxJqT1As1OBPWOym1z5BFjQowJabtA5/dhskC74cgjxoQYE9J2gZ6U+3P6ogXaGkceMSbEmJAObiYyPXhl9j+Xrs3+98ArOVvkyCPGhBgT0v7t7OY3Aj32bnYdcOQRY0KMCenmjvQn6bvJnfqmcm1y5BFjQowJ6eaGyrNtzyvpR95NpD2OPGJMiDEh3RToojl9S49WOfKIMSHGhHTzrpzpjennL+Et0PY48ogxIcaEdPG+8Om9QA/efO+qBdomRx4xJsSYkC7uSH+lcD2Sb+nRHkceMSbEmJAu7kifvqHx4p09Glqf1jnyiDEhxoS0fi382Xvz85jOT9NLOl9vaHWq4MgjxoQYE9LB7ey+Ss5cenJrOr10u6G1qYojjxgTYkyIN1SOw5FHjAkxJqTTAj37/KOPPZG+NY48YkyIMSFtn0h/69q1/HW7J9K3ypFHjAkxJqSDm4lMX3+Qf2SBtseRR4wJMSakiwKdXv40+8gCbY8jjxgTYkxIJwU6Pbi9/MgCbY8jjxgTYkxINwW6eBlvgbbKkUeMCTEmpKsCTV7GW6CtcuQRY0KMCengdnb/Y7p8GW+BtsqRR4wJMSaki/uB3lu8M+eRBdoqRx4xJsSYkE5uqPzkZtqgl3xTpDY58ogxIcaEdHNH+rNf+L7w7XPkEWNCjAnppkDPz5cv4y3Q9jjyiDEhxoR0VaDLl/EWaHscecSYEGNCOivQxct4C7Q9jjxiTIgxbTdJNfJQ1Z/++ta1V7PKvOd7IrXKkUeMCTGmrSaT5hoUPcZXH3k7uxY58ogxIca0zWTSYIN6Q+X+OfKIMSHGtE2nBXr28e7r0MUcecSYEGPaYjJpskGrH+H+zeQd5WYeX51e/3TntTyvBnfyDoAjjxgTMqyYevhLb79A529pvHwf45P51fA/3nk1z6fJnbwDMKyR740xIYOKqYe/9EnrBZr05/RK+sFxD+9q3Og+igEY1Mj3x5iQIcXUy1966wV6knTmi8lh97RMp9OjnVf0PM/JAtU6Y0KGFFPIAn2cXLyZ7fi8f7Pr8+ib/QEHYEgj3yNjQgYUU09/6Y2udP0hkg3Q/B05F1cidbgJaoGqijEhA4opZIEmL9qvlD51vPaZNk0sUFUxJmQ4MfX2l97kOtceY/5mHstzmMpcuwsAABZJSURBVBZOs12inbBAVcWYkAHF1NtfeoOrrCzQlT2eFZ9qkwWqKsaEDCimPv/SW7sbU/8F6lF4VTEmZEgx9fiX3lqBzveBrryEf9zx3ZgsUFUwJmRIMUUs0OSQUfmY+0m3+0C9EklVjAkZVEz9/aW3V6Anq6d9Ju8R3+mZ9F4Lr3XGhAwrpt7+0tsr0ORE+sv5DUSS9/RYeVGvJg1r5HtjTIgxIS2+pUd6+furP/ty7le3ptNOTwMdIUceMSbEmJAWCzR5yV7mG3q0yZFHjAkxJqTNN5V7fHWlP30B3ypHHjEmxJiQVt+Vc/FWxkuXu7+j8qg48ogxIcaEtPy2xvfzCr10u3oRNcWRR4wJMSak5QI9Pz/7/MM33njjRx/5bpytc+QRY0KMCWm9QNUZRx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAs0DkceMSbEmBALNA5HHjEmxJgQCzQORx4xJsSYEAt0g0mq76fxPBx5xJgQY0Is0GqTyfAa1JFHjAkxJsQCrTSZDLBBHXnEmBBjQizQShZoXMaEGBNigVaZTIbYoI48YkyIMSEWaBULNDBjQowJsUArTCzQwIwJMSbEAq1igQZmTIgxIXtRoI8Ov7/85x+/d3j4rXd2fz67sUADMybEmJB9KNBv3soK9O5h4rtNPKVdDLE/HXnGmBBjQvagQL95+3BZoA8PX3rn/NmvD/Mt0p5YoHEZE2JMSP8F+vTG4bIwl5uiDw9f/m0zT6u2AfanI88YE2JMSN8F+uxfDw+//faiQB8tinNWpD9p6HnVNrz+dOQZY0KMCem7QJ/eeOlvn/18UaAPlzs/7/b+Gn6IHHnEmBBjQnov0L/5zXlWoHfzAu39MNIAOfKIMSHGhPRdoHPLAs2KdLYp+p0/NfCkRsaRR4wJMSZkMAX6B0kKovMC1VZuMyDGhBgTMpgtUG3lyCPGhBgTYoHG4cgjxoQYE7JPBZqfveRR+DocecSYEGNC9qpAPQ90J448YkyIMSF7VaD7dCXSADnyiDEhxoTsVYHu0bXwQ+TII8aEGBOyVwU6a87D/bgb0yA58ogxIcaE7FeBPtuX+4EOkiOP1I1pgLeX2YXThOxXge7LHemHyZFHasY0xBsc7sJpQvahQNUMRx6pF9Mgb7G9C6cJsUDjcOQRCxRxmhALNA5HHqkV0zDfZnAXThNigcbhyCMWKOI0IRZoHI48UiemiQWqShZoHI484hYo4jQhFmgcjjxigSJOE2KBxuHIIx6FR5wmxAKNw5FHLFDEaUIs0DgcecQrkRCnCbFA43DkEa+FR5wmxAKNw5FHjAkxJsQCjcORR4wJMSbEAo3DkUeMCTEmxAKNw5FHjAkxJsQCjcORR4wJMSbEAo3DkUeMCTEmxAKNw5FHjAkxJsQCjcORR4wJMSbEAo3DkUeMCTEmxAKNw5FHjAkxJsQCjcORR4wJ6SGmIV4sa4HGYTMgxoR0H9Mgb9digcZhMyDGhHQe0zBvGGiBxmEzIMaEWKCIBRqHzYAYE9J1TAN90xQLNA6bATEmxAJFLNA4bAbEmJCOYxrqG0dboHHYDIgxIW6BIhZoHDYDYkyIBYpYoHHYDIgxIR6FRyzQOLx2BLFAt+vj92qBql9eO4JYoFv183sd9TQN6ocOyhddiAW6TV+/1+HNkgUaiQWKWKDbDPP32g8LNA6PmyIW6BYD/b32wwKNwwJFLNAtBvp77YcFGofXjiAW6MWG+nvthwUah1ugiAW6xUB/r/2wQOOwQBELdIuB/l77YYHG4VF4xALdZpi/135YoHFYoIgFus0wf6/9sEDj8EokxALdapC/135YoHF4LTxigW43xN9rXbv9rBZoHDYDYkzIWGLacWvbAo1jLCO/I2NCRhLTrvt7LdA4RjLyuzImZCQxWaBaGsnI78qYkHHEtPM5rxZoHOMY+Z0ZEzKOmCxQZcYx8jszJmQUMU0sUGVGMfK7MyZkHDFZoMqMY+R3ZkzIOGKyQJUZx8jvzJiQkcTkUXgtjWTkd2VMyEhiskC1NJKR35UxIWOJySuRtDCWkd+RMSGjiclr4ZUazcjvxpgQY0Is0DgcecSYEGNCLNA4HHnEmBBjQizQOBx5xJgQY0Is0DgcecSYEGNCLNA4HHnEmBBjQizQOBx5xJgQY0Is0DgcecSYEGNCLNA4HHnEmBBjQizQOBx5xJgQY0Is0DgcecSYEGNCLNA4HHnEmBBjQizQOBx5xJgQY0Is0DgcecSYEGNCLNA4HHnEmBBjQizQOBx5xJgQY0Is0DgcecSYEGNCLNA4HHnEmBBjQizQOBx5xJgQY0Is0Djq/i53e1OYwbEZEGNCLNA4av4ud3xbwsGxGRBjQizQOOr9Lnd9Y+zBsRkQY0Is0DgsUMRmQIwJsUDjqPW7nEzG1qA2A2JMiAUahwWK2AyIMSEWaBx1fpcTC1SVjAmxQONwCxSxGRBjQizQOCxQxGZAjAmxQOPwKDxiMyDGhFigcVigiM2AGBNigcbhlUiIzYAYE2KBxuG18IjNgBgTYoE2r69CcuQRY0KMCbFAG9fbS2JHHjEmxJgQC7Rp/R2UceSRYcXU2/6VYcXUGwu0aRbonhtUTP0d4RtUTP2xQBvW44npjjwypJh6PMdsSDH1yAJtmAW674YUkwW67yzQZk0s0H03oJh6HKYhxdQnC7RhFui+G1BMFujes0AbZoHuu+HE1OfLmQHF1CsLtGmO/J4bUEwW6N6zQJvmyO+5AcVkge49C7RxHjfdb0OKyaPw+84CbV5PE+/IM0OKyQLddxZoHI48MqiYeuvPYcXUHws0DkceGVZMffXnwGLqjQUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgTYkyIBRqHI48YE2JMiAUahyOPGBNiTIgFGocjjxgT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" alt width="100%" /></p>
+<p>Wykres odpowiada na pytanie o położenie, kształt, nakładanie się grup
+lub kierunek związku. Tytuł, osie i jednostki są częścią wyniku. Nie
+wnioskuj o istotności tylko z wyglądu, lecz sprawdź, czy obraz jest
+spójny z tabelą i estymatą.</p>
+<p>Przeczytaj wykres w trzech warstwach. Najpierw opisz elementy
+widoczne bez testu: zakres, skupienie i nietypowe obserwacje. Potem
+połącz je z estymatą w tabeli. Na końcu nazwij rzecz, której wykres nie
+rozstrzyga, np. przyczynowość, błąd pomiaru albo zachowanie wyniku w
+nowej próbie. Nie usuwaj obserwacji tylko dlatego, że psuje prostą
+historię.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="wynik-czytany-linia-po-linii" class="section level1">
+<h1>12. Wynik czytany linia po linii</h1>
+<p>Odczyt zaczyna się od N, następnie od nazw kolumn i pojedynczego
+rekordu. Wynik techniczny jest poprawny, gdy wiadomo, z którego pliku,
+wiersza i pola pochodzi.</p>
+<p>Schemat pełnego zdania: „W analizie N osób oszacowano [efekt] w
+[jednostce], 95% CI [dolna; górna]. Statystyka klasyczna wyniosła
+[symbol i df], p=[wartość], a procedura permutacyjna B losowań dała
+p_perm=[wartość]. Wynik opisuje [zakres] i nie rozstrzyga
+[ograniczenie]”.</p>
+<p>Podczas zajęć jedna osoba czyta tabelę, druga sprawdza znak i
+jednostkę, a trzecia wskazuje granicę wniosku. Dopiero po tej kontroli
+zapisujemy odpowiedź do pliku Markdown.</p>
+<p>Dobra interpretacja ma trzy warstwy. Warstwa liczbowa mówi, co
+oszacowano. Warstwa badawcza odpowiada na pytanie o zachowanie
+informacyjne lub wykonanie zadania. Warstwa krytyczna wskazuje, czego
+projekt, pomiar i syntetyczność nie pozwalają stwierdzić. Pominięcie
+którejkolwiek warstwy tworzy tekst technicznie poprawny, lecz
+metodologicznie niepełny.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="błędy-interpretacji" class="section level1">
+<h1>13. Błędy interpretacji</h1>
+<p>Błąd: „R wyliczył 9, więc wynik jest prawdziwy”. Poprawnie: „W
+gotowym przykładzie druga obserwacja ma czas 10,4 minuty; jest to
+syntetyczny zapis jednego zadania, a nie średnia populacji”.</p>
+<p>Dodatkowe pułapki: traktowanie braku istotności jako dowodu równości,
+pomijanie N, raportowanie samego p, utożsamienie samooceny z kompetencją
+oraz zamiana obserwacyjnego związku w przyczynę. Poprawa polega na
+dodaniu liczby, jednostki, zakresu i ograniczenia, a nie na bardziej
+stanowczym czasowniku.</p>
+<p>Porównaj dwie konstrukcje: „test wykazał efekt” i „oszacowana różnica
+wyniosła…, a wynik testu był…”. Druga oddziela wielkość od decyzji.
+Podobnie „grupy były takie same” zastępujemy opisem przedziału i
+precyzji. W raporcie nie używamy słowa „trend” jako sposobu ratowania p
+nieco większego od .05; opisujemy rzeczywisty efekt i jego
+niepewność.</p>
+<p><strong>Po zajęciach.</strong> Znajdź w swoim szkicu jedno zdanie
+zawierające „wpływa”, „udowadnia”, „brak różnicy” albo „95% wyników”.
+Przepisz je tak, aby odpowiadało projektowi i rzeczywistemu znaczeniu
+statystyki.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="próba-prowadzona" class="section level1">
+<h1>14. Próba prowadzona</h1>
+<ol style="list-style-type: decimal">
+<li>Otwórz gotowy skrypt i wskaż sekcję parametrów.<br />
+</li>
+<li>Uruchom cały plik bez zmiany dalszej części.<br />
+</li>
+<li>Otwórz zapisany CSV i odnajdź N, estymatę oraz jednostkę.<br />
+</li>
+<li>Jeżeli analiza jest inferencyjna, porównaj p klasyczne i
+permutacyjne.<br />
+</li>
+<li>Odczytaj efekt i przedział.<br />
+</li>
+<li>Napisz jedno zdanie wyniku oraz jedno zdanie ograniczenia.</li>
+</ol>
+<p>Jeżeli skrypt zgłasza błąd, najpierw sprawdź katalog projektu, nazwę
+parametru i dozwoloną wartość. Nie poprawiaj wnętrza funkcji
+statystycznej. Błąd parametru jest informacją o niedozwolonym wyborze, a
+nie zaproszeniem do przepisania procedury.</p>
+<p>Podział czasu próby: 3 minuty na uruchomienie, 4 na odnalezienie
+właściwego CSV, 5 na głośny odczyt tabeli, 5 na szkic interpretacji i 3
+na kontrolę ograniczenia. Jeśli grupa utknie, wraca do pytania,
+jednostki i znaku efektu. Celem jest krótkie, sprawdzalne rozumowanie,
+nie zwiększanie liczby wykonanych poleceń.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="zadanie-z01" class="section level1">
+<h1>15. Zadanie Z01</h1>
+<p>Uruchom gotowy Z01. Wskaż liczbę wierszy przed i po czyszczeniu,
+jedną nazwę zmiennej samoopisowej i jedną obserwacyjną. Opisz różnicę
+między konsolą, skryptem i plikiem wyniku oraz wskaż, gdzie odczytuje
+się zdalne SHA oddania.</p>
+<p>Przygotuj pliki poleceniem poniżej. Uruchom zapisany
+<code>analiza.R</code>, a następnie uzupełnij wszystkie pola
+<code>[UZUPELNIJ]</code> w <code>odpowiedzi.md</code>. Nie wklejaj kodu
+ani zrzutu całej konsoli.</p>
+<pre class="r"><code>przygotuj_zadanie(&#39;Z01&#39;, katalog = &#39;.&#39;)
+sprawdz_zadanie(&#39;Z01&#39;, katalog = &#39;.&#39;)
+oddaj_zadanie(&#39;Z01&#39;, katalog = &#39;.&#39;)</code></pre>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="rubryka-kontrola-i-dalszy-krok" class="section level1">
+<h1>16. Rubryka, kontrola i dalszy krok</h1>
+<table>
+<colgroup>
+<col width="42%" />
+<col width="57%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>Kryterium</th>
@@ -681,67 +939,45 @@ odczytaj je po wysyłce z pokwitowania.</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Z01.1: zapisany projekt i działający skrypt z obiektami</td>
+<td>Z01.1: Gotowy skrypt uruchomiono od początku; zapisany wynik
+potwierdza właściwy projekt i dane.</td>
 <td align="right">3</td>
 </tr>
 <tr class="even">
-<td>Z01.2: poprawny odczyt wektora/tabeli i obliczenie</td>
+<td>Z01.2: Z gotowego wyniku poprawnie odczytano wiersz, kolumnę,
+wartość, jednostkę i N.</td>
 <td align="right">3</td>
 </tr>
 <tr class="odd">
-<td>Z01.3: objaśnienie konsoli, skryptu i źródła wyniku</td>
+<td>Z01.3: W <code>.md</code> poprawnie objaśniono konsolę, skrypt i
+źródło jednego wyniku.</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td>Z01.4: własne repo/ID oraz wskazanie pokwitowania SHA/statusu</td>
+<td>Z01.4: Wyniki i pliki należą do własnego repo/ID; student potrafi
+wskazać potwierdzone SHA oraz status.</td>
 <td align="right">2</td>
 </tr>
 </tbody>
 </table>
-<p>Pełne poziomy punktacji znajdziesz przez <code>rubryka(&quot;Z01&quot;)</code>
-i w katalogu rubryk. Kontrola techniczna nie zastępuje oceny
-uzasadnienia.</p>
+<p>Automatyczna kontrola sprawdza pliki, parametry, odtwarzalność i
+zgodność eksportu. Prowadzący ocenia dobór języka, odczyt liczb,
+interpretację efektu oraz ograniczenie. Poprawny skrypt bez własnego
+wyjaśnienia nie realizuje zadania.</p>
+<p>Po wysyłce sprawdź <code>status_oddania()</code> i zdalne SHA. Na
+współdzielonym komputerze wywołaj <code>wyloguj_github()</code>, wyloguj
+przeglądarkę i zamknij RStudio bez <code>.RData</code>. Następne
+ćwiczenie rozpoczyna się od pobrania potwierdzonej wersji.</p>
+<div id="źródło-kontekstu" class="section level2">
+<h2>Źródło kontekstu</h2>
+<p>Wilson (1999) porządkuje zachowania informacyjne jako działania osoby
+w kontekście. W C01 kontekst przekładamy na rekord, lecz nie wyciągamy
+jeszcze wniosków poza tabelę.</p>
+<p>Materiały odwołują się do: Wilsona (1999), Kuhlthau (1991),
+Savolainen (1995), Hargittai (2002), DigComp 2.2, ACRL Framework oraz
+Internet Skills Scale. Są to ramy pojęciowe; dane i pozycje kursowe
+pozostają syntetyczne i dydaktyczne.</p>
 </div>
-<div id="kontrola-oddanie-i-zakończenie" class="section level1">
-<h1>Kontrola, oddanie i zakończenie</h1>
-<p>Zapisz oba pliki i uruchom skrypt od początku. Kontrola pokaże
-tabelę: wiersz <code>FALSE</code> wskazuje element do poprawienia.
-Jeżeli kontrola przejdzie, oddanie wykona commit i push oraz zapisze na
-GitHub pokwitowanie z SHA i czasem serwera; lokalny commit nie
-wystarcza.</p>
-<pre class="r"><code>sprawdz_zadanie(&quot;Z01&quot;, katalog = &quot;.&quot;)
-oddaj_zadanie(&quot;Z01&quot;, katalog = &quot;.&quot;)
-status_oddania(&quot;Z01&quot;, katalog = &quot;.&quot;)
-pobierz_ocene(&quot;Z01&quot;, katalog = &quot;.&quot;)
-wyloguj_github()</code></pre>
-<p>Brak opublikowanej oceny nie oznacza zera. Przy braku sieci zachowaj
-kopię własnych plików na prywatnym nośniku przed czyszczeniem komputera
-i ponów wysyłkę po odzyskaniu połączenia. Po potwierdzeniu oddania
-zakończ logowanie pakietu, wyloguj przeglądarkę w sali i zamknij RStudio
-bez zapisywania <code>.RData</code>.</p>
-</div>
-<div id="instalacja-na-własnym-komputerze-poza-rdzeniem-zajęć" class="section level1">
-<h1>Instalacja na własnym komputerze — poza rdzeniem zajęć</h1>
-<p>W sali nie instalujesz pakietu na początku każdego spotkania. Na
-własnym komputerze zainstaluj R i RStudio, a następnie
-<code>remotes</code> z CRAN oraz pakiet kursu z GitHub. Instalowanie i
-logowanie są odrębnymi czynnościami; publiczny pakiet można pobrać bez
-dostępu do prywatnego repo pracy.</p>
-<pre class="r"><code>install.packages(&quot;remotes&quot;)
-remotes::install_github(&quot;MarekDejaUJ/projektowanie-badan-ZI&quot;,
-  dependencies = NA, upgrade = &quot;never&quot;)</code></pre>
-<p>Wersję rocznika sprawdzisz przez
-<code>packageVersion(&quot;badaniaZI&quot;)</code>. GitHub CLI instaluje
-informatyk w sali; na własnym komputerze jest potrzebny dla wariantu
-logowania <code>gh</code>. Alternatywny device flow korzysta z aplikacji
-kursu, jeśli jest skonfigurowana.</p>
-</div>
-<div id="pytania-do-samokontroli" class="section level1">
-<h1>Pytania do samokontroli</h1>
-<p>Dlaczego zapisany skrypt może zwrócić <code>object not found</code>?
-Czym różnią się <code>NA</code> i zero? Dlaczego przypisanie nie jes
-porównaniem? Co potwierdza, że praca dotarła do GitHub? Wskaż odpowiedzi
-na własnym projekcie.</p>
 </div>
 
 

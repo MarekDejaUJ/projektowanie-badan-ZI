@@ -10,7 +10,11 @@ test_that("znaczniki raportu i naruszenie surowych danych blokują oddanie", {
   tekst <- readLines(plik, encoding = "UTF-8")
   tekst <- gsub("[UZUPELNIJ]", "Odczytane dane pozwalają wskazać wynik obliczenia i objaśnić działanie konsoli oraz skryptu.", tekst, fixed = TRUE)
   writeLines(enc2utf8(tekst), plik, useBytes = TRUE)
-  writeLines("wynik <- sum(1:4)", file.path(k, "zadania", "z01", "analiza.R"))
+  wd <- getwd()
+  on.exit(setwd(wd), add = TRUE)
+  setwd(k)
+  sys.source("zadania/z01/analiza.R", envir = new.env())
+  setwd(wd)
   r <- sprawdz_zadanie("Z01", k, uruchom = TRUE)
   expect_true(r$ok, info = paste(r$kontrole$element[!r$kontrole$ok], collapse = ", "))
   writeLines("github_pat_123456789012345678901234567890", file.path(k, "zadania", "z01", "wyniki", "sekret.md"))
@@ -27,7 +31,7 @@ test_that("adresy z tokenem i ścieżki obcego serwera nie są przyjmowane", {
   expect_error(badaniaZI:::nazwa_repo("https://example.org/prowadzacy/badania-s017.git"), "repo_url")
 })
 
-test_that("świeża kontrola zachowuje bibliotekę R i usuwa tokeny z otoczenia", {
+test_that("zmiana gotowego toku analizy jest odrzucana", {
   k <- tempfile("własne R ")
   biblioteka <- tempfile("biblioteka ")
   dir.create(biblioteka)
@@ -48,13 +52,13 @@ test_that("świeża kontrola zachowuje bibliotekę R i usuwa tokeny z otoczenia"
   tekst <- readLines(md, encoding = "UTF-8")
   tekst <- gsub("[UZUPELNIJ]", "Własny skrypt odtwarza kontrolę środowiska w nowym procesie bez logowania do serwera i bez pobierania zależności.", tekst, fixed = TRUE)
   writeLines(enc2utf8(tekst), md, useBytes = TRUE)
-  kod <- c('stopifnot(all(Sys.getenv(c("GITHUB_PAT", "GH_TOKEN", "GITHUB_TOKEN")) == ""))',
-    'stopifnot(dir.exists(Sys.getenv("R_LIBS_USER")))',
-    'stopifnot(normalizePath(Sys.getenv("R_LIBS_USER"), winslash="/") %in% .libPaths())',
-    'stopifnot(Sys.getenv("GH_CONFIG_DIR") != "konfiguracja_konta")',
-    'stopifnot(Sys.getenv("R_TESTS") == "")')
+  kod <- c('library(badaniaZI)', 'parametry <- list(tryb = "orientacja")',
+           'system("echo niedozwolona zmiana")',
+           'uruchom_analize("Z01", katalog = ".", parametry = parametry)')
   writeLines(kod, file.path(k, "zadania/z01/analiza.R"))
-  expect_true(sprawdz_zadanie("Z01", k)$ok)
+  r <- sprawdz_zadanie("Z01", k)
+  expect_false(r$ok)
+  expect_false(r$kontrole$ok[r$kontrole$element == "gotowy tok analizy"])
   expect_identical(Sys.getenv("GITHUB_PAT"), "prywatna_wartosc")
   expect_identical(Sys.getenv("GH_CONFIG_DIR"), "konfiguracja_konta")
 })
@@ -69,22 +73,18 @@ test_that("brak eksportu i nieaktualny CSV nie przechodzą odtworzenia", {
   t <- gsub("[UZUPELNIJ]", "Własna tabela została oczyszczona z identycznych kopii, a reguły oraz liczby zmian zapisano w dzienniku. Brak nie jest zerem.", t, fixed = TRUE)
   writeLines(enc2utf8(t), md, useBytes = TRUE)
   a <- file.path(k, "zadania/z02/analiza.R")
-  kod <- c('dir.create("zadania/z02/wyniki", recursive=TRUE, showWarnings=FALSE)',
-    'x <- read.csv("dane/surowe.csv", encoding="UTF-8")',
-    'write.csv(x, "zadania/z02/wyniki/wyczyszczone.csv", row.names=FALSE, fileEncoding="UTF-8")',
-    'write.csv(data.frame(regula="test", liczba=nrow(x)), "zadania/z02/wyniki/dziennik.csv", row.names=FALSE)')
-  writeLines(kod, a)
+  kod <- readLines(a, encoding = "UTF-8", warn = FALSE)
   wd <- getwd()
   on.exit(setwd(wd), add = TRUE)
   setwd(k)
-  sys.source(a, envir = new.env())
+  sys.source("zadania/z02/analiza.R", envir = new.env())
   setwd(wd)
   expect_true(sprawdz_zadanie("Z02", k)$ok)
   # Ta kontrola dotyczy odtwarzalności; celowo nie przyznaje punktów za czyszczenie.
   writeLines('x <- 1', a)
   r <- sprawdz_zadanie("Z02", k)
   expect_false(r$ok)
-  expect_false(all(r$kontrole$ok[grepl(": odtworzenie$", r$kontrole$element)]))
+  expect_false(r$kontrole$ok[r$kontrole$element == "gotowy tok analizy"])
   writeLines(kod, a)
   write.csv(data.frame(regula = "test", liczba = 1), file.path(k, "zadania/z02/wyniki/dziennik.csv"), row.names = FALSE)
   r <- sprawdz_zadanie("Z02", k)

@@ -1,0 +1,75 @@
+---
+title: 'Handout W04 — Porównania grup i zależności kategorii'
+subtitle: 'Mapa pojęć, wzorów i pytań'
+author: 'Marek Deja'
+date: '2026/27'
+lang: pl-PL
+fontsize: 11pt
+papersize: a4
+geometry: margin=2cm
+---
+
+# 1. Pytanie i główna myśl
+
+**Pytanie:** Czy dwie grupy różnią się indeksem lub czasem oraz czy powodzenie zadania zależy od grupy? Jak duży i precyzyjny jest wzorzec?
+
+Pytanie o różnicę wymaga wskazania wyniku, grup, kolejności oraz projektu. Pytanie o współwystępowanie kategorii wymaga tabeli i właściwego mianownika. Test jest końcem tego rozumowania, nie początkiem.
+
+## Tok rozumowania
+
+1. Pytanie i zakres wniosku.  
+2. Jednostka, zmienne, skale i braki.  
+3. Estymata oraz jednostka.  
+4. Niepewność i dwa tory, jeśli dotyczą.  
+5. Efekt, ograniczenie i odpowiedź.
+
+\newpage
+
+# 2. Wzór i symbole
+
+$$t_W=\frac{\bar{x}_1-\bar{x}_2}{\sqrt{s_1^2/N_1+s_2^2/N_2}}, \quad \chi^2=\sum\frac{(O-E)^2}{E}$$
+
+| Symbol | Nazwa | Znaczenie |
+|---|---|---|
+| $\Delta$ | różnica | grupa 2 minus grupa 1 |
+| $g$ | Hedges g | standaryzowana różnica |
+| $O,E$ | liczebności | obserwowane i oczekiwane |
+| $V$ | V Cramera | siła związku kategorii |
+
+Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę i składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani CI zakresu 95% osób.
+
+\newpage
+
+# 3. Dwa tory i efekt
+
+**Tor klasyczny.** 
+Welch porównuje średnie bez założenia równych wariancji. Test rangowy odpowiada na pytanie o rozkłady/rangi i nie jest automatyczną wersją testu średnich. Chi-kwadrat porównuje obserwowane komórki z oczekiwanymi przy niezależności, Fisher służy małym układom.
+
+**Tor permutacyjny/resampling.** 
+Dla dwóch grup tasujemy etykiety przy zachowanych wynikach. Dla tabeli Monte Carlo tworzy tabele zgodne z hipotezą niezależności i marginesami procedury. Odczyt p pozostaje warunkowy względem H0.
+
+**Efekt i przedział.** 
+Raportujemy różnicę w punktach lub minutach, Hedges g oraz CI. Dla tabeli V Cramera nie ma kierunku, dlatego trzeba podać odsetki w grupach i ewentualnie różnicę ryzyka dla 2×2.
+
+\newpage
+
+# 4. Interpretacja i pytania
+
+**Przykład.** 
+Nowi użytkownicy mogą mieć niższy indeks i mniejszy odsetek powodzenia. Dwa wyniki dotyczą różnych aspektów: samooceny i wykonania. Zgodność zwiększa spójność opisu, lecz nadal nie dowodzi, że doświadczenie samo spowodowało wynik.
+
+**Pułapki.** 
+Błędy obejmują zmianę kolejności grup bez zmiany znaku, raportowanie p bez średnich, V jako procent różnicy, test chi-kwadrat na procentach zamiast liczebnościach, ignorowanie oczekiwanych komórek i przyczynowy język.
+
+**Pytanie do pracy.** 
+Dla czterech pytań wybierz: opis, Welch, test rangowy, chi-kwadrat/Fisher lub brak testu. Uzasadnij decyzję pytaniem, skalą, niezależnością i mianownikiem, a następnie wskaż efekt oraz wersję permutacyjną.
+
+## Dalszy krok
+
+C06 przeprowadzi jedno porównanie dwóch grup, C07 tabelę kategorii. W05 pokaże związki dwóch zmiennych ilościowych i prostą regresję.
+
+## Literatura
+
+- Agresti. An Introduction to Categorical Data Analysis.
+- [Lakens (2013). Calculating and reporting effect sizes](https://doi.org/10.3389/fpsyg.2013.00863).
+- Kontekst LIS pochodzi ze scenariuszy usług cyfrowych i obserwowanego zadania wyszukiwawczego.

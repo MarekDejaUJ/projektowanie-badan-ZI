@@ -4,10 +4,8 @@ rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z03.1
-  title: Poprawne N, liczebności/odsetki i miary położenia/zróżnicowania z obsługą
-    braków.
-  evidence: Poprawne N, liczebności/odsetki i miary położenia/zróżnicowania z obsługą
-    braków.
+  title: Z gotowego opisu poprawnie odczytano N, braki oraz miary położenia i zróżnicowania.
+  evidence: Z gotowego opisu poprawnie odczytano N, braki oraz miary położenia i zróżnicowania.
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -17,19 +15,20 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.75
-    observable_description: Jedna miara poprawna; braki psują pozostałe.
+    observable_description: Odczytano jedną miarę, lecz pomylono N lub braki.
   - points: 1.5
-    observable_description: Miary poprawne dla części zmiennych albo odsetki mają
-      błędny mianownik.
+    observable_description: Miary położenia są poprawne; miara zróżnicowania albo
+      N jest błędne.
   - points: 2.25
-    observable_description: Miary i mianowniki poprawne; jedna miara zróżnicowania
-      pominięta.
+    observable_description: Odczyt liczb jest poprawny; jedna jednostka została pominięta.
   - points: 3.0
-    observable_description: Poprawne N, liczebności/odsetki i miary położenia/zróżnicowania
-      z obsługą braków.
+    observable_description: Z gotowego opisu poprawnie odczytano N, braki oraz miary
+      położenia i zróżnicowania.
 - id: Z03.2
-  title: Dwa czytelne wykresy dobrane do skal, z osiami, jednostkami i etykietami.
-  evidence: Dwa czytelne wykresy dobrane do skal, z osiami, jednostkami i etykietami.
+  title: Dwa gotowe wykresy poprawnie odczytano, z uwzględnieniem osi, jednostek i
+    kształtu rozkładu.
+  evidence: Dwa gotowe wykresy poprawnie odczytano, z uwzględnieniem osi, jednostek
+    i kształtu rozkładu.
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -39,14 +38,16 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.75
-    observable_description: Jeden wykres bez etykiet lub o niewłaściwej skali.
+    observable_description: Nazwano jeden wykres bez odczytu osi lub jednostki.
   - points: 1.5
-    observable_description: Dwa wykresy, lecz jeden nie odpowiada skali danych.
+    observable_description: Dwa wykresy opisano, lecz jeden wniosek nie odpowiada
+      widocznemu rozkładowi.
   - points: 2.25
-    observable_description: Dwa właściwe wykresy; brak jednej jednostki albo etykiety.
+    observable_description: Oba wykresy odczytano poprawnie; brakuje jednej etykiety
+      lub różnicy między nimi.
   - points: 3.0
-    observable_description: Dwa czytelne wykresy dobrane do skal, z osiami, jednostkami
-      i etykietami.
+    observable_description: Dwa gotowe wykresy poprawnie odczytano, z uwzględnieniem
+      osi, jednostek i kształtu rozkładu.
 - id: Z03.3
   title: Uzasadnienie wyboru średniej/mediany lub częstości uwzględnia typ i asymetrię.
   evidence: Uzasadnienie wyboru średniej/mediany lub częstości uwzględnia typ i asymetrię.

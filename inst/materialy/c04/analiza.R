@@ -1,51 +1,23 @@
-## ----przygotowanie------------------------------------------------------------
-dane <- badaniaZI::przygotuj_ankiete(badaniaZI::dane_przykladowe())$dane
-nazwy_pozycji <- paste0("pozycja_", 1:6)
-pozycje <- dane[, nazwy_pozycji]
-head(pozycje)
-colSums(is.na(pozycje))
-
-
-## ----pozycja------------------------------------------------------------------
-jedna <- factor(pozycje$pozycja_1, levels = 1:5, ordered = TRUE)
-table(jedna, useNA = "ifany")
-100 * prop.table(table(jedna, useNA = "no"))
-
-
-## ----kierunek-----------------------------------------------------------------
-wejscie <- c(1, 2, 3, 4, 5, NA)
-data.frame(wejscie = wejscie, po_odwroceniu = badaniaZI::odwroc_pozycje(wejscie))
-
-
-## ----rekodacja----------------------------------------------------------------
-ukierunkowane <- pozycje
-ukierunkowane$pozycja_3 <- badaniaZI::odwroc_pozycje(pozycje$pozycja_3)
-head(ukierunkowane)
-
-
-## ----minimum------------------------------------------------------------------
-male <- data.frame(p1 = c(4, 4, 4), p2 = c(5, 5, 5), p3 = c(4, 4, 4),
-  p4 = c(3, 3, 3), p5 = c(4, 4, NA), p6 = c(4, NA, NA))
-data.frame(wazne = rowSums(!is.na(male)),
-  indeks = badaniaZI::indeks_ankiety(male, minimum = 5))
-
-
-## ----indeks-------------------------------------------------------------------
-indeks <- data.frame(id_odpowiedzi = dane$id_odpowiedzi,
-  n_pozycji = rowSums(!is.na(ukierunkowane)),
-  indeks = badaniaZI::indeks_ankiety(ukierunkowane, minimum = 5))
-head(indeks)
-c(wazny_indeks = sum(!is.na(indeks$indeks)),
-  brak_indeksu = sum(is.na(indeks$indeks)))
-summary(indeks$indeks)
-
-
-## ----male-kanaly--------------------------------------------------------------
-male_kanaly <- data.frame(www = c(1, 1, 0, NA), email = c(1, 0, 1, NA))
-badaniaZI::odpowiedzi_wielokrotne(male_kanaly)
-
-
-## ----kanaly-------------------------------------------------------------------
-kanaly <- badaniaZI::odpowiedzi_wielokrotne(dane[, paste0("kanal_", 1:4)])
-kanaly
-sum(kanaly$procent_respondentow)
+dane_surowe <- badaniaZI::dane_przykladowe()
+przygotowane <- badaniaZI::przygotuj_ankiete(dane_surowe)
+dane <- przygotowane$dane
+pozycje <- dane[paste0('pozycja_', 1:6)]
+pozycje$pozycja_3 <- badaniaZI::odwroc_pozycje(pozycje$pozycja_3)
+dane$liczba_pozycji <- rowSums(!is.na(pozycje))
+dane$indeks <- badaniaZI::indeks_ankiety(pozycje, minimum = 5L)
+B <- 1999L
+set.seed(202627)
+formatuj_wynik <- function(x) {
+  wynik <- x
+  kolumny_p <- names(wynik)[grepl('^p($|_)', names(wynik))]
+  for (nazwa in kolumny_p) if (is.numeric(wynik[[nazwa]]))
+    wynik[[nazwa]] <- format.pval(wynik[[nazwa]], digits = 3, eps = 0.001)
+  wynik
+}
+tabela_glowna <- data.frame(id = dane$id_odpowiedzi, indeks = dane$indeks, liczba_pozycji = dane$liczba_pozycji)
+kanaly <- badaniaZI::odpowiedzi_wielokrotne(dane[paste0('kanal_', 1:4)])
+wynik_glowny <- data.frame(N_indeks = sum(!is.na(dane$indeks)), srednia = mean(dane$indeks, na.rm = TRUE), SD = sd(dane$indeks, na.rm = TRUE))
+wynik_klasyczny <- head(tabela_glowna, 8)
+wynik_permutacyjny <- data.frame(status = 'najpierw jako\u015B\u0107 pomiaru; test zwi\u0105zku na C08')
+efekt <- kanaly
+wykres_glowny <- ggplot2::ggplot(dane, ggplot2::aes(x = indeks)) + ggplot2::geom_histogram(binwidth = .25, fill = '#009E73', colour = 'white') + ggplot2::labs(x = 'Indeks samooceny [1\u20135]', y = 'Liczba os\u00F3b', title = 'Samoocena po rekodacji pozycji 3') + badaniaZI::theme_zi()

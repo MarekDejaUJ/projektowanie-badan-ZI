@@ -1,0 +1,75 @@
+---
+title: 'Handout W05 — Korelacja, regresja i raport ilościowy'
+subtitle: 'Mapa pojęć, wzorów i pytań'
+author: 'Marek Deja'
+date: '2026/27'
+lang: pl-PL
+fontsize: 11pt
+papersize: a4
+geometry: margin=2cm
+---
+
+# 1. Pytanie i główna myśl
+
+**Pytanie:** Czy wyższa samoocena współwystępuje z krótszym czasem i jak zmienia się przewidywany czas na jeden punkt indeksu?
+
+Ostatni wykład łączy samoocenę z wykonaniem oraz wynik statystyczny z raportem. Korelacja opisuje współzmienność, regresja zapisuje warunkową średnią, a żadna z nich sama nie tworzy przyczynowości.
+
+## Tok rozumowania
+
+1. Pytanie i zakres wniosku.  
+2. Jednostka, zmienne, skale i braki.  
+3. Estymata oraz jednostka.  
+4. Niepewność i dwa tory, jeśli dotyczą.  
+5. Efekt, ograniczenie i odpowiedź.
+
+\newpage
+
+# 2. Wzór i symbole
+
+$$r=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum(x_i-\bar{x})^2\sum(y_i-\bar{y})^2}}, \quad \widehat{y}=b_0+b_1x$$
+
+| Symbol | Nazwa | Znaczenie |
+|---|---|---|
+| $r,\rho$ | korelacja | siła i kierunek związku |
+| $b_0$ | wyraz wolny | przewidywane y przy x=0 |
+| $b_1$ | nachylenie | zmiana y na jednostkę x |
+| $R^2$ | dopasowanie | udział zmienności y |
+
+Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę i składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani CI zakresu 95% osób.
+
+\newpage
+
+# 3. Dwa tory i efekt
+
+**Tor klasyczny.** 
+Korelacja podaje współczynnik, CI, p i N par. Prosta regresja dodaje nachylenie w naturalnej jednostce, jego SE, t i p oraz R2. Wyraz wolny może nie mieć praktycznego sensu, jeśli x=0 leży poza skalą.
+
+**Tor permutacyjny/resampling.** 
+Tasowanie y względem x niszczy pary, zachowując oba rozkłady. Dla każdej permutacji liczymy ten sam r lub rho. p_perm opisuje skrajność obserwowanego współczynnika przy braku związku par.
+
+**Efekt i przedział.** 
+r/rho jest wielkością efektu, nachylenie mówi o jednostkach, a CI o precyzji. R2 nie jest odsetkiem poprawnie sklasyfikowanych osób ani częścią związku wyjaśnioną przyczynowo.
+
+\newpage
+
+# 4. Interpretacja i pytania
+
+**Przykład.** 
+rho=−.25 oznacza słabą do umiarkowanej monotoniczną tendencję: wraz z wyższą samooceną czas bywa krótszy. Nachylenie −1,4 min/punkt opisuje liniową zmianę przewidywanego czasu, nie indywidualną gwarancję.
+
+**Pułapki.** 
+Pułapki to przyczynowość z korelacji, ignorowanie znaku skali czasu, ekstrapolacja poza 1–5, p bez wykresu, R2 jako jakość całego badania, usuwanie punktu wpływowego bez reguły i wybór metody po p.
+
+**Pytanie do pracy.** 
+Odczytaj tabelę korelacji i regresji w kolejności N, efekt, CI, statystyka, p, p_perm, nachylenie i R2. Zapisz jedno zdanie wyniku, jedno ograniczenie i warunkową rekomendację dla usługi.
+
+## Dalszy krok
+
+C08 wykona analizę samooceny i czasu. C09 zaplanuje indywidualny projekt, a C10 połączy dwa wyniki, ograniczenia, wersje i oddanie w spójny raport Markdown.
+
+## Literatura
+
+- [Hargittai, E. (2002). Beyond logs and surveys](https://www.webuse.org/pdf/Hargittai-BeyondLogsSurveys2002.pdf).
+- [van Deursen, Helsper & Eynon. Internet Skills Scale](https://ris.utwente.nl/ws/portalfiles/portal/6972069/development.pdf).
+- [ACRL Framework](https://www.ala.org/acrl/standards/ilframework) oraz [DigComp 2.2](https://publications.jrc.ec.europa.eu/repository/handle/JRC128415) jako język konstruktu, nie gotowy test kursowy.

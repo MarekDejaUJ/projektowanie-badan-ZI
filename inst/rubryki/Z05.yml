@@ -25,10 +25,10 @@ criteria:
     observable_description: Estymata i przedział dla wskazanej zmiennej są poprawne,
       z właściwym N.
 - id: Z05.2
-  title: Bootstrap ma poprawny poziom losowania i powtarzalność; wykres/rezultat odpowiada
-    danych.
-  evidence: Bootstrap ma poprawny poziom losowania i powtarzalność; wykres/rezulta
-    odpowiada danych.
+  title: Poprawnie odczytano bootstrap średniej i permutacyjną zmianę znaków, wraz
+    z B i ich odmiennym celem.
+  evidence: Poprawnie odczytano bootstrap średniej i permutacyjną zmianę znaków, wraz
+    z B i ich odmiennym celem.
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -38,20 +38,21 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.5
-    observable_description: Losowano pojedyncze wartości bez odtwarzania próby.
+    observable_description: Pomylono bootstrap z permutacją albo poziom losowania.
   - points: 1.0
-    observable_description: Losowanie wierszy poprawne; brak powtarzalności lub zły
-      kwantyl.
+    observable_description: Oba wyniki odnaleziono, lecz pomylono ich cel lub pominięto
+      B.
   - points: 1.5
-    observable_description: Bootstrap i kwantyle poprawne; pominięto liczbę replikacji.
+    observable_description: Bootstrap, zmiana znaków i B są poprawne; jedno wyjaśnienie
+      procedury jest niepełne.
   - points: 2.0
-    observable_description: Bootstrap ma poprawny poziom losowania i powtarzalność;
-      wykres/rezultat odpowiada danych.
+    observable_description: Poprawnie odczytano bootstrap średniej i permutacyjną
+      zmianę znaków, wraz z B i ich odmiennym celem.
 - id: Z05.3
-  title: Własne objaśnienie przedziału nie przypisuje prawdopodobieństwa stałemu parametrowi
-    po obliczeniu.
-  evidence: Własne objaśnienie przedziału nie przypisuje prawdopodobieństwa stałemu
-    parametrowi po obliczeniu.
+  title: Wynik klasyczny i permutacyjny zawiera N, efekt, CI, t, df, p oraz p_perm
+    i jest poprawnie objaśniony.
+  evidence: Wynik klasyczny i permutacyjny zawiera N, efekt, CI, t, df, p oraz p_perm
+    i jest poprawnie objaśniony.
   max_points: 3.0
   review_mode: human
   learning_outcomes:
@@ -61,16 +62,16 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.75
-    observable_description: Przedział utożsamiono z zakresem 95% obserwacji.
+    observable_description: Podano tylko jedno p bez N, efektu i przedziału.
   - points: 1.5
-    observable_description: Opis niepewności częściowy, lecz przypisuje prawdopodobieństwo
-      stałemu parametrowi.
+    observable_description: Oba tory są obecne, lecz statystyka, df albo znaczenie
+      p jest błędne.
   - points: 2.25
-    observable_description: Interpretacja częstotliwościowa poprawna; pominięto warunek
-      powtarzania próbkowania.
+    observable_description: Kompletny odczyt obu torów; jedno objaśnienie niepewności
+      jest niepełne.
   - points: 3.0
-    observable_description: Własne objaśnienie przedziału nie przypisuje prawdopodobieństwa
-      stałemu parametrowi po obliczeniu.
+    observable_description: Wynik klasyczny i permutacyjny zawiera N, efekt, CI, t,
+      df, p oraz p_perm i jest poprawnie objaśniony.
 - id: Z05.4
   title: Wniosek odróżnia precyzję od znaczenia praktycznego i wskazuje ograniczenie
     próby.

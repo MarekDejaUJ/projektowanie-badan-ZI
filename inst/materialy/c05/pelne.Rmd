@@ -1,5 +1,5 @@
 ---
-title: 'C05 — Niepewność średniej, bootstrap i intuicja permutacji'
+title: 'C05 — Niepewność estymaty: przedział, bootstrap i test jednej próby'
 subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
 author: 'Marek Deja'
 date: '2026/27'
@@ -9,169 +9,235 @@ papersize: a4
 geometry: margin=2cm
 ---
 
-# Cel: ile wiemy o średnim wyniku?
+```{r przygotowanie, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, digits = 3)
+source('analiza.R', local = knitr::knit_global(), encoding = 'UTF-8')
+```
 
-Średni indeks dostępności z jednej ankiety jest konkretną liczbą. Gdybyśmy badali inne osoby, wynik mógłby być inny. Na C05 opiszesz tę niepewność dwoma sposobami: przedziałem t dla średniej i prostym bootstrapem. Permutację zobaczysz we wspólnej demonstracji; Z05 nie wymaga osobnego testu ani trzech metod dla tego samego pytania.
+# 1. Miejsce w opowieści
+
+Średni indeks samooceny w próbie jest jedną liczbą. Uczymy się odczytywać, jak bardzo wynik może zmieniać się między próbami i czy odległość od punktu odniesienia jest skrajna w modelu zerowym.
+
+**Pytanie przewodnie:** Jaka jest średnia samoocena, jak precyzyjnie ją oszacowano i czy różni się od neutralnego punktu 3?
+
+Rdzeń zajęć trwa 90 minut. Strony oznaczone jako „po zajęciach” służą utrwaleniu; podczas spotkania uruchamiamy gotowy kod, czytamy liczby i zapisujemy własne wyjaśnienie.
 
 | Minuty | Praca |
-|---|---|
-| 0–10 | Odtworzenie projektu i Z05 |
-| 10–30 | Średnia, SE i przedział |
-| 30–50 | Bootstrap wspólnej próby |
-| 50–60 | Intuicja tasowania etykiet |
-| 60–80 | Z05 na własnym wariancie |
-| 80–90 | Zapis, kontrola i odbiór |
+|---:|---|
+| 0–10 | Powrót do poprzedniego odcinka i pytanie |
+| 10–30 | Zmienne, wzór i symbole |
+| 30–55 | Gotowe wyniki i dwa tory, jeśli dotyczą |
+| 55–80 | Zadanie na indywidualnych danych |
+| 80–90 | Kontrola, oddanie i zapowiedź kolejnego kroku |
 
-# Własna próba i parametr
+\newpage
 
-Pytamy o średni indeks oceny dostępu do informacji w populacji użytkowników określonej w scenariuszu. Obserwacją jest osoba, a nie pojedyncza pozycja kwestionariusza. W kursie indeks 1–5 traktujemy jako przybliżony pomiar ilościowy; warunek minimum pięciu odpowiedzi z sześciu pozostaje ten sam co na C04. Nie zmieniaj go po obejrzeniu przedziału.
+# 2. Scena badawcza
 
-Odtwórz projekt przez funkcje logowania i `rozpocznij_zajecia("C05", ...)`. W demonstracji używamy S02; Z05 wymaga Twojego wariantu. Surowego CSV i manifestu nie edytujesz. Każdy wynik odnosi się do danych syntetycznych, a nie do faktycznej ankiety w bibliotece.
+Średni indeks samooceny w próbie jest jedną liczbą. Uczymy się odczytywać, jak bardzo wynik może zmieniać się między próbami i czy odległość od punktu odniesienia jest skrajna w modelu zerowym.
 
-Przygotowujemy indeks tymi samymi regułami co na C04. Do estymacji wybieramy osoby z ważnym indeksem, pozostawiając ID i grupę do dalszej demonstracji. Odczytaj liczebność przed i po tym wyborze.
+Badana osoba wykonuje krótkie zadanie wyszukiwawcze w cyfrowej usłudze informacyjnej, a potem odpowiada na sześć pozycji samooceny. Rejestrujemy czas i powodzenie jako pomiar obserwacyjny. Częstość korzystania, samoocena oraz wybrane kanały są deklaracjami. Rozdzielenie tych źródeł jest częścią interpretacji, ponieważ wysoka pewność nie musi oznaczać sprawnego wykonania.
 
-```{r przygotowanie}
-dane <- badaniaZI::przygotuj_ankiete(badaniaZI::dane_przykladowe())$dane
-p <- dane[, paste0("pozycja_", 1:6)]
-p$pozycja_3 <- badaniaZI::odwroc_pozycje(p$pozycja_3)
-dane$indeks <- badaniaZI::indeks_ankiety(p, minimum = 5)
-proba <- dane[!is.na(dane$indeks), ]
-c(osoby_po_czyszczeniu = nrow(dane), wazny_indeks = nrow(proba))
+Dane demonstracyjne dotyczą scenariusza S02 i są syntetyczne. Ich rozkłady przygotowano do nauki, dlatego nie wolno opisywać nimi realnej biblioteki ani użytkowników UJ. Jednostką analizy jest osoba po usunięciu identycznych duplikatów. Każdy brak pozostaje brakiem, dopóki słownik nie podaje jawnej reguły.
+
+\newpage
+
+# 3. Pytanie, jednostka i zmienne
+
+Analizowane zmienne: **indeks samooceny, wartość odniesienia 3, N ważnych indeksów**.
+
+Przed spojrzeniem na wynik odpowiedz głośno na cztery pytania: kto jest obserwacją, co jest zmienną, jaka jest skala i w jakiej jednostce pojawi się rezultat. Nazwa kolumny jest technicznym adresem; znaczenie pochodzi z operacjonalizacji oraz słownika danych.
+
+| Element | Pytanie kontrolne | Odpowiedź w tej historii |
+|---|---|---|
+| Jednostka | Co zajmuje jeden wiersz? | jedna osoba i jedno zadanie |
+| Samoopis | Co osoba deklaruje? | pozycje, częstość, kanały |
+| Obserwacja | Co zapisuje procedura? | czas i powodzenie |
+| Granica wniosku | O czym mówią dane? | o syntetycznej próbie dydaktycznej |
+
+Skala pomiarowa ogranicza sens działań. Dla kategorii liczymy osoby i odsetki; dla uporządkowanych odpowiedzi możemy porównywać kolejność; dla czasu sens mają różnice i ilorazy. Indeks 1–5 traktujemy w kursie jako przybliżoną zmienną ilościową, ale pamiętamy, że powstał z pozycji porządkowych. Nazwanie skali przed analizą chroni przed mechanicznym wyborem testu.
+
+\newpage
+
+# 4. Słownik statystyczny
+
+Statystyka jest językiem skrótu. Symbol ma nazwę, znaczenie w badaniu i jednostkę. Odczytuj wzór zdaniem, zanim podstawisz liczby.
+
+| Symbol | Nazwa | Znaczenie w przykładzie | Jednostka |
+|---|---|---|---|
+| $\mu_0$ | wartość zerowa | neutralny punkt skali | punkty |
+| $SE$ | błąd standardowy | zmienność średniej między próbami | punkty |
+| $t$ | statystyka testowa | różnica w jednostkach SE | bez jednostki |
+| $p$ | wartość p | skrajność wyniku przy H0 | odsetek/proporcja |
+
+Wartość p nie jest prawdopodobieństwem prawdziwości hipotezy. Przedział nie jest zakresem środkowych 95% obserwacji. Efekt nie jest tym samym co istotność. Te trzy rozróżnienia wracają w każdej analizie.
+
+**Notatnik pojęć.** Dla każdego symbolu dopisz jedną liczbę z gotowego wyniku i przeczytaj ją bez skrótu. Zamiast „t równa się” powiedz „obserwowana różnica leży tyle błędów standardowych od wartości zerowej”. Zamiast „V równa się” powiedz „znormalizowana siła związku w tabeli wynosi”. Taki przekład jest ważniejszy niż pamięciowe odtwarzanie wzoru.
+
+\newpage
+
+# 5. Wzór czytany jak zdanie
+
+$$t=\frac{\bar{x}-\mu_0}{s/\sqrt{N}}, \qquad CI=\bar{x}\pm t^{*}\frac{s}{\sqrt{N}}$$
+
+Czytamy od lewej do prawej, nazywając licznik, mianownik i jednostkę. Znak wyniku ma sens dopiero po ustaleniu kolejności grup lub kierunku skali. Jeżeli we wzorze jest N, chodzi o przypadki rzeczywiście użyte w danym obliczeniu, a nie automatycznie o wszystkie wiersze surowego pliku.
+
+**Ćwiczenie ustne.** Wskaż w formule estymatę, element niepewności i punkt odniesienia. Jeżeli dana metoda ich nie ma, powiedz to wprost. Następnie przewidź, co stanie się z wynikiem po zwiększeniu N, zmianie jednostki albo odwróceniu kolejności grup.
+
+Czytanie wzoru ma pięć kroków: (1) nazwij wynik po lewej stronie, (2) nazwij obserwowane wielkości po prawej, (3) wskaż porównanie lub wartość zerową, (4) ustal jednostkę, (5) powiedz, jaka zmiana danych zwiększa wynik. Nie wykonujemy ręcznie długich obliczeń. Wzór ma odsłonić logikę liczby zwracanej przez gotową funkcję.
+
+\newpage
+
+# 6. Gotowy skrypt pomocniczy
+
+Pierwszy chunk materiału załadował towarzyszący plik `analiza.R`. Zawiera przygotowanie danych, obiekty i funkcje potrzebne na zajęciach. Uruchamiasz kolejne fragmenty i odczytujesz wynik. Nie implementujesz testu ani pętli permutacyjnej.
+
+```{r struktura}
+wynik_glowny
 ```
 
-# Estymata i błąd standardowy
+W zadaniu indywidualnym analogiczny skrypt powstaje przez `przygotuj_zadanie()`. Wolno zmienić jedynie wartości oznaczone komentarzem jako parametry. Dzięki temu przedmiot ocenia rozumienie wyniku, a nie biegłość w programowaniu.
 
-Parametr $\mu$ oznacza nieznaną średnią populacji, a $\bar{x}$ średnią obliczoną w próbie. Estymator jest regułą, według której liczymy, a estymata konkretnym wynikiem zastosowania tej reguły. W projekcie nie znamy rzeczywistej populacji: generator daje dane do nauki, a plan badania określa, jak mogłaby wyglądać prawdziwa próba.
+Po zmianie parametru uruchom cały skrypt od początku. Pojedyncze obiekty pozostawione w Environment mogą pochodzić ze starszej próby, dlatego nie są dowodem odtwarzalności. Zapisany plik w `wyniki` ma powstać ponownie w świeżej sesji. Jeśli nazwa zmiennej jest niedozwolona, funkcja zatrzymuje analizę i podaje listę dopuszczalnych wartości.
 
-Odchylenie standardowe $s$ opisuje różnice między osobami. Błąd standardowy $SE=s/\sqrt{n}$ przy niezależnych obserwacjach opisuje niepewność średniej wynikającą z próbkowania. To różne wielkości, nawet jeśli mają tę samą jednostkę. Gdy $s=0{,}8$ i $n=100$, SE wynosi 0,08 punktu indeksu; osoby nie są przez to podobne do siebie w granicach 0,08.
+\newpage
 
-Obliczamy N, średnią, SD i SE w oddzielnych polach. `length()` dotyczy tylko wybranego wektora ważnych indeksów. Odczytaj jednostkę wyniku i sprawdź, dlaczego SD jest większe niż SE.
+# 7. Dane, braki i mianownik
 
-```{r estymata}
-wartosci <- proba$indeks
-n <- length(wartosci)
-srednia <- mean(wartosci)
-odchylenie <- stats::sd(wartosci)
-se <- odchylenie / sqrt(n)
-data.frame(n = n, srednia = srednia, sd = odchylenie, se = se)
+```{r dane}
+knitr::kable(head(tabela_glowna, 10), digits = 3)
 ```
 
-# Przedział ufności 95%
+Zanim przeczytasz statystykę, ustal N i braki. Dla średniej N oznacza ważne liczby. Dla korelacji są to kompletne pary. Dla tabeli jest to suma analizowanych komórek. Dla indeksu przypadek musi mieć co najmniej pięć odpowiedzi po właściwym ukierunkowaniu.
 
-Oprócz pojedynczej średniej (estymaty punktowej) podajemy **przedział ufności (CI)**. Mówi on: "jeśli pobieralibyśmy próby nieskończenie wiele razy, około 95% wyliczonych z nich przedziałów zawierałoby prawdziwą średnią dla całej populacji użytkowników w określonej populacji".
+Dwa wyniki mogą używać różnych N w tym samym raporcie. Nie jest to sprzeczność, jeśli wynika z braków i zostało jawnie opisane. Nie wolno dopasowywać reguły braków po zobaczeniu, która wersja daje korzystniejsze p.
 
+Brak może dotyczyć jednej pozycji, całego indeksu albo pary zmiennych. Duplikat jest powtórzeniem rekordu, a obserwacja odstająca nadal może być prawdziwą obserwacją. Te pojęcia wymagają innych decyzji. Dziennik czyszczenia powinien pozwolić odtworzyć, ile elementów zmieniła każda reguła i dlaczego wynikowe N jest właściwym mianownikiem.
 
-Ten opis ma sens przy określonym modelu próbkowania i spełnionych założeniach. Nie znaczy, że 95% osób mieści się w przedziale ani że po obliczeniu przypisujemy stałej średniej populacji prawdopodobieństwo 95%. Po obejrzeniu danych mamy jeden przedział; własność 95% odnosi się do powtarzania procedury.
+\newpage
 
-Dla niezależnych obserwacji przedział t ma postać $\bar{x}\pm t_{0{,}975,n-1}\,s/\sqrt{n}$. Wartość krytyczna t zależy od liczby stopni swobody $n-1$. Rozkład średniej musi być dostatecznie dobrze przybliżony; duża liczebność nie naprawia zależności osób, systematycznego braku odpowiedzi czy błędnej rekrutacji. W rzeczywistych badaniach klastrowych lub ważonych trzeba odpowiednio zmienić model.
+# 8. Tor klasyczny
 
-Używamy `t.test()` z archiwalnego przykładu estymacji, aby odczytać przedział. Funkcja zwraca także test względem domyślnego zera, ale Z05 nie stawia pytania o średnią równą zero; odczytujemy tylko estymatę i CI. Porównaj granice z obliczeniem wzoru.
+Tor klasyczny używa rozkładu t: podaje średnią, SE, 95% CI, t, df i p. Pytanie dotyczy średniej populacyjnej w modelu próbkowania, nie prawdopodobieństwa hipotezy.
 
-```{r przedzial-t}
-wynik_ci <- stats::t.test(wartosci, conf.level = .95)
-granice_t <- unname(wynik_ci$conf.int)
-granice_t
-srednia + c(-1, 1) * stats::qt(.975, df = n - 1) * se
+```{r klasyczny}
+knitr::kable(formatuj_wynik(wynik_klasyczny), digits = 4)
 ```
 
-Wąski przedział oznacza większą precyzję w danym modelu, lecz nie jest dowodem dobrego pomiaru. Można precyzyjnie oszacować wynik źle sformułowanego pytania. Bootstrap również nie usunie takiej wady.
+Odczytaj wynik bez etykiety „dobry” lub „zły”. Powiedz, jaka estymata odpowiada pytaniu, co mierzy statystyka oraz jakie założenie projektu ogranicza interpretację. Jeżeli widzisz p, opisz je warunkowo: przy modelu zerowym i przyjętej procedurze.
 
-# Bootstrap: nowe próby z obserwowanej próby
+**Karta odczytu toru klasycznego.** Zapisz: (a) nazwę metody, (b) N lub liczebności grup, (c) estymatę i jednostkę, (d) statystykę wraz z df, jeśli występują, (e) p, (f) jedno założenie. Jeżeli metoda na tej stronie nie jest testem, wpisz „nie dotyczy” zamiast wymyślać p. Kompletność wyniku jest oceniana oddzielnie od jego istotności.
 
-Bootstrap losuje ze zwracaniem obserwacje z dostępnej próby. Każda replika ma takie samo N, a ta sama osoba może zostać wylosowana kilka razy. Dla średniej indeksu wybieramy całe osoby z ważnym wynikiem; nie losujemy osobno sześciu odpowiedzi jednej osoby. Dzięki temu poziom losowania odpowiada jednostce analizy.
+\newpage
 
-`sample.int(n, size=n, replace=TRUE)` wybiera numery wierszy. Indeksowanie `wartosci[numery]` odczytuje wyniki wybranych osób, a `replicate()` powtarza obliczenie B razy. Ustalamy ziarno przed symulacją, aby świeży skrypt odtworzył wynik. Odczytaj pierwsze średnie i zauważ, że replika nie jest nową faktycznie zebraną ankietą.
+# 9. Tor permutacyjny lub decyzja o jego braku
 
-```{r bootstrap}
-set.seed(2027)
-B <- 1999
-srednie_boot <- replicate(B, {
-  numery <- sample.int(n, size = n, replace = TRUE)
-  mean(wartosci[numery])
-})
-head(srednie_boot)
-granice_boot <- unname(stats::quantile(srednie_boot, c(.025, .975)))
-granice_boot
+Tor permutacyjny losowo zmienia znaki odchyleń od 3. W każdym losowaniu buduje średnią zgodną z hipotezą zerową. p_perm to udział równie lub bardziej skrajnych różnic, z korektą jednego losowania.
+
+```{r permutacyjny}
+knitr::kable(formatuj_wynik(wynik_permutacyjny), digits = 4)
 ```
 
-Przedział percentylowy bierze kwantyle 2,5% i 97,5% rozkładu średnich bootstrapowych. Jest prostym przybliżeniem, którego pokrycie zależy od danych i estymatora. Nie jest przedziałem dla 95% indywidualnych odpowiedzi i nie gwarantuje dokładnego poziomu przy każdej skośności czy małej próbie. Liczba B dotyczy powtórzeń komputera; zwiększenie jej nie zwiększa liczby badanych osób.
+W analizie inferencyjnej liczba B określa rozdzielczość szacowanego p. Za każdym razem trzeba powiedzieć, co dokładnie tasowano i jaki związek został zerwany. Nazwa „permutacyjny” nie zwalnia z wyjaśnienia hipotezy zerowej.
 
-Tworzymy tabelę dwóch metod z poziomem ufności i N. Wyniki mają wspólny parametr i jednostkę, więc można porównać szerokość przedziałów. Odczytaj, czy różnica granic jest duża względem pełnego zakresu indeksu 1–5; nie wybieraj metody tylko dlatego, że daje wygodniejszy wniosek.
+**Karta odczytu toru permutacyjnego.** Uzupełnij zdanie: „Przy braku związku lub różnicy wielokrotnie zmieniano znaki, tasowano etykiety lub losowano tabele, za każdym razem liczono tę samą statystykę, a określony odsetek wyników był co najmniej tak skrajny jak obserwowany”. Następnie porównaj wniosek z torem klasycznym bez wybierania mniejszego p.
 
-```{r tabela}
-estymacja <- data.frame(metoda = c("t", "bootstrap percentylowy"),
-  n = n, srednia = srednia, dolna = c(granice_t[1], granice_boot[1]),
-  gorna = c(granice_t[2], granice_boot[2]), poziom = .95,
-  B = c(NA, B), ziarno = c(NA, 2027))
-estymacja
-bootstrap <- data.frame(replika = seq_len(B), srednia = srednie_boot)
+\newpage
+
+# 10. Efekt i przedział
+
+Różnica średniej jest efektem w punktach skali, a d standaryzuje ją przez SD. Klasyczny CI opisuje niepewność średniej; percentylowy bootstrap sprawdza wrażliwość bez opierania kształtu na wzorze t.
+
+```{r efekt}
+knitr::kable(formatuj_wynik(efekt), digits = 4)
 ```
 
-Histogram pokazuje rozkład średnich replik, a nie surowe odpowiedzi 1–5. Linia ciągła oznacza średnią próby, a dwie przerywane granice percentylowego CI. Odczytaj rozproszenie średnich i porównaj je z SD osób z początku ćwiczenia.
+Znaczenie praktyczne oceniamy w kontekście usługi: minuty, punkty skali, różnica odsetków albo siła związku. Uniwersalne etykiety mały/średni/duży nie zastępują pytania, czy efekt zmienia decyzję instytucji i jak precyzyjnie został oszacowany.
 
-```{r wykres-bootstrap, fig.cap="Syntetyczna ankieta S02; N i B w podtytule. Rozkład średnich bootstrapowych."}
-wykres_boot <- ggplot2::ggplot(bootstrap, ggplot2::aes(x = srednia)) +
-  ggplot2::geom_histogram(bins = 30, fill = badaniaZI::paleta_zi()["primary"],
-    color = "white") +
-  ggplot2::geom_vline(xintercept = srednia, linewidth = .7) +
-  ggplot2::geom_vline(xintercept = granice_boot, linetype = "dashed",
-    color = badaniaZI::paleta_zi()["accent"]) +
-  ggplot2::labs(title = "Średnie z prób bootstrapowych",
-    subtitle = paste("N =", n, "osób; B =", B, "replik"),
-    x = "Średnia indeksu (punkty 1–5)", y = "Liczba replik") +
-  badaniaZI::theme_zi()
-wykres_boot
+Przedział szeroki obejmuje wiele możliwych wielkości efektu i wymaga ostrożniejszego języka. Przedział wąski może nadal koncentrować się wokół efektu praktycznie małego. Gdy przedział przecina zero, nie zapisujemy automatycznie „brak efektu”; podajemy zakres zgodnych wartości i oceniamy, czy obejmuje skutki istotne dla usługi informacyjnej.
+
+\newpage
+
+# 11. Wykres jako część argumentu
+
+```{r wykres, fig.height=4.6}
+wykres_glowny
 ```
 
-# Permutacja: inny cel losowania
+Wykres odpowiada na pytanie o położenie, kształt, nakładanie się grup lub kierunek związku. Tytuł, osie i jednostki są częścią wyniku. Nie wnioskuj o istotności tylko z wyglądu, lecz sprawdź, czy obraz jest spójny z tabelą i estymatą.
 
-Bootstrap pokazuje zmienność estymaty wokół danych, które zaobserwowaliśmy. Permutacja etykiet dwóch grup buduje rozkład zerowy statystyki przy założeniu ich wymienialności. To nie jest ten sam rozkład ani automatyczny sposób naprawy dowolnych naruszeń założeń testu t. W obserwacyjnej ankiecie wymienialność wymaga uzasadnienia; sam brak normalności jej nie zapewnia.
+Przeczytaj wykres w trzech warstwach. Najpierw opisz elementy widoczne bez testu: zakres, skupienie i nietypowe obserwacje. Potem połącz je z estymatą w tabeli. Na końcu nazwij rzecz, której wykres nie rozstrzyga, np. przyczynowość, błąd pomiaru albo zachowanie wyniku w nowej próbie. Nie usuwaj obserwacji tylko dlatego, że psuje prostą historię.
 
-Dla tej demonstracji przyjmujemy mocną hipotezę identycznych rozkładów wyników w dwóch grupach. Zostawiamy indeksy, tasujemy tylko etykiety i zachowujemy liczebności grup. Tę samą różnicę średnich obliczamy przed i po tasowaniu. W eksperymencie z losowym przydziałem argumentacja opierałaby się na procedurze przydziału; generator nie tworzy takiego rzeczywistego eksperymentu.
+\newpage
 
-Wybieramy stały porządek etykiet, aby znak różnicy był jawny. Każda permutacja przestawia ich kolejność bez zmiany liczby osób. Odczytaj obserwowaną różnicę i odsetek co najmniej tak skrajnych bezwzględnych różnic; poprawka +1 zapobiega raportowaniu p równego zero w symulacji Monte Carlo.
+# 12. Wynik czytany linia po linii
 
-```{r permutacja}
-grupy <- sort(unique(proba$grupa))
-roznica <- function(g) {
-  mean(wartosci[g == grupy[1]]) - mean(wartosci[g == grupy[2]])
-}
-obserwowana <- roznica(proba$grupa)
-set.seed(2028)
-permutacje <- replicate(B, roznica(sample(proba$grupa)))
-p_perm <- (1 + sum(abs(permutacje) >= abs(obserwowana))) / (B + 1)
-data.frame(pierwsza = grupy[1], druga = grupy[2],
-  roznica = obserwowana, p_monte_carlo = p_perm)
+Czytamy kolejno N, średnią, wartość odniesienia, różnicę, SE, CI, t(df), p klasyczne, d i p permutacyjne. Zgodność obu p nie zastępuje oceny wielkości różnicy.
+
+Schemat pełnego zdania: „W analizie N osób oszacowano [efekt] w [jednostce], 95% CI [dolna; górna]. Statystyka klasyczna wyniosła [symbol i df], p=[wartość], a procedura permutacyjna B losowań dała p_perm=[wartość]. Wynik opisuje [zakres] i nie rozstrzyga [ograniczenie]”.
+
+Podczas zajęć jedna osoba czyta tabelę, druga sprawdza znak i jednostkę, a trzecia wskazuje granicę wniosku. Dopiero po tej kontroli zapisujemy odpowiedź do pliku Markdown.
+
+Dobra interpretacja ma trzy warstwy. Warstwa liczbowa mówi, co oszacowano. Warstwa badawcza odpowiada na pytanie o zachowanie informacyjne lub wykonanie zadania. Warstwa krytyczna wskazuje, czego projekt, pomiar i syntetyczność nie pozwalają stwierdzić. Pominięcie którejkolwiek warstwy tworzy tekst technicznie poprawny, lecz metodologicznie niepełny.
+
+\newpage
+
+# 13. Błędy interpretacji
+
+Błąd: „z prawdopodobieństwem 95% parametr jest w tym konkretnym przedziale”. Poprawnie: „procedura budowania takich przedziałów obejmowałaby parametr w 95% powtarzanych prób przy spełnionych warunkach”.
+
+Dodatkowe pułapki: traktowanie braku istotności jako dowodu równości, pomijanie N, raportowanie samego p, utożsamienie samooceny z kompetencją oraz zamiana obserwacyjnego związku w przyczynę. Poprawa polega na dodaniu liczby, jednostki, zakresu i ograniczenia, a nie na bardziej stanowczym czasowniku.
+
+Porównaj dwie konstrukcje: „test wykazał efekt” i „oszacowana różnica wyniosła..., a wynik testu był...”. Druga oddziela wielkość od decyzji. Podobnie „grupy były takie same” zastępujemy opisem przedziału i precyzji. W raporcie nie używamy słowa „trend” jako sposobu ratowania p nieco większego od .05; opisujemy rzeczywisty efekt i jego niepewność.
+
+**Po zajęciach.** Znajdź w swoim szkicu jedno zdanie zawierające „wpływa”, „udowadnia”, „brak różnicy” albo „95% wyników”. Przepisz je tak, aby odpowiadało projektowi i rzeczywistemu znaczeniu statystyki.
+
+\newpage
+
+# 14. Próba prowadzona
+
+1. Otwórz gotowy skrypt i wskaż sekcję parametrów.  
+2. Uruchom cały plik bez zmiany dalszej części.  
+3. Otwórz zapisany CSV i odnajdź N, estymatę oraz jednostkę.  
+4. Jeżeli analiza jest inferencyjna, porównaj p klasyczne i permutacyjne.  
+5. Odczytaj efekt i przedział.  
+6. Napisz jedno zdanie wyniku oraz jedno zdanie ograniczenia.
+
+Jeżeli skrypt zgłasza błąd, najpierw sprawdź katalog projektu, nazwę parametru i dozwoloną wartość. Nie poprawiaj wnętrza funkcji statystycznej. Błąd parametru jest informacją o niedozwolonym wyborze, a nie zaproszeniem do przepisania procedury.
+
+Podział czasu próby: 3 minuty na uruchomienie, 4 na odnalezienie właściwego CSV, 5 na głośny odczyt tabeli, 5 na szkic interpretacji i 3 na kontrolę ograniczenia. Jeśli grupa utknie, wraca do pytania, jednostki i znaku efektu. Celem jest krótkie, sprawdzalne rozumowanie, nie zwiększanie liczby wykonanych poleceń.
+
+\newpage
+
+# 15. Zadanie Z05
+
+Uruchom Z05 dla indeksu i punktu 3. Odczytaj pełny wynik klasyczny, bootstrap i zmianę znaków. Napisz jedno zdanie wyniku zawierające N, efekt, CI, t, df oraz oba p i oceń znaczenie praktyczne.
+
+Przygotuj pliki poleceniem poniżej. Uruchom zapisany `analiza.R`, a następnie uzupełnij wszystkie pola `[UZUPELNIJ]` w `odpowiedzi.md`. Nie wklejaj kodu ani zrzutu całej konsoli.
+
+```{r zadanie, eval=FALSE}
+przygotuj_zadanie('Z05', katalog = '.')
+sprawdz_zadanie('Z05', katalog = '.')
+oddaj_zadanie('Z05', katalog = '.')
 ```
 
-Wartość p jest liczona w modelu zerowym dla wybranej statystyki i procedury. Nie oznacza prawdopodobieństwa, że grupy są „takie same”, ani że nowy katalog spowodował obserwowaną różnicę. Z05 wymaga własnego porównania CI, nie raportu z tej demonstracji. Szczegóły hipotez i błędów decyzji są w W03.
+\newpage
 
-# Z05 — estymacja na własnym wariancie
-
-Odczytaj własny CSV, zastosuj reguły C02/C04 i oszacuj średni indeks wszystkich osób z ważnym wynikiem. Podaj N, średnią, SD, SE, CI t 95% i percentylowe CI bootstrapowe. W bootstrapie użyj B=1999 oraz ziarna 2027; zachowaj losowanie respondentów ze zwracaniem. Nie zastępuj indeksu surową pozycją 3 bez rekodacji.
-
-Zapisz `wyniki/estymacja.csv` z dwiema metodami, N, estymatą, granicami, poziomem, B i ziarnem oraz `wyniki/bootstrap.csv` ze średnimi replik. W `wyniki/bootstrap.png` pokaż histogram replik z estymatą i granicami. Podpisz osie, N, B, scenariusz i syntetyczne źródło. W `odpowiedzi.md` połącz te pliki względnymi odnośnikami.
-
-Własnymi słowami wyjaśnij, do czego odnosi się 95%, dlaczego B nie jest N i czym różnią się SD oraz SE. Oceń precyzję w punktach indeksu, opisz możliwe znaczenie praktyczne i jedno ograniczenie planowanej próby. Nie raportuj „95% użytkowników ma wynik w przedziale” ani „bootstrap usuwa błędy ankiety”.
-
-Zapisujemy obliczone obiekty; sama obecność histogramu w panelu Plots nie zapisuje pliku. Skrypt musi odtworzyć oba CSV i PNG od początku. Otwórz pliki w panelu Files i dopiero potem uruchom kontrolę.
-
-```{r zapis, eval=FALSE, purl=FALSE}
-folder <- "zadania/z05/wyniki"
-dir.create(folder, recursive = TRUE, showWarnings = FALSE)
-utils::write.csv(estymacja, file.path(folder, "estymacja.csv"),
-  row.names = FALSE, fileEncoding = "UTF-8")
-utils::write.csv(bootstrap, file.path(folder, "bootstrap.csv"),
-  row.names = FALSE, fileEncoding = "UTF-8")
-ggplot2::ggsave(file.path(folder, "bootstrap.png"), plot = wykres_boot,
-  width = 7, height = 4, dpi = 150)
-```
+# 16. Rubryka, kontrola i dalszy krok
 
 | Kryterium | Punkty |
 |---|---:|
-| Z05.1 Estymata, N i przedział 95% | 3 |
-| Z05.2 Bootstrap: jednostka losowania, powtarzalność i wynik | 2 |
-| Z05.3 Własne wyjaśnienie CI | 3 |
-| Z05.4 Precyzja, znaczenie praktyczne i ograniczenie próby | 2 |
+| Z05.1: Estymata i przedział dla wskazanej zmiennej są poprawne, z właściwym N. | 3 |
+| Z05.2: Poprawnie odczytano bootstrap średniej i permutacyjną zmianę znaków, wraz z B i ich odmiennym celem. | 2 |
+| Z05.3: Wynik klasyczny i permutacyjny zawiera N, efekt, CI, t, df, p oraz p_perm i jest poprawnie objaśniony. | 3 |
+| Z05.4: Wniosek odróżnia precyzję od znaczenia praktycznego i wskazuje ograniczenie próby. | 2 |
 
-Pełne poziomy: `rubryka("Z05")`. Wykonaj `sprawdz_zadanie("Z05")`, `oddaj_zadanie("Z05")` i `status_oddania("Z05")`. Termin: początek C06; dokładna data będzie widoczna po ogłoszeniu kalendarza. Wyloguj sesję pakietu i przeglądarkę.
+Automatyczna kontrola sprawdza pliki, parametry, odtwarzalność i zgodność eksportu. Prowadzący ocenia dobór języka, odczyt liczb, interpretację efektu oraz ograniczenie. Poprawny skrypt bez własnego wyjaśnienia nie realizuje zadania.
+
+Po wysyłce sprawdź `status_oddania()` i zdalne SHA. Na współdzielonym komputerze wywołaj `wyloguj_github()`, wyloguj przeglądarkę i zamknij RStudio bez `.RData`. Następne ćwiczenie rozpoczyna się od pobrania potwierdzonej wersji.
+
+## Źródło kontekstu
+
+Bootstrap odtwarza proces pobierania próby z empirycznego rozkładu, a permutacja buduje rozkład zerowy. Te dwie procedury odpowiadają na różne pytania.
+
+Materiały odwołują się do: Wilsona (1999), Kuhlthau (1991), Savolainen (1995), Hargittai (2002), DigComp 2.2, ACRL Framework oraz Internet Skills Scale. Są to ramy pojęciowe; dane i pozycje kursowe pozostają syntetyczne i dydaktyczne.

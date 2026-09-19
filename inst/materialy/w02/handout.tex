@@ -40,46 +40,6 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{248,248,248}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
 \usepackage{caption}
 \captionsetup[table]{skip=6pt}
@@ -154,7 +114,6 @@
 \newtcolorbox{uwagabox}[1][]{colback=orange!10, colframe=orange!70!black, title={#1}}
 \newtcolorbox{wzorbox}[1][]{colback=gray!5, colframe=gray!50!black, title={#1}}
 \newtcolorbox{przykladbox}[1][]{colback=purple!5, colframe=purple!50!black, title={#1}}
-
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -163,133 +122,138 @@
 \@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
 \makeatother
 \hypersetup{
-  pdftitle={Handout W02 --- Opis danych{,} jakość i pomiar ankietowy},
+  pdftitle={Handout W02 --- Język danych{,} pomiar i opis},
   pdfauthor={Marek Deja},
   pdflang={pl-PL},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Handout W02 --- Opis danych, jakość i pomiar ankietowy}
+\title{Handout W02 --- Język danych, pomiar i opis}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\subtitle{Zarządzanie informacją --- część ilościowa --- 2026/27}
+\subtitle{Mapa pojęć, wzorów i pytań}
 \author{Marek Deja}
 \date{2026/27}
 
 \begin{document}
 \maketitle
 
-\section{W02 --- co zachowuje dobry
-opis}\label{w02-co-zachowuje-dobry-opis}
+\section{1. Pytanie i główna
+myśl}\label{pytanie-i-gux142uxf3wna-myux15bl}
 
-Jednostka → skala → reguły jakości → N ważne i braki → miary/wykres →
-ograniczenia. Surowy plik pozostaje bez zmian, a dziennik rozróżnia
-wiersze i komórki.
+\textbf{Pytanie:} Jak opisać samoocenę, obserwowany czas, powodzenie i
+wybór kanału tak, aby miara odpowiadała skali i właściwemu mianownikowi?
 
-\section{Miary i jednostki}\label{miary-i-jednostki}
+Ta sama osoba może wysoko oceniać własne kompetencje i jednocześnie
+długo wykonywać zadanie. Pomiar ankietowy oraz obserwacyjny są różnymi
+oknami na zachowanie. Dobry opis nie zaciera tej różnicy i nie sprowadza
+tabeli do jednej średniej.
+
+\subsection{Tok rozumowania}\label{tok-rozumowania}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Pytanie i zakres wniosku.\\
+\item
+  Jednostka, zmienne, skale i braki.\\
+\item
+  Estymata oraz jednostka.\\
+\item
+  Niepewność i dwa tory, jeśli dotyczą.\\
+\item
+  Efekt, ograniczenie i odpowiedź.
+\end{enumerate}
+
+\newpage
+
+\section{2. Wzór i symbole}\label{wzuxf3r-i-symbole}
+
+\[I_i=\frac{1}{m_i}\sum_{j=1}^{6}x^{*}_{ij}, \quad m_i\geq5; \qquad \bar{x}=\frac{1}{N}\sum x_i\]
 
 {\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Miara
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Znaczenie
-\end{minipage} \\
+Symbol & Nazwa & Znaczenie \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Średnia \(\bar{x}=\sum x_i/n\) & poziom przeciętny, wrażliwy na
-ekstremum \\
-Mediana & środek uporządkowanego zbioru \\
-Moda & najczęstsza wartość/kategoria, możliwe remisy \\
-SD \(s=\sqrt{s^2}\) & rozproszenie w jednostce pomiaru \\
-IQR \(Q_3-Q_1\) & szerokość środkowej połowy danych \\
-Zakres & minimum/maksimum, wrażliwe na ekstremum \\
+\(x^{*}_{ij}\) & pozycja po ukierunkowaniu & punkty 1--5 \\
+\(m_i\) & ważne pozycje osoby & co najmniej 5 \\
+\(I_i\) & indeks samooceny & punkty 1--5 \\
+\(\bar{x},Me\) & średnia i mediana & położenie rozkładu \\
 \end{longtable}
 }
 
-SD opisuje osoby, a SE niepewność estymacji. CV wymaga sensownego
-naturalnego zera i średniej oddalonej od zera. Kurtoza 3 i eksces 0 dla
-rozkładu normalnego są różnymi konwencjami.
+Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę i
+składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani
+CI zakresu 95\% osób.
 
-Porównujemy średnią i medianę w małej próbie. Odczytaj oba wyniki i IQR
-w minutach. Wskaż, jak skrajna wartość wpływa na centrum.
+\newpage
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{36}\NormalTok{)}
-\FunctionTok{c}\NormalTok{(}\AttributeTok{srednia =} \FunctionTok{mean}\NormalTok{(x), }\AttributeTok{mediana =} \FunctionTok{median}\NormalTok{(x), }\AttributeTok{SD =}\NormalTok{ stats}\SpecialCharTok{::}\FunctionTok{sd}\NormalTok{(x),}
-  \AttributeTok{IQR =}\NormalTok{ stats}\SpecialCharTok{::}\FunctionTok{IQR}\NormalTok{(x))}
-\end{Highlighting}
-\end{Shaded}
+\section{3. Dwa tory i efekt}\label{dwa-tory-i-efekt}
 
-\begin{verbatim}
-##  srednia  mediana       SD      IQR
-## 10.00000  4.00000 14.57738  2.00000
-\end{verbatim}
+\textbf{Tor klasyczny.} Opis liczbowy obejmuje N, braki, miarę położenia
+i zróżnicowania. Dla skośnego czasu zestawiamy średnią z medianą, SD z
+IQR oraz histogram. Dla kategorii podajemy liczebność i odsetek z jawnym
+mianownikiem.
 
-\section{Szeregi, procenty i wykresy}\label{szeregi-procenty-i-wykresy}
+\textbf{Tor permutacyjny/resampling.} Na etapie pomiaru nie używamy
+testu do naprawiania złych wskaźników. Permutacja odpowie później na
+pytanie o losowy związek przy zachowanych rozkładach. Najpierw musi być
+jasne, co zostało zmierzone i które braki są dopuszczalne.
 
-Szereg punktowy --- kategorie i N. Przedziałowy --- klasy liczbowe.
-Czasowy --- kolejne okresy. Histogram --- kształt, pudełko --- kwartyle
-i mediana. Punkty poza wąsami sprawdzamy, bez automatycznego usuwania.
+\textbf{Efekt i przedział.} Różnica między średnią i medianą opisuje
+asymetrię, SD i IQR zróżnicowanie. Nie są to jeszcze efekty przyczynowe.
+Jednostka miary pozwala ocenić, czy zmiana o dwie minuty lub pół punktu
+jest ważna dla usługi.
 
-Odsetki: podaj licznik i mianownik. Jednokrotny wybór tworzy rozłączne
-kategorie, wielokrotny może dać sumę procentów respondentów
-\textgreater100. Gęstość w punkcie nie jest procentem. Asymetrię czytaj
-na wykresie; średnia bliska medianie nie dowodzi normalności.
+\newpage
 
-\section{Cztery sposoby pomiaru
-postaw}\label{cztery-sposoby-pomiaru-postaw}
+\section{4. Interpretacja i pytania}\label{interpretacja-i-pytania}
 
-{\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Podejście
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Zasada
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-Likert & stopnie zgody, pojedyncza pozycja porządkowa, indeks
-uzasadniony \\
-Bogardus & gotowość do różnych poziomów kontaktu społecznego \\
-Guttman & kumulatywny wzorzec silniejszych/słabszych pozycji \\
-Thurstone & stwierdzenia wcześniej ocenione przez sędziów \\
-\end{longtable}
-}
+\textbf{Przykład.} Wielokrotny wybór kanałów może dać sumę odsetków
+większą niż 100\%, ponieważ jedna osoba wybiera kilka opcji. Mianownik
+powinien obejmować osoby z kompletnym zestawem odpowiedzi 0/1. Brak w
+jednym kanale nie jest automatycznie odpowiedzią „nie''.
 
-Treść i reguła ważniejsze niż nazwa. Brak ≠ odpowiedź neutralna ≠
-negatywna. Alfa nie dowodzi trafności. W kursie: pozycja 3 odwrócona,
-średni indeks przy minimum 5/6.
+\textbf{Pułapki.} Pułapki obejmują kodowanie braku jako zera, odwrócenie
+pozycji po policzeniu indeksu, średnią z nazw kategorii, wykres bez
+jednostki, opis średniej jako wyniku większości i nazywanie kursowego
+indeksu walidowanym testem.
 
-\section{Operacje na danych}\label{operacje-na-danych}
+\textbf{Pytanie do pracy.} Oceń cztery zdania z raportu: wskaż skalę,
+mianownik, właściwą miarę oraz brakujące ograniczenie. Następnie
+porównaj, co wnosi indeks samooceny, a co obserwowany czas i powodzenie.
 
-Sortowanie --- kolejność całych wierszy; ranking --- pozycje/remisy;
-agregacja --- podsumowania; transpozycja --- zamiana wymiarów. z-score i
-min--max zmieniają skalę/jednostkę, bez nadawania normalności. CSV nie
-zachowuje formuł ani wielu arkuszy.
+\subsection{Dalszy krok}\label{dalszy-krok}
 
-\section{Notatki}\label{notatki}
+C03 zbuduje portret próby, a C04 przeprowadzi rekodację i indeks. W03
+doda język niepewności, lecz zachowa rozróżnienie pomiaru od
+wnioskowania.
 
-Którą miarę wybiorę dla skośnego czasu i dlaczego?
-\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots..
+\subsection{Literatura}\label{literatura}
 
-Mianownik mojej tabeli: \ldots\ldots\ldots\ldots\ldots\ldots{} Jedno
-ograniczenie pomiaru:
-\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots{}
+\begin{itemize}
+\tightlist
+\item
+  \href{https://publications.jrc.ec.europa.eu/repository/handle/JRC128415}{European
+  Commission JRC (2022). DigComp 2.2}.
+\item
+  \href{https://www.ala.org/acrl/standards/ilframework}{Association of
+  College and Research Libraries. Framework for Information Literacy}.
+\item
+  \href{https://www.webuse.org/pdf/Hargittai-BeyondLogsSurveys2002.pdf}{Hargittai,
+  E. (2002). Beyond logs and surveys}.
+\item
+  \href{https://ris.utwente.nl/ws/portalfiles/portal/6972069/development.pdf}{van
+  Deursen, Helsper \& Eynon. Internet Skills Scale}.
+\end{itemize}
 
 \end{document}

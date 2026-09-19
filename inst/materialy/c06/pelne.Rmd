@@ -1,0 +1,243 @@
+---
+title: 'C06 — Dwie grupy: różnica czasu lub samooceny i tasowanie etykiet'
+subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
+author: 'Marek Deja'
+date: '2026/27'
+lang: pl-PL
+fontsize: 11pt
+papersize: a4
+geometry: margin=2cm
+---
+
+```{r przygotowanie, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, digits = 3)
+source('analiza.R', local = knitr::knit_global(), encoding = 'UTF-8')
+```
+
+# 1. Miejsce w opowieści
+
+Porównujemy dwie grupy użytkowników katalogu. Grupy są obserwacyjne, więc różnica może współwystępować z doświadczeniem i częstością korzystania; nie przypisujemy jej automatycznie interwencji.
+
+**Pytanie przewodnie:** Jak duża jest różnica między grupami i czy jest skrajna przy braku związku etykiety grupy z wynikiem?
+
+Rdzeń zajęć trwa 90 minut. Strony oznaczone jako „po zajęciach” służą utrwaleniu; podczas spotkania uruchamiamy gotowy kod, czytamy liczby i zapisujemy własne wyjaśnienie.
+
+| Minuty | Praca |
+|---:|---|
+| 0–10 | Powrót do poprzedniego odcinka i pytanie |
+| 10–30 | Zmienne, wzór i symbole |
+| 30–55 | Gotowe wyniki i dwa tory, jeśli dotyczą |
+| 55–80 | Zadanie na indywidualnych danych |
+| 80–90 | Kontrola, oddanie i zapowiedź kolejnego kroku |
+
+\newpage
+
+# 2. Scena badawcza
+
+Porównujemy dwie grupy użytkowników katalogu. Grupy są obserwacyjne, więc różnica może współwystępować z doświadczeniem i częstością korzystania; nie przypisujemy jej automatycznie interwencji.
+
+Badana osoba wykonuje krótkie zadanie wyszukiwawcze w cyfrowej usłudze informacyjnej, a potem odpowiada na sześć pozycji samooceny. Rejestrujemy czas i powodzenie jako pomiar obserwacyjny. Częstość korzystania, samoocena oraz wybrane kanały są deklaracjami. Rozdzielenie tych źródeł jest częścią interpretacji, ponieważ wysoka pewność nie musi oznaczać sprawnego wykonania.
+
+Dane demonstracyjne dotyczą scenariusza S02 i są syntetyczne. Ich rozkłady przygotowano do nauki, dlatego nie wolno opisywać nimi realnej biblioteki ani użytkowników UJ. Jednostką analizy jest osoba po usunięciu identycznych duplikatów. Każdy brak pozostaje brakiem, dopóki słownik nie podaje jawnej reguły.
+
+\newpage
+
+# 3. Pytanie, jednostka i zmienne
+
+Analizowane zmienne: **grupa, indeks samooceny albo obserwowany czas wykonania**.
+
+Przed spojrzeniem na wynik odpowiedz głośno na cztery pytania: kto jest obserwacją, co jest zmienną, jaka jest skala i w jakiej jednostce pojawi się rezultat. Nazwa kolumny jest technicznym adresem; znaczenie pochodzi z operacjonalizacji oraz słownika danych.
+
+| Element | Pytanie kontrolne | Odpowiedź w tej historii |
+|---|---|---|
+| Jednostka | Co zajmuje jeden wiersz? | jedna osoba i jedno zadanie |
+| Samoopis | Co osoba deklaruje? | pozycje, częstość, kanały |
+| Obserwacja | Co zapisuje procedura? | czas i powodzenie |
+| Granica wniosku | O czym mówią dane? | o syntetycznej próbie dydaktycznej |
+
+Skala pomiarowa ogranicza sens działań. Dla kategorii liczymy osoby i odsetki; dla uporządkowanych odpowiedzi możemy porównywać kolejność; dla czasu sens mają różnice i ilorazy. Indeks 1–5 traktujemy w kursie jako przybliżoną zmienną ilościową, ale pamiętamy, że powstał z pozycji porządkowych. Nazwanie skali przed analizą chroni przed mechanicznym wyborem testu.
+
+\newpage
+
+# 4. Słownik statystyczny
+
+Statystyka jest językiem skrótu. Symbol ma nazwę, znaczenie w badaniu i jednostkę. Odczytuj wzór zdaniem, zanim podstawisz liczby.
+
+| Symbol | Nazwa | Znaczenie w przykładzie | Jednostka |
+|---|---|---|---|
+| $\bar{x}_g$ | średnia grupy | typowy poziom wyniku | punkty lub minuty |
+| $\Delta$ | różnica średnich | grupa 2 minus grupa 1 | jednostka wyniku |
+| $t$ | statystyka Welcha | różnica względem SE | bez jednostki |
+| $g$ | Hedges g | standaryzowana różnica | SD |
+
+Wartość p nie jest prawdopodobieństwem prawdziwości hipotezy. Przedział nie jest zakresem środkowych 95% obserwacji. Efekt nie jest tym samym co istotność. Te trzy rozróżnienia wracają w każdej analizie.
+
+**Notatnik pojęć.** Dla każdego symbolu dopisz jedną liczbę z gotowego wyniku i przeczytaj ją bez skrótu. Zamiast „t równa się” powiedz „obserwowana różnica leży tyle błędów standardowych od wartości zerowej”. Zamiast „V równa się” powiedz „znormalizowana siła związku w tabeli wynosi”. Taki przekład jest ważniejszy niż pamięciowe odtwarzanie wzoru.
+
+\newpage
+
+# 5. Wzór czytany jak zdanie
+
+$$t=\frac{\bar{x}_1-\bar{x}_2}{\sqrt{s_1^2/N_1+s_2^2/N_2}}$$
+
+Czytamy od lewej do prawej, nazywając licznik, mianownik i jednostkę. Znak wyniku ma sens dopiero po ustaleniu kolejności grup lub kierunku skali. Jeżeli we wzorze jest N, chodzi o przypadki rzeczywiście użyte w danym obliczeniu, a nie automatycznie o wszystkie wiersze surowego pliku.
+
+**Ćwiczenie ustne.** Wskaż w formule estymatę, element niepewności i punkt odniesienia. Jeżeli dana metoda ich nie ma, powiedz to wprost. Następnie przewidź, co stanie się z wynikiem po zwiększeniu N, zmianie jednostki albo odwróceniu kolejności grup.
+
+Czytanie wzoru ma pięć kroków: (1) nazwij wynik po lewej stronie, (2) nazwij obserwowane wielkości po prawej, (3) wskaż porównanie lub wartość zerową, (4) ustal jednostkę, (5) powiedz, jaka zmiana danych zwiększa wynik. Nie wykonujemy ręcznie długich obliczeń. Wzór ma odsłonić logikę liczby zwracanej przez gotową funkcję.
+
+\newpage
+
+# 6. Gotowy skrypt pomocniczy
+
+Pierwszy chunk materiału załadował towarzyszący plik `analiza.R`. Zawiera przygotowanie danych, obiekty i funkcje potrzebne na zajęciach. Uruchamiasz kolejne fragmenty i odczytujesz wynik. Nie implementujesz testu ani pętli permutacyjnej.
+
+```{r struktura}
+wynik_glowny
+```
+
+W zadaniu indywidualnym analogiczny skrypt powstaje przez `przygotuj_zadanie()`. Wolno zmienić jedynie wartości oznaczone komentarzem jako parametry. Dzięki temu przedmiot ocenia rozumienie wyniku, a nie biegłość w programowaniu.
+
+Po zmianie parametru uruchom cały skrypt od początku. Pojedyncze obiekty pozostawione w Environment mogą pochodzić ze starszej próby, dlatego nie są dowodem odtwarzalności. Zapisany plik w `wyniki` ma powstać ponownie w świeżej sesji. Jeśli nazwa zmiennej jest niedozwolona, funkcja zatrzymuje analizę i podaje listę dopuszczalnych wartości.
+
+\newpage
+
+# 7. Dane, braki i mianownik
+
+```{r dane}
+knitr::kable(head(tabela_glowna, 10), digits = 3)
+```
+
+Zanim przeczytasz statystykę, ustal N i braki. Dla średniej N oznacza ważne liczby. Dla korelacji są to kompletne pary. Dla tabeli jest to suma analizowanych komórek. Dla indeksu przypadek musi mieć co najmniej pięć odpowiedzi po właściwym ukierunkowaniu.
+
+Dwa wyniki mogą używać różnych N w tym samym raporcie. Nie jest to sprzeczność, jeśli wynika z braków i zostało jawnie opisane. Nie wolno dopasowywać reguły braków po zobaczeniu, która wersja daje korzystniejsze p.
+
+Brak może dotyczyć jednej pozycji, całego indeksu albo pary zmiennych. Duplikat jest powtórzeniem rekordu, a obserwacja odstająca nadal może być prawdziwą obserwacją. Te pojęcia wymagają innych decyzji. Dziennik czyszczenia powinien pozwolić odtworzyć, ile elementów zmieniła każda reguła i dlaczego wynikowe N jest właściwym mianownikiem.
+
+\newpage
+
+# 8. Tor klasyczny
+
+Test Welcha nie zakłada równych wariancji. Wynik obejmuje N i średnią każdej grupy, różnicę, przybliżone df oraz p. Wykres pokazuje nakładanie się rozkładów, którego samo p nie ujawnia.
+
+```{r klasyczny}
+knitr::kable(formatuj_wynik(wynik_klasyczny), digits = 4)
+```
+
+Odczytaj wynik bez etykiety „dobry” lub „zły”. Powiedz, jaka estymata odpowiada pytaniu, co mierzy statystyka oraz jakie założenie projektu ogranicza interpretację. Jeżeli widzisz p, opisz je warunkowo: przy modelu zerowym i przyjętej procedurze.
+
+**Karta odczytu toru klasycznego.** Zapisz: (a) nazwę metody, (b) N lub liczebności grup, (c) estymatę i jednostkę, (d) statystykę wraz z df, jeśli występują, (e) p, (f) jedno założenie. Jeżeli metoda na tej stronie nie jest testem, wpisz „nie dotyczy” zamiast wymyślać p. Kompletność wyniku jest oceniana oddzielnie od jego istotności.
+
+\newpage
+
+# 9. Tor permutacyjny lub decyzja o jego braku
+
+Tasujemy etykiety grup, zachowując wartości wyniku i liczebności. Dla każdego tasowania liczymy tę samą różnicę średnich. p_perm mówi, jak często losowa etykieta daje co najmniej tak dużą różnicę bezwzględną.
+
+```{r permutacyjny}
+knitr::kable(formatuj_wynik(wynik_permutacyjny), digits = 4)
+```
+
+W analizie inferencyjnej liczba B określa rozdzielczość szacowanego p. Za każdym razem trzeba powiedzieć, co dokładnie tasowano i jaki związek został zerwany. Nazwa „permutacyjny” nie zwalnia z wyjaśnienia hipotezy zerowej.
+
+**Karta odczytu toru permutacyjnego.** Uzupełnij zdanie: „Przy braku związku lub różnicy wielokrotnie zmieniano znaki, tasowano etykiety lub losowano tabele, za każdym razem liczono tę samą statystykę, a określony odsetek wyników był co najmniej tak skrajny jak obserwowany”. Następnie porównaj wniosek z torem klasycznym bez wybierania mniejszego p.
+
+\newpage
+
+# 10. Efekt i przedział
+
+Różnica średnich ma naturalną jednostkę, Hedges g ułatwia porównanie skal, a bootstrapowy CI pokazuje precyzję różnicy. Znak efektu zależy od jawnie podanej kolejności grup.
+
+```{r efekt}
+knitr::kable(formatuj_wynik(efekt), digits = 4)
+```
+
+Znaczenie praktyczne oceniamy w kontekście usługi: minuty, punkty skali, różnica odsetków albo siła związku. Uniwersalne etykiety mały/średni/duży nie zastępują pytania, czy efekt zmienia decyzję instytucji i jak precyzyjnie został oszacowany.
+
+Przedział szeroki obejmuje wiele możliwych wielkości efektu i wymaga ostrożniejszego języka. Przedział wąski może nadal koncentrować się wokół efektu praktycznie małego. Gdy przedział przecina zero, nie zapisujemy automatycznie „brak efektu”; podajemy zakres zgodnych wartości i oceniamy, czy obejmuje skutki istotne dla usługi informacyjnej.
+
+\newpage
+
+# 11. Wykres jako część argumentu
+
+```{r wykres, fig.height=4.6}
+wykres_glowny
+```
+
+Wykres odpowiada na pytanie o położenie, kształt, nakładanie się grup lub kierunek związku. Tytuł, osie i jednostki są częścią wyniku. Nie wnioskuj o istotności tylko z wyglądu, lecz sprawdź, czy obraz jest spójny z tabelą i estymatą.
+
+Przeczytaj wykres w trzech warstwach. Najpierw opisz elementy widoczne bez testu: zakres, skupienie i nietypowe obserwacje. Potem połącz je z estymatą w tabeli. Na końcu nazwij rzecz, której wykres nie rozstrzyga, np. przyczynowość, błąd pomiaru albo zachowanie wyniku w nowej próbie. Nie usuwaj obserwacji tylko dlatego, że psuje prostą historię.
+
+\newpage
+
+# 12. Wynik czytany linia po linii
+
+Najpierw ustalamy kolejność grup. Następnie N1/N2, średnie, Δ, CI, g, t(df), p klasyczne i p_perm. Dopiero potem odpowiadamy na pytanie i dodajemy ograniczenie projektu.
+
+Schemat pełnego zdania: „W analizie N osób oszacowano [efekt] w [jednostce], 95% CI [dolna; górna]. Statystyka klasyczna wyniosła [symbol i df], p=[wartość], a procedura permutacyjna B losowań dała p_perm=[wartość]. Wynik opisuje [zakres] i nie rozstrzyga [ograniczenie]”.
+
+Podczas zajęć jedna osoba czyta tabelę, druga sprawdza znak i jednostkę, a trzecia wskazuje granicę wniosku. Dopiero po tej kontroli zapisujemy odpowiedź do pliku Markdown.
+
+Dobra interpretacja ma trzy warstwy. Warstwa liczbowa mówi, co oszacowano. Warstwa badawcza odpowiada na pytanie o zachowanie informacyjne lub wykonanie zadania. Warstwa krytyczna wskazuje, czego projekt, pomiar i syntetyczność nie pozwalają stwierdzić. Pominięcie którejkolwiek warstwy tworzy tekst technicznie poprawny, lecz metodologicznie niepełny.
+
+\newpage
+
+# 13. Błędy interpretacji
+
+Błąd: „grupa spowodowała wyższy wynik, bo p<.05”. Poprawnie: „w syntetycznej próbie grupa 2 miała średnio o Δ więcej; obserwacyjny projekt nie izoluje przyczyny”.
+
+Dodatkowe pułapki: traktowanie braku istotności jako dowodu równości, pomijanie N, raportowanie samego p, utożsamienie samooceny z kompetencją oraz zamiana obserwacyjnego związku w przyczynę. Poprawa polega na dodaniu liczby, jednostki, zakresu i ograniczenia, a nie na bardziej stanowczym czasowniku.
+
+Porównaj dwie konstrukcje: „test wykazał efekt” i „oszacowana różnica wyniosła..., a wynik testu był...”. Druga oddziela wielkość od decyzji. Podobnie „grupy były takie same” zastępujemy opisem przedziału i precyzji. W raporcie nie używamy słowa „trend” jako sposobu ratowania p nieco większego od .05; opisujemy rzeczywisty efekt i jego niepewność.
+
+**Po zajęciach.** Znajdź w swoim szkicu jedno zdanie zawierające „wpływa”, „udowadnia”, „brak różnicy” albo „95% wyników”. Przepisz je tak, aby odpowiadało projektowi i rzeczywistemu znaczeniu statystyki.
+
+\newpage
+
+# 14. Próba prowadzona
+
+1. Otwórz gotowy skrypt i wskaż sekcję parametrów.  
+2. Uruchom cały plik bez zmiany dalszej części.  
+3. Otwórz zapisany CSV i odnajdź N, estymatę oraz jednostkę.  
+4. Jeżeli analiza jest inferencyjna, porównaj p klasyczne i permutacyjne.  
+5. Odczytaj efekt i przedział.  
+6. Napisz jedno zdanie wyniku oraz jedno zdanie ograniczenia.
+
+Jeżeli skrypt zgłasza błąd, najpierw sprawdź katalog projektu, nazwę parametru i dozwoloną wartość. Nie poprawiaj wnętrza funkcji statystycznej. Błąd parametru jest informacją o niedozwolonym wyborze, a nie zaproszeniem do przepisania procedury.
+
+Podział czasu próby: 3 minuty na uruchomienie, 4 na odnalezienie właściwego CSV, 5 na głośny odczyt tabeli, 5 na szkic interpretacji i 3 na kontrolę ograniczenia. Jeśli grupa utknie, wraca do pytania, jednostki i znaku efektu. Celem jest krótkie, sprawdzalne rozumowanie, nie zwiększanie liczby wykonanych poleceń.
+
+\newpage
+
+# 15. Zadanie Z06
+
+W Z06 wybierz indeks albo czas. Odczytaj kolejność grup i znak różnicy, porównaj oba p, podaj g i CI. Wyjaśnij, co pozostaje niepewne mimo zgodności metod.
+
+Przygotuj pliki poleceniem poniżej. Uruchom zapisany `analiza.R`, a następnie uzupełnij wszystkie pola `[UZUPELNIJ]` w `odpowiedzi.md`. Nie wklejaj kodu ani zrzutu całej konsoli.
+
+```{r zadanie, eval=FALSE}
+przygotuj_zadanie('Z06', katalog = '.')
+sprawdz_zadanie('Z06', katalog = '.')
+oddaj_zadanie('Z06', katalog = '.')
+```
+
+\newpage
+
+# 16. Rubryka, kontrola i dalszy krok
+
+| Kryterium | Punkty |
+|---|---:|
+| Z06.1: Wybór testu uwzględnia pytanie, skalę, niezależność i projekt, z krótkim uzasadnieniem. | 3 |
+| Z06.2: Poprawnie odczytano opis dwóch grup, wykres, różnicę, Hedges g i przedział. | 3 |
+| Z06.3: Wyniki Welcha i tasowania etykiet zawierają N, t, df, p, p_perm i kierunek efektu. | 2 |
+| Z06.4: Interpretacja własna, zgodna z wynikiem, bez utożsamienia istotności z wagą praktyczną. | 2 |
+
+Automatyczna kontrola sprawdza pliki, parametry, odtwarzalność i zgodność eksportu. Prowadzący ocenia dobór języka, odczyt liczb, interpretację efektu oraz ograniczenie. Poprawny skrypt bez własnego wyjaśnienia nie realizuje zadania.
+
+Po wysyłce sprawdź `status_oddania()` i zdalne SHA. Na współdzielonym komputerze wywołaj `wyloguj_github()`, wyloguj przeglądarkę i zamknij RStudio bez `.RData`. Następne ćwiczenie rozpoczyna się od pobrania potwierdzonej wersji.
+
+## Źródło kontekstu
+
+W badaniach zachowań informacyjnych grupy często powstają z doświadczenia lub sposobu korzystania. Porównanie opisuje wzorzec, a siłę wniosku przyczynowego wyznacza projekt.
+
+Materiały odwołują się do: Wilsona (1999), Kuhlthau (1991), Savolainen (1995), Hargittai (2002), DigComp 2.2, ACRL Framework oraz Internet Skills Scale. Są to ramy pojęciowe; dane i pozycje kursowe pozostają syntetyczne i dydaktyczne.

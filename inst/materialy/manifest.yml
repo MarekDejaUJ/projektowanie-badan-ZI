@@ -2,22 +2,46 @@ rocznik: 2026-27
 jednostki:
 - id: C01
   typ: cwiczenie
-  tytul: R, RStudio i własna przestrzeń pracy
+  tytul: 'Od rekordu do wyniku: RStudio i własna przestrzeń pracy'
 - id: C02
   typ: cwiczenie
-  tytul: Import i porządkowanie danych ankietowych
+  tytul: 'Surowy eksport: braki, duplikaty i jawne czyszczenie'
 - id: C03
   typ: cwiczenie
-  tytul: Opis danych i dwa wykresy
+  tytul: 'Portret próby: czas wyszukiwania, skuteczność i zróżnicowanie'
 - id: C04
   typ: cwiczenie
-  tytul: Pozycje ankiety, indeks i odpowiedzi wielokrotne
-- id: W01
-  typ: wyklad
-  tytul: Pytania, projekty badań i skale pomiarowe
-- id: W02
-  typ: wyklad
-  tytul: Opis danych, jakość i pomiar ankietowy
+  tytul: 'Od pozycji do konstruktu: samoocena i wykonanie zadania'
 - id: C05
   typ: cwiczenie
-  tytul: Niepewność średniej, bootstrap i intuicja permutacji
+  tytul: 'Niepewność estymaty: przedział, bootstrap i test jednej próby'
+- id: C06
+  typ: cwiczenie
+  tytul: 'Dwie grupy: różnica czasu lub samooceny i tasowanie etykiet'
+- id: C07
+  typ: cwiczenie
+  tytul: 'Kategorie i zachowanie: tabela, chi-kwadrat i Monte Carlo'
+- id: C08
+  typ: cwiczenie
+  tytul: 'Samoocena a wykonanie: korelacja, permutacja i prosta regresja'
+- id: C09
+  typ: cwiczenie
+  tytul: 'Warsztat projektu: od scenariusza do dwóch małych analiz'
+- id: C10
+  typ: cwiczenie
+  tytul: 'Od wyniku do raportu: interpretacja, ograniczenia i odtwarzalność'
+- id: W01
+  typ: wyklad
+  tytul: Od potrzeby informacyjnej do projektu badania
+- id: W02
+  typ: wyklad
+  tytul: Język danych, pomiar i opis
+- id: W03
+  typ: wyklad
+  tytul: Losowość, estymacja i dwa tory wnioskowania
+- id: W04
+  typ: wyklad
+  tytul: Porównania grup i zależności kategorii
+- id: W05
+  typ: wyklad
+  tytul: Korelacja, regresja i raport ilościowy

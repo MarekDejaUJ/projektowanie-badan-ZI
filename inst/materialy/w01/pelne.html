@@ -12,7 +12,7 @@
 <meta name="author" content="Marek Deja" />
 
 
-<title>W01 — Pytania, projekty badań i skale pomiarowe</title>
+<title>W01 — Od potrzeby informacyjnej do projektu badania</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -155,7 +155,7 @@ window.buildTabsets = function(tocID) {
     var tabContent = $('<div class="tab-content"></div>');
     $(tabs[0]).before(tabContent);
 
-    // build the tabse
+    // build the tabset
     var activeTab = 0;
     tabs.each(function(i) {
 
@@ -177,7 +177,7 @@ window.buildTabsets = function(tocID) {
       id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
       tab.attr('id', id);
 
-      // get the heading element within it, grab it's text, then remove i
+      // get the heading element within it, grab it's text, then remove it
       var heading = tab.find('h' + tabLevel + ':first');
       var headingText = heading.html();
       heading.remove();
@@ -375,8 +375,8 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">W01 — Pytania, projekty badań i skale
-pomiarowe</h1>
+<h1 class="title toc-ignore">W01 — Od potrzeby informacyjnej do projektu
+badania</h1>
 <h3 class="subtitle">Zarządzanie informacją — część ilościowa —
 2026/27</h3>
 <h4 class="author">Marek Deja</h4>
@@ -386,364 +386,279 @@ pomiarowe</h1>
 
 <div id="TOC">
 <ul>
-<li><a href="#pytanie-dow%C3%B3d-i-decyzja-w-zarz%C4%85dzaniu-informacj%C4%85" id="toc-pytanie-dowód-i-decyzja-w-zarządzaniu-informacją">Pytanie, dowód
-i decyzja w zarządzaniu informacją</a>
+<li><a href="#odcinek-wsp%C3%B3lnej-opowie%C5%9Bci" id="toc-odcinek-wspólnej-opowieści">1. Odcinek wspólnej
+opowieści</a></li>
+<li><a href="#dlaczego-to-jest-pytanie-lis" id="toc-dlaczego-to-jest-pytanie-lis">2. Dlaczego to jest pytanie
+LIS</a></li>
+<li><a href="#pytanie-przed-metod%C4%85" id="toc-pytanie-przed-metodą">3. Pytanie przed metodą</a></li>
+<li><a href="#projekt-wyznacza-granic%C4%99-wniosku" id="toc-projekt-wyznacza-granicę-wniosku">4. Projekt wyznacza granicę
+wniosku</a></li>
+<li><a href="#pomiar-samoocena-i-obserwacja" id="toc-pomiar-samoocena-i-obserwacja">5. Pomiar: samoocena i
+obserwacja</a></li>
+<li><a href="#wz%C3%B3r-jako-zdanie" id="toc-wzór-jako-zdanie">6. Wzór
+jako zdanie</a></li>
+<li><a href="#tok-analizy" id="toc-tok-analizy">7. Tok analizy</a></li>
+<li><a href="#przyk%C5%82ad-prowadzony" id="toc-przykład-prowadzony">8.
+Przykład prowadzony</a></li>
+<li><a href="#tor-klasyczny" id="toc-tor-klasyczny">9. Tor
+klasyczny</a></li>
+<li><a href="#tor-permutacyjny-i-resampling" id="toc-tor-permutacyjny-i-resampling">10. Tor permutacyjny i
+resampling</a></li>
+<li><a href="#efekt-przedzia%C5%82-i-znaczenie" id="toc-efekt-przedział-i-znaczenie">11. Efekt, przedział i
+znaczenie</a></li>
+<li><a href="#jak-nie-pisa%C4%87-wyniku" id="toc-jak-nie-pisać-wyniku">12. Jak nie pisać wyniku</a></li>
+<li><a href="#aktywno%C5%9B%C4%87-podczas-wyk%C5%82adu" id="toc-aktywność-podczas-wykładu">13. Aktywność podczas
+wykładu</a></li>
+<li><a href="#most-do-%C4%87wicze%C5%84-i-projektu" id="toc-most-do-ćwiczeń-i-projektu">14. Most do ćwiczeń i projektu</a>
 <ul>
-<li><a href="#opis-a-wnioskowanie" id="toc-opis-a-wnioskowanie">Opis a
-wnioskowanie</a></li>
+<li><a href="#literatura-i-ramy" id="toc-literatura-i-ramy">Literatura i
+ramy</a></li>
 </ul></li>
-<li><a href="#podstawowe-poj%C4%99cia-i-aparat-poj%C4%99ciowy" id="toc-podstawowe-pojęcia-i-aparat-pojęciowy">Podstawowe pojęcia i
-aparat pojęciowy</a>
-<ul>
-<li><a href="#schemat-badania-statystycznego" id="toc-schemat-badania-statystycznego">Schemat badania
-statystycznego</a></li>
-<li><a href="#losowanie-i-rekrutacja" id="toc-losowanie-i-rekrutacja">Losowanie i rekrutacja</a></li>
-</ul></li>
-<li><a href="#co-mo%C5%BCe-stanowi%C4%87-dow%C3%B3d-skuteczno%C5%9Bci-zmiany" id="toc-co-może-stanowić-dowód-skuteczności-zmiany">Co może stanowić
-dowód skuteczności zmiany</a></li>
-<li><a href="#pytanie-badawcze-i-hipoteza" id="toc-pytanie-badawcze-i-hipoteza">Pytanie badawcze i
-hipoteza</a></li>
-<li><a href="#klasyfikacja-zmiennych-i-skale-pomiarowe" id="toc-klasyfikacja-zmiennych-i-skale-pomiarowe">Klasyfikacja zmiennych
-i skale pomiarowe</a>
-<ul>
-<li><a href="#cztery-skale-pomiarowe" id="toc-cztery-skale-pomiarowe">Cztery skale pomiarowe</a></li>
-<li><a href="#klasyfikacja-zmiennych-jako%C5%9Bciowe-vs.-ilo%C5%9Bciowe" id="toc-klasyfikacja-zmiennych-jakościowe-vs.-ilościowe">Klasyfikacja
-zmiennych: jakościowe vs. ilościowe</a></li>
-</ul></li>
-<li><a href="#ma%C5%82y-przyk%C5%82ad-co-dok%C5%82adnie-policzono" id="toc-mały-przykład-co-dokładnie-policzono">Mały przykład: co
-dokładnie policzono</a></li>
-<li><a href="#narz%C4%99dzia-i-zapis-dowodu" id="toc-narzędzia-i-zapis-dowodu">Narzędzia i zapis dowodu</a></li>
-<li><a href="#pytania-do-dyskusji" id="toc-pytania-do-dyskusji">Pytania
-do dyskusji</a></li>
 </ul>
 </div>
 
-<div id="pytanie-dowód-i-decyzja-w-zarządzaniu-informacją" class="section level1">
-<h1>Pytanie, dowód i decyzja w zarządzaniu informacją</h1>
-<p>Biblioteka rozważa zmianę katalogu, urząd porządkuje portal
-informacji publicznej, a zespół repozytorium chce ułatwić dostęp do
-publikacji. Każda instytucja potrzebuje pytania, na które dane mogą
-odpowiedzieć: co użytkownicy znajdują, czego nie znajdują i jak różnią
-się ich doświadczenia? Statystyka pomaga gromadzić, analizować,
-interpretować i prezentować dane. Jakość odpowiedzi zależy jednak także
-od projektu badania, doboru osób i sposobu pomiaru.</p>
-<p>Ten wykład obejmuje część ilościową: pytania, hipotezy, schematy
-badań, jednostki, zmienne i skale. Układ 90 minut: 10 minut problemu i
-języka dowodu, 20 minut projektu i próby, 20 minut pytań oraz hipotez,
-20 minut pomiaru, 15 minut zastosowania do katalogu, 5 minut pytań.
-Składnię R przećwiczysz na C01; dziś kod służy tylko odczytaniu małego
-przykładu.</p>
-<div id="opis-a-wnioskowanie" class="section level2">
-<h2>Opis a wnioskowanie</h2>
-<p>Statystyka opisowa podsumowuje to, co zaobserwowano w zbadanej
-grupie: liczebności, średnie i wykresy. Wnioskowanie szacuje nieznane
-parametry lub sprawdza hipotezy przy określonym modelu i projekcie
-doboru. Średnia 8 minut w ankiecie jest opisem odpowiedzi; twierdzenie,
-że wszyscy użytkownicy potrzebują przeciętnie 8 minut, wymaga
-dodatkowego uzasadnienia.</p>
-<p>Można precyzyjnie obliczyć błędnie zdefiniowany wskaźnik albo bardzo
-wąski przedział z próby ochotniczej. Wynik liczbowy nie naprawia
-selekcji, błędnego pytania lub niejednoznacznej definicji czasu.
-Rozdzielaj niepewność losową od błędów systematycznych. Oba rodzaje
-ograniczeń wpływają na decyzję instytucji.</p>
-</div>
-</div>
-<div id="podstawowe-pojęcia-i-aparat-pojęciowy" class="section level1">
-<h1>Podstawowe pojęcia i aparat pojęciowy</h1>
-<p>Aby mówić o statystyce, musimy zdefiniować jej podstawowe elementy
-konstrukcyjne.</p>
-<ul>
-<li><strong>Populacja generalna</strong> — pełny zbiór wszystkich
-obiektów (użytkowników, dokumentów, zapytań informacyjnych), o których
-chcemy wnioskować.</li>
-<li><strong>Próba</strong> — podzbiór populacji generalnej, który został
-bezpośrednio zbadany. Sposób doboru i brak odpowiedzi wpływają na zakres
-wnioskowania.</li>
-<li><strong>Jednostka badania</strong> (statystyczna) — pojedynczy
-element populacji (np. jeden użytkownik, jeden dokument, jedno zadanie
-wyszukiwania).</li>
-<li><strong>Cecha (zmienna)</strong> — właściwość jednostki badania
-podlegająca pomiarowi (np. grupa użytkownika, ocena usługi, liczba
-zapytań, czas wyszukiwania).</li>
-</ul>
-<div id="schemat-badania-statystycznego" class="section level2">
-<h2>Schemat badania statystycznego</h2>
-<p>Typowe badanie statystyczne przebiega według następującego
-schematu:</p>
-<pre><code>[Populacja generalna] --(Losowanie)--&gt; [Próba] --(Pomiar cech)--&gt; [Dane] --(Analiza)--&gt; [Wnioski o populacji]</code></pre>
-</div>
-<div id="losowanie-i-rekrutacja" class="section level2">
-<h2>Losowanie i rekrutacja</h2>
-<p>Losowanie proste daje każdej jednostce znane, równe
-prawdopodobieństwo włączenia z określonej ramy doboru. Wylosowana próba
-nadal może różnić się od populacji przez przypadek. Niepełna rama,
-odmowy i brak odpowiedzi mogą systematycznie zniekształcić wyniki.
-Losowość nie jest więc synonimem gotowej reprezentatywności wszystkich
-cech.</p>
-<p>Przykładowa populacja to osoby korzystające z katalogu biblioteki w
-semestrze zimowym. Rama mogłaby obejmować uprawnionych aktywnych
-użytkowników, jeśli jest prawnie i organizacyjnie dostępna. Ankieta
-rozesłana tylko w jednym kole naukowym jest próbą dogodną; ankieta na
-stronie przyciąga ochotników. Liczba odpowiedzi 1000 nie usuwa selekcji,
-jeśli częściej odpowiadają osoby o wyjątkowo dobrych lub złych
-doświadczeniach.</p>
-<p>W badaniu obserwacyjnym można stosować wnioskowanie oparte na modelu
-i jawnych założeniach, lecz nie należy przedstawiać go jako losowego
-doboru. W raporcie opisz rekrutację i zakres uogólnienia. Nie określaj
-generatora jako „reprezentatywnej ankiety studentów”: tworzy sztuczne
-odpowiedzi, bez rzeczywistej populacji i kontaktu z respondentami.</p>
-</div>
-</div>
-<div id="co-może-stanowić-dowód-skuteczności-zmiany" class="section level1">
-<h1>Co może stanowić dowód skuteczności zmiany</h1>
-<p>Piramida dowodu porządkuje siłę uzasadnienia dla określonego pytania,
-zwłaszcza przyczynowego. Na dole mogą znaleźć się pojedyncze opinie i
-obserwacje bez porównania, wyżej systematyczne badania obserwacyjne oraz
-eksperymenty, a następnie syntezy odpowiednich badań. Nie jest to
-uniwersalny ranking jakości: zły eksperyment może dać słabszą odpowiedź
-niż dobre badanie obserwacyjne, a synteza dziedziczy ograniczenia badań
-źródłowych. Pytanie o częstość potrzeb może wymagać przede wszystkim
-dobrego pomiaru i doboru próby.</p>
+<div id="odcinek-wspólnej-opowieści" class="section level1">
+<h1>1. Odcinek wspólnej opowieści</h1>
+<p>Punktem wyjścia nie jest test statystyczny, lecz sytuacja osoby,
+która potrzebuje informacji i działa w określonym środowisku. Projekt
+badania ma połączyć problem instytucji z obserwowalnym zachowaniem,
+samoopisem i decyzją, której wynik ma służyć.</p>
+<p><strong>Pytanie wykładu:</strong> Czy użytkownicy nowi i doświadczeni
+różnią się samooceną oraz powodzeniem krótkiego zadania w katalogu?
+Jakiego projektu potrzeba, aby opisać różnicę, a jakiego, aby mówić o
+skutku instrukcji?</p>
 <table>
-<colgroup>
-<col width="25%" />
-<col width="25%" />
-<col width="25%" />
-<col width="25%" />
-</colgroup>
 <thead>
 <tr class="header">
-<th>Projekt</th>
-<th>Przykład informacyjny</th>
-<th>Co pomaga ustalić</th>
-<th>Główne ograniczenie</th>
+<th align="right">Minuty</th>
+<th>Część</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Obserwacyjny przekrojowy</td>
-<td>Ankieta dwóch grup użytkowników katalogu</td>
-<td>Rozkład i związek cech w danym okresie</td>
-<td>Selekcja, brak porządku czasowego</td>
+<td align="right">0–15</td>
+<td>problem i ramy LIS</td>
 </tr>
 <tr class="even">
-<td>Obserwacyjny podłużny</td>
-<td>Te same osoby badane w kolejnych tygodniach</td>
-<td>Zmianę w czasie i kolejność zdarzeń</td>
-<td>Odpływ osób, zmiany otoczenia</td>
+<td align="right">15–35</td>
+<td>projekt, pomiar i symbole</td>
 </tr>
 <tr class="odd">
-<td>Interwencja bez kontroli</td>
-<td>Pomiar czasu przed zmianą i po zmianie instrukcji</td>
-<td>Czy wynik zmienił się po działaniu</td>
-<td>Zmiana mogła mieć inną przyczynę</td>
+<td align="right">35–55</td>
+<td>metoda oraz przykład</td>
 </tr>
 <tr class="even">
-<td>Eksperyment z randomizacją</td>
-<td>Losowy przydział osób do starej/nowej instrukcji</td>
-<td>Efekt przydzielenia interwencji</td>
-<td>Realizacja, brak odpowiedzi, ograniczona populacja</td>
+<td align="right">55–70</td>
+<td>tor klasyczny i permutacyjny</td>
 </tr>
 <tr class="odd">
-<td>Projekt quasi-eksperymentalny</td>
-<td>Zmiana portalu w jednym oddziale i porównanie z podobnym</td>
-<td>Warunkowe uzasadnienie efektu</td>
-<td>Brak losowego przydziału i nieporównywalność grup</td>
+<td align="right">70–85</td>
+<td>interpretacja, błędy i dyskusja</td>
 </tr>
 <tr class="even">
-<td>Eksperyment naturalny</td>
-<td>Zewnętrzna zmiana dostępu obejmuje część użytkowników</td>
-<td>Efekt przy wiarygodnej zewnętrznej ekspozycji</td>
-<td>Założenie, że ekspozycja nie wiąże się z inną przyczyną</td>
-</tr>
-<tr class="odd">
-<td>Synteza badań</td>
-<td>Przegląd wyników wielu wdrożeń</td>
-<td>Spójność i zakres dowodu</td>
-<td>Jakość, porównywalność i selekcja publikacji</td>
+<td align="right">85–90</td>
+<td>most do ćwiczeń</td>
 </tr>
 </tbody>
 </table>
-<p>Randomizacja przydziela interwencję, a losowanie próby wybiera osoby
-z populacji. To różne operacje: można losowo przydzielić warian
-instrukcji ochotnikom bez losowej próby użytkowników. Dwie grupy z
-generatora nie stają się przez swoje istnienie grupami
-eksperymentalnymi. Test różnicy średnich sam nie dowodzi, że katalog
-spowodował zmianę.</p>
-<p>„Kwasi-naturalny” i „naturalny” projekt w praktyce wymagają
-precyzyjnego opisu sposobu powstania grup. Nie traktuj braku własnej
-interwencji jako automatycznego dowodu naturalnego eksperymentu. Trzeba
-wskazać zdarzenie zewnętrzne, porównanie i założenia wiążące je z
-wynikiem. W projekcie kursowym przygotowujesz plan takiego rozumowania,
-a nie dowód z realnego wdrożenia.</p>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="pytanie-badawcze-i-hipoteza" class="section level1">
-<h1>Pytanie badawcze i hipoteza</h1>
-<p>Pytanie wyznacza, jakich zmiennych i obserwacji potrzebujemy. „Czy
-katalog działa dobrze?” jest zbyt ogólne. „Jak rozkłada się deklarowany
-czas znalezienia dokumentu wśród aktywnych użytkowników katalogu w
-semestrze zimowym?” wskazuje zmienną, jednostkę, odbiorców i okres. „Czy
-średni indeks postrzeganej dostępności różni się między nowymi i
-doświadczonymi użytkownikami?” dodaje porównanie.</p>
-<p>Hipoteza badawcza jest sprawdzalnym twierdzeniem o spodziewanej
-relacji, opartym np. na teorii lub wcześniejszym badaniu. Hipoteza
-statystyczna opisuje parametr albo rozkład. Dla porównania dwóch
-średnich hipoteza zerowa może mieć postać
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_0:\mu_1-\mu_2=0</annotation></semantics></math>,
-a dwustronna alternatywa
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>1</mn></msub><mo>:</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_1:\mu_1-\mu_2\ne0</annotation></semantics></math>.
-Symbole
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\mu_1</annotation></semantics></math>
-i
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\mu_2</annotation></semantics></math>
-oznaczają średnie w określonych populacjach/modelach, nie dwie liczby
-wydrukowane z próby.</p>
-<p>Kierunkową alternatywę należy uzasadnić i wybrać przed oglądaniem
-wyniku. Nie zmieniaj testu na jednostronny dlatego, że dwustronne p
-wyszło zbyt duże. Opis rozkładu nie zawsze wymaga hipotezy zerowej:
-pytanie opisowe może prowadzić do estymacji i wykresu. Wartość p i
-przedział poznasz na W03; dzisiaj wystarczy rozróżnienie pytania,
-przewidywania i danych.</p>
+<div id="dlaczego-to-jest-pytanie-lis" class="section level1">
+<h1>2. Dlaczego to jest pytanie LIS</h1>
+<p>Wilson ujmuje zachowanie informacyjne jako szerszy układ potrzeb,
+barier, poszukiwania i użycia. Kuhlthau pokazuje proces, w którym
+działania i niepewność zmieniają się na kolejnych etapach wyszukiwania.
+Savolainen przypomina o codziennych praktykach i kontekście. Ramy
+pomagają nazwać pytania, lecz nie dostarczają automatycznie
+wskaźników.</p>
+<p>Library and information science bada relację osób, informacji,
+technologii i instytucji. W kursie nie tworzymy wyniku o konkretnej
+bibliotece. Używamy syntetycznego badania, aby ćwiczyć przejście od
+konstruktu do wskaźnika oraz od liczby do ostrożnego wniosku.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="pytanie-przed-metodą" class="section level1">
+<h1>3. Pytanie przed metodą</h1>
+<p>Czy użytkownicy nowi i doświadczeni różnią się samooceną oraz
+powodzeniem krótkiego zadania w katalogu? Jakiego projektu potrzeba, aby
+opisać różnicę, a jakiego, aby mówić o skutku instrukcji?</p>
+<p>Pytanie powinno wskazywać jednostkę, wynik, porównanie lub związek,
+populację i okres. Hipoteza dodaje przewidywany kierunek wtedy, gdy ma
+podstawę teoretyczną. Analiza eksploracyjna też jest dopuszczalna, lecz
+trzeba ją nazwać i nie przedstawiać późniejszego odkrycia jako
+wcześniejszej prognozy.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="projekt-wyznacza-granicę-wniosku" class="section level1">
+<h1>4. Projekt wyznacza granicę wniosku</h1>
+<p>W przekrojowym badaniu obserwacyjnym mierzymy istniejące grupy w
+jednym okresie. Eksperyment wymagałby przydziału warunku, porównywalnej
+procedury i kontroli zakłóceń. Badanie podłużne pozwala obserwować
+zmianę. Sam fakt istnienia dwóch kolumn nie określa projektu.</p>
+<p>Losowość doboru dotyczy uogólnienia na populację, a losowy przydział
+warunku wniosku przyczynowego. Dostępna próba nie staje się
+reprezentatywna przez duże N. Braki, odmowa udziału i samoselekcja mogą
+zmieniać obraz nawet przy poprawnie wykonanym teście.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="pomiar-samoocena-i-obserwacja" class="section level1">
+<h1>5. Pomiar: samoocena i obserwacja</h1>
+<p>Łączymy ankietę po zadaniu z logiem obserwacyjnym. Pozycje samooceny
+opisują przekonanie osoby, czas i powodzenie opisują wykonanie, a
+częstość korzystania pomaga zrozumieć doświadczenie. Jednostką jest
+osoba, a jedno zadanie nie reprezentuje całej kompetencji.</p>
+<p>Wspólny zbiór łączy sześć pozycji, częstość korzystania, kanały,
+grupę, obserwowany czas i powodzenie zadania. Pozycje są przykładem
+dydaktycznym. Nie przypisujemy im walidacji ani nie wnioskujemy o całej
+kompetencji na podstawie jednego zadania.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="wzór-jako-zdanie" class="section level1">
+<h1>6. Wzór jako zdanie</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>Y</mi><mo>∣</mo><mi>G</mi><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>Y</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mtext mathvariant="normal">oznacza związek, nie automatycznie przyczynę</mtext></mrow><annotation encoding="application/x-tex">P(Y\mid G) \neq P(Y) \quad \text{oznacza związek, nie automatycznie przyczynę}</annotation></semantics></math></p>
 <table>
-<colgroup>
-<col width="50%" />
-<col width="50%" />
-</colgroup>
 <thead>
 <tr class="header">
-<th>Ogólne twierdzenie</th>
-<th>Konkretna operacjonalizacja</th>
+<th>Symbol</th>
+<th>Nazwa</th>
+<th>Znaczenie</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Użytkownicy są zadowoleni</td>
-<td>Sześć stwierdzeń o dostępności z instrukcją odpowiedzi</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math></td>
+<td>wynik</td>
+<td>indeks, czas albo powodzenie</td>
 </tr>
 <tr class="even">
-<td>Doświadczenie pomaga</td>
-<td>Częstość korzystania 1–5 oraz uzasadniony indeks</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math></td>
+<td>grupa/warunek</td>
+<td>dwa poziomy porównania</td>
 </tr>
 <tr class="odd">
-<td>Instrukcja jest skuteczna</td>
-<td>Czas lub powodzenie zadania po określonym przydziale</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math></td>
+<td>zmienna towarzysząca</td>
+<td>np. częstość korzystania</td>
 </tr>
 <tr class="even">
-<td>Portal jest dostępny wszystkim</td>
-<td>Pomiar różnych grup, urządzeń i potrzeb; jedna ankieta nie
-wystarcza</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math></td>
+<td>próba</td>
+<td>liczba analizowanych osób</td>
 </tr>
 </tbody>
 </table>
+<p>Odczyt wzoru zaczyna się od nazwania wyniku, następnie składników,
+punktu odniesienia i jednostki. Student nie musi ręcznie odtwarzać
+algorytmu. Ma rozpoznać, co zwiększa statystykę, co oznacza znak i gdzie
+w gotowym wyniku znajduje N, efekt oraz niepewność.</p>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="klasyfikacja-zmiennych-i-skale-pomiarowe" class="section level1">
-<h1>Klasyfikacja zmiennych i skale pomiarowe</h1>
-<p>Zmienne statystyczne różnią się poziomem informacji, jaki niosą. Te
-różnice definiujemy poprzez <strong>skale pomiarowe
-Stevensa</strong>.</p>
-<div id="cztery-skale-pomiarowe" class="section level2">
-<h2>Cztery skale pomiarowe</h2>
+<div id="tok-analizy" class="section level1">
+<h1>7. Tok analizy</h1>
+<p>Najpierw definiujemy populację, ramę doboru, jednostkę, okres
+odniesienia i kryteria włączenia. Potem zapisujemy pytanie w języku
+zmiennych oraz przewidujemy, jaka estymata odpowie na nie bez
+nadmiarowych procedur.</p>
+<p>Kolejność jest stała: pytanie → projekt → pomiar → dane i braki →
+opis → estymata → niepewność → wniosek → ograniczenie. Przestawienie tej
+kolejności sprzyja dobieraniu pytania do wyniku i raportowaniu
+przypadkowej liczby bez znaczenia badawczego.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="przykład-prowadzony" class="section level1">
+<h1>8. Przykład prowadzony</h1>
+<p>Biblioteka rozważa krótką instrukcję filtrowania. Pytanie opisowe
+dotyczy aktualnego czasu nowych użytkowników. Pytanie porównawcze
+dotyczy dwóch istniejących grup. Pytanie przyczynowe wymaga przydziału
+instrukcji i wspólnego zadania. Te trzy pytania mogą używać podobnej
+tabeli, ale prowadzą do innego wniosku.</p>
+<p>Przykład czytamy w trzech warstwach. Warstwa liczbowa nazywa estymatę
+i jednostkę. Warstwa badawcza odpowiada na pytanie o zachowanie lub
+usługę. Warstwa krytyczna wskazuje ograniczenie projektu, pomiaru i
+syntetyczności. Każda z nich jest potrzebna do pełnego wyniku.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="tor-klasyczny" class="section level1">
+<h1>9. Tor klasyczny</h1>
+<p>Najpierw definiujemy populację, ramę doboru, jednostkę, okres
+odniesienia i kryteria włączenia. Potem zapisujemy pytanie w języku
+zmiennych oraz przewidujemy, jaka estymata odpowie na nie bez
+nadmiarowych procedur.</p>
+<p>Klasyczny wynik może zawierać statystykę t, chi-kwadrat, r, F lub
+współczynnik regresji. Stopnie swobody mówią, z jakiego rozkładu
+odniesienia korzysta procedura. Wartość p opisujemy warunkowo przy H0;
+nie mierzy ona wielkości efektu, jakości pomiaru ani prawdopodobieństwa
+powtórzenia wyniku.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="tor-permutacyjny-i-resampling" class="section level1">
+<h1>10. Tor permutacyjny i resampling</h1>
+<p>Dwa tory analizy pojawią się później. Już teraz trzeba rozumieć
+hipotezę zerową jako model braku określonego związku. Permutacja będzie
+zmieniała tylko ten element danych, który reprezentuje związek
+podlegający testowi.</p>
+<p>Bootstrap odtwarza próbki empiryczne, aby ocenić niepewność estymaty.
+Permutacja narzuca model zerowy przez zmianę znaków, etykiet, par lub
+tabel. Oba korzystają z losowania komputerowego, ale odpowiadają na inne
+pytania. Zakres kursu kończy się na zestawieniu tych dwóch torów.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="efekt-przedział-i-znaczenie" class="section level1">
+<h1>11. Efekt, przedział i znaczenie</h1>
+<p>Przed zebraniem danych warto nazwać różnicę praktycznie ważną: ile
+minut, punktów indeksu lub punktów procentowych mogłoby zmienić decyzję
+o usłudze. Dzięki temu p nie stanie się jedynym kryterium wniosku.</p>
+<p>Efekt prowadzimy przed p. Najpierw pytamy o kierunek i wielkość w
+naturalnej jednostce, potem o standaryzację, a następnie o przedział.
+Znaczenie praktyczne ustala kontekst instytucji, nie uniwersalna
+etykieta. Szeroki przedział wymaga języka dopuszczającego różne
+wielkości.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="jak-nie-pisać-wyniku" class="section level1">
+<h1>12. Jak nie pisać wyniku</h1>
+<p>Najczęstsze błędy to rozpoczynanie od nazwy testu, utożsamienie
+dostępnej próby z populacją, zmiana pytania po zobaczeniu p, nazywanie
+samooceny kompetencją oraz język wpływu w badaniu obserwacyjnym.</p>
+<p>Unikamy zdań: „H0 jest prawdziwa”, „95% wyników leży w CI”, „grupy są
+takie same”, „korelacja pokazuje wpływ” i „V oznacza procent”.
+Poprawione zdanie zawiera N, estymatę, jednostkę, CI, statystykę, p,
+efekt i granicę wniosku w zakresie potrzebnym danej metodzie.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="aktywność-podczas-wykładu" class="section level1">
+<h1>13. Aktywność podczas wykładu</h1>
+<p>W zespołach przekształć ogólne zdanie „katalog jest trudny” w pytanie
+opisowe, porównawcze i przyczynowe. Dla każdego wskaż jednostkę,
+zmienne, źródło danych, jedną estymatę i ograniczenie.</p>
+<p>Odpowiedź przedstawiamy bez uruchamiania nowego testu. Zadaniem jest
+dobór języka oraz argumentacja. Każda grupa wskazuje także jeden
+element, którego nie da się rozstrzygnąć z przedstawionych danych i
+jedną dodatkową informację, która rzeczywiście wzmocniłaby projekt.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="most-do-ćwiczeń-i-projektu" class="section level1">
+<h1>14. Most do ćwiczeń i projektu</h1>
+<p>C01 pokaże pojedynczy rekord i przepływ pracy, a C02 odtworzy
+przejście od surowego eksportu do danych analitycznych. W01 dostarcza
+pytania, do których te techniczne czynności mają prowadzić.</p>
+<p>W projekcie każda liczba ma odpowiadać pytaniu, a każdy wniosek ma
+odsyłać do zapisanego pliku wyniku. Gotowy kod wyrównuje obciążenie
+techniczne; samodzielne pozostają wybór dozwolonego parametru, odczyt
+statystyki, interpretacja i krytyczna ocena.</p>
+<div id="literatura-i-ramy" class="section level2">
+<h2>Literatura i ramy</h2>
 <ul>
-<li><strong>Skala nominalna</strong> — pozwala jedynie na klasyfikację
-obiektów do rozłącznych kategorii. Brak relacji porządku ani działań
-matematycznych. Przykłady: typ zasobu (katalog, repozytorium), grupa
-użytkowników, powodzenie wyszukiwania (tak/nie).</li>
-<li><strong>Skala porządkowa</strong> — oprócz klasyfikacji pozwala na
-uszeregowanie obiektów w określonym porządku (relacje:
-większy/mniejszy). Równych odległości między kategoriami nie można
-założyć na podstawie samych kodów. Przykłady: satysfakcja użytkownika
-(skala Likerta 1–5: bardzo niezadowolony -&gt; bardzo zadowolony),
-wykształcenie.</li>
-<li><strong>Skala przedziałowa (interwałowa)</strong> — pozwala na
-mierzenie odległości między obiektami (jednakowa jednostka miary). Brak
-naturalnego punktu zero (zero jest umowne). Możliwe jest dodawanie i
-odejmowanie. Przykład: temperatura w stopniach Celsjusza, rok
-kalendarzowy.</li>
-<li><strong>Skala ilorazowa (stosunkowa)</strong> — posiada naturalny,
-bezwzględny punkt zero (oznaczający brak danej cechy). Możliwe są
-wszystkie działania matematyczne, w tym mnożenie i dzielenie (można
-powiedzieć, że coś jest “2 razy większe”). Przykłady: czas znalezienia
-dokumentu (min), liczba pobrań, koszt usługi (PLN).</li>
+<li><a href="https://www.informationr.net/tdw/publ/papers/1999JDoc.html">Wilson,
+T.D. (1999). Models in information behaviour research</a>.</li>
+<li><a href="https://doi.org/10.1002/(SICI)1097-4571(199106)42:5%3C361::AID-ASI6%3E3.0.CO;2-%23">Kuhlthau,
+C.C. (1991). Inside the search process</a>.</li>
+<li><a href="https://doi.org/10.1016/0740-8188(95)90048-9">Savolainen,
+R. (1995). Everyday life information seeking</a>.</li>
 </ul>
+<p>Źródła wyznaczają język pojęć. Pozycje, dane i wyniki kursowe są
+syntetyczne; nie przedstawiamy ich jako rezultatów cytowanych badań.</p>
 </div>
-<div id="klasyfikacja-zmiennych-jakościowe-vs.-ilościowe" class="section level2">
-<h2>Klasyfikacja zmiennych: jakościowe vs. ilościowe</h2>
-<p>W praktyce badawczej upraszczamy ten podział na dwa główne typy
-zmiennych:</p>
-<ul>
-<li><strong>Zmienne jakościowe (kategoryczne)</strong> — mierzone na
-skali nominalnej lub porządkowej. Ich liczbowy kod nie nadaje równych
-odległości (typ zasobu, grupa, zadowolenie). Opisujemy je głównie za
-pomocą częstości i procentów.</li>
-<li><strong>Zmienne ilościowe (numeryczne)</strong> — mierzone na skali
-przedziałowej lub ilorazowej. Przyjmują wartości liczbowe o
-jednoznacznym sensie matematycznym (liczba zapytań, koszty, czas).
-Dzielą się na:
-<ul>
-<li><em>dyskretne</em> (przyjmujące skończoną lub przeliczalną liczbę
-wartości, np. liczba pobrań albo zapytań w tygodniu),</li>
-<li><em>ciągłe</em> (przyjmujące dowolne wartości z przedziału
-liczbowego, np. dokładny czas wyszukiwania).</li>
-</ul></li>
-</ul>
-<p>Skala w statystyce i klasa R to różne informacje. Kod kategorii 1/2
-nadal jest nominalny. Liczba zapytań jest dyskretna, a czas można
-traktować jako ciągły, mimo że zapisano go z ograniczoną dokładnością.
-Średni indeks sześciu pozycji jest wynikiem złożonym z jawnym założeniem
-kodowania; nie jest pojedynczą pozycją Likerta. Przegląd skal postaw i
-ich ograniczeń rozwija W02, a obliczenia C04.</p>
-</div>
-</div>
-<div id="mały-przykład-co-dokładnie-policzono" class="section level1">
-<h1>Mały przykład: co dokładnie policzono</h1>
-<p>Pięć osób podało czas znalezienia informacji w minutach. Obliczamy
-średnią i medianę, żeby zobaczyć różne odpowiedzi na pytanie o typowy
-poziom. Odczytaj oba wyniki i zauważ, że opis pięciu liczb nie wymaga
-jeszcze testu różnicy grup.</p>
-<pre class="r"><code>czasy &lt;- c(6, 9, 4, 12, 8)
-c(N = length(czasy), srednia_min = mean(czasy), mediana_min = median(czasy))</code></pre>
-<pre><code>##           N srednia_min mediana_min
-##         5.0         7.8         8.0</code></pre>
-<p>W tym przykładzie średnia wynosi 7,8 minuty, a mediana 8 minut. Nie
-wiemy, jak wybrano osoby, czy mierzyły ten sam rodzaj zadania i czy czas
-był rejestrowany czy deklarowany. Zanim wynik posłuży do porównania
-serwisów, potrzebne są jednakowe definicje i warunki pomiaru. Ta
-niepewność dotyczy projektu i pomiaru, nie samej poprawności
-arytmetyki.</p>
-</div>
-<div id="narzędzia-i-zapis-dowodu" class="section level1">
-<h1>Narzędzia i zapis dowodu</h1>
-<p>R jest otwartym językiem obliczeń statystycznych. RStudio pomaga
-edytować skrypt, uruchamiać polecenia i przeglądać wykresy; Positron
-jest alternatywnym IDE. Skrypt <code>.R</code> zachowuje kolejność
-analizy, <code>.md</code> własne wyjaśnienie, a <code>.Rmd</code> łączy
-tekst z wykonywanym kodem i tworzy HTML/PDF. Gotowe materiały są w
-pakiecie i Pages; student nie potrzebuje LaTeX do wykonania zadań.</p>
-<p>GitHub przechowuje prywatną pracę indywidualną i pokwitowanie
-zdalnego SHA. W sali pakiet jest zainstalowany, lecz stan pracy i Gita
-jest czyszczony między spotkaniami. Na początku logujesz się funkcją R i
-pobierasz własny projekt, na końcu kontrolujesz i wysyłasz zapisane
-pliki. Hasło i drugi składnik podajesz tylko na stronie GitHub.
-Potwierdzenie odbioru, wynik kontroli i ocena są osobnymi
-informacjami.</p>
-<p>Zaliczenie tej realizacji obejmuje dziesięć jednakowo ważonych zadań
-— łącznie 50% — oraz indywidualny projekt ilościowy — 50%. Projekt łączy
-plan badania z analizą własnych danych syntetycznych. Nie ma egzaminu.
-Daty i pełne zasady rocznika odczytaj w konfiguracji kursu i ogłoszeniu
-na platformie UJ, aby korzystać z tej samej wersji w całym
-semestrze.</p>
-</div>
-<div id="pytania-do-dyskusji" class="section level1">
-<h1>Pytania do dyskusji</h1>
-<p>Dlaczego losowy przydział instrukcji nie gwarantuje losowej próby?
-Jak zmienisz pytanie „czy portal jest dobry”, aby dało się wskazać
-zmienne i populację? Czy kod 4 w skali postaw jest dwa razy większy niż
-2? Jaki wynik mógłby podważyć Twoją hipotezę? Jakie ograniczenie
-należałoby dopisać do opisu pięciu czasów?</p>
-<p>Do przygotowania projektu przydadzą się rozdziały metodologiczne
-wskazane w sylabusie: Cisek (2025), Francuz i Mackiewicz (2007) oraz
-Stefaniak, Skalska-Zlat i Cisek (2016). Pomoc funkcji i instrukcje R są
-dostępne lokalnie przez <code>?mean</code> i dokumentację pakietu.</p>
 </div>
 
 

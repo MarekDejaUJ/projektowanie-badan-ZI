@@ -12,7 +12,7 @@
 <meta name="author" content="Marek Deja" />
 
 
-<title>C04 — Pozycje ankiety, indeks i odpowiedzi wielokrotne</title>
+<title>C04 — Od pozycji do konstruktu: samoocena i wykonanie zadania</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -155,7 +155,7 @@ window.buildTabsets = function(tocID) {
     var tabContent = $('<div class="tab-content"></div>');
     $(tabs[0]).before(tabContent);
 
-    // build the tabse
+    // build the tabset
     var activeTab = 0;
     tabs.each(function(i) {
 
@@ -177,7 +177,7 @@ window.buildTabsets = function(tocID) {
       id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
       tab.attr('id', id);
 
-      // get the heading element within it, grab it's text, then remove i
+      // get the heading element within it, grab it's text, then remove it
       var heading = tab.find('h' + tabLevel + ':first');
       var headingText = heading.html();
       heading.remove();
@@ -375,8 +375,8 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">C04 — Pozycje ankiety, indeks i odpowiedzi
-wielokrotne</h1>
+<h1 class="title toc-ignore">C04 — Od pozycji do konstruktu: samoocena i
+wykonanie zadania</h1>
 <h3 class="subtitle">Zarządzanie informacją — część ilościowa —
 2026/27</h3>
 <h4 class="author">Marek Deja</h4>
@@ -386,313 +386,588 @@ wielokrotne</h1>
 
 <div id="TOC">
 <ul>
-<li><a href="#cel-od-pytania-do-wska%C5%BAnika" id="toc-cel-od-pytania-do-wskaźnika">Cel: od pytania do
-wskaźnika</a></li>
-<li><a href="#przygotowanie" id="toc-przygotowanie">Przygotowanie</a></li>
-<li><a href="#operacjonalizacja" id="toc-operacjonalizacja">Operacjonalizacja</a></li>
-<li><a href="#pojedyncza-pozycja-typu-likerta" id="toc-pojedyncza-pozycja-typu-likerta">Pojedyncza pozycja typu
-Likerta</a></li>
-<li><a href="#pozycja-odwr%C3%B3cona" id="toc-pozycja-odwrócona">Pozycja
-odwrócona</a></li>
-<li><a href="#indeks-i-regu%C5%82a-minimum-pi%C4%99ciu-odpowiedzi" id="toc-indeks-i-reguła-minimum-pięciu-odpowiedzi">Indeks i reguła
-minimum pięciu odpowiedzi</a></li>
-<li><a href="#wielokrotny-wyb%C3%B3r-mianownik-respondent%C3%B3w" id="toc-wielokrotny-wybór-mianownik-respondentów">Wielokrotny wybór:
-mianownik respondentów</a></li>
-<li><a href="#z04-w%C5%82asna-operacjonalizacja-i-wyniki" id="toc-z04-własna-operacjonalizacja-i-wyniki">Z04 — własna
-operacjonalizacja i wyniki</a></li>
-<li><a href="#pytania-do-w%C5%82asnych-notatek" id="toc-pytania-do-własnych-notatek">Pytania do własnych
-notatek</a></li>
+<li><a href="#miejsce-w-opowie%C5%9Bci" id="toc-miejsce-w-opowieści">1.
+Miejsce w opowieści</a></li>
+<li><a href="#scena-badawcza" id="toc-scena-badawcza">2. Scena
+badawcza</a></li>
+<li><a href="#pytanie-jednostka-i-zmienne" id="toc-pytanie-jednostka-i-zmienne">3. Pytanie, jednostka i
+zmienne</a></li>
+<li><a href="#s%C5%82ownik-statystyczny" id="toc-słownik-statystyczny">4. Słownik statystyczny</a></li>
+<li><a href="#wz%C3%B3r-czytany-jak-zdanie" id="toc-wzór-czytany-jak-zdanie">5. Wzór czytany jak zdanie</a></li>
+<li><a href="#gotowy-skrypt-pomocniczy" id="toc-gotowy-skrypt-pomocniczy">6. Gotowy skrypt pomocniczy</a></li>
+<li><a href="#dane-braki-i-mianownik" id="toc-dane-braki-i-mianownik">7.
+Dane, braki i mianownik</a></li>
+<li><a href="#tor-klasyczny" id="toc-tor-klasyczny">8. Tor
+klasyczny</a></li>
+<li><a href="#tor-permutacyjny-lub-decyzja-o-jego-braku" id="toc-tor-permutacyjny-lub-decyzja-o-jego-braku">9. Tor permutacyjny
+lub decyzja o jego braku</a></li>
+<li><a href="#efekt-i-przedzia%C5%82" id="toc-efekt-i-przedział">10.
+Efekt i przedział</a></li>
+<li><a href="#wykres-jako-cz%C4%99%C5%9B%C4%87-argumentu" id="toc-wykres-jako-część-argumentu">11. Wykres jako część
+argumentu</a></li>
+<li><a href="#wynik-czytany-linia-po-linii" id="toc-wynik-czytany-linia-po-linii">12. Wynik czytany linia po
+linii</a></li>
+<li><a href="#b%C5%82%C4%99dy-interpretacji" id="toc-błędy-interpretacji">13. Błędy interpretacji</a></li>
+<li><a href="#pr%C3%B3ba-prowadzona" id="toc-próba-prowadzona">14. Próba
+prowadzona</a></li>
+<li><a href="#zadanie-z04" id="toc-zadanie-z04">15. Zadanie Z04</a></li>
+<li><a href="#rubryka-kontrola-i-dalszy-krok" id="toc-rubryka-kontrola-i-dalszy-krok">16. Rubryka, kontrola i dalszy
+krok</a>
+<ul>
+<li><a href="#%C5%BAr%C3%B3d%C5%82o-kontekstu" id="toc-źródło-kontekstu">Źródło kontekstu</a></li>
+</ul></li>
 </ul>
 </div>
 
-<div id="cel-od-pytania-do-wskaźnika" class="section level1">
-<h1>Cel: od pytania do wskaźnika</h1>
-<p>„Dostępność informacji” jest pojęciem, które trzeba przełożyć na
-obserwowalne odpowiedzi. Ankieta nie mierzy go przez samą nazwę kolumny.
-Na tych zajęciach opiszesz pozycje, ich kierunek i kody, przygotujesz
-średni indeks oraz odsetki wskazanych kanałów. Te same reguły wrócą w
-indywidualnym projekcie.</p>
+<div id="miejsce-w-opowieści" class="section level1">
+<h1>1. Miejsce w opowieści</h1>
+<p>Sześć pozycji ankiety opisuje samoocenę kompetencji. Jedna jest
+sformułowana przeciwnie, a indeks powstaje dopiero po rekodacji i
+zastosowaniu jawnej reguły minimum pięciu odpowiedzi.</p>
+<p><strong>Pytanie przewodnie:</strong> Co mierzy indeks samooceny i
+dlaczego nie jest tym samym co obserwowany wynik zadania?</p>
+<p>Rdzeń zajęć trwa 90 minut. Strony oznaczone jako „po zajęciach” służą
+utrwaleniu; podczas spotkania uruchamiamy gotowy kod, czytamy liczby i
+zapisujemy własne wyjaśnienie.</p>
 <table>
 <thead>
 <tr class="header">
-<th>Minuty</th>
+<th align="right">Minuty</th>
 <th>Praca</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>0–10</td>
-<td>Logowanie, odtworzenie projektu i Z04</td>
+<td align="right">0–10</td>
+<td>Powrót do poprzedniego odcinka i pytanie</td>
 </tr>
 <tr class="even">
-<td>10–30</td>
-<td>Konstrukt, pozycje i skale</td>
+<td align="right">10–30</td>
+<td>Zmienne, wzór i symbole</td>
 </tr>
 <tr class="odd">
-<td>30–55</td>
-<td>Wspólna rekodacja, indeks i kanały</td>
+<td align="right">30–55</td>
+<td>Gotowe wyniki i dwa tory, jeśli dotyczą</td>
 </tr>
 <tr class="even">
-<td>55–80</td>
-<td>Z04 na własnym wariancie</td>
+<td align="right">55–80</td>
+<td>Zadanie na indywidualnych danych</td>
 </tr>
 <tr class="odd">
-<td>80–90</td>
-<td>Kontrola i oddanie</td>
+<td align="right">80–90</td>
+<td>Kontrola, oddanie i zapowiedź kolejnego kroku</td>
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="przygotowanie" class="section level1">
-<h1>Przygotowanie</h1>
-<p>Odtwórz swój projekt przez logowanie i
-<code>rozpocznij_zajecia(&quot;C04&quot;, ...)</code>. W demonstracji używamy S02,
-czyli oceny katalogu bibliotecznego; inne scenariusze zmieniają
-sformułowanie i grupy, a nie reguły obliczania. Wywołaj
-<code>scenariusz()</code> dla swojego S01–S20 i przeczytaj właściwe
-pytania przed interpretacją. Wszystkie dane są syntetyczne, a skala jes
-przykładem dydaktycznym, bez deklaracji walidacji.</p>
-<p>Odczytujemy dane i stosujemy jawne reguły C02. Pozycje mają teraz
-wyłącznie odpowiedzi 1–5 i <code>NA</code>, więc kod 99 nie zawyży
-indeksu. Obejrzyj sześć kolumn i liczbę braków w każdej.</p>
-<pre class="r"><code>dane &lt;- badaniaZI::przygotuj_ankiete(badaniaZI::dane_przykladowe())$dane
-nazwy_pozycji &lt;- paste0(&quot;pozycja_&quot;, 1:6)
-pozycje &lt;- dane[, nazwy_pozycji]
-head(pozycje)</code></pre>
-<pre><code>##   pozycja_1 pozycja_2 pozycja_3 pozycja_4 pozycja_5 pozycja_6
-## 1         3         3         4         2         3         2
-## 2         3         3         3         3         3         3
-## 3         4         4         3         5         4         4
-## 4         4         4         2         4         4         5
-## 5         4         2         4         1         3         1
-## 6         5         4         1         5         5         4</code></pre>
-<pre class="r"><code>colSums(is.na(pozycje))</code></pre>
-<pre><code>## pozycja_1 pozycja_2 pozycja_3 pozycja_4 pozycja_5 pozycja_6
-##         4         4         4         4         4         4</code></pre>
+<div id="scena-badawcza" class="section level1">
+<h1>2. Scena badawcza</h1>
+<p>Sześć pozycji ankiety opisuje samoocenę kompetencji. Jedna jest
+sformułowana przeciwnie, a indeks powstaje dopiero po rekodacji i
+zastosowaniu jawnej reguły minimum pięciu odpowiedzi.</p>
+<p>Badana osoba wykonuje krótkie zadanie wyszukiwawcze w cyfrowej
+usłudze informacyjnej, a potem odpowiada na sześć pozycji samooceny.
+Rejestrujemy czas i powodzenie jako pomiar obserwacyjny. Częstość
+korzystania, samoocena oraz wybrane kanały są deklaracjami. Rozdzielenie
+tych źródeł jest częścią interpretacji, ponieważ wysoka pewność nie musi
+oznaczać sprawnego wykonania.</p>
+<p>Dane demonstracyjne dotyczą scenariusza S02 i są syntetyczne. Ich
+rozkłady przygotowano do nauki, dlatego nie wolno opisywać nimi realnej
+biblioteki ani użytkowników UJ. Jednostką analizy jest osoba po
+usunięciu identycznych duplikatów. Każdy brak pozostaje brakiem, dopóki
+słownik nie podaje jawnej reguły.</p>
+<div style="page-break-after: always;"></div>
 </div>
-<div id="operacjonalizacja" class="section level1">
-<h1>Operacjonalizacja</h1>
-<p>Konstrukt to pojęcie, np. postrzegana dostępność katalogu. Wskaźnik
-to uzgodniony sposób jego pomiaru, np. odpowiedź na stwierdzenie
-„Rozumiem opisy wyników wyszukiwania”. Pozycja kwestionariusza jes
-konkretnym pytaniem lub stwierdzeniem z instrukcją odpowiedzi. Zmienna
-to zapis odpowiedzi w tabeli, a indeks łączy kilka odpowiednio
-ukierunkowanych zmiennych.</p>
-<p>Cel badania może dotyczyć tego, czy dwie grupy różnią się w
-postrzeganej dostępności, ale sam kwestionariusz nie powinien podsuwać
-wyniku. „Czy zgadzasz się, że nasz znakomity katalog oszczędza czas?”
-zawiera ocenę i sugestię. „Łatwo znajduję potrzebny dokument w katalogu”
-określa jedno doświadczenie, lecz nadal wymaga wskazania okresu
-odniesienia i użytkowników, do których pytanie pasuje. Osoba, która nie
-używała katalogu, potrzebuje opcji „nie dotyczy”, a nie przymusu
-wybrania środka skali.</p>
-<p>Przy każdym pytaniu zapisz: co ma mierzyć, do kogo jest skierowane,
-okres odniesienia, dopuszczalne odpowiedzi, kody i sposób traktowania
-braków. W tym ćwiczeniu nie zbierasz nowych danych od kolegów. Pracujesz
-na własnym wariancie generatora i opisujesz, jak przygotowałbyś
-rzeczywiste badanie.</p>
-</div>
-<div id="pojedyncza-pozycja-typu-likerta" class="section level1">
-<h1>Pojedyncza pozycja typu Likerta</h1>
-<p>Skala oceny dostępności informacji ma porządek od niskiej do wysokiej
-oceny, ale odległość między 2 i 3 nie musi oznaczać dokładnie tego
-samego co między 4 i 5. Dlatego w analizie opisowej często pokazujemy
-rozkład odpowiedzi, a nie tylko średnią. Patrzymy na poziomy skali i
-liczebność każdej oceny.</p>
-<p>W naszym kwestionariuszu sześć stwierdzeń ocenia się od 1 —
-zdecydowanie nie zgadzam się — do 5 — zdecydowanie zgadzam się.
-Pojedyncza odpowiedź jest porządkowa. Kod 4 nie oznacza „dwa razy tyle
-dostępności” co kod 2. Pokazujemy częstości kategorii oraz braki; nie
-uznajemy odpowiedzi 3 automatycznie za „nie wiem”.</p>
-<p>Ustalony porządek pozwala wyświetlić wszystkie pięć kategorii, także
-gdy niektórej nikt nie wybrał. <code>useNA=&quot;ifany&quot;</code> pokazuje brak
-osobno. Odczytaj rozkład pozycji 1, a następnie policz N ważnych
-odpowiedzi bez doliczania braków do mianownika.</p>
-<pre class="r"><code>jedna &lt;- factor(pozycje$pozycja_1, levels = 1:5, ordered = TRUE)
-table(jedna, useNA = &quot;ifany&quot;)</code></pre>
-<pre><code>## jedna
-##    1    2    3    4    5 &lt;NA&gt;
-##    1   24   54   45   20    4</code></pre>
-<pre class="r"><code>100 * prop.table(table(jedna, useNA = &quot;no&quot;))</code></pre>
-<pre><code>## jedna
-##          1          2          3          4          5
-##  0.6944444 16.6666667 37.5000000 31.2500000 13.8888889</code></pre>
-<p>Wykres słupkowy odpowiedzi 1–5 powinien zachować kolejność. Jeśli
-zamienisz cyfry na opisy, ustaw poziomy jawnie, aby porządek nie stał
-się alfabetyczny. W galerii jest przykład wykresu Likerta; wykonanie
-własnego wykresu nie jest wymaganiem Z04.</p>
-</div>
-<div id="pozycja-odwrócona" class="section level1">
-<h1>Pozycja odwrócona</h1>
-<p>Pozycja 3 opisuje trudność, np. „Gubię się podczas przechodzenia
-między wynikami katalogu”. Wysoka zgoda oznacza tu gorsze doświadczenie,
-podczas gdy pozostałe pozycje mają odwrotny sens. Przed połączeniem
-odpowiedzi wyrównujemy kierunek: wysoki wynik każdej pozycji ma oznaczać
-większą dostępność. Ta decyzja wynika z treści, a nie z tego, który
-kierunek daje mniejsze p.</p>
-<p>Dla skali 1–5 rekodacja ma wzór
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mo>*</mo></msup><mo>=</mo><mn>1</mn><mo>+</mo><mn>5</mn><mo>−</mo><mi>x</mi><mo>=</mo><mn>6</mn><mo>−</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">x^*=1+5-x=6-x</annotation></semantics></math>.
-Odpowiedź 1 przechodzi na 5, 2 na 4, 3 pozostaje 3, a brak pozostaje
-brakiem. Zachowaj oryginalną tabelę i oznacz w słowniku, której pozycji
-dotyczy reguła; nie odwracaj jej ponownie po ponownym uruchomieniu
-skryptu.</p>
-<p>Sprawdzamy regułę na małym wektorze, aby zobaczyć wszystkie wartości
-wejścia i wyjścia. Funkcja nie zaakceptuje kodu 99 jako zwykłej
-odpowiedzi. Odczytaj pary i upewnij się, że <code>NA</code> nie stało
-się oceną 3.</p>
-<pre class="r"><code>wejscie &lt;- c(1, 2, 3, 4, 5, NA)
-data.frame(wejscie = wejscie, po_odwroceniu = badaniaZI::odwroc_pozycje(wejscie))</code></pre>
-<pre><code>##   wejscie po_odwroceniu
-## 1       1             5
-## 2       2             4
-## 3       3             3
-## 4       4             2
-## 5       5             1
-## 6      NA            NA</code></pre>
-<p>Tworzymy ukierunkowaną kopię sześciu pozycji. Rekodujemy tylko
-pozycję 3, ponieważ jej treść jest negatywna. Odczytaj pierwsze wiersze
-i porównaj je z tabelą przed rekodacją.</p>
-<pre class="r"><code>ukierunkowane &lt;- pozycje
-ukierunkowane$pozycja_3 &lt;- badaniaZI::odwroc_pozycje(pozycje$pozycja_3)
-head(ukierunkowane)</code></pre>
-<pre><code>##   pozycja_1 pozycja_2 pozycja_3 pozycja_4 pozycja_5 pozycja_6
-## 1         3         3         2         2         3         2
-## 2         3         3         3         3         3         3
-## 3         4         4         3         5         4         4
-## 4         4         4         4         4         4         5
-## 5         4         2         2         1         3         1
-## 6         5         4         5         5         5         4</code></pre>
-</div>
-<div id="indeks-i-reguła-minimum-pięciu-odpowiedzi" class="section level1">
-<h1>Indeks i reguła minimum pięciu odpowiedzi</h1>
-<p>Indeks jest średnią zgodnie ukierunkowanych odpowiedzi. W kursie
-wymaga minimum pięciu ważnych odpowiedzi z sześciu; dla czterech lub
-mniej wynik jest <code>NA</code>. To jawna reguła dydaktyczna, a nie
-własność wszystkich skal ankietowych. Nie imputujemy środka skali ani
-zera. Dwie osoby z pięcioma odpowiedziami mogą mieć indeks oparty na
-nieco innym zestawie pozycji, co trzeba wskazać jako ograniczenie.</p>
-<p>Dla osoby
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
-zapisujemy
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>i</mi></msub><mo>=</mo><msub><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><msub><mi>J</mi><mi>i</mi></msub></mrow></msub><msubsup><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>*</mo></msubsup><mi>/</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>J</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">I_i=\sum_{j\in J_i}x^*_{ij}/|J_i|</annotation></semantics></math>,
-gdy
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>J</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">|</mo><mo>≥</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">|J_i|\geq5</annotation></semantics></math>.
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>J</mi><mi>i</mi></msub><annotation encoding="application/x-tex">J_i</annotation></semantics></math>
-oznacza pozycje z ważną odpowiedzią, a
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>J</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|J_i|</annotation></semantics></math>
-ich liczbę. Gdy wartości to 4, 5, 4, 3, 4 i brak, indeks wynosi 4,0.
-Dodanie brakującej odpowiedzi jako zera zmieniłoby go na 3,33 i
-oznaczałoby ocenę, której nikt nie podał.</p>
-<p>Mała tabela pokazuje osoby z sześcioma, pięcioma i czterema
-odpowiedziami. Zliczamy ważne pola osobno od średniej. Odczytaj, dla
-którego wiersza funkcja zwróci brak i dlaczego.</p>
-<pre class="r"><code>male &lt;- data.frame(p1 = c(4, 4, 4), p2 = c(5, 5, 5), p3 = c(4, 4, 4),
-  p4 = c(3, 3, 3), p5 = c(4, 4, NA), p6 = c(4, NA, NA))
-data.frame(wazne = rowSums(!is.na(male)),
-  indeks = badaniaZI::indeks_ankiety(male, minimum = 5))</code></pre>
-<pre><code>##   wazne indeks
-## 1     6      4
-## 2     5      4
-## 3     4     NA</code></pre>
-<p>Obliczamy indeks własnej przygotowanej ankiety tą samą regułą.
-Zachowujemy ID oraz liczbę ważnych pozycji w tabeli eksportu, żeby można
-było skontrolować indywidualne wyniki. Odczytaj N z indeksem i N bez
-indeksu.</p>
-<pre class="r"><code>indeks &lt;- data.frame(id_odpowiedzi = dane$id_odpowiedzi,
-  n_pozycji = rowSums(!is.na(ukierunkowane)),
-  indeks = badaniaZI::indeks_ankiety(ukierunkowane, minimum = 5))
-head(indeks)</code></pre>
-<pre><code>##   id_odpowiedzi n_pozycji   indeks
-## 1          o001         6 2.500000
-## 2          o002         6 3.000000
-## 3          o003         6 4.000000
-## 4          o004         6 4.166667
-## 5          o005         6 2.166667
-## 6          o006         6 4.666667</code></pre>
-<pre class="r"><code>c(wazny_indeks = sum(!is.na(indeks$indeks)),
-  brak_indeksu = sum(is.na(indeks$indeks)))</code></pre>
-<pre><code>## wazny_indeks brak_indeksu
-##          147            1</code></pre>
-<pre class="r"><code>summary(indeks$indeks)</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s
-##   1.600   2.833   3.333   3.292   3.833   5.000       1</code></pre>
-<p>Wynik złożony ma więcej możliwych wartości niż pojedyncza odpowiedź
-1–5. W dalszych ćwiczeniach przyjmujemy średni indeks jako przybliżony
-pomiar ilościowy i jawnie zapisujemy to założenie. Nie dowodzi to
-równych odległości między odpowiedziami ani jednowymiarowości
-konstruktu. Spójność pozycji, np. alfa Cronbacha, nie jest dowodem
-trafności: pozycje mogą zgodnie mierzyć coś innego, niż zamierzono. Z04
-nie wymaga obliczania alfa.</p>
-</div>
-<div id="wielokrotny-wybór-mianownik-respondentów" class="section level1">
-<h1>Wielokrotny wybór: mianownik respondentów</h1>
-<p>Pytanie o używane kanały pozwala zaznaczyć kilka odpowiedzi. Cztery
-kolumny 0/1 odpowiadają czterem opcjom opisanym w scenariuszu. Zero
-oznacza świadome niezaznaczenie opcji; <code>NA</code> oznacza brak
-znanej odpowiedzi. W kursowej regule odsetków respondentów uwzględniamy
-osoby z kompletnymi czterema polami. Nie zamieniamy częściowej
-odpowiedzi w komplet zer.</p>
-<p>Jeśli trzech respondentów zaznaczyło łącznie cztery opcje, suma
-odsetków respondentów wynosi 133,3%. To nie jest błąd: jedna osoba może
-należeć do kilku kategorii. Odsetek wskazań miałby mianownik czterech
-zaznaczeń i odpowiadałby innemu pytaniu. W raporcie pisz, którego
-odsetka używasz.</p>
-<p>Na małym przykładzie każdy ważny respondent ma dwa znane pola.
-Funkcja pokazuje liczebność, mianownik, procent i liczbę pominiętych
-niepełnych odpowiedzi. Odczytaj, dlaczego suma procentów przekracza
-100.</p>
-<pre class="r"><code>male_kanaly &lt;- data.frame(www = c(1, 1, 0, NA), email = c(1, 0, 1, NA))
-badaniaZI::odpowiedzi_wielokrotne(male_kanaly)</code></pre>
-<pre><code>##   opcja liczba mianownik procent_respondentow pominiete_niepelne
-## 1   www      2         3             66.66667                  1
-## 2 email      2         3             66.66667                  1</code></pre>
-<p>Stosujemy tę samą regułę do czterech opcji ankiety. Ich etykiety
-odczytuje się z własnego scenariusza, a nie z numeru kolumny. Odczytaj
-mianownik i liczbę pominiętych osób, zanim opiszesz najczęściej używany
-kanał.</p>
-<pre class="r"><code>kanaly &lt;- badaniaZI::odpowiedzi_wielokrotne(dane[, paste0(&quot;kanal_&quot;, 1:4)])
-kanaly</code></pre>
-<pre><code>##     opcja liczba mianownik procent_respondentow pominiete_niepelne
-## 1 kanal_1     91       144             63.19444                  4
-## 2 kanal_2     76       144             52.77778                  4
-## 3 kanal_3     59       144             40.97222                  4
-## 4 kanal_4     79       144             54.86111                  4</code></pre>
-<pre class="r"><code>sum(kanaly$procent_respondentow)</code></pre>
-<pre><code>## [1] 211.8056</code></pre>
-<p>Przy zerowej liczbie kompletnych odpowiedzi nie ma odsetków do
-raportowania; funkcja zwróci <code>NA</code>. Zmiana reguły na „każda
-opcja ma osobny mianownik” może być uzasadniona w innym badaniu, ale
-wymaga nowego opisu i utrudnia porównanie opcji. Tutaj zachowujemy
-jeden, wspólny mianownik respondentów.</p>
-</div>
-<div id="z04-własna-operacjonalizacja-i-wyniki" class="section level1">
-<h1>Z04 — własna operacjonalizacja i wyniki</h1>
-<p>W <code>odpowiedzi.md</code> zapisz pytanie badawcze zgodne z Twoim
-scenariuszem oraz słownik: konstrukt, treść sześciu pozycji, skale,
-kody, kierunek pozycji 3 i regułę braków. Opisz sens kodów 0/1 w
-kanałach. Własny słownik zapisz także jako
-<code>wyniki/slownik_pomiaru.csv</code>; może to być tabela utworzona w
-R z kolumnami <code>zmienna</code>, <code>znaczenie</code>,
-<code>skala</code>, <code>kody</code>, <code>regula</code>.</p>
-<p>W <code>analiza.R</code> odczytaj własny surowy CSV, zastosuj
-czyszczenie, odwróć pozycję 3 i oblicz indeks przy minimum 5/6.
-Eksportuj <code>wyniki/indeks.csv</code> z ID, liczbą ważnych pozycji i
-indeksem oraz <code>wyniki/kanaly.csv</code> z liczebnościami, wspólnym
-mianownikiem i procentami. W <code>.md</code> podaj N indeksu, mianownik
-kanałów i ograniczenie przykładowej skali. Dodaj względne odnośniki do
-trzech CSV; nie zastępuj własnego wyjaśnienia samym wynikiem
-funkcji.</p>
-<p>Zapis jest osobnym krokiem od obliczenia. Używamy nazw, które
-kontrola będzie mogła odnaleźć i odtworzyć. Po zapisie otwórz CSV w
-panelu Files i sprawdź, czy mają nazwy kolumn oraz niepotrzebnie nie
-dopisałeś numerów wierszy.</p>
-<pre class="r"><code>wyniki &lt;- &quot;zadania/z04/wyniki&quot;
-dir.create(wyniki, recursive = TRUE, showWarnings = FALSE)
-utils::write.csv(indeks, file.path(wyniki, &quot;indeks.csv&quot;),
-  row.names = FALSE, fileEncoding = &quot;UTF-8&quot;)
-utils::write.csv(kanaly, file.path(wyniki, &quot;kanaly.csv&quot;),
-  row.names = FALSE, fileEncoding = &quot;UTF-8&quot;)</code></pre>
+<div id="pytanie-jednostka-i-zmienne" class="section level1">
+<h1>3. Pytanie, jednostka i zmienne</h1>
+<p>Analizowane zmienne: <strong>pozycje Likerta, indeks, czas,
+powodzenie, kanały informacji</strong>.</p>
+<p>Przed spojrzeniem na wynik odpowiedz głośno na cztery pytania: kto
+jest obserwacją, co jest zmienną, jaka jest skala i w jakiej jednostce
+pojawi się rezultat. Nazwa kolumny jest technicznym adresem; znaczenie
+pochodzi z operacjonalizacji oraz słownika danych.</p>
 <table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Element</th>
+<th>Pytanie kontrolne</th>
+<th>Odpowiedź w tej historii</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Jednostka</td>
+<td>Co zajmuje jeden wiersz?</td>
+<td>jedna osoba i jedno zadanie</td>
+</tr>
+<tr class="even">
+<td>Samoopis</td>
+<td>Co osoba deklaruje?</td>
+<td>pozycje, częstość, kanały</td>
+</tr>
+<tr class="odd">
+<td>Obserwacja</td>
+<td>Co zapisuje procedura?</td>
+<td>czas i powodzenie</td>
+</tr>
+<tr class="even">
+<td>Granica wniosku</td>
+<td>O czym mówią dane?</td>
+<td>o syntetycznej próbie dydaktycznej</td>
+</tr>
+</tbody>
+</table>
+<p>Skala pomiarowa ogranicza sens działań. Dla kategorii liczymy osoby i
+odsetki; dla uporządkowanych odpowiedzi możemy porównywać kolejność; dla
+czasu sens mają różnice i ilorazy. Indeks 1–5 traktujemy w kursie jako
+przybliżoną zmienną ilościową, ale pamiętamy, że powstał z pozycji
+porządkowych. Nazwanie skali przed analizą chroni przed mechanicznym
+wyborem testu.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="słownik-statystyczny" class="section level1">
+<h1>4. Słownik statystyczny</h1>
+<p>Statystyka jest językiem skrótu. Symbol ma nazwę, znaczenie w badaniu
+i jednostkę. Odczytuj wzór zdaniem, zanim podstawisz liczby.</p>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Nazwa</th>
+<th>Znaczenie w przykładzie</th>
+<th>Jednostka</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>*</mo></msubsup><annotation encoding="application/x-tex">x^{*}_{ij}</annotation></semantics></math></td>
+<td>ukierunkowana odpowiedź</td>
+<td>pozycja j osoby i</td>
+<td>punkty 1–5</td>
+</tr>
+<tr class="even">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mi>i</mi></msub><annotation encoding="application/x-tex">m_i</annotation></semantics></math></td>
+<td>ważne pozycje</td>
+<td>liczba odpowiedzi osoby i</td>
+<td>pozycje</td>
+</tr>
+<tr class="odd">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>i</mi></msub><annotation encoding="application/x-tex">I_i</annotation></semantics></math></td>
+<td>indeks samooceny</td>
+<td>średnia co najmniej 5 pozycji</td>
+<td>punkty 1–5</td>
+</tr>
+</tbody>
+</table>
+<p>Wartość p nie jest prawdopodobieństwem prawdziwości hipotezy.
+Przedział nie jest zakresem środkowych 95% obserwacji. Efekt nie jest
+tym samym co istotność. Te trzy rozróżnienia wracają w każdej
+analizie.</p>
+<p><strong>Notatnik pojęć.</strong> Dla każdego symbolu dopisz jedną
+liczbę z gotowego wyniku i przeczytaj ją bez skrótu. Zamiast „t równa
+się” powiedz „obserwowana różnica leży tyle błędów standardowych od
+wartości zerowej”. Zamiast „V równa się” powiedz „znormalizowana siła
+związku w tabeli wynosi”. Taki przekład jest ważniejszy niż pamięciowe
+odtwarzanie wzoru.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="wzór-czytany-jak-zdanie" class="section level1">
+<h1>5. Wzór czytany jak zdanie</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>i</mi></msub><mo>=</mo><mfrac><mn>1</mn><msub><mi>m</mi><mi>i</mi></msub></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mn>6</mn></munderover><msubsup><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>*</mo></msubsup><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>m</mi><mi>i</mi></msub><mo>≥</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">I_i=\frac{1}{m_i}\sum_{j=1}^{6}x^{*}_{ij}, \qquad m_i\geq 5</annotation></semantics></math></p>
+<p>Czytamy od lewej do prawej, nazywając licznik, mianownik i jednostkę.
+Znak wyniku ma sens dopiero po ustaleniu kolejności grup lub kierunku
+skali. Jeżeli we wzorze jest N, chodzi o przypadki rzeczywiście użyte w
+danym obliczeniu, a nie automatycznie o wszystkie wiersze surowego
+pliku.</p>
+<p><strong>Ćwiczenie ustne.</strong> Wskaż w formule estymatę, element
+niepewności i punkt odniesienia. Jeżeli dana metoda ich nie ma, powiedz
+to wprost. Następnie przewidź, co stanie się z wynikiem po zwiększeniu
+N, zmianie jednostki albo odwróceniu kolejności grup.</p>
+<p>Czytanie wzoru ma pięć kroków: (1) nazwij wynik po lewej stronie, (2)
+nazwij obserwowane wielkości po prawej, (3) wskaż porównanie lub wartość
+zerową, (4) ustal jednostkę, (5) powiedz, jaka zmiana danych zwiększa
+wynik. Nie wykonujemy ręcznie długich obliczeń. Wzór ma odsłonić logikę
+liczby zwracanej przez gotową funkcję.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="gotowy-skrypt-pomocniczy" class="section level1">
+<h1>6. Gotowy skrypt pomocniczy</h1>
+<p>Pierwszy chunk materiału załadował towarzyszący plik
+<code>analiza.R</code>. Zawiera przygotowanie danych, obiekty i funkcje
+potrzebne na zajęciach. Uruchamiasz kolejne fragmenty i odczytujesz
+wynik. Nie implementujesz testu ani pętli permutacyjnej.</p>
+<pre class="r"><code>wynik_glowny</code></pre>
+<pre><code>##   N_indeks srednia        SD
+## 1      147 3.29229 0.7268504</code></pre>
+<p>W zadaniu indywidualnym analogiczny skrypt powstaje przez
+<code>przygotuj_zadanie()</code>. Wolno zmienić jedynie wartości
+oznaczone komentarzem jako parametry. Dzięki temu przedmiot ocenia
+rozumienie wyniku, a nie biegłość w programowaniu.</p>
+<p>Po zmianie parametru uruchom cały skrypt od początku. Pojedyncze
+obiekty pozostawione w Environment mogą pochodzić ze starszej próby,
+dlatego nie są dowodem odtwarzalności. Zapisany plik w
+<code>wyniki</code> ma powstać ponownie w świeżej sesji. Jeśli nazwa
+zmiennej jest niedozwolona, funkcja zatrzymuje analizę i podaje listę
+dopuszczalnych wartości.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="dane-braki-i-mianownik" class="section level1">
+<h1>7. Dane, braki i mianownik</h1>
+<pre class="r"><code>knitr::kable(head(tabela_glowna, 10), digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">id</th>
+<th align="right">indeks</th>
+<th align="right">liczba_pozycji</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">o001</td>
+<td align="right">2.500</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">o002</td>
+<td align="right">3.000</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">o003</td>
+<td align="right">4.000</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">o004</td>
+<td align="right">4.167</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">o005</td>
+<td align="right">2.167</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">o006</td>
+<td align="right">4.667</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">o007</td>
+<td align="right">4.667</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">o008</td>
+<td align="right">3.167</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">o009</td>
+<td align="right">2.667</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">o010</td>
+<td align="right">2.833</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<p>Zanim przeczytasz statystykę, ustal N i braki. Dla średniej N oznacza
+ważne liczby. Dla korelacji są to kompletne pary. Dla tabeli jest to
+suma analizowanych komórek. Dla indeksu przypadek musi mieć co najmniej
+pięć odpowiedzi po właściwym ukierunkowaniu.</p>
+<p>Dwa wyniki mogą używać różnych N w tym samym raporcie. Nie jest to
+sprzeczność, jeśli wynika z braków i zostało jawnie opisane. Nie wolno
+dopasowywać reguły braków po zobaczeniu, która wersja daje
+korzystniejsze p.</p>
+<p>Brak może dotyczyć jednej pozycji, całego indeksu albo pary
+zmiennych. Duplikat jest powtórzeniem rekordu, a obserwacja odstająca
+nadal może być prawdziwą obserwacją. Te pojęcia wymagają innych decyzji.
+Dziennik czyszczenia powinien pozwolić odtworzyć, ile elementów zmieniła
+każda reguła i dlaczego wynikowe N jest właściwym mianownikiem.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="tor-klasyczny" class="section level1">
+<h1>8. Tor klasyczny</h1>
+<p>Klasyczny tor pomiaru obejmuje słownik, rozkłady pozycji, rekodację
+6−x i indeks. Odpowiedzi wielokrotne liczymy z jawnym mianownikiem
+kompletnych respondentów, dlatego suma odsetków może przekraczać
+100%.</p>
+<pre class="r"><code>knitr::kable(formatuj_wynik(wynik_klasyczny), digits = 4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">id</th>
+<th align="right">indeks</th>
+<th align="right">liczba_pozycji</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">o001</td>
+<td align="right">2.5000</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">o002</td>
+<td align="right">3.0000</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">o003</td>
+<td align="right">4.0000</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">o004</td>
+<td align="right">4.1667</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">o005</td>
+<td align="right">2.1667</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">o006</td>
+<td align="right">4.6667</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">o007</td>
+<td align="right">4.6667</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">o008</td>
+<td align="right">3.1667</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<p>Odczytaj wynik bez etykiety „dobry” lub „zły”. Powiedz, jaka estymata
+odpowiada pytaniu, co mierzy statystyka oraz jakie założenie projektu
+ogranicza interpretację. Jeżeli widzisz p, opisz je warunkowo: przy
+modelu zerowym i przyjętej procedurze.</p>
+<p><strong>Karta odczytu toru klasycznego.</strong> Zapisz: (a) nazwę
+metody, (b) N lub liczebności grup, (c) estymatę i jednostkę, (d)
+statystykę wraz z df, jeśli występują, (e) p, (f) jedno założenie.
+Jeżeli metoda na tej stronie nie jest testem, wpisz „nie dotyczy”
+zamiast wymyślać p. Kompletność wyniku jest oceniana oddzielnie od jego
+istotności.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="tor-permutacyjny-lub-decyzja-o-jego-braku" class="section level1">
+<h1>9. Tor permutacyjny lub decyzja o jego braku</h1>
+<p>Permutacja nie naprawia słabego pomiaru. Przed testowaniem trzeba
+ustalić znaczenie pozycji, kierunek skali i regułę braków. Dopiero C08
+użyje tasowania, aby sprawdzić związek indeksu z wykonaniem.</p>
+<pre class="r"><code>knitr::kable(formatuj_wynik(wynik_permutacyjny), digits = 4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">najpierw jakość pomiaru; test związku na C08</td>
+</tr>
+</tbody>
+</table>
+<p>W analizie inferencyjnej liczba B określa rozdzielczość szacowanego
+p. Za każdym razem trzeba powiedzieć, co dokładnie tasowano i jaki
+związek został zerwany. Nazwa „permutacyjny” nie zwalnia z wyjaśnienia
+hipotezy zerowej.</p>
+<p><strong>Karta odczytu toru permutacyjnego.</strong> Uzupełnij zdanie:
+„Przy braku związku lub różnicy wielokrotnie zmieniano znaki, tasowano
+etykiety lub losowano tabele, za każdym razem liczono tę samą
+statystykę, a określony odsetek wyników był co najmniej tak skrajny jak
+obserwowany”. Następnie porównaj wniosek z torem klasycznym bez
+wybierania mniejszego p.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="efekt-i-przedział" class="section level1">
+<h1>10. Efekt i przedział</h1>
+<p>Indeks zachowuje jednostkę punktów 1–5. Różnica jednego punktu ma
+znaczenie opisowe, lecz nie dowodzi równych odległości psychologicznych
+ani trafności konstruktu.</p>
+<pre class="r"><code>knitr::kable(formatuj_wynik(efekt), digits = 4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">opcja</th>
+<th align="right">liczba</th>
+<th align="right">mianownik</th>
+<th align="right">procent_respondentow</th>
+<th align="right">pominiete_niepelne</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">kanal_1</td>
+<td align="right">91</td>
+<td align="right">144</td>
+<td align="right">63.1944</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">kanal_2</td>
+<td align="right">76</td>
+<td align="right">144</td>
+<td align="right">52.7778</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">kanal_3</td>
+<td align="right">59</td>
+<td align="right">144</td>
+<td align="right">40.9722</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">kanal_4</td>
+<td align="right">79</td>
+<td align="right">144</td>
+<td align="right">54.8611</td>
+<td align="right">4</td>
+</tr>
+</tbody>
+</table>
+<p>Znaczenie praktyczne oceniamy w kontekście usługi: minuty, punkty
+skali, różnica odsetków albo siła związku. Uniwersalne etykiety
+mały/średni/duży nie zastępują pytania, czy efekt zmienia decyzję
+instytucji i jak precyzyjnie został oszacowany.</p>
+<p>Przedział szeroki obejmuje wiele możliwych wielkości efektu i wymaga
+ostrożniejszego języka. Przedział wąski może nadal koncentrować się
+wokół efektu praktycznie małego. Gdy przedział przecina zero, nie
+zapisujemy automatycznie „brak efektu”; podajemy zakres zgodnych
+wartości i oceniamy, czy obejmuje skutki istotne dla usługi
+informacyjnej.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="wykres-jako-część-argumentu" class="section level1">
+<h1>11. Wykres jako część argumentu</h1>
+<pre class="r"><code>wykres_glowny</code></pre>
+<p><img role="img" aria-label src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABUAAAANzCAMAAABf5kIwAAABdFBMVEUAnnMiIiIiIk4iInUiTk4iTnUiTpoidXUidZoidb1AQEBBQWRBQYZBZGRBZIZBZKZBhsROIiJOIk5OTiJOTk5OTnVOdU5OdXVOdZpOdb1Omr1Omt5kQUFkZEFkZGRkZIZkhsRkpuJ1IiJ1TiJ1Tk51TnV1dU51dXV1dZp1mpp1mr11mt51vb11vd51vf+GQUGGZEGGZGSGhkGGhqaGpsSGpuKGxOKGxP+aTiKadSKadU6adXWadZqamk6amnWamr2avb2avd6a3r2a3t6a3v+mZEGmhmSmxOKm4sSm4v+9dSK9dU69dZq9mk69mnW9mpq9vXW9vZq9vb29vd693pq93t693v+9///EhkHEhmTEpmTE4uLE4v/E///emk7emnXevXXevZrevb3e3pre3r3e3t7e3v/e/97e///g4ODipmTipobixIbi4v/i////vXX/xIb/3pr/3r3/3t7/4qb/4sT/4uL//73//8T//97//+L///8Kh/+wAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO2d/YMc1ZWe1YPEZgb8oTBaIw+brC3FsnEQzhcmkNgmhk12SOTYDqB1bFmwLCtrvRaScGDU/3y6urq6q/pj5q3W0e33TD3PDzDTM3P63NvvfVRVXVV9YQwAAFtxYdcNAABkBYECAGwJAgUA2BIECgCwJQgUAGBLECgAwJYgUACALUGgAABbgkABALYEgQIAbAkCBQDYEgQKALAlCBQAYEsQKADAliBQAIAtQaAAAFtSSqAfv3U4mnDxW+/cK/SM6XlQTdj+Fn94p/rDo35/czz/mzvbPm0EZ7fx6VuXJz+4QozAgjICvVuFfsbeq2RfAoGutvHoWhOjS+8Wbw5ghSICvTPq8DwGVUCgK208bP9DfLN8ewBLlBDog9ESu1qeuUCgy22cvNlO0XMf7aBBgA4FBPrld6dHP1+bbHeefDzdBdtj90ugqEBTMJ2RvdfG448vn9chQjIKCPRBe3OhtimboAIIdJnp9ul0z/0Oh4LAggIC7a5noq+CQJf55CffO6z/JZ4eDGUfHnZOKYHORdCN/qO3p2c37R2++ln9wPQw18Svn16f/N7F6Rv2J7demvzGyx+2az56+6XqsMDL73Sfav3DJ7euV08yf476V6enw7QeezDbvPl4+sxXW7+70mSL2V89rnocXek+74YmpxxPZ+HR9cVZCesb2l9M4Wi/+WdnfeGPmynrCHR98ytTcvrBxz6j7B6onJSqHzhq/7g5htOzjaWG+GcYdk4pgY6+vSbtJ28t1tneD+uHpgL9x2YRXvpo8c7r0fzvFiezjC61VvOGh3+/eOt2XqL1zFdnjdWSeNjUmPWztskW9V/Nn+LSQvMbupkxFej/qf/s5ikN7c+/mvtifeH5o3vvtgS6ofnVKVEEqo1yRaDdnY7pyzn7pm8b3enjQBDsnlLHQFe2IccrS+1o/tjFxcJ6vnUKaXPeSvus0pYU1z98ctxdzVPqI7HNU9xbtHmjVePmxiaXB3e4+Pn8/bENTTZUXe29NP1ZtTm+saGq4QeXW49uKNwqsHc4/8H65tdNiSBQcZSrAp06s/mThd37t9Hw+P1m3gB2SwGBtlbUlZ+2t0OXTg+dLojl5demLZZVLWx4+M6aR5eeZH/t38+ebl2TLTb81aZu5hx3frS5of3m5MfmidcXXp22o83Nr5sSQaDiKFcF2t6Hb+3B92+j0wyncoABJc4DbZ/+3LoQqV5X1Q5rvUUxXRGz5bc32R282yzWD8eP3lwsmXpba1qmPpvl1Ifr556UmD06dch0ce69dm98snjiZl1e+nmnwNomWzR/9cF8b/bolG4WLARa/WRzQ/uzUs/NNt83FK7bqHaiH7257LLl5tdOiSTQfqOcCfJm54jlYg9+izbazazszwDsgCJXIj3o7OjND/KdfPKTw3pZ1StxeiywpcpaMtNF1NoLvNNaqV9em//GhoePl9Zu9STTZ5v96mKdtg80zn91fZPtobX+qu59+vWGbhbUY5tp8ZSG9tsTsrFw65mb0kcbm183JZJA+41yJt2j7vgezJ9nizZaUzDau3pv3Q8BilLmWvjWWw0Vl5aPXtWLciHQ1nvP7e3LxS8czf5wLtYND7fVND6++P2fVW/3ts8Pmv7CdOOnXvA3l/pZ22SLB229ndVNi+PWs53W0L/o+vO0YTbV6m+Oxh0Wza+dEkWg/UY52+1YPrR53PzSNm20p459eHCg1N2YHrXeDl4+AeXxL67NddJelK0z8Bfrv3sa1Pxx6eEZ7dN8Fsfk2uf7d9Ww0mSLzvk0Z3XT4rj9d6c0VDPvZEPhzrUKZzS//hRKQaC9Rjk7FDP76fzvp9pc7MH3bKPmH+6NH//n0bq/BihNwfuBfnrrpbkR5jb55O3ug+1l2Fq2i4eXzgBs3KM9XNN593fUKdysycVCXtdki+7Z7sfrn3bNme2d83BOaWjU9pA4zO7TLTe//hRKQaC9RlkPqdlInG9uNifbbtfG2l8E2CGFb6j88WxDtF453c1STaBLC6v5dsPDfQXa/Gprfa5pskVXLY1DNnSz3MPR2Q3N2F9faf3oWyZb0/zTC1QY5eINpO6f1NcPzEtuL1DOpAcLit+Rvn6XuD7IVx8m27vy039YOgZ61hboBlM+C4Gua7LFerVs6Ga5h6OzG5rRbMpJo18IdF3zcQLdPMrOAdD5A8/fm76MrZO0thdo5xAqwK4oINDHv3z7pdZKmB/8qt/smF4zufwmUoFd+KPlNtcLdG2Tm/6q7y780bpvuqUnEmnv7ffbhV/b/NYC1Uc5O6u/9SSzI7vT137lxZXbaIFAwYJnL9DpSmgd75+/zdxaIj0E+hRvIj3Y+9ZPPxiv9dl4k0DXNrn8V923b/Q3kZoeTmlotH+vdU6VNvrTm187JYpA5VF230BqD/HO4uEt2nh868bhS7NXaHGyAsAOefYCrT1w1P2+iv7i5mQrZymdItDuSTpLJ/JseHjmruad7/UbP+sFurbJldHd1Lpp0RHoGQ21riVXhvnw8qnNr50S6TxQdZTLB0Dnz//8Yg9+mzbaGucYKFjw7AU6u1zl3c631cpo7Zq+P19xZwp0+xPp5+u9vfAf/Msrr35wb+nZlgW63GSLWi2zVb14Mu1E+qPOnKxtaH/px6cNc3bG1+JE+vXNr5sSSaDiKFtn0C8PuD2B/dtozUP7dGGA3VHsbkyjl6t9tMe3Fpf81Uvq2/fmbxVrAt3mUs7qGsS/vzaXQN1RdSnL3cV9Ok4R6HKTLZoLsxcXUR6d0s2C7mHPzQ0t/nGo9XX2pZzXFv5a3/zaKZEu5ZRGufIGUqfEYrd7izaOm2lqX9oLsEPK3kyk4ah6fOUOFUdjRaArf9e+nGf14XW3rOjc+6jjoBWBrm2yhXqbjeVPQOsKdHND+4vRr7/nSXsneLnPDc0/u5uJ3Fyt3j2GsPKufa82lqZp6aUAKE+J05hWDHp15eG/vDxqX9V9qkCXVt5R8zQbHl53O7vO7U3a1z2tCHRtky2mf/UXiytV5xtYG7rpdLV4dGNDLWu2L5ZfKdzu8/DyGc1vdzs7cZQbBNpcwt7aaux/O7vONF1dnlOA4hQ5D/TkVud+TK81Dzfre++H0y+rZakItHMX39aC3PDw4ra9i1sKt361aWfDeaDrmmzRvuPHaOOthlf3NZfPXNrUUPs99P3TCi9unXz1YSPQjc2vTolyHqg2yk0Cfdi5q+lWbbSfbp4igB1S6kT6j9+afbLE9z9oP1p9osP0gzuaN4wlgU4W0k+qchdf/qDzJBsenn9wRHvxfvpWdYXj3uLzKTZdibSmyRaN5aa/tPxhF+ubXHmC0xrqbDLP/wFZW/jT6jNBLr784Xgh0I3Nr0yJdiK9MspNAl1ziX7fNuajXLqxLMCuKH4l0jnjwYZ1no01/za0iBhl58OQtmsDwA0E+nScE4GuvUhgQcQolTM3z2gDwA0E+nScE4HeHT1rgd6dn96/fRsAbiDQp+M8CLR5b3vzlZFPOcr5YdFTr708uw0ANxDo03EeBNqczXnGzeO2H+X8dNGjp2sDwA0E+nScB4HONhBXPmhlQZBAj56yDQA3EOjTcR4E+vvD5lSnTTzlKB9eG9UnWD1lGwBuIFAAgC1BoAAAW4JAAQC2BIECAGwJAgUA2BIECgCwJQgUAGBLECgAwJYgUACALUGgAABbgkABALYEgQIAbAkCBQDYEgQKALAlCBQAYEsQaDh/2HUDeWCqZJgqlbIzhUDDIeoyTJUMU6WCQJND1GWYKhmmSgWBJoeoyzBVMkyVCgJNDlGXYapkmCoVBJocoi7DVMkwVSoINDlEXYapkmGqVBBocoi6DFMlw1SpINDkEHUZpkqGqVJBoMkh6jJMlQxTpYJAk0PUZZgqGaZKBYEmh6jLMFUyTJUKAk0OUZdhqmSYKhUEmhyiLsNUyTBVKgg0OURdhqmSYapUEGhyiLoMUyXDVKkg0OQQdRmmSoapUkGgySHqMkyVDFOlgkCTQ9RlmCoZpkoFgSaHqMswVTJMlQoCTQ5Rl2GqZJgqFQSaHKIuw1TJMFUqCDQ5RF2GqZJhqlQQaHKIugxTJcNUqSDQ5BB1GaZKhqlSQaDJIeoyTJUMU6WCQJND1GWYKhmmSgWBJoeoyzBVMkyVCgJNDlGXYapkmCoVBJocoi7DVMkwVSoINDlEXYapkmGqVBBocoi6DFMlw1SpINDkEHUZpkqGqVJBoMkh6jJMlQxTpYJAk0PUZZgqGaZKBYEmh6jLiFN1IYhnO5hnC6lSQaDJIeoyCFSGVKkg0OQQdRkEKkOqVBBocoi6DAKVIVUqCDQ5RF0GgcqQKhUEmhyiLoNAZUiVCgJNDlGXQaAypEoFgSaHqMsgUBlSpYJAk0PUZRCoDKlSQaDJIeoyCFSGVKkg0OQQdRkEKkOqVBBocoi6DAKVIVUqCDQ5RF0GgcqQKhUEmhyiLoNAZUiVCgJNDlGXQaAypEoFgSaHqMsgUBlSpYJAk0PUZRCoDKlSQaDJIeoyCFSGVKkg0OQQdRkEKkOqVBBocoi6DAKVIVUqCDQ5RF0GgcqQKhUEmhyiLoNAZUiVCgJNDlGXQaAypEoFgSaHqMsgUBlSpYJAk0PUZRCoDKlSQaDJIeoyCFSGVKkg0OQQdRkEKkOqVBBocoi6DAKVIVUqCDQ5RF0GgcqQKhUEmhyiLoNAZUiVCgJNDlGXQaAypEoFgSaHqMsgUBlSpYJAk0PUZRCoDKlSQaDJIeoyCFSGVKkg0OQQdRkEKkOqVBBocoi6DAKVIVUqCDQ5RF0GgcqQKhUEmhyiLoNAZUiVCgJNDlGXQaAypEoFgSaHqMsgUBlSpYJAk0PUZRCoDKlSQaDJIeoyCFSGVKkg0OQQdRkEKkOqVBBocoi6DAKVIVUqCDQ5RF0GgcqQKhUEmhyiLoNAZUiVCgJNDlGXQaAypEoFgSaHqMsgUBlSpYJAk0PUZRCoDKlSQaDJIeoyCFSGVKkg0OQQdRkEKkOqVBBocoi6DAKVIVUqCDQ5RF0GgcqQKhUEmhyiLoNAZUiVCgJNDlGXQaAypEoFgSaHqMsgUBlSpYJAk0PUZRCoDKlSQaDJIeoyCFSGVKkg0OQQdRkEKkOqVBBocoi6DAKVIVUqCDQ5RF0GgcqQKhUEmhyiLoNAZUiVCgJNDlGXQaAypEoFgSaHqMsgUBlSpYJAk0PUZRCoDKlSQaDJIeoyCFSGVKkg0OQQdRkEKkOqVBBocoi6DAKVIVUqCDQ5RF0GgcqQKhUEmhyiLoNAZUiVCgJNDlGXQaAypEoFgSaHqMsgUBlSpYJAk0PUZRCoDKlSQaDJIeoyCFSGVKkg0OQQdRkEKkOqVBBocoi6DAKVIVUqCDQ5RF0GgcqQKhUEmhyiLoNAZUiVCgJNDlGXQaAypEoFgSaHqMsgUBlSpYJAk0PUZRCoDKlSQaDJIeoyCFSGVKkg0OQQdRkEKkOqVBBocoi6DAKVIVUqCDQ5RF0GgcqQKhUEmhyiLoNAZUiVCgJNDlGXQaAypEoFgSaHqMsgUBlSpYJAk0PUZRCoDKlSQaDJIeoyCFSGVKkg0OQQdRkEKkOqVBBocoi6DAKVIVUqCDQ5RF0GgcqQKhUEmhyiLoNAZUiVCgJNDlGXQaAypEoFgSaHqMsgUBlSpYJAk0PUZRCoDKlSQaDJIeoyCFSGVKkg0OQQdRkEKkOqVBBocoi6DAKVIVUqCDQ5RF0GgcqQKhUEmhyiLpNaoGWbIlUqCDQ5RF0GgSLQcBBocoi6DAJFoOEg0OQQdRkEikDDQaDJIeoyCBSBhoNAk0PUZRAoAg0HgSaHqMsgUAQaDgJNDlGXQaAINBwEmhyiLoNAEWg4CDQ5RF0GgSLQcBBocoi6DAJFoOEg0OQQdRkEikDDQaDJIeoyCBSBhoNAk0PUZRAoAg0HgSaHqMsgUAQaDgJNDlGXQaAINBwEmhyiLoNAEWg4CDQ5RF0GgSLQcBBocoi6DAJFoOEg0OQQdRkEikDDQaDJIeoyCBSBhoNAk0PUZRAoAg0HgSaHqMsgUAQaDgJNDlGXQaAINBwEmhyiLoNAEWg4CDQ5RF0GgSLQcBBocoi6DAJFoOEg0OQQdRkEikDDQaDJIeoyCBSBhoNAk0PUZRAoAg0HgSaHqMsgUAQaDgJNDlGXQaAINBwEmhyiLoNAEWg4CDQ5RF0GgSLQcBBocoi6DAJFoOEg0OQQdRkEikDDQaDJIeoyCBSBhoNAk0PUZRAoAg0HgSaHqMsgUAQaDgJNDlGXQaAINBwEmhyiLoNAEWg4SQT657955eDga2/8afbtH/+q+i6oqdwQdRkEikDDySHQ+wc136gNerv+7ptxjeWFqMsgUAQaTgqBfn5w8Nf/PH7yT6/Uzrx/8MIb4ye/OTj4TmRvSSHqMggUgYaTQqC3ZxubE3P+7Xj81eu1Oe8fvPi7sM7SQtRlECgCDSeDQCfG/HHri89n4pw/PGiIugwCRaDhZBDonFqZ95uDn7fZhyfqPUCgCDScVAL94pVKoLcXAuVtJKKug0ARaDipBDo96vnkvWbD837zrvyQIeoyCBSBhpNJoJMN0Ik6TxXoHwCehnGoQP26Yo2kIlSgX/1oKky2QDuwrSDDFihboOHk2QKdiLM6iQmBdiHqMggUgYaTRqCT7c+pPxFoF6Iug0ARaDhZBPrn12f+bJ29xLvwY6LeAwSKQMNJItAvXjl48bezrzkPtA1Rl0GgCDScHAKd+PPr88s2uRKpDVGXQaAINJwUAp2osnW0k2vh2xB1GQSKQMNJIdAlVd4/OOBuTA1EXQaBItBwMgh0ssk5p3LmE+4HuoCoyyBQBBpOBoF+8UpXoNyRvgVRl0GgCDScDAKFUyDqMggUgYaDQJND1GUQKAINB4Emh6jLIFAEGg4CTQ5Rl0GgCDQcBJocoi6DQBFoOAg0OURdBoEi0HAQaHKIugwCRaDhINDkEHUZBIpAw0GgySHqMggUgYaDQJND1GUQKAINB4Emh6jLIFAEGg4CTQ5Rl0GgCDQcBJocoi6DQBFoOAg0OURdBoEi0HAQaHKIugwCRaDhINDkEHUZBIpAw0GgySHqMggUgYaDQJND1GUQKAINB4Emh6jLIFAEGg4CTQ5Rl0GgCDQcBJocoi6DQBFoOAg0OURdBoEi0HAQaHKIugwCRaDhINDkEHUZBIpAw0GgySHqMggUgYaDQJND1GUQKAINB4Emh6jLIFAEGg4CTQ5Rl0GgCDQcBJocoi6DQBFoOAg0OURdBoEi0HAQaHKIugwCRaDhINDkEHUZBIpAw0GgySHqMggUgYaDQJND1GUQKAINB4Emh6jLIFAEGg4CTQ5Rl0GgCDQcBJocoi6DQBFoOAg0OURdBoEi0HAQaHKIugwCRaDhINDkEHUZBIpAw0GgySHqMggUgYaDQJOTOupBVhBjhUARaDgINDmpox5kBQQa3VTqVBUFgSYnddSDrIBAo5tKnaqiINDkpI56kBUQaHRTqVNVFASanNRRD7ICAo1uKnWqioJAk5M66kFWQKDRTaVOVVEQaHJSRz3ICgg0uqnUqSoKAk1O6qgHWQGBRjeVOlVFQaDJSR31ICsg0OimUqeqKAg0OamjHmQFBBrdVOpUFQWBJid11IOsgECjm0qdqqIg0OSkjnqQFRBodFOpU1UUBJqc1FEPsgICjW4qdaqKgkCTkzrqQVZAoNFNpU5VURBoclJHPcgKCDS6qdSpKgoCTU7qqAdZAYFGN5U6VUVBoMlJHfUgKyDQ6KZSp6ooCDQ5qaMeZAUEGt1U6lQVBYEmJ3XUg6yAQKObSp2qoiDQ5KSOepAVEGh0U6lTVRQEmpzUUQ+yAgKNbip1qoqCQJOTOupBVkCg0U2lTlVREGhyUkc9yAoINLqp1KkqCgJNTuqoB1kBgUY3lTpVRUGgyUkd9SArINDoplKnqigINDmpox5kBQQa3VTqVBUFgSYnddSDrIBAo5tKnaqiINDkpI56kBUQaHRTqVNVFASanNRRD7ICAo1uKnWqioJAk5M66kFWQKDRTaVOVVEQaHJSRz3ICgg0uqnUqSoKAk1O6qgHWQGBRjeVOlVFMRLop798+8YPfvVZqV7OCamjHmQFBBrdVOpUFcVFoCe3Lo9q9l4r2FB+Ukc9yAoINLqp1KkqiolAT94cLXj+XsmekpM66kFWQKDRTaVOVVE8BNrx52i0X7Sp3KSOepAVEGh0U6lTVRQPgT6YmfNwth9/s2hXqUkd9SArINDoplKnqigeAj2eSPPSB9MvP73GJmgfUkc9yAoINLqp1KkqioVAv/xu68DnycSmz31UrKXspI56kBUQaHRTqVNVFBeB7r07/+7hZQSqkzrqQVZAoNFNpU5VUVwE2lJm9zs4ndRRD7ICAo1uKnWqimIh0PHx0hYoJzLJpI56kBUQaHRTqVNVFA+BPhiNjubfHLe/gTNIHfUgKyDQ6KZSp6ooHgIdvz8azS5AOnmfM+n7kDrqQVZAoNFNpU5VUXYs0JO3b9RcHo32vjX5//XRaPTcB1wQL5M66kFWQKDRTaVOVVF2LNDqBKY18CaSTOqoB1kBgUY3lTpVRUGgyUkd9SArINDoplKnqigINDmpox5kBQQa3VTqVBVl1wK9friOKwhUJXXUg6yAQKObSp2qopi8Cw/bkjrqQVZAoNFNpU5VURBoclJHPcgKCDS6qdSpKgoCTU7qqAdZAYFGN5U6VUUxEujJJz+58YNfl2rlvJA66kFWQKDRTaVOVVFsBPrordk78C9zGVIfUkc9yAoINLqp1KkqiotAH16en8PUuq8InEnqqAdZAYFGN5U6VUUxEWjLnxi0F6mjHmQFBBrdVOpUFWW3Av3y33w4/X/zoXKHfCxnX1JHPcgKCDS6qdSpKsqOBfrdemvzwfTz4Cttnty9zIfK9SF11IOsgECjm0qdqqLsWqCjvUqW7Y9Bqq7u5EPlZFJHPcgKCDS6qdSpKsrOBVrdPbnag19sdD5gH74HqaMeZAUEGt1U6lQVZbcCnR77fO4jPhNpe1JHPcgKCDS6qdSpKsqu34V/9BYCfSpSRz3ICgg0uqnUqSrKrgU62Qr9xUfswm9P6qgHWQGBRjeVOlVF2b1AK45bzqxsyptIMqmjHmQFBBrdVOpUFcVDoNVpTJd+Pv3y769xGlMfUkc9yAoINLqp1KkqiodAZzemPzw85Ib0PUkd9SArINDoplKnqigeAp1ugi5gA1QnddSDrIBAo5tKnaqimAh0fKflz6NyDeUnddSDrIBAo5tKnaqiuAh0/OjaTJ+X3inXzzkgddSDrIBAo5tKnaqi2Ah0PH5868aNG69+WKqXc0LqqAdZAYFGN5U6VUUxEihsQ+qoB1kBgUY3lTpVRUGgyUkd9SArINDoplKnqih2Av2Hz559G+eJ1FEPsgICjW4qdaqK4iLQk19Mz/2s3ozf412kHqSOepAVEGh0U6lTVRQTgT68PD358w7ngfYlddSDrIBAo5tKnaqieAi0uhLpaH5BElci9SB11IOsgECjm0qdqqJ4CPRB/UFIDziVvjepox5kBQQa3VTqqSqKh0CPJ9K8em/6vx9+yt2Y+oBA5QWY2gplm0o9VUWxEGh1B7ujeg9+svf+8DL3A9VBoPICTG2Fsk2lnqqiWAi0+my5d+sPh9/njvT9QKDyAkxthbJNpZ6qorgItFLmnVGzIYpAZRCovABTW6FsU6mnqihOAj0eNRuiCFQGgcoLMLUVyjaVeqqKYiHQ+jORZodAO5/vAWeBQOUFmNoKZZtKPVVFsRBo5cxLP6s+4nh//On1Ee/C9wCBygswtRXKNpV6qoriIdD5CaA3p58Uz6VIOghUXoCprVC2qdRTVRQPgdbanO66H4/Yg+8DApUXYGorlG0q9VQVxUOgs/vRX/poujF6ibeQdBCovABTW6FsU6mnqigmAh2ffHzjxjvVhufDyy+z/dkDBCovwNRWKNtU6qkqiotAYUsQqLwAU1uhbFOpp6ooCDQ5CFRegKmtULap1FNVFCOBnnzykxs/+HWpVs4LCFRegKmtULap1FNVFBuBPnprdiYTh0B7gUDlBZjaCmWbSj1VRXERaHUjkRnV5ZyggkDlBZjaCmWbSj1VRTERaMufGLQXCFRegKmtULap1FNVFA+BNifSH87PpwcRBCovwNRWKNtU6qkqiodAq0s5916rtHly9zKXcvYBgcoLMLUVyjaVeqqK4iHQ49YHyVU3ZeJmIjIIVF6Aqa1QtqnUU1UUC4HWt7NreMA+fA8QqLwAU1uhbFOpp6ooFgLt3oOeO9L3AYHKCzC1Fco2lXqqioJAk4NA5QWY2gplm0o9VUWxECi78NuDQOUFmNoKZZtKPVVFsRBo51M8Tvhc+D4gUHkBprZC2aZST1VRPARancZ06efTL//+Gqcx9QGBygswtRXKNpV6qoriIdDq1KXqPPrD+kx6DoHqIFB5Aaa2QtmmUk9VUTwEuvhQpBEfidQPBCovwNRWKNtU6qkqiolAx3da/jwq11B+EKi8AFNboWxTqaeqKC4CnX0qUnUs9J1y/ZwDEKi8AFNboWxTqaeqKDYCHY8f37px48arH5bq5ZyAQOUFmNoKZZtKPVVFMRIobAMClRdgaiuUbSr1VBUFgSYHgcoLMLUVyjaVeqqKgkCTg0DlBZjaCmWbSj1VRUGgyUGg8gJMbYWyTaWeqqIg0OQgUHkBprZC2aZST1VREGhyEKi8AFNboWxTqaeqKAg0OQhUXoCprVC2qdRTVRQEmhwEKi/A1FYo21TqqSoKAk0OApUXYGorlG0q9VQVBYEmB4HKCzC1Fco2lXqqioJAk4NA5QWY2gplm0o9VUWxFOjJ/+SGoCoIVF6Aqa1QtqnUU1UUF4E+vvW9w4orN64fXuaOyjoIVF6Aqa1QtqnUU1UUE4F2b6iMQHUQqLwAU1uhbFOpp6ooHgJ9eBmBblYC4dQAACAASURBVAkClRdgaiuUbSr1VBXFQ6B3uv4cPY9AVRCovABTW6FsU6mnqigWAq0+yXi099LkPxcPJ//d4zORdBCovABTW6FsU6mnqigWAq0+lPOo+nT4vXenu/PswesgUHkBprZC2aZST1VRXARaqfNO/XlyD/hYuR4gUHkBprZC2aZST1VRXARabXROtj336++ev1e0rcwgUHkBlreCXynxhUGgKk4CnZlz9h1IIFB5ASJQBBqOhUCrN5GO6v/dnO7CI1AZBCovQASKQMOxEOj4uDp16V71v71X37qMQHuAQOUFiEARaDgeAq0uRNpvXY+0X7Sr1CBQeQEiUAQajodAZ/vw1elMUzgRVAaBygsQgSLQcDwEOj55qzqPafygvqTzasGWsoNA5QWIQBFoOCYCHY8fT89cenR9NLr4Wql2zgMIVF6ACBSBhmMjUNgOBCovQASKQMNBoMlBoPICRKAINBwjgX76y7dv/OBXn5Xq5ZyAQOUFiEARaDguAj251dwSdI9DoH1AoPICRKAINBwTgU5vaDe/GyhXwusgUHkBIlAEGo6HQDv+5Dz6PiBQeQEiUAQajodAm0uQDi9zIn1PEKi8ABEoAg3HQ6DVtfCXPph++ek1NkH7gEDlBYhAEWg4FgKtLuGcH/g8OeZmIj1AoPICRKAINBwXgU6v5KzhMz36gEDlBYhAEWg4LgJtKZMbKvcBgcoLEIEi0HAsBDr7OLkZky1QTmSSQaDyAkSgCDQcD4F2PkfumA+V6wEClRcgAkWg4XgIdPz+aDS7AOnkfc6k7wMClRcgAkWg4exYoCdv36i5PBrtfWvy/+uj0ei5D7ggXgaBygsQgSLQcHYs0Pk96LvwJpIMApUXIAJFoOEg0OQgUHkBIlAEGg4CTQ4ClRcgAkWg4exaoNcP13EFgaogUHkBIlAEGo7Ju/CwLQhUXoAIFIGGg0CTg0DlBYhAEWg4hgI9+eRXv+ZEUBUEKi9ABIpAw7EQaHUkdPFBHlwL3wcEKi9ABIpAw/EQaPVe/NV7i+8QqAwClRcgAkWg4fgIdHTpw/l3CFQGgcoLEIEi0HCMBNp8HicC7QMClRcgAkWg4TgJdLYbj0D7gEDlBYhAEWg4XgKd7sYj0D4gUHkBIlAEGo6LQJ/7r6NmNx6B9gGBygsQgSLQcGwE+tHd2UcaHyHQPiBQeQEiUAQajo9Ax4+u1Qa9yIfK9QCBygsQgSLQcIwEOr0ZPXdj6gkClRcgAkWg4TgJdDxuduMRqAwClRcgAkWg4XgJtNmNR6AyCFRegAgUgYZjJtDZbjwClUGg8gJEoAg0HA+BXm/dQrnajUegMghUXoAIFIGGYyHQLo9/xe3sdBCovAARKAINx1Cg0AcEKi9ABIpAw/ER6Cf1VueX/+XDMr2cExCovAARKAINx0WgD6/tvTv94sFodLVUO+cBBCovQASKQMMxEeiD6hrO6Vd35l+BAgKVFyACRaDheAh0ejum/emXx9UdRd4t11J2EKi8ABEoAg3HQ6DVZufo+eog6MmbIzZB+4BA5QWIQBFoOBYCray513yq3KM3Zy4FBQQqL0AEikDDsRBotQd/c/7dQ+7G1AMEKi9ABIpAw3ERaEuZ3A+0DwhUXoAIFIGGYyhQtkD7gEDlBYhAEWg4FgKtjoEezb+7wzHQHiBQeQEiUAQajoVAp+cufbuW5vR2TPvlWsoOApUXIAJFoOF4CPTh9EbKFw8PD6dfcB6oDgKVFyACRaDheAh0ugm6gA1QHQQqL0AEikDDMRFoff78DI6A9gCBygsQgSLQcEwEOj65Nfs4pNHeq/izBwhUXoAIFIGG4yLQCZ/85MaNGz/4dalezgkIVF6ACBSBhmMkUNgGBCovQASKQMNBoMlBoPICRKAINBwEmhwEKi9ABIpAw9mxQOvP45z8t8sVLuVUQaDyAkSgCDScXQt0ehX89H7KbdZeC//5wXeaL//4VwcHX3vjmbaaBQQqL0AEikDDySPQr16fC/T2wZRvPuNuU4BA5QWIQBFoOGkE+tWPDhqB3j944Y3xk98cLLZIBwwClRcgAkWg4exYoCdv3/j+veq/Xb6/ci79F68cNMJsNkXvH7z4u2fcbwIQqLwAESgCDSfHu/BP/u7g4Os/mgn085k4JyL9cVRjeUGg8gJEoAg0nBwC/eKVF/7Tk/dmAr3fHPy8zT48Au2xABEoAg0niUD/w2/Hc4HeXgiUt5EQqL4AESgCDcdPoNUB0dVjoOO5QOcinWyKfuNPcb0lBYHKCxCBItBw/ARavSW/7jQmSaB/gHU83av27AhcgHEzFdiUX6m4mQqeqqiuzhcrC0ZYVE8l0OFhK0eFwAUowBYoW6DhnLMt0OGhvoBxUQ+qFFwqbqoCm/IrJaYFgaog0OQg0AsItFclz6nKSj6BLs5e4l34MQJtSsVNVWBTfqXEtCBQlYQC5TzQNgj0AgLtVclzqrKSUKBcidQGgV5AoL0qeU5VVhIKlGvh2yDQCwi0VyXPqcpKQoFOzHnA3ZgaEOgFBNqrkudUZSWjQJ9wP9AFCPQCAu1VyXOqspJRoNyRvgUCvYBAe1XynKqs7PqGysufhnR4+NKmj/SAdSDQCwi0VyXPqcrKrgW6fC/6Uz4TCdaBQC8g0F6VPKcqKwg0OQj0AgLtVclzqrKCQJODQC8g0F6VPKcqK7v/TKR1rLsfKKwFgV5AoL0qeU5VVvzehYdeINALCLRXJc+pygoCTQ4CvYBAe1XynKqsINDkINALCLRXJc+pygoCTQ4CvYBAe1XynKqsINDkINALCLRXJc+pygoCTQ4CvYBAe1XynKqsINDkINALCLRXJc+pygoCTQ4CvYBAe1XynKqsINDkINALwQswsCm/UuIcIFAVBJocBHoBgfaqpIBAVRBochDoBQTaq5ICAlVBoMlBoKGlLJtCoL4g0OQg0NBSlk0hUF8QaHIQaGgpy6YQqC8INDkINLSUZVMI1BcEmhwEGlrKsikE6gsCTQ4CDS1l2RQC9QWBJgeBhpaybAqB+oJAk4NAQ0tZNoVAfUGgyUGgoaUsm0KgviDQ5CDQ0FKWTSFQXxBochBoaCnLphCoLwg0OQg0tJRlUwjUFwSaHAQaWsqyKQTqCwJNDgINLWXZFAL1BYEmB4GGlrJsCoH6gkCTg0BDS1k2hUB9QaDJQaChpSybQqC+INDkINDQUpZNIVBfEGhyEGhoKcumEKgvCDQ5CDS0lGVTCNQXBJocBBpayrIpBOoLAk0OAg0tZdkUAvUFgSYHgYaWsmyqvEDLhiqzFhBochBoaCnLphCoLwg0OQg0tJRlUwjUFwSaHAQaWsqyqSGMLysINDkINLSUZVNDGF9WEGhyEGhoKcumhjC+rCDQ5CDQ0FKWTQ1hfFlBoMlBoKGlLJsawviygkCTg0BDS1k2NYTxZQWBJgeBhpaybGoI48sKAk0OAg0tZdnUEMaXFQSaHAQaWsqyqSGMLysINDkINLSUZVNDGF9WEGhyEGhoKcumhjC+rCDQ5CDQ0FKWTQ1hfFlBoMlBoKGlLJsawviygkCTg0BDS1k2NYTxZQWBJgeBhpaybGoI48sKAk0OAg0tZdnUEMaXFQSaHAQaWsqyqSGMLysINDkINLSUZVNDGF9WEGhyEGhoKcumhjC+rCDQ5CDQ0FKWTQ1hfFlBoMlBoKGlLJsawviygkCTg0BDS1k2NYTxZQWBJgeBhpaybGoI48sKAk0OAg0tZdnUEMaXFQSaHAQaWsqyqSGMLysINDkINLSUZVNDGF9WEGhyEGhoKcumhjC+rCDQ5CDQ0FKWTQ1hfFlBoMlBoKGlLJsawviygkCTg0BDS1k2NYTxZQWBJgeBhpaybGoI48sKAk0OAg0tZdnUEMaXFQSaHAQaWsqyqSGMLysINDkINLSUZVNDGF9WEGhyEGhoKcumhjC+rCDQ5CDQ0FKWTQ1hfFlBoMlBoKGlLJsawviygkCTg0BDS1k2NYTxZQWBJgeBhpaybGoI48sKAk0OAg0tZdnUEMaXFQSaHAQaWsqyqSGMLysINDkINLSUZVNDGF9WEGhyEGhoKcumhjC+rCDQ5CDQ0FKWTQ1hfFlBoMlBoKGlLJsawviygkCTg0BDS1k2NYTxZQWBJgeBhpaybGoI48sKAk0OAg0tZdnUEMaXFQSaHAQaWsqyqSGMLysINDkINLSUZVNDGF9WEGhyEGhoKcumhjC+rCDQ5CDQ0FKWTQ1hfFlBoMlBoKGlLJsawviygkCTg0BDS1k2NYTxZQWBJgeBhpaybGoI48sKAk0OAg0tZdnUEMaXFQSaHAQaWsqyqSGMLysINDkINLSUZVNDGF9WEGhyEGhoKcumhjC+rCDQ5CDQ0FKWTQ1hfFlBoMlBoKGlLJsawviygkCTg0BDS1k2NYTxZQWBJgeBhpaybGoI48sKAk0OAg0tZdnUEMaXFQSaHAQaWsqyqSGMLysINDkINLSUZVNDGF9WEGhyEGhoKcumhjC+rCDQ5CDQ0FKWTQ1hfFlBoMlBoKGlLJsawviygkCTg0BDS1k2NYTxZQWBJgeBhpaybGoI48sKAk0OAg0tZdnUEMaXFQSaHAQaWsqyqSGMLysIdCDERT2okmcpy6aGML6sINCBEBf1oEqepSybGsL4soJAB0Jc1IMqeZaybGoI48sKAnUmMKB2lTxLWTY1hPFZLhoBBOpMYBbsKnmWsmxqCOOzXDQCCNSZwCzYVfIsZdnUEMZnuWgEEKgzgVmwq+RZyrKpIYzPctEIIFBnArNgV8mzlGVTQxif5aIRQKDOBGbBrpJnKcumhjA+y0UjgECdCcyCXSXPUpZNDWF8lotGAIE6E5gFu0qepSybGsL4LBeNAAJ1JjALdpU8S1k2NYTxWS4aAQTqTGAW7Cp5lrJsagjjs1w0AgjUmcAs2FXyLGXZ1BDGZ7loBBCoM4FZsKvkWcqyqSGMz3LRCCBQZwKzYFfJs5RlU0MYn+WiEUCgzgRmwa6SZynLpoYwPstFI4BAnQnMgl0lz1KWTQ1hfJaLRgCBOhOYBbtKnqUsmxrC+CwXjQACdSYwC3aVPEtZNjWE8VkuGgEE6kxgFuwqeZaybGoI47NcNAII1JnALNhV8ixl2dQQxme5aAQQqDOBWbCr5FnKsqkhjM9y0QggUGcCs2BXybOUZVNDGJ/lohFAoM4EZsGukmcpy6aGMD7LRSOAQJ0JzIJdJc9Slk0NYXyWi0YAgToTmAW7Sp6lLJsawvgsF40AAnUmMAt2lTxLWTY1hPFZLhoBBOpMYBbsKnmWsmxqCOOzXDQCCNSZwCzYVfIsZdnUEMZnuWgEEKgzgVmwq+RZyrKpIYzPctEIIFBnArNgV8mzlGVTQxif5aIRQKDOBGbBrpJnKcumhjA+y0UjgECdCcyCXSXPUpZNDWF8lotGAIE6E5gFu0qepSybGsL4LBeNAAJ1JjALdpU8S1k2NYTxWS4aAQTqTGAW7Cp5lrJsagjjs1w0AgjUmcAs2FXyLGXZ1BDGZ7loBBCoM4FZsKvkWcqyqSGMz3LRCCBQZwKzYFfJs5RlU0MYn+WiEUCgzgRmwa6SZynLpoYwPstFI4BAnQnMgl0lz1KWTQ1hfJaLRgCBOhOYBbtKnqUsmxrC+CwXjQACdSYwC3aVPEtZNjWE8VkuGgEE6kxgFuwqeZaybGoI47NcNAII1JnALNhV8ixl2dQQxme5aAQQqDOBWbCr5FnKsqkhjM9y0QggUGcCs2BXybOUZVNDGJ/lohFAoM4EZsGukmcpy6aGMD7LRSOAQJ0JzIJdJc9Slk0NYXyWi0YAgToTmAW7Sp6lLJsawvgsF40AAnUmMAt2lTxLWTY1hPFZLhoBBOpMYBbsKnmWsmxqCOOzXDQCCNSZwCzYVfIsZdnUEMZnuWgEEKgzgVmwq+RZyrKpIYzPctEIIFBnArNgV8mzlGVTQxif5aIRQKDOBGbBrpJnKcumhjA+y0UjgECdCcyCXSXPUpZNDWF8lotGAIE6E5gFu0qepSybGsL4LBeNAAJ1JjALdpU8S1k2NYTxWS4aAQTqTGAW7Cp5lrJsagjjs1w0AgjUmcAs2FXyLGXZ1BDGZ7loBBCoM4FZsKvkWcqyqSGMz3LRCCBQZwKzYFfJs5RlU0MYn+WiEUCgzgRmwa6SZynLpoYwPstFI4BAnQnMgl0lz1KWTQ1hfJaLRgCBOhOYBbtKnqUsmxrC+CwXjQACdSYwC3aVPEtZNjWE8VkuGgEE6kxgFuwqeZaybGoI47NcNAII1JnALNhV8ixl2dQQxme5aAQQqDOBWbCr5FnKsqkhjM9y0QggUGcCs2BXybOUZVNDGJ/lohFAoM4EZsGukmcpy6aGMD7LRSOAQJ0JzIJdJc9Slk0NYXyWi0YAgToTmAW7Sp6lLJsawvgsF40AAnUmMAt2lTxLWTY1hPFZLhoBBOpMYBbsKnmWsmxqCOOzXDQCCNSZwCzYVfIsZdnUEMZnuWgEEKgzgVmwq+RZyrKpIYzPctEIINBwAl9Av1KWTTG+HVTyLBXblAACDSfwBfQrZdkU49tBJc9SsU0JINBwAl9Av1KWTTG+HVTyLBXblAACDSfwBfQrZdkU49tBJc9SsU0JINBwAl9Av1KWTTG+HVTyLBXblAACDSfwBfQrZdkU49tBJc9SsU0JINBwAl9Av1KWTTG+HVTyLBXblAACDSfwBfQrZdkU49tBJc9SsU0JINBwAl9Av1KWTTG+HVTyLBXblAACDSfwBfQrZdkU49tBJc9SsU0JINBwAl9Av1KWTTG+HVTyLBXblAACDSfwBfQrZdkU49tBJc9SsU0JINBwAl9Av1KWTTG+HVTyLBXblAACDSfwBfQrZdkU49tBJc9SsU0JINBwAl9Av1KWTTG+HVTyLBXblAACDSfwBfQrZdkU49tBJc9SsU0JINBwAl9Av1KWTTG+HVTyLBXblAACDSfwBfQrZdkU49tBJc9SsU0JINBwAl9Av1KWTTG+HVTyLBXblAACDSfwBfQrZdkU49tBJc9SsU0JINBwAl9Av1KWTTG+HVTyLBXblAACDSfwBfQrZdkU49tBJc9SsU0JINBwAl9Av1KWTTG+HVTyLBXblB2WTUUT+AL6lbJsivHtoJJnqdim7LBsKprAF9CvlGVTjG8HlTxLxTZlh2VTNXGzHlTJs5RlU4xvB5U8S1k2Fac9BJq9lGVTjG8HlTxLWTaFQHtNVVAlz1KWTTG+HVTyLGXZFALtNVVBlTxLWTbF+HZQybOUZVMItNdUBVXyLGXZFOPbQSXPUpZNIdBeUxVUybOUZVOMbweVPEtZNoVAe01VUCXPUpZNMb4dVPIsZdkUAu01VUGVPEtZNsX4dlDJs5RlUwi011QFVfIsZdkU49tBJc9Slk0h0F5TFVTJs5RlU4xvB5U8S1k2hUB7TVVQJc9Slk0xvh1U8ixl2RQC7TVVQZU8S1k2xfh2UMmzlGVTCLTXVAVV8ixl2RTj20Elz1KWTSHQXlMVVMmzlGVTjG8HlTxLWTaFQHtNVVAlz1KWTTG+HVTyLGXZlJ9A//hXBwdfeyOoWE3cVAVV8ixl2RTj20Elz1KWTdkJ9PbBlG/GVKuJm6qgSp6lLJtifDuo5FnKsik3gd4/eOGN8ZPfHBx8J6RcTdxUBVXyLGXZFOPbQSXPUpZNmQn0q9drc94/ePF3EfVq4qYqqJJnKcumGN8OKnmWsmzKTKCfz8Q5EemPI+rVxE1VUCXPUpZNMb4dVPIsZdmUmUDvNwc/b0fuw8dNVVAlz1KWTTG+HVTyLGXZlJlAby8EGvg2UtxUBVXyLGXZFOPbQSXPUpZNeQn0yXvNhuf9g2/8KaAgAEAGnrlA/7AdAW0BAGwiRkxsgQIAbAkCDYetZxmmSoapUik7Uwg0HKIuw1TJMFUq+QS6OHsp9F34rBB1GaZKhqlSSSjQZ3MeaFaIugxTJcNUqSQU6LO5EikrRF2GqZJhqlQSCvTZXAufFaIuw1TJMFUqCQU6MedB/N2YskLUZZgqGaZKJaNAnzyL+4FmhajLMFUyTJVKRoE+kzvSZ4WoyzBVMkyVSk6BwhyiLsNUyTBVKgg0OURdhqmSYapUEGhyiLoMUyXDVKkg0OQQdRmmSoapUkGgySHqMkyVDFOlgkCTQ9RlmCoZpkoFgSaHqMswVTJMlQoCTQ5Rl2GqZJgqFQSaHKIuw1TJMFUqCDQ5RF2GqZJhqlQQaHKIugxTJcNUqSDQ5BB1GaZKhqlSQaDJIeoyTJUMU6WCQJND1GWYKhmmSgWBJoeoyzBVMkyVCgJNDlGXYapkmCoVBJocoi7DVMkwVSoINDlEXYapkmGqVBBocoi6DFMlw1SpINDkEHUZpkqGqVJBoMkh6jJMlQxTpYJAk0PUZZgqGaZKBYECAKQAgQIAbAkCBQDYEgQKALAlCBQAYEsQKADAliBQAIAtQaAAAFuCQAEAtgSBAgBsCQIFANgSBAoAsCUIFABgSxAoAMCWIFAAgC1BoAAAW4JAAQC2BIGG8ue/eeXg4Gtv/GnXfSTgyd9Npupf/99dt5GG+wff3HUL9jx576DmG8VWIAKN5H7x1y8tf369nqrv7LqRJHzxCgI9k69eR6CZ+fzg4K//efzkn8j6mUy2Fb7+2/GT3xwc/HjXraSg2rYiVGfxxSvFN10QaCC3Zxm/f/DC3+64FXc+n03RbbQgUe3bMFNn8Xn5OUKgcUx2IH7c/QI2sfi3hsMdAl+9/uK/R6Bncr/8ESEE+gxAoDIIVOL2wY/ZVj+b2+X3/BDoM+CLVxCoxpP30ILA55N/ZhDomUy20//Hvzs4eOE/Fvw3GYE+A+4fvPi7XfeQgj+/x0wJfPX6ZMsKgZ7JZMOl5uvlQoVA45m8jpycI/B5db4J/jyb21WeEOiZTAL1wn8fj//4CqcxZearH3FcT+Lzr/2rycYC5yucxefTPCHQM2n2/EoeQkOg0Tx5j5OYZJ7cZrLO4sl70ylCoDoF5wqBBjPZ/kQJOryLdCazazgRqE7BczsQaCx/fh1/9oLzmM7gi1fq/VIEqoNAs/LFKwcv/nbXTaQCgZ5Bc38F7rGgg0CTMvFnwTMoEjPZc5+dqMCG1RkgUJV5qBbpevYg0EC+ep2Ii7TeMOWULwn+pTmTJlSfFzyMhkAD4QR6mcm/NV//beFT9nKDQM+k2gH8beG7oSHQOOZ3I+Q2l2fTXDXCIQ8RBHo2n89C9c1y/ygj0DjmV5IhUIH/93fcvL8PCFRg9okQBZ8RgQIAbAkCBQDYEgQKALAlCBQAYEsQKADAliBQAIAtQaAAAFuCQAEAtgSBAgBsCQIFANgSBAoAsCUIFABgSxAoAMCWIFAAgC1BoNDlwWg02ntX+a3nPlr3k5M3Jz/aj+/LijujmpvNA19+dzR6/t7G369+3DD5tYeX6y+PSvQKzxIECl0QqMCKQO+MThVoY0wEet5AoNAFgQosC/TB6HSBPhgh0PMJAoUuCFRgSaB3L58h0DsI9JyCQKELAhW40x7jyf+am3ETx+3d/cVDR8+qPygFAoUuCFSgLdCPr43OEmg1J8tzikDPBQgUujQCnS36j69Pvr/yQfPTk1svjUYXX+sIdPorF69+NvuNuUDvLKzy8fVqp3Xvyk9XHbP6o0/feqn6y8OXP5w39Py9x+9frp548kufTjv6cF7g5NZh9fwvLx5Z99CjadGLr37WeuLltjvDnb5xfrSYk84/Fy2BLvbONwu0qrX8zw0CPRcgUOjSEejP3xx1jtY1B++evztXypfNBtjsd+YCnZrl0kedX1nZDlv90cmb80fqilOB/u/mif/x/e7hx/Hv529wX7238aGT5q9Gez9cfuJF293hHi+ceLy8Ub0k0L3XWr+8YU4v/aT6F+DV+e8g0HMBAoUubYG2mPqqfTbOTKDtMxynSmkE+mD+K51KXYOu+dHx8rO238FeLbT09syGh9pFj8Yb2+488eJYxvSXO4cwuwKdbOmeLtBWR5ea8SPQcwEChS5dge69NnuPpNJF/dC3740/vjy3Y+WBvXdmb0TfHM8FOnXtcx82FZ/7+Xj2O/vLT9b90fTvqg3Hu82z1gK92jzr5Pnrjo6aAqPnP2w1ue6hO7O+H3339LY7w50+Mn2SqqfuHnhboNMDBacLtO3v5l8QBHouQKDQpSPQ6WqfflXZYSq3o+qXaj1+VH9RK6E5lbwW6FRVM1cs3oK+c/H7v+5YZs2PHv/iem2ixkmLcyyPGyNONwnnSt+f/vrddt/dhxaHM5sRbGi7O9z5yfGd99zH43WPnCrQ7tZta6P4SH1RwBUECl06Al2orLLlndF8S6z9UG2SylLzv/uLlj9Pk8tp3ukI9Kh65E7Hcc3WafvY6f4ZD528eeXVD8Yb2+4Ot7Hs9Efdk5D6CXQq8EuTDe16G/rm/C+ONvwBpAGBQpeOQGtJNOJsWWL20GI3d66ZxeZWY5j6COCln362+mQbf/T4l9ebrbUHc+ksBN500vbWbINxzUMr11luars73Oa3Vvfg+26B3vreS/UPHy4OYiDQcwEChS6bBdo+w3N2Yk/7vZjZhuJCoM0W6OKRK+8sOWbtjz59+6X27u5i+3G9QBuRzVra8FDHbpva7gp0dgLV9H9LJ7ZuFuhy6SX3LlpBoOcCBApdOgI9mj6kC3S/c8CvkVbrob1vdxW6+qOH11r1zhBo56T9+vfWPHS2QPfXDXe+e7/mMiIECjUIFLpsFmh74+5Mgf7lqK2dR29dbv1Kh6Ufzc6UuvLTD9vHQJ/xFugGgdaSW3cWPAKFGgQKXc4Q6MZjoA21QK/O34ppePzL703duOYy0faPmvOLum8inSZQ7RhoR2Ob2u4Od7YPf3eN9fsdA737vcPL9Q9b28cI9FyAQKHLKQJd8y78yjU6c0csznl6/PFbL9XbovOzLhtWftS6gFIRaN934ZuzpTa03R3ubB/+JTrSsQAAAldJREFUe6OVPfieAr0z3xpfTAoCPR8gUOhyikDXnAe6euuR+UZW49ipE2u5LF/Ss/qjhUDnPztNoPUJoasnfa57qF10Q9vd4Y7nlxCt3Daln0Cns7X32uw0ptY/QUcb/gDSgEChyykCrc9k71yJVJ9//lp1tfnet35WnY00F+hcW9O/ennys0dvrjsk2PnRvN7H81tsnibQ2Q1LVi87WvPQ1Xv1s8xPWlpte2m48yOyKzeX6ifQ7uWpR4vHjvq8MOAIAoUupwm0+w7J9KHO5fFzpc61Nd0AbL+v3pXG6o+6V753N3LXCHT8fuu3ZwZb89Dx8kPr214a7vwCz5XDtj0F2h7m/r3FXxxt+gPIAgKFLqcJdPxoZoK9//bd5YcmXKquCl8IdL4TfvLW/FeamyE1rP6o0d/ev52d4n66QPvejal5aG3by8Pt3JKvTU+Bts7WmjeJQM8FCBS6nCrQ2f1AX/2sfW5PfUfPiy/XNw1tvdG8uIbo0ewWn6+uOmblR9P7fVb3fZu903OGQMcnv6j/oHU105qHZvcDbd0idE3bK8Ntv+vTpq9Aq1FVF4a2nh6BngsQKMBmmkvll1i9vUhvEOi5AIECbGbDxxUjUKhBoAAbubt+D371c+H7wadynhsQKMB6Zm/dr/vsPAQKNQgUYD21QPfWSRKBQg0CBVjP70fd981bIFCoQaAAAFuCQAEAtgSBAgBsCQIFANgSBAoAsCUIFABgSxAoAMCWIFAAgC1BoAAAW4JAAQC2BIECAGwJAgUA2BIECgCwJQgUAGBLECgAwJb8f7eHX7xy01XZAAAAAElFTkSuQmCC" alt width="100%" /></p>
+<p>Wykres odpowiada na pytanie o położenie, kształt, nakładanie się grup
+lub kierunek związku. Tytuł, osie i jednostki są częścią wyniku. Nie
+wnioskuj o istotności tylko z wyglądu, lecz sprawdź, czy obraz jest
+spójny z tabelą i estymatą.</p>
+<p>Przeczytaj wykres w trzech warstwach. Najpierw opisz elementy
+widoczne bez testu: zakres, skupienie i nietypowe obserwacje. Potem
+połącz je z estymatą w tabeli. Na końcu nazwij rzecz, której wykres nie
+rozstrzyga, np. przyczynowość, błąd pomiaru albo zachowanie wyniku w
+nowej próbie. Nie usuwaj obserwacji tylko dlatego, że psuje prostą
+historię.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="wynik-czytany-linia-po-linii" class="section level1">
+<h1>12. Wynik czytany linia po linii</h1>
+<p>Dla indeksu podajemy regułę, zakres, N ważnych przypadków i liczbę
+pozycji. Wynik obserwacyjny odczytujemy oddzielnie; zgodność samooceny z
+wykonaniem jest pytaniem empirycznym.</p>
+<p>Schemat pełnego zdania: „W analizie N osób oszacowano [efekt] w
+[jednostce], 95% CI [dolna; górna]. Statystyka klasyczna wyniosła
+[symbol i df], p=[wartość], a procedura permutacyjna B losowań dała
+p_perm=[wartość]. Wynik opisuje [zakres] i nie rozstrzyga
+[ograniczenie]”.</p>
+<p>Podczas zajęć jedna osoba czyta tabelę, druga sprawdza znak i
+jednostkę, a trzecia wskazuje granicę wniosku. Dopiero po tej kontroli
+zapisujemy odpowiedź do pliku Markdown.</p>
+<p>Dobra interpretacja ma trzy warstwy. Warstwa liczbowa mówi, co
+oszacowano. Warstwa badawcza odpowiada na pytanie o zachowanie
+informacyjne lub wykonanie zadania. Warstwa krytyczna wskazuje, czego
+projekt, pomiar i syntetyczność nie pozwalają stwierdzić. Pominięcie
+którejkolwiek warstwy tworzy tekst technicznie poprawny, lecz
+metodologicznie niepełny.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="błędy-interpretacji" class="section level1">
+<h1>13. Błędy interpretacji</h1>
+<p>Błąd: „indeks mierzy prawdziwe kompetencje cyfrowe”. Poprawnie:
+„indeks podsumowuje dydaktyczne pozycje samooceny; trafność wymaga
+osobnych dowodów, a wykonanie oceniamy czasem i powodzeniem”.</p>
+<p>Dodatkowe pułapki: traktowanie braku istotności jako dowodu równości,
+pomijanie N, raportowanie samego p, utożsamienie samooceny z kompetencją
+oraz zamiana obserwacyjnego związku w przyczynę. Poprawa polega na
+dodaniu liczby, jednostki, zakresu i ograniczenia, a nie na bardziej
+stanowczym czasowniku.</p>
+<p>Porównaj dwie konstrukcje: „test wykazał efekt” i „oszacowana różnica
+wyniosła…, a wynik testu był…”. Druga oddziela wielkość od decyzji.
+Podobnie „grupy były takie same” zastępujemy opisem przedziału i
+precyzji. W raporcie nie używamy słowa „trend” jako sposobu ratowania p
+nieco większego od .05; opisujemy rzeczywisty efekt i jego
+niepewność.</p>
+<p><strong>Po zajęciach.</strong> Znajdź w swoim szkicu jedno zdanie
+zawierające „wpływa”, „udowadnia”, „brak różnicy” albo „95% wyników”.
+Przepisz je tak, aby odpowiadało projektowi i rzeczywistemu znaczeniu
+statystyki.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="próba-prowadzona" class="section level1">
+<h1>14. Próba prowadzona</h1>
+<ol style="list-style-type: decimal">
+<li>Otwórz gotowy skrypt i wskaż sekcję parametrów.<br />
+</li>
+<li>Uruchom cały plik bez zmiany dalszej części.<br />
+</li>
+<li>Otwórz zapisany CSV i odnajdź N, estymatę oraz jednostkę.<br />
+</li>
+<li>Jeżeli analiza jest inferencyjna, porównaj p klasyczne i
+permutacyjne.<br />
+</li>
+<li>Odczytaj efekt i przedział.<br />
+</li>
+<li>Napisz jedno zdanie wyniku oraz jedno zdanie ograniczenia.</li>
+</ol>
+<p>Jeżeli skrypt zgłasza błąd, najpierw sprawdź katalog projektu, nazwę
+parametru i dozwoloną wartość. Nie poprawiaj wnętrza funkcji
+statystycznej. Błąd parametru jest informacją o niedozwolonym wyborze, a
+nie zaproszeniem do przepisania procedury.</p>
+<p>Podział czasu próby: 3 minuty na uruchomienie, 4 na odnalezienie
+właściwego CSV, 5 na głośny odczyt tabeli, 5 na szkic interpretacji i 3
+na kontrolę ograniczenia. Jeśli grupa utknie, wraca do pytania,
+jednostki i znaku efektu. Celem jest krótkie, sprawdzalne rozumowanie,
+nie zwiększanie liczby wykonanych poleceń.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="zadanie-z04" class="section level1">
+<h1>15. Zadanie Z04</h1>
+<p>Uruchom Z04. Wyjaśnij rekodację pozycji 3, regułę 5/6, znaczenie
+jednego wiersza indeks.csv oraz mianownik w kanaly.csv. Porównaj
+samoocenę i obserwację bez twierdzenia, że są zamienne.</p>
+<p>Przygotuj pliki poleceniem poniżej. Uruchom zapisany
+<code>analiza.R</code>, a następnie uzupełnij wszystkie pola
+<code>[UZUPELNIJ]</code> w <code>odpowiedzi.md</code>. Nie wklejaj kodu
+ani zrzutu całej konsoli.</p>
+<pre class="r"><code>przygotuj_zadanie(&#39;Z04&#39;, katalog = &#39;.&#39;)
+sprawdz_zadanie(&#39;Z04&#39;, katalog = &#39;.&#39;)
+oddaj_zadanie(&#39;Z04&#39;, katalog = &#39;.&#39;)</code></pre>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="rubryka-kontrola-i-dalszy-krok" class="section level1">
+<h1>16. Rubryka, kontrola i dalszy krok</h1>
+<table>
+<colgroup>
+<col width="42%" />
+<col width="57%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>Kryterium</th>
@@ -701,35 +976,45 @@ utils::write.csv(kanaly, file.path(wyniki, &quot;kanaly.csv&quot;),
 </thead>
 <tbody>
 <tr class="odd">
-<td>Z04.1 Słownik, pozycje, skale, kody i pytanie</td>
+<td>Z04.1: Słownik definiuje pozycje, skale, zakresy, kody braków i
+pytanie badawcze.</td>
 <td align="right">3</td>
 </tr>
 <tr class="even">
-<td>Z04.2 Rekodacja i jawna reguła indeksu</td>
+<td>Z04.2: Poprawnie odczytano rekodację pozycji odwróconej i
+uzasadniono regułę indeksu przy brakach.</td>
 <td align="right">3</td>
 </tr>
 <tr class="odd">
-<td>Z04.3 Wielokrotny wybór z poprawnym mianownikiem</td>
+<td>Z04.3: Pytanie wielokrotnego wyboru ma poprawne liczebności, odsetki
+i mianownik.</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td>Z04.4 Rozróżnienie pozycji/indeksu i ograniczenie pomiaru</td>
+<td>Z04.4: Student rozróżnia pojedynczą pozycję porządkową od wyniku
+złożonego i wskazuje ograniczenie pomiaru.</td>
 <td align="right">2</td>
 </tr>
 </tbody>
 </table>
-<p>Pełne poziomy: <code>rubryka(&quot;Z04&quot;)</code>. Zapisz skrypt, uruchom od
-początku, wykonaj <code>sprawdz_zadanie(&quot;Z04&quot;)</code>,
-<code>oddaj_zadanie(&quot;Z04&quot;)</code> i <code>status_oddania(&quot;Z04&quot;)</code>.
-Zakończ logowanie pakietu i przeglądarki.</p>
+<p>Automatyczna kontrola sprawdza pliki, parametry, odtwarzalność i
+zgodność eksportu. Prowadzący ocenia dobór języka, odczyt liczb,
+interpretację efektu oraz ograniczenie. Poprawny skrypt bez własnego
+wyjaśnienia nie realizuje zadania.</p>
+<p>Po wysyłce sprawdź <code>status_oddania()</code> i zdalne SHA. Na
+współdzielonym komputerze wywołaj <code>wyloguj_github()</code>, wyloguj
+przeglądarkę i zamknij RStudio bez <code>.RData</code>. Następne
+ćwiczenie rozpoczyna się od pobrania potwierdzonej wersji.</p>
+<div id="źródło-kontekstu" class="section level2">
+<h2>Źródło kontekstu</h2>
+<p>DigComp 2.2 i ACRL Framework dostarczają języka obszarów kompetencji,
+a skale samooceny przypominają o psychometrycznej jakości. Pozycje
+kursowe są przykładem dydaktycznym, nie walidowanym testem.</p>
+<p>Materiały odwołują się do: Wilsona (1999), Kuhlthau (1991),
+Savolainen (1995), Hargittai (2002), DigComp 2.2, ACRL Framework oraz
+Internet Skills Scale. Są to ramy pojęciowe; dane i pozycje kursowe
+pozostają syntetyczne i dydaktyczne.</p>
 </div>
-<div id="pytania-do-własnych-notatek" class="section level1">
-<h1>Pytania do własnych notatek</h1>
-<p>Dlaczego pozycję odwraca się na podstawie treści? Czym różnią się
-brak, odpowiedź neutralna i odpowiedź negatywna? Dlaczego wynik średni
-nie jest zwalidowaną skalą przez sam sposób liczenia? Jak policzysz
-mianownik, gdy ktoś nie odpowiedział na pytanie o kanały? Odpowiedz z
-przykładami z własnego wariantu.</p>
 </div>
 
 

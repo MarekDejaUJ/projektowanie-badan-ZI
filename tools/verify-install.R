@@ -13,9 +13,18 @@ stopifnot(nrow(x$dane) == 150L, nrow(scenariusze()) == 20L)
 k <- tempfile("projekt lokalny ze spacjami-")
 utworz_projekt("instalacja017", "S03", k)
 stopifnot(file.exists(file.path(k, "moje-badania.Rproj")))
-for (id in materialy()$id) for (f in c("html", "pdf", "Rmd"))
-  stopifnot(file.exists(otworz_material(id, format = f, otworz = FALSE)),
-            file.exists(otworz_material(id, format = f, handout = TRUE, otworz = FALSE)))
+katalog_materialow <- materialy()
+for (id in katalog_materialow$id) {
+  for (f in c("html", "pdf", "Rmd"))
+    stopifnot(file.exists(otworz_material(id, format = f, otworz = FALSE)))
+  if (katalog_materialow$typ[katalog_materialow$id == id] == "wyklad") {
+    for (f in c("html", "pdf", "Rmd", "tex"))
+      stopifnot(file.exists(otworz_material(id, format = f, handout = TRUE, otworz = FALSE)))
+  } else {
+    stopifnot(file.exists(otworz_material(id, format = "R", otworz = FALSE)))
+    stopifnot(inherits(try(otworz_material(id, handout = TRUE, otworz = FALSE), silent = TRUE), "try-error"))
+  }
+}
 stopifnot(oblicz_ocene(rep(8, 10), 90)$procent == 85)
 unlink(k, recursive = TRUE)
 cat("Instalacja z konkretnego SHA, dane, projekt i materiały offline: OK.\n")

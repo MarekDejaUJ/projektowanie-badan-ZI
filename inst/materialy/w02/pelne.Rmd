@@ -1,5 +1,5 @@
 ---
-title: 'W02 — Opis danych, jakość i pomiar ankietowy'
+title: 'W02 — Język danych, pomiar i opis'
 subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
 author: 'Marek Deja'
 date: '2026/27'
@@ -9,165 +9,137 @@ papersize: a4
 geometry: margin=2cm
 ---
 
-# Opis, który zachowuje znaczenie pomiaru
+# 1. Odcinek wspólnej opowieści
 
-Otrzymana tabela ankiety nie mówi sama, jaki wynik jest typowy, z ilu odpowiedzi pochodzi ani czy opis pasuje do skali. Czas, pojedyncza pozycja postawy i indeks wymagają różnych decyzji. Na tym wykładzie przechodzimy od organizacji danych przez miary położenia, rozproszenia i asymetrii do interpretacji pomiaru ankietowego. Obliczenia importu oraz opisu rozwijają C02–C04.
+Ta sama osoba może wysoko oceniać własne kompetencje i jednocześnie długo wykonywać zadanie. Pomiar ankietowy oraz obserwacyjny są różnymi oknami na zachowanie. Dobry opis nie zaciera tej różnicy i nie sprowadza tabeli do jednej średniej.
 
-Układ 90 minut: 10 minut jednostek i jakości, 15 minut szeregów/mianowników, 20 minut miar położenia oraz zróżnicowania, 15 minut kształtu i wykresów, 20 minut pomiaru postaw, 10 minut transformacji i pytań. Rozkłady teoretyczne i prawdopodobieństwo rozwija W03. Wykład nie wymaga opanowania wszystkich funkcji R; przykłady można odczytać z gotowego HTML/PDF.
+**Pytanie wykładu:** Jak opisać samoocenę, obserwowany czas, powodzenie i wybór kanału tak, aby miara odpowiadała skali i właściwemu mianownikowi?
 
-# Organizacja odpowiedzi i jakość
+| Minuty | Część |
+|---:|---|
+| 0–15 | problem i ramy LIS |
+| 15–35 | projekt, pomiar i symbole |
+| 35–55 | metoda oraz przykład |
+| 55–70 | tor klasyczny i permutacyjny |
+| 70–85 | interpretacja, błędy i dyskusja |
+| 85–90 | most do ćwiczeń |
 
-W tabeli ankietowej jeden wiersz jest odpowiedzią jednej osoby, a kolumny są zmiennymi. Słownik ustala znaczenie, skale, jednostki i kody. Manifest identyfikuje wariant, a dziennik czyszczenia zapisuje reguły i ich skutki. Nie zmieniamy surowego pliku na podstawie oczekiwanych wyników testu.
+\newpage
 
-Brak odpowiedzi nie jest zerem, a „nie dotyczy” nie jest oceną neutralną. Identyczne kopie wierszy zwiększają N pozornie; sprzeczne odpowiedzi o tym samym ID wymagają wyjaśnienia. Obserwacja odstająca może być błędem albo prawidłowym rzadkim doświadczeniem. Przed usunięciem sprawdź zakres, źródło i jednostkę; sam boxplot nie rozstrzyga.
+# 2. Dlaczego to jest pytanie LIS
 
-Załóżmy, że czas 120 sekund wpisano do kolumny minut. Poprawna konwersja daje 2 minuty, a nie brak. Jeżeli nie można ustalić jednostki z dokumentacji, nie zgaduj na podstawie tego, jaki wynik pasuje do średniej. Utrzymuj kopię danych, jawny kod i dziennik. Przy różnych regułach braków opisz również, jak zmienia się N używane w poszczególnych tabelach.
+DigComp 2.2 i ACRL Framework pomagają rozdzielić wyszukiwanie, ocenę, wykorzystanie i refleksję nad informacją. Internet Skills Scale oraz badania bezpośredniego wykonania pokazują, że deklaracja i umiejętność nie są tożsame. Pozycje kursowe wykorzystują ten język, ale nie kopiują zwalidowanej skali.
 
-# Szeregi statystyczne
+Library and information science bada relację osób, informacji, technologii i instytucji. W kursie nie tworzymy wyniku o konkretnej bibliotece. Używamy syntetycznego badania, aby ćwiczyć przejście od konstruktu do wskaźnika oraz od liczby do ostrożnego wniosku.
 
-Zanim przystąpimy do obliczeń, musimy uporządkować zebrane dane. W statystyce służą do tego **szeregi statystyczne** — uporządkowane zestawienia wartości zmiennej wraz z informacją o częstości ich występowania.
+\newpage
 
+# 3. Pytanie przed metodą
 
-Szereg punktowy zestawia pojedyncze wartości lub kategorie i ich liczebności, np. odpowiedzi 1–5. Szereg przedziałowy grupuje liczbowe pomiary w klasy, np. 0–5, 5–10, 10–15 minut. Granice klas muszą jasno określać, do którego przedziału należy wartość na granicy. Szereg czasowy porządkuje obserwacje według kolejnych okresów; czas jako zmienna w jednej ankiecie nie tworzy automatycznie szeregu czasowego.
+Jak opisać samoocenę, obserwowany czas, powodzenie i wybór kanału tak, aby miara odpowiadała skali i właściwemu mianownikowi?
 
-Zachowujemy mały wektor trzydziestu ocen, aby sprawdzić liczebności ręcznie. `factor(..., levels=1:5)` pokazuje również kategorię bez wskazań. Odczytaj sumę liczebności i mianownik procentów, a nie tylko najczęstszą ocenę.
+Pytanie powinno wskazywać jednostkę, wynik, porównanie lub związek, populację i okres. Hipoteza dodaje przewidywany kierunek wtedy, gdy ma podstawę teoretyczną. Analiza eksploracyjna też jest dopuszczalna, lecz trzeba ją nazwać i nie przedstawiać późniejszego odkrycia jako wcześniejszej prognozy.
 
-```{r szereg}
-oceny <- c(4, 5, 3, 4, 5, 4, 3, 5, 4, 4, 5, 3, 4, 4, 5,
-           2, 4, 5, 4, 3, 4, 5, 4, 4, 5, 4, 3, 4, 5, 4)
-tab <- table(factor(oceny, levels = 1:5))
-data.frame(ocena = names(tab), n = as.integer(tab),
-  procent_waznych = as.numeric(100 * prop.table(tab)))
-```
+\newpage
 
-W pytaniu jednokrotnego wyboru procenty ważnych, rozłącznych odpowiedzi sumują się do 100. W wielokrotnym wyborze jedna osoba może zaznaczyć kilka opcji, więc procenty respondentów mogą przekroczyć 100. Gdy zamiast respondentów mianownikiem są wszystkie wskazania, otrzymujemy inny wskaźnik. Nazwa „procent” bez mianownika jest niewystarczająca.
+# 4. Projekt wyznacza granicę wniosku
 
-## Histogram i wybór klas
+Pomiar zaczyna się od definicji konstruktu i mapy: konstrukt → wymiar → wskaźnik → pozycja lub obserwacja → kod. Trafność dotyczy interpretacji wyniku, rzetelność jego powtarzalności, a błąd pomiaru może powstać w instrukcji, zadaniu, urządzeniu lub odpowiedzi.
 
-Histogram przedstawia szereg przedziałowy. Przy równych szerokościach wysokość może oznaczać liczebność; przy gęstości pole słupka odpowiada udziałowi w przedziale. Wartość gęstości w punkcie nie jest odsetkiem osób. Zbyt szerokie klasy mogą ukryć dwa skupienia, a zbyt wąskie pokazać przypadkowy szum. Dobór klas pomaga czytaniu, ale nie powinien służyć do podkreślenia oczekiwanego wyniku.
+Losowość doboru dotyczy uogólnienia na populację, a losowy przydział warunku wniosku przyczynowego. Dostępna próba nie staje się reprezentatywna przez duże N. Braki, odmowa udziału i samoselekcja mogą zmieniać obraz nawet przy poprawnie wykonanym teście.
 
-# Miary położenia
+\newpage
 
-## Średnia
+# 5. Pomiar: samoocena i obserwacja
 
-Średnia arytmetyczna to suma wartości podzielona przez liczbę ważnych obserwacji: $\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i$. $x_i$ oznacza wartość osoby $i$, $n$ liczbę znanych wartości, a $\bar{x}$ średnią z próby. Średnią populacji oznaczamy $\mu$, a jej liczebność $N$. Oba wyniki mają jednostkę zmiennej, np. minuty.
+Skala nominalna klasyfikuje, porządkowa ustawia kolejność, a ilorazowa zachowuje sens zera i ilorazów. Pozycja Likerta jest porządkowa. Średni indeks wielu ukierunkowanych pozycji bywa analizowany ilościowo po jawnym uzasadnieniu. Czas ma jednostkę minut.
 
-Każda obserwacja ma równą wagę, lecz duża wartość może mocno zmienić wynik. Dla czasów 2, 3, 4, 5, 36 minut średnia wynosi 10 minut; żadna osoba nie podała 10. Średnia jest poprawnym podsumowaniem, lecz może słabo opisywać doświadczenie typowej osoby w skośnym rozkładzie. Nie zastępuj jej interpretacji samym określeniem „przeciętnie”.
+Wspólny zbiór łączy sześć pozycji, częstość korzystania, kanały, grupę, obserwowany czas i powodzenie zadania. Pozycje są przykładem dydaktycznym. Nie przypisujemy im walidacji ani nie wnioskujemy o całej kompetencji na podstawie jednego zadania.
 
-## Mediana
+\newpage
 
-Mediana to wartość dzieląca uporządkowany zbiór danych na dwie równe części. Jest to miara **odporna** na wartości odstające.
+# 6. Wzór jako zdanie
 
+$$I_i=\frac{1}{m_i}\sum_{j=1}^{6}x^{*}_{ij}, \quad m_i\geq5; \qquad \bar{x}=\frac{1}{N}\sum x_i$$
 
-Najpierw porządkujemy wartości. Dla nieparzystego n mediana jest środkowym elementem, a dla parzystego R uśrednia dwa środkowe pomiary liczbowe. W powyższym przykładzie wynosi 4 minuty. Dla kategorii porządkowych ważniejsze jest położenie w porządku niż arytmetyczne uśrednianie kodów; rozkład częstości zachowuje więcej informacji o pojedynczej pozycji ankiety.
-
-## Moda, kwartyle i percentyle
-
-Moda jest najczęstszą wartością lub kategorią. Może być kilka równie częstych kategorii; wtedy nie wymuszaj jednej dominanty. Dla ciągłych pomiarów zależy od zaokrąglenia albo sposobu oszacowania gęstości. Moda nadaje się do danych nominalnych, dla których średnia kodów nie ma interpretacji.
-
-Kwartyle Q1/Q2/Q3 wyznaczają progi dla około 25%, 50% i 75% uporządkowanych danych; Q2 jest medianą. Percentyl 90 opisuje próg, poniżej którego znajduje się około 90% obserwacji. Algorytmy wyznaczania kwantyli mogą się różnić, szczególnie przy małej próbie i remisach. R domyślnie interpoluje pomiary liczbowe; podaj metodę, gdy dokładne porównanie ma znaczenie.
-
-Mały zbiór pokazuje różnicę średniej i mediany bez testu hipotezy. Obliczamy również kwartyle, aby opisać środkową część rozkładu. Odczytaj jednostki i zauważ, że maksimum 36 wpływa silniej na średnią niż medianę.
-
-```{r polozenie}
-czasy <- c(2, 3, 4, 5, 36)
-c(srednia = mean(czasy), mediana = median(czasy))
-stats::quantile(czasy, probs = c(.25, .5, .75, .9))
-```
-
-# Miary zróżnicowania
-
-Dwie grupy mogą mieć tę samą średnią i zupełnie inne doświadczenia pojedynczych osób. Rozstęp $R=x_{max}-x_{min}$ używa tylko skrajnych wartości i rośnie wraz z możliwością zaobserwowania ekstremum. Nie przedstawiaj go jako typowego odchylenia od średniej. Do opisu dołącz SD albo IQR oraz N.
-
-## Wariancja i odchylenie standardowe
-
-Wariancja mierzy średnie kwadratowe odchylenie od średniej. Podnoszenie do kwadratu eliminuje znaki ujemne.
-
-
-Dla próby estymator ma postać $s^2=\frac{1}{n-1}\sum_i(x_i-\bar{x})^2$. Dzielnik n−1 uwzględnia estymowanie średniej z tych samych danych; przy niezależnych obserwacjach i skończonej wariancji daje nieobciążony estymator wariancji populacji. Wariancja opisowa pełnej populacji może używać dzielnika N. Nie należy tych konwencji mylić, gdy porównujesz arkusz z R.
-
-Odchylenie standardowe to pierwiastek z wariancji. Przywraca ono wynik do oryginalnych jednostek pomiaru:
-
-
-Zapis $s=\sqrt{s^2}$ przywraca jednostkę, np. minuty. SD nie jest błędem standardowym średniej: SD opisuje rozproszenie osób, a SE niepewność estymacji; wrócimy do niej na W03. Reguła „około 68% wartości w średnia ± SD” wymaga rozkładu zbliżonego do normalnego. Nie stosuj jej mechanicznie do skośnych czasów.
-
-## IQR i względne zróżnicowanie
-
-Rozstęp międzykwartylowy $IQR=Q_3-Q_1$ opisuje szerokość środkowej połowy danych. Jest mniej wrażliwy na pojedyncze ekstremum niż zakres lub SD. Pudełko ma granice Q1 i Q3, a linia wewnątrz medianę. Wąsy kończą się na najbardziej odległych danych w odległości do 1,5 IQR od kwartylów; punkty dalej wymagają sprawdzenia, nie automatycznego odrzucenia.
-
-Współczynnik zmienności $CV=100s/\bar{x}$ odnosi SD do średniej. Ma sens przede wszystkim na skali z naturalnym zerem i przy dodatniej średniej oddalonej od zera. Nie używaj go do porównania dowolnych skal, np. roku kalendarzowego lub kodów Likerta. Przesunięcie umownego zera zmieniłoby wynik bez zmiany rozproszenia doświadczeń.
-
-# Kształt rozkładu i asymetria
-
-Prawy ogon oznacza nieliczne duże wartości, lewy nieliczne małe. Skośność numeryczna opisuje asymetrię, ale pojedynczy współczynnik nie zastępuje histogramu. Bliskość średniej i mediany albo skośność bliska zeru nie dowodzą normalności. Dwa skupienia mogą mieć symetrię, lecz nie przypominać jednego dzwonowego rozkładu.
-
-Poniższa demonstracja zachowuje trzy rozkłady pomocnicze, aby porównać kierunki ogonów. Wartości mają jednostkę umowną i nie są czasami rzeczywistych użytkowników. Odczytaj kierunek ogona i kształt każdej krzywej; wysokość gęstości nie jest prawdopodobieństwem w punkcie.
-
-```{r ksztalt, fig.cap='Trzy rozkłady pomocnicze; po 1000 wartości syntetycznych.'}
-set.seed(111)
-prawosk <- stats::rgamma(1000, shape = 2, rate = .5)
-symetr <- stats::rnorm(1000, mean = 10, sd = 2)
-lewosk <- 20 - stats::rgamma(1000, shape = 2, rate = .5)
-rozklady <- data.frame(wartosc = c(lewosk, symetr, prawosk),
-  typ = factor(rep(c("Lewoskośny", "Symetryczny", "Prawoskośny"), each = 1000),
-    levels = c("Lewoskośny", "Symetryczny", "Prawoskośny")))
-ggplot2::ggplot(rozklady, ggplot2::aes(wartosc, fill = typ)) +
-  ggplot2::geom_density(alpha = .7) +
-  ggplot2::facet_wrap(~typ, scales = "free", ncol = 3) +
-  ggplot2::scale_fill_manual(values =
-    unname(badaniaZI::paleta_zi()[c("primary", "success", "accent")])) +
-  ggplot2::labs(x = "Wartość pomocnicza", y = "Gęstość") +
-  badaniaZI::theme_zi() + ggplot2::theme(legend.position = "none")
-```
-
-Kurtoza dotyczy ciężaru ogonów i wrażliwości na rzadkie wartości, a nie wyłącznie wysokości szczytu. Dla rozkładu normalnego kurtoza wynosi 3, natomiast eksces — po odjęciu 3 — wynosi 0. Programy stosują różne konwencje i korekty dla próby, dlatego nazwę oraz definicję trzeba sprawdzić w dokumentacji. Z03 nie wymaga obliczania kurtozy. [NIST: Measures of Skewness and Kurtosis](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35b.htm).
-
-# Pomiar samooceny, akceptacji i dystansu
-
-Postawa nie jest odczytem fizycznego miernika. Treść pytań, skala odpowiedzi i reguła łączenia wpływają na wynik. Poniższe podejścia są różnymi sposobami operacjonalizacji, a nie czterema nazwami tej samej ankiety. Przykłady dotyczą środowiska informacyjnego i służą objaśnieniu zasady, bez deklaracji walidacji narzędzia.
-
-## Pozycje typu Likerta i skala złożona
-
-Respondent określa stopień zgody ze stwierdzeniami. Pojedyncza pozycja jest porządkowa, a sumowany lub uśredniany wynik kilku uzasadnionych pozycji wymaga sprawdzenia kierunku, reguły braków oraz znaczenia konstruktu. W C04 odwracamy pozycję 3 i liczymy średni indeks przy minimum 5/6 odpowiedzi. Nie utożsamiamy odpowiedzi neutralnej z brakiem ani alfa Cronbacha z trafnością.
-
-## Dystans społeczny Bogardusa
-
-Skala bada gotowość do różnych form kontaktu z członkami określonej grupy, od relacji odległych do bliskich. W badaniu społeczności informacyjnej pytania mogłyby dotyczyć udziału w wspólnym wydarzeniu, współpracy nad kolekcją i bliskiej współpracy zespołowej. Adaptacja wymaga uzasadnienia porządku relacji; nie wolno uznać kolejnych kodów za równe odległości psychologiczne. To pomiar deklarowanej akceptacji kontaktu, nie dowód zachowania osoby. [Bogardus (1925), Measuring Social Distance](https://brocku.ca/MeadProject/Bogardus/Bogardus_1925c.html).
-
-## Skala kumulatywna Guttmana
-
-Odpowiedzi mają tworzyć uporządkowany wzorzec: zgoda na silniejszą pozycję powinna współwystępować ze zgodą na słabsze. W przykładowej skali umiejętności można sprawdzić kolejność wyszukania, zapisania i opracowania wyniku, ale ta kolejność nie jest oczywista dla każdej osoby. Trzeba obejrzeć rzeczywiste wzorce oraz błędy kumulatywności. Sama suma odpowiedzi tak/nie nie dowodzi spełnienia założenia. [Guttman (1947), The Cornell Technique for Scale and Intensity Analysis](https://journals.sagepub.com/doi/10.1177/001316444700700204).
-
-## Podejście Thurstona
-
-Sędziowie wcześniej porządkują stwierdzenia według stopnia wyrażanej postawy; dobiera się pozycje reprezentujące różne miejsca kontinuum. Respondent wskazuje zaakceptowane stwierdzenia, których ustalone wartości tworzą podstawę wyniku. To inne zadanie niż zaznaczanie zgody 1–5 przy każdej pozycji Likerta. Przygotowanie wymaga oceny stwierdzeń i sprawdzenia zgodności; numery pozycji nie są automatycznie ich wagami. [Thurstone (1928), Attitudes Can Be Measured](https://www.journals.uchicago.edu/doi/abs/10.1086/214483).
-
-| Podejście | Co określa wynik | Co wymaga uzasadnienia |
+| Symbol | Nazwa | Znaczenie |
 |---|---|---|
-| Likert | Stopnie zgody i złożony wynik pozycji | Konstrukt, kierunek, łączenie i braki |
-| Bogardus | Akceptowane poziomy kontaktu | Porządek i znaczenie relacji |
-| Guttman | Kumulatywny wzorzec odpowiedzi | Hierarchia i odstępstwa od wzorca |
-| Thurstone | Wcześniejsze wartości stwierdzeń | Dobór sędziów, zgodność i wybór pozycji |
+| $x^{*}_{ij}$ | pozycja po ukierunkowaniu | punkty 1–5 |
+| $m_i$ | ważne pozycje osoby | co najmniej 5 |
+| $I_i$ | indeks samooceny | punkty 1–5 |
+| $\bar{x},Me$ | średnia i mediana | położenie rozkładu |
 
-# Transformacja, agregacja i arkusz
+Odczyt wzoru zaczyna się od nazwania wyniku, następnie składników, punktu odniesienia i jednostki. Student nie musi ręcznie odtwarzać algorytmu. Ma rozpoznać, co zwiększa statystykę, co oznacza znak i gdzie w gotowym wyniku znajduje N, efekt oraz niepewność.
 
-Sortowanie zmienia kolejność wierszy, ranking nadaje pozycje według wartości, a agregacja oblicza podsumowanie grup. Transpozycja zamienia wiersze z kolumnami; mieszane kolumny tekstowe i liczbowe mogą wtedy stać się jedną macierzą tekstową. Dlatego nie transponujemy całej ankiety bez celu i kontroli klas. W arkuszu filtruj i sortuj całe wiersze, aby nie rozłączyć ID od odpowiedzi.
+\newpage
 
-Standaryzacja z odejmuje średnią i dzieli przez SD, a skalowanie min–max przenosi zakres do 0–1. Oba zabiegi zmieniają jednostkę, lecz nie czynią rozkładu normalnym. Wyraz „normalizacja” jest używany w różnych znaczeniach; zapisuj dokładny wzór. Przy stałych wartościach mianownik wynosi zero, więc takie skalowanie nie jest określone. Logarytm dodatniego czasu rozwija W03.
+# 7. Tok analizy
 
-Trzy znane czasy pozwalają odczytać transformacje bez braków. `rank()` uśrednia pozycje remisów, `scale()` zwraca macierz, a `t()` macierz transponowaną. Odczytaj, co zmieniło jednostkę, a co tylko kolejność lub kształt tabeli.
+Opis liczbowy obejmuje N, braki, miarę położenia i zróżnicowania. Dla skośnego czasu zestawiamy średnią z medianą, SD z IQR oraz histogram. Dla kategorii podajemy liczebność i odsetek z jawnym mianownikiem.
 
-```{r transformacje}
-male <- data.frame(grupa = c("A", "B", "A"), czas = c(2, 8, 2))
-data.frame(czas = male$czas, ranking = rank(male$czas),
-  z = as.numeric(scale(male$czas)),
-  min_max = (male$czas - min(male$czas)) / diff(range(male$czas)))
-stats::aggregate(czas ~ grupa, data = male, FUN = mean)
-t(as.matrix(male["czas"]))
-```
+Kolejność jest stała: pytanie → projekt → pomiar → dane i braki → opis → estymata → niepewność → wniosek → ograniczenie. Przestawienie tej kolejności sprzyja dobieraniu pytania do wyniku i raportowaniu przypadkowej liczby bez znaczenia badawczego.
 
-Eksport CSV zachowuje wartości tabeli, lecz nie formuły, kolory ani wiele arkuszy. Konwersja do XLSX nie nadaje danych nowej skali pomiarowej. Po konwersji sprawdź N, kolumny, jednostki, separator i kodowanie. W zadaniach źródłem odtworzenia jest skrypt R, a raport opisuje decyzje oraz odnosi się do zapisanych tabel i wykresów.
+\newpage
 
-# Pytania do dyskusji
+# 8. Przykład prowadzony
 
-Jak zmieni się średnia pięciu czasów, jeśli 36 zostanie zastąpione 360? Czy zmieni się mediana? Czy uporządkowany kod odpowiedzi oznacza równą odległość? Dlaczego z-scores nie naprawią asymetrii? Co znaczy 70% przy pytaniu wielokrotnym? Jaki dowód trzeba zgromadzić, zanim nazwiesz sumę odpowiedzi skalą kumulatywną?
+Wielokrotny wybór kanałów może dać sumę odsetków większą niż 100%, ponieważ jedna osoba wybiera kilka opcji. Mianownik powinien obejmować osoby z kompletnym zestawem odpowiedzi 0/1. Brak w jednym kanale nie jest automatycznie odpowiedzią „nie”.
+
+Przykład czytamy w trzech warstwach. Warstwa liczbowa nazywa estymatę i jednostkę. Warstwa badawcza odpowiada na pytanie o zachowanie lub usługę. Warstwa krytyczna wskazuje ograniczenie projektu, pomiaru i syntetyczności. Każda z nich jest potrzebna do pełnego wyniku.
+
+\newpage
+
+# 9. Tor klasyczny
+
+Opis liczbowy obejmuje N, braki, miarę położenia i zróżnicowania. Dla skośnego czasu zestawiamy średnią z medianą, SD z IQR oraz histogram. Dla kategorii podajemy liczebność i odsetek z jawnym mianownikiem.
+
+Klasyczny wynik może zawierać statystykę t, chi-kwadrat, r, F lub współczynnik regresji. Stopnie swobody mówią, z jakiego rozkładu odniesienia korzysta procedura. Wartość p opisujemy warunkowo przy H0; nie mierzy ona wielkości efektu, jakości pomiaru ani prawdopodobieństwa powtórzenia wyniku.
+
+\newpage
+
+# 10. Tor permutacyjny i resampling
+
+Na etapie pomiaru nie używamy testu do naprawiania złych wskaźników. Permutacja odpowie później na pytanie o losowy związek przy zachowanych rozkładach. Najpierw musi być jasne, co zostało zmierzone i które braki są dopuszczalne.
+
+Bootstrap odtwarza próbki empiryczne, aby ocenić niepewność estymaty. Permutacja narzuca model zerowy przez zmianę znaków, etykiet, par lub tabel. Oba korzystają z losowania komputerowego, ale odpowiadają na inne pytania. Zakres kursu kończy się na zestawieniu tych dwóch torów.
+
+\newpage
+
+# 11. Efekt, przedział i znaczenie
+
+Różnica między średnią i medianą opisuje asymetrię, SD i IQR zróżnicowanie. Nie są to jeszcze efekty przyczynowe. Jednostka miary pozwala ocenić, czy zmiana o dwie minuty lub pół punktu jest ważna dla usługi.
+
+Efekt prowadzimy przed p. Najpierw pytamy o kierunek i wielkość w naturalnej jednostce, potem o standaryzację, a następnie o przedział. Znaczenie praktyczne ustala kontekst instytucji, nie uniwersalna etykieta. Szeroki przedział wymaga języka dopuszczającego różne wielkości.
+
+\newpage
+
+# 12. Jak nie pisać wyniku
+
+Pułapki obejmują kodowanie braku jako zera, odwrócenie pozycji po policzeniu indeksu, średnią z nazw kategorii, wykres bez jednostki, opis średniej jako wyniku większości i nazywanie kursowego indeksu walidowanym testem.
+
+Unikamy zdań: „H0 jest prawdziwa”, „95% wyników leży w CI”, „grupy są takie same”, „korelacja pokazuje wpływ” i „V oznacza procent”. Poprawione zdanie zawiera N, estymatę, jednostkę, CI, statystykę, p, efekt i granicę wniosku w zakresie potrzebnym danej metodzie.
+
+\newpage
+
+# 13. Aktywność podczas wykładu
+
+Oceń cztery zdania z raportu: wskaż skalę, mianownik, właściwą miarę oraz brakujące ograniczenie. Następnie porównaj, co wnosi indeks samooceny, a co obserwowany czas i powodzenie.
+
+Odpowiedź przedstawiamy bez uruchamiania nowego testu. Zadaniem jest dobór języka oraz argumentacja. Każda grupa wskazuje także jeden element, którego nie da się rozstrzygnąć z przedstawionych danych i jedną dodatkową informację, która rzeczywiście wzmocniłaby projekt.
+
+\newpage
+
+# 14. Most do ćwiczeń i projektu
+
+C03 zbuduje portret próby, a C04 przeprowadzi rekodację i indeks. W03 doda język niepewności, lecz zachowa rozróżnienie pomiaru od wnioskowania.
+
+W projekcie każda liczba ma odpowiadać pytaniu, a każdy wniosek ma odsyłać do zapisanego pliku wyniku. Gotowy kod wyrównuje obciążenie techniczne; samodzielne pozostają wybór dozwolonego parametru, odczyt statystyki, interpretacja i krytyczna ocena.
+
+## Literatura i ramy
+
+- [European Commission JRC (2022). DigComp 2.2](https://publications.jrc.ec.europa.eu/repository/handle/JRC128415).
+- [Association of College and Research Libraries. Framework for Information Literacy](https://www.ala.org/acrl/standards/ilframework).
+- [Hargittai, E. (2002). Beyond logs and surveys](https://www.webuse.org/pdf/Hargittai-BeyondLogsSurveys2002.pdf).
+- [van Deursen, Helsper & Eynon. Internet Skills Scale](https://ris.utwente.nl/ws/portalfiles/portal/6972069/development.pdf).
+
+Źródła wyznaczają język pojęć. Pozycje, dane i wyniki kursowe są syntetyczne; nie przedstawiamy ich jako rezultatów cytowanych badań.

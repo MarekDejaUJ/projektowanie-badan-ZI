@@ -2,14 +2,14 @@
 "id_odpowiedzi","Identyfikator odpowiedzi; identyczne powtórzenie to duplikat","identyfikator","o001...","brak niedopuszczalny",FALSE
 "grupa","Grupa porównania","nominalna","nowi / doświadczeni","brak niedopuszczalny",FALSE
 "czestosc_korzystania","Częstość korzystania z zasobu","porządkowa","1=nigdy; 2=rzadko; 3=czasami; 4=często; 5=bardzo często","NA",FALSE
-"czas_wyszukiwania","Deklarowany czas szukania informacji w minutach","ilorazowa","0--120 minut; wartości poza zakresem wymagają oceny","NA",FALSE
+"czas_wyszukiwania","Obserwowany czas wykonania zadania wyszukiwawczego w minutach","ilorazowa","0--120 minut; wartości poza zakresem wymagają oceny","NA",FALSE
 "pozycja_1","Szybko znajduję pole wyszukiwania w katalogu.","porządkowa","1=zdecydowanie nie; 2=raczej nie; 3=ani tak, ani nie; 4=raczej tak; 5=zdecydowanie tak","NA",FALSE
 "pozycja_2","Nazwy filtrów są dla mnie zrozumiałe.","porządkowa","1=zdecydowanie nie; 2=raczej nie; 3=ani tak, ani nie; 4=raczej tak; 5=zdecydowanie tak","99 lub NA",FALSE
 "pozycja_3","Odczytanie rekordu wymaga ode mnie zgadywania.","porządkowa","1=zdecydowanie nie; 2=raczej nie; 3=ani tak, ani nie; 4=raczej tak; 5=zdecydowanie tak","NA",TRUE
 "pozycja_4","Potrafię znaleźć lokalizację dokumentu.","porządkowa","1=zdecydowanie nie; 2=raczej nie; 3=ani tak, ani nie; 4=raczej tak; 5=zdecydowanie tak","NA",FALSE
 "pozycja_5","Komunikaty katalogu pomagają mi poprawić zapytanie.","porządkowa","1=zdecydowanie nie; 2=raczej nie; 3=ani tak, ani nie; 4=raczej tak; 5=zdecydowanie tak","NA",FALSE
 "pozycja_6","Katalog wspiera wykonanie mojego zadania.","porządkowa","1=zdecydowanie nie; 2=raczej nie; 3=ani tak, ani nie; 4=raczej tak; 5=zdecydowanie tak","NA",FALSE
-"powodzenie","Czy udało się znaleźć wskazany dokument?","nominalna","0=nie; 1=tak","NA",FALSE
+"powodzenie","Obserwowany wynik zadania: Czy udało się znaleźć wskazany dokument?","nominalna","0=nie; 1=tak","NA",FALSE
 "kanal_1","Wybrano kanał: strona WWW","nominalna","0=nie wybrano; 1=wybrano","NA; wszystkie cztery puste = brak odpowiedzi",FALSE
 "kanal_2","Wybrano kanał: e-mail","nominalna","0=nie wybrano; 1=wybrano","NA; wszystkie cztery puste = brak odpowiedzi",FALSE
 "kanal_3","Wybrano kanał: media społecznościowe","nominalna","0=nie wybrano; 1=wybrano","NA; wszystkie cztery puste = brak odpowiedzi",FALSE

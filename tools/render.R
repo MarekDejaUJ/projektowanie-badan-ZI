@@ -7,7 +7,8 @@ preambula <- normalizePath("inst/materialy/wspolne/preambula.tex", winslash = "/
 matematyka <- if (rmarkdown::pandoc_version() >= "3.11") "--math-method=mathml" else "--mathml"
 for (id in wybrane) {
   folder <- file.path("inst", "materialy", tolower(id))
-  for (nazwa in c("pelne", "handout")) {
+  nazwy <- if (startsWith(id, "W")) c("pelne", "handout") else "pelne"
+  for (nazwa in nazwy) {
     input <- file.path(folder, paste0(nazwa, ".Rmd"))
     stopifnot(file.exists(input))
     knitr::opts_chunk$set(dev = "png", fig.width = 6, fig.height = 3.8,
@@ -25,6 +26,5 @@ for (id in wybrane) {
       envir = new.env(parent = globalenv()), quiet = TRUE)
     cat(id, nazwa, "HTML i PDF: OK\n")
   }
-  if (startsWith(id, "C")) knitr::purl(file.path(folder, "pelne.Rmd"),
-                                      output = file.path(folder, "analiza.R"), documentation = 1L, quiet = TRUE)
+  if (startsWith(id, "C")) stopifnot(file.exists(file.path(folder, "analiza.R")))
 }

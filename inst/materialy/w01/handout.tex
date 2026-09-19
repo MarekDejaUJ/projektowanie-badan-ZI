@@ -40,46 +40,6 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{248,248,248}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
 \usepackage{caption}
 \captionsetup[table]{skip=6pt}
@@ -154,7 +114,6 @@
 \newtcolorbox{uwagabox}[1][]{colback=orange!10, colframe=orange!70!black, title={#1}}
 \newtcolorbox{wzorbox}[1][]{colback=gray!5, colframe=gray!50!black, title={#1}}
 \newtcolorbox{przykladbox}[1][]{colback=purple!5, colframe=purple!50!black, title={#1}}
-
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -163,140 +122,139 @@
 \@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
 \makeatother
 \hypersetup{
-  pdftitle={Handout W01 --- Pytania{,} projekty badań i skale pomiarowe},
+  pdftitle={Handout W01 --- Od potrzeby informacyjnej do projektu badania},
   pdfauthor={Marek Deja},
   pdflang={pl-PL},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Handout W01 --- Pytania, projekty badań i skale pomiarowe}
+\title{Handout W01 --- Od potrzeby informacyjnej do projektu badania}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\subtitle{Zarządzanie informacją --- część ilościowa --- 2026/27}
+\subtitle{Mapa pojęć, wzorów i pytań}
 \author{Marek Deja}
 \date{2026/27}
 
 \begin{document}
 \maketitle
 
-\section{W01 --- pytanie i zakres
-dowodu}\label{w01-pytanie-i-zakres-dowodu}
+\section{1. Pytanie i główna
+myśl}\label{pytanie-i-gux142uxf3wna-myux15bl}
 
-Problem instytucji → pytanie → jednostka/populacja/próba → pomiar →
-analiza → ograniczony wniosek. Średnia w próbie jest opisem; wniosek o
-populacji wymaga projektu i założeń.
+\textbf{Pytanie:} Czy użytkownicy nowi i doświadczeni różnią się
+samooceną oraz powodzeniem krótkiego zadania w katalogu? Jakiego
+projektu potrzeba, aby opisać różnicę, a jakiego, aby mówić o skutku
+instrukcji?
 
-\section{Schematy badań}\label{schematy-badaux144}
+Punktem wyjścia nie jest test statystyczny, lecz sytuacja osoby, która
+potrzebuje informacji i działa w określonym środowisku. Projekt badania
+ma połączyć problem instytucji z obserwowalnym zachowaniem, samoopisem i
+decyzją, której wynik ma służyć.
+
+\subsection{Tok rozumowania}\label{tok-rozumowania}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Pytanie i zakres wniosku.\\
+\item
+  Jednostka, zmienne, skale i braki.\\
+\item
+  Estymata oraz jednostka.\\
+\item
+  Niepewność i dwa tory, jeśli dotyczą.\\
+\item
+  Efekt, ograniczenie i odpowiedź.
+\end{enumerate}
+
+\newpage
+
+\section{2. Wzór i symbole}\label{wzuxf3r-i-symbole}
+
+\[P(Y\mid G) \neq P(Y) \quad \text{oznacza związek, nie automatycznie przyczynę}\]
 
 {\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Schemat
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Kluczowe pytanie
-\end{minipage} \\
+Symbol & Nazwa & Znaczenie \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Obserwacja przekrojowa & Czy cechy współwystępują w danym okresie? \\
-Obserwacja podłużna & Czy wynik zmienia się u tych samych osób? \\
-Interwencja przed/po & Czy zmiana mogła mieć inną przyczynę? \\
-Randomizacja & Czy przydzielono interwencję losowo? \\
-Quasi-eksperyment/naturalny & Co uzasadnia porównywalność i
-ekspozycję? \\
-Synteza & Czy badania są odpowiednie, porównywalne i dobrej jakości? \\
+\(Y\) & wynik & indeks, czas albo powodzenie \\
+\(G\) & grupa/warunek & dwa poziomy porównania \\
+\(X\) & zmienna towarzysząca & np. częstość korzystania \\
+\(N\) & próba & liczba analizowanych osób \\
 \end{longtable}
 }
 
-Piramida dowodu zależy od pytania. Randomizacja przydziału i losowanie
-próby są różnymi operacjami. Duże N nie usuwa selekcji ani błędnego
-pomiaru.
+Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę i
+składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani
+CI zakresu 95\% osób.
 
-\section{Pytanie i hipoteza}\label{pytanie-i-hipoteza}
+\newpage
 
-„Jak rozkłada się czas znalezienia dokumentu wśród aktywnych
-użytkowników w semestrze zimowym?'' --- pytanie opisowe. „Czy indeks
-dostępności różni się między nowymi i doświadczonymi?'' --- porównanie.
-\(H_0:\mu_1-\mu_2=0\), \(H_1:\mu_1-\mu_2\ne0\). Kierunek alternatywy
-wybiera się przed wynikiem.
+\section{3. Dwa tory i efekt}\label{dwa-tory-i-efekt}
 
-\section{Skale i jednostki}\label{skale-i-jednostki}
+\textbf{Tor klasyczny.} Najpierw definiujemy populację, ramę doboru,
+jednostkę, okres odniesienia i kryteria włączenia. Potem zapisujemy
+pytanie w języku zmiennych oraz przewidujemy, jaka estymata odpowie na
+nie bez nadmiarowych procedur.
 
-{\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Skala
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Przykład
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Uprawnione relacje
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-Nominalna & grupa/typ zasobu & równość, liczebności \\
-Porządkowa & pojedyncza pozycja 1--5 & dodatkowo porządek \\
-Przedziałowa & rok kalendarzowy & dodatkowo różnica \\
-Ilorazowa & czas w minutach/liczba pobrań & dodatkowo stosunek i
-naturalne zero \\
-\end{longtable}
-}
+\textbf{Tor permutacyjny/resampling.} Dwa tory analizy pojawią się
+później. Już teraz trzeba rozumieć hipotezę zerową jako model braku
+określonego związku. Permutacja będzie zmieniała tylko ten element
+danych, który reprezentuje związek podlegający testowi.
 
-Klasa R nie zastępuje skali. Kod kategorii pozostaje etykietą. Indeks
-wymaga treści, kierunku pozycji i reguły braków.
+\textbf{Efekt i przedział.} Przed zebraniem danych warto nazwać różnicę
+praktycznie ważną: ile minut, punktów indeksu lub punktów procentowych
+mogłoby zmienić decyzję o usłudze. Dzięki temu p nie stanie się jedynym
+kryterium wniosku.
 
-\section{Sprawdź na przykładzie}\label{sprawdux17a-na-przykux142adzie}
+\newpage
 
-Pięć czasów opisuje małą grupę. Średnia i mediana odpowiadają na różne
-pytania o centrum. Odczytaj N i jednostkę, a potem wskaż brakującą
-informację o doborze.
+\section{4. Interpretacja i pytania}\label{interpretacja-i-pytania}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{6}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{12}\NormalTok{, }\DecValTok{8}\NormalTok{)}
-\FunctionTok{c}\NormalTok{(}\AttributeTok{N =} \FunctionTok{length}\NormalTok{(x), }\AttributeTok{srednia =} \FunctionTok{mean}\NormalTok{(x), }\AttributeTok{mediana =} \FunctionTok{median}\NormalTok{(x))}
-\end{Highlighting}
-\end{Shaded}
+\textbf{Przykład.} Biblioteka rozważa krótką instrukcję filtrowania.
+Pytanie opisowe dotyczy aktualnego czasu nowych użytkowników. Pytanie
+porównawcze dotyczy dwóch istniejących grup. Pytanie przyczynowe wymaga
+przydziału instrukcji i wspólnego zadania. Te trzy pytania mogą używać
+podobnej tabeli, ale prowadzą do innego wniosku.
 
-\begin{verbatim}
-##       N srednia mediana
-##     5.0     7.8     8.0
-\end{verbatim}
+\textbf{Pułapki.} Najczęstsze błędy to rozpoczynanie od nazwy testu,
+utożsamienie dostępnej próby z populacją, zmiana pytania po zobaczeniu
+p, nazywanie samooceny kompetencją oraz język wpływu w badaniu
+obserwacyjnym.
 
-\section{Własny szkic i notatki}\label{wux142asny-szkic-i-notatki}
+\textbf{Pytanie do pracy.} W zespołach przekształć ogólne zdanie
+„katalog jest trudny'' w pytanie opisowe, porównawcze i przyczynowe. Dla
+każdego wskaż jednostkę, zmienne, źródło danych, jedną estymatę i
+ograniczenie.
 
-Problem:
-\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots{}
-Populacja/okres:
-\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots{}
+\subsection{Dalszy krok}\label{dalszy-krok}
 
-Jednostka:
-\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots.
-Zmienna i skala:
-\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots.
+C01 pokaże pojedynczy rekord i przepływ pracy, a C02 odtworzy przejście
+od surowego eksportu do danych analitycznych. W01 dostarcza pytania, do
+których te techniczne czynności mają prowadzić.
 
-Pytanie:
-\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots{}
-Co mogłoby podważyć hipotezę?
-\ldots\ldots\ldots\ldots\ldots\ldots\ldots{}
+\subsection{Literatura}\label{literatura}
 
-Jedno ograniczenie doboru lub pomiaru:
-\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots..
-
-Ocena: zadania 50\% (każde 5\%), projekt 50\%; indywidualny plan i
-analiza ilościowa, bez egzaminu.
+\begin{itemize}
+\tightlist
+\item
+  \href{https://www.informationr.net/tdw/publ/papers/1999JDoc.html}{Wilson,
+  T.D. (1999). Models in information behaviour research}.
+\item
+  \href{https://doi.org/10.1002/(SICI)1097-4571(199106)42:5\%3C361::AID-ASI6\%3E3.0.CO;2-\%23}{Kuhlthau,
+  C.C. (1991). Inside the search process}.
+\item
+  \href{https://doi.org/10.1016/0740-8188(95)90048-9}{Savolainen, R.
+  (1995). Everyday life information seeking}.
+\end{itemize}
 
 \end{document}

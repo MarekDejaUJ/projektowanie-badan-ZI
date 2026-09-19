@@ -1,4 +1,4 @@
-#' Syntetyczny przykład do wspólnej analizy
+#' Syntetyczny przyklad do wspolnej analizy
 #' @return Surowa tabela ankietowa S02 dla demonstracyjnego ID demo001.
 #' @export
 #' @examples
@@ -7,9 +7,9 @@ dane_przykladowe <- function() {
   utils::read.csv(zasob("extdata", "przyklad", "surowe.csv"), encoding = "UTF-8", stringsAsFactors = FALSE)
 }
 
-#' Plik przykładowych danych
+#' Plik przykladowych danych
 #' @param format CSV albo XLSX.
-#' @return Ścieżka do pliku z pakietu.
+#' @return Sciezka do pliku z pakietu.
 #' @export
 #' @examples
 #' plik_przykladu("csv")
@@ -18,8 +18,8 @@ plik_przykladu <- function(format = c("csv", "xlsx")) {
   zasob("extdata", "przyklad", if (format == "csv") "surowe.csv" else "ankieta.xlsx")
 }
 
-#' Katalog materiałów rocznika
-#' @return Tabela jednostek, tytułów i lokalnych ścieżek źródeł.
+#' Katalog materialow rocznika
+#' @return Tabela jednostek, tytulow i lokalnych sciezek zrodel.
 #' @export
 #' @examples
 #' materialy()
@@ -30,22 +30,31 @@ materialy <- function() {
              typ = vapply(x, `[[`, character(1), "typ"))
 }
 
-#' Dostęp do materiału lokalnego lub Pages
+#' Dostep do materialu lokalnego lub Pages
 #' @param id Identyfikator jednostki, np. C01 lub W01.
 #' @param format html, pdf, Rmd, R albo tex.
-#' @param handout Czy otworzyć handout.
+#' @param handout Czy otworzyc handout wykladu. Cwiczenia nie maja handoutow.
 #' @param zrodlo lokalne albo pages.
-#' @param otworz Czy uruchomić przeglądarkę lub otworzyć plik.
-#' @return Istniejąca ścieżka lub adres Pages, niewidocznie.
+#' @param otworz Czy uruchomic przegladarke lub otworzyc plik.
+#' @return Istniejaca sciezka lub adres Pages, niewidocznie.
 #' @export
 #' @examples
-#' \dontrun{ otworz_material("C01") }
+#' \dontrun{
+#' otworz_material("C01")
+#' otworz_material("W01", handout = TRUE)
+#' }
 otworz_material <- function(id, format = c("html", "pdf", "Rmd", "R", "tex"),
                             handout = FALSE, zrodlo = c("lokalne", "pages"), otworz = TRUE) {
   format <- match.arg(format)
   zrodlo <- match.arg(zrodlo)
   id <- toupper(id)
-  if (!id %in% materialy()$id) stop("Nie ma takiej jednostki w katalogu materia\u0142\u00f3w.", call. = FALSE)
+  katalog <- materialy()
+  if (!id %in% katalog$id) stop("Nie ma takiej jednostki w katalogu materia\u0142\u00f3w.", call. = FALSE)
+  typ <- katalog$typ[match(id, katalog$id)]
+  if (handout && typ != "wyklad") stop("Handout jest dost\u0119pny tylko dla wyk\u0142adu.", call. = FALSE)
+  if (format == "R" && typ != "cwiczenie") stop("Gotowy skrypt R jest cz\u0119\u015bci\u0105 \u0107wicze\u0144.", call. = FALSE)
+  if (format == "R" && handout) stop("Handout nie ma osobnego skryptu R.", call. = FALSE)
+  if (format == "tex" && !handout) stop("Plik tex jest \u017ar\u00f3d\u0142em handoutu wyk\u0142adu.", call. = FALSE)
   nazwa <- if (handout) "handout" else if (format == "R") "analiza" else "pelne"
   rel <- file.path("materialy", tolower(id), paste0(nazwa, ".", format))
   if (zrodlo == "lokalne") {
@@ -55,11 +64,11 @@ otworz_material <- function(id, format = c("html", "pdf", "Rmd", "R", "tex"),
   invisible(sciezka)
 }
 
-#' Kontrola środowiska pracy
+#' Kontrola srodowiska pracy
 #'
-#' Nie instaluje pakietów ani nie zmienia konfiguracji. LaTeX jest potrzebny
-#' do budowania PDF, lecz nie do wykonywania zadań lub korzystania z gotowych materiałów.
-#' @return Tabela narzędzi, stanów i znaczenia braków.
+#' Nie instaluje pakietow ani nie zmienia konfiguracji. LaTeX jest potrzebny
+#' do budowania PDF, lecz nie do wykonywania zadan lub korzystania z gotowych materialow.
+#' @return Tabela narzedzi, stanow i znaczenia brakow.
 #' @export
 #' @examples
 #' sprawdz_srodowisko()

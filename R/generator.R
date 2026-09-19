@@ -22,9 +22,10 @@ scenariusz <- function(id) {
   katalog[[match(id, vapply(katalog, `[[`, character(1), "id"))]]
 }
 
-#' Indywidualne syntetyczne dane ankietowe
+#' Indywidualne syntetyczne dane ankietowe i obserwacyjne
 #'
 #' Dane służą do ćwiczenia analizy, a nie opisania rzeczywistej instytucji.
+#' Łączą samoocenę z obserwowanym wykonaniem krótkiego zadania wyszukiwawczego.
 #' Zawierają kontrolowane braki, dwa duplikaty i dwa nietypowe czasy.
 #' Identyfikator jest pseudonimem przydzielonym na zajęciach, nie numerem albumu.
 #' @param id Pseudonim studenta, np. "s017".
@@ -99,8 +100,8 @@ slownik_scenariusza <- function(opis) {
              paste0("pozycja_", 1:6), "powodzenie", paste0("kanal_", 1:4))
   data.frame(zmienna = nazwy,
     opis = c("Identyfikator odpowiedzi; identyczne powt\u00f3rzenie to duplikat", "Grupa por\u00f3wnania",
-             "Cz\u0119sto\u015b\u0107 korzystania z zasobu", "Deklarowany czas szukania informacji w minutach",
-             unlist(opis$pozycje), opis$pytanie_binarne, paste("Wybrano kana\u0142:", unlist(opis$kanaly))),
+             "Cz\u0119sto\u015b\u0107 korzystania z zasobu", "Obserwowany czas wykonania zadania wyszukiwawczego w minutach",
+             unlist(opis$pozycje), paste("Obserwowany wynik zadania:", opis$pytanie_binarne), paste("Wybrano kana\u0142:", unlist(opis$kanaly))),
     skala = c("identyfikator", "nominalna", "porz\u0105dkowa", "ilorazowa",
               rep("porz\u0105dkowa", 6), "nominalna", rep("nominalna", 4)),
     kodowanie = c("o001...", paste(opis$grupy, collapse = " / "),

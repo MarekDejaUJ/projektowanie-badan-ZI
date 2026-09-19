@@ -66,10 +66,10 @@ criteria:
     observable_description: Plan próby i operacjonalizacja/kwestionariusz nadają się
       do planowanego badania.
 - id: Z09.4
-  title: Plan dwóch analiz jest uzasadniony; pierwszy odtwarzalny wynik i ograniczenie
-    są zapisane.
-  evidence: Plan dwóch analiz jest uzasadniony; pierwszy odtwarzalny wynik i ograniczenie
-    są zapisane.
+  title: Dwie analizy mają uzasadnione tory klasyczne i permutacyjne, efekt, przedział
+    oraz ograniczenie.
+  evidence: Dwie analizy mają uzasadnione tory klasyczne i permutacyjne, efekt, przedział
+    oraz ograniczenie.
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -79,12 +79,13 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.5
-    observable_description: Nazwano jedną analizę bez wyniku.
+    observable_description: Nazwano jedną analizę bez odpowiadającego toru i efektu.
   - points: 1.0
-    observable_description: Dwie analizy zaplanowane; brak właściwego pierwszego wyniku
-      albo ograniczenia.
+    observable_description: Dwie analizy są wskazane; brakuje wersji permutacyjnej,
+      efektu albo ograniczenia.
   - points: 1.5
-    observable_description: Dwie uzasadnione analizy i wynik; jedno uzasadnienie niepełne.
+    observable_description: Oba plany są spójne; jedno uzasadnienie tasowania lub
+      przedziału jest niepełne.
   - points: 2.0
-    observable_description: Plan dwóch analiz jest uzasadniony; pierwszy odtwarzalny
-      wynik i ograniczenie są zapisane.
+    observable_description: Dwie analizy mają uzasadnione tory klasyczne i permutacyjne,
+      efekt, przedział oraz ograniczenie.

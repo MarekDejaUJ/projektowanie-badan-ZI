@@ -25,8 +25,10 @@ criteria:
     observable_description: Słownik definiuje pozycje, skale, zakresy, kody braków
       i pytanie badawcze.
 - id: Z04.2
-  title: Poprawna rekodacja odwróconej pozycji i jawna reguła indeksu przy brakach.
-  evidence: Poprawna rekodacja odwróconej pozycji i jawna reguła indeksu przy brakach.
+  title: Poprawnie odczytano rekodację pozycji odwróconej i uzasadniono regułę indeksu
+    przy brakach.
+  evidence: Poprawnie odczytano rekodację pozycji odwróconej i uzasadniono regułę
+    indeksu przy brakach.
   max_points: 3.0
   review_mode: mixed
   learning_outcomes: U2
@@ -34,14 +36,15 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.75
-    observable_description: Próba rekodacji, lecz kierunek pozycji nadal błędny.
+    observable_description: Kierunek pozycji opisano błędnie.
   - points: 1.5
-    observable_description: Rekodacja poprawna; indeks nie respektuje minimum odpowiedzi.
+    observable_description: Rekodacja jest poprawna; pomylono minimum ważnych odpowiedzi.
   - points: 2.25
-    observable_description: Rekodacja i minimum poprawne; pominięto uzasadnienie reguły.
+    observable_description: Rekodacja i minimum są poprawne; uzasadnienie jednej reguły
+      jest niepełne.
   - points: 3.0
-    observable_description: Poprawna rekodacja odwróconej pozycji i jawna reguła indeksu
-      przy brakach.
+    observable_description: Poprawnie odczytano rekodację pozycji odwróconej i uzasadniono
+      regułę indeksu przy brakach.
 - id: Z04.3
   title: Pytanie wielokrotnego wyboru ma poprawne liczebności, odsetki i mianownik.
   evidence: Pytanie wielokrotnego wyboru ma poprawne liczebności, odsetki i mianownik.

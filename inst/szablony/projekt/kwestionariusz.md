@@ -3,8 +3,9 @@
 ID: {{ID}}  
 Rocznik: {{ROCZNIK}}
 
-To plan narzędzia badawczego. Nie prowadź rzeczywistego sondażu w ramach zadania.
-Wzoruj pytania na opisie scenariusza. Zastąp wszystkie `[UZUPELNIJ]`.
+To plan narzędzia ankietowego i arkusza obserwacji zadania. Nie zbieraj danych
+od ludzi w ramach projektu. Wzoruj pozycje i kryteria na opisie scenariusza.
+Zastąp wszystkie `[UZUPELNIJ]`.
 
 ## Wstęp i instrukcja
 
@@ -13,10 +14,18 @@ Wyjaśnij możliwość pominięcia odpowiedzi bez zbierania zbędnych danych oso
 
 [UZUPELNIJ]
 
-## Grupa, częstość i czas
+## Standaryzowane zadanie i arkusz obserwacji
 
-Zapisz brzmienie trzech pytań, kategorie grup oraz częstości i jednostkę czasu.
-Wskaż, jak odróżnisz brak odpowiedzi od zera minut.
+Zapisz jednoznaczne polecenie zadania, moment rozpoczęcia i zakończenia pomiaru
+czasu, jednostkę oraz kryterium powodzenia 0/1. Wskaż, jak obserwator odróżni
+wynik negatywny, przerwaną próbę i brak zapisu.
+
+[UZUPELNIJ]
+
+## Grupa i częstość korzystania
+
+Zapisz kategorie grup oraz odpowiedzi o częstości korzystania. Wskaż okres
+odniesienia i wyjaśnij, że są to deklaracje uczestnika.
 
 [UZUPELNIJ]
 
@@ -28,9 +37,10 @@ pozycji do konstruktu oraz regułę obliczenia indeksu.
 
 [UZUPELNIJ]
 
-## Pytanie binarne
+## Powodzenie zadania
 
-Zapisz dokładne pytanie scenariusza i odpowiedzi nie/tak.
+Zapisz kryterium obserwacyjnego wyniku scenariusza i kody nie/tak. Nie formułuj
+go jako pytania o pamięć lub samoocenę.
 
 [UZUPELNIJ]
 

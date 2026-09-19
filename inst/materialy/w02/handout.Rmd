@@ -1,6 +1,6 @@
 ---
-title: 'Handout W02 — Opis danych, jakość i pomiar ankietowy'
-subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
+title: 'Handout W02 — Język danych, pomiar i opis'
+subtitle: 'Mapa pojęć, wzorów i pytań'
 author: 'Marek Deja'
 date: '2026/27'
 lang: pl-PL
@@ -9,54 +9,68 @@ papersize: a4
 geometry: margin=2cm
 ---
 
-# W02 — co zachowuje dobry opis
+# 1. Pytanie i główna myśl
 
-Jednostka → skala → reguły jakości → N ważne i braki → miary/wykres → ograniczenia. Surowy plik pozostaje bez zmian, a dziennik rozróżnia wiersze i komórki.
+**Pytanie:** Jak opisać samoocenę, obserwowany czas, powodzenie i wybór kanału tak, aby miara odpowiadała skali i właściwemu mianownikowi?
 
-# Miary i jednostki
+Ta sama osoba może wysoko oceniać własne kompetencje i jednocześnie długo wykonywać zadanie. Pomiar ankietowy oraz obserwacyjny są różnymi oknami na zachowanie. Dobry opis nie zaciera tej różnicy i nie sprowadza tabeli do jednej średniej.
 
-| Miara | Znaczenie |
-|---|---|
-| Średnia $\bar{x}=\sum x_i/n$ | poziom przeciętny, wrażliwy na ekstremum |
-| Mediana | środek uporządkowanego zbioru |
-| Moda | najczęstsza wartość/kategoria, możliwe remisy |
-| SD $s=\sqrt{s^2}$ | rozproszenie w jednostce pomiaru |
-| IQR $Q_3-Q_1$ | szerokość środkowej połowy danych |
-| Zakres | minimum/maksimum, wrażliwe na ekstremum |
+## Tok rozumowania
 
-SD opisuje osoby, a SE niepewność estymacji. CV wymaga sensownego naturalnego zera i średniej oddalonej od zera. Kurtoza 3 i eksces 0 dla rozkładu normalnego są różnymi konwencjami.
+1. Pytanie i zakres wniosku.  
+2. Jednostka, zmienne, skale i braki.  
+3. Estymata oraz jednostka.  
+4. Niepewność i dwa tory, jeśli dotyczą.  
+5. Efekt, ograniczenie i odpowiedź.
 
-Porównujemy średnią i medianę w małej próbie. Odczytaj oba wyniki i IQR w minutach. Wskaż, jak skrajna wartość wpływa na centrum.
+\newpage
 
-```{r czasy}
-x <- c(2, 3, 4, 5, 36)
-c(srednia = mean(x), mediana = median(x), SD = stats::sd(x),
-  IQR = stats::IQR(x))
-```
+# 2. Wzór i symbole
 
-# Szeregi, procenty i wykresy
+$$I_i=\frac{1}{m_i}\sum_{j=1}^{6}x^{*}_{ij}, \quad m_i\geq5; \qquad \bar{x}=\frac{1}{N}\sum x_i$$
 
-Szereg punktowy — kategorie i N. Przedziałowy — klasy liczbowe. Czasowy — kolejne okresy. Histogram — kształt, pudełko — kwartyle i mediana. Punkty poza wąsami sprawdzamy, bez automatycznego usuwania.
+| Symbol | Nazwa | Znaczenie |
+|---|---|---|
+| $x^{*}_{ij}$ | pozycja po ukierunkowaniu | punkty 1–5 |
+| $m_i$ | ważne pozycje osoby | co najmniej 5 |
+| $I_i$ | indeks samooceny | punkty 1–5 |
+| $\bar{x},Me$ | średnia i mediana | położenie rozkładu |
 
-Odsetki: podaj licznik i mianownik. Jednokrotny wybór tworzy rozłączne kategorie, wielokrotny może dać sumę procentów respondentów >100. Gęstość w punkcie nie jest procentem. Asymetrię czytaj na wykresie; średnia bliska medianie nie dowodzi normalności.
+Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę i składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani CI zakresu 95% osób.
 
-# Cztery sposoby pomiaru postaw
+\newpage
 
-| Podejście | Zasada |
-|---|---|
-| Likert | stopnie zgody, pojedyncza pozycja porządkowa, indeks uzasadniony |
-| Bogardus | gotowość do różnych poziomów kontaktu społecznego |
-| Guttman | kumulatywny wzorzec silniejszych/słabszych pozycji |
-| Thurstone | stwierdzenia wcześniej ocenione przez sędziów |
+# 3. Dwa tory i efekt
 
-Treść i reguła ważniejsze niż nazwa. Brak ≠ odpowiedź neutralna ≠ negatywna. Alfa nie dowodzi trafności. W kursie: pozycja 3 odwrócona, średni indeks przy minimum 5/6.
+**Tor klasyczny.** 
+Opis liczbowy obejmuje N, braki, miarę położenia i zróżnicowania. Dla skośnego czasu zestawiamy średnią z medianą, SD z IQR oraz histogram. Dla kategorii podajemy liczebność i odsetek z jawnym mianownikiem.
 
-# Operacje na danych
+**Tor permutacyjny/resampling.** 
+Na etapie pomiaru nie używamy testu do naprawiania złych wskaźników. Permutacja odpowie później na pytanie o losowy związek przy zachowanych rozkładach. Najpierw musi być jasne, co zostało zmierzone i które braki są dopuszczalne.
 
-Sortowanie — kolejność całych wierszy; ranking — pozycje/remisy; agregacja — podsumowania; transpozycja — zamiana wymiarów. z-score i min–max zmieniają skalę/jednostkę, bez nadawania normalności. CSV nie zachowuje formuł ani wielu arkuszy.
+**Efekt i przedział.** 
+Różnica między średnią i medianą opisuje asymetrię, SD i IQR zróżnicowanie. Nie są to jeszcze efekty przyczynowe. Jednostka miary pozwala ocenić, czy zmiana o dwie minuty lub pół punktu jest ważna dla usługi.
 
-# Notatki
+\newpage
 
-Którą miarę wybiorę dla skośnego czasu i dlaczego? ...............................................
+# 4. Interpretacja i pytania
 
-Mianownik mojej tabeli: .................. Jedno ograniczenie pomiaru: ...........................
+**Przykład.** 
+Wielokrotny wybór kanałów może dać sumę odsetków większą niż 100%, ponieważ jedna osoba wybiera kilka opcji. Mianownik powinien obejmować osoby z kompletnym zestawem odpowiedzi 0/1. Brak w jednym kanale nie jest automatycznie odpowiedzią „nie”.
+
+**Pułapki.** 
+Pułapki obejmują kodowanie braku jako zera, odwrócenie pozycji po policzeniu indeksu, średnią z nazw kategorii, wykres bez jednostki, opis średniej jako wyniku większości i nazywanie kursowego indeksu walidowanym testem.
+
+**Pytanie do pracy.** 
+Oceń cztery zdania z raportu: wskaż skalę, mianownik, właściwą miarę oraz brakujące ograniczenie. Następnie porównaj, co wnosi indeks samooceny, a co obserwowany czas i powodzenie.
+
+## Dalszy krok
+
+C03 zbuduje portret próby, a C04 przeprowadzi rekodację i indeks. W03 doda język niepewności, lecz zachowa rozróżnienie pomiaru od wnioskowania.
+
+## Literatura
+
+- [European Commission JRC (2022). DigComp 2.2](https://publications.jrc.ec.europa.eu/repository/handle/JRC128415).
+- [Association of College and Research Libraries. Framework for Information Literacy](https://www.ala.org/acrl/standards/ilframework).
+- [Hargittai, E. (2002). Beyond logs and surveys](https://www.webuse.org/pdf/Hargittai-BeyondLogsSurveys2002.pdf).
+- [van Deursen, Helsper & Eynon. Internet Skills Scale](https://ris.utwente.nl/ws/portalfiles/portal/6972069/development.pdf).

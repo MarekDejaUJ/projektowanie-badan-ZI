@@ -17,7 +17,8 @@ Lista: ok, tabela kontroli i jawna lista plików.
 \description{
 Kontrola nie przyznaje punktów za interpretację. Opcjonalne wykonanie skryptu
 odbywa się w kopii pracy i świeżym procesie R; wyniki w oryginale muszą być zapisane.
-Wykonuj w ten sposób własny kod. Kontrolę prac oddanych wykonuje CI bez poświadczeń kursu.
+Wykonuj w ten sposób gotowy skrypt po ustawieniu wskazanych parametrów.
+Kontrolę prac oddanych wykonuje CI bez poświadczeń kursu.
 }
 \examples{
 k <- tempfile("kontrola-")
