@@ -4,7 +4,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     r-base-core r-cran-digest r-cran-gert r-cran-ggplot2 r-cran-httr2 \
     r-cran-jsonlite r-cran-knitr r-cran-processx r-cran-rmarkdown r-cran-yaml \
     r-cran-readxl pandoc texlive-xetex texlive-latex-extra texlive-fonts-recommended \
-    fonts-dejavu-core fonts-lmodern && apt-get clean
+    texlive-lang-polish fonts-dejavu-core fonts-lmodern && apt-get clean
 COPY badaniaZI.tar.gz /opt/badaniazi/badaniaZI.tar.gz
 RUN Rscript --vanilla -e 'stopifnot(isTRUE(l10n_info()[["UTF-8"]]))'
 RUN R CMD INSTALL /opt/badaniazi/badaniaZI.tar.gz

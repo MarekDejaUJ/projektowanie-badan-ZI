@@ -65,8 +65,15 @@ sprawdz_aktualnosc_pdf <- function(kontrola) {
 }
 
 uruchom_render_pracy <- function(wejscie, katalog, timeout) {
+  katalog <- normalizePath(katalog, winslash = "/", mustWork = TRUE)
+  # Starszy rmarkdown wymaga HOME na Linux. Nie przekazujemy domu użytkownika:
+  # wyłącznie pusty katalog tego procesu, usuwany po zakończeniu renderowania.
+  render_home <- tempfile("dom-renderu-", tmpdir = katalog)
+  stopifnot(dir.create(render_home, mode = "0700"))
+  render_home <- normalizePath(render_home, winslash = "/", mustWork = TRUE)
+  on.exit(unlink(render_home, recursive = TRUE, force = TRUE), add = TRUE)
   processx::run(rscript_bin(), c("--vanilla", zasob("skrypty", "render-prace.R"), wejscie),
-    wd = katalog, env = srodowisko_renderu(), timeout = timeout, error_on_status = FALSE,
+    wd = katalog, env = c(srodowisko_renderu(), HOME = render_home), timeout = timeout, error_on_status = FALSE,
     cleanup_tree = TRUE, windows_hide_window = TRUE)
 }
 

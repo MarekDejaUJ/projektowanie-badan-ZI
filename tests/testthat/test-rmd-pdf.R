@@ -96,6 +96,31 @@ test_that("błąd i zmiana źródła podczas renderu zachowują poprzedni PDF", 
   expect_identical(badaniaZI:::hashe_plikow(k, pliki), przed)
 })
 
+test_that("renderer otrzymuje odrębny pusty dom, usuwany także po błędzie", {
+  k <- tempfile("test-domu-renderu-")
+  dir.create(k)
+  on.exit(unlink(k, recursive = TRUE, force = TRUE), add = TRUE)
+  original_home <- Sys.getenv("HOME", unset = NA_character_)
+  render_home <- NULL
+  fail <- FALSE
+  local_mocked_bindings(run = function(command, args, wd, env, ...) {
+    render_home <<- unname(env["HOME"])
+    expect_true(dir.exists(render_home))
+    expect_true(startsWith(render_home, paste0(normalizePath(k, winslash = "/"), "/")))
+    expect_length(list.files(render_home, all.files = TRUE, no.. = TRUE), 0L)
+    expect_false(identical(render_home, original_home))
+    if (fail) stop("testowy timeout")
+    list(status = 0L)
+  }, .package = "processx")
+  expect_equal(badaniaZI:::uruchom_render_pracy("zadanie.Rmd", k, 10)$status, 0L)
+  expect_false(dir.exists(render_home))
+  fail <- TRUE
+  expect_error(badaniaZI:::uruchom_render_pracy("zadanie.Rmd", k, 10), "testowy timeout")
+  expect_false(dir.exists(render_home))
+  expect_identical(Sys.getenv("HOME", unset = NA_character_), original_home)
+  expect_true(dir.exists(k))
+})
+
 test_that("świeży R nie dziedziczy tokenów, profilu ani dowolnych zmiennych", {
   withr::local_envvar(c(GH_TOKEN = "tajne", OPENAI_API_KEY = "tajne", R_TESTS = "tajne",
     R_PROFILE_USER = "tajne", R_ENVIRON_USER = "tajne", GH_CONFIG_DIR = "tajne"))
