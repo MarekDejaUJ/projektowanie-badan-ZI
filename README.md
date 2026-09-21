@@ -131,6 +131,10 @@ Z09/Z10 do odpowiednich części. Uporządkuj je w spójny raport, uzupełnij P1
 
 ## Ocena i terminy 2026/27
 
+Prowadzący może niezależnie odtworzyć oddanie w izolowanym środowisku;
+[instrukcja kontroli](docs/kontrola-oddan.md) opisuje pobranie konkretnego SHA
+i osobny PDF kontrolny. Student nie potrzebuje Docker ani dodatkowych poleceń.
+
 Projekt indywidualny ilościowy stanowi 50% oceny, dziesięć jednakowo ważonych
 zadań łącznie 50% (każde 5%). Projekt obejmuje plan badania i analizę danych.
 Nie ma egzaminu; ocena wybranej realizacji jest oceną końcową.
