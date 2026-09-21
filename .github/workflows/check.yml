@@ -6,6 +6,12 @@ on:
     tags: ['v*']
   pull_request:
   workflow_dispatch:
+    inputs:
+      scope:
+        description: Zakres sprawdzenia
+        type: choice
+        default: all
+        options: [all, review]
 
 permissions:
   contents: read
@@ -45,6 +51,7 @@ jobs:
         run: source('tools/kontrola/verify.R', encoding = 'UTF-8')
 
   check:
+    if: github.event_name != 'workflow_dispatch' || inputs.scope != 'review'
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }} / R ${{ matrix.r }}
     strategy:
@@ -81,6 +88,7 @@ jobs:
         run: source("tools/verify-install.R", encoding = "UTF-8")
 
   render-smoke:
+    if: github.event_name != 'workflow_dispatch' || inputs.scope != 'review'
     runs-on: ${{ matrix.os }}
     name: Render smoke / ${{ matrix.os }}
     strategy:
@@ -106,6 +114,7 @@ jobs:
         run: source("tools/verify-render.R", encoding = "UTF-8")
 
   render-full-linux:
+    if: github.event_name != 'workflow_dispatch' || inputs.scope != 'review'
     runs-on: ubuntu-latest
     name: Pełny render HTML/PDF / Linux
     steps:

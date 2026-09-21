@@ -45,12 +45,13 @@ run <- function() {
       "w <- badaniaZI:::kontroluj_wejscia_rmd(d$zadanie, '/work/praca'); ",
       "r <- badaniaZI:::uruchom_render_pracy(file.path(badaniaZI:::folder_pracy(d$zadanie), w$rmd), '/work/praca', 240); ",
       "cat('\\nDIAGNOSTYKA SYNTETYCZNA\\n', r$status, '\\n', r$stdout, '\\n', r$stderr)")
-    testthat::with_mocked_bindings({
-      z <- badaniaZI:::uruchom_kontrole_kontener(inp, image, 360)
-      cat(substr(z$stdout, 1L, 20000L), "\n")
-    }, argumenty_kontenera = function(wejscie, obraz) {
-      c(head(args0(wejscie, obraz), -1L), "-e", code)
-    }, .package = "badaniaZI")
+    z <- processx::run("docker", c(head(args0(inp, image), -1L), "-e", code), timeout = 30)
+    cid <- trimws(z$stdout)
+    stopifnot(grepl("^[0-9a-f]{64}$", cid))
+    on.exit(processx::run("docker", c("rm", "--force", cid), timeout = 30), add = TRUE)
+    z <- processx::run("docker", c("start", "--attach", cid), timeout = 360, error_on_status = FALSE)
+    cat("Status diagnostyki:", z$status, "\n", substr(z$stdout, 1L, 20000L),
+      "\n", substr(z$stderr, 1L, 20000L), "\n")
   }
   for (id in c("Z01", "Z09", "Z10", "PROJEKT")) {
     inp <- make_input(id, id)
