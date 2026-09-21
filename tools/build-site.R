@@ -1,5 +1,9 @@
 root <- normalizePath(".", winslash = "/", mustWork = TRUE)
 stopifnot(identical(read.dcf(file.path(root, "DESCRIPTION"), fields = "Package")[[1]], "badaniaZI"))
+wydanie <- yaml::read_yaml(file.path(root, "inst/kurs/wydanie.yml"))
+stopifnot(identical(wydanie$pakiet, read.dcf(file.path(root, "DESCRIPTION"), fields = "Version")[[1]]),
+  all(vapply(wydanie[c("pakiet", "materialy", "generator")], function(x)
+    is.character(x) && length(x) == 1L && grepl("^[0-9]+[.][0-9]+[.][0-9]+$", x), logical(1))))
 # Budujemy obok istniejącej strony; dopiero kompletny wynik zastępuje _site.
 out <- tempfile(".site-stage-", tmpdir = root)
 stopifnot(dir.create(out))
@@ -24,6 +28,7 @@ copy_tree("inst/rubryki", file.path(out, "rubryki"))
 copy_tree("inst/scenariusze", file.path(out, "scenariusze"))
 copy_tree("inst/szablony", file.path(out, "szablony"))
 file.copy("README.md", file.path(out, "README.md"), overwrite = TRUE)
+stopifnot(file.copy("NEWS.md", file.path(out, "NEWS.md")))
 
 esc <- function(x) {
   x <- gsub("&", "&amp;", x, fixed = TRUE)
@@ -65,6 +70,8 @@ html <- c('<!doctype html>', '<html lang="pl"><head><meta charset="utf-8">',
   '<title>Projektowanie badań — Zarządzanie informacją</title>',
   '<style>body{font-family:system-ui,sans-serif;line-height:1.55;color:#1f2933;max-width:1050px;margin:auto;padding:2rem}h1,h2,h3{color:#005c91}article{border:1px solid #cbd8df;border-radius:.5rem;padding:.8rem 1rem;margin:.8rem 0;background:#f8fbfc}code,pre{background:#eef4f8}pre{padding:1rem;overflow:auto}a{color:#005c91}aside{border-left:4px solid #d55e00;padding:.6rem 1rem;background:#fff7ef}</style>',
   '</head><body>', '<h1>Projektowanie badań — część ilościowa</h1>',
+  sprintf('<p>Materiały %s · pakiet %s · generator %s. <a href="NEWS.md">Opis zmian i status wydania</a>.</p>',
+    esc(wydanie$materialy), esc(wydanie$pakiet), esc(wydanie$generator)),
   '<p>Zarządzanie informacją, rok 2026/27. Materiały łączą ankietę z obserwowanym zadaniem wyszukiwawczym. Kod analiz jest gotowy; praca studenta polega na wyborze wskazanych parametrów oraz samodzielnej interpretacji.</p>',
   '<aside><strong>Terminy:</strong> Z01–Z09 do początku kolejnych ćwiczeń; Z10 do 26.01.2027, 10:30. Projekt do 27.01.2027. Spóźnione oddanie do 10.02.2027 ma ocenę maksymalną 4,5; poprawa projektu do 24.02.2027.</aside>',
   '<h2>Początek każdych ćwiczeń w RStudio</h2>',
