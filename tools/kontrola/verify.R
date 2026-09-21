@@ -44,7 +44,9 @@ run <- function() {
     code <- paste0("source('/opt/badaniazi/kontrola.R', encoding='UTF-8'); ",
       "w <- badaniaZI:::kontroluj_wejscia_rmd(d$zadanie, '/work/praca'); ",
       "r <- badaniaZI:::uruchom_render_pracy(file.path(badaniaZI:::folder_pracy(d$zadanie), w$rmd), '/work/praca', 240); ",
-      "cat('\\nDIAGNOSTYKA SYNTETYCZNA\\n', r$status, '\\n', r$stdout, '\\n', r$stderr)")
+      "cat('\\nDIAGNOSTYKA SYNTETYCZNA\\n', r$status, '\\n', r$stdout, '\\n', r$stderr); ",
+      "for (f in list.files('/work/praca', pattern='[.]log$', recursive=TRUE, full.names=TRUE)) ",
+      "cat(paste(tail(readLines(f, warn=FALSE), 60), collapse='\\n'))")
     z <- processx::run("docker", c(head(args0(inp, image), -1L), "-e", code), timeout = 30)
     cid <- trimws(z$stdout)
     stopifnot(grepl("^[0-9a-f]{64}$", cid))
@@ -73,7 +75,7 @@ run <- function() {
   cat("Zmieniony kod odrzucony PASS\n")
   # Sprawdzenie ograniczeń na tym samym obrazie i z tymi samymi flagami.
   args0 <- badaniaZI:::argumenty_kontenera
-  probe <- paste0("stopifnot(all(Sys.getenv(c('GH_TOKEN','GITHUB_TOKEN','GITHUB_PAT'))==''), ",
+  probe <- paste0("stopifnot(isTRUE(l10n_info()[['UTF-8']]), all(Sys.getenv(c('GH_TOKEN','GITHUB_TOKEN','GITHUB_PAT'))==''), ",
     "!file.exists('/var/run/docker.sock'), identical(list.files('/sys/class/net'),'lo')); ",
     "s<-readLines('/proc/self/status'); stopifnot(any(grepl('^Uid:([[:space:]]+65534){4}$',s)), ",
     "any(grepl('^NoNewPrivs:[[:space:]]+1$',s)), ",
