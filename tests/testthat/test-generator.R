@@ -48,6 +48,8 @@ test_that("manifest i zapis chronią surową wersję", {
   expect_false(as.raw(13) %in% bajty)
   expect_true(as.raw(10) %in% bajty)
   expect_identical(manifest$sha256_rds, digest::digest(file = file.path(katalog, "surowe.rds"), algo = "sha256"))
+  expect_identical(manifest$sha256_slownik, digest::digest(file = file.path(katalog, "slownik.csv"), algo = "sha256"))
+  expect_identical(manifest$sha256_scenariusz, digest::digest(file = file.path(katalog, "scenariusz.yml"), algo = "sha256"))
   slownik <- utils::read.csv(file.path(katalog, "slownik.csv"), encoding = "UTF-8", stringsAsFactors = FALSE, na.strings = character())
   expect_equal(slownik, x$slownik)
   d <- utils::read.csv(file.path(katalog, "surowe.csv"), encoding = "UTF-8", stringsAsFactors = FALSE)
@@ -59,6 +61,40 @@ test_that("manifest i zapis chronią surową wersję", {
   expect_error(generuj_dane("s017", "S21"), "scenariusz")
   expect_error(sprawdz_warianty(c("s017", "s017"), "S01"), "Roster")
   expect_false(anyDuplicated(sprawdz_warianty(sprintf("s%03d", 1:100), "S01")$seed) > 0)
+})
+
+test_that("zapisany wariant odczytuje się bez generatora i bez zmiany RNG", {
+  k <- tempfile("zapisany wariant ")
+  on.exit(unlink(k, recursive = TRUE), add = TRUE)
+  x <- generuj_dane("s017", "S11")
+  zapisz_dane(x, k)
+  set.seed(765)
+  stan <- .Random.seed
+  testthat::local_mocked_bindings(generuj_dane = function(...) stop("Nie wolno losować"),
+                                 scenariusz = function(...) stop("Nie wolno czytać nowej karty"))
+  y <- wczytaj_dane(k, id = "s017", scenariusz = "S11", rocznik = "2026-27")
+  expect_identical(y$dane, x$dane)
+  expect_equal(y$slownik, x$slownik)
+  expect_equal(y$scenariusz, x$scenariusz)
+  expect_identical(.Random.seed, stan)
+  expect_error(wczytaj_dane(k, id = "s999"), "inne id")
+  expect_error(wczytaj_dane(k, scenariusz = "S02"), "inne scenariusz")
+  plik <- file.path(k, "scenariusz.yml")
+  tekst <- readLines(plik, encoding = "UTF-8")
+  badaniaZI:::pisz_linie(c(tekst, "# zmiana pliku"), plik)
+  expect_error(wczytaj_dane(k), "hash pliku scenariusz.yml")
+  expect_identical(tail(readLines(plik, encoding = "UTF-8"), 1L), "# zmiana pliku")
+})
+
+test_that("zmienione metadane nie podszywają się pod inne ID", {
+  k <- tempfile("manifest-")
+  on.exit(unlink(k, recursive = TRUE), add = TRUE)
+  zapisz_dane(generuj_dane("s017", "S02"), k)
+  p <- file.path(k, "manifest.json")
+  m <- jsonlite::read_json(p, simplifyVector = TRUE)
+  m$id <- "s018"
+  jsonlite::write_json(m, p, auto_unbox = TRUE)
+  expect_error(wczytaj_dane(k, id = "s018"), "Metadane i klucz")
 })
 
 test_that("przykład z zainstalowanej paczki zachowuje hashe i polskie etykiety", {

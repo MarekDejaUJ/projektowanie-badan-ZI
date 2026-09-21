@@ -1,9 +1,8 @@
-wersja: 1.0.0
+wersja: 1.1.0
 scenariusze:
 - id: S01
   tytul: 'Biblioteka akademicka: dostępność wsparcia w wyszukiwaniu'
-  problem: Instytucja chce ocenić wsparcie biblioteki z perspektywy użytkowników i
-    wskazać uzasadniony kierunek poprawy.
+  problem: "Biblioteka rozważa zmianę sposobu oferowania konsultacji. Chce rozpoznać deklarowaną pewność użytkowników i jej związek z korzystaniem z biblioteki, zanim uzna same wizyty na konsultacjach za dowód poprawy umiejętności."
   konstrukt: pewności wyszukiwania
   grupy:
   - konsultacje
@@ -27,21 +26,33 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Deklarowana pewność wyszukiwania"
+  etykiety_grup: ["konsultacje","bez konsultacji"]
+  opis_grup: "Konsultacje: co najmniej jedna konsultacja wyszukiwawcza w ostatnim semestrze; bez konsultacji: żadna w tym okresie. To zastane doświadczenie, nie losowy przydział. Osoby szukające pomocy mogą już przed konsultacją różnić się trudnością zadania."
+  zadanie_obserwacyjne: "W katalogu znajdź dokument odpowiadający podanemu tytułowi i autorowi oraz wskaż jego lokalizację."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "wskazano właściwy dokument i jego lokalizację"
+  kod_0: "nie spełniono obu kryteriów w zakończonej, zarejestrowanej próbie"
+  ograniczenie_binarnego: "Jedno poprawne zadanie nie mierzy całej kompetencji informacyjnej; wysoka pewność pozostaje deklaracją."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Kuhlthau (1991)](https://wp.comminfo.rutgers.edu/ckuhlthau2/wp-content/uploads/sites/185/2016/01/InsidetheSearchProcess.pdf): wykorzystaj pytanie o moment procesu wyszukiwania, w którym mierzysz pewność lub ocenę. Nie przypisuj autorce kursowego indeksu ani syntetycznych wyników."
 - id: S02
   tytul: 'Katalog biblioteczny: użyteczność wyszukiwania'
-  problem: Instytucja chce ocenić katalog biblioteczny z perspektywy użytkowników
-    i wskazać uzasadniony kierunek poprawy.
+  problem: "Biblioteka chce ustalić, czy katalog wymaga dodatkowego wsparcia przy pierwszych kontaktach. Porównuje ocenę katalogu i wykonanie jednego zadania, ponieważ pozytywna opinia o interfejsie nie musi oznaczać poprawnego odnalezienia dokumentu."
   konstrukt: użyteczności katalogu
   grupy:
   - nowi
   - doświadczeni
   druga_analiza: tabela krzyżowa
   pytanie_drugie: grupa × powodzenie znalezienia dokumentu
-  zmienna_druga: czestosc_korzystania
+  zmienna_druga: powodzenie
   efekt_grup: 0.35
   czas_typowy: 9.0
   pozycje:
@@ -58,14 +69,26 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena użyteczności katalogu"
+  etykiety_grup: ["nowi","doświadczeni"]
+  opis_grup: "Nowi: korzystający z tego katalogu po raz pierwszy; doświadczeni: korzystający wcześniej. Doświadczenie dotyczy konkretnego katalogu, nie ogólnej sprawności cyfrowej. Rekrutacja tylko przy stanowisku pomocy może nadreprezentować osoby mające trudności."
+  zadanie_obserwacyjne: "Znajdź wskazaną publikację i wskaż lokalizację egzemplarza lub właściwy dostęp elektroniczny."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "wskazano właściwą publikację i jej lokalizację lub dostęp"
+  kod_0: "zakończono próbę bez poprawnego wskazania"
+  ograniczenie_binarnego: "Wynik zależy od tego konkretnego zadania i katalogu; nie uzasadnia diagnozy wszystkich umiejętności użytkownika."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Hargittai (2002)](https://webuse.org/p/a09/): uzasadnij rozdzielenie deklaracji i obserwacji działania. Sześć pozycji oraz wyniki w tym scenariuszu nie pochodzą z narzędzia ani próby autorki."
 - id: S03
   tytul: 'Repozytorium uczelni: znajomość zasad otwartego dostępu'
-  problem: Instytucja chce ocenić informację o otwartym dostępie z perspektywy użytkowników
-    i wskazać uzasadniony kierunek poprawy.
+  problem: "Repozytorium chce poprawić instrukcje dotyczące znajdowania i udostępniania tekstów. Oddziela deklarowaną znajomość zasad od sprawdzenia konkretnego źródła; samo uczestnictwo w szkoleniu nie dowodzi wiedzy ani efektu szkolenia."
   konstrukt: znajomości zasad otwartego dostępu
   grupy:
   - przeszkoleni
@@ -89,21 +112,33 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Deklarowana znajomość zasad otwartego dostępu"
+  etykiety_grup: ["przeszkoleni","nieprzeszkoleni"]
+  opis_grup: "Przeszkoleni: uczestniczyli w szkoleniu repozytorium w ostatnim roku; nieprzeszkoleni: nie uczestniczyli. Udział nie był randomizowany; motywacja do publikowania lub wcześniejsze doświadczenie mogły wpływać na wybór szkolenia."
+  zadanie_obserwacyjne: "Znajdź otwartą wersję wskazanego tekstu w przygotowanym zestawie źródeł i wskaż informację o podstawie udostępnienia."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "wybrano wersję i podstawę udostępnienia zgodne z przygotowanym kluczem zadania"
+  kod_0: "zakończono próbę bez obu poprawnych wskazań"
+  ograniczenie_binarnego: "Ocena według klucza dydaktycznego nie jest poradą prawną ani dowodem ogólnej znajomości wszystkich licencji."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Hargittai (2002)](https://webuse.org/p/a09/): uzasadnij rozdzielenie deklaracji i obserwacji działania. Sześć pozycji oraz wyniki w tym scenariuszu nie pochodzą z narzędzia ani próby autorki."
 - id: S04
   tytul: 'Biblioteka publiczna: dopasowanie kanału informacji o wydarzeniach'
-  problem: Instytucja chce ocenić informację o wydarzeniach z perspektywy użytkowników
-    i wskazać uzasadniony kierunek poprawy.
+  problem: "Biblioteka publiczna porównuje doświadczenia odbiorców informacji przez WWW i media społecznościowe. Chce odróżnić łatwość znalezienia komunikatu od deklarowanego udziału w wydarzeniu, na który wpływają też termin, zainteresowania i dostępność miejsca."
   konstrukt: łatwości dotarcia do informacji
   grupy:
   - WWW
   - media społecznościowe
   druga_analiza: tabela krzyżowa
-  pytanie_drugie: kanał × udział w wydarzeniu
-  zmienna_druga: czestosc_korzystania
+  pytanie_drugie: "główny kanał × deklarowany udział w wydarzeniu"
+  zmienna_druga: powodzenie
   efekt_grup: 0.2
   czas_typowy: 5.0
   pozycje:
@@ -120,14 +155,26 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena łatwości dotarcia do informacji o wydarzeniach"
+  etykiety_grup: ["WWW","media społecznościowe"]
+  opis_grup: "WWW i media społecznościowe oznaczają jeden deklarowany główny kanał szukania informacji o wydarzeniach. To nie są wszystkie zaznaczenia pytania wielokrotnego; dana osoba może korzystać także z innych kanałów."
+  zadanie_obserwacyjne: "Znajdź datę, miejsce i warunki udziału w wskazanym wydarzeniu, korzystając z przygotowanego komunikatu."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "deklaracja"
+  kod_1: "zadeklarowano udział w co najmniej jednym wydarzeniu tej biblioteki w ostatnich czterech tygodniach"
+  kod_0: "zadeklarowano brak takiego udziału"
+  ograniczenie_binarnego: "Udział jest wspomnieniem respondenta, a nie obserwowanym sukcesem zadania ani dowodem działania wybranego kanału."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Wilson (1999)](https://www.informationr.net/tdw/publ/papers/1999JDoc.html): odróżnij wybrany epizod korzystania od szerszego zachowania informacyjnego. Karta jest przykładem dydaktycznym, nie narzędziem zwalidowanym w tej publikacji."
 - id: S05
   tytul: 'Portal studencki: odnajdywanie procedur administracyjnych'
-  problem: Instytucja chce ocenić portal z procedurami z perspektywy użytkowników
-    i wskazać uzasadniony kierunek poprawy.
+  problem: "Zespół portalu studenckiego chce ułatwić odnajdywanie właściwych formularzy. Porównuje ocenę przejrzystości między osobami o różnym stażu studiowania i sprawdza jej związek z czasem, nie utożsamiając krótkiej próby z poprawnym załatwieniem sprawy."
   konstrukt: przejrzystości procedur
   grupy:
   - pierwszy rok
@@ -151,21 +198,33 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena przejrzystości procedur"
+  etykiety_grup: ["pierwszy rok","kolejny rok"]
+  opis_grup: "Pierwszy rok i kolejny rok odnoszą się do czasu studiowania w tej uczelni. Nie oznaczają wieku, trybu studiów ani pierwszego użycia dowolnego portalu. W planie uwzględnij możliwe różnice rodzaju spraw załatwianych przez grupy."
+  zadanie_obserwacyjne: "W portalu odszukaj formularz i wymagane załączniki dla jednej opisanej sprawy administracyjnej."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "wskazano formularz właściwy dla opisanej sprawy"
+  kod_0: "zakończono próbę bez wskazania właściwego formularza"
+  ograniczenie_binarnego: "Czas dotyczy zakończenia próby, nie uzyskania decyzji administracyjnej. Drugie pytanie rdzenia dotyczy czasu, a nie wyniku 0/1."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Vial (2019)](https://doi.org/10.1016/j.jsis.2019.01.003): rozważ, jak odróżnić udostępnienie cyfrowej funkcji od zmiany działania usługi. Porównanie przekrojowe na danych syntetycznych nie dowodzi transformacji instytucji."
 - id: S06
   tytul: 'Newsletter instytucji: informacyjne dopasowanie treści'
-  problem: Instytucja chce ocenić newsletter z perspektywy użytkowników i wskazać
-    uzasadniony kierunek poprawy.
+  problem: "Instytucja rozważa zmianę układu i doboru treści newslettera. Chce oddzielić ocenę jego przydatności od deklaracji wykorzystania informacji; otwarcie wiadomości lub kliknięcie linku nie przesądza o użyciu treści."
   konstrukt: przydatności newslettera
   grupy:
   - regularni
   - okazjonalni
   druga_analiza: tabela krzyżowa
-  pytanie_drugie: grupa × wykorzystanie wskazanej informacji
-  zmienna_druga: czestosc_korzystania
+  pytanie_drugie: "grupa × deklarowane wykorzystanie informacji"
+  zmienna_druga: powodzenie
   efekt_grup: 0.5
   czas_typowy: 15.0
   pozycje:
@@ -182,14 +241,26 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena przydatności newslettera"
+  etykiety_grup: ["regularni","okazjonalni"]
+  opis_grup: "Regularni i okazjonalni oznaczają deklarowany zwyczaj czytania newslettera w ostatnim semestrze. Kryterium nie jest otwarciem jednej wiadomości. Zaproszenie wyłącznie w newsletterze może pominąć osoby, które przestały go czytać."
+  zadanie_obserwacyjne: "W jednym wydaniu newslettera odszukaj wskazaną informację i link do jej szczegółów."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "deklaracja"
+  kod_1: "zadeklarowano wykorzystanie co najmniej jednej informacji z newslettera w ostatnich czterech tygodniach"
+  kod_0: "zadeklarowano brak takiego wykorzystania"
+  ograniczenie_binarnego: "Deklaracja użycia nie jest logiem zachowania ani dowodem skuteczności newslettera; w planie doprecyzuj, jakie działanie uznajesz za wykorzystanie."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Wilson (1999)](https://www.informationr.net/tdw/publ/papers/1999JDoc.html): odróżnij wybrany epizod korzystania od szerszego zachowania informacyjnego. Karta jest przykładem dydaktycznym, nie narzędziem zwalidowanym w tej publikacji."
 - id: S07
   tytul: 'Archiwum cyfrowe: zrozumiałość opisów zbiorów'
-  problem: Instytucja chce ocenić opisy archiwalne z perspektywy użytkowników i wskazać
-    uzasadniony kierunek poprawy.
+  problem: "Archiwum cyfrowe chce sprawdzić, czy opisy pozwalają odbiorcy rozpoznać przydatne jednostki. Interesuje je związek postrzeganej zrozumiałości z korzystaniem z zasobu, a nie samo zwiększenie liczby wyszukań."
   konstrukt: zrozumiałości opisów archiwalnych
   grupy:
   - z doświadczeniem
@@ -213,21 +284,33 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena zrozumiałości opisów archiwalnych"
+  etykiety_grup: ["z doświadczeniem","bez doświadczenia"]
+  opis_grup: "Z doświadczeniem: wcześniejsza samodzielna praca z opisami archiwalnymi; bez doświadczenia: pierwszy taki kontakt. Doświadczenie dotyczy opisów i struktury archiwum, nie wykształcenia ogółem."
+  zadanie_obserwacyjne: "Znajdź opis jednostki odpowiadającej wskazanemu tematowi i okresowi oraz podaj jej sygnaturę."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "wskazano właściwy opis i sygnaturę"
+  kod_0: "zakończono próbę bez obu poprawnych wskazań"
+  ograniczenie_binarnego: "Zrozumiałość oceniona w ankiecie nie jest ekspercką oceną kompletności opisu ani dowodem poprawnego zrozumienia wszystkich terminów."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Kuhlthau (1991)](https://wp.comminfo.rutgers.edu/ckuhlthau2/wp-content/uploads/sites/185/2016/01/InsidetheSearchProcess.pdf): wykorzystaj pytanie o moment procesu wyszukiwania, w którym mierzysz pewność lub ocenę. Nie przypisuj autorce kursowego indeksu ani syntetycznych wyników."
 - id: S08
   tytul: 'Kolekcja muzealna online: jakość metadanych dla odbiorcy'
-  problem: Instytucja chce ocenić metadane kolekcji z perspektywy użytkowników i wskazać
-    uzasadniony kierunek poprawy.
+  problem: "Muzeum chce rozpoznać, jak odbiorcy o różnych celach korzystają z opisów kolekcji. Pytanie o kompletność jest oceną z perspektywy potrzeby użytkownika, nie automatycznym audytem zgodności rekordów ze standardem metadanych."
   konstrukt: kompletności metadanych
   grupy:
   - edukacyjni
   - hobbystyczni
   druga_analiza: tabela krzyżowa
   pytanie_drugie: grupa × znalezienie potrzebnego obiektu
-  zmienna_druga: czestosc_korzystania
+  zmienna_druga: powodzenie
   efekt_grup: 0.35
   czas_typowy: 9.0
   pozycje:
@@ -244,14 +327,26 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Postrzegana kompletność metadanych"
+  etykiety_grup: ["edukacyjni","hobbystyczni"]
+  opis_grup: "Edukacyjni i hobbystyczni oznaczają deklarowany główny cel bieżącej wizyty. Osoba może mieć oba zainteresowania, lecz wskazuje cel dominujący dla tej sesji; nie jest liczona w obu grupach."
+  zadanie_obserwacyjne: "Znajdź obiekt odpowiadający podanemu twórcy, okresowi i typowi oraz wskaż jego rekord."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "wybrano rekord spełniający wszystkie podane warunki"
+  kod_0: "zakończono próbę bez właściwego rekordu"
+  ograniczenie_binarnego: "Znalezienie obiektu nie dowodzi zrozumienia jego kontekstu; subiektywnie kompletne metadane nie muszą być kompletne według normy katalogowania."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Hargittai (2002)](https://webuse.org/p/a09/): uzasadnij rozdzielenie deklaracji i obserwacji działania. Sześć pozycji oraz wyniki w tym scenariuszu nie pochodzą z narzędzia ani próby autorki."
 - id: S09
   tytul: 'Biuletyn Informacji Publicznej: dostępność informacji urzędowej'
-  problem: Instytucja chce ocenić Biuletyn Informacji Publicznej z perspektywy użytkowników
-    i wskazać uzasadniony kierunek poprawy.
+  problem: "Zespół informacji urzędowej chce wiedzieć, gdzie odbiorcy tracą czas na odnalezienie dokumentu. Ocenia nawigację i czas konkretnej próby, nie wyciągając z nich wniosku o ogólnej jakości urzędu lub kompetencji obywatela."
   konstrukt: łatwości nawigacji
   grupy:
   - często
@@ -275,21 +370,33 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena łatwości nawigacji w BIP"
+  etykiety_grup: ["często","rzadko"]
+  opis_grup: "Często i rzadko oznaczają deklarowany utrwalony zwyczaj korzystania z BIP w ostatnim roku. Odrębna kolumna częstotliwości dotyczy ostatnich czterech tygodni; nie wylicza się z niej automatycznie grup."
+  zadanie_obserwacyjne: "Odnajdź wskazany dokument urzędowy i podaj jego datę oraz miejsce publikacji w BIP."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "odnaleziono właściwy dokument"
+  kod_0: "zakończono próbę bez właściwego dokumentu"
+  ograniczenie_binarnego: "Szybkie zakończenie próby nie oznacza odczytania dokumentu ze zrozumieniem ani poprawnej oceny jego skutków."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Vial (2019)](https://doi.org/10.1016/j.jsis.2019.01.003): rozważ, jak odróżnić udostępnienie cyfrowej funkcji od zmiany działania usługi. Porównanie przekrojowe na danych syntetycznych nie dowodzi transformacji instytucji."
 - id: S10
   tytul: 'Baza danych badawczych: gotowość do ponownego użycia danych'
-  problem: Instytucja chce ocenić dokumentację danych z perspektywy użytkowników i
-    wskazać uzasadniony kierunek poprawy.
+  problem: "Repozytorium danych rozważa poprawę opisów zmiennych i warunków użycia zbioru. Chce porównać ocenę dokumentacji oraz deklarowaną gotowość ponownego użycia, oddzielając zamiar od późniejszego pobrania, analizy i cytowania danych."
   konstrukt: użyteczności dokumentacji danych
   grupy:
   - z doświadczeniem
   - bez doświadczenia
   druga_analiza: tabela krzyżowa
   pytanie_drugie: grupa × deklaracja ponownego użycia
-  zmienna_druga: czestosc_korzystania
+  zmienna_druga: powodzenie
   efekt_grup: 0.2
   czas_typowy: 5.0
   pozycje:
@@ -306,14 +413,26 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena użyteczności dokumentacji danych"
+  etykiety_grup: ["z doświadczeniem","bez doświadczenia"]
+  opis_grup: "Z doświadczeniem: wcześniejsze samodzielne wykorzystanie cudzego zbioru danych w analizie; bez doświadczenia: brak takiej praktyki. Samo pobranie pliku nie wystarcza do przypisania doświadczenia."
+  zadanie_obserwacyjne: "W dokumentacji wskazanego zbioru znajdź znaczenie zmiennej, jej jednostkę i informację o warunkach użycia."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "deklaracja"
+  kod_1: "po zapoznaniu się z opisanym zbiorem zadeklarowano zamiar jego ponownego użycia"
+  kod_0: "nie zadeklarowano takiego zamiaru"
+  ograniczenie_binarnego: "Zamiar nie jest obserwowanym użyciem ani obietnicą, że zbiór rzeczywiście nadaje się do przyszłej analizy. Brak odpowiedzi nie oznacza odmowy."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Hargittai (2002)](https://webuse.org/p/a09/): uzasadnij rozdzielenie deklaracji i obserwacji działania. Sześć pozycji oraz wyniki w tym scenariuszu nie pochodzą z narzędzia ani próby autorki."
 - id: S11
   tytul: 'Biblioteka: przekazywanie instrukcji korzystania z e-zasobów'
-  problem: Instytucja chce ocenić instrukcję e-zasobów z perspektywy użytkowników
-    i wskazać uzasadniony kierunek poprawy.
+  problem: "Biblioteka porównuje doświadczenia osób wybierających instrukcję tekstową lub wideo. Chce ocenić zrozumiałość i czas zapoznania, pamiętając, że wybór formatu zależy od potrzeb i preferencji, a nie od losowego przydziału."
   konstrukt: zrozumiałości instrukcji
   grupy:
   - teks
@@ -337,21 +456,33 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena zrozumiałości instrukcji"
+  etykiety_grup: ["tekst","wideo"]
+  opis_grup: "Kod teks oznacza instrukcję tekstową, a wideo instrukcję filmową. Kody danych pozostają niezmienione; etykieta teks nie jest trzecią kategorią. Osoby same wybierają format, dlatego różnica nie identyfikuje efektu przyczynowego formatu."
+  zadanie_obserwacyjne: "Zapoznaj się z jedną instrukcją dostępu do e-zasobu, a następnie wykonaj wskazane czynności. Pomiar czasu obejmuje tylko zapoznanie z instrukcją; wykonanie ocenia się osobno."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "po zapoznaniu z instrukcją wykonano wszystkie wskazane czynności zgodnie z kluczem"
+  kod_0: "obserwowana próba wykonania nie spełniła kryterium"
+  ograniczenie_binarnego: "Czas czytania lub oglądania nie jest czasem wykonania czynności. Dłuższe zapoznanie może wynikać z długości materiału, a nie z gorszych umiejętności."
+  nazwa_czasu: "Czas zapoznania z instrukcją"
+  protokol_czasu: "Od otwarcia instrukcji do zgłoszenia gotowości do działania, w minutach. Późniejsze wykonanie czynności jest osobnym etapem i nie należy do tego czasu."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Hargittai (2002)](https://webuse.org/p/a09/): uzasadnij rozdzielenie deklaracji i obserwacji działania. Sześć pozycji oraz wyniki w tym scenariuszu nie pochodzą z narzędzia ani próby autorki."
 - id: S12
   tytul: 'Platforma e-learningowa: organizacja materiałów kursu'
-  problem: Instytucja chce ocenić organizację materiałów kursu z perspektywy użytkowników
-    i wskazać uzasadniony kierunek poprawy.
+  problem: "Zespół platformy nauczania chce sprawdzić, czy materiały kursu są odnajdywalne na urządzeniach używanych przez studentów. Oddziela ocenę organizacji plików od znalezienia konkretnego materiału i od późniejszego opanowania jego treści."
   konstrukt: odnajdywalności materiałów
   grupy:
   - telefon
   - komputer
   druga_analiza: tabela krzyżowa
   pytanie_drugie: grupa × znalezienie wskazanego materiału
-  zmienna_druga: czestosc_korzystania
+  zmienna_druga: powodzenie
   efekt_grup: 0.5
   czas_typowy: 15.0
   pozycje:
@@ -368,21 +499,33 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena odnajdywalności materiałów"
+  etykiety_grup: ["telefon","komputer"]
+  opis_grup: "Telefon i komputer oznaczają urządzenie użyte w zadaniu, wybrane przez uczestnika. Brak randomizacji pozostawia możliwe różnice doświadczenia, warunków pracy i celu korzystania."
+  zadanie_obserwacyjne: "Odszukaj wskazany obowiązkowy materiał z określonych zajęć i pokaż właściwy plik."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "otwarto właściwy materiał"
+  kod_0: "zakończono próbę bez właściwego materiału"
+  ograniczenie_binarnego: "Znalezienie pliku nie mierzy uczenia się; porównanie użytkowników urządzeń nie jest eksperymentem nad interfejsem."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Vial (2019)](https://doi.org/10.1016/j.jsis.2019.01.003): rozważ, jak odróżnić udostępnienie cyfrowej funkcji od zmiany działania usługi. Porównanie przekrojowe na danych syntetycznych nie dowodzi transformacji instytucji."
 - id: S13
   tytul: 'Instytucjonalne FAQ: adekwatność odpowiedzi'
-  problem: Instytucja chce ocenić odpowiedzi FAQ z perspektywy użytkowników i wskazać
-    uzasadniony kierunek poprawy.
+  problem: "Instytucja chce poprawić FAQ tak, aby odpowiadało na sprawy odbiorców. Porównuje ocenę adekwatności i deklarację rozwiązania problemu; brak kontaktu z obsługą sam w sobie nie oznacza rozwiązania sprawy."
   konstrukt: adekwatności odpowiedzi FAQ
   grupy:
   - pierwszy raz
   - powracający
   druga_analiza: tabela krzyżowa
-  pytanie_drugie: grupa × rozwiązanie problemu
-  zmienna_druga: czestosc_korzystania
+  pytanie_drugie: "grupa × deklarowane rozwiązanie problemu"
+  zmienna_druga: powodzenie
   efekt_grup: 0.2
   czas_typowy: 5.0
   pozycje:
@@ -399,14 +542,26 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena adekwatności odpowiedzi FAQ"
+  etykiety_grup: ["pierwszy raz","powracający"]
+  opis_grup: "Pierwszy raz i powracający oznaczają pierwszy lub kolejny kontakt z tym FAQ. To nie jest pomiar tej samej osoby przed i po zmianie strony. Powracający mogą mieć bardziej złożone sprawy."
+  zadanie_obserwacyjne: "Odszukaj odpowiedź na jedną opisaną sprawę w FAQ i zapisz proponowany sposób jej rozwiązania. Następnie oceń, czy znaleziona odpowiedź pozwoliła rozwiązać tę sprawę."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "deklaracja"
+  kod_1: "zadeklarowano, że FAQ pozwoliło rozwiązać opisaną sprawę"
+  kod_0: "zadeklarowano, że FAQ nie pozwoliło jej rozwiązać"
+  ograniczenie_binarnego: "To ocena respondenta, nie niezależna weryfikacja poprawności rozwiązania. Wspólne źródło obu deklaracji może ograniczać interpretację ich zgodności."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Hargittai (2002)](https://webuse.org/p/a09/): uzasadnij rozdzielenie deklaracji i obserwacji działania. Sześć pozycji oraz wyniki w tym scenariuszu nie pochodzą z narzędzia ani próby autorki."
 - id: S14
   tytul: 'Wyszukiwarka instytucji: wsparcie filtrowania wyników'
-  problem: Instytucja chce ocenić filtry wyszukiwarki z perspektywy użytkowników i
-    wskazać uzasadniony kierunek poprawy.
+  problem: "Instytucja chce ustalić, czy filtry są zrozumiałym wsparciem, a nie tylko dostępną funkcją. Porównuje ocenę kontroli i jej związek z częstością wyszukiwania; aktywowanie filtra nie musi oznaczać właściwego jego użycia."
   konstrukt: kontroli nad wyszukiwaniem
   grupy:
   - filtry
@@ -430,14 +585,26 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Deklarowana kontrola nad wyszukiwaniem"
+  etykiety_grup: ["filtry","bez filtrów"]
+  opis_grup: "Filtry i bez filtrów oznaczają użycie lub brak użycia co najmniej jednego filtra w zadaniu. To zachowanie wybrane przez osobę, nie interwencja przydzielona przez badacza; trudność zadania i doświadczenie mogą wpływać na wybór."
+  zadanie_obserwacyjne: "Odnajdź dokument o wskazanym typie i okresie, samodzielnie wybierając sposób zawężenia wyników."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "wskazano dokument spełniający warunki zadania"
+  kod_0: "zakończono próbę bez właściwego dokumentu"
+  ograniczenie_binarnego: "Ocenę kontroli należy odróżnić od efektywności strategii. Brak użycia filtra nie jest automatycznie błędem."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Kuhlthau (1991)](https://wp.comminfo.rutgers.edu/ckuhlthau2/wp-content/uploads/sites/185/2016/01/InsidetheSearchProcess.pdf): wykorzystaj pytanie o moment procesu wyszukiwania, w którym mierzysz pewność lub ocenę. Nie przypisuj autorce kursowego indeksu ani syntetycznych wyników."
 - id: S15
   tytul: 'Baza wiedzy organizacji: znajdowanie aktualnych instrukcji'
-  problem: Instytucja chce ocenić instrukcje w bazie wiedzy z perspektywy użytkowników
-    i wskazać uzasadniony kierunek poprawy.
+  problem: "Organizacja chce ograniczyć korzystanie z nieaktualnych procedur. Zestawia deklarowane zaufanie do bazy wiedzy z czasem odnalezienia instrukcji; zaufanie nie zastępuje kontroli wersji dokumentu."
   konstrukt: zaufania do aktualności instrukcji
   grupy:
   - krótki staż
@@ -461,21 +628,33 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Deklarowane zaufanie do aktualności instrukcji"
+  etykiety_grup: ["krótki staż","długi staż"]
+  opis_grup: "Krótki staż: mniej niż rok pracy w organizacji; długi staż: co najmniej rok. Próg jest przykładem planistycznym, nie cechą naturalną. W planie uwzględnij różne role i uprawnienia pracowników."
+  zadanie_obserwacyjne: "Znajdź instrukcję dla opisanej czynności i sprawdź oznaczenie aktualnej wersji."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "wskazano obowiązującą wersję zgodną z kluczem zadania"
+  kod_0: "zakończono próbę bez wskazania obowiązującej wersji"
+  ograniczenie_binarnego: "Zaufanie do aktualności jest deklaracją. Długi czas może oznaczać staranną kontrolę wersji, a nie niesprawność."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Vial (2019)](https://doi.org/10.1016/j.jsis.2019.01.003): rozważ, jak odróżnić udostępnienie cyfrowej funkcji od zmiany działania usługi. Porównanie przekrojowe na danych syntetycznych nie dowodzi transformacji instytucji."
 - id: S16
   tytul: 'Informacja miejska: spójność kanałów komunikacji'
-  problem: Instytucja chce ocenić komunikaty miejskie z perspektywy użytkowników i
-    wskazać uzasadniony kierunek poprawy.
+  problem: "Zespół informacji miejskiej chce rozpoznać niespójności dostrzegane przez odbiorców. Osobno ocenia postrzeganą spójność komunikatów i deklarowane napotkanie sprzeczności; większa ekspozycja na kanały zwiększa okazję do zauważenia rozbieżności."
   konstrukt: spójności komunikacji
   grupy:
   - jeden kanał
   - wiele kanałów
   druga_analiza: tabela krzyżowa
-  pytanie_drugie: grupa × napotkanie sprzecznej informacji
-  zmienna_druga: czestosc_korzystania
+  pytanie_drugie: "grupa × zgłoszone napotkanie sprzecznej informacji"
+  zmienna_druga: powodzenie
   efekt_grup: 0.2
   czas_typowy: 5.0
   pozycje:
@@ -492,21 +671,33 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Postrzegana spójność komunikacji"
+  etykiety_grup: ["jeden kanał","wiele kanałów"]
+  opis_grup: "Jeden kanał i wiele kanałów oznaczają deklarowany zwyczaj rozpoczynania poszukiwań w jednym kanale albo rutynowego porównywania kilku. Nie są liczbą zaznaczeń w pytaniu wielokrotnym. W zadaniu wszyscy otrzymują te same dwa komunikaty do porównania."
+  zadanie_obserwacyjne: "Porównaj dwa przygotowane komunikaty o tej samej usłudze i wskaż aktualną informację. Pozycje ankiety oceń po obejrzeniu obu komunikatów."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "deklaracja"
+  kod_1: "zadeklarowano napotkanie sprzecznej informacji miejskiej w ostatnich czterech tygodniach"
+  kod_0: "zadeklarowano brak takiego doświadczenia"
+  ograniczenie_binarnego: "Kod 1 oznacza zgłoszoną trudność, nie sukces. Brak zgłoszenia nie dowodzi obiektywnej spójności; odpowiedź nie jest wynikiem audytu komunikatów."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Wilson (1999)](https://www.informationr.net/tdw/publ/papers/1999JDoc.html): odróżnij wybrany epizod korzystania od szerszego zachowania informacyjnego. Karta jest przykładem dydaktycznym, nie narzędziem zwalidowanym w tej publikacji."
 - id: S17
   tytul: 'Opisy danych w katalogu otwartych danych: czytelność dla odbiorcy'
-  problem: Instytucja chce ocenić opisy otwartych danych z perspektywy użytkowników
-    i wskazać uzasadniony kierunek poprawy.
+  problem: "Zespół katalogu otwartych danych chce ułatwić rozpoznanie, do jakich pytań nadaje się zbiór. Porównuje czytelność z perspektywy odbiorcy z poprawnym rozpoznaniem zakresu; łatwy opis może nadal prowadzić do błędnego zastosowania."
   konstrukt: czytelności opisów danych
   grupy:
   - zawodowi
   - niezawodowi
   druga_analiza: tabela krzyżowa
   pytanie_drugie: grupa × poprawne rozpoznanie zakresu zbioru
-  zmienna_druga: czestosc_korzystania
+  zmienna_druga: powodzenie
   efekt_grup: 0.35
   czas_typowy: 9.0
   pozycje:
@@ -523,21 +714,33 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena czytelności opisów danych"
+  etykiety_grup: ["zawodowi","niezawodowi"]
+  opis_grup: "Zawodowi: korzystający z katalogu na potrzeby pracy; niezawodowi: korzystający do innego celu podczas tej wizyty. Cel wizyty nie jest poziomem umiejętności ani kategorią zatrudnienia."
+  zadanie_obserwacyjne: "Na podstawie opisu wskaż zakres tematyczny, terytorialny i czasowy podanego zbioru."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "poprawnie wskazano wszystkie trzy elementy zakresu według klucza"
+  kod_0: "zakończono odpowiedź bez poprawnego wskazania całego zakresu"
+  ograniczenie_binarnego: "Mimo osobowej formy pytania poprawność koduje obserwator według klucza, nie samoocena respondenta. Jedno zadanie nie potwierdza poprawnego użycia danych."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Hargittai (2002)](https://webuse.org/p/a09/): uzasadnij rozdzielenie deklaracji i obserwacji działania. Sześć pozycji oraz wyniki w tym scenariuszu nie pochodzą z narzędzia ani próby autorki."
 - id: S18
   tytul: 'Informacja biblioteczna: komunikowanie ograniczeń dostępu'
-  problem: Instytucja chce ocenić zasady dostępu z perspektywy użytkowników i wskazać
-    uzasadniony kierunek poprawy.
+  problem: "Biblioteka chce odróżnić niejasny komunikat od ograniczenia wynikającego z uprawnień lub połączenia. Porównuje ocenę jasności z wystąpieniem nieudanego dostępu; nawet zrozumiałe zasady nie gwarantują, że każda osoba ma uprawnienia."
   konstrukt: jasności zasad dostępu
   grupy:
   - lokalni
   - zdalni
   druga_analiza: tabela krzyżowa
   pytanie_drugie: grupa × nieudana próba dostępu
-  zmienna_druga: czestosc_korzystania
+  zmienna_druga: powodzenie
   efekt_grup: 0.5
   czas_typowy: 15.0
   pozycje:
@@ -554,14 +757,26 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena jasności zasad dostępu"
+  etykiety_grup: ["lokalni","zdalni"]
+  opis_grup: "Lokalni i zdalni oznaczają miejsce lub tryb połączenia podczas jednej próby dostępu. Dostęp zdalny nie jest przydzieloną interwencją; grupy mogą różnić się uprawnieniami, konfiguracją i wcześniejszym doświadczeniem."
+  zadanie_obserwacyjne: "Wykonaj jedną wskazaną próbę dostępu do zasobu. Zapis obserwatora obejmuje wynik tej próby, a nie dowolny wcześniejszy błąd podczas całej sesji."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "wskazana, zarejestrowana próba zakończyła się nieuzyskaniem dostępu"
+  kod_0: "wskazana próba zakończyła się uzyskaniem dostępu"
+  ograniczenie_binarnego: "Kod 1 oznacza niepowodzenie, a 0 uzyskanie dostępu. Utrata zapisu nie jest ani niepowodzeniem, ani sukcesem; wymaga NA. Wynik nie ustala przyczyny odmowy."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Hargittai (2002)](https://webuse.org/p/a09/): uzasadnij rozdzielenie deklaracji i obserwacji działania. Sześć pozycji oraz wyniki w tym scenariuszu nie pochodzą z narzędzia ani próby autorki."
 - id: S19
   tytul: 'System rekomendacji lektur: dopasowanie informacji do potrzeb'
-  problem: Instytucja chce ocenić rekomendacje lektur z perspektywy użytkowników i
-    wskazać uzasadniony kierunek poprawy.
+  problem: "Zespół usługi rekomendacyjnej chce rozpoznać dopasowanie lektur do potrzeb odbiorców. Oddziela postrzeganą trafność, wybór tytułu i późniejsze czytanie; wybrana rekomendacja nie jest jeszcze dowodem użyteczności po lekturze."
   konstrukt: trafności rekomendacji
   grupy:
   - nowe zainteresowania
@@ -585,21 +800,33 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena trafności rekomendacji"
+  etykiety_grup: ["nowe zainteresowania","stałe zainteresowania"]
+  opis_grup: "Nowe i stałe zainteresowania opisują deklarowany etap poszukiwań w temacie bieżącej wizyty. Nie są losowym podziałem ani stałą cechą osoby; temat i wcześniejsza wiedza mogą wpływać na ocenę."
+  zadanie_obserwacyjne: "Przejrzyj przygotowany zestaw rekomendacji dla opisanego celu i wskaż lekturę do dalszego sprawdzenia albo zrezygnuj z wyboru."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "wybrano co najmniej jedną lekturę z pokazanego zestawu"
+  kod_0: "zakończono zadanie bez wyboru lektury"
+  ograniczenie_binarnego: "Wybór nie oznacza przeczytania ani obiektywnej trafności źródła. Uzasadniona rezygnacja nie musi świadczyć o braku kompetencji."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Kuhlthau (1991)](https://wp.comminfo.rutgers.edu/ckuhlthau2/wp-content/uploads/sites/185/2016/01/InsidetheSearchProcess.pdf): wykorzystaj pytanie o moment procesu wyszukiwania, w którym mierzysz pewność lub ocenę. Nie przypisuj autorce kursowego indeksu ani syntetycznych wyników."
 - id: S20
   tytul: 'Portal konferencji naukowej: przejrzystość informacji organizacyjnej'
-  problem: Instytucja chce ocenić portal konferencji z perspektywy użytkowników i
-    wskazać uzasadniony kierunek poprawy.
+  problem: "Organizator konferencji chce ułatwić odnalezienie aktualnych warunków udziału. Porównuje ocenę portalu i rozpoznanie terminu, oddzielając znajomość wydarzenia od cech samej strony."
   konstrukt: przejrzystości informacji organizacyjnej
   grupy:
   - pierwszy raz
   - kolejny raz
   druga_analiza: tabela krzyżowa
   pytanie_drugie: grupa × poprawne odnalezienie terminu
-  zmienna_druga: czestosc_korzystania
+  zmienna_druga: powodzenie
   efekt_grup: 0.35
   czas_typowy: 9.0
   pozycje:
@@ -616,7 +843,20 @@ scenariusze:
   - media społecznościowe
   - kontakt bezpośredni
   projekt_badania: Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-  regula_indeksu: Pozycję 3 odwróć jako 6-x. Średnia z 6 pozycji przy minimum 5 odpowiedziach.
-    Kod 99 zamień na NA.
+  regula_indeksu: "Gotowy skrypt oznacza 99 jako NA, odwraca pozycję 3 jako 6-x i oblicza średnią przy minimum 5 z 6 ważnych odpowiedzi. Student odczytuje i uzasadnia tę regułę."
   ograniczenia: Pozycje są przykładem dydaktycznym, nie zwalidowaną skalą. Dane są
     syntetyczne, nie stanowią dowodu o instytucji.
+  wersja_opisu: "1.1.0"
+  nazwa_indeksu: "Ocena przejrzystości informacji organizacyjnej"
+  etykiety_grup: ["pierwszy raz","kolejny raz"]
+  opis_grup: "Pierwszy raz i kolejny raz oznaczają pierwszy lub kolejny planowany udział w tym cyklu konferencji, ustalony przed zadaniem. Nie są liczbą wizyt na stronie; wcześniejsze uczestnictwo może zmieniać potrzeby informacyjne."
+  zadanie_obserwacyjne: "Odnajdź termin zgłoszenia dla wskazanej kategorii udziału i edycji konferencji."
+  kontekst_pozycji: "Po zadaniu oceń zasób i własne doświadczenie korzystania. Pozycje dotyczące historii odnieś do ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu grup."
+  rodzaj_binarnego: "obserwacja"
+  kod_1: "podano właściwy termin dla tej kategorii i edycji"
+  kod_0: "zakończono próbę bez właściwego terminu"
+  ograniczenie_binarnego: "Poprawność jest sprawdzana według przygotowanego klucza. Znalezienie terminu nie dowodzi zrozumienia wszystkich warunków udziału."
+  nazwa_czasu: "Czas do zakończenia próby"
+  protokol_czasu: "Od udostępnienia zadania do zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej odpowiedzi."
+  opis_czestosci: "Deklarowana częstość korzystania z opisanego zasobu w ostatnich czterech tygodniach przed zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to kategorie porządkowe, nie liczba wizyt."
+  inspiracja: "[Vial (2019)](https://doi.org/10.1016/j.jsis.2019.01.003): rozważ, jak odróżnić udostępnienie cyfrowej funkcji od zmiany działania usługi. Porównanie przekrojowe na danych syntetycznych nie dowodzi transformacji instytucji."

@@ -74,6 +74,11 @@ Tekst Markdown z oznaczeniami matematycznymi obsługiwanymi przez R Markdown.
 \description{
 Funkcje formatują wynik; samodzielnie opisz kierunek, znaczenie praktyczne,
 założenia i ograniczenia. Brak istotności nie dowodzi braku efektu.
+Przedział pochodzi z przekazanego testu, z jego poziomem ufności; alpha
+zmienia tylko próg decyzji, nie przelicza przedziału. Kolejność różnicy
+odpowiada wywołaniu testu (x minus y). Liczebności niewystępujące w obiekcie
+testu, w szczególności N grup w teście Welcha, należy odczytać z danych.
+Funkcje nie piszą za studenta odpowiedzi na pytanie badawcze.
 }
 \examples{
 wniosek_ind(stats::t.test(c(2, 3, 5, 6), c(4, 6, 8, 9)))

@@ -1,12 +1,13 @@
 #' Przygotowanie prywatnego repozytorium studenta
 #'
 #' Funkcja jest przeznaczona dla prowadzacego. Tworzy zwykle prywatne
-#' repozytorium na jego koncie, umieszcza w nim indywidualny projekt i wysyla
+#' repozytorium na jego koncie, umieszcza w nim konfiguracje przestrzeni cwiczen i wysyla
 #' zaproszenie do wskazanego konta studenta. Nie wymaga organizacji GitHub.
+#' Nie generuje danych ani raportu: projekt badawczy rozpoczyna sie na C09.
 #'
 #' @param id_studenta Pseudonim uzywany w danych i nazwie repozytorium.
 #' @param login_github Login konta GitHub studenta.
-#' @param scenariusz S01--S20.
+#' @param scenariusz Opcjonalna propozycja S01--S20 na C09; bez generowania danych.
 #' @param nazwa Opcjonalna nazwa repozytorium; domyslnie `ZI-ID`.
 #' @param rocznik Rocznik konfiguracji kursu.
 #' @return Niewidocznie lista z adresem repozytorium i stanem zaproszenia.
@@ -14,13 +15,13 @@
 #' @examples
 #' \dontrun{
 #' zaloguj_github()
-#' przygotuj_repo_studenta("s017", "login-studenta", "S02")
+#' przygotuj_repo_studenta("s017", "login-studenta")
 #' }
-przygotuj_repo_studenta <- function(id_studenta, login_github, scenariusz = "S01",
+przygotuj_repo_studenta <- function(id_studenta, login_github, scenariusz = NULL,
                                     nazwa = NULL, rocznik = "2026-27") {
   sprawdz_id(id_studenta, "id_studenta")
   sprawdz_id(login_github, "login_github", "^[A-Za-z0-9][A-Za-z0-9-]{0,38}$")
-  get("scenariusz", mode = "function")(scenariusz)
+  if (!is.null(scenariusz)) get("scenariusz", mode = "function")(scenariusz)
   cfg <- konfiguracja_kursu(rocznik)
   wlasciciel <- cfg$wlasciciel_repozytoriow
   sprawdz_id(wlasciciel, "wlasciciel_repozytoriow", "^[A-Za-z0-9][A-Za-z0-9-]{0,38}$")
@@ -46,7 +47,7 @@ przygotuj_repo_studenta <- function(id_studenta, login_github, scenariusz = "S01
   gert::git_add(pliki, repo = lokalny)
   podpis <- gert::git_signature(sesja_github$login,
     paste0(sesja_github$id, "+", sesja_github$login, "@users.noreply.github.com"))
-  gert::git_commit("Rozpocznij projekt ilo\u015bciowy", author = podpis,
+  gert::git_commit("Przygotuj przestrze\u0144 \u0107wicze\u0144", author = podpis,
                    committer = podpis, repo = lokalny)
   if (!identical(gert::git_info(repo = lokalny)$shorthand, "main"))
     gert::git_branch_create("main", checkout = TRUE, repo = lokalny)

@@ -2,12 +2,12 @@
 \alias{status_oddania}
 \title{Status odbioru i kontroli}
 \usage{
-status_oddania(id, katalog = ".", sha = NULL)
+status_oddania(id, katalog = NULL, sha = NULL)
 }
 \arguments{
 \item{id}{Z01--Z10 albo PROJEKT.}
 
-\item{katalog}{Katalog projektu.}
+\item{katalog}{Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.}
 
 \item{sha}{Opcjonalne SHA poprzedniego oddania; domyślnie lokalne HEAD.}
 }

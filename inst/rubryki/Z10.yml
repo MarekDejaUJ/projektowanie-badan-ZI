@@ -1,13 +1,13 @@
 id: Z10
-version: 1.0.0
+version: 1.2.0
 rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z10.1
-  title: Gotowy skrypt z dozwolonymi parametrami odtwarza wyniki od surowych danych
-    w świeżej sesji.
-  evidence: Gotowy skrypt z dozwolonymi parametrami odtwarza wyniki od surowych danych
-    w świeżej sesji.
+  title: Ten sam wariant co Z09 i odtworzenie obu gotowych analiz od danych surowych.
+  evidence: Rmd i analiza.R odtwarzają dwie analizy w świeżej sesji; manifest jest
+    zgodny z Z09, a S01 wyjaśnia pomiar, reguły i rzeczywiste N.
+  answer_fields: [S01]
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -24,12 +24,13 @@ criteria:
   - points: 2.25
     observable_description: Cały gotowy tok działa; instrukcja odtworzenia jest niepełna.
   - points: 3.0
-    observable_description: Gotowy skrypt z dozwolonymi parametrami odtwarza wyniki
-      od surowych danych w świeżej sesji.
+    observable_description: Obie analizy odtwarzają się dla wariantu zgodnego z Z09;
+      S01 poprawnie wyjaśnia pomiar, reguły przygotowania i liczebności.
 - id: Z10.2
-  title: '`.md` zawiera komplet wymaganych sekcji i odnośniki do rzeczywistych tabel/wykresów.'
-  evidence: '`.md` zawiera komplet wymaganych sekcji i odnośniki do rzeczywistych
-    tabel/wykresów.'
+  title: Pięć własnych odpowiedzi w Rmd i zgodny PDF z tabelami oraz wykresami.
+  evidence: Pola S01–S05 są wypełnione własnym tekstem poza kodem; aktualny PDF
+    zachowuje te odpowiedzi i wyniki z tego samego źródła.
+  answer_fields: [S01, S02, S03, S04, S05]
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -39,21 +40,21 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.5
-    observable_description: Raport ma nagłówki bez dowodów.
+    observable_description: Są nagłówki albo tabele, ale niemal brak własnych odpowiedzi.
   - points: 1.0
-    observable_description: Sekcje częściowo wypełnione; odnośnik prowadzi do nieistniejącego
-      wyniku.
+    observable_description: Część odpowiedzi jest pusta lub PDF nie odpowiada
+      aktualnemu Rmd i jego wynikom.
   - points: 1.5
-    observable_description: Sekcje i odnośniki poprawne; jedna tabela niedopisana
-      w tekście.
+    observable_description: Pięć odpowiedzi i zgodny PDF są obecne; jedna odpowiedź
+      nie odnosi się dostatecznie do pokazanego wyniku.
   - points: 2.0
-    observable_description: '`.md` zawiera komplet wymaganych sekcji i odnośniki do
-      rzeczywistych tabel/wykresów.'
+    observable_description: Pięć własnych akapitów odpowiada zadaniom, odwołuje się
+      do wyników i jest zachowanych w aktualnym PDF z tego samego Rmd.
 - id: Z10.3
-  title: Interpretacja obu torów została poprawiona według rubryki i zawiera efekt,
-    niepewność oraz ograniczenie.
-  evidence: Interpretacja obu torów została poprawiona według rubryki i zawiera efekt,
-    niepewność oraz ograniczenie.
+  title: Interpretacja dwóch relacji i obu torów zawiera efekt, CI i granice wniosku.
+  evidence: S02 i S03 opisują właściwe efekty, jednostki, CI oraz oba tory; S04
+    łączy wyniki bez wniosku przyczynowego, a S05 uzasadnia proporcjonalną rekomendację.
+  answer_fields: [S02, S03, S04, S05]
   max_points: 3.0
   review_mode: human
   learning_outcomes:
@@ -63,21 +64,23 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.75
-    observable_description: Wskazano poprawkę bez odczytu obu torów.
+    observable_description: Podano pojedynczy wynik bez wyjaśnienia obu relacji.
   - points: 1.5
-    observable_description: Poprawka obejmuje oba p, lecz efekt, przedział albo ograniczenie
-      nadal jest błędne.
+    observable_description: Obie relacje opisano częściowo; efekt, przedział albo
+      ograniczenie nadal jest błędne.
   - points: 2.25
-    observable_description: Interpretacja jest poprawna; uzasadnienie jednej zmiany
-      wymaga doprecyzowania.
+    observable_description: Interpretacja jest poprawna; synteza wyników lub
+      uzasadnienie rekomendacji wymaga doprecyzowania.
   - points: 3.0
-    observable_description: Interpretacja obu torów została poprawiona według rubryki
-      i zawiera efekt, niepewność oraz ograniczenie.
+    observable_description: Obie relacje i ich tory opisano poprawnie; efekty, CI,
+      pomiar, ograniczenie i rekomendacja są spójne z wynikami, niezależnie od p.
 - id: Z10.4
   title: Wersja robocza ma identyfikowalne zdalne SHA i instrukcję odtworzenia zgodną
     z plikami.
-  evidence: Wersja robocza ma identyfikowalne zdalne SHA i instrukcję odtworzenia
-    zgodną z plikami.
+  evidence: Zapisane źródła, dane i manifest pozwalają odtworzyć wyniki; pokwitowanie
+    wysyłki wskazuje zdalne SHA tej wersji. Nie wymaga się wpisania SHA do tego samego
+    Rmd ani ręcznego programowania procedur lub przepisywania wyników.
+  answer_fields: [S01, S02, S03, S04, S05]
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:

@@ -24,6 +24,15 @@ for (id in wybrane) {
       includes = rmarkdown::includes(in_header = preambula),
       keep_tex = nazwa == "handout"), output_file = paste0(nazwa, ".pdf"),
       envir = new.env(parent = globalenv()), quiet = TRUE)
+    # Jednolity zapis artefaktów tekstowych także po renderowaniu na Windows.
+    tekstowe <- file.path(folder,paste0(nazwa,c(".html",
+      if(nazwa=="handout") ".tex")))
+    for(plik in tekstowe) {
+      tresc <- paste0(paste(sub("[ \t]+$","",
+        readLines(plik,encoding="UTF-8",warn=FALSE)),
+        collapse="\n"),"\n")
+      writeBin(charToRaw(enc2utf8(tresc)),plik)
+    }
     cat(id, nazwa, "HTML i PDF: OK\n")
   }
   if (startsWith(id, "C")) stopifnot(file.exists(file.path(folder, "analiza.R")))

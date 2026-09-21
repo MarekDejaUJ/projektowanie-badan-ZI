@@ -6,7 +6,7 @@ rozpocznij_zajecia(
   cwiczenie,
   id_studenta,
   repo_url = NULL,
-  katalog = "moje-badania",
+  katalog = NULL,
   otworz = TRUE
 )
 }
@@ -17,15 +17,20 @@ rozpocznij_zajecia(
 
 \item{repo_url}{URL własnego repo; dla istniejącego katalogu odczytywany z konfiguracji.}
 
-\item{katalog}{Katalog lokalny.}
+\item{katalog}{Katalog lokalny. NULL używa zapamiętanej lub bieżącej
+przestrzeni kursu, a przy pierwszym pobraniu podkatalogu moje-badania.}
 
-\item{otworz}{Czy otworzyć projekt i materiał w IDE/przeglądarce.}
+\item{otworz}{Czy otworzyć roboczy Rmd w bieżącej sesji IDE.}
 }
 \value{
-Lista: projekt i identyfikator ćwiczenia, niewidocznie.
+Lista: projekt, plik, cwiczenie, id, katalog i aktualizacja
+  (pobrano, sprawdzono albo lokalne_zmiany), niewidocznie.
 }
 \description{
-Początek zajęć na czyszczonym komputerze
+Otwiera zadanie.Rmd w bieżącej sesji IDE, nie przełącza projektu RStudio
+ani nie zmienia katalogu roboczego. Dzięki temu zachowuje ID i logowanie.
+Zapamiętuje własną przestrzeń dla dalszych poleceń bez argumentu katalog.
+Jeśli istnieją niezapisane w Gicie zmiany, zachowuje je i pomija aktualizację.
 }
 \examples{
 \dontrun{

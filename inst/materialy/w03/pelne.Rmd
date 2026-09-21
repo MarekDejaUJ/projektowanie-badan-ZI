@@ -1,6 +1,6 @@
 ---
-title: 'W03 — Losowość, estymacja i dwa tory wnioskowania'
-subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
+title: 'W03 — Od wyniku próby do niepewności: estymacja i testowanie'
+subtitle: 'Zarządzanie informacją — wykład — 2026/27'
 author: 'Marek Deja'
 date: '2026/27'
 lang: pl-PL
@@ -9,136 +9,287 @@ papersize: a4
 geometry: margin=2cm
 ---
 
-# 1. Odcinek wspólnej opowieści
+Towarzyszący skrypt oblicza przykłady z jawnie podanych statystyk oraz symulację powtarzanych prób. Symulacja jest modelem dydaktycznym, nie badaniem realnej biblioteki. Pozwala zobaczyć wielkości, których przy jednej rzeczywistej próbie nie obserwujemy bezpośrednio.
 
-Estymata jest wynikiem jednej próby, a parametr dotyczy populacji zdefiniowanej przez projekt. Wnioskowanie nie usuwa ograniczeń doboru; porządkuje losową niepewność pod określonym modelem.
+```{r przygotowanie, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+                     fig.width = 6, fig.height = 3.4, fig.align = "center")
+source("analiza.R", local = knitr::knit_global(), encoding = "UTF-8")
+```
 
-**Pytanie wykładu:** Jak precyzyjnie oszacowano średnią samoocenę i czy odległość od punktu neutralnego jest skrajna w modelu zerowym?
+# Jedna ankieta, kilka różnych pytań
 
-| Minuty | Część |
-|---:|---|
-| 0–15 | problem i ramy LIS |
-| 15–35 | projekt, pomiar i symbole |
-| 35–55 | metoda oraz przykład |
-| 55–70 | tor klasyczny i permutacyjny |
-| 70–85 | interpretacja, błędy i dyskusja |
-| 85–90 | most do ćwiczeń |
+Biblioteka otrzymała podsumowanie oceny katalogu: średni indeks jest wyższy od środka skali. Czy różnica jest duża? Jak precyzyjnie ją oszacowano? Czy taki wynik byłby nietypowy przy średniej równej wartości odniesienia? Czy wynik mówi o wszystkich użytkownikach? To cztery różne pytania.
 
-\newpage
+Pierwsze dotyczy wielkości efektu w punktach. Drugie niepewności estymacji. Trzecie zgodności wyniku z określonym modelem zerowym. Czwarte wymaga przede wszystkim informacji o populacji, doborze próby, odmowach i pomiarze. Test statystyczny nie zastępuje odpowiedzi na pozostałe pytania.
 
-# 2. Dlaczego to jest pytanie LIS
+W C04 ustaliliśmy, że wspólny indeks S02 podsumowuje dydaktyczne pozycje deklarowanej użyteczności katalogu. Nie jest zwalidowanym pomiarem wszystkich kompetencji. Na tym wykładzie nie zmieniamy jego znaczenia. Uczymy się, jak mówić o losowej niepewności wybranej liczby, nie przypisując jej nowej treści.
 
-W badaniach LIS próby wygodne i ankiety internetowe są częste. Duże N może dać precyzyjny opis niewłaściwie zdefiniowanej populacji. Dlatego przedział ufności i p czytamy razem z informacją o doborze, brakach i sposobie pomiaru.
+W ciągu 90 minut przejdziemy od pytania i estymandy do błędu standardowego oraz przedziału, następnie do statystyki t i wartości p, a na końcu do dwóch różnych zastosowań losowania komputerowego. Symulacje ilustrują argument; student ma je odczytać, nie samodzielnie implementować.
 
-Library and information science bada relację osób, informacji, technologii i instytucji. W kursie nie tworzymy wyniku o konkretnej bibliotece. Używamy syntetycznego badania, aby ćwiczyć przejście od konstruktu do wskaźnika oraz od liczby do ostrożnego wniosku.
+# Cztery słowa, których nie warto używać zamiennie
 
-\newpage
-
-# 3. Pytanie przed metodą
-
-Jak precyzyjnie oszacowano średnią samoocenę i czy odległość od punktu neutralnego jest skrajna w modelu zerowym?
-
-Pytanie powinno wskazywać jednostkę, wynik, porównanie lub związek, populację i okres. Hipoteza dodaje przewidywany kierunek wtedy, gdy ma podstawę teoretyczną. Analiza eksploracyjna też jest dopuszczalna, lecz trzeba ją nazwać i nie przedstawiać późniejszego odkrycia jako wcześniejszej prognozy.
-
-\newpage
-
-# 4. Projekt wyznacza granicę wniosku
-
-Rozkład próbkowania opisuje, jak estymata zmieniałaby się w powtarzanych próbach według tego samego projektu. Błąd standardowy mierzy zmienność estymaty, nie rozrzut pojedynczych osób. Poziom ufności dotyczy procedury budowania przedziałów.
-
-Losowość doboru dotyczy uogólnienia na populację, a losowy przydział warunku wniosku przyczynowego. Dostępna próba nie staje się reprezentatywna przez duże N. Braki, odmowa udziału i samoselekcja mogą zmieniać obraz nawet przy poprawnie wykonanym teście.
-
-\newpage
-
-# 5. Pomiar: samoocena i obserwacja
-
-Bootstrap losuje obserwacje z próby i szacuje niepewność estymaty. Permutacja lub zmiana znaków narzuca hipotezę zerową i tworzy rozkład statystyki przy braku efektu. Nazwy resampling i losowanie nie oznaczają tej samej funkcji.
-
-Wspólny zbiór łączy sześć pozycji, częstość korzystania, kanały, grupę, obserwowany czas i powodzenie zadania. Pozycje są przykładem dydaktycznym. Nie przypisujemy im walidacji ani nie wnioskujemy o całej kompetencji na podstawie jednego zadania.
-
-\newpage
-
-# 6. Wzór jako zdanie
-
-$$SE=\frac{s}{\sqrt{N}}, \quad t=\frac{\bar{x}-\mu_0}{SE}, \quad p_{perm}=\frac{1+\#(|T^*|\geq|T_{obs}|)}{B+1}$$
-
-| Symbol | Nazwa | Znaczenie |
+| Pojęcie | Znaczenie | Przykład |
 |---|---|---|
-| $SE$ | błąd standardowy | zmienność estymaty |
-| $t$ | statystyka | odległość od H0 w SE |
-| $T^*$ | statystyka losowa | wynik po tasowaniu |
-| $B$ | replikacje | liczba losowań |
+| Estymanda | Dokładnie określona wielkość, którą chcemy oszacować | Średni czas tego zadania w określonej populacji i warunkach |
+| Parametr | Liczba charakteryzująca populację lub model | $\mu$, średnia czasu |
+| Estymator | Reguła wykorzystująca dane do oszacowania | Średnia arytmetyczna z próby |
+| Estymata | Konkretna otrzymana wartość | 11,2 minuty w danej próbie |
 
-Odczyt wzoru zaczyna się od nazwania wyniku, następnie składników, punktu odniesienia i jednostki. Student nie musi ręcznie odtwarzać algorytmu. Ma rozpoznać, co zwiększa statystykę, co oznacza znak i gdzie w gotowym wyniku znajduje N, efekt oraz niepewność.
+Parametr może być celem estymacji, czyli estymandą. Słowo „estymanda” podkreśla jednak, że trzeba określić populację, wynik, warunki i sposób podsumowania. Średni czas wszystkich prób i średni czas prób zakończonych sukcesem są różnymi estymandami, nawet jeśli oba rezultaty zapisujemy literą $\mu$ z odpowiednim indeksem.
 
-\newpage
+Statystyka jest funkcją danych z próby. Średnia, SD, odsetek i statystyka testowa t są statystykami, ale pełnią inne role. Średnia może szacować parametr, SD opisuje rozrzut i pomaga oszacować niepewność, a t odnosi różnicę do jej błędu standardowego. Nie każda liczba z tabeli jest „efektem”.
 
-# 7. Tok analizy
+## Populacja musi mieć granice
 
-Tor klasyczny korzysta z rozkładu teoretycznego i założeń. Raportuje estymatę, CI, statystykę, df i p. Decyzja p<alpha jest regułą procedury, a nie miarą wartości badania ani prawdopodobieństwem H0.
+„Wszyscy użytkownicy informacji” to zwykle zbyt szerokie określenie dla jednego zadania w katalogu. Bardziej precyzyjny cel mógłby dotyczyć nowych użytkowników konkretnej usługi, wykonujących określone zadanie w danym okresie i na określonym urządzeniu. Zmiana tych warunków może zmienić rozkład wyników.
 
-Kolejność jest stała: pytanie → projekt → pomiar → dane i braki → opis → estymata → niepewność → wniosek → ograniczenie. Przestawienie tej kolejności sprzyja dobieraniu pytania do wyniku i raportowaniu przypadkowej liczby bez znaczenia badawczego.
+W rzeczywistym badaniu potrzebujemy powiązania między sposobem doboru a populacją. Próba osób, które dobrowolnie wypełniły ankietę po udanym wyszukaniu, może nie reprezentować tych, którzy porzucili usługę. Nawet bardzo mały błąd standardowy nie opisuje automatycznie niepewności wynikającej z tej samoselekcji.
 
-\newpage
+W danych syntetycznych kursu wnioskowanie jest ćwiczeniem procedury pod jawnymi założeniami. Nie ogłaszamy wyniku o bibliotece UJ. W projekcie trzeba umieć opisać hipotetyczną populację i projekt, a zarazem uczciwie wskazać dydaktyczny charakter danych.
 
-# 8. Przykład prowadzony
+# Prawdopodobieństwo punktu, przedziału i kwantyl
 
-Średni indeks 3,24 przy N=146 może być o 0,24 punktu wyższy od 3. Test t pyta o skrajność takiej różnicy względem SE, zmiana znaków o jej skrajność przy symetrycznym zerowym układzie odchyleń, a bootstrap o stabilność średniej między próbami empirycznymi.
+Niepewność będziemy opisywać rozkładem. Zanim odczytamy pole pod krzywą testu, rozróżnijmy zmienną dyskretną, która przyjmuje policzalne wartości, i model ciągłego czasu. W obu przypadkach suma albo całka całego rozkładu prawdopodobieństwa wynosi 1; sposób odczytu pojedynczego punktu jest jednak inny.
 
-Przykład czytamy w trzech warstwach. Warstwa liczbowa nazywa estymatę i jednostkę. Warstwa badawcza odpowiada na pytanie o zachowanie lub usługę. Warstwa krytyczna wskazuje ograniczenie projektu, pomiaru i syntetyczności. Każda z nich jest potrzebna do pełnego wyniku.
+Załóżmy trzy niezależne próby odnalezienia dokumentu, każda z prawdopodobieństwem powodzenia $\pi=0{,}5$. Zmienna $K$ liczy powodzenia. W tym modelu dwumianowym $P(K=k)=\binom{3}{k}\pi^k(1-\pi)^{3-k}$: symbol dwumianowy liczy układy k powodzeń, a potęgi opisują prawdopodobieństwo każdego takiego układu. To model dydaktyczny, nie założenie, że prawdziwi użytkownicy zawsze działają niezależnie i równie skutecznie.
 
-\newpage
+Pierwsza kolumna prawdopodobieństw dotyczy dokładnie k powodzeń. Druga to dystrybuanta $F(k)=P(K\leq k)$, czyli suma do wskazanej granicy. Odczytaj różnicę między „dokładnie dwa” a „najwyżej dwa”.
 
-# 9. Tor klasyczny
+```{r prawdopodobienstwo-dyskretne}
+knitr::kable(przyklad_prawdopodobienstwa(),digits=3)
+```
 
-Tor klasyczny korzysta z rozkładu teoretycznego i założeń. Raportuje estymatę, CI, statystykę, df i p. Decyzja p<alpha jest regułą procedury, a nie miarą wartości badania ani prawdopodobieństwem H0.
+Dokładnie dwa powodzenia mają prawdopodobieństwo 3/8, najwyżej dwa 7/8, a co najmniej dwa $1-F(1)=1/2$. Gdy trzy próby wykonuje ta sama osoba, uczenie się i wspólne cechy mogą naruszyć model niezależności. Rozkład nie zastępuje analizy sposobu powstawania danych.
 
-Klasyczny wynik może zawierać statystykę t, chi-kwadrat, r, F lub współczynnik regresji. Stopnie swobody mówią, z jakiego rozkładu odniesienia korzysta procedura. Wartość p opisujemy warunkowo przy H0; nie mierzy ona wielkości efektu, jakości pomiaru ani prawdopodobieństwa powtórzenia wyniku.
+Teraz przyjmijmy wyłącznie do demonstracji ciągły model czasu z gęstością $f(t)=0{,}1e^{-0{,}1t}$ dla $t\geq0$, czyli rozkład wykładniczy o średniej 10 minut. Gęstość $f(5)$ nie jest prawdopodobieństwem „dokładnie pięć minut”. Prawdopodobieństwo przedziału to pole pod krzywą: $P(a<T\leq b)=F(b)-F(a)$. W modelu ciągłym pojedynczy punkt ma prawdopodobieństwo zero, mimo że zmierzony czas zapisujemy z ograniczoną dokładnością.
 
-\newpage
+Tabela rozdziela wysokość gęstości, pole do 5 minut i pole między 5 a 10 minutami. Ostatni wiersz odwraca pytanie: znajduje czas, do którego kończy się połowa prób w modelu. To kwantyl rzędu 0,5, czyli mediana.
 
-# 10. Tor permutacyjny i resampling
+```{r prawdopodobienstwo-ciagle}
+knitr::kable(przyklad_czasu_modelowego(),digits=4)
+```
 
-Tor permutacyjny zachowuje dane, lecz niszczy określony związek: zmienia znaki odchyleń, tasuje etykiety grup lub jedną zmienną. Statystyka musi być taka sama jak ta, której skrajność oceniamy. Dodanie 1 do licznika i mianownika zapobiega p=0.
+Mediana wynosi około 6,93 minuty, choć średnia modelowa wynosi 10. Nie dopasowaliśmy tu rozkładu do danych biblioteki. Model wykładniczy ma własne mocne założenia, m.in. brak pamięci czasu oczekiwania; nie przyjmujemy ich automatycznie dla złożonego wyszukiwania. W kolejnej symulacji użyjemy odrębnego dodatniego rozkładu lognormalnego.
 
-Bootstrap odtwarza próbki empiryczne, aby ocenić niepewność estymaty. Permutacja narzuca model zerowy przez zmianę znaków, etykiet, par lub tabel. Oba korzystają z losowania komputerowego, ale odpowiadają na inne pytania. Zakres kursu kończy się na zestawieniu tych dwóch torów.
+W dokumentacji R prefiks `d` oznacza gęstość lub prawdopodobieństwo punktowe, `p` dystrybuantę, `q` kwantyl, a `r` losowanie. Przykładowo `pexp` liczy $F(t)$ i `qexp` odwraca to pytanie. Nie trzeba pisać tych wywołań w zadaniu; rozpoznanie ich znaczenia pomaga czytać gotowy wynik. [Dokumentacja rozkładu wykładniczego w R](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Exponential.html).
 
-\newpage
+# Rozkład osób i rozkład estymatora
 
-# 11. Efekt, przedział i znaczenie
+W jednej próbie osoby mają różne czasy. Gdyby pobierać kolejne próby z tej samej populacji według tej samej procedury, każda miałaby także inną średnią. Te dwa rodzaje zróżnicowania trzeba oddzielić.
 
-Efekt w naturalnej jednostce odpowiada na pytanie praktyczne, efekt standaryzowany ułatwia porównanie, a CI pokazuje precyzję. Wynik może być istotny i mały albo nieistotny i zgodny z efektami ważnymi praktycznie.
+Model symulacyjny poniżej generuje dodatnie czasy o średniej populacyjnej 10 minut i SD 4 minuty. Najpierw pokazuje czasy 40 osób, a potem średnie z 2000 oddzielnych prób po 40 osób. W drugim panelu każda liczba reprezentuje całą próbę, nie jednego użytkownika.
 
-Efekt prowadzimy przed p. Najpierw pytamy o kierunek i wielkość w naturalnej jednostce, potem o standaryzację, a następnie o przedział. Znaczenie praktyczne ustala kontekst instytucji, nie uniwersalna etykieta. Szeroki przedział wymaga języka dopuszczającego różne wielkości.
+```{r osoby-i-srednie, fig.height=4.7}
+wykres_rozkladow
+```
 
-\newpage
+Osie poziome pozostają w minutach. Rozkład średnich jest jednak znacznie węższy niż rozkład indywidualnych czasów. Średnia z wielu niezależnych informacji mniej się waha niż pojedyncza obserwacja. Pionowa linia oznacza znaną średnią modelu; w zwykłym badaniu ta wartość byłaby nieznana.
 
-# 12. Jak nie pisać wyniku
+Centralne twierdzenie graniczne pomaga rozumieć, dlaczego rozkład średniej może być bliski normalnemu nawet przy nienormalnych danych, pod odpowiednimi warunkami. Nie mówi, że rozkład samych czasów staje się normalny po zebraniu dużego N. Nie daje też jednego magicznego progu liczebności dla każdej skośności i każdego układu zależności.
 
-Błędy to: p jako prawdopodobieństwo H0, CI jako zakres 95% osób, bootstrap jako test zerowy, wybór mniejszego z dwóch p, pominięcie efektu oraz twierdzenie o reprezentatywności na podstawie małego SE.
+## Błąd standardowy jest odchyleniem standardowym estymatora
 
-Unikamy zdań: „H0 jest prawdziwa”, „95% wyników leży w CI”, „grupy są takie same”, „korelacja pokazuje wpływ” i „V oznacza procent”. Poprawione zdanie zawiera N, estymatę, jednostkę, CI, statystykę, p, efekt i granicę wniosku w zakresie potrzebnym danej metodzie.
+Dla niezależnych obserwacji o wspólnej skończonej wariancji standardowy wzór na oszacowanie błędu standardowego średniej to:
 
-\newpage
+$$SE(\bar{x})=\frac{s}{\sqrt{n}}.$$
 
-# 13. Aktywność podczas wykładu
+Licznik mówi o zróżnicowaniu osób, mianownik o ilości niezależnej informacji. SE ma tę samą jednostkę co średnia. Dla SD równego 4 minutom i N=100 błąd standardowy wynosi 0,4 minuty, nie 4 i nie 0,04.
 
-Ułóż w poprawnej kolejności osiem elementów wyniku: N, estymata, jednostka, CI, statystyka, df, p klasyczne, p permutacyjne. Następnie wyjaśnij rozbieżność obu torów bez uznawania jednego za automatycznie prawdziwy.
+Tabela utrzymuje SD równe 4 i zmienia tylko N. Odczytaj, ile razy trzeba zwiększyć próbę, aby zmniejszyć SE o połowę. To zależność modelowa, nie obietnica, że każdy większy zbiór automatycznie ma taki sam SD.
 
-Odpowiedź przedstawiamy bez uruchamiania nowego testu. Zadaniem jest dobór języka oraz argumentacja. Każda grupa wskazuje także jeden element, którego nie da się rozstrzygnąć z przedstawionych danych i jedną dodatkową informację, która rzeczywiście wzmocniłaby projekt.
+```{r se-a-n}
+knitr::kable(se_i_n, digits = 2)
+```
 
-\newpage
+Czterokrotnie większa liczebność daje dwukrotnie mniejsze SE przy niezmienionym SD. Osiemdziesiąt kliknięć jednej osoby nie zastępuje jednak osiemdziesięciu niezależnych osób. Jeśli obserwacje są powiązane, potrzebujemy procedury uwzględniającej zależność. Proste dzielenie przez pierwiastek z liczby wierszy może zaniżyć niepewność.
 
-# 14. Most do ćwiczeń i projektu
+## Nieobciążoność, precyzja i zgodność
 
-C05 zastosuje t, CI, bootstrap i zmianę znaków. W04 przeniesie tę logikę do porównania grup i tabel kategorii.
+Estymator nieobciążony trafia w parametr przeciętnie w powtarzanych próbach w danym modelu. Nie znaczy to, że każda estymata jest równa parametrowi. Precyzja dotyczy małego rozrzutu estymat, a zgodność zbliżania się do celu wraz ze wzrostem liczebności pod odpowiednimi warunkami.
 
-W projekcie każda liczba ma odpowiadać pytaniu, a każdy wniosek ma odsyłać do zapisanego pliku wyniku. Gotowy kod wyrównuje obciążenie techniczne; samodzielne pozostają wybór dozwolonego parametru, odczyt statystyki, interpretacja i krytyczna ocena.
+Wyobraź sobie bardzo dużą ankietę skierowaną tylko do najbardziej aktywnych użytkowników. Może dawać powtarzalną i precyzyjną ocenę tej grupy. Nie staje się przez to nieobciążonym opisem wszystkich użytkowników, jeżeli celem była szersza populacja.
 
-## Literatura i ramy
+Do poprawnej interpretacji potrzebujemy więc dwóch pytań: „jak bardzo waha się oszacowanie?” i „czy procedura kieruje nas do właściwej wielkości?”. Wąski przedział odpowiada tylko na część pierwszego pytania, zgodnie z przyjętym modelem.
 
-- Efron & Tibshirani. An Introduction to the Bootstrap.
-- Good. Permutation, Parametric and Bootstrap Tests of Hypotheses.
-- Materiały kursowe zestawiają klasyczne i permutacyjne wnioskowanie.
+# Przedział ufności: procedura, nie pudełko z osobami
 
-Źródła wyznaczają język pojęć. Pozycje, dane i wyniki kursowe są syntetyczne; nie przedstawiamy ich jako rezultatów cytowanych badań.
+Dla średniej w standardowym modelu t dwustronny przedział 95% ma postać:
+
+$$
+\bar{x}\ \pm\ t_{0{,}975;\,n-1}\frac{s}{\sqrt{n}}.
+$$
+
+W środku jest estymata. Margines powstaje przez pomnożenie SE przez odpowiedni kwantyl rozkładu t. Liczba $n-1$ to stopnie swobody; przy małej próbie kwantyl jest większy niż przy dużej. Szerszy poziom ufności, na przykład 99%, wymaga szerszego przedziału przy tych samych danych.
+
+Poziom ufności odnosi się do długookresowego działania procedury. Przy spełnieniu warunków około 95% tak konstruowanych przedziałów obejmowałoby ustalony parametr. Po otrzymaniu konkretnego przedziału nie znamy faktu jego trafienia, ale wiemy, jaką procedurą powstał.
+
+Poniższe odcinki to pierwsze 40 przedziałów z symulacji. Linia pionowa pokazuje znany parametr 10. Przedziały zmieniają położenie i długość; parametr w tym doświadczeniu komputerowym pozostaje stały.
+
+```{r pokrycie-ci, fig.height=4.4}
+wykres_przedzialow
+```
+
+Nie wymagamy dokładnie dwóch nietrafień w każdych czterdziestu próbach. Poziom 95% nie jest rozkładem obowiązkowych trafień w małej serii. Ponieważ symulowana populacja czasu jest skośna, standardowy przedział t ma tutaj uzasadnienie przybliżone, nie dokładne wynikające z normalności obserwacji.
+
+Podsumowanie wykorzystuje wszystkie 2000 prób, a nie tylko odcinki na wykresie. Odczytaj empiryczny rozrzut średnich i udział przedziałów obejmujących parametr. N próby nadal wynosi 40; liczba 2000 to liczba powtórzeń eksperymentu komputerowego.
+
+```{r podsumowanie-pokrycia}
+knitr::kable(przeloz_wynik(podsumowanie_symulacji))
+```
+
+Przedział średniej nie jest zakresem, w którym znajduje się 95% indywidualnych czasów. Nie jest też przedziałem predykcji czasu nowej osoby. W dużej próbie średnią możemy oszacować dokładnie, mimo że ludzie nadal bardzo się różnią.
+
+# Przykład pierwszy: indeks względem środka skali
+
+Rozważmy osobny, hipotetyczny opis próby: N=100, średni indeks 3,24 i SD=0,80 punktu. Porównujemy średnią z wartością 3. Jest to umowny punkt odniesienia oparty na środku skali, nie normatywna granica kompetencji ani oficjalny standard usługi.
+
+Estymandą jest $\Delta=\mu-3$, różnica średniej określonej populacji od punktu odniesienia. Estymata wynosi $\widehat\Delta=3{,}24-3=0{,}24$ punktu. Wartość dodatnia oznacza wyższy wynik w kierunku korzystnej oceny, a nie automatycznie poprawę spowodowaną zmianą katalogu.
+
+## Statystyka t jako odległość w jednostkach niepewności
+
+$$
+t=\frac{\bar{x}-\mu_0}{s/\sqrt n}
+  =\frac{3{,}24-3}{0{,}80/\sqrt{100}}=3.
+$$
+
+Licznik to efekt w punktach, mianownik to SE średniej w punktach. Jednostki się skracają. Statystyka t=3 oznacza, że estymata leży trzy oszacowane błędy standardowe powyżej wartości zerowej hipotezy. Nie oznacza trzech punktów skali ani trzech SD osób.
+
+Hipoteza zerowa brzmi $H_0:\mu=3$, a dwustronna alternatywa $H_1:\mu\neq3$. Rozkład t z 99 stopniami swobody jest rozkładem odniesienia w klasycznym modelu. Przy niezależnych normalnych obserwacjach ma uzasadnienie dokładne; przy innych rozkładach stosowanie do średniej wymaga oceny przybliżenia, skrajności danych i wielkości próby.
+
+Zestawienie pokazuje wszystkie składniki obliczenia. Zwróć uwagę na dwa oddzielnie nazwane przedziały: jeden dotyczy średniej, drugi różnicy od 3. Przesunięcie obu końców o 3 zmienia parametr opisywany przez przedział.
+
+```{r przyklad-indeks}
+knitr::kable(przeloz_wynik(przyklad_indeks))
+```
+
+Średnia 3,24 ma 95% CI około [3,081; 3,399], a różnica 0,24 ma CI około [0,081; 0,399] punktu. Te zapisy przekazują zgodną informację, ale porównują się z innymi wartościami zerowymi: 3 dla średniej i 0 dla różnicy. Nie wolno podać efektu 0,24 z nienazwanym przedziałem [3,081; 3,399], jak gdyby dotyczył on tego efektu.
+
+## Wartość p jest warunkową oceną skrajności
+
+Dwustronne p określa, jak często w modelu zerowym otrzymalibyśmy statystykę co najmniej tak skrajną w obu kierunkach. W przykładzie bierzemy pod uwagę t nie większe niż −3 oraz nie mniejsze niż 3. Nie obliczamy prawdopodobieństwa prawdziwości hipotezy.
+
+Wykres przedstawia rozkład odniesienia t przy H0. Zaznaczone ogony wyznaczają p, które wynosi około 0,0034. Położenie obserwacji w ogonie jest relacją do modelu, nie miarą korzyści dla biblioteki.
+
+```{r ogony-testu}
+wykres_t
+```
+
+Odczyt pełnym zdaniem: „Przy hipotezie średniej równej 3 i założeniach testu wynik o takiej lub większej bezwzględnej wartości t byłby rzadki”. Nie: „szansa, że H0 jest prawdziwa, wynosi 0,34%”. Nie: „99,66% użytkowników ocenia katalog pozytywnie”.
+
+[Stanowisko ASA z 2016 roku](https://www.stat.berkeley.edu/~aldous/Real_World/ASA_statement.pdf) podkreśla ograniczenia przypisywania pojedynczemu p roli całego argumentu naukowego. W kursie zapisujemy efekt, niepewność i warunki analizy obok wyniku testu. Nie zastępujemy ich samą etykietą istotności.
+
+# Efekt naturalny, standaryzowany i praktyczny
+
+W przykładzie efekt naturalny wynosi 0,24 punktu. Efekt standaryzowany jednej próby można zapisać jako $d=(\bar{x}-\mu_0)/s$, co daje $0{,}24/0{,}80=0{,}30$. Mianownikiem jest SD osób, nie SE. Dlatego t=3 i d=0,30 są jednocześnie poprawne.
+
+Standaryzacja ułatwia pewne porównania, ale nie usuwa różnic pomiaru i populacji. To samo d może odpowiadać innym różnicom w minutach lub punktach. Większy rozrzut osób zmniejsza d przy niezmienionej naturalnej różnicy.
+
+Znaczenie praktyczne wymaga osobnego kryterium. Czy różnica kilku dziesiątych punktu zmienia decyzję o katalogu? Czy odpowiada zauważalnej zmianie wykonania? Czy instrument w ogóle ma dość dobrze uzasadnioną interpretację? Żadna uniwersalna etykieta „mały” lub „średni” nie rozstrzyga tych pytań.
+
+Nie należy po obejrzeniu wyniku ogłaszać dowolnego progu praktycznego jako wcześniej ustalonego. Można uczciwie przedstawić eksploracyjną dyskusję kosztów, korzyści i zakresu zgodnych efektów. W projekcie dydaktycznym umowne progi muszą być nazwane umownymi.
+
+# Przykład drugi: czas z małej próby
+
+W innej demonstracji N=16 osób, średni czas 11,2 minuty, SD=6 minut, a odniesienie wynosi 10. Estymata różnicy to 1,2 minuty. SE równa się $6/\sqrt{16}=1{,}5$ minuty, a t=0,8.
+
+Tabela pokazuje szeroki przedział, mimo że średnia w próbie jest wyższa od odniesienia. Jest to przykład rachunku z zadanych statystyk opisowych; bez surowych danych nie ocenimy skośności ani pojedynczych długich prób. Interpretacja inferencyjna wymaga więc wyraźnego zastrzeżenia o założeniach.
+
+```{r przyklad-czas}
+knitr::kable(przeloz_wynik(przyklad_czas))
+```
+
+Przedział różnicy wynosi około [−2,00; 4,40] minuty, a p około 0,436. Dane przy tym modelu są zgodne z różnicami w obu kierunkach, w tym z wartościami mogącymi mieć znaczenie dla usługi. Nieodrzucenie H0 nie dowodzi, że średni czas wynosi dokładnie 10 ani że katalog spełnia standard.
+
+Ten przykład pokazuje problem nieprecyzyjnego wyniku. Stwierdzenie „nie ma różnicy” usuwa z opisu możliwość kilku minut dłuższego wyszukiwania. Właściwa odpowiedź podaje oszacowanie i szerokość niepewności. Jeżeli instytucja chce wykazać wystarczającą bliskość do celu, potrzebuje wcześniej zdefiniowanej tolerancji i odpowiedniej procedury, a nie zwykłego nieistotnego testu różnicy.
+
+# Alfa, błędy i moc: własności procedury
+
+Poziom $\alpha$ ustalamy przed oceną wyniku. W poprawnie skalibrowanym teście opisuje kontrolę częstości odrzucenia prawdziwej H0 w powtarzanym stosowaniu procedury. Nie jest prawdopodobieństwem, że nasze konkretne odrzucenie jest błędem.
+
+| Stan modelowy | Nie odrzucamy H0 | Odrzucamy H0 |
+|---|---|---|
+| H0 prawdziwa | Decyzja zgodna z H0 | Błąd I rodzaju |
+| Określona alternatywa prawdziwa | Błąd II rodzaju | Wykrycie tej alternatywy |
+
+Moc to prawdopodobieństwo odrzucenia H0 przy określonej alternatywie. Nie istnieje jedna moc badania bez wskazania wielkości efektu, zmienności, N i procedury. Mały efekt jest zwykle trudniejszy do wykrycia niż duży przy tych samych warunkach.
+
+Większa próba może zwiększyć moc oraz zwęzić przedział, ale nie naprawia systematycznego błędu pomiaru. Nie planujemy N wyłącznie po to, aby „wyszło p<0,05”. Warto rozważyć, jak mała różnica ma znaczenie i jakiej precyzji potrzebujemy do decyzji.
+
+## Wiele prób znalezienia jednego wyniku
+
+Jeśli wykonamy 20 niezależnych testów przy prawdziwych H0 i poziomie 0,05, prawdopodobieństwo co najmniej jednego odrzucenia wynosi $1-0{,}95^{20}\approx0{,}64$. Liczba 64% dotyczy tego szczególnego układu niezależności, nie każdego zestawu analiz, ale pokazuje problem selektywnego wyboru.
+
+Szukanie wielu podziałów grup, progów czasu i wariantów braków, a potem pokazanie tylko najniższego p, zmienia procedurę. Zapis jednego testu w raporcie nie usuwa wcześniejszego poszukiwania. Dlatego odróżniamy pytania zaplanowane od eksploracji i dokumentujemy decyzje.
+
+Nie ma ostrej naukowej granicy między p=0,049 a p=0,051, choć przy umownej regule decyzji leżą po przeciwnych stronach. W obu przypadkach potrzebujemy efektu, przedziału i warunków. Dwa wyniki z takimi p nie są dowodem, że efekty między badaniami różnią się istotnie.
+
+# Losowanie komputerowe ma dwa odmienne zadania
+
+| Pytanie | Procedura | Co powstaje? |
+|---|---|---|
+| Jak zmieniałaby się estymata? | Bootstrap obserwacji z powtórzeniami | Przybliżenie niepewności estymatora |
+| Jak skrajna jest statystyka przy modelu zerowym? | Dopuszczalne przestawienia lub zmiany znaków | Rozkład odniesienia testu |
+
+W obu przypadkach komputer wykonuje wiele powtórzeń, ale samo słowo „losowanie” nie mówi, jaki świat odtwarzamy. W bootstrapie próbujemy przybliżyć zmienność estymatora wokół informacji dostarczonej przez próbę. W teście zerowym celowo tworzymy układy odpowiadające określonej hipotezie.
+
+## Bootstrap: próba jako empiryczne przybliżenie populacji
+
+W podstawowym bootstrapie nieparametrycznym losujemy z posiadanych n obserwacji n elementów z powtórzeniami i ponownie liczymy statystykę. Jedna osoba może pojawić się kilka razy, inna w danym losowaniu wcale. Powtarzamy procedurę B razy, zachowując po jednej estymacie.
+
+Rozrzut tych estymat służy ocenie niepewności. Prosty przedział percentylowy bierze kwantyle 2,5% i 97,5% rozkładu bootstrapowego. Nie jest to przedział środkowych obserwacji surowych. Podstawy metody wiążą się z pracą [Efrona (1979)](https://doi.org/10.1214/aos/1176344552).
+
+Bootstrap nie tworzy nowych niezależnych ludzi i nie ujawnia cech populacji nieobecnych w próbie. Przy małym N, skrajnych rozkładach, parametrach na granicy lub zależnościach prosty wariant może działać źle. Dla par i klastrów należy zachować strukturę losowania; dowolne tasowanie komórek niszczy to, co miało być oszacowane.
+
+Zwiększenie B poprawia dokładność komputerowego przybliżenia, nie wielkość próby badawczej. Dziesięć tysięcy replik z dwudziestu osób nadal opiera się na dwudziestu osobach. Nie przedstawiamy B w raporcie jako N respondentów.
+
+## Zmiana znaków: konkretny model zerowy
+
+Dla jednej próby można analizować odchylenia $d_i=x_i-\mu_0$. W procedurze zmian znaków mnożymy każde odchylenie niezależnie przez +1 albo −1 i liczymy tę samą statystykę, na przykład średnią odchyleń. Porównujemy jej bezwzględną wartość z obserwowaną.
+
+Uzasadnienie dokładne wymaga niezależności i symetrii rozkładu odchyleń wokół zera pod H0. Sama równość średniej do $\mu_0$ nie zapewnia symetrii. Skośne czasy mogą mieć średnią równą odniesieniu, lecz bardzo różne dodatnie i ujemne ogony. Zmiana znaków nie staje się wtedy automatycznie „testem bez założeń”. Warunki przestawień omawiają [Winkler i współautorzy (2014)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4010955/).
+
+Dla dwóch niezależnych grup będziemy tasować etykiety, jeśli odpowiednia wymienialność pod hipotezą zerową jest uzasadniona. Dla związku dwóch zmiennych przestawimy jedną względem drugiej. Schemat losowania musi pasować do projektu; nie wolno mieszać dowolnie obserwacji tej samej osoby.
+
+## P z losowej liczby przestawień
+
+Przy B losowych przestawieniach stosujemy w kursie:
+
+$$
+p_{\mathrm{MC}}=
+\frac{1+\#\{|T_b^*|\geq|T_{\mathrm{obs}}|\}}{B+1}.
+$$
+
+Symbol $\#$ oznacza liczbę spełniających warunek replik. Znak $\geq$ uwzględnia także remisy. Dla B=1999 i 39 wyników co najmniej tak skrajnych otrzymujemy $40/2000=0{,}02$. Jeśli nie znajdziemy żadnego, wynik wyniesie $1/2000=0{,}0005$, nie zero.
+
+Takie postępowanie nie naprawia niewłaściwego schematu przestawień. Zapobiega natomiast traktowaniu braku skrajnych wyników w skończonej symulacji jako niemożliwości zdarzenia. Znaczenie poprawnego obliczania losowanych p omawiają [Phipson i Smyth (2010)](https://pubmed.ncbi.nlm.nih.gov/21044043/).
+
+B wpływa na rozdzielczość i losową dokładność obliczenia. W pobliżu progu dwa uruchomienia z różnymi ziarnami mogą znaleźć się po różnych stronach 0,05. Nie wybieramy ziarna dającego mniejszy wynik. Wspólne ziarno w materiale pozwala odtworzyć przykład, a nie zwiększa wiarygodności samego projektu.
+
+# Zgodność testu i przedziału ma warunki
+
+W dwustronnym teście t na poziomie 0,05 i odpowiadającym mu dwustronnym przedziale t 95% wykluczenie wartości zerowej jest zgodne z odrzuceniem H0. Dla średniej sprawdzamy $\mu_0$, a dla różnicy zero. To związek konkretnej pary procedur.
+
+Nie musimy otrzymać identycznej decyzji, gdy zestawimy klasyczny test t z percentylowym przedziałem bootstrapowym lub innym testem permutacyjnym. Mogą różnić się założenia, aproksymacje i sposób konstrukcji. Rozbieżność wymaga wyjaśnienia, nie wyboru bardziej atrakcyjnego wyniku.
+
+W C05 przedstawimy klasyczny przedział i bootstrap osobno. Opiszemy, który parametr obejmuje każda para granic. Zgodne wnioski będą informacją o tych konkretnych analizach, a nie uniwersalnym certyfikatem poprawności.
+
+# Czytanie krótkiego raportu
+
+Poprawny raport pierwszego przykładu można zacząć tak: „W hipotetycznej próbie 100 osób średni indeks wyniósł 3,24 punktu (SD=0,80). Różnica względem umownego odniesienia 3 wyniosła 0,24 punktu, 95% CI [0,081; 0,399]. W teście t uzyskano t(99)=3,00, p=0,0034; standaryzowana różnica d=0,30”.
+
+Drugi akapit powinien mówić o sensie: „Odpowiedzi były przeciętnie przesunięte w stronę korzystnej oceny katalogu. Wielkość ta nie jest miarą całej kompetencji cyfrowej ani dowodem skutku zmiany interfejsu. Uogólnienie wymagałoby uzasadnienia projektu doboru i jakości pomiaru”.
+
+Raport drugiego przykładu musi zachować szerokość niepewności: „Oszacowana różnica czasu wyniosła 1,2 minuty, lecz przedział od około −2,0 do 4,4 minuty obejmuje różne praktycznie możliwe sytuacje”. Sama fraza „wynik nieistotny” jest znacznie uboższa od tej informacji.
+
+## Sprawdzenie rozumienia
+
+W podanym akapicie odszukaj kolejno estymandę, N, efekt, jednostkę, przedział, statystykę, df i p. Rozróżnij liczbę opisującą zróżnicowanie osób od liczby opisującej niepewność średniej. Następnie sprawdź, czy ograniczenie rzeczywiście dotyczy projektu, a nie jest ogólnym zdaniem dodanym na końcu. Jest to kontrola odczytu przykładu, nie dodatkowy tekst do oddania.
+
+Jeśli ktoś odczytuje p jako szansę prawdziwości H0, wracamy do rozkładu zerowego. Jeśli odczytuje CI jako 95% użytkowników, wracamy do dwóch paneli rozkładów. Jeśli t nazywa wielkością efektu w punktach, porównujemy mianowniki t i d.
+
+# Most do ćwiczenia i dalszych analiz
+
+C05 zastosuje te pojęcia do wspólnego indeksu oraz własnego wariantu zadania. Na kolejnych spotkaniach zmieni się estymanda: różnica grup, związek kategorii, korelacja lub nachylenie. Pozostanie obowiązek określenia wielkości, jednostki, danych, niepewności i warunków.
+
+Wykonanie testu jest krótką częścią analizy. Dłuższa praca polega na ustaleniu, czy jego pytanie jest tym, na które naprawdę chcieliśmy odpowiedzieć. W zarządzaniu informacją właśnie to rozróżnia obliczoną statystykę od użytecznego argumentu o działaniu usługi.

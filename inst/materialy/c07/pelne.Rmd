@@ -1,243 +1,586 @@
 ---
-title: 'C07 — Kategorie i zachowanie: tabela, chi-kwadrat i Monte Carlo'
-subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
-author: 'Marek Deja'
+title: 'C07 — Czy użytkownicy osiągają cel: liczebność, proporcja i związek'
+subtitle: 'Zarządzanie informacją — ćwiczenie i zadanie Z07 — 2026/27'
+author: 'ID: [UZUPELNIJ_ID]'
 date: '2026/27'
 lang: pl-PL
 fontsize: 11pt
 papersize: a4
 geometry: margin=2cm
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document: default
 ---
 
+<!-- start-sesji -->
+# Początek pracy na tych zajęciach
+
+Otwórz RStudio. Pakiet kursu jest już zainstalowany w sali; nie instalujesz go ponownie. W konsoli poniżej edytora wpisz swoje ID i adres prywatnego repozytorium otrzymany w kursie, a następnie wykonaj polecenia. Ten blok jest instrukcją do konsoli, nie chunkiem uruchamianym przy tworzeniu PDF.
+
+```r
+library(badaniaZI)
+ID <- "TWOJE_ID"
+zaloguj_github()
+rozpocznij_zajecia(
+  "C07", id_studenta = ID,
+  repo_url = "ADRES_TWOJEGO_PRYWATNEGO_REPOZYTORIUM"
+)
+```
+
+Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie tam, nie w konsoli R. Sprawdź potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w tej sesji; pliki pracy mają je zachować także po zamknięciu RStudio.
+
+Polecenie otwiera własny `zadanie.Rmd` i zapamiętuje katalog pracy. Nie przełączaj teraz projektu przez `.Rproj`, bo nowa sesja R utraci logowanie. Pracuj w otwartym Rmd, nie w źródłach pakietu. Uruchom pierwszy chunk przygotowania, potem wykonuj LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; nie usuwaj pracy ani nie wpisuj cudzego ID.
+<!-- /start-sesji -->
+
+
+Skrypt przygotowuje tabelę grupy i powodzenia oraz gotowe funkcje odczytu oczekiwań, testów i efektów. Osobno tworzy małe demonstracje rzadkich komórek, bootstrapu V i pomiaru przed–po. Wszystkie dane są syntetyczne; dodatkowych demonstracji nie traktujemy jako rekordów S02.
+
 ```{r przygotowanie, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, digits = 3)
-source('analiza.R', local = knitr::knit_global(), encoding = 'UTF-8')
+source(badaniaZI::plik_pracy("Z07", "analiza.R"),
+       local = knitr::knit_global(), encoding = "UTF-8")
+ustaw_material()
 ```
 
-# 1. Miejsce w opowieści
+# Czas i ocena to nie wszystko: czy znaleziono dokument
 
-Sprawdzamy, czy obserwowane powodzenie zadania rozkłada się podobnie w dwóch grupach. Najpierw czytamy liczebności i odsetki w wierszach, potem wynik testu i siłę związku.
+Wspólna historia dotyczy biblioteki, która chce poprawić korzystanie z katalogu. C06 pokazało różnicę deklarowanej oceny między nowymi i doświadczonymi oraz nieprecyzyjne porównanie ich czasu. Teraz pytamy o wynik obserwacyjny: czy osoba znalazła wskazany dokument.
 
-**Pytanie przewodnie:** Czy grupa i powodzenie zadania współwystępują oraz jak silny jest wzorzec w tabeli?
+Powodzenie jest zakodowane jako 1, a niepowodzenie jako 0. Nie są to dwa stopnie tej samej skali oceny katalogu. Jest to binarne kryterium wykonania konkretnego zadania. W realnym badaniu trzeba wcześniej ustalić, jaka odpowiedź spełnia kryterium i co robić z rezygnacją lub problemem technicznym.
 
-Rdzeń zajęć trwa 90 minut. Strony oznaczone jako „po zajęciach” służą utrwaleniu; podczas spotkania uruchamiamy gotowy kod, czytamy liczby i zapisujemy własne wyjaśnienie.
+Zespół pyta: „Czy nowi równie często osiągają cel?”. Żeby odpowiedzieć, potrzebujemy liczby sukcesów oraz liczby osób w każdej grupie. Dopiero po odczytaniu proporcji przechodzimy do niepewności i testu. Samo p nie powie, która grupa miała większą skuteczność.
 
-| Minuty | Praca |
-|---:|---|
-| 0–10 | Powrót do poprzedniego odcinka i pytanie |
-| 10–30 | Zmienne, wzór i symbole |
-| 30–55 | Gotowe wyniki i dwa tory, jeśli dotyczą |
-| 55–80 | Zadanie na indywidualnych danych |
-| 80–90 | Kontrola, oddanie i zapowiedź kolejnego kroku |
+Grupy S02 są obserwacyjne. Związek doświadczenia z powodzeniem nie jest automatycznie skutkiem doświadczenia, szkolenia czy jakości interfejsu. Syntetyczny charakter danych dodatkowo ogranicza opis do ćwiczenia metody, nie diagnozy realnej instytucji.
 
-\newpage
+## Przebieg 90 minut
 
-# 2. Scena badawcza
+Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN, 50 minut na pięć CHALLENGE i 5 minut na zapis oraz oddanie. W LEARN uruchamiasz gotowe przykłady i czytasz ich wzorcową interpretację. W CHALLENGE wpisujesz pięć własnych krótkich akapitów pod wynikami w tym samym Rmd. Pracujesz indywidualnie; jeśli coś jest niejasne, pytasz prowadzącego. Rozwinięcia po części obowiązkowej służą powtórce, bez dodatkowych odpowiedzi.
 
-Sprawdzamy, czy obserwowane powodzenie zadania rozkłada się podobnie w dwóch grupach. Najpierw czytamy liczebności i odsetki w wierszach, potem wynik testu i siłę związku.
+W CHALLENGE analizujesz przygotowane dane archiwum cyfrowego. Nie wybierasz jeszcze własnego projektu badawczego ani nie programujesz czyszczenia. Projekt zaliczeniowy zostanie przedstawiony na C09.
 
-Badana osoba wykonuje krótkie zadanie wyszukiwawcze w cyfrowej usłudze informacyjnej, a potem odpowiada na sześć pozycji samooceny. Rejestrujemy czas i powodzenie jako pomiar obserwacyjny. Częstość korzystania, samoocena oraz wybrane kanały są deklaracjami. Rozdzielenie tych źródeł jest częścią interpretacji, ponieważ wysoka pewność nie musi oznaczać sprawnego wykonania.
+Dzisiaj trzeba umieć powiedzieć, skąd bierze się każda liczba w komórce, co oznacza oczekiwanie przy niezależności i dlaczego V nie ma kierunku. Gotowy kod wykonuje obliczenia. Twoim zadaniem jest utrzymać zgodność pytania, mianownika, efektu i wniosku.
 
-Dane demonstracyjne dotyczą scenariusza S02 i są syntetyczne. Ich rozkłady przygotowano do nauki, dlatego nie wolno opisywać nimi realnej biblioteki ani użytkowników UJ. Jednostką analizy jest osoba po usunięciu identycznych duplikatów. Każdy brak pozostaje brakiem, dopóki słownik nie podaje jawnej reguły.
+# LEARN 1: osoby, sukcesy i mianowniki
 
-\newpage
+Jednostką jest osoba ze znaną grupą i wynikiem zadania. Do tej tabeli nie potrzebujemy ważnego indeksu ani czasu. Osoba bez indeksu może wciąż wnosić prawidłowo zarejestrowane powodzenie, dlatego N nie musi być takie samo jak na C05–C06.
 
-# 3. Pytanie, jednostka i zmienne
+Nie zmieniamy braku powodzenia na zero. Zero oznacza obserwowane niepowodzenie, a brak oznacza, że wynik jest nieznany. Jeżeli protokół definiuje rezygnację jako niepowodzenie, powinno to być ustalone i zapisane wcześniej, nie dopisane dla wygody testu.
 
-Analizowane zmienne: **grupa nominalna, powodzenie 0/1, liczebności i odsetki w grupie**.
+Tabela pokazuje rzeczywiste liczebności wspólnego przykładu po czyszczeniu. Wiersze to grupy, kolumny to 0 i 1. Odczytaj najpierw komórkę doświadczeni–1 jako zdanie o liczbie osób.
 
-Przed spojrzeniem na wynik odpowiedz głośno na cztery pytania: kto jest obserwacją, co jest zmienną, jaka jest skala i w jakiej jednostce pojawi się rezultat. Nazwa kolumny jest technicznym adresem; znaczenie pochodzi z operacjonalizacji oraz słownika danych.
-
-| Element | Pytanie kontrolne | Odpowiedź w tej historii |
-|---|---|---|
-| Jednostka | Co zajmuje jeden wiersz? | jedna osoba i jedno zadanie |
-| Samoopis | Co osoba deklaruje? | pozycje, częstość, kanały |
-| Obserwacja | Co zapisuje procedura? | czas i powodzenie |
-| Granica wniosku | O czym mówią dane? | o syntetycznej próbie dydaktycznej |
-
-Skala pomiarowa ogranicza sens działań. Dla kategorii liczymy osoby i odsetki; dla uporządkowanych odpowiedzi możemy porównywać kolejność; dla czasu sens mają różnice i ilorazy. Indeks 1–5 traktujemy w kursie jako przybliżoną zmienną ilościową, ale pamiętamy, że powstał z pozycji porządkowych. Nazwanie skali przed analizą chroni przed mechanicznym wyborem testu.
-
-\newpage
-
-# 4. Słownik statystyczny
-
-Statystyka jest językiem skrótu. Symbol ma nazwę, znaczenie w badaniu i jednostkę. Odczytuj wzór zdaniem, zanim podstawisz liczby.
-
-| Symbol | Nazwa | Znaczenie w przykładzie | Jednostka |
-|---|---|---|---|
-| $O_{rc}$ | liczebność obserwowana | rzeczywista komórka tabeli | osoby |
-| $E_{rc}$ | liczebność oczekiwana | wartość przy niezależności | osoby |
-| $\chi^2$ | statystyka rozbieżności | łączna różnica O i E | bez jednostki |
-| $V$ | V Cramera | siła związku | 0–1 |
-
-Wartość p nie jest prawdopodobieństwem prawdziwości hipotezy. Przedział nie jest zakresem środkowych 95% obserwacji. Efekt nie jest tym samym co istotność. Te trzy rozróżnienia wracają w każdej analizie.
-
-**Notatnik pojęć.** Dla każdego symbolu dopisz jedną liczbę z gotowego wyniku i przeczytaj ją bez skrótu. Zamiast „t równa się” powiedz „obserwowana różnica leży tyle błędów standardowych od wartości zerowej”. Zamiast „V równa się” powiedz „znormalizowana siła związku w tabeli wynosi”. Taki przekład jest ważniejszy niż pamięciowe odtwarzanie wzoru.
-
-\newpage
-
-# 5. Wzór czytany jak zdanie
-
-$$\chi^2=\sum_{r,c}\frac{(O_{rc}-E_{rc})^2}{E_{rc}}, \qquad V=\sqrt{\frac{\chi^2}{N\min(R-1,C-1)}}$$
-
-Czytamy od lewej do prawej, nazywając licznik, mianownik i jednostkę. Znak wyniku ma sens dopiero po ustaleniu kolejności grup lub kierunku skali. Jeżeli we wzorze jest N, chodzi o przypadki rzeczywiście użyte w danym obliczeniu, a nie automatycznie o wszystkie wiersze surowego pliku.
-
-**Ćwiczenie ustne.** Wskaż w formule estymatę, element niepewności i punkt odniesienia. Jeżeli dana metoda ich nie ma, powiedz to wprost. Następnie przewidź, co stanie się z wynikiem po zwiększeniu N, zmianie jednostki albo odwróceniu kolejności grup.
-
-Czytanie wzoru ma pięć kroków: (1) nazwij wynik po lewej stronie, (2) nazwij obserwowane wielkości po prawej, (3) wskaż porównanie lub wartość zerową, (4) ustal jednostkę, (5) powiedz, jaka zmiana danych zwiększa wynik. Nie wykonujemy ręcznie długich obliczeń. Wzór ma odsłonić logikę liczby zwracanej przez gotową funkcję.
-
-\newpage
-
-# 6. Gotowy skrypt pomocniczy
-
-Pierwszy chunk materiału załadował towarzyszący plik `analiza.R`. Zawiera przygotowanie danych, obiekty i funkcje potrzebne na zajęciach. Uruchamiasz kolejne fragmenty i odczytujesz wynik. Nie implementujesz testu ani pętli permutacyjnej.
-
-```{r struktura}
-wynik_glowny
+```{r tabela}
+widok <- liczebnosci_tabeli(wynik)
+print(widok)
 ```
 
-W zadaniu indywidualnym analogiczny skrypt powstaje przez `przygotuj_zadanie()`. Wolno zmienić jedynie wartości oznaczone komentarzem jako parametry. Dzięki temu przedmiot ocenia rozumienie wyniku, a nie biegłość w programowaniu.
+Doświadczeni mają 52 sukcesy i 22 niepowodzenia, nowi 45 sukcesów i 29 niepowodzeń. Każda grupa liczy 74 osoby, razem 148. To o jeden więcej niż N analizy indeksu, ponieważ powodzenie jest znane także dla osoby bez ważnego indeksu.
 
-Po zmianie parametru uruchom cały skrypt od początku. Pojedyncze obiekty pozostawione w Environment mogą pochodzić ze starszej próby, dlatego nie są dowodem odtwarzalności. Zapisany plik w `wyniki` ma powstać ponownie w świeżej sesji. Jeśli nazwa zmiennej jest niedozwolona, funkcja zatrzymuje analizę i podaje listę dopuszczalnych wartości.
+## Marginesy nie są dodatkowymi obserwacjami
 
-\newpage
+Sumy wierszy i kolumn nazywamy marginesami tabeli. Są podsumowaniami tych samych osób, nie dodatkowymi kategoriami do testowania. Nie przekazujemy do testu tabeli rozszerzonej o wiersz i kolumnę „suma”.
 
-# 7. Dane, braki i mianownik
+Poniższy widok dodaje marginesy wyłącznie do czytania. Suma sukcesów wynosi 97, a niepowodzeń 51. Sprawdź, czy oba sposoby zsumowania prowadzą do N=148.
 
-```{r dane}
-knitr::kable(head(tabela_glowna, 10), digits = 3)
+```{r marginesy}
+widok <- liczebnosci_tabeli(wynik, marginesy = TRUE)
+print(widok)
 ```
 
-Zanim przeczytasz statystykę, ustal N i braki. Dla średniej N oznacza ważne liczby. Dla korelacji są to kompletne pary. Dla tabeli jest to suma analizowanych komórek. Dla indeksu przypadek musi mieć co najmniej pięć odpowiedzi po właściwym ukierunkowaniu.
+Jedna osoba wnosi dokładnie jedną komórkę. Ta własność odróżnia tabelę od pytania wielokrotnego wyboru z C04, gdzie osoba mogła wskazać kilka kanałów. Gdyby każde wskazanie kanału potraktować jako niezależnego respondenta, sztucznie zwiększylibyśmy N.
 
-Dwa wyniki mogą używać różnych N w tym samym raporcie. Nie jest to sprzeczność, jeśli wynika z braków i zostało jawnie opisane. Nie wolno dopasowywać reguły braków po zobaczeniu, która wersja daje korzystniejsze p.
+## procent zawsze ma pytanie w mianowniku
 
-Brak może dotyczyć jednej pozycji, całego indeksu albo pary zmiennych. Duplikat jest powtórzeniem rekordu, a obserwacja odstająca nadal może być prawdziwą obserwacją. Te pojęcia wymagają innych decyzji. Dziennik czyszczenia powinien pozwolić odtworzyć, ile elementów zmieniła każda reguła i dlaczego wynikowe N jest właściwym mianownikiem.
+Skuteczność grupy opisujemy proporcją sukcesów w tej grupie:
 
-\newpage
+$$\widehat\pi_g=\frac{\text{liczba sukcesów w grupie }g}{n_g}.$$
 
-# 8. Tor klasyczny
+Dla doświadczonych jest to $52/74\approx0{,}7027$, czyli 70,27%. Dla nowych $45/74\approx0{,}6081$, czyli 60,81%. Równe N ułatwia ten przykład, lecz reguła musi działać także dla nierównych grup.
 
-Klasyczny test chi-kwadrat porównuje O z E i używa rozkładu asymptotycznego. Sprawdzamy najmniejszą liczebność oczekiwaną; przy małej tabeli i rzadkich zdarzeniach rozważamy Fishera.
+Tabela z procentami wierszowymi odpowiada na pytanie o strukturę wyników wewnątrz grupy. Każdy wiersz sumuje się do 100%. Odczytaj jedną komórkę wraz z nazwą grupy i kategorii wyniku.
+
+```{r procenty-wierszowe}
+widok <- odsetki_tabeli(wynik, mianownik = "grupa")
+print(widok)
+```
+
+Możemy także obliczyć procenty kolumnowe. Odpowiadają one na inne pytanie: jaki udział wśród wszystkich sukcesów lub niepowodzeń stanowią osoby z danej grupy. Nie są odsetkiem sukcesów w tej grupie.
+
+Poniżej te same liczniki dzielimy przez sumy kolumn. Każda kolumna sumuje się do 100%. Porównaj mianownik komórki nowych z sukcesem: teraz jest nim 97, a nie 74.
+
+```{r procenty-kolumnowe}
+widok <- odsetki_tabeli(wynik, mianownik = "wynik")
+print(widok)
+```
+
+Zdanie „nowi stanowią około 46,4% sukcesów” jest zgodne z procentem kolumnowym. Zdanie „skuteczność nowych wynosi około 46,4%” byłoby błędne, bo ich skuteczność wynosi około 60,8%. Te dwie liczby opisują te same dane, ale nie tę samą proporcję.
+
+Do opisu skuteczności nowych potrzebujemy 45/74, bo pytamy o wynik wśród wszystkich nowych osób. Do opisu składu osób odnoszących sukces potrzebujemy 45/97. W raporcie mianownik jest częścią znaczenia wyniku, a nie tylko ustawieniem funkcji.
+
+## wykres struktury
+
+Wykres słupkowy pokazuje udział sukcesów i niepowodzeń wewnątrz każdej grupy. Cały słupek ma 100%, ponieważ dwie kategorie są rozłączne i wyczerpują znane wyniki. Legenda wiąże kolory z kodami 0/1.
+
+```{r wykres-proporcji}
+widok <- proporcje_na_wykresie(wynik)
+print(widok)
+```
+
+Nowi mają opisowo mniejszy udział sukcesów. Na tym etapie jest to stwierdzenie o próbie, nie o przyczynie ani istotności. Wysokość fragmentu słupka nie pokazuje sama niepewności wynikającej z N.
+
+Gdyby jedna grupa miała dziesięć osób, a druga tysiąc, słupki nadal miałyby tę samą wysokość całkowitą. Dlatego obok wykresu potrzebujemy liczebności. Wizualne podobieństwo proporcji nie oznacza jednakowej precyzji.
+
+# LEARN 2: hipoteza niezależności i oczekiwane komórki
+
+| Symbol | Co oznacza w analizie powodzenia |
+|---|---|
+| $N$, $n_g$ | Liczba analizowanych osób ogółem i w grupie |
+| $\pi_g$, $\widehat\pi_g$ | Prawdopodobieństwo sukcesu w modelu i proporcja z próby |
+| $O_{ij}$, $E_{ij}$ | Liczebność obserwowana i oczekiwana pod niezależnością |
+| $\chi^2$, df | Statystyka rozbieżności oraz stopnie swobody |
+| $p$, $p_{\mathrm{MC}}$ | Skrajność w rozkładzie odniesienia, nie wielkość efektu |
+| $\Delta_\pi$, $\widehat\Delta_\pi$ | Różnica prawdopodobieństw oraz jej estymata |
+| CI | Przedział niepewności konkretnego parametru |
+| $V$ | Nieujemna miara siły związku, bez kierunku |
+| $B$ | Liczba losowań komputerowych, nie osób |
+
+Hipoteza zerowa mówi, że grupa i powodzenie są niezależne w rozpatrywanym modelu. Dla dwóch grup i wyniku binarnego odpowiada to równości prawdopodobieństw sukcesu. Nie znaczy, że połowa osób musi odnieść sukces: wspólna proporcja może być inna niż 0,5.
+
+Przy niezależności rozkład sukcesów między grupami powinien odzwierciedlać ich liczebności. Oczekiwaną komórkę obliczamy:
+
+$$E_{ij}=\frac{n_{i\cdot}n_{\cdot j}}N.$$
+
+Indeks i wskazuje wiersz, j kolumnę. Kropka oznacza sumowanie po drugim wymiarze. Licznik mnoży sumę wiersza przez sumę kolumny, a mianownik dzieli przez całe N.
+
+Dla sukcesów doświadczonych mamy $74\cdot97/148=48{,}5$. Dla niepowodzeń $74\cdot51/148=25{,}5$. W obu grupach oczekiwania są tu jednakowe z powodu równych liczebności, nie z definicji każdej tabeli.
+
+Gotowa tabela pokazuje cztery oczekiwania. Nie zaokrąglaj ich do całych osób przed obliczeniem statystyki. Są wartościami modelowymi i mogą być ułamkami.
+
+```{r oczekiwania}
+widok <- oczekiwania_tabeli(wynik)
+print(widok)
+```
+
+Obserwowane 52 sukcesy doświadczonych przewyższają oczekiwanie 48,5 o 3,5. Nowi mają o 3,5 mniej sukcesów niż oczekiwanie. Te odchylenia równoważą marginesy, ale test będzie sumował ich odpowiednio przeskalowane kwadraty.
+
+## Co oznacza „oczekiwane”
+
+To nie cel biblioteki, prognoza kolejnego dnia ani pożądany standard skuteczności. E wynika z modelu niezależności i marginesów tej tabeli. Gdy zmienią się N lub łączna liczba sukcesów, zmienią się również oczekiwania.
+
+Nie wpisujemy jako E arbitralnego podziału po 25% w każdej komórce, jeśli marginesy są nierówne. Taki układ odpowiadałby innemu modelowi. W tabelach krzyżowych punktem odniesienia jest iloczyn udziałów brzegowych, nie zawsze równy podział.
+
+## od komórki do chi-kwadrat
+
+$$
+\chi^2=\sum_{i,j}\frac{(O_{ij}-E_{ij})^2}{E_{ij}}.
+$$
+
+O oznacza liczebność obserwowaną, E oczekiwaną. Kwadrat usuwa znak, a dzielenie przez E uwzględnia wielkość oczekiwanej komórki. Na końcu sumujemy wkłady wszystkich komórek.
+
+Tabela rozpisuje cztery składniki. Sprawdź, że wszystkie są nieujemne. Wkłady nie są czterema niezależnymi testami ani czterema efektami, tylko częściami jednej statystyki.
+
+```{r wklady}
+widok <- wklady_tabeli(wynik)
+print(widok)
+```
+
+Ponieważ w S02 odchylenia bezwzględne są równe 3,5, większy wkład mają komórki z mniejszym E=25,5. Łączna statystyka wynosi około 1,466. Nie ma znaku wskazującego przewagę nowych lub doświadczonych.
+
+Jeżeli podamy do testu procenty zamiast liczebności, zmienimy N i relację między skalą odchylenia a oczekiwaniem. Dwie tabele z identycznymi proporcjami, ale liczebnościami 20 i 2000, zawierają inną ilość informacji. Test musi wiedzieć, z ilu osób pochodzą procenty.
+
+## Reszty pomagają zlokalizować wzorzec
+
+Reszta Pearsona ma postać $(O-E)/\sqrt E$. Zachowuje znak: dodatni oznacza więcej obserwacji niż oczekiwano, ujemny mniej. Jej kwadrat jest wkładem do chi-kwadrat.
+
+Na wykresie kolor pokazuje znak i nasilenie reszty, a etykieta podaje O i E. To pomoc do opisu struktury, nie automatyczne oznaczenie komórek „istotnych”. Osobne testowanie wielu komórek wymagałoby właściwej procedury.
+
+```{r reszty, fig.height=2.8}
+widok <- pokaz_wykres(wykres_reszt)
+print(widok)
+```
+
+W tym przykładzie przewagę sukcesów doświadczonych widać w dodatniej reszcie odpowiedniej komórki. Nie dopisujemy, że komórka dowodzi wpływu doświadczenia. Wzorzec w tabeli i wyjaśnienie jego przyczyny to odrębne poziomy rozumowania.
+
+## df, p i jakość przybliżenia
+
+Dla tabeli r na c liczba stopni swobody wynosi $(r-1)(c-1)$. W naszym 2 na 2 df=1. Przy ustalonych marginesach wybór jednej komórki wyznacza pozostałe, co pomaga zrozumieć, dlaczego nie ma czterech swobodnych odchyleń.
+
+Klasyczny tor porównuje chi-kwadrat z odpowiednim rozkładem asymptotycznym. W materiale używamy wersji bez korekty ciągłości, aby porównywać tę samą statystykę z torem Monte Carlo. Informacja o korekcie jest częścią raportu, nie szczegółem do pominięcia.
+
+Tabela podaje N, chi-kwadrat, df, p oraz kontrolę oczekiwanych komórek. Odczytaj minimum E i liczbę E mniejszych od 5 przed oceną adekwatności przybliżenia. W S02 najmniejsze oczekiwanie wynosi 25,5.
 
 ```{r klasyczny}
-knitr::kable(formatuj_wynik(wynik_klasyczny), digits = 4)
+widok <- test_tabeli(wynik)
+print(widok)
 ```
 
-Odczytaj wynik bez etykiety „dobry” lub „zły”. Powiedz, jaka estymata odpowiada pytaniu, co mierzy statystyka oraz jakie założenie projektu ogranicza interpretację. Jeżeli widzisz p, opisz je warunkowo: przy modelu zerowym i przyjętej procedurze.
+P około 0,226 nie daje podstaw do odrzucenia niezależności na umownym poziomie 0,05 przy tej procedurze. Nie jest dowodem niezależności populacyjnej ani prawdopodobieństwem, że „wynik jest przypadkowy”. W próbie proporcje nadal różnią się o około 9,46 punktu procentowego.
 
-**Karta odczytu toru klasycznego.** Zapisz: (a) nazwę metody, (b) N lub liczebności grup, (c) estymatę i jednostkę, (d) statystykę wraz z df, jeśli występują, (e) p, (f) jedno założenie. Jeżeli metoda na tej stronie nie jest testem, wpisz „nie dotyczy” zamiast wymyślać p. Kompletność wyniku jest oceniana oddzielnie od jego istotności.
+Reguły dotyczące oczekiwań pomagają ocenić przybliżenie. Dla małej tabeli 2 na 2 z komórkami E poniżej 5 rozważymy Fishera. Próg 5 nie zastępuje jednak sprawdzenia niezależności, sposobu doboru i poprawności kategorii. Duże komórki nie naprawią zależnych powtórzeń tych samych osób.
 
-\newpage
+# LEARN 3: Monte Carlo przy ustalonych marginesach
 
-# 9. Tor permutacyjny lub decyzja o jego braku
+Losujemy tabele, które zachowują N grup i łączną liczbę sukcesów, zgodnie z warunkowym rozkładem pod niezależnością. Oznacza to 74 osoby w każdym wierszu, 51 niepowodzeń i 97 sukcesów w kolumnach. Zmienia się rozmieszczenie wyniku między grupami.
 
-Wersja Monte Carlo losuje tabele zgodne z warunkami hipotezy niezależności i szacuje p. Zachowuje logikę tej samej statystyki chi-kwadrat, lecz nie polega wyłącznie na przybliżeniu asymptotycznym.
+Poniżej jedna przykładowa tabela zerowa. Dodane marginesy służą sprawdzeniu, co zachowano. Nie próbuj odczytać jej jako nowych uczestników badania.
 
-```{r permutacyjny}
-knitr::kable(formatuj_wynik(wynik_permutacyjny), digits = 4)
+```{r jedna-tabela-zerowa}
+widok <- losowa_tabela(wynik)
+print(widok)
 ```
 
-W analizie inferencyjnej liczba B określa rozdzielczość szacowanego p. Za każdym razem trzeba powiedzieć, co dokładnie tasowano i jaki związek został zerwany. Nazwa „permutacyjny” nie zwalnia z wyjaśnienia hipotezy zerowej.
+Nie tasujemy dowolnie czterech liczb w komórkach, bo to zwykle zmieniłoby marginesy. Nie losujemy też wszystkich możliwych tabel z równymi prawdopodobieństwami. Schemat przypisuje im prawdopodobieństwa wynikające z modelu warunkowego.
 
-**Karta odczytu toru permutacyjnego.** Uzupełnij zdanie: „Przy braku związku lub różnicy wielokrotnie zmieniano znaki, tasowano etykiety lub losowano tabele, za każdym razem liczono tę samą statystykę, a określony odsetek wyników był co najmniej tak skrajny jak obserwowany”. Następnie porównaj wniosek z torem klasycznym bez wybierania mniejszego p.
+Dla każdej z B=1999 tabel obliczamy chi-kwadrat. Skrajność oznacza wartość nie mniejszą niż obserwowana, bo statystyka jest nieujemna i sumuje rozbieżności w dowolnym kierunku. Nie mnożymy tego udziału przez dwa.
 
-\newpage
+$$
+p_{\mathrm{MC}}=
+\frac{1+\#\{\chi_b^{2*}\geq\chi_{\mathrm{obs}}^2\}}{B+1}.
+$$
 
-# 10. Efekt i przedział
+Tabela pokazuje 593 wyniki co najmniej tak skrajne i p=594/2000=0,297. B określa dokładność komputerowego przybliżenia, a nie liczbę osób. Nie dopisujemy fikcyjnego df do obliczenia p Monte Carlo: jego rozkład odniesienia pochodzi z losowania.
 
-V Cramera oddziela siłę związku od N. Bootstrapowy CI dla V pokazuje niepewność, choć przy małych komórkach może być niestabilny. Kierunek odczytujemy z odsetków, nie ze znaku V.
-
-```{r efekt}
-knitr::kable(formatuj_wynik(efekt), digits = 4)
+```{r monte-carlo}
+widok <- monte_carlo_tabeli(wynik)
+print(widok)
 ```
 
-Znaczenie praktyczne oceniamy w kontekście usługi: minuty, punkty skali, różnica odsetków albo siła związku. Uniwersalne etykiety mały/średni/duży nie zastępują pytania, czy efekt zmienia decyzję instytucji i jak precyzyjnie został oszacowany.
+Histogram pokazuje statystyki z losowanych tabel. Linia oznacza chi-kwadrat z S02. Wartości na prawo od niej, wraz z remisami, tworzą licznik skrajności.
 
-Przedział szeroki obejmuje wiele możliwych wielkości efektu i wymaga ostrożniejszego języka. Przedział wąski może nadal koncentrować się wokół efektu praktycznie małego. Gdy przedział przecina zero, nie zapisujemy automatycznie „brak efektu”; podajemy zakres zgodnych wartości i oceniamy, czy obejmuje skutki istotne dla usługi informacyjnej.
-
-\newpage
-
-# 11. Wykres jako część argumentu
-
-```{r wykres, fig.height=4.6}
-wykres_glowny
+```{r histogram-zerowy}
+widok <- pokaz_wykres(wykres_zerowy)
+print(widok)
 ```
 
-Wykres odpowiada na pytanie o położenie, kształt, nakładanie się grup lub kierunek związku. Tytuł, osie i jednostki są częścią wyniku. Nie wnioskuj o istotności tylko z wyglądu, lecz sprawdź, czy obraz jest spójny z tabelą i estymatą.
+P klasyczne i warunkowe Monte Carlo różnią się nie tylko przez skończone B. Pierwsze używa ciągłego przybliżenia chi-kwadrat, a drugie dyskretnego rozkładu tabel przy marginesach. Remisy i warunkowanie mają znaczenie. W obu torach w tym przykładzie nie odrzucamy H0, lecz nie ogłaszamy jej prawdziwości.
 
-Przeczytaj wykres w trzech warstwach. Najpierw opisz elementy widoczne bez testu: zakres, skupienie i nietypowe obserwacje. Potem połącz je z estymatą w tabeli. Na końcu nazwij rzecz, której wykres nie rozstrzyga, np. przyczynowość, błąd pomiaru albo zachowanie wyniku w nowej próbie. Nie usuwaj obserwacji tylko dlatego, że psuje prostą historię.
+Schemat ten odpowiada funkcji `chisq.test(..., simulate.p.value=TRUE)`; dokumentacja R wyjaśnia zachowanie marginesów i brak klasycznego df w symulowanym wyniku. Własny helper odsłania losowane statystyki, aby można było zobaczyć sens p. [Opis procedury](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/chisq.test.html).
 
-\newpage
+# LEARN 4: efekt w punktach procentowych i jego niepewność
 
-# 12. Wynik czytany linia po linii
+Estymandą kierunkową jest $\Delta_\pi=\pi_{\mathrm{nowi}}-\pi_{\mathrm{doświadczeni}}$. Estymata wynosi $45/74-52/74=-7/74\approx-0{,}0946$, czyli −9,46 punktu procentowego. Zapis „−9,46%” bez wyjaśnienia mógłby zostać pomylony ze zmianą względną.
 
-Odczytujemy tabelę z mianownikiem w każdym wierszu, N całkowite, minimum E, chi2(df), p klasyczne, p Monte Carlo, V i CI. Statystyka nie zastępuje opisu, która grupa ma większy odsetek powodzenia.
+Poniższa tabela podaje tę samą różnicę jako proporcję i w punktach procentowych oraz osobno V. Odczytaj najpierw znak i jednostkę różnicy. V nie jest kolejnym zapisem tej samej estymandy.
 
-Schemat pełnego zdania: „W analizie N osób oszacowano [efekt] w [jednostce], 95% CI [dolna; górna]. Statystyka klasyczna wyniosła [symbol i df], p=[wartość], a procedura permutacyjna B losowań dała p_perm=[wartość]. Wynik opisuje [zakres] i nie rozstrzyga [ograniczenie]”.
-
-Podczas zajęć jedna osoba czyta tabelę, druga sprawdza znak i jednostkę, a trzecia wskazuje granicę wniosku. Dopiero po tej kontroli zapisujemy odpowiedź do pliku Markdown.
-
-Dobra interpretacja ma trzy warstwy. Warstwa liczbowa mówi, co oszacowano. Warstwa badawcza odpowiada na pytanie o zachowanie informacyjne lub wykonanie zadania. Warstwa krytyczna wskazuje, czego projekt, pomiar i syntetyczność nie pozwalają stwierdzić. Pominięcie którejkolwiek warstwy tworzy tekst technicznie poprawny, lecz metodologicznie niepełny.
-
-\newpage
-
-# 13. Błędy interpretacji
-
-Błąd: „V=.20 oznacza o 20% więcej sukcesów”. Poprawnie: „V=.20 opisuje siłę związku bez kierunku; różnicę odsetków trzeba odczytać z tabeli”.
-
-Dodatkowe pułapki: traktowanie braku istotności jako dowodu równości, pomijanie N, raportowanie samego p, utożsamienie samooceny z kompetencją oraz zamiana obserwacyjnego związku w przyczynę. Poprawa polega na dodaniu liczby, jednostki, zakresu i ograniczenia, a nie na bardziej stanowczym czasowniku.
-
-Porównaj dwie konstrukcje: „test wykazał efekt” i „oszacowana różnica wyniosła..., a wynik testu był...”. Druga oddziela wielkość od decyzji. Podobnie „grupy były takie same” zastępujemy opisem przedziału i precyzji. W raporcie nie używamy słowa „trend” jako sposobu ratowania p nieco większego od .05; opisujemy rzeczywisty efekt i jego niepewność.
-
-**Po zajęciach.** Znajdź w swoim szkicu jedno zdanie zawierające „wpływa”, „udowadnia”, „brak różnicy” albo „95% wyników”. Przepisz je tak, aby odpowiadało projektowi i rzeczywistemu znaczeniu statystyki.
-
-\newpage
-
-# 14. Próba prowadzona
-
-1. Otwórz gotowy skrypt i wskaż sekcję parametrów.  
-2. Uruchom cały plik bez zmiany dalszej części.  
-3. Otwórz zapisany CSV i odnajdź N, estymatę oraz jednostkę.  
-4. Jeżeli analiza jest inferencyjna, porównaj p klasyczne i permutacyjne.  
-5. Odczytaj efekt i przedział.  
-6. Napisz jedno zdanie wyniku oraz jedno zdanie ograniczenia.
-
-Jeżeli skrypt zgłasza błąd, najpierw sprawdź katalog projektu, nazwę parametru i dozwoloną wartość. Nie poprawiaj wnętrza funkcji statystycznej. Błąd parametru jest informacją o niedozwolonym wyborze, a nie zaproszeniem do przepisania procedury.
-
-Podział czasu próby: 3 minuty na uruchomienie, 4 na odnalezienie właściwego CSV, 5 na głośny odczyt tabeli, 5 na szkic interpretacji i 3 na kontrolę ograniczenia. Jeśli grupa utknie, wraca do pytania, jednostki i znaku efektu. Celem jest krótkie, sprawdzalne rozumowanie, nie zwiększanie liczby wykonanych poleceń.
-
-\newpage
-
-# 15. Zadanie Z07
-
-Uruchom Z07. Podaj liczebności i odsetki powodzenia dla obu grup, sprawdź oczekiwane komórki, zestaw oba p oraz V z CI. Napisz wniosek bez języka przyczynowego.
-
-Przygotuj pliki poleceniem poniżej. Uruchom zapisany `analiza.R`, a następnie uzupełnij wszystkie pola `[UZUPELNIJ]` w `odpowiedzi.md`. Nie wklejaj kodu ani zrzutu całej konsoli.
-
-```{r zadanie, eval=FALSE}
-przygotuj_zadanie('Z07', katalog = '.')
-sprawdz_zadanie('Z07', katalog = '.')
-oddaj_zadanie('Z07', katalog = '.')
+```{r efekty}
+widok <- efekty_tabeli(wynik)
+print(widok)
 ```
 
-\newpage
+Przybliżone SE różnicy proporcji niezależnych grup ma postać:
 
-# 16. Rubryka, kontrola i dalszy krok
+$$
+SE(\widehat\Delta_\pi)=
+\sqrt{\frac{\widehat\pi_N(1-\widehat\pi_N)}{n_N}+
+      \frac{\widehat\pi_D(1-\widehat\pi_D)}{n_D}}.
+$$
 
-| Kryterium | Punkty |
-|---|---:|
-| Z07.1: Wybór wyniku klasycznego oraz Monte Carlo uzasadniono strukturą tabeli i liczebnościami oczekiwanymi. | 2 |
-| Z07.2: Tabela liczebności i odsetków ma poprawne mianowniki, sumy i podpisy. | 3 |
-| Z07.3: Poprawnie odczytano chi-kwadrat, df, p, p Monte Carlo, V Cramera i jego przedział. | 3 |
-| Z07.4: Wykres/wniosek określa kierunek wzorca i nie przypisuje przyczynowości. | 2 |
+W dużopróbkowym przybliżeniu przedział budujemy wokół estymaty. Taki prosty wariant nie jest dobrym uniwersalnym rozwiązaniem dla skrajnych proporcji i bardzo małych N. Dlatego w rzadkim przykładzie nie będziemy ogłaszać jego bezwarunkowej poprawności.
 
-Automatyczna kontrola sprawdza pliki, parametry, odtwarzalność i zgodność eksportu. Prowadzący ocenia dobór języka, odczyt liczb, interpretację efektu oraz ograniczenie. Poprawny skrypt bez własnego wyjaśnienia nie realizuje zadania.
+Tabela zestawia przybliżony CI bez korekty ciągłości z percentylowym bootstrapem różnicy przy losowaniu osobno w grupach. Obydwa dotyczą różnicy proporcji nowych i doświadczonych, nie V. Granice zapisane jako proporcje mnożymy przez 100, aby otrzymać punkty procentowe.
 
-Po wysyłce sprawdź `status_oddania()` i zdalne SHA. Na współdzielonym komputerze wywołaj `wyloguj_github()`, wyloguj przeglądarkę i zamknij RStudio bez `.RData`. Następne ćwiczenie rozpoczyna się od pobrania potwierdzonej wersji.
+```{r ci-roznicy}
+widok <- przedzialy_tabeli(wynik)
+print(widok)
+```
 
-## Źródło kontekstu
+Przybliżony przedział wynosi około [−24,70; 5,78] punktu procentowego. Bootstrap daje około [−24,32; 5,41]. Wynik dopuszcza w tym modelu różnice w obu kierunkach, a także zauważalnie niższą skuteczność nowych.
 
-W analizie kanałów i strategii mianownik jest częścią wyniku. Ten sam licznik może prowadzić do innego odsetka, gdy grupy mają różne liczebności.
+Wykres umieszcza obie metody na wspólnej osi punktów procentowych. Linia zero oznacza równość proporcji. Odczytaj szerokość przedziału, zamiast ograniczać odpowiedź do „nieistotne”.
 
-Materiały odwołują się do: Wilsona (1999), Kuhlthau (1991), Savolainen (1995), Hargittai (2002), DigComp 2.2, ACRL Framework oraz Internet Skills Scale. Są to ramy pojęciowe; dane i pozycje kursowe pozostają syntetyczne i dydaktyczne.
+```{r wykres-ci, fig.height=2.7}
+widok <- pokaz_wykres(wykres_ci)
+print(widok)
+```
+
+Gdyby instytucja chciała zapewnić, że różnica nie przekracza określonej tolerancji, potrzebowałaby jawnego progu i odpowiedniej analizy. Samo p>0,05 nie dowodzi równego dostępu ani identycznej skuteczności. Mała próba może być zgodna z praktycznie ważnymi różnicami.
+
+## V Craméra opisuje siłę, ale nie kierunek
+
+Dla tabeli o $r$ wierszach i $c$ kolumnach zapisujemy:
+
+$$
+V=\sqrt{\frac{\chi^2}{N\min(r-1,c-1)}}.
+$$
+
+Czytamy: statystykę chi-kwadrat dzielimy przez liczebność i mniejszą liczbę niezależnych kategorii, a następnie wyciągamy pierwiastek. W tabeli 2 × 2 mianownik upraszcza się do $N$. Ponieważ wszystkie składniki są nieujemne, V nie ma znaku. Zamiana kolejności grup nie zmieni V, choć zmieni znak różnicy proporcji.
+
+W naszym przykładzie V wynosi około 0,100. Nie oznacza to, że grupa wyjaśnia 10% sukcesów albo że nowe osoby są o 10% mniej skuteczne. Wartość opisuje natężenie odstępstwa od niezależności w tej tabeli. Bez proporcji grupowych i kontekstu zadania nie informuje, czy problem dotyczy nowych czy doświadczonych użytkowników.
+
+Nie ma jednego uniwersalnego progu praktycznej ważności. Ta sama różnica skuteczności może mieć inne znaczenie dla wyszukania lektury i dla odnalezienia pilnej informacji o świadczeniu. Rozmiar tabeli, częstość wyniku oraz konsekwencje błędu są częścią interpretacji. W raporcie najpierw podajemy efekt w jednostkach zrozumiałych dla odbiorcy, a dopiero potem miarę standaryzowaną.
+
+W tym ćwiczeniu przedział dotyczy kierunkowej różnicy proporcji, nie V. Proste percentyle bootstrapu V nie są automatycznym testem niezależności: zero leży na granicy zakresu tej miary. Rozwinięcie po CHALLENGE pokazuje konkretny kontrprzykład. Do podstawowego raportu wystarczą V opisowo oraz przedział różnicy proporcji.
+
+# LEARN 5: łączymy wynik z pytaniem o usługę
+
+## Przykładowy akapit raportu
+
+W syntetycznej próbie 148 użytkowników sukces w zadaniu uzyskało 45 z 74 nowych osób (60,8%) i 52 z 74 doświadczonych (70,3%). Różnica nowych względem doświadczonych wyniosła −9,5 punktu procentowego, z przybliżonym 95% CI od −24,7 do 5,8 punktu procentowego. Test chi-kwadrat bez korekty ciągłości dał $\chi^2(1)=1{,}466$, p=0,226; wszystkie liczebności oczekiwane przekraczały 5. Warunkowa symulacja Monte Carlo z B=1999 dała p=0,297. V Craméra wyniosło 0,100.
+
+Nie uzyskano jednoznacznych podstaw do odrzucenia niezależności, ale szeroki przedział nie pozwala traktować skuteczności grup jako praktycznie równoważnej. Wynik dotyczy obserwowanego sukcesu w określonym zadaniu, nie całych kompetencji informacyjnych. Nielosowy dobór i brak losowego przydziału ograniczają uogólnienie oraz wnioski przyczynowe.
+
+W CHALLENGE nie kopiuj liczb z przykładu. Nazwij też sposób konstrukcji przedziału i rzeczywiste B. Jeżeli używasz bootstrapu różnicy, zastąp granice odpowiednimi wynikami; nie mieszaj estymaty z jednej analizy i przedziału z innego zbioru.
+
+## Dlaczego ten opis jest kompletny
+
+Pierwsze zdanie określa osoby, wynik i mianowniki. Drugie nazywa efekt w jednostkach usługi oraz niepewność jego estymacji. Dopiero kolejne zdanie przechodzi do rozbieżności od niezależności i procedury obliczania p. Wniosek wraca do skuteczności i granic pomiaru; nie kończy się samą etykietą „nieistotne”.
+
+Zwrot „brak podstaw do odrzucenia niezależności” nie zastępuje opisu przedziału. Przy zakresie od około −25 do +6 punktów procentowych nadal dopuszczamy zauważalnie niższą skuteczność nowych. Zespół nie może wywnioskować, że wsparcie jest zbędne, ani że szkolenie na pewno pomoże. Żadne z tych twierdzeń nie było bezpośrednio badane.
+
+Gdy oczekiwane komórki w tabeli 2 × 2 są małe, przybliżenie chi-kwadrat może być niedokładne. Wtedy właściwym podstawowym odczytem może być dokładny test Fishera; nie dopisujemy mu statystyki chi-kwadrat i df z innej procedury. W S02 minimum E=25,5 nie wskazuje tego problemu. Mały pilotaż pokazany w rozwinięciu uczy tej różnicy, ale nie dodaje drugiego zadania do oddania.
+
+## Wzorcowa korekta zbyt mocnego wniosku
+
+Zdanie „p=0,297 dowodzi, że grupy są równe i mają te same kompetencje” zawiera dwa różne błędy. P nie jest prawdopodobieństwem hipotezy, a sukces pojedynczego wyszukania nie jest pełnym pomiarem kompetencji informacyjnych. Poprawny opis brzmi: w tej syntetycznej próbie nowe osoby miały niższą skuteczność, lecz wynik i jego szeroki przedział nie rozstrzygają równości populacyjnej ani różnic całego konstruktu kompetencji.
+
+Taki odczyt ma znaczenie w badaniach LIS: deklaracja znajomości narzędzia, wcześniejsze korzystanie i obserwowany sukces są odrębnymi wskaźnikami. Nie zamieniamy ich nazw tylko dlatego, że wszystkie dotyczą dostępu do informacji. Badania Hargittai nad obserwowanymi umiejętnościami oraz prace o skalach umiejętności internetowych uzasadniają potrzebę rozdzielenia pomiarów; liczby w ćwiczeniu nie pochodzą z tych publikacji.
+
+# CHALLENGE: Z07 — kto odnajduje dokument w archiwum cyfrowym
+
+W odrębnym syntetycznym badaniu obserwacyjnym zarejestrowano 126 osób korzystających z archiwum cyfrowego. Grupa „powracający” używała go wcześniej, a grupa „pierwsza wizyta” nie miała wcześniejszej wizyty w tym serwisie. To nie są grupy przydzielone losowo do szkolenia. Wcześniejsze korzystanie z konkretnego archiwum nie oznacza automatycznie wyższych kompetencji we wszystkich zadaniach informacyjnych.
+
+Każda osoba wykonywała jedno takie samo zadanie: znaleźć wskazany dokument i podać poprawny identyfikator rekordu w ciągu 12 minut. Sukces oznacza poprawną odpowiedź w tym limicie. Obserwowane zakończenie bez poprawnej odpowiedzi oznacza 0; utrata zapisu obserwacyjnego oznacza brak wyniku, nie niepowodzenie. W dostarczonym zestawieniu 6 osób ma brak wyniku. Nie odtwarzasz ich wyniku z pamięci ani nie zamieniasz na zera.
+
+Dane, bilans i analizy są przygotowane w `analiza.R`. Uruchamiaj poniższe chunki, a pod każdym poleceniem zastąp znacznik własnym tekstem poza kodem. Każda odpowiedź ma być jednym krótkim akapitem proporcjonalnym do pytania. Pięć akapitów składa się na oddawane Z07; nie tworzysz osobnego pliku odpowiedzi ani dodatkowych eksportów tabel i wykresów.
+
+## CHALLENGE 1: co dokładnie porównujemy
+
+Pierwszy wynik pokazuje przejście od wszystkich zarejestrowanych osób do tabeli znanych wyników. Wiersz opisuje grupę, a komórki 0 i 1 — wynik obserwowany. Sprawdź, z jakiej liczby osób pochodzą oba mianowniki; sam fakt rejestracji nie wystarcza do znania wyniku zadania.
+
+```{r challenge-1}
+bilans <- bilans_archiwum()
+print(bilans)
+```
+
+**Twoja odpowiedź.** W jednym krótkim akapicie nazwij jednostkę, kryterium sukcesu i estymandę: prawdopodobieństwo sukcesu przy pierwszej wizycie minus prawdopodobieństwo u powracających, w modelu właściwym dla tego porównania. Podaj N analizowanych w obu grupach i liczbę braków. Wyjaśnij, dlaczego nie wolno włączyć braków jako niepowodzeń oraz dlaczego są to dwie niezależne grupy, a nie pomiar przed–po.
+
+<!-- odpowiedz:S01 -->
+[UZUPELNIJ_S01]
+<!-- /odpowiedz:S01 -->
+
+## CHALLENGE 2: więcej sukcesów nie musi oznaczać większej skuteczności
+
+Drugi wynik zawiera te same obserwacje w trzech widokach: liczebności, procenty w grupach i procenty w kategoriach wyniku. Na wykresie cały słupek ma 100%, a pod nim widnieje N grupy. Nie porównuj wyłącznie liczby sukcesów, bo grupy nie mają tej samej liczebności.
+
+```{r challenge-2}
+odsetki <- mianowniki_archiwum()
+print(odsetki)
+```
+
+**Twoja odpowiedź.** W jednym krótkim akapicie porównaj skuteczność obu grup i wskaż, która miała więcej sukcesów, a która wyższy odsetek sukcesów. Objaśnij odczyt 48/80 oraz 48/78: podaj znaczenie i wartość obu procentów. Powiąż opis z wykresem, nie utożsamiając równych wysokości całych słupków z równą liczbą osób.
+
+<!-- odpowiedz:S02 -->
+[UZUPELNIJ_S02]
+<!-- /odpowiedz:S02 -->
+
+## CHALLENGE 3: od hipotezy do statystyki i dwóch p
+
+Kolejny wynik zestawia oczekiwane liczebności, wkłady do statystyki i dwie procedury oceny skrajności. Przeczytaj tabelę E przed samym p. Monte Carlo zachowuje marginesy obserwowanej tabeli; nie zwiększa liczby badanych osób.
+
+```{r challenge-3}
+testy <- testy_archiwum()
+print(testy)
+```
+
+**Twoja odpowiedź.** W jednym krótkim akapicie zapisz H0 językiem powodzenia zadania. Odczytaj E dla sukcesu w grupie pierwszej wizyty, wskazując licznik i mianownik wzoru, oraz wyjaśnij wkład tej komórki do chi-kwadrat. Podaj statystykę, df, p klasyczne, najmniejsze E, p Monte Carlo, k i B; z tych dwóch ostatnich liczb pokaż odczyt `(k+1)/(B+1)`. Uzasadnij użycie przybliżenia chi-kwadrat i wyjaśnij, czego podane p nie mówi o prawdziwości H0.
+
+<!-- odpowiedz:S03 -->
+[UZUPELNIJ_S03]
+<!-- /odpowiedz:S03 -->
+
+## CHALLENGE 4: efekt z kierunkiem i przedziałem
+
+Różnicę obliczono jako pierwsza wizyta minus powracający. Tabela CI podaje granice już w punktach procentowych, więc nie mnożysz ich ponownie przez 100. V opisuje ten sam układ danych, lecz nie przejmuje znaku różnicy i nie jest procentem wyjaśnionych sukcesów.
+
+```{r challenge-4}
+efekt <- efekt_archiwum()
+print(efekt)
+```
+
+**Twoja odpowiedź.** W jednym krótkim akapicie podaj różnicę proporcji, jej zapis w punktach procentowych oraz oba 95% CI z nazwami metod. Wyjaśnij, jakie kierunki i wielkości różnicy pozostają zgodne z przedziałami w przyjętych procedurach. Odczytaj V opisowo i wyjaśnij, dlaczego kierunek bierzesz z proporcji, a nie z V. Nie używaj percentyli V jako automatycznego testu zera.
+
+<!-- odpowiedz:S04 -->
+[UZUPELNIJ_S04]
+<!-- /odpowiedz:S04 -->
+
+## CHALLENGE 5: odpowiedź dla zespołu archiwum
+
+Zespół otrzymał propozycję zdania do raportu: „Ponieważ p jest większe od 0,05, wszyscy korzystają z archiwum równie skutecznie i nie potrzeba wsparcia”. Wcześniej jako zauważalną dla usługi wskazano różnicę 10 punktów procentowych. To wskazówka do interpretacji skali, nie przeprowadzony test równoważności ani normatywny próg kompetencji.
+
+Wróć do własnych wyników, a poniżej wyświetl ponownie tylko efekt z przedziałem. Nie zmieniaj poziomu istotności, definicji sukcesu ani danych, by dopasować wynik do propozycji zespołu. Wniosek powinien rozdzielać opis próby, niepewność modelową i ocenę działania usługi.
+
+```{r challenge-5}
+podsumowanie <- efekt_archiwum()
+print(podsumowanie)
+```
+
+**Twoja odpowiedź.** Zastąp propozycję zespołu jednym krótkim akapitem raportowym z N, odsetkami, kierunkiem różnicy, przedziałem oraz odczytem obu p. Oceń, czy wyniki pozwalają wykluczyć różnicę wielkości 10 punktów procentowych na niekorzyść pierwszej wizyty. Nazwij jedno ograniczenie pomiaru lub doboru i zaproponuj jedną adekwatną następną czynność badawczą. Nie przypisuj różnicy szkoleniu, którego tu nie przydzielano, ani całym kompetencjom.
+
+<!-- odpowiedz:S05 -->
+[UZUPELNIJ_S05]
+<!-- /odpowiedz:S05 -->
+
+## Co jest oceniane
+
+Z07 ma 10 punktów: 2 za uzasadnienie analizy i warunków, 3 za liczebności oraz mianowniki, 3 za odczyt statystyk, p, efektu i niepewności, 2 za odczyt wykresu oraz wniosek bez nieuprawnionej przyczynowości. Dowodem są tabele i wykresy wygenerowane z tego Rmd oraz pięć twoich akapitów. Nie wystarcza samo uruchomienie kodu ani przepisanie wartości bez wyjaśnienia ich znaczenia.
+
+Przed oddaniem sprawdź, czy każde „więcej” ma wskazaną grupę odniesienia, procent ma właściwy mianownik, a znak różnicy jest zgodny z kolejnością grup. Nie dodawaj do statystyki liczby braków ani marginesów jako kolejnych osób. Powyższe pięć odpowiedzi wyczerpuje pisemne zadanie na to spotkanie.
+
+## Zapis i oddanie Z07
+
+Zapisz swój Rmd. W konsoli RStudio, nie w chunku dokumentu, wykonaj jedno polecenie:
+
+```r
+oddaj_zadanie("Z07")
+```
+
+Funkcja oddania ma odtworzyć PDF z zapisanej wersji, sprawdzić kompletność i wysłać PDF wraz ze źródłami do twojego prywatnego repozytorium. Poczekaj na potwierdzenie odbioru ze zdalnym SHA. Sam lokalny zapis pliku albo komunikat o commicie nie jest jeszcze potwierdzeniem oddania. Jeśli pojawi się błąd, zachowaj pliki i pokaż komunikat prowadzącemu; nie usuwaj odpowiedzi ani nie zmieniaj ID.
+
+Po potwierdzeniu zakończ pracę na współdzielonym komputerze poleceniem `wyloguj_github()` w konsoli. Wyloguj też konto w przeglądarce, jeśli było używane. Ponowne rozpoczęcie kolejnych zajęć ma odtworzyć twoją potwierdzoną pracę z repozytorium.
+
+# Rozwinięcia do powtórki — poza zadaniem ocenianym
+
+Poniższe przykłady pomagają rozpoznać inne pytania i ograniczenia metod. Nie wymagają kolejnych odpowiedzi w Z07. Wróć do nich po wykonaniu pięciu CHALLENGE lub wtedy, gdy potrzebujesz wyjaśnienia konkretnego wyniku.
+
+## V przy granicy zera
+
+Poniższe percentyle pochodzą z losowania osób ze zwracaniem osobno w grupach. Rozkład bootstrapowy V odpowiada zmienności tej nieujemnej miary. Nie utożsamiamy automatycznie jego percentyli z dobrze skalibrowanym przedziałem do testowania niezależności.
+
+```{r v-bootstrap}
+widok <- pokaz_tabele(pionowo(wynik$opis_boot_V), "Bootstrap V: opis, nie test zera")
+print(widok)
+```
+
+Wartość zero leży na granicy dopuszczalnego zakresu V. Nawet przy niezależności losowa tabela zwykle nie daje idealnie równych proporcji, więc jej V jest dodatnie. Prosty bootstrap percentylowy może zatem zachowywać się przy zerze inaczej niż przedział dla parametru przyjmującego wartości dodatnie i ujemne.
+
+### Kontrprzykład: dodatnia granica nie musi dowodzić związku
+
+Spójrz na drugą tabelę, złożoną z 200 hipotetycznych obserwacji. Proporcje sukcesu w grupach są niemal identyczne. Przed obejrzeniem p oszacuj na podstawie samych liczebności, czy różnica jest duża.
+
+```{r niezaleznosc-przyklad}
+widok <- v_przy_zerze()
+print(widok)
+```
+
+Statystyka chi-kwadrat wynosi około 0,00016, a p około 0,990. V w obserwowanej tabeli to około 0,00090. Mimo to dolny percentyl 2,5% w tym wykonaniu bootstrapu jest większy od zera. Wniosek „przedział nie obejmuje zera, więc związek jest istotny” byłby tutaj błędnym użyciem metody.
+
+Histogram pokazuje, dlaczego taki efekt jest możliwy. Większość bootstrapowych tabel daje większe V niż niemal idealnie zrównoważona tabela wyjściowa. Rozkład nie może rozciągnąć się na wartości ujemne.
+
+```{r histogram-v, fig.height=3.2}
+widok <- pokaz_wykres(wykres_V)
+print(widok)
+```
+
+Zadaniem tego przykładu nie jest odrzucenie bootstrapu jako takiego. Trzeba dopasować procedurę do parametru, jego granic i pytania. W tym kursie wniosek o niezależności opieramy na właściwym teście, a nie na naiwnym odczycie percentyli V. Niepewność efektu kierunkowego przedstawiamy jako przedział różnicy proporcji, z omówieniem ograniczeń użytego przybliżenia.
+
+Po zamianie grup V pozostaje takie samo i nadal nie może być ujemne. Różnica zmienia znak, a jej przedział po zmianie kierunku ma granice przeciwne i zamienione kolejnością. To kontrola zgodności kierunku w tabeli i raporcie.
+
+## małe liczebności i test dokładny Fishera
+
+Biblioteka testuje nowy sposób dostępu do bazy w małej grupie pilotażowej. Tabela poniżej obejmuje po dziesięć osób w dwóch grupach. Nie przenosimy do tego przykładu automatycznie reguły „N jest duże”, którą można było przyjąć w analizie głównej.
+
+Najpierw odczytaj obserwacje, a następnie wartości oczekiwane. Mała liczebność obserwowana i mała liczebność oczekiwana nie są tym samym. Założenia przybliżenia chi-kwadrat sprawdzamy na podstawie rozkładu pod hipotezą zerową.
+
+```{r tabela-rzadka}
+widok <- rzadka_tabela_do_odczytu()
+print(widok)
+```
+
+W dwóch komórkach wartość oczekiwana wynosi 4. To sygnał, żeby nie traktować asymptotycznego p jako jedynego wyniku. Dla tabeli 2 × 2 możemy zastosować test dokładny Fishera, warunkujący na ustalonych sumach brzegowych.
+
+Porównanie pokazuje trzy procedury: przybliżenie chi-kwadrat, dokładny test Fishera i symulację Monte Carlo rozkładu chi-kwadrat z ustalonymi marginesami. Nie są to trzy niezależne badania ani trzy szanse na wybranie najmniejszego p. Każda procedura ma określoną definicję rozkładu odniesienia i ekstremalności.
+
+```{r rzadkie-testy}
+widok <- rzadkie_testy_do_odczytu()
+print(widok)
+```
+
+Dla tych danych asymptotyczne p wynosi około 0,0062, a dwustronne p Fishera około 0,0198. Różnica nie jest pomyłką zaokrąglenia. W tabeli małej i dyskretnej przybliżenie ciągłym rozkładem może istotnie zmieniać ocenę niepewności. Podaj nazwę użytego testu, zamiast pisać samo „p=0,02”.
+
+W wyniku Fishera pojawia się warunkowa estymata ilorazu szans i jej przedział. Nie jest ona z definicji identyczna z prostym ilorazem iloczynów liczebności. Nie dopisuj do Fishera stopni swobody pożyczonych z chi-kwadrat: ten wynik opisujemy nazwą testu, kierunkiem efektu, p i odpowiednią miarą z przedziałem.
+
+Komórka z zerem nie zawsze uniemożliwia analizę dokładną. Natomiast cały pusty wiersz albo pusta kolumna oznaczają inny problem: brak obserwacji jednej z porównywanych kategorii. Nie uzupełniamy takiej tabeli dowolnymi jedynkami tylko po to, żeby program zwrócił liczbę. Najpierw ustalamy, czy kategoria w ogóle była możliwa i poprawnie zarejestrowana.
+
+Wynik dokładny nadal wymaga poprawnej interpretacji: p nie jest „prawdopodobieństwem przypadkowego związku”. Małe p nie dowodzi, że doświadczenie spowodowało sukces, ponieważ przydział do grup nie był losowany. Dokładność rachunku nie zastępuje uzasadnienia projektu badania.
+
+## punkty procentowe, iloraz proporcji i iloraz szans
+
+Doświadczone osoby osiągnęły w przykładzie głównym skuteczność 70,27%, a nowe 60,81%. Różnica to −9,46 punktu procentowego. Jest to porównanie bezwzględne: odejmujemy dwie proporcje.
+
+Iloraz proporcji obliczamy jako:
+
+$$
+RR=\frac{\widehat\pi_N}{\widehat\pi_D}
+=\frac{45/74}{52/74}\approx0{,}865.
+$$
+
+Nowa grupa miała w próbie około 86,5% poziomu skuteczności grupy doświadczonej. Można też powiedzieć: proporcja sukcesu była względnie niższa o około 13,5%. To nadal opis próby, a nie dowód przyczynowy ani precyzyjne oszacowanie różnicy w populacji. Nie mieszaj tej liczby z 9,46 punktu procentowego.
+
+Szansa to stosunek prawdopodobieństwa sukcesu do prawdopodobieństwa niepowodzenia. W próbie nowych wynosi $45/29$, a w próbie doświadczonych $52/22$. Iloraz szans obliczamy jako:
+
+$$
+OR=\frac{45/29}{52/22}\approx0{,}656.
+$$
+
+Szansa sukcesu nowych jest w próbie około 0,66 razy szansą sukcesu doświadczonych. Nie oznacza to „o 34% mniejsze prawdopodobieństwo sukcesu”. Gdy sukces jest częsty, OR i RR mogą wyraźnie się różnić. Słowo „szansa” w języku statystyki ma tu precyzyjne znaczenie, inne niż potoczne „możliwość”.
+
+W tabeli 2 × 2 kierunkowe efekty wymagają wskazania kategorii odniesienia. Po odwróceniu grup RR oraz OR zastępujemy ich odwrotnościami, a różnicę proporcji zmieniamy na przeciwną. V i dwustronne p pozostają bez zmian. To dobry sprawdzian spójności raportu.
+
+**Wzorcowa korekta języka.** Zdanie „Nowi mieli o 34% mniejsze prawdopodobieństwo sukcesu, co dowodzi ich niższych kompetencji” jest niepoprawne. Około 34% dotyczy tu względnej różnicy szans, nie prawdopodobieństw. Możemy powiedzieć: szansa sukcesu w tym zadaniu była w próbie nowych około 0,66 razy szansą w próbie doświadczonych; sam wynik nie dowodzi różnicy całych kompetencji.
+
+## ta sama wielkość efektu, inna precyzja
+
+Wyobraźmy sobie drugie, niezależne badanie o dziesięciokrotnie większej liczbie osób, w którym proporcje byłyby identyczne jak w pierwszym. To hipotetyczne porównanie projektów. Nie wolno skopiować wierszy rzeczywistego zbioru i uznać kopii za nowych uczestników.
+
+Tabela utrzymuje te same proporcje i V. Statystyka chi-kwadrat zwiększa się wraz z liczebnością, a p maleje. Przeczytaj wyniki jako demonstrację zależności niepewności od N.
+
+```{r n-a-efekt}
+widok <- pokaz_tabele(formatuj_wynik(skalowanie_N), "Te same proporcje, różne N", digits = 5)
+print(widok)
+```
+
+Duże N nie naprawia jednak selekcji uczestników ani błędu definicji sukcesu. Jeżeli badanie obejmuje wyłącznie osoby aktywnie korzystające z katalogu, nie dowiemy się z niego automatycznie, dlaczego inni katalogu unikają. W kontekście transformacji cyfrowej brak użytkowania może wynikać z barier dostępu, braku potrzeby albo wyboru innego kanału.
+
+Przedział może być wąski i jednocześnie dotyczyć niewłaściwej populacji. Dlatego oprócz N podajemy sposób rekrutacji, jednostkę analizy i zakres uogólnienia. Te informacje należą do analizy, a nie tylko do „ograniczeń” dodanych na końcu.
+
+### Więcej niż dwie kategorie
+
+Dla trzech niezależnych grup i dwóch wyników test chi-kwadrat ma $(3-1)(2-1)=2$ stopnie swobody. Istotny wynik globalny oznacza niezgodność z niezależnością gdzieś w tabeli, a nie automatycznie różnicę każdej pary grup. Dalsze porównania trzeba zaplanować, uwzględniając wielokrotność.
+
+Nie zastępuj tabeli osób tabelą wszystkich zaznaczeń pytania wielokrotnego wyboru. Jedna osoba może wskazać WWW i media społecznościowe, więc dwie odpowiedzi nie są dwoma niezależnymi uczestnikami. Wróć do C04: mianownik osób i mianownik wskazań odpowiadają na inne pytania.
+
+W pytaniu jednokrotnego wyboru każdy uczestnik należy do jednej komórki tabeli. W wielokrotnym wyborze taka konstrukcja może nie zachodzić. Sam wygląd prostokątnej tabeli nie dowodzi, że klasyczny test niezależności jest odpowiedni.
+
+## te same osoby przed szkoleniem i po nim
+
+Tym razem obserwujemy 50 osób dwa razy. Wiersze oznaczają wynik przed szkoleniem, kolumny wynik po nim. Każda osoba wnosi jedną parę wyników, a nie dwa niezależne rekordy do porównania grup.
+
+Odczytaj najpierw komórki przekątnej, a następnie dwie komórki zmiany. Wpis 10 oznacza poprawę z 0 na 1. Wpis 2 oznacza zmianę w przeciwnym kierunku.
+
+```{r przed-po}
+widok <- pomiar_sparowany_do_odczytu()
+print(widok)
+```
+
+Przed szkoleniem sukces odniosło 20 osób, po szkoleniu 28, więc obserwowana różnica proporcji wynosi $8/50=0{,}16$, czyli 16 punktów procentowych. Zmiany nastąpiły u 12 osób: 10 poprawiło wynik, a 2 pogorszyły. Pozostałe 38 nie zmieniło kategorii.
+
+Test McNemara adresuje symetrię dwóch kierunków zmiany. W wersji z korektą ciągłości wykorzystujemy:
+
+$$
+\chi^2_M=\frac{(|b-c|-1)^2}{b+c},
+$$
+
+gdzie $b=10$ i $c=2$ oznaczają liczebności par niezgodnych. W tym przykładzie statystyka wynosi około 4,08 przy jednym stopniu swobody. Dla małej liczby par niezgodnych można zastosować dokładny test dwumianowy, warunkując na ich liczbie: pod hipotezą symetrii oba kierunki są równie prawdopodobne.
+
+Proporcja $10/12$ opisuje kierunek wśród osób, które zmieniły kategorię. Nie jest skutecznością całej grupy po szkoleniu, która wynosi $28/50=56\%$. Te dwa mianowniki trzeba umieć rozdzielić.
+
+Test nie usuwa efektu powtórnego wykonania zadania, zmiany jego trudności ani innych wydarzeń między pomiarami. Bez odpowiedniego projektu nie możemy przypisać całej poprawy szkoleniu. Statystyczne uwzględnienie parowania jest konieczne, lecz nie wystarcza do wniosku przyczynowego.
+
+To rozszerzenie pomaga rozpoznać problem, nie dodaje obowiązkowego testu do Z07. Rozpoznając powtarzane pomiary w opisach badań, sprawdzaj uwzględnienie parowania; procedura dla niezależnych grup nie opisuje tego samego problemu.
+
+# Po spotkaniu
+
+Do powtórki służą trzy widoki tej samej tabeli: liczebności, procenty w wierszach i procenty w kolumnach. Każdy odpowiada na inne pytanie. Różnica proporcji zachowuje kierunek i jednostkę punktów procentowych, V jest nieujemne, a RR i OR są miarami względnymi o odmiennym znaczeniu.
+
+Na następnych zajęciach przejdziemy od kategorii do współzmienności wielkości liczbowych. Pytanie „czy grupa wiąże się z sukcesem?” zastąpi pytanie „jak wynik deklarowany współzmienia się z obserwowanym czasem?”. Rozróżnienie samoopisu i zachowania pozostanie jednak takie samo.
+
+Kontekst merytoryczny: Hargittai (2002), pomiar umiejętności przez obserwację oraz logi; van Deursen, Helsper i Eynon (2016), operacjonalizacja umiejętności internetowych; Vial (2019), transformacja cyfrowa jako szerszy proces niż sam dostęp do narzędzia. Procedury: dokumentacja `chisq.test`, `fisher.test` i `prop.test` pakietu stats; znaczenie p: Wasserstein i Lazar (2016). Odsyłacze i opisy źródeł znajdują się w [bibliografii kursu](../wspolne/literatura.md).

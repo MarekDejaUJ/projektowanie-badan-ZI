@@ -1,13 +1,14 @@
 id: PROJEKT
-version: 1.0.0
+version: 1.1.0
 rocznik: 2026-27
 max_points: 100.0
 criteria:
 - id: A01
-  title: Problem, cel, 1–2 pytania/hipotezy oraz plan populacji/próby są spójne i
+  title: Problem, cel, dwa pytania z estymandami oraz plan populacji/próby są spójne i
     instytucjonalnie uzasadnione. Rozdzielono plan badania od symulacji.
-  evidence: Problem, cel, 1–2 pytania/hipotezy oraz plan populacji/próby są spójne
-    i instytucjonalnie uzasadnione. Rozdzielono plan badania od symulacji.
+  evidence: P01–P03 przedstawiają problem, dwa pytania, zmienne, estymandy, hipotezy
+    zerowe i plan populacji oraz rekrutacji. Nie sugerują wykonania rzeczywistego
+    badania; pytania odpowiadają scenariuszowi wybranemu w Z09.
   max_points: 15.0
   review_mode: human
   learning_outcomes:
@@ -24,13 +25,15 @@ criteria:
   - points: 11.25
     observable_description: Spójny plan; jedna luka doboru lub uzasadnienia instytucjonalnego.
   - points: 15.0
-    observable_description: Problem, cel, 1–2 pytania/hipotezy oraz plan populacji/próby
+    observable_description: Problem, cel, dwa pytania z estymandami oraz plan populacji/próby
       są spójne i instytucjonalnie uzasadnione. Rozdzielono plan badania od symulacji.
 - id: A02
   title: Operacjonalizacja, krótki kwestionariusz, słownik i zasady pomiaru odpowiadają
     pytaniom; rekodacja i indeks mają uzasadnienie.
-  evidence: Operacjonalizacja, krótki kwestionariusz, słownik i zasady pomiaru odpowiadają
-    pytaniom; rekodacja i indeks mają uzasadnienie.
+  evidence: P03 i karta pomiaru w raporcie odpowiadają rzeczywistym pozycjom oraz
+    kodom scenariusza; indeks i minimum 5/6 mają uzasadnienie. Rozdzielono deklarację,
+    czas i znaczenie kodu 1; opisano plan instrukcji, startu/końca oraz braków.
+    Nie wymaga się oddzielnego formularza ani napisania nowego narzędzia do innych danych.
   max_points: 15.0
   review_mode: mixed
   learning_outcomes:
@@ -53,8 +56,9 @@ criteria:
 - id: A03
   title: Czyszczenie jest jawne i odtwarzalne; reguły braków/duplikatów/odstających
     uzasadnione, N udokumentowane, manifest zgodny.
-  evidence: Czyszczenie jest jawne i odtwarzalne; reguły braków/duplikatów/odstających
-    uzasadnione, N udokumentowane, manifest zgodny.
+  evidence: P04–P05 odczytują i uzasadniają reguły wykonane przez gotowy skrypt,
+    rozróżniają zmiany komórek i rekordów oraz podają N obu analiz. Dane i manifest
+    odpowiadają Z09/Z10; ocenie nie podlega autorstwo programu czyszczącego.
   max_points: 15.0
   review_mode: mixed
   learning_outcomes:
@@ -77,8 +81,9 @@ criteria:
 - id: A04
   title: Opis próby i zmiennych oraz 2–3 wykresy są poprawne, czytelne i odpowiadają
     skalom/pytaniom.
-  evidence: Opis próby i zmiennych oraz 2–3 wykresy są poprawne, czytelne i odpowiadają
-    skalom/pytaniom.
+  evidence: P06 i podpisane tabele opisują N, indeks oraz czas, z właściwymi miarami
+    i jednostkami. Kanały mają jawny mianownik osób. Dwa gotowe wykresy indeksu
+    oraz drugiej relacji są poprawnie odczytane w P06–P09; trzeci nie jest wymagany.
   max_points: 10.0
   review_mode: mixed
   learning_outcomes:
@@ -101,8 +106,10 @@ criteria:
 - id: A05
   title: Dwie właściwe analizy zawierają tor klasyczny i permutacyjny, efekt, przedział,
     N oraz komplet statystyk.
-  evidence: Dwie właściwe analizy zawierają tor klasyczny i permutacyjny, efekt, przedział,
-    N oraz komplet statystyk.
+  evidence: P02 uzasadnia dwie relacje; P07–P08 odczytują gotowe analizy, N, jednostki,
+    efekty i właściwe CI, statystyki oraz oba p z B. Dla tabeli CI dotyczy kierunkowej
+    różnicy proporcji, V jest miarą bez kierunku; dla Spearmana CI pochodzi z
+    bootstrapu par i nie dopisuje się df. Dwa tory jednego testu nie są dwoma pytaniami.
   max_points: 20.0
   review_mode: mixed
   learning_outcomes:
@@ -125,8 +132,9 @@ criteria:
 - id: A06
   title: Własne wnioski odpowiadają pytaniom i liczbom; ograniczenia pomiaru/próby/symulacji
     i rekomendacja są realistyczne, bez nieuprawnionej przyczynowości.
-  evidence: Własne wnioski odpowiadają pytaniom i liczbom; ograniczenia pomiaru/próby/symulacji
-    i rekomendacja są realistyczne, bez nieuprawnionej przyczynowości.
+  evidence: P09–P10 łączą wyniki z problemem, opisują konkretne ograniczenia i
+    warunkową rekomendację z propozycją rzeczywistego sprawdzenia. Brak istotności
+    nie jest dowodem braku efektu; istotność nie dowodzi znaczenia praktycznego.
   max_points: 15.0
   review_mode: human
   learning_outcomes:
@@ -148,10 +156,13 @@ criteria:
     observable_description: Własne wnioski odpowiadają pytaniom i liczbom; ograniczenia
       pomiaru/próby/symulacji i rekomendacja są realistyczne, bez nieuprawnionej przyczynowości.
 - id: A07
-  title: Raport `.md`, gotowy skrypt z parametrami, słownik, dane i wyniki tworzą
+  title: Raport Rmd i zgodny PDF, gotowy silnik R, słownik, dane i manifest tworzą
     odtwarzalną, identyfikowalną całość.
-  evidence: Raport `.md`, gotowy skrypt z parametrami, słownik, dane i wyniki tworzą
-    odtwarzalną, identyfikowalną całość.
+  evidence: Zapisany Rmd odtwarza własne akapity, tabele i wykresy w PDF, korzystając
+    z zachowanych danych, manifestu i karty scenariusza. P11 zawiera użyte źródła;
+    wersje i parametry są zapisane, a oddanie potwierdza zdalne SHA w pokwitowaniu.
+    Nie wymaga się limitu słów, powtórnego wpisania odpowiedzi Z09/Z10, samodzielnego
+    programowania, ręcznego eksportu CSV/PNG ani wpisania SHA do tego samego Rmd.
   max_points: 10.0
   review_mode: mixed
   learning_outcomes:
@@ -170,5 +181,6 @@ criteria:
     observable_description: Całość jest odtwarzalna; pozostaje drobna luka źródła
       albo wersji.
   - points: 10.0
-    observable_description: Raport `.md`, gotowy skrypt z parametrami, słownik, dane
-      i wyniki tworzą odtwarzalną, identyfikowalną całość.
+    observable_description: Rmd, aktualny PDF, silnik R, słownik, dane i manifest
+      tworzą odtwarzalną całość. Źródła i wersje są jawne, a pokwitowanie
+      identyfikuje oddaną wersję; własne odpowiedzi pozostały w dokumencie.

@@ -1,28 +1,31 @@
 \name{sprawdz_zadanie}
 \alias{sprawdz_zadanie}
-\title{Lokalna kontrola zadania lub projektu}
+\title{Lokalna kontrola Rmd i utworzenie aktualnego PDF}
 \usage{
-sprawdz_zadanie(id, katalog = ".", uruchom = TRUE)
+sprawdz_zadanie(id, katalog = NULL, uruchom = TRUE)
 }
 \arguments{
 \item{id}{Z01--Z10 albo PROJEKT.}
 
-\item{katalog}{Katalog projektu.}
+\item{katalog}{Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.}
 
-\item{uruchom}{Czy wykonać zapisany skrypt (domyślnie tak).}
+\item{uruchom}{Czy utworzyć aktualny PDF. FALSE tylko sprawdza zapisany
+PDF i jego zgodność z bieżącymi wejściami, bez wykonywania kodu.}
 }
 \value{
-Lista: ok, tabela kontroli i jawna lista plików.
+Lista: ok, tabela kontroli i jawna lista plików oddania.
 }
 \description{
-Kontrola nie przyznaje punktów za interpretację. Opcjonalne wykonanie skryptu
-odbywa się w kopii pracy i świeżym procesie R; wyniki w oryginale muszą być zapisane.
-Wykonuj w ten sposób gotowy skrypt po ustawieniu wskazanych parametrów.
-Kontrolę prac oddanych wykonuje CI bez poświadczeń kursu.
+Sprawdza własne pola odpowiedzi oraz zgodność gotowego kodu, ID i danych.
+Nie ocenia sensu interpretacji ani długości akapitów. Domyślnie tworzy PDF
+od początku w świeżym procesie R, bez logowania i bez dostępu do tokenu
+sesji. Wymaga narzędzi PDF przygotowanych przez informatyka.
+Kontrola nie wysyła pracy. Brak sieci nie blokuje tworzenia PDF.
 }
 \examples{
 k <- tempfile("kontrola-")
 utworz_projekt("s017", katalog = k)
-sprawdz_zadanie("PROJEKT", k, uruchom = FALSE)$ok
+przygotuj_zadanie("Z01", k)
+sprawdz_zadanie("Z01", k, uruchom = FALSE)$ok
 unlink(k, recursive = TRUE)
 }

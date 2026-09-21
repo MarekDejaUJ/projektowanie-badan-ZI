@@ -2,10 +2,10 @@
 \alias{oddaj_projekt}
 \title{Oddanie indywidualnego projektu ilościowego}
 \usage{
-oddaj_projekt(katalog = ".")
+oddaj_projekt(katalog = NULL)
 }
 \arguments{
-\item{katalog}{Katalog projektu.}
+\item{katalog}{Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.}
 }
 \value{
 Pokwitowanie GitHub z SHA i czasem serwera.

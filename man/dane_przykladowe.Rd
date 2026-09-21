@@ -1,6 +1,6 @@
 \name{dane_przykladowe}
 \alias{dane_przykladowe}
-\title{Syntetyczny przykład do wspólnej analizy}
+\title{Syntetyczny przyklad do wspolnej analizy}
 \usage{
 dane_przykladowe()
 }
@@ -8,7 +8,7 @@ dane_przykladowe()
 Surowa tabela ankietowa S02 dla demonstracyjnego ID demo001.
 }
 \description{
-Syntetyczny przykład do wspólnej analizy
+Syntetyczny przyklad do wspolnej analizy
 }
 \examples{
 head(dane_przykladowe())

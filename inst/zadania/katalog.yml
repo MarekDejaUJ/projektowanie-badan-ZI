@@ -1,25 +1,49 @@
 rocznik: "2026-27"
-wersja: "1.0.0"
+wersja: "2.0.0"
+format_pracy: "rmd-1"
+odpowiedzi_zadania: [S01, S02, S03, S04, S05]
+pliki_zadania: [zadanie.Rmd, analiza.R, zadanie.yml, literatura.md]
+pliki_pdf: [zadanie.pdf, pdf.json]
+wariant_projektowy: [wariant.yml, dane/surowe.csv, dane/surowe.rds, dane/slownik.csv, dane/scenariusz.yml, dane/manifest.json]
+# kurs.yml jest wspólnym plikiem konfiguracyjnym przestrzeni ćwiczeń.
+# PDF i jego metadane tworzy oddaj_zadanie(); student zapisuje tylko swój Rmd.
 zadania:
   Z01:
-    wyniki: [orientacja.csv]
+    material: C01
+    rubryka: Z01
   Z02:
-    wyniki: [wyczyszczone.csv, dziennik.csv]
+    material: C02
+    rubryka: Z02
   Z03:
-    wyniki: [opis.csv, histogram.png, boxplot.png]
+    material: C03
+    rubryka: Z03
   Z04:
-    wyniki: [slownik_pomiaru.csv, indeks.csv, kanaly.csv]
+    material: C04
+    rubryka: Z04
   Z05:
-    wyniki: [estymacja.csv, bootstrap.csv, bootstrap.png]
+    material: C05
+    rubryka: Z05
   Z06:
-    wyniki: [porownanie.csv, permutacja.csv, grupy.png]
+    material: C06
+    rubryka: Z06
   Z07:
-    wyniki: [tabela.csv, test_kategorie.csv, permutacja.csv, tabela.png]
+    material: C07
+    rubryka: Z07
   Z08:
-    wyniki: [korelacja.csv, permutacja.csv, regresja.csv, rozrzut.png]
+    material: C08
+    rubryka: Z08
   Z09:
-    wyniki: [plan_analizy.csv]
+    material: C09
+    rubryka: Z09
+    wymaga_wariantu: true
   Z10:
-    wyniki: [kontrola_raportu.csv]
+    material: C10
+    rubryka: Z10
+    wymaga_wariantu: true
   PROJEKT:
-    wyniki: [dziennik.csv, opis.csv, indeks.csv, kanaly.csv, porownanie.csv, druga_analiza.csv, histogram.png, grupy.png, druga_analiza.png]
+    szablon: szablony/projekt/raport.Rmd
+    rubryka: PROJEKT
+    odpowiedzi: [P01, P02, P03, P04, P05, P06, P07, P08, P09, P10, P11]
+    pliki: [raport.Rmd, analiza.R, raport.yml, literatura.md]
+    pliki_pdf: [raport.pdf, pdf.json]
+    wymaga_wariantu: true

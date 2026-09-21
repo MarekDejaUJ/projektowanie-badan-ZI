@@ -1,243 +1,573 @@
 ---
-title: 'C03 — Portret próby: czas wyszukiwania, skuteczność i zróżnicowanie'
-subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
-author: 'Marek Deja'
+title: 'C03 — Portret próby: czas, skuteczność i zróżnicowanie'
+subtitle: 'Zarządzanie informacją — ćwiczenie i zadanie Z03 — 2026/27'
+author: 'ID: [UZUPELNIJ_ID]'
 date: '2026/27'
 lang: pl-PL
 fontsize: 11pt
 papersize: a4
 geometry: margin=2cm
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document: default
 ---
 
+<!-- start-sesji -->
+# Początek pracy na tych zajęciach
+
+Otwórz RStudio. Pakiet kursu jest już zainstalowany w sali; nie instalujesz go ponownie. W konsoli poniżej edytora wpisz swoje ID i adres prywatnego repozytorium otrzymany w kursie, a następnie wykonaj polecenia. Ten blok jest instrukcją do konsoli, nie chunkiem uruchamianym przy tworzeniu PDF.
+
+```r
+library(badaniaZI)
+ID <- "TWOJE_ID"
+zaloguj_github()
+rozpocznij_zajecia(
+  "C03", id_studenta = ID,
+  repo_url = "ADRES_TWOJEGO_PRYWATNEGO_REPOZYTORIUM"
+)
+```
+
+Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie tam, nie w konsoli R. Sprawdź potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w tej sesji; pliki pracy mają je zachować także po zamknięciu RStudio.
+
+Polecenie otwiera własny `zadanie.Rmd` i zapamiętuje katalog pracy. Nie przełączaj teraz projektu przez `.Rproj`, bo nowa sesja R utraci logowanie. Pracuj w otwartym Rmd, nie w źródłach pakietu. Uruchom pierwszy chunk przygotowania, potem wykonuj LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; nie usuwaj pracy ani nie wpisuj cudzego ID.
+<!-- /start-sesji -->
+
+
+Gotowy skrypt przygotowuje dane według reguł C02 oraz funkcje opisujące czas i powodzenie. Uruchom blok przygotowania przed czytaniem kolejnych wyników. Nie zmieniamy surowego pliku i nie usuwamy długich czasów tylko dlatego, że odbiegają od większości.
+
 ```{r przygotowanie, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, digits = 3)
-source('analiza.R', local = knitr::knit_global(), encoding = 'UTF-8')
+source(badaniaZI::plik_pracy("Z03", "analiza.R"),
+       local = knitr::knit_global(), encoding = "UTF-8")
+ustaw_material()
 ```
 
-# 1. Miejsce w opowieści
+# Czy katalog działa sprawnie
 
-Po oczyszczeniu danych tworzymy portret osób i wykonania zadania. Średnia nie wystarcza przy prawoskośnym czasie, dlatego zestawiamy ją z medianą, SD, IQR i wykresem.
+Po przygotowaniu danych zespół biblioteki chce prostego podsumowania. Pyta: „Ile trwa znalezienie dokumentu?”. To pytanie może jednak oznaczać przeciętny nakład czasu, czas środkowej osoby, czas potrzebny większości użytkowników albo czas udanych prób. Zanim wybierzemy miarę, trzeba doprecyzować, do jakiej decyzji ma służyć odpowiedź.
 
-**Pytanie przewodnie:** Jak opisać typowy czas wykonania i jego zróżnicowanie, nie wykraczając poza badaną próbę?
+Bibliotekarz planujący dyżur może interesować się łącznym obciążeniem długimi próbami. Projektant interfejsu może chcieć wiedzieć, jak wygląda doświadczenie środkowej części użytkowników. Osoba odpowiedzialna za dostępność usługi może pytać o tych, którzy potrzebują najwięcej czasu. Żadnej z tych perspektyw nie oddaje w pełni pojedyncza średnia.
 
-Rdzeń zajęć trwa 90 minut. Strony oznaczone jako „po zajęciach” służą utrwaleniu; podczas spotkania uruchamiamy gotowy kod, czytamy liczby i zapisujemy własne wyjaśnienie.
+Druga część pytania brzmi: „Czy szybkie zakończenie oznacza powodzenie?”. Osoba może szybko zrezygnować albo wybrać niewłaściwy dokument. Dlatego portret usługi powinien uwzględniać czas i poprawność. W tym ćwiczeniu uczymy się zestawiać te wskaźniki bez automatycznego uznawania czasu za miarę całej kompetencji.
 
-| Minuty | Praca |
-|---:|---|
-| 0–10 | Powrót do poprzedniego odcinka i pytanie |
-| 10–30 | Zmienne, wzór i symbole |
-| 30–55 | Gotowe wyniki i dwa tory, jeśli dotyczą |
-| 55–80 | Zadanie na indywidualnych danych |
-| 80–90 | Kontrola, oddanie i zapowiedź kolejnego kroku |
+Wspólne dane S02 są syntetyczne. W małych demonstracjach wykorzystamy dodatkowe serie liczb, wyraźnie oddzielone od S02. CHALLENGE wykonasz niżej w tym samym Rmd na osobnym scenariuszu repozytorium. Własny projekt zaliczeniowy zostanie wprowadzony dopiero na C09; teraz ćwiczysz sposób odczytu i pisania.
 
-\newpage
+## Przebieg spotkania
 
-# 2. Scena badawcza
+Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN, 50 minut na pięć CHALLENGE i 5 minut na zapis oraz oddanie. W LEARN uruchamiasz gotowy kod i porównujesz wynik z podaną interpretacją. W CHALLENGE piszesz własne krótkie akapity pod wynikami, poza blokiem R. Pracujesz samodzielnie, a w razie wątpliwości pytasz prowadzącego. Rozwinięcia po części obowiązkowej służą powtórce i nie dodają zadań do oddania.
 
-Po oczyszczeniu danych tworzymy portret osób i wykonania zadania. Średnia nie wystarcza przy prawoskośnym czasie, dlatego zestawiamy ją z medianą, SD, IQR i wykresem.
+Dzisiejszy wynik jest opisem próby. Nie musisz uzyskiwać wartości p, aby poprawnie nazwać różnicę widoczną w danych. Nie stwierdzamy jednak na podstawie tego opisu, że zaobserwowana różnica musi występować w całej populacji albo że doświadczenie ją spowodowało.
 
-Badana osoba wykonuje krótkie zadanie wyszukiwawcze w cyfrowej usłudze informacyjnej, a potem odpowiada na sześć pozycji samooceny. Rejestrujemy czas i powodzenie jako pomiar obserwacyjny. Częstość korzystania, samoocena oraz wybrane kanały są deklaracjami. Rozdzielenie tych źródeł jest częścią interpretacji, ponieważ wysoka pewność nie musi oznaczać sprawnego wykonania.
+# LEARN 1: pytanie, mianownik i środek rozkładu
 
-Dane demonstracyjne dotyczą scenariusza S02 i są syntetyczne. Ich rozkłady przygotowano do nauki, dlatego nie wolno opisywać nimi realnej biblioteki ani użytkowników UJ. Jednostką analizy jest osoba po usunięciu identycznych duplikatów. Każdy brak pozostaje brakiem, dopóki słownik nie podaje jawnej reguły.
-
-\newpage
-
-# 3. Pytanie, jednostka i zmienne
-
-Analizowane zmienne: **obserwowany czas wyszukiwania, grupa, powodzenie zadania**.
-
-Przed spojrzeniem na wynik odpowiedz głośno na cztery pytania: kto jest obserwacją, co jest zmienną, jaka jest skala i w jakiej jednostce pojawi się rezultat. Nazwa kolumny jest technicznym adresem; znaczenie pochodzi z operacjonalizacji oraz słownika danych.
-
-| Element | Pytanie kontrolne | Odpowiedź w tej historii |
+| Pytanie zespołu | Przydatna miara | Jednostka lub mianownik |
 |---|---|---|
-| Jednostka | Co zajmuje jeden wiersz? | jedna osoba i jedno zadanie |
-| Samoopis | Co osoba deklaruje? | pozycje, częstość, kanały |
-| Obserwacja | Co zapisuje procedura? | czas i powodzenie |
-| Granica wniosku | O czym mówią dane? | o syntetycznej próbie dydaktycznej |
+| Jaki był przeciętny nakład czasu? | Średnia | Minuty, ważne pomiary czasu |
+| Gdzie leży środek uporządkowanych czasów? | Mediana | Minuty |
+| Jak zróżnicowane były próby? | SD i IQR | Minuty |
+| Jak długo trwała zdecydowana większość prób? | Odpowiednio wybrany kwantyl | Minuty i poziom kwantyla |
+| Jaka część osób znalazła dokument? | Proporcja powodzeń | Osoby ze znanym wynikiem |
+| Jaka część znalazła go w określonym czasie? | Łączny warunek powodzenia i czasu | Osoby z oboma pomiarami |
 
-Skala pomiarowa ogranicza sens działań. Dla kategorii liczymy osoby i odsetki; dla uporządkowanych odpowiedzi możemy porównywać kolejność; dla czasu sens mają różnice i ilorazy. Indeks 1–5 traktujemy w kursie jako przybliżoną zmienną ilościową, ale pamiętamy, że powstał z pozycji porządkowych. Nazwanie skali przed analizą chroni przed mechanicznym wyborem testu.
+Próg czasu może być użyteczny, ale wymaga uzasadnienia. W ćwiczeniu wybieramy 10 minut jako umowny przykład do czytania wyniku. Nie jest to oficjalna norma biblioteki ani granica kompetencji użytkownika. W rzeczywistym projekcie próg powinien wynikać z celu usługi lub być jawnie oznaczony jako eksploracyjny.
 
-\newpage
+Estymandą opisu może być średni czas określonej populacji, mediana lub proporcja powodzeń. W aktualnym ćwiczeniu obliczamy odpowiadające im statystyki w syntetycznej próbie. Definicja wielkości pozostaje potrzebna również wtedy, gdy na razie nie uogólniamy wyniku.
 
-# 4. Słownik statystyczny
+## Opis zaczyna się od N
 
-Statystyka jest językiem skrótu. Symbol ma nazwę, znaczenie w badaniu i jednostkę. Odczytuj wzór zdaniem, zanim podstawisz liczby.
+Przygotowanie danych nie zapewnia, że każda kolumna ma tyle samo ważnych wartości. Czas mógł pozostać nieznany, choć powodzenie zapisano. Indeks może być brakujący przy niewystarczającej liczbie pozycji, mimo że obserwacja wykonania jest kompletna.
 
-| Symbol | Nazwa | Znaczenie w przykładzie | Jednostka |
-|---|---|---|---|
-| $\bar{x}$ | średnia | punkt równowagi czasów | minuty |
-| $s$ | odchylenie standardowe | typowe odchylenie od średniej | minuty |
-| $Me$ | mediana | środkowa uporządkowana wartość | minuty |
-| $IQR$ | rozstęp międzykwartylowy | zakres środkowych 50% | minuty |
+Poniższa funkcja pokazuje opis czasu w postaci jednej miary w każdym wierszu. Najpierw odczytaj N i braki, a dopiero potem wartości położenia oraz zróżnicowania. Wszystkie miary czasu poza liczebnościami są tutaj wyrażone w minutach.
 
-Wartość p nie jest prawdopodobieństwem prawdziwości hipotezy. Przedział nie jest zakresem środkowych 95% obserwacji. Efekt nie jest tym samym co istotność. Te trzy rozróżnienia wracają w każdej analizie.
-
-**Notatnik pojęć.** Dla każdego symbolu dopisz jedną liczbę z gotowego wyniku i przeczytaj ją bez skrótu. Zamiast „t równa się” powiedz „obserwowana różnica leży tyle błędów standardowych od wartości zerowej”. Zamiast „V równa się” powiedz „znormalizowana siła związku w tabeli wynosi”. Taki przekład jest ważniejszy niż pamięciowe odtwarzanie wzoru.
-
-\newpage
-
-# 5. Wzór czytany jak zdanie
-
-$$\bar{x}=\frac{1}{N}\sum_{i=1}^{N}x_i, \qquad s=\sqrt{\frac{\sum_{i=1}^{N}(x_i-\bar{x})^2}{N-1}}$$
-
-Czytamy od lewej do prawej, nazywając licznik, mianownik i jednostkę. Znak wyniku ma sens dopiero po ustaleniu kolejności grup lub kierunku skali. Jeżeli we wzorze jest N, chodzi o przypadki rzeczywiście użyte w danym obliczeniu, a nie automatycznie o wszystkie wiersze surowego pliku.
-
-**Ćwiczenie ustne.** Wskaż w formule estymatę, element niepewności i punkt odniesienia. Jeżeli dana metoda ich nie ma, powiedz to wprost. Następnie przewidź, co stanie się z wynikiem po zwiększeniu N, zmianie jednostki albo odwróceniu kolejności grup.
-
-Czytanie wzoru ma pięć kroków: (1) nazwij wynik po lewej stronie, (2) nazwij obserwowane wielkości po prawej, (3) wskaż porównanie lub wartość zerową, (4) ustal jednostkę, (5) powiedz, jaka zmiana danych zwiększa wynik. Nie wykonujemy ręcznie długich obliczeń. Wzór ma odsłonić logikę liczby zwracanej przez gotową funkcję.
-
-\newpage
-
-# 6. Gotowy skrypt pomocniczy
-
-Pierwszy chunk materiału załadował towarzyszący plik `analiza.R`. Zawiera przygotowanie danych, obiekty i funkcje potrzebne na zajęciach. Uruchamiasz kolejne fragmenty i odczytujesz wynik. Nie implementujesz testu ani pętli permutacyjnej.
-
-```{r struktura}
-wynik_glowny
+```{r opis-czasu}
+czas <- opis_czasu_do_raportu(dane$czas_wyszukiwania)
+print(czas)
 ```
 
-W zadaniu indywidualnym analogiczny skrypt powstaje przez `przygotuj_zadanie()`. Wolno zmienić jedynie wartości oznaczone komentarzem jako parametry. Dzięki temu przedmiot ocenia rozumienie wyniku, a nie biegłość w programowaniu.
+Wynik opisuje zarejestrowane czasy spełniające reguły przygotowania. Nie dopisujemy brakującym osobom średniego czasu i nie traktujemy ich jako zer. Jeśli braki wiązałyby się z trudnością zadania, podsumowanie mogłoby pomijać istotną część doświadczenia użytkowników.
 
-Po zmianie parametru uruchom cały skrypt od początku. Pojedyncze obiekty pozostawione w Environment mogą pochodzić ze starszej próby, dlatego nie są dowodem odtwarzalności. Zapisany plik w `wyniki` ma powstać ponownie w świeżej sesji. Jeśli nazwa zmiennej jest niedozwolona, funkcja zatrzymuje analizę i podaje listę dopuszczalnych wartości.
+W nazwach wyników `Q1` i `Q3` oznaczają kwartyle, `P90` percentyl 90., `SD` odchylenie standardowe, a `IQR` zakres międzykwartylowy. Liczba miejsc po przecinku w tabeli służy czytelności. Nie oznacza, że pomiar ani oszacowanie jest aż tak precyzyjne.
 
-\newpage
+## Język wzorów opisowych
 
-# 7. Dane, braki i mianownik
+| Symbol | Jak czytać? | Co ma znaczenie badawcze? |
+|---|---|---|
+| $x_i$ | czas i-tej osoby | Jedna ważna obserwacja |
+| $\bar{x}$ | średnia w próbie | Suma czasu na pomiar |
+| $Me$ | mediana | Środek uporządkowanych wartości |
+| $Q_1,Q_3$ | pierwszy i trzeci kwartyl | Granice środkowej części rozkładu |
+| $s$ lub SD | odchylenie standardowe | Rozrzut względem średniej |
+| $s^2$ | wariancja | Średni kwadrat odchylenia z korektą $n-1$ |
+| $\hat{\pi}$ | oszacowana proporcja | Licznik podzielony przez właściwy mianownik |
 
-```{r dane}
-knitr::kable(head(tabela_glowna, 10), digits = 3)
+Zapis „SD=4” jest niepełny, dopóki nie wiadomo, czego dotyczy i w jakiej jednostce. „SD czasu wyniosło 4 minuty” mówi o rozrzucie osób. Nie znaczy, że każda osoba odchyla się dokładnie o 4 minuty, że wszystkie czasy leżą w odległości 4 minut od średniej ani że średnia ma błąd równy 4 minutom.
+
+W tym zestawie nie podstawiamy mechanicznie wartości do wielu wzorów. Wybieramy kilka małych przykładów, aby zrozumieć, co robi gotowa funkcja. Dopiero z tą wiedzą odczytujemy pełny zbiór.
+
+## Średnia i mediana odpowiadają inaczej
+
+$$
+\bar{x}=\frac{x_1+\cdots+x_n}{n}.
+$$
+
+W serii A czasy wynoszą 2, 4, 6, 8 i 10 minut. Suma jest równa 30, więc średnia wynosi 6 minut. Mediana jest trzecią wartością uporządkowanej piątki, również 6 minut. Równość obu miar w tym przykładzie nie oznacza, że są tą samą funkcją.
+
+W serii B ostatni czas zmieniamy na 30 minut. Średnia rośnie do 10, a mediana pozostaje równa 6. Zmiana wpływa na sumę, lecz nie na pozycję środkowej obserwacji. W S02 taki mechanizm może wystąpić, gdy część osób potrzebuje szczególnie dużo czasu.
+
+Poniższe podsumowanie oblicza oba przykłady gotową funkcją. Odczytaj N, średnią i medianę w obu seriach. Kolejny blok pokaże osobno miary rozrzutu tych samych czasów.
+
+```{r srednia-mediana}
+srodek <- polozenie_serii()
+print(srodek)
 ```
 
-Zanim przeczytasz statystykę, ustal N i braki. Dla średniej N oznacza ważne liczby. Dla korelacji są to kompletne pary. Dla tabeli jest to suma analizowanych komórek. Dla indeksu przypadek musi mieć co najmniej pięć odpowiedzi po właściwym ukierunkowaniu.
+Błędne zdanie o serii B brzmi: „większość osób wyszukiwała około dziesięciu minut”. Cztery osoby miały czas nie większy niż osiem minut, a jedna trzydzieści. Lepszy opis podaje obie miary i wyjaśnia wpływ długiej próby.
 
-Dwa wyniki mogą używać różnych N w tym samym raporcie. Nie jest to sprzeczność, jeśli wynika z braków i zostało jawnie opisane. Nie wolno dopasowywać reguły braków po zobaczeniu, która wersja daje korzystniejsze p.
+Nie usuwamy tej próby po to, aby średnia „zgadzała się” z medianą. Ich rozbieżność może być właśnie informacją o zróżnicowaniu usługi. Gdy instytucja planuje wsparcie dla osób mających największą trudność, długie czasy nie są niewygodnym dodatkiem do danych.
 
-Brak może dotyczyć jednej pozycji, całego indeksu albo pary zmiennych. Duplikat jest powtórzeniem rekordu, a obserwacja odstająca nadal może być prawdziwą obserwacją. Te pojęcia wymagają innych decyzji. Dziennik czyszczenia powinien pozwolić odtworzyć, ile elementów zmieniła każda reguła i dlaczego wynikowe N jest właściwym mianownikiem.
+## Mediana nie zawsze jest jedną z wartości
 
-\newpage
+Dla czasów 2, 4, 8 i 10 minut mediana wynosi $(4+8)/2=6$. Żadna osoba nie miała czasu 6 minut. Mediana pozostaje poprawnym opisem środka, lecz nie przedstawia konkretnego użytkownika.
 
-# 8. Tor klasyczny
+Przy pojedynczych kategoriach porządkowych trzeba uważać z uśrednianiem dwóch środkowych kodów, jeżeli wynik wypada między kategoriami. Można wtedy opisać kategorię medianową według uzgodnionej konwencji i pokazać cały rozkład odpowiedzi. Nie przypisujemy wartości 3,5 brzmienia odpowiedzi, której ankieta nie zawierała.
 
-Opis klasyczny łączy średnią i SD z medianą i IQR. Histogram pokazuje kształt rozkładu, a wykres pudełkowy po grupach ujawnia nakładanie się wyników oraz obserwacje odległe.
+**Przykładowa interpretacja S02:** „W 148 rekordach dostępne są 142 ważne czasy i 6 braków. Średnia wyniosła około 10,13 minuty, a mediana 8,25 minuty. Średnia uwzględnia pełny nakład czasu, w tym dłuższe próby; mediana opisuje środek uporządkowanych pomiarów. Żadna z tych liczb sama nie mówi, czy zadanie wykonano poprawnie”.
 
-```{r klasyczny}
-knitr::kable(formatuj_wynik(wynik_klasyczny), digits = 4)
+
+# LEARN 2: czytamy odchylenie standardowe
+
+$$
+s^2=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2,
+\qquad s=\sqrt{s^2}.
+$$
+
+Licznik sumuje kwadraty odchyleń od średniej. Mianownik to liczba ważnych wartości pomniejszona o jeden. W tej formule duże odchylenie wnosi szczególnie dużo, ponieważ jest podnoszone do kwadratu. Pierwiastek przywraca jednostkę czasu. Użycie $n-1$ wiąże się z tym, że średnią oszacowano z tych samych danych: odchylenia sumują się do zera, więc po poznaniu pierwszych $n-1$ ostatnie jest już określone. Przy niezależnej próbie z tej samej populacji taka korekta daje nieobciążoną estymację wariancji; nie usuwa błędów pomiaru ani doboru próby.
+
+Tabela rozpisuje serię A. Zsumuj widoczne zwykłe odchylenia i porównaj rezultat z sumą kwadratów. Pierwsza suma wynosi zero, dlatego nie mogłaby samodzielnie opisywać zróżnicowania.
+
+```{r skladniki-sd}
+odchylenia <- pokaz_tabele(kwadraty_demo, "Od pomiarów do wariancji")
+print(odchylenia)
 ```
 
-Odczytaj wynik bez etykiety „dobry” lub „zły”. Powiedz, jaka estymata odpowiada pytaniu, co mierzy statystyka oraz jakie założenie projektu ogranicza interpretację. Jeżeli widzisz p, opisz je warunkowo: przy modelu zerowym i przyjętej procedurze.
+Suma kwadratów to 40 minut kwadratowych. Dzielimy przez $5-1=4$, otrzymując wariancję 10. SD wynosi $\sqrt{10}\approx3{,}16$ minuty. Nie jest to średnia bezwzględna odległość, lecz pierwiastek z odpowiednio skorygowanej średniej kwadratów.
 
-**Karta odczytu toru klasycznego.** Zapisz: (a) nazwę metody, (b) N lub liczebności grup, (c) estymatę i jednostkę, (d) statystykę wraz z df, jeśli występują, (e) p, (f) jedno założenie. Jeżeli metoda na tej stronie nie jest testem, wpisz „nie dotyczy” zamiast wymyślać p. Kompletność wyniku jest oceniana oddzielnie od jego istotności.
+Teraz wróć do serii B, w której jedna osoba ma czas 30 minut. Porównanie pokaże, jak wzrost dużego odchylenia wpływa na SD. Zwróć uwagę na jednostkę wariancji i odchylenia: w raporcie częściej wykorzystujemy SD właśnie dlatego, że wraca do minut.
 
-\newpage
-
-# 9. Tor permutacyjny lub decyzja o jego braku
-
-Nie testujemy jeszcze hipotezy, więc nie obliczamy p z permutacji. Możemy jednak zrozumieć ideę: przestawienie etykiet grup pozostawiłoby rozkład czasu bez zmian, lecz zerwałoby związek czasu z grupą.
-
-```{r permutacyjny}
-knitr::kable(formatuj_wynik(wynik_permutacyjny), digits = 4)
+```{r rozrzut-demo}
+rozrzut <- rozrzut_serii()
+print(rozrzut)
 ```
 
-W analizie inferencyjnej liczba B określa rozdzielczość szacowanego p. Za każdym razem trzeba powiedzieć, co dokładnie tasowano i jaki związek został zerwany. Nazwa „permutacyjny” nie zwalnia z wyjaśnienia hipotezy zerowej.
+Nie odczytujemy SD jako zakresu wszystkich obserwacji. Zależność między średnią, SD i udziałem wartości w określonym przedziale zależy od rozkładu. Reguła dotycząca około 68% wartości w odległości jednego SD odnosi się do rozkładu normalnego, nie do dowolnej tabeli czasów.
 
-**Karta odczytu toru permutacyjnego.** Uzupełnij zdanie: „Przy braku związku lub różnicy wielokrotnie zmieniano znaki, tasowano etykiety lub losowano tabele, za każdym razem liczono tę samą statystykę, a określony odsetek wyników był co najmniej tak skrajny jak obserwowany”. Następnie porównaj wniosek z torem klasycznym bez wybierania mniejszego p.
+## SD i SE trzeba rozdzielić już teraz
 
-\newpage
+Dwie badane grupy mogą mieć podobne SD czasu, lecz inną precyzję średniej, jeśli bardzo różnią się liczebnością. Więcej osób nie musi oznaczać, że ludzie stają się bardziej podobni. Oznacza większą ilość informacji o rozkładzie przy odpowiednim projekcie.
 
-# 10. Efekt i przedział
+Na C05 poznamy błąd standardowy średniej $SE=s/\sqrt{n}$. Dzisiaj miarą zróżnicowania osób pozostaje SD. Jeżeli w raporcie widzisz znak „±”, musisz sprawdzić, czy autor podał SD, SE, przedział czy inną miarę. Sam znak nie definiuje statystyki.
 
-Różnica średniej i mediany wskazuje asymetrię, a SD i IQR mówią o zróżnicowaniu w tych samych jednostkach co czas. Nie nazywamy ich efektem między grupami.
+**Przykładowy opis:** „Seria A ma SD około 3,16 minuty, a seria B około 11,40 minuty. W B jedna długa próba znacznie zwiększa rozrzut wokół średniej. SD nie mówi, że każda osoba odchyla się o tę samą liczbę minut, i nie jest błędem oszacowania średniej”.
 
-```{r efekt}
-knitr::kable(formatuj_wynik(efekt), digits = 4)
+
+# LEARN 3: kwartyle i zakres międzykwartylowy
+
+Kwartyle odczytujemy z uporządkowania danych. IQR jest różnicą trzeciego i pierwszego kwartyla. W serii B $Q_1=4$, $Q_3=8$, a IQR wynosi 4 minuty. Długi czas 30 nie zmienia tutaj położeń kwartyli, choć wpływa na średnią i SD.
+
+$$IQR=Q_3-Q_1.$$
+
+W pełnej próbie wartości nie muszą trafiać dokładnie w obserwowane czasy. Funkcja korzysta z interpolacji. To nie jest błąd, lecz część definicji kwantyla. Dla małych prób warto znać używaną konwencję; w tym materiale jest to domyślny typ 7 funkcji `quantile()` w R.
+
+Wynik „mediana 8, IQR 5 minut” nie oznacza przedziału od 3 do 13 minut. IQR jest szerokością, nie symetrycznym marginesem wokół mediany. Aby odtworzyć granice środkowej części, trzeba podać $Q_1$ i $Q_3$ albo odczytać je z tabeli.
+
+**Krótka próba:** jeśli $Q_1=3$, mediana 5, a $Q_3=9$ minut, IQR wynosi 6 minut. Odległości mediany od obu kwartyli są różne: 2 i 4 minuty. Taki zapis nie wymaga symetrii.
+
+## Histogram — obraz rozkładu
+
+Histogram dzieli oś czasu na przedziały i liczy wartości w każdym z nich. Nie jest wykresem pojedynczych osób. Dwa różne ustawienia przedziałów mogą pokazać ten sam zbiór nieco inaczej, dlatego do interpretacji trzeba używać także tabeli i znajomości pomiaru.
+
+Pierwszy wykres pokazuje przygotowany rozkład czasu w S02. Pionowa linia oznacza medianę, a nie średnią ani próg poprawnego wykonania. Odczytaj skupienie oraz to, czy po którejś stronie widać dłuższy ogon.
+
+```{r histogram}
+rozklad <- pokaz_wykres(wykres_glowny)
+print(rozklad)
 ```
 
-Znaczenie praktyczne oceniamy w kontekście usługi: minuty, punkty skali, różnica odsetków albo siła związku. Uniwersalne etykiety mały/średni/duży nie zastępują pytania, czy efekt zmienia decyzję instytucji i jak precyzyjnie został oszacowany.
+Opisz najpierw to, co widzisz: zakres, skupienie, ogon, ewentualne przerwy. Nie dopisuj przyczyn. Długi prawy ogon może być zgodny z grupą trudnych prób, ale wykres nie mówi, czy powodem był interfejs, zadanie, urządzenie czy wcześniejsze doświadczenie.
 
-Przedział szeroki obejmuje wiele możliwych wielkości efektu i wymaga ostrożniejszego języka. Przedział wąski może nadal koncentrować się wokół efektu praktycznie małego. Gdy przedział przecina zero, nie zapisujemy automatycznie „brak efektu”; podajemy zakres zgodnych wartości i oceniamy, czy obejmuje skutki istotne dla usługi informacyjnej.
+Jeżeli rozkład jest skośny, mediana i IQR mogą być czytelnym uzupełnieniem średniej i SD. Nie uruchamiamy automatycznego schematu „skośność, więc średnia jest zakazana”. Wybór podsumowania zależy od pytania, a wybór późniejszego testu również od projektu i liczebności.
 
-\newpage
+## Percentyl nie jest gwarancją czasu dla każdej przyszłej osoby
 
-# 11. Wykres jako część argumentu
+Tabela zestawia kwartyle i percentyl 90. w obu małych seriach. Odczytaj P90 osobno od IQR. Obydwie miary mają jednostkę minut, ale odpowiadają innym pytaniom.
 
-```{r wykres, fig.height=4.6}
-wykres_glowny
+```{r kwartyle-demo}
+kwantyle <- kwantyle_serii()
+print(kwantyle)
 ```
 
-Wykres odpowiada na pytanie o położenie, kształt, nakładanie się grup lub kierunek związku. Tytuł, osie i jednostki są częścią wyniku. Nie wnioskuj o istotności tylko z wyglądu, lecz sprawdź, czy obraz jest spójny z tabelą i estymatą.
+W serii B czasy wynoszą 2, 4, 6, 8 i 30 minut. Domyślna interpolacja typu 7 w R daje percentyl 90. równy 21,2 minuty. Nie znaczy to, że dokładnie 90% z pięciu osób miało czas poniżej 21,2: cztery osoby to 80%, pięć to 100%.
 
-Przeczytaj wykres w trzech warstwach. Najpierw opisz elementy widoczne bez testu: zakres, skupienie i nietypowe obserwacje. Potem połącz je z estymatą w tabeli. Na końcu nazwij rzecz, której wykres nie rozstrzyga, np. przyczynowość, błąd pomiaru albo zachowanie wyniku w nowej próbie. Nie usuwaj obserwacji tylko dlatego, że psuje prostą historię.
+Kwantyl jest oszacowaniem położenia przy określonej konwencji. Przy małym N niektórych udziałów nie da się osiągnąć dokładnym licznikiem osób. Dlatego nie przedstawiamy wyliczonej wartości z dokładnością do dziesiątych minuty jako stabilnego standardu działania dla całej biblioteki.
 
-\newpage
+**Przykładowy opis pełnego zbioru:** „W S02 kwartyle czasu wynoszą 5,80 i 12,98 minuty, a IQR około 7,18 minuty. Mediana 8,25 minuty nie leży dokładnie pośrodku tego zakresu. Te wartości opisują zróżnicowanie ważnych pomiarów, nie przedział ufności dla średniego czasu populacji”.
 
-# 12. Wynik czytany linia po linii
 
-Najpierw podajemy N ważnych czasów i liczbę braków. Potem odczytujemy średnią, medianę, SD i IQR oraz sprawdzamy, czy wykres zgadza się z liczbami.
+# LEARN 4: dystrybuanta mówi „jaka część do tego czasu”
 
-Schemat pełnego zdania: „W analizie N osób oszacowano [efekt] w [jednostce], 95% CI [dolna; górna]. Statystyka klasyczna wyniosła [symbol i df], p=[wartość], a procedura permutacyjna B losowań dała p_perm=[wartość]. Wynik opisuje [zakres] i nie rozstrzyga [ograniczenie]”.
+$$
+\widehat F(t)=\frac{\#\{i:x_i\leq t\}}{n}.
+$$
 
-Podczas zajęć jedna osoba czyta tabelę, druga sprawdza znak i jednostkę, a trzecia wskazuje granicę wniosku. Dopiero po tej kontroli zapisujemy odpowiedź do pliku Markdown.
+Czytamy: „liczba ważnych czasów nie większych od progu, podzielona przez liczbę ważnych czasów”. Symbol $\#$ oznacza liczbę elementów spełniających warunek. Funkcja zaczyna się przy małych wartościach i dochodzi do 1 po uwzględnieniu wszystkich pomiarów.
 
-Dobra interpretacja ma trzy warstwy. Warstwa liczbowa mówi, co oszacowano. Warstwa badawcza odpowiada na pytanie o zachowanie informacyjne lub wykonanie zadania. Warstwa krytyczna wskazuje, czego projekt, pomiar i syntetyczność nie pozwalają stwierdzić. Pominięcie którejkolwiek warstwy tworzy tekst technicznie poprawny, lecz metodologicznie niepełny.
+Na wykresie przerywana linia wskazuje umowny próg 10 minut. Odczytaj wysokość dystrybuanty przy tym progu. Ta wysokość dotyczy czasu, a nie automatycznie powodzenia zadania.
 
-\newpage
-
-# 13. Błędy interpretacji
-
-Błąd: „większość osób potrzebowała średnio 11 minut”. Poprawnie: „średni czas wyniósł 11 minut, mediana 8 minut; prawy ogon wskazuje, że część zadań trwała znacznie dłużej”.
-
-Dodatkowe pułapki: traktowanie braku istotności jako dowodu równości, pomijanie N, raportowanie samego p, utożsamienie samooceny z kompetencją oraz zamiana obserwacyjnego związku w przyczynę. Poprawa polega na dodaniu liczby, jednostki, zakresu i ograniczenia, a nie na bardziej stanowczym czasowniku.
-
-Porównaj dwie konstrukcje: „test wykazał efekt” i „oszacowana różnica wyniosła..., a wynik testu był...”. Druga oddziela wielkość od decyzji. Podobnie „grupy były takie same” zastępujemy opisem przedziału i precyzji. W raporcie nie używamy słowa „trend” jako sposobu ratowania p nieco większego od .05; opisujemy rzeczywisty efekt i jego niepewność.
-
-**Po zajęciach.** Znajdź w swoim szkicu jedno zdanie zawierające „wpływa”, „udowadnia”, „brak różnicy” albo „95% wyników”. Przepisz je tak, aby odpowiadało projektowi i rzeczywistemu znaczeniu statystyki.
-
-\newpage
-
-# 14. Próba prowadzona
-
-1. Otwórz gotowy skrypt i wskaż sekcję parametrów.  
-2. Uruchom cały plik bez zmiany dalszej części.  
-3. Otwórz zapisany CSV i odnajdź N, estymatę oraz jednostkę.  
-4. Jeżeli analiza jest inferencyjna, porównaj p klasyczne i permutacyjne.  
-5. Odczytaj efekt i przedział.  
-6. Napisz jedno zdanie wyniku oraz jedno zdanie ograniczenia.
-
-Jeżeli skrypt zgłasza błąd, najpierw sprawdź katalog projektu, nazwę parametru i dozwoloną wartość. Nie poprawiaj wnętrza funkcji statystycznej. Błąd parametru jest informacją o niedozwolonym wyborze, a nie zaproszeniem do przepisania procedury.
-
-Podział czasu próby: 3 minuty na uruchomienie, 4 na odnalezienie właściwego CSV, 5 na głośny odczyt tabeli, 5 na szkic interpretacji i 3 na kontrolę ograniczenia. Jeśli grupa utknie, wraca do pytania, jednostki i znaku efektu. Celem jest krótkie, sprawdzalne rozumowanie, nie zwiększanie liczby wykonanych poleceń.
-
-\newpage
-
-# 15. Zadanie Z03
-
-W Z03 wybierz dozwoloną zmienną. Z pliku opis.csv odczytaj N, braki, średnią, medianę, SD i IQR. W 350–650 słowach opisz kształt oraz dwie różne informacje niesione przez histogram i wykres grup.
-
-Przygotuj pliki poleceniem poniżej. Uruchom zapisany `analiza.R`, a następnie uzupełnij wszystkie pola `[UZUPELNIJ]` w `odpowiedzi.md`. Nie wklejaj kodu ani zrzutu całej konsoli.
-
-```{r zadanie, eval=FALSE}
-przygotuj_zadanie('Z03', katalog = '.')
-sprawdz_zadanie('Z03', katalog = '.')
-oddaj_zadanie('Z03', katalog = '.')
+```{r dystrybuanta}
+dystrybuanta <- pokaz_wykres(wykres_ecdf)
+print(dystrybuanta)
 ```
 
-\newpage
+Dystrybuanta jest schodkowa, ponieważ pochodzi ze skończonej liczby pomiarów. Przy powtarzających się czasach skok może obejmować więcej niż jedną osobę. Wygładzenie nie jest wymagane: schodki niosą informację o empirycznym rozkładzie.
 
-# 16. Rubryka, kontrola i dalszy krok
+Poniższa tabela zestawia dwa pytania o próg. Pierwsze dotyczy samego czasu, drugie wymaga również powodzenia. Przeczytaj liczniki i mianowniki osobno; liczba kompletnych par może być mniejsza niż liczba znanych czasów.
 
-| Kryterium | Punkty |
-|---|---:|
-| Z03.1: Z gotowego opisu poprawnie odczytano N, braki oraz miary położenia i zróżnicowania. | 3 |
-| Z03.2: Dwa gotowe wykresy poprawnie odczytano, z uwzględnieniem osi, jednostek i kształtu rozkładu. | 3 |
-| Z03.3: Uzasadnienie wyboru średniej/mediany lub częstości uwzględnia typ i asymetrię. | 2 |
-| Z03.4: Własny opis danych odnosi się do liczb, bez wniosków wykraczających poza próbę. | 2 |
+```{r prog-i-powodzenie}
+prog <- opis_progow(dane, prog_min = 10)
+print(prog)
+```
 
-Automatyczna kontrola sprawdza pliki, parametry, odtwarzalność i zgodność eksportu. Prowadzący ocenia dobór języka, odczyt liczb, interpretację efektu oraz ograniczenie. Poprawny skrypt bez własnego wyjaśnienia nie realizuje zadania.
+Jeżeli ktoś zakończył zadanie szybko, lecz błędnie, wchodzi do licznika pierwszego pytania, ale nie drugiego. To nie sprzeczność między wynikami, tylko różnica definicji. Rekomendacja dla biblioteki powinna wskazywać, czy priorytetem jest szybkość, skuteczność czy ich połączenie.
 
-Po wysyłce sprawdź `status_oddania()` i zdalne SHA. Na współdzielonym komputerze wywołaj `wyloguj_github()`, wyloguj przeglądarkę i zamknij RStudio bez `.RData`. Następne ćwiczenie rozpoczyna się od pobrania potwierdzonej wersji.
+## Powodzenie ma własny mianownik
 
-## Źródło kontekstu
+Czas jest zmienną ilościową, a powodzenie kategorią 0/1. Dla powodzenia podstawowy opis obejmuje liczbę znanych wyników, liczbę jedynek i ich udział. Nie utożsamiaj N powodzenia z N czasu bez porównania braków.
 
-Hargittai (2002) pokazuje wartość bezpośredniego pomiaru umiejętności internetowych. W kursie czas i powodzenie pochodzą z obserwowanego zadania, a nie z deklaracji.
+Poniższa tabela liczy odsetki osobno w każdej grupie. Dla każdej wartości procentowej przeczytaj licznik i mianownik. To szczególnie ważne, gdy grupy różnią się wielkością.
 
-Materiały odwołują się do: Wilsona (1999), Kuhlthau (1991), Savolainen (1995), Hargittai (2002), DigComp 2.2, ACRL Framework oraz Internet Skills Scale. Są to ramy pojęciowe; dane i pozycje kursowe pozostają syntetyczne i dydaktyczne.
+```{r tabela-powodzen}
+sukcesy <- pokaz_tabele(powodzenie_grup, "Powodzenie w każdej grupie")
+print(sukcesy)
+```
+
+Duża liczba powodzeń może wynikać z dużej liczby osób. Do porównania skuteczności potrzebujemy udziału w grupie, a do planowania liczby obsłużonych zadań przydatna jest również liczba bezwzględna. Pytanie decyduje, która miara powinna znaleźć się na pierwszym planie.
+
+Wykres pokazuje odsetki na wspólnej osi od 0 do 100%. Nad słupkami podano licznik i mianownik, żeby odbiorca nie musiał odgadywać, z ilu obserwacji pochodzi wynik. Nie wyciągamy z samej wysokości słupka wniosku o istotności.
+
+```{r wykres-powodzen}
+skutecznosc <- pokaz_wykres(wykres_powodzen)
+print(skutecznosc)
+```
+
+Jeśli różnica wynosiłaby 12 punktów procentowych, oznaczałoby to różnicę między odsetkami, a nie wzrost względny o 12%. Dla przykładu 60% i 72% różnią się o 12 punktów procentowych; 72% jest o 20% większe względem 60%. Zawsze podaj wartości wyjściowe.
+
+**Przykładowa interpretacja progów:** „Czas nie przekroczył 10 minut w 86 ze 142 ważnych pomiarów, czyli w około 60,6%. Sukces w najwyżej 10 minut odnotowano w 55 ze 142 kompletnych par, czyli w około 38,7%. Pierwsza liczba obejmuje również szybkie niepowodzenia. Dla celu łączącego poprawność i szybkość właściwy jest drugi wskaźnik”.
+
+
+# LEARN 5: dwie grupy na jednym wykresie
+
+W S02 grupy tworzą nowi i doświadczeni użytkownicy. Nie losowaliśmy doświadczenia, więc różnice opisujemy jako obserwacyjne. Zanim przejdziemy do testowania, chcemy wiedzieć, czy różni się położenie, rozrzut albo obecność długich prób.
+
+Tabela podaje ten sam zestaw miar w obu grupach. Odczytaj N przed porównaniem średnich. Zwróć uwagę, czy różnica średnich opowiada tę samą historię co porównanie median i IQR.
+
+```{r opis-grup}
+grupy <- opis_czasu_grup()
+print(grupy)
+```
+
+Jeżeli średnie są różne, ale rozkłady silnie się nakładają, nie znaczy to, że przynależność do grupy pozwala bezbłędnie przewidzieć wynik osoby. Statystyka grupowa i indywidualna prognoza są różnymi zadaniami. Duże zróżnicowanie wewnątrz grup może być ważne dla planowania wsparcia.
+
+Wykres pudełkowy zestawia mediany i kwartyle. Punkty poza wąsami są pokazane oddzielnie, lecz pozostają częścią danych i obliczeń. Nie traktuj ich jako listy rekordów do automatycznego usunięcia.
+
+```{r pudelek}
+pudelka <- pokaz_wykres(wykres_grup)
+print(pudelka)
+```
+
+W standardowej konwencji dolna i górna granica do wyznaczania wąsów wynoszą $Q_1-1{,}5IQR$ i $Q_3+1{,}5IQR$. Sam wąs kończy się na odpowiedniej zaobserwowanej wartości. Nie jest zawsze dokładnie równy teoretycznej granicy i nie oznacza przedziału ufności.
+
+Pudełko nie pokazuje wszystkich cech kształtu. Dwie grupy mogą mieć podobną medianę i kwartyle, a różnić się liczbą skupień albo rozkładem ogona. Dlatego do raportu wybieramy wykresy komplementarne. Histogram i pudełko nie są dwoma niezależnymi dowodami, tylko dwoma widokami tych samych danych.
+
+Wykres rozstrzyga pytania o opis grup, ale nie o mechanizm różnicy. Możesz zobaczyć medianę grupy; nie zobaczysz, czy różnica została spowodowana szkoleniem. Możesz zauważyć długie czasy; nie poznasz ich przyczyny.
+
+## Czas wszystkich prób i czas udanych prób
+
+Instytucja może zapytać, ile czasu potrzebują osoby, którym udało się znaleźć dokument. To dopuszczalne pytanie, ale jego mianownik obejmuje wyłącznie powodzenia z ważnym czasem. Nie odpowiada automatycznie na pytanie o nakład czasu wszystkich badanych.
+
+Gotowy skrypt pokazuje dwa podsumowania. Pierwsze obejmuje wszystkie ważne czasy, drugie ważne czasy prób zakończonych powodzeniem. Nazwij zmianę badanego zbioru przed porównaniem średnich.
+
+```{r czas-a-selekcja}
+zakres <- czas_wszystkich_i_udanych()
+print(zakres)
+```
+
+Selekcja do udanych prób może zmieniać skład grup. Jeśli nowa pomoc umożliwia sukces także osobom potrzebującym dużo czasu, średni czas udanych prób może wzrosnąć mimo poprawy skuteczności. Nie wystarczy wtedy ogłosić, że interfejs stał się gorszy, bo średnia jest większa.
+
+W S02 nie ma eksperymentu z nową pomocą, więc powyższy przykład jest scenariuszem do rozumowania. Pokazuje, jak definicja estymandy wpływa na interpretację. W raporcie musisz odróżnić wynik obliczony z danych od hipotetycznego wyjaśnienia mechanizmu.
+
+## Jak napisać opis, który nie pomija problemu
+
+Opis powinien zawierać N i braki, miarę położenia, miarę rozrzutu oraz odniesienie do wykresu. Przy czasie warto często pokazać średnią i medianę, żeby czytelnik widział ich relację. Przy powodzeniu podaj liczbę jedynek oraz mianownik, nie sam procent.
+
+Schemat zdania nie jest automatyczną interpretacją: „Wśród [N] ważnych pomiarów czasu średnia wyniosła [M] min, a mediana [Me] min. Zróżnicowanie opisują SD=[s] min i IQR=[IQR] min. Histogram wskazuje [zaobserwowana cecha]. Wyniki dotyczą [zakres próby i zadania]”.
+
+Po zapisaniu sprawdź każdą liczbę w odpowiedniej tabeli. Jeżeli histogram nie ma wyraźnego ogona, nie dopisuj go dlatego, że czasy „zwykle są skośne”. Jeżeli średnia i mediana są podobne, napisz to bez ogłaszania, że udowodniono normalność.
+
+| Zdanie wymagające korekty | Dlaczego? | Co trzeba dodać lub zmienić? |
+|---|---|---|
+| „Typowy czas to średnia” | Typowość ma kilka znaczeń | Nazwać miarę i pytanie |
+| „IQR jest przedziałem 95%” | Myli rozrzut z niepewnością | Podać kwartyle i ich rolę |
+| „Grupa ma wyższy słupek, więc jest skuteczniejsza” | Może porównywać same liczniki | Sprawdzić procenty i mianowniki |
+| „Punkt poza wąsem jest błędem” | Konwencja wykresu nie rozstrzyga jakości pomiaru | Sprawdzić protokół i zakres |
+| „Doświadczenie skróciło czas” | Grupy są obserwacyjne | Opisać związek bez przypisania przyczyny |
+
+**Przykładowy akapit porównawczy:** „W grupie doświadczonych użytkowników dostępnych było 70 ważnych czasów: średnia 9,97 minuty, mediana 7,90 i SD 6,02 minuty. U nowych było 72 ważnych pomiarów: średnia 10,28, mediana 8,50 i SD 5,72 minuty. Średnie różnią się opisowo o około 0,31 minuty, przy dużym zróżnicowaniu wewnątrz obu grup. To nie jest jeszcze wynik testu ani dowód wpływu doświadczenia. Warto osobno odczytać powodzenie, dostępne dla 74 osób w każdej grupie”.
+
+
+# CHALLENGE — samodzielny portret repozytorium
+
+Uzupełnij pięć pól odpowiedzi własnymi krótkimi akapitami. Wpisuj tekst pod wynikiem poza chunkiem, zastępując znacznik. Dane repozytorium są odrębne od S02 i serii A/B: przenosisz sposób odczytu, nie liczby.
+
+## CHALLENGE 1: Raport o czasie w repozytorium
+
+Dwanaście hipotetycznych osób szuka wskazanej publikacji w repozytorium uczelni. Jeden czas nie został zarejestrowany, ale wynik zadania jest znany. Potwierdzone 24 minuty pozostają prawidłowym pomiarem.
+
+Poniższy blok pokazuje dane i opis czasu. Wybierz miary, które odpowiadają na pytanie o typową wartość i nakład czasu. Nie zamieniaj brakującego czasu na zero.
+
+```{r s01-opis}
+opis_repozytorium <- portret_repozytorium()
+print(opis_repozytorium)
+```
+
+**Napisz krótki akapit:** podaj N osób, N ważnych czasów, średnią, medianę i SD. Wyjaśnij rozbieżność średniej i mediany, nie nazywając żadnej z tych miar błędną.
+
+<!-- odpowiedz:S01 -->
+[UZUPELNIJ_S01]
+<!-- /odpowiedz:S01 -->
+
+## CHALLENGE 2: Obietnica „90% użytkowników”
+
+Opiekun repozytorium chce poznać czas odpowiadający percentylowi 90. według przyjętej konwencji. Nie jest to przedział ufności dla średniej ani gwarancja dla przyszłych użytkowników. Kwantyl z interpolacji trzeba odróżnić od odsetka policzonego przy zadanym progu.
+
+Tabela pokazuje kwartyle i P90. Wykres umożliwia odczyt udziału pomiarów nie większych niż wybrany czas. Sprawdź, skąd bierze się liczba ważnych obserwacji.
+
+```{r s02-kwantyle}
+kwantyle_repozytorium <- kwantyle_i_dystrybuanta()
+print(kwantyle_repozytorium)
+```
+
+**Napisz krótki akapit:** podaj Q1, Q3, IQR i P90 z jednostkami. Zastąp zdanie „90% przyszłych studentów na pewno zmieści się w P90” opisem dopuszczalnym dla tej próby.
+
+<!-- odpowiedz:S02 -->
+[UZUPELNIJ_S02]
+<!-- /odpowiedz:S02 -->
+
+## CHALLENGE 3: Długi czas nie jest błędem tylko dlatego, że zmienia średnią
+
+Osoba redagująca raport proponuje wykluczyć 24 minuty, aby średnia lepiej wyglądała. Protokół potwierdza jednak pomiar bez przerwy technicznej. Analiza wrażliwości ma ujawnić konsekwencję wyboru, a nie go usprawiedliwić.
+
+Porównaj dwa zakresy danych. Zwróć uwagę na średnią, medianę i SD oraz na usunięty rekord. Pozostający brak czasu nie staje się nowym pomiarem.
+
+```{r s03-wrazliwosc}
+warianty <- wrazliwosc_repozytorium()
+print(warianty)
+```
+
+**Napisz krótki akapit:** opisz zmianę miar i N, oceń propozycję wykluczenia oraz wskaż, którą wersję należy przedstawić jako podstawową. Uzasadnij decyzję znaczeniem danych, nie atrakcyjnością wyniku.
+
+<!-- odpowiedz:S03 -->
+[UZUPELNIJ_S03]
+<!-- /odpowiedz:S03 -->
+
+## CHALLENGE 4: Trzy odsetki, trzy pytania
+
+Łączny sukces, krótki czas i sukces w krótkim czasie to trzy różne wskaźniki działania usługi. Ostatni wymaga pary obserwacji tej samej osoby. Nie wolno zastąpić jednego drugim tylko dlatego, że wszystkie są procentami.
+
+Blok pokazuje gotowe liczniki i mianowniki. Odnieś je do rekordów z CHALLENGE 1. Przy odsetkach wyraźnie nazwij zbiór odniesienia.
+
+```{r s04-skutecznosc}
+trzy_wskazniki <- skutecznosc_repozytorium(prog_min = 10)
+print(trzy_wskazniki)
+```
+
+**Napisz krótki akapit:** odczytaj trzy odsetki wraz z ułamkami i wyjaśnij ich rozbieżność. Wskaż miarę najlepiej odpowiadającą celowi „poprawna publikacja w najwyżej 10 minut”.
+
+<!-- odpowiedz:S04 -->
+[UZUPELNIJ_S04]
+<!-- /odpowiedz:S04 -->
+
+## CHALLENGE 5: Akapit dla instytucji
+
+Instytucja rozważa zmianę instrukcji wyszukiwania. Opis obecnej próby może ujawnić problemy wymagające zbadania, ale nie wykazuje skutku przyszłej zmiany. Połącz czas z poprawnością i zachowaj tę granicę wniosku.
+
+Na wykresie kształt oznacza sukces. Zwróć uwagę na krótki czas bez sukcesu i długi czas zakończony sukcesem. Wykorzystaj także tabelę miar z CHALLENGE 1.
+
+```{r s05-wniosek}
+czas_i_sukces <- pokaz_wykres(repo_wykres)
+print(czas_i_sukces)
+```
+
+**Napisz krótki akapit:** przygotuj spójny opis czasu, zróżnicowania i skuteczności z liczbami potrzebnymi do uzasadnienia opisu. Zakończ ograniczeniem oraz propozycją następnego pomiaru; nie przypisuj wyniku przyczynowo instrukcji ani kompetencjom.
+
+<!-- odpowiedz:S05 -->
+[UZUPELNIJ_S05]
+<!-- /odpowiedz:S05 -->
+
+# Zapis i oddanie
+
+Sprawdź pięć własnych odpowiedzi: każda liczba ma odnosić się do właściwego zbioru, miary i jednostki. Nie nazywaj SD błędem średniej, a krótkiego czasu dowodem sukcesu. Zapisz ten Rmd w edytorze.
+
+W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy PDF z zapisanej pracy, sprawdza kompletność i wysyła dokument wraz z Rmd i `analiza.R` do Twojego prywatnego repozytorium z dostępem prowadzącego.
+
+```r
+oddaj_zadanie("Z03")
+```
+
+Odczytaj potwierdzenie odbioru i SHA. Błąd nie oznacza oddania; po poprawce zapisz plik i ponownie wykonaj to samo polecenie. Nie uruchamiasz osobnego renderowania ani nie przepisujesz odpowiedzi do dodatkowego formularza.
+
+Po potwierdzonym oddaniu wykonaj w konsoli `wyloguj_github()`. Na komputerze współdzielonym wyloguj także przeglądarkę i zamknij RStudio bez zachowywania `.RData`. Przy braku sieci zachowaj źródła przed czyszczeniem komputera i poproś prowadzącego o pomoc.
+
+## Kryteria i dowody
+
+| Kryterium | Dowód odczytu i rozumowania | Punkty |
+|---|---|---:|
+| Z03.1 | Poprawne N, braki oraz miary położenia i zróżnicowania | 3 |
+| Z03.2 | Odczyt dwóch gotowych wykresów, skal i jednostek | 3 |
+| Z03.3 | Uzasadnienie wyboru miary z uwzględnieniem rozkładu | 2 |
+| Z03.4 | Własny opis próby bez nieuprawnionego uogólnienia | 2 |
+
+Wszystkie liczby powinny dać się odnaleźć w wynikach własnej analizy. Opis nie otrzymuje lepszej oceny za dramatyczną różnicę między grupami. Oceniana jest zgodność zdania z danymi, również gdy obraz jest mało wyrazisty.
+
+# Rozwinięcia do powtórki — poza rdzeniem spotkania
+
+Poniższe przykłady nie dodają obowiązkowych pól odpowiedzi. Rozwijają odczyt wykresów, jednostek i porównywalność grup. Wróć do nich przy konkretnej wątpliwości, nie tworząc kolejnego pliku do oddania.
+
+## Różne przedziały histogramu tych samych danych
+
+Gotowa funkcja pokazuje te same dane przy dwóch liczbach przedziałów: 8 tworzy szersze koszyki, a 24 węższe. Nie trzeba zmieniać kodu. Porównaj, które cechy obrazu pozostają stabilne, a które zależą od prezentacji.
+
+```{r koszyki, fig.height=2.5}
+histogramy <- porownanie_histogramow()
+print(histogramy)
+```
+
+Nie wybieraj ustawienia wyłącznie dlatego, że daje najbardziej gładki lub najbardziej dramatyczny obraz. W raporcie histogram ma pomóc odbiorcy zrozumieć rozkład. Zmiana koszyków nie zmienia wartości czasu ani N, choć zmienia wysokości poszczególnych słupków.
+
+## Jednostki i transformacje
+
+### Przeliczenie czasu
+
+Zamiana minut na sekundy mnoży każdą wartość przez 60. Średnia, mediana, SD i IQR również rosną sześćdziesięciokrotnie. Wariancja rośnie $60^2$ razy, ponieważ opiera się na kwadratach odchyleń.
+
+Poniższe podsumowanie pokazuje średnią i SD w obu jednostkach. Kolumna CV jest ilorazem SD i średniej; nie zmienia się przy takim przeliczeniu. Jej interpretacja wymaga jednak sensownego zera i dodatniej średniej.
+
+```{r jednostki}
+jednostki <- pokaz_tabele(skalowanie_demo, "Ten sam czas w dwóch jednostkach")
+print(jednostki)
+```
+
+Współczynnik zmienności $CV=s/\bar{x}$ może ułatwiać porównanie względnego rozrzutu dodatnich czasów. Nie jest obowiązkową miarą każdej zmiennej. Dla indeksu 1–5 z umownym początkiem skali albo średniej bliskiej zeru taki iloraz może być mylący.
+
+### Standaryzacja i logarytm nie naprawiają pomiaru
+
+Standaryzacja $z_i=(x_i-\bar{x})/s$ wyraża odległość pomiaru od średniej w jednostkach SD. Wynik $z=1$ oznacza jedną wartość SD powyżej średniej, a nie „100% kompetencji” czy pierwsze miejsce w rankingu. Po zmianie próby zmienią się średnia i SD odniesienia, więc ten sam surowy czas może dostać inną wartość z.
+
+Logarytm dodatniego czasu podkreśla relacje ilorazowe: podwojenie czasu odpowiada stałej różnicy logarytmów. Nie wolno jednak bez komentarza interpretować średniej logarytmów jako średniej minut. Powrót przez funkcję wykładniczą prowadzi do średniej geometrycznej dodatnich wartości, a nie do zwykłej średniej arytmetycznej.
+
+Przy czasie równym zero logarytm nie jest skończony. Dopisanie arbitralnej stałej zmienia analizowaną wielkość i wymaga uzasadnienia. W rdzeniu Z03 pozostajemy przy oryginalnych minutach; transformacje służą tu zrozumieniu, dlaczego podpis osi jest częścią wyniku.
+
+## Trzy dodatkowe przykłady odczytu
+
+### Próba A: taka sama średnia, inne doświadczenie
+
+Pierwsza mała grupa ma czasy 4, 5, 6, 7 i 8 minut. Druga 0, 2, 6, 10 i 12 minut. Obie średnie wynoszą 6 minut. Czy można powiedzieć, że usługa działa identycznie?
+
+Nie. Druga grupa jest bardziej zróżnicowana. Trzeba także sprawdzić, co oznacza czas zero: natychmiastowy wynik, zaokrąglenie czy niewłaściwy zapis. Równość jednej statystyki nie oznacza identyczności rozkładów ani identycznego procesu powstawania danych.
+
+### Próba B: dwie średnie z różnych liczebności
+
+W grupie dziesięciu osób średni czas wynosi 4 minuty, a w grupie trzydziestu 8 minut. Oblicz ogólną średnią z sum czasu. Nie uśredniaj odruchowo 4 i 8.
+
+Pierwsza grupa wnosi 40 minut, druga 240, razem 280. Po podzieleniu przez 40 osób otrzymujemy 7 minut. Średnia dwóch średnich wyniosłaby 6 i nadawałaby taką samą wagę grupom o różnej liczbie pomiarów. To inne ważenie niż średnia osób.
+
+### Próba C: dwa odsetki z różnych mianowników
+
+W małej filii sukces odnosi 8 z 10 osób, a w dużej 45 z 90. Ogólny odsetek wynosi $53/100=53\%$, a nie średnią 80% i 50%, czyli 65%. Analogicznie do średnich, trzeba wrócić do liczników i mianowników.
+
+Jednocześnie ogólny wynik 53% ukrywa duże opisowe zróżnicowanie filii. Zestawienie ogółem i według grup odpowiada na dwa przydatne pytania. Wniosek o przyczynie różnicy wymagałby informacji o zadaniach, osobach i warunkach.
+
+## Laboratorium interpretacji: kiedy prosty opis wprowadza w błąd
+
+## Cztery osoby, cztery różne doświadczenia
+
+W małej demonstracji osoba a kończy poprawnie po 2 minutach, b kończy błędnie po 3, c poprawnie po 14, a d błędnie po 16. Kto ma „najlepszy wynik”? Jeśli kryterium jest tylko czas, druga osoba wyprzedza trzecią. Jeśli kryterium jest znalezienie właściwego dokumentu, ich kolejność się odwraca. Ocena wymaga zatem definicji wyniku, a nie tylko obliczenia średniej.
+
+Wykres rozdziela dwie osie, nie sumując ich w arbitralny wynik. Litery wskazują cztery osoby z dodatkowego przykładu, nie rekordy S02. Odczytaj każdą pozycję jako zdanie łączące czas i powodzenie.
+
+```{r profile-wykonania, fig.height=2.6}
+profile <- pokaz_wykres(wykres_profili)
+print(profile)
+```
+
+Osoba a wykonała to konkretne zadanie szybko i poprawnie. Osoba b mogła szybko zrezygnować, źle zrozumieć instrukcję albo wskazać pierwszy znaleziony wynik; są to możliwe wyjaśnienia, nie ustalone fakty. Osoba c osiągnęła powodzenie mimo dłuższego czasu. Osoba d poświęciła dużo czasu bez powodzenia, więc może być szczególnie ważna dla diagnozy bariery.
+
+Opis ten nie uzasadnia etykietowania osób jako ogólnie kompetentnych lub niekompetentnych. Potrzebowalibyśmy wielu zadań, informacji o ich trudności i warunkach wykonania. Nawet wtedy trzeba zdefiniować obszar kompetencji: odnalezienie sygnatury nie jest tym samym co ocena wiarygodności publikacji.
+
+Jeżeli instytucja potrzebuje jednego rankingu, trzeba najpierw ustalić priorytet i konsekwencje pomyłek. Można raportować odsetek poprawnych odpowiedzi oraz czas udanych prób obok siebie. Jeśli tworzymy wynik złożony z czasu i poprawności, jego wagi i reguła muszą być jawne. Samo dodanie minut do punktu za sukces nie ma oczywistej jednostki ani uzasadnienia.
+
+## Granica obserwacji nie jest dokładnym czasem wykonania
+
+Wyobraź sobie inny protokół: każdą próbę kończymy po 15 minutach. Trzy osoby jeszcze szukają, a w arkuszu otrzymują zapis 15. Czy jest to ich czas znalezienia dokumentu? Nie. Wiemy jedynie, że w okresie obserwacji nie uzyskały sukcesu. Ich hipotetyczny czas do sukcesu może być dłuższy albo zadanie mogłoby nigdy nie zakończyć się powodzeniem.
+
+Jeśli pytanie brzmi „ile minut zajmowało stanowisko w sesji ograniczonej do 15 minut”, zapis czasu trwania sesji jest użyteczny. Jeśli pytamy „ile trwa skuteczne wyszukanie”, ten sam zapis jest informacją niepełną. W analizie czasu do zdarzenia takie zakończenie obserwacji może wymagać uwzględnienia cenzorowania. Nie wdrażamy tu tej metody; uczymy się rozpoznać, że zwykła średnia zapisów odpowiada innemu pytaniu.
+
+W S02 słownik określa czas obserwowanego zadania i jego dopuszczalny zakres. Nie dodajemy samodzielnie założenia, że każda wysoka wartość jest ucięta limitem. Przykład 15 minut służy czytaniu przyszłych badań i projektowaniu własnego protokołu. Gdy autor artykułu podaje „średni czas wyszukiwania”, warto sprawdzić, co robił z porzuceniami i próbami niezakończonymi.
+
+## Skład próby może odwrócić porównanie
+
+Biblioteka porównuje dwie wersje usługi, A i B, ale w każdej zarejestrowano inne zadania. W A przeważają łatwe, w B trudne. Dodatkowa tabela pokazuje liczby dobrane wyłącznie do demonstracji; nie jest eksperymentem w S02.
+
+Odczytaj odsetki wewnątrz każdego typu zadania. Porównuj A z B najpierw w zadaniu łatwym, potem w trudnym. W każdym wierszu mianownikiem jest liczba osób danej wersji i danego zadania.
+
+```{r sklad-proby}
+sklad <- pokaz_tabele(sklad_demo, "Wyniki wewnątrz rodzaju zadania")
+print(sklad)
+```
+
+W łatwym zadaniu obie wersje osiągają 90%. W trudnym A osiąga 20%, a B 30%. Teraz połączymy typy zadań. Zanim odczytasz wynik, przewidź, czy liczniejsze trudne zadania w B mogą obniżyć jego ogólny odsetek.
+
+```{r polaczenie-zadan}
+wynik_laczny <- pokaz_tabele(sklad_ogolem, "Wyniki po połączeniu zadań")
+print(wynik_laczny)
+```
+
+Ogółem A ma 83%, a B 36%. Nie ma błędu rachunkowego: zmieniły się wagi. W A łatwe zadania stanowią 90% prób, w B tylko 10%. Wynik zbiorczy opisuje każdą wersję w jej faktycznym zestawie zadań, ale nie izoluje różnicy między wersjami przy porównywalnym obciążeniu.
+
+Dla ilustracji możemy nadać obu typom zadań wspólne wagi po połowie. Obliczamy wtedy odsetek dla hipotetycznej mieszanki, nie nową obserwację. Porównaj go z wynikiem ogólnym i zauważ, że zmiana ważenia zmieniła pytanie.
+
+```{r wspolne-wagi}
+wynik_wazony <- pokaz_tabele(sklad_wspolny, "Hipotetyczna mieszanka pół na pół")
+print(wynik_wazony)
+```
+
+A otrzymuje 55%, a B 60%. Nie ogłaszamy na tej podstawie przyczynowej przewagi B, ponieważ nadal mogą różnić się osoby i warunki. Pokazujemy jedynie, że wniosek „A lepsze, bo 83% to więcej niż 36%” pomija strukturę porównania. Standardowe wagi też trzeba uzasadnić: pół na pół było tu wyborem dydaktycznym.
+
+W badaniach zachowań informacyjnych podobny problem może pojawić się przy łączeniu początkujących z ekspertami, prostych zapytań z problemami badawczymi albo korzystania mobilnego ze stacjonarnym. Nie trzeba od razu budować skomplikowanego modelu, aby zauważyć ryzyko. Pierwszy krok to tabela liczebności i pytanie o porównywalność.
+
+## Od wykresu do decyzji: trzy krótkie recenzje
+
+**Recenzja 1.** Autor porównuje czas na dwóch histogramach, ale jeden pokazuje liczebności dla 30 osób, a drugi dla 300. Pisze, że drugi rozkład jest dziesięć razy bardziej intensywny. Problemem jest pomylenie wysokości liczników z kształtem rozkładu. Do porównania kształtu przydałaby się wspólna skala udziałów lub gęstości i ten sam podział osi; liczebności nadal należy podać.
+
+**Recenzja 2.** Autor przedstawia dwa pudełka, lecz oś czasu zaczyna się przy 9 minutach, a kończy przy 11. Niewielka różnica median zajmuje większość wysokości wykresu. Nie oznacza to automatycznie fałszerstwa: zawężenie osi może ujawniać szczegół. Podpis i opis powinny jednak pokazywać rzeczywistą wielkość w minutach, żeby odbiorca nie mylił efektownego obrazu z dużym znaczeniem praktycznym.
+
+**Recenzja 3.** Raport stwierdza, że „wyniki są stabilne, bo SD jest małe”. Trzeba zapytać: małe względem czego i czy chodzi o podobieństwo osób, powtarzalność pomiaru tej samej osoby, czy precyzję średniej? Jedno SD z przekrojowej próby opisuje pierwszą z tych spraw. Powtarzalność wymaga powtórnych pomiarów, a precyzja estymacji własnego modelu niepewności.
+
+W poprawionej wersji potrzebne jest zdanie odnoszące się do wyniku, nie sama nazwa błędu. Na przykład: „W drugiej grupie zebrano więcej obserwacji; po przeliczeniu na udziały oba histogramy mają podobne skupienie”. Poprawa ma odtworzyć pytanie i dowód. Samo dodanie słowa „prawdopodobnie” nie naprawia pomylonego mianownika.
+
+## Samokontrola przed własnym opisem
+
+Weź jedną liczbę z podsumowania S02 i odpowiedz pełnymi zdaniami: z których rekordów powstała, co wykluczono, jaka jest jednostka i jakie pytanie rozstrzyga. Następnie wskaż jedno zdanie, którego ta liczba nie uzasadnia. Dla mediany może to być twierdzenie o całkowitym koszcie czasu, dla odsetka powodzeń — twierdzenie o szybkości, a dla SD — twierdzenie o błędzie średniej.
+
+Ta próba nie wymaga dodatkowego pliku ani nowych punktów. Pozwala wrócić do Z03, w którym tabela jest materiałem do własnego opisu. Dobry opis pozostaje poprawny także po usunięciu wykresu z raportu, a dobry wykres pozwala sprawdzić najważniejsze zdanie opisu.
+
+C04 wróci do drugiej części badania: jak z pojedynczych odpowiedzi powstaje indeks i co ten indeks rzeczywiście mierzy. Dzisiejsza zasada pozostanie aktualna: najpierw definiujemy wielkość, później odczytujemy liczbę. Długi czas, wysoka ocena katalogu i prawidłowe wykonanie zadania są różnymi elementami historii użytkownika.

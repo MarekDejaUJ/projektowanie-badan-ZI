@@ -1,6 +1,6 @@
 ---
-title: 'Handout W04 — Porównania grup i zależności kategorii'
-subtitle: 'Mapa pojęć, wzorów i pytań'
+title: 'W04 — Porównania: mapa projektu, efektu i testu'
+subtitle: 'Zarządzanie informacją — handout — 2026/27'
 author: 'Marek Deja'
 date: '2026/27'
 lang: pl-PL
@@ -9,67 +9,94 @@ papersize: a4
 geometry: margin=2cm
 ---
 
-# 1. Pytanie i główna myśl
+# Najpierw ustal strukturę
 
-**Pytanie:** Czy dwie grupy różnią się indeksem lub czasem oraz czy powodzenie zadania zależy od grupy? Jak duży i precyzyjny jest wzorzec?
-
-Pytanie o różnicę wymaga wskazania wyniku, grup, kolejności oraz projektu. Pytanie o współwystępowanie kategorii wymaga tabeli i właściwego mianownika. Test jest końcem tego rozumowania, nie początkiem.
-
-## Tok rozumowania
-
-1. Pytanie i zakres wniosku.  
-2. Jednostka, zmienne, skale i braki.  
-3. Estymata oraz jednostka.  
-4. Niepewność i dwa tory, jeśli dotyczą.  
-5. Efekt, ograniczenie i odpowiedź.
-
-\newpage
-
-# 2. Wzór i symbole
-
-$$t_W=\frac{\bar{x}_1-\bar{x}_2}{\sqrt{s_1^2/N_1+s_2^2/N_2}}, \quad \chi^2=\sum\frac{(O-E)^2}{E}$$
-
-| Symbol | Nazwa | Znaczenie |
+| Projekt | Wielkość główna | Kluczowa kontrola |
 |---|---|---|
-| $\Delta$ | różnica | grupa 2 minus grupa 1 |
-| $g$ | Hedges g | standaryzowana różnica |
-| $O,E$ | liczebności | obserwowane i oczekiwane |
-| $V$ | V Cramera | siła związku kategorii |
+| Dwie niezależne grupy, wynik ilościowy | Różnica średnich | Inne osoby, N i SD w obu grupach |
+| Dwa pomiary tych samych osób | Średnia różnica wewnątrz par | ID i kompletne pary |
+| Dwie zmienne kategorialne | Proporcje i związek w tabeli | Liczebności, mianowniki, oczekiwania |
+| Więcej grup | Zaplanowany kontrast lub porównanie ogólne | Wielokrotność i właściwy model |
+| Wynik interpretowany rangowo | Położenie/rangi według metody | Nie utożsamiać z testem średnich |
 
-Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę i składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani CI zakresu 95% osób.
+Równe liczebności nie tworzą par. Wielokrotne zadania tej samej osoby nie są niezależnymi osobami. Grupy obserwacyjne nie stają się randomizowane przez użycie permutacji.
 
-\newpage
+# Jeden kierunek we wszystkich wynikach
 
-# 3. Dwa tory i efekt
+$$\Delta=\mu_N-\mu_D,\qquad
+\widehat\Delta=\bar{x}_N-\bar{x}_D.$$
 
-**Tor klasyczny.** 
-Welch porównuje średnie bez założenia równych wariancji. Test rangowy odpowiada na pytanie o rozkłady/rangi i nie jest automatyczną wersją testu średnich. Chi-kwadrat porównuje obserwowane komórki z oczekiwanymi przy niezależności, Fisher służy małym układom.
+Nowi minus doświadczeni: dodatni wynik czasu oznacza dłuższy czas nowych, dodatni indeks — wyższą deklarację zgodnie z kierunkiem skali. Po odwróceniu kolejności zmieniamy znak różnicy, t, g i granice CI: [L; U] przechodzi w [−U; −L]. Dwustronne p pozostaje takie samo.
 
-**Tor permutacyjny/resampling.** 
-Dla dwóch grup tasujemy etykiety przy zachowanych wynikach. Dla tabeli Monte Carlo tworzy tabele zgodne z hipotezą niezależności i marginesami procedury. Odczyt p pozostaje warunkowy względem H0.
+# Welch: obie średnie mają niepewność
 
-**Efekt i przedział.** 
-Raportujemy różnicę w punktach lub minutach, Hedges g oraz CI. Dla tabeli V Cramera nie ma kierunku, dlatego trzeba podać odsetki w grupach i ewentualnie różnicę ryzyka dla 2×2.
+$$
+SE=\sqrt{\frac{s_N^2}{n_N}+\frac{s_D^2}{n_D}},
+\quad t_W=\frac{\widehat\Delta}{SE},
+\quad CI_{95\%}=\widehat\Delta\pm t_{0{,}975;\nu}SE.
+$$
 
-\newpage
+Welch nie wymaga równych wariancji, ale nadal wymaga właściwego projektu i uzasadnienia przybliżenia. Niecałkowite df jest normalnym wynikiem przybliżenia, nie błędem liczebności. Test normalności nie ocenia niezależności i nie jest uniwersalnym przełącznikiem metod.
 
-# 4. Interpretacja i pytania
+Przykład hipotetyczny: po 5 osób, średnie czasu 12 i 8 minut, SD w obu grupach około 3,162. Różnica wynosi 4 minuty, SE=2, t(8)=2, p około 0,081, CI [−0,61; 8,61] minuty. To nieprecyzyjna dodatnia estymata, nie dowód równości.
 
-**Przykład.** 
-Nowi użytkownicy mogą mieć niższy indeks i mniejszy odsetek powodzenia. Dwa wyniki dotyczą różnych aspektów: samooceny i wykonania. Zgodność zwiększa spójność opisu, lecz nadal nie dowodzi, że doświadczenie samo spowodowało wynik.
+$$
+s_p=\sqrt{\frac{(n_N-1)s_N^2+(n_D-1)s_D^2}{n_N+n_D-2}},
+\quad
+g\approx\left(1-\frac{3}{4(n_N+n_D)-9}\right)
+\frac{\widehat\Delta}{s_p}.
+$$
 
-**Pułapki.** 
-Błędy obejmują zmianę kolejności grup bez zmiany znaku, raportowanie p bez średnich, V jako procent różnicy, test chi-kwadrat na procentach zamiast liczebnościach, ignorowanie oczekiwanych komórek i przyczynowy język.
+G dzieli różnicę przez rozrzut osób, nie przez SE. Naturalna różnica w minutach lub punktach pozostaje podstawą sensu praktycznego. Duże g i p powyżej 0,05 mogą wystąpić jednocześnie przy małej próbie.
 
-**Pytanie do pracy.** 
-Dla czterech pytań wybierz: opis, Welch, test rangowy, chi-kwadrat/Fisher lub brak testu. Uzasadnij decyzję pytaniem, skalą, niezależnością i mianownikiem, a następnie wskaż efekt oraz wersję permutacyjną.
+# Pary: jedna różnica na osobę
 
-## Dalszy krok
+$$
+d_i=x_{i,\mathrm{po}}-x_{i,\mathrm{przed}},
+\quad t=\frac{\bar d}{s_d/\sqrt{n_{\mathrm{par}}}},
+\quad df=n_{\mathrm{par}}-1.
+$$
 
-C06 przeprowadzi jedno porównanie dwóch grup, C07 tabelę kategorii. W05 pokaże związki dwóch zmiennych ilościowych i prostą regresję.
+Ujemna zmiana czasu oznacza skrócenie. Założenie normalności dla dokładnego modelu dotyczy różnic, nie osobno kolumn przed i po. Bez kontroli zmiana może odzwierciedlać także uczenie się, a nie tylko interwencję.
 
-## Literatura
+# Resampling musi pasować do projektu
 
-- Agresti. An Introduction to Categorical Data Analysis.
-- [Lakens (2013). Calculating and reporting effect sizes](https://doi.org/10.3389/fpsyg.2013.00863).
-- Kontekst LIS pochodzi ze scenariuszy usług cyfrowych i obserwowanego zadania wyszukiwawczego.
+Permutacja dwóch grup przestawia etykiety przy zachowaniu liczebności, jeśli pod H0 dopuszcza to wymienialność lub mechanizm randomizacji. Sama równość średnich nie wystarcza przy dowolnie różnych rozkładach. Surowe tasowanie różnicy nie dziedziczy automatycznie odporności Welcha na nierówne wariancje.
+
+Bootstrap dwóch grup losuje z powtórzeniami osobno w każdej grupie, aby szacować niepewność różnicy. Dla par zachowujemy całą parę. Zmiana znaków różnic ma własne uzasadnienie symetrii lub randomizacji; nie jest dowolnym mieszaniem wszystkich wartości.
+
+# Kategorie: od komórki do statystyki
+
+$$E_{ij}=\frac{n_{i\cdot}n_{\cdot j}}N,\qquad
+\chi^2=\sum_{i,j}\frac{(O_{ij}-E_{ij})^2}{E_{ij}},
+\qquad df=(r-1)(c-1).$$
+
+O to liczebność obserwowana, E oczekiwana przy niezależności. E może być ułamkiem. Do testu podajemy liczebności, nie procenty. Małe oczekiwania mogą pogarszać przybliżenie chi-kwadrat; Fisher lub odpowiednie Monte Carlo wymagają jawnego opisu procedury.
+
+Monte Carlo w omawianym teście tabel zachowuje marginesy. Fisher 2 na 2 ma interpretację warunkową przy tych marginesach. Słowo „dokładny” nie oznacza braku wymagań dotyczących projektu lub niezależności.
+
+# Wielkość związku nie jest p
+
+$$V=\sqrt{\frac{\chi^2}{N\min(r-1,c-1)}}.$$
+
+V jest nieujemne i nie ma kierunku. Nie jest procentem skuteczności. Prosty percentylowy bootstrap V może nie obejmować zera także przy niezależności populacyjnej, dlatego nie używamy jego dolnej granicy jako automatycznego testu związku.
+
+W przykładzie 18/30 wobec 32/40:
+
+| Miara: nowi względem doświadczonych | Wynik | Odczyt |
+|---|---:|---|
+| Różnica proporcji | −0,20 | O 20 punktów procentowych mniej |
+| Iloraz proporcji | 0,75 | Udział stanowi 75% udziału drugiej grupy |
+| Iloraz szans | 0,375 | Inny iloraz: sukcesy do niepowodzeń |
+
+Przedział każdej miary trzeba nazwać. Wartością zerową różnicy jest 0, a brakiem związku dla ilorazów jest 1. Nie przenosimy granic między skalami bez odpowiedniego przekształcenia.
+
+# Rangi i wiele grup: granice skrótu
+
+Test Manna–Whitneya nie jest automatycznym testem median. Interpretacja przesunięcia położenia wymaga dodatkowych warunków. Porównanie rang może odpowiadać innemu pytaniu niż przeciętny koszt czasu.
+
+ANOVA pyta, czy wszystkie średnie są równe; wynik ogólny nie wskazuje pary. Zaplanowane kontrasty i analizy po obejrzeniu wyników wymagają odpowiednich reguł wielokrotności. Istotny wynik ogólny nie uprawnia do dowolnego wybierania kolejnych p.
+
+W raporcie: projekt, grupy, N, wielkość i kierunek efektu, jednostka, CI, statystyka, df, p i ograniczenie. Wniosek o przyczynie wymaga uzasadnienia projektu, nie tylko małego p.
+
+Definicje efektów: [Lakens (2013)](https://doi.org/10.3389/fpsyg.2013.00863). Warunki przestawień: [Winkler i in. (2014)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4010955/).

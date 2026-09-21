@@ -1,0 +1,302 @@
+---
+title: 'Projekt indywidualny — plan badania i analiza ilościowa'
+subtitle: 'Zarządzanie informacją — {{ROCZNIK}} — {{SCENARIUSZ}}'
+author: 'ID: {{ID}}'
+lang: pl-PL
+fontsize: 11pt
+papersize: a4
+geometry: margin=2cm
+params:
+  id_studenta: '{{ID}}'
+  scenariusz: '{{SCENARIUSZ}}'
+  rocznik: '{{ROCZNIK}}'
+  wersja_generatora: '{{GENERATOR}}'
+  hash_danych: '{{HASH_DANYCH}}'
+output:
+  pdf_document:
+    latex_engine: xelatex
+    dev: cairo_pdf
+  html_document: default
+---
+
+<!--
+To jest jeden roboczy plik raportu. Pola P01–P10 odpowiadają twoim zapisanym
+odpowiedziom z Z09 i Z10; po przeniesieniu tekstu poprawiasz go tutaj, bez
+ponownego wpisywania tych samych odpowiedzi w dwóch plikach. Jeżeli pole jest
+puste, uzupełnij je własnym akapitem. Nie kopiuj wzorcowych odpowiedzi LEARN.
+
+Nie obowiązuje limit słów ani stron raportu. Dopisz to, czego brakuje do
+odpowiedzi na pytanie, usuń powtórzenia, pozostaw liczby, jednostki i granice
+wniosku. Uporządkuj bibliografię w P11. Instrukcje w komentarzach nie pojawią
+się w PDF; własny tekst wpisuj między znacznikami odpowiedzi, poza komentarzem
+i poza chunkiem. Znaczników nie usuwaj.
+
+Uruchamiaj chunki od początku. Pierwszy wczytuje zapisane dane, słownik,
+manifest i kartę scenariusza; nie generuje nowego wariantu. Gotowy analiza.R
+wykonuje obliczenia oraz prezentację. Nie zmieniaj surowych danych ani
+parametrów metadanych w nagłówku, aby dopasować wynik.
+
+Zapisz raport, a do oddania użyj w konsoli oddaj_projekt(). Ta funkcja ma
+utworzyć aktualny PDF i przesłać go razem ze źródłami oraz danymi. Zdalne SHA
+zachowuje pokwitowanie, nie dopisuj go do pliku, który samo identyfikuje.
+-->
+
+<!--
+Przygotowanie łączy zapisany wariant z regułami poznanymi na C02–C04.
+Obie analizy odpowiadają pytaniom zapisanym w scenariuszu na C09.
+-->
+```{r przygotowanie, include=FALSE}
+source(badaniaZI::plik_pracy("PROJEKT", "analiza.R"),
+       local = knitr::knit_global(), encoding = "UTF-8")
+ustaw_material()
+projekt <- wczytaj_projekt_raportu()
+analizy <- analizy_wariantu(projekt)
+```
+
+# 1. Problem informacyjny i cel
+
+<!--
+P01: punkt wyjścia Z09/S01. Zachowaj własny opis instytucji, problemu,
+odbiorców i decyzji, której miałoby służyć badanie. Wyraźnie rozdziel plan
+realnego badania od wykonanej analizy danych syntetycznych. Szczegóły
+manifestu umieść w części o danych, nie zastępuj nimi problemu.
+-->
+<!-- odpowiedz:P01 -->
+[UZUPELNIJ_P01]
+<!-- /odpowiedz:P01 -->
+
+# 2. Pytania, estymandy i plan analiz
+
+<!--
+P02: punkt wyjścia Z09/S02. Zapisz dokładnie dwa pytania zgodne ze scenariuszem,
+zmienne, estymandy i hipotezy zerowe. Uzasadnij metody skalą i projektem,
+wskaż niezależność obserwacji oraz założenie wymienialności przy tasowaniu.
+Klasyczny i permutacyjny wynik jednego porównania nie są dwoma pytaniami.
+Nie zmieniaj planu tylko dlatego, że uzyskano p większe od wybranego progu.
+-->
+<!-- odpowiedz:P02 -->
+[UZUPELNIJ_P02]
+<!-- /odpowiedz:P02 -->
+
+# 3. Populacja, rekrutacja i operacjonalizacja
+
+<!--
+P03: punkt wyjścia Z09/S03. Rozwiń plan realnej populacji i doboru próby:
+kto, gdzie, w jakim okresie i jak mógłby zostać zaproszony; kto może nie
+odpowiedzieć. Określ kategorie grup i okres odniesienia deklaracji.
+Nie opisuj tej rekrutacji jako już przeprowadzonej.
+
+Wyjaśnij, co mierzy indeks, jak pozycje odpowiadają konstruktowi i dlaczego
+pozycję trzecią odwracamy. Nie nazywaj przykładów zwalidowaną skalą.
+Zapisz konkretną instrukcję zadania, start i koniec pomiaru czasu, jednostkę,
+pomoc i przerwanie próby. Dla pola 0/1 odczytaj treść pytania: może to być
+wykonanie, deklaracja zamiaru albo inne zdarzenie, nie zawsze sukces.
+Nazwij sposób przyszłego pomiaru, odróżniając brak zapisu od wartości 0.
+
+Doprecyzuj dobrowolność udziału i ograniczenie zbierania danych osobowych.
+Nie zbierasz danych od ludzi w ramach tego projektu. Podaj jedno
+ograniczenie pomiaru i sposób sprawdzenia zrozumiałości instrukcji.
+-->
+<!-- odpowiedz:P03 -->
+[UZUPELNIJ_P03]
+<!-- /odpowiedz:P03 -->
+
+<!--
+Ta karta zawiera rzeczywiste pozycje i kody zapisane dla analizowanego
+wariantu. Nie trzeba przepisywać ich do oddzielnego kwestionariusza.
+-->
+```{r pomiar}
+karta_pomiaru <- pomiar_wariantu(projekt)
+print(karta_pomiaru)
+```
+
+# 4. Dane i reguły przygotowania
+
+<!--
+Manifest identyfikuje wariant, nie poświadcza jakości pomiaru ani
+reprezentatywności. Dane i karta scenariusza zostały odczytane z zapisanych
+plików, bez wywoływania generatora podczas renderowania.
+-->
+```{r wariant}
+print(projekt)
+```
+
+<!--
+P04: punkt wyjścia Z09/S04. Uzasadnij reguły duplikatów, kodu 99, czasu,
+odwrócenia pozycji i minimum 5/6. Zachowaj rozróżnienie zmiany komórek
+i usunięcia całych rekordów; nie usuwaj poprawnych skrajnych wyników dla p.
+-->
+<!-- odpowiedz:P04 -->
+[UZUPELNIJ_P04]
+<!-- /odpowiedz:P04 -->
+
+<!--
+Dziennik pokazuje skutki gotowego przygotowania. Bilans wskazuje, które
+osoby mogą wejść do poszczególnych analiz i skąd bierze się różnica N.
+-->
+```{r przygotowanie-danych}
+dziennik <- przygotowanie_wariantu(projekt)
+bilans <- bilans_wariantu(projekt)
+print(dziennik)
+print(bilans)
+```
+
+<!--
+P05: punkt wyjścia Z10/S01. Porównaj faktyczne N i metadane z wcześniejszym
+planem. Usuń powtórzenia z P04; tutaj podsumuj rezultat kontroli, liczebności
+obu analiz i konsekwencję braków. Nie dopisuj, że braki są losowe, jeśli
+nie masz dowodu. Nie przepisuj całych hashy do akapitu.
+-->
+<!-- odpowiedz:P05 -->
+[UZUPELNIJ_P05]
+<!-- /odpowiedz:P05 -->
+
+# 5. Opis próby i pomiarów
+
+<!--
+Tabele rozdzielają indeks i czas, z własnymi N oraz jednostkami.
+W odpowiedziach wielokrotnych procenty mają wspólny mianownik osób z kompletem
+kodów, a nie liczbę wszystkich zaznaczeń; suma może przekraczać 100%.
+-->
+```{r opis}
+opis_danych <- opis_raportu(projekt)
+opis_kanalow <- kanaly_raportu(projekt)
+print(opis_danych)
+print(opis_kanalow)
+```
+
+<!--
+Pierwszy wykres pokazuje zróżnicowanie indeksu w grupach.
+Pudełko nie jest przedziałem ufności średniej ani testem różnicy.
+-->
+```{r wykres-indeksu}
+obraz_indeksu <- wykres_raportu(analizy,numer=1)
+print(obraz_indeksu)
+```
+
+<!--
+P06: punkt wyjścia Z09/S05. Zachowaj własny pierwszy opis indeksu, sprawdź
+N/średnie/SD z bieżącą tabelą i dodaj krótki odczyt czasu oraz kanałów.
+Uzasadnij średnią lub medianę dla czasu i wskaż właściwy mianownik kanałów.
+O planie analiz pisz w części 2; tutaj opisuj próbę, a nie populację.
+Drugi wykres znajduje się przy drugiej analizie, nie trzeba go dublować.
+-->
+<!-- odpowiedz:P06 -->
+[UZUPELNIJ_P06]
+<!-- /odpowiedz:P06 -->
+
+# 6. Pierwsza analiza — porównanie indeksu w grupach
+
+<!--
+Gotowa procedura zachowuje kolejność kontrastu z karty scenariusza.
+CI dotyczy różnicy średnich; Welcha, bootstrapu oraz tasowania etykiet
+nie traktujemy jako procedur o identycznych założeniach.
+-->
+```{r analiza-pierwsza}
+porownanie <- wynik_pierwszej_analizy(analizy)
+print(porownanie)
+```
+
+<!--
+P07: punkt wyjścia Z10/S02. Popraw własny akapit wyniku: pomiar i grupy,
+N/średnie, różnica w punktach indeksu, CI Welcha i bootstrapu, t/df/p oraz
+p permutacyjne z B. Odpowiedz na pierwsze pytanie i nazwij granicę wniosku.
+Nie zastępuj efektu samym p ani progu praktycznej ważności etykietą g.
+-->
+<!-- odpowiedz:P07 -->
+[UZUPELNIJ_P07]
+<!-- /odpowiedz:P07 -->
+
+# 7. Druga analiza — relacja ze scenariusza
+
+<!--
+Plan scenariusza wybiera tabelę albo Spearmana, nie wynik pierwszego p.
+Kod 1 ma znaczenie zapisane w pytaniu; rho jest bez jednostki, a różnica
+proporcji może być wyrażona w punktach procentowych.
+-->
+```{r analiza-druga}
+relacja <- wynik_drugiej_analizy(analizy)
+print(relacja)
+```
+
+<!--
+Drugi wykres przedstawia odsetki w grupach albo kompletne pary tej samej
+osoby. Porównaj jego kierunek i osie z efektem z tabeli.
+-->
+```{r wykres-relacji}
+obraz_relacji <- wykres_raportu(analizy,numer=2)
+print(obraz_relacji)
+```
+
+<!--
+P08: punkt wyjścia Z10/S03. Dla tabeli podaj liczby i mianowniki, różnicę
+odsetków z CI, klasyczny test i Monte Carlo z B; V czytaj bez kierunku.
+Przy rzadkich komórkach odróżnij Fishera i jego CI ilorazu szans od
+dużopróbkowego CI różnicy. Dla Spearmana podaj N par, rho, S, przybliżone p,
+p permutacyjne z B oraz CI bootstrapu par, bez fikcyjnego df lub CI Pearsona.
+Zakończ odpowiedzią na drugie pytanie, nie wnioskiem przyczynowym.
+-->
+<!-- odpowiedz:P08 -->
+[UZUPELNIJ_P08]
+<!-- /odpowiedz:P08 -->
+
+# 8. Wnioski, ograniczenia i rekomendacja
+
+<!--
+P09: punkt wyjścia Z10/S04. Połącz obie odpowiedzi z problemem instytucji.
+Wykorzystaj efekty, CI i wykresy, nie powtarzaj pełnych wyników testów.
+Wyjaśnij ograniczenie pomiaru, doboru i syntetyczności; podaj konkretną
+alternatywę dla nieuprawnionego wniosku przyczynowego. Różne decyzje przy p
+nie są testem różnicy między dwoma efektami.
+-->
+<!-- odpowiedz:P09 -->
+[UZUPELNIJ_P09]
+<!-- /odpowiedz:P09 -->
+
+<!--
+P10: punkt wyjścia Z10/S05. Powiąż warunkową rekomendację z konkretnym
+wynikiem i najważniejszą niepewnością. Zaproponuj sposób sprawdzenia jej
+w rzeczywistym badaniu. Symulacja nie jest podstawą realnej decyzji
+o instytucji; samo powiększenie N nie naprawi złego pomiaru.
+-->
+<!-- odpowiedz:P10 -->
+[UZUPELNIJ_P10]
+<!-- /odpowiedz:P10 -->
+
+# 9. Źródła i odtworzenie
+
+<!--
+P11: uporządkuj źródła rzeczywiście wykorzystane w swoim planie i opisie.
+Podaj autora, rok, tytuł i DOI lub URL oraz wyjaśnij, do jakiego pojęcia,
+pomiaru lub decyzji odwołujesz się w raporcie. Nie przenoś wyników badań
+LIS do danych syntetycznych i nie przypisuj kursowym pozycjom walidacji.
+
+Jeżeli generatywna SI pomagała w zrozumieniu lub poprawieniu kodu, oznacz
+takie fragmenty kodu i opisz rzeczywisty zakres wsparcia. Interpretację
+i wnioski piszesz samodzielnie; odpowiedź modelu nie jest źródłem naukowym.
+Nie przekazuj danych osobowych ani poświadczeń. Korzystanie z SI nie jest
+wymagane. Nie dopisuj deklaracji użycia narzędzia, z którego nie korzystałeś.
+-->
+<!-- odpowiedz:P11 -->
+[UZUPELNIJ_P11]
+<!-- /odpowiedz:P11 -->
+
+Zapisane `raport.Rmd` i `analiza.R` oraz katalog `dane` tworzą podstawę
+odtworzenia. Katalog danych zawiera surowe CSV i RDS, słownik, manifest
+oraz kartę scenariusza. Analiza sprawdza zgodność ID, wariantu i hashy
+przed przygotowaniem danych. Nie korzysta z poprzedniej przestrzeni roboczej
+i nie wywołuje nowego losowania danych.
+
+Aby odtworzyć wynik, otwórz raport w RStudio i uruchom chunki od początku
+albo renderuj ten zapisany Rmd. Tabele i wykresy powstają w dokumencie;
+nie trzeba przepisywać wyników z konsoli ani osobno wstawiać obrazów.
+Wersję wysłaną do oceny identyfikuje odrębne pokwitowanie zdalnego SHA.
+
+<!--
+Poniższa tabela zapisuje wersje środowiska tego wykonania, a nie deklarację
+autora z pamięci. Wersja generatora pochodzi z manifestu zachowanych danych.
+-->
+```{r wersje}
+srodowisko <- wersje_raportu(analizy)
+print(srodowisko)
+```

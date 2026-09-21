@@ -20,3 +20,173 @@ wynik_klasyczny <- tabela_glowna[2, , drop = FALSE]
 wynik_permutacyjny <- data.frame(status = 'nie dotyczy pytania C01')
 efekt <- data.frame(status = 'brak inferencji na C01')
 wykres_glowny <- ggplot2::ggplot(head(dane, 20), ggplot2::aes(x = seq_len(20), y = czas_wyszukiwania)) + ggplot2::geom_point(size = 2, colour = '#0072B2') + ggplot2::labs(x = 'Kolejne rekordy', y = 'Czas [min]', title = 'Pierwsze rekordy zadania') + badaniaZI::theme_zi()
+
+# Mały, odrębny przykład umożliwia sprawdzenie każdego licznika i mianownika.
+mini <- data.frame(
+  id = paste0('u0', 1:6),
+  grupa = c('nowi', 'nowi', 'doświadczeni', 'nowi', 'doświadczeni', 'nowi'),
+  czas_min = c(6, 8, 12, NA, 9, 5),
+  powodzenie = c(1, 1, 0, NA, 1, 0)
+)
+czasy <- mini$czas_min
+slownik_start <- data.frame(
+  kolumna = c('id_odpowiedzi', 'grupa', 'czas_wyszukiwania', 'powodzenie',
+              'pozycja_1', 'czestosc_korzystania'),
+  znaczenie = c('Identyfikator rekordu osoby', 'Nowi lub doświadczeni użytkownicy',
+                'Obserwowany czas w minutach', 'Wynik zadania: 0 = nie, 1 = tak',
+                'Deklaracja: szybko znajduję pole wyszukiwania',
+                'Deklarowana częstość korzystania: 1–5'),
+  skala = c('identyfikator', 'nominalna', 'ilorazowa', 'nominalna',
+            'porządkowa', 'porządkowa')
+)
+
+# Funkcja pokazuje, które wiersze faktycznie wchodzą do danego podsumowania.
+odczytaj_mianownik <- function(tabela, zmienna) {
+  stopifnot(is.data.frame(tabela), zmienna %in% names(tabela))
+  x <- tabela[[zmienna]]
+  data.frame(zmienna = zmienna, rekordy = length(x),
+             wazne = sum(!is.na(x)), braki = sum(is.na(x)))
+}
+
+czytaj_rekord <- function(tabela, numer = 1L) {
+  stopifnot(numer >= 1L, numer <= nrow(tabela))
+  data.frame(pole = names(tabela),
+             wartosc = unname(vapply(tabela, function(x) as.character(x[numer]), character(1))))
+}
+
+opis_mini <- data.frame(
+  miara = c('Średni czas [min]', 'Mediana czasu [min]', 'Znane wyniki zadania',
+            'Liczba powodzeń', 'Proporcja powodzeń', 'Odsetek powodzeń [%]'),
+  wartosc = c(mean(czasy, na.rm = TRUE), median(czasy, na.rm = TRUE),
+              sum(!is.na(mini$powodzenie)), sum(mini$powodzenie, na.rm = TRUE),
+              mean(mini$powodzenie, na.rm = TRUE),
+              100 * mean(mini$powodzenie, na.rm = TRUE))
+)
+kontrola_braku <- data.frame(
+  postepowanie = c('Pięć zmierzonych czasów', 'Brak błędnie zastąpiony zerem'),
+  suma_min = c(sum(czasy, na.rm = TRUE), sum(czasy, na.rm = TRUE)),
+  mianownik = c(5, 6), srednia_min = c(40/5, 40/6)
+)
+odczyt_polecen <- data.frame(
+  polecenie = c('czasy[3]', 'mini[3, "czas_min"]', 'mini$czas_min',
+                'nrow(mini)', 'sum(is.na(czasy))', 'mean(czasy, na.rm = TRUE)'),
+  sens = c('Trzecia wartość wektora', 'Czas z trzeciego wiersza tabeli',
+            'Cała kolumna czasu', 'Liczba wierszy, także z brakami',
+            'Liczba braków czasu', 'Średnia wyłącznie zmierzonych czasów')
+)
+wykres_mini <- ggplot2::ggplot(mini[!is.na(mini$czas_min), ],
+                               ggplot2::aes(x = id, y = czas_min)) +
+  ggplot2::geom_point(size = 3, colour = '#0072B2') +
+  ggplot2::geom_hline(yintercept = mean(czasy, na.rm = TRUE),
+                     linetype = 2, colour = '#D55E00') +
+  ggplot2::labs(x = 'Identyfikator osoby', y = 'Czas [min]',
+                 title = 'Pięć zmierzonych czasów',
+                 caption = 'Odrębny przykład syntetyczny; linia: średnia. Brak u04 nie jest zerem.') +
+  badaniaZI::theme_zi()
+
+# Oddzielna, syntetyczna historia do pięciu samodzielnych odpowiedzi.
+portal <- data.frame(
+  id=c('p01','p02','p03','p04','p05','p06','p07','p08'),
+  rok=c('pierwszy','pierwszy','kolejny','pierwszy','kolejny','kolejny','pierwszy','kolejny'),
+  czas_min=c(4,7,11,NA,6,14,9,5),
+  sukces=c(1,1,0,NA,1,0,1,1),
+  pewnosc=c(4,5,4,3,2,5,4,3)
+)
+opis_portalu <- data.frame(
+  wskaznik=c('Wiersze','Ważny czas','Brak czasu','Średnia czasu [min]',
+    'Mediana czasu [min]','Ważny sukces','Sukcesy','Sukces [% ważnych]'),
+  wartosc=c(nrow(portal),sum(!is.na(portal$czas_min)),sum(is.na(portal$czas_min)),
+    mean(portal$czas_min,na.rm=TRUE),median(portal$czas_min,na.rm=TRUE),
+    sum(!is.na(portal$sukces)),sum(portal$sukces,na.rm=TRUE),
+    100*mean(portal$sukces,na.rm=TRUE)))
+rekord_portalu <- czytaj_rekord(portal,6)
+wybor_portalu <- data.frame(wyrazenie=c('portal$czas_min[3]','portal[3, "czas_min"]',
+  'nrow(portal)','sum(!is.na(portal$czas_min))'),
+  wynik=c(portal$czas_min[3],portal[3,'czas_min'],nrow(portal),
+    sum(!is.na(portal$czas_min))))
+blad_portalu <- data.frame(wariant=c('Brak pozostaje brakiem','Brak zastąpiony zerem'),
+  N=c(7,8),suma_czasu=c(sum(portal$czas_min,na.rm=TRUE),sum(portal$czas_min,na.rm=TRUE)),
+  srednia=c(mean(portal$czas_min,na.rm=TRUE),sum(portal$czas_min,na.rm=TRUE)/8))
+wykres_portalu <- ggplot2::ggplot(portal,ggplot2::aes(czas_min,pewnosc,shape=factor(sukces)))+
+  ggplot2::geom_point(size=2.8,colour='#0072B2',na.rm=TRUE)+
+  ggplot2::scale_shape_manual(values=c('0'=1,'1'=16),na.translate=FALSE)+
+  ggplot2::labs(x='Obserwowany czas [min]',y='Deklarowana pewność [1–5]',
+    shape='Sukces',title='Portal: deklaracja i wynik zadania')+badaniaZI::theme_zi()
+
+# Warstwa prezentacji: w Rmd wystarczy przypisanie oraz print(wynik).
+ustaw_material <- function() {
+  knitr::opts_chunk$set(echo=TRUE,message=FALSE,warning=FALSE,
+    results='asis',fig.width=6,fig.height=3.3,fig.align='center')
+  invisible(NULL)
+}
+wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L) {
+  stopifnot(is.list(tabele),is.list(wykresy),is.numeric(digits),length(digits)==1L)
+  structure(list(tabele=tabele,wykresy=wykresy,tekst=tekst,digits=digits),
+    class='zi_wydruk')
+}
+print.zi_wydruk <- function(x,...) {
+  dokument <- isTRUE(getOption('knitr.in.progress'))
+  for(nazwa in names(x$tabele)) {
+    tab <- x$tabele[[nazwa]]
+    if(dokument) {
+      format <- if(knitr::is_latex_output()) 'latex' else 'html'
+      # Podpis jest Markdownem, więc znaki takie jak % są escapowane przez Pandoc.
+      # Brak środowiska float utrzymuje tabelę bezpośrednio przy swoim zadaniu.
+      cat('\n\n**',nazwa,'**\n\n',sep='')
+      if(format=='latex') cat('\\begin{center}\n')
+      tresc <- as.character(knitr::kable(tab,format=format,caption=NULL,
+        digits=x$digits,row.names=FALSE))
+      if(format=='html') tresc <- gsub('$','&#36;',tresc,fixed=TRUE)
+      cat(tresc,'\n',sep='')
+      if(format=='latex') cat('\\end{center}\n')
+      cat('\n\n')
+    } else {
+      cat('\n',nazwa,'\n',sep='')
+      print(tab,row.names=FALSE)
+    }
+  }
+  if(!is.null(x$tekst)) {
+    if(dokument) cat('\n\n```text\n',paste(x$tekst,collapse='\n'),'\n```\n\n',sep='')
+    else cat(paste(x$tekst,collapse='\n'),'\n')
+  }
+  for(wykres in x$wykresy) print(wykres)
+  invisible(x)
+}
+pokaz_tabele <- function(tabela,tytul='Wynik analizy',digits=3L) {
+  wydruk_zi(tabele=setNames(list(tabela),tytul),digits=digits)
+}
+pokaz_wykres <- function(wykres) wydruk_zi(wykresy=list(wykres))
+
+
+slownik_obserwacji <- function() {
+  tab <- data.frame(
+    kolumna=c('id','grupa','czas_min','powodzenie'),
+    znaczenie=c('Identyfikator osoby','Wcześniejsze doświadczenie z katalogiem',
+      'Czas obserwowanego zadania [min]','0 = niepowodzenie, 1 = powodzenie'),
+    skala=c('identyfikator','nominalna','ilorazowa','nominalna'))
+  pokaz_tabele(tab,'Definicje czterech kolumn')
+}
+odczyt_rekordu <- function(tabela,numer=1L) {
+  pokaz_tabele(czytaj_rekord(tabela,numer),'Odczyt jednej osoby')
+}
+mianowniki_obserwacji <- function(tabela) {
+  wydruk_zi(tabele=list('Czas'=odczytaj_mianownik(tabela,'czas_min'),
+    'Powodzenie'=odczytaj_mianownik(tabela,'powodzenie')))
+}
+slownik_pelnego_badania <- function() {
+  # Długie nazwy i opisy w osobnych tabelach mieszczą się w szerokości A4.
+  definicje <- slownik_start[,c('kolumna','znaczenie')]
+  skale <- slownik_start[,c('kolumna','skala')]
+  wydruk_zi(tabele=list('Znaczenie zmiennych'=definicje,'Skale pomiaru'=skale))
+}
+podglad_badania <- function() {
+  tab <- tabela_glowna
+  names(tab) <- c('ID','Grupa','Czas [min]','Powodzenie')
+  pokaz_tabele(tab,'Sześć pierwszych rekordów S02',2L)
+}
+slownik_odczytu <- function() pokaz_tabele(odczyt_polecen,'Polecenie i jego sens')
+odczyt_portalu <- function(numer=6L) {
+  wydruk_zi(tabele=list('Portal studencki — osiem osób'=portal,
+    'Rekord wybranej osoby'=czytaj_rekord(portal,numer)))
+}
+tabela_adresow <- function() pokaz_tabele(wybor_portalu,'Polecenia wskazujące źródło wyniku')

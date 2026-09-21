@@ -1,31 +1,30 @@
 id: Z06
-version: 1.0.0
+version: 1.1.0
 rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z06.1
-  title: Wybór testu uwzględnia pytanie, skalę, niezależność i projekt, z krótkim
-    uzasadnieniem.
-  evidence: Wybór testu uwzględnia pytanie, skalę, niezależność i projekt, z krótkim
-    uzasadnieniem.
+  title: "Pytanie, niezależność i warunki dwóch procedur."
+  evidence: "S02 zapisuje H0 o różnicy średnich czasów i uzasadnia niezależne grupy. S03 wyjaśnia tasowanie etykiet, dwustronną skrajność i wymienialność pod H0. Nie uznaje podziału według doświadczenia za randomizację ani testu normalności za dowód wymienialności."
+  answer_fields: [S02, S03]
   max_points: 3.0
   review_mode: human
   learning_outcomes: U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Nazwa testu bez uzasadnienia.
+    observable_description: "Nazwano test bez hipotezy i uzasadnienia projektu."
   - points: 1.5
-    observable_description: Skala uwzględniona; niezależność albo projekt pominięte.
+    observable_description: "Hipoteza i skala są poprawne, lecz pominięto niezależność lub wymienialność przy tasowaniu."
   - points: 2.25
-    observable_description: Dobór pasuje do projektu; jedno założenie nieopisane.
+    observable_description: "Dobór i warunki odpowiadają projektowi; jedno objaśnienie hipotezy lub skrajności jest niepełne."
   - points: 3.0
-    observable_description: Wybór testu uwzględnia pytanie, skalę, niezależność i
-      projekt, z krótkim uzasadnieniem.
+    observable_description: "S02 zapisuje H0 o różnicy średnich czasów i uzasadnia niezależne grupy. S03 wyjaśnia tasowanie etykiet, dwustronną skrajność i wymienialność pod H0. Nie uznaje podziału według doświadczenia za randomizację ani testu normalności za dowód wymienialności."
 - id: Z06.2
-  title: Poprawnie odczytano opis dwóch grup, wykres, różnicę, Hedges g i przedział.
-  evidence: Poprawnie odczytano opis dwóch grup, wykres, różnicę, Hedges g i przedział.
+  title: "Opis grup, różnica czasu i jej niepewność."
+  evidence: "S01 porównuje N, średnie i minima z jednostkami na podstawie tabeli i wykresu. S04 odczytuje różnicę nowi minus doświadczeni, oba 95% CI i g; przedziały minut przypisuje różnicy średnich, nie osobom ani g."
+  answer_fields: [S01, S04]
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -33,23 +32,19 @@ criteria:
   - U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Podano wynik bez poprawnego opisu grup.
+    observable_description: "Podano efekt bez poprawnego opisu obu grup."
   - points: 1.5
-    observable_description: Opis grup jest poprawny; efekt albo przedział odczytano
-      błędnie.
+    observable_description: "Opis grup jest poprawny, ale znak, jednostka efektu lub parametr przedziału są błędne."
   - points: 2.25
-    observable_description: Opis, efekt i przedział są poprawne; jeden element wykresu
-      pominięto.
+    observable_description: "Opis i oba CI są poprawne; pominięto jedno minimum, jednostkę lub odczyt g."
   - points: 3.0
-    observable_description: Poprawnie odczytano opis dwóch grup, wykres, różnicę,
-      Hedges g i przedział.
+    observable_description: "S01 porównuje N, średnie i minima z jednostkami na podstawie tabeli i wykresu. S04 odczytuje różnicę nowi minus doświadczeni, oba 95% CI i g; przedziały minut przypisuje różnicy średnich, nie osobom ani g."
 - id: Z06.3
-  title: Wyniki Welcha i tasowania etykiet zawierają N, t, df, p, p_perm i kierunek
-    efektu.
-  evidence: Wyniki Welcha i tasowania etykiet zawierają N, t, df, p, p_perm i kierunek
-    efektu.
+  title: "Statystyka Welcha i wynik permutacyjny."
+  evidence: "S02 odczytuje różnicę, SE, t, df i p ze zgodnym znakiem. S03 podaje T, B oraz p permutacyjne i porównuje oba wyniki dla tego samego pytania i N; nie wybiera procedury po wygodniejszym p."
+  answer_fields: [S02, S03]
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -57,35 +52,30 @@ criteria:
   - U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Podano tylko jedno p bez statystyki i N.
+    observable_description: "Podano tylko jedno p bez statystyki i kierunku porównania."
   - points: 1.0
-    observable_description: Oba tory są obecne; df, znak efektu albo znaczenie permutacji
-      jest błędne.
+    observable_description: "Oba tory są obecne, ale pomylono t z efektem, df, znak albo sens p permutacyjnego."
   - points: 1.5
-    observable_description: Wyniki obu torów są poprawne; pominięto jedno N albo B.
+    observable_description: "Wyniki obu torów są poprawne; pominięto jeden element odczytu, np. SE lub B."
   - points: 2.0
-    observable_description: Wyniki Welcha i tasowania etykiet zawierają N, t, df,
-      p, p_perm i kierunek efektu.
+    observable_description: "S02 odczytuje różnicę, SE, t, df i p ze zgodnym znakiem. S03 podaje T, B oraz p permutacyjne i porównuje oba wyniki dla tego samego pytania i N; nie wybiera procedury po wygodniejszym p."
 - id: Z06.4
-  title: Interpretacja własna, zgodna z wynikiem, bez utożsamienia istotności z wagą
-    praktyczną.
-  evidence: Interpretacja własna, zgodna z wynikiem, bez utożsamienia istotności z
-    wagą praktyczną.
+  title: "Ostrożna rekomendacja oparta na wynikach."
+  evidence: "S05 zastępuje błędny szkic własnym opisem N, różnicy, CI i obu testów. Wykorzystuje S01 i S04: czas nie dowodzi skuteczności, a istotność nie rozstrzyga praktycznej wagi minut. Podaje ograniczenie i proponuje pomiar skuteczności lub projekt oceny szkolenia."
+  answer_fields: [S01, S04, S05]
   max_points: 2.0
   review_mode: human
   learning_outcomes: U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Wniosek ogranicza się do etykiety istotny/nieistotny.
+    observable_description: "Wniosek ogranicza się do etykiety istotny albo nieistotny."
   - points: 1.0
-    observable_description: Kierunek poprawny, lecz istotność utożsamiono z wagą praktyczną.
+    observable_description: "Kierunek jest poprawny, lecz przypisano przyczynę doświadczeniu, zagwarantowano efekt szkolenia lub utożsamiono szybkość ze skutecznością."
   - points: 1.5
-    observable_description: Własna interpretacja kierunku i znaczenia poprawna; ograniczenie
-      niepełne.
+    observable_description: "Interpretacja i granice są poprawne; ograniczenie albo propozycja dalszego pomiaru jest niepełna."
   - points: 2.0
-    observable_description: Interpretacja własna, zgodna z wynikiem, bez utożsamienia
-      istotności z wagą praktyczną.
+    observable_description: "S05 zastępuje błędny szkic własnym opisem N, różnicy, CI i obu testów. Wykorzystuje S01 i S04: czas nie dowodzi skuteczności, a istotność nie rozstrzyga praktycznej wagi minut. Podaje ograniczenie i proponuje pomiar skuteczności lub projekt oceny szkolenia."

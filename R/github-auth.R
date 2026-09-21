@@ -33,7 +33,8 @@ zaloguj_github <- function(metoda = c("auto", "device", "gh"), client_id = NULL,
 
 #' Zakończenie sesji GitHub pakietu
 #'
-#' Usuwa token z sesji pakietu. Wyloguj też przeglądarkę na komputerze w sali
+#' Usuwa token i zapamiętany katalog pracy z sesji pakietu. Nie usuwa plików.
+#' Wyloguj też przeglądarkę na komputerze w sali
 #' i zakończ sesję R bez zapisywania przestrzeni roboczej.
 #' @param komunikat Czy wyświetlić potwierdzenie.
 #' @return TRUE, niewidocznie.
@@ -42,6 +43,7 @@ zaloguj_github <- function(metoda = c("auto", "device", "gh"), client_id = NULL,
 #' wyloguj_github()
 wyloguj_github <- function(komunikat = TRUE) {
   rm(list = ls(sesja_github, all.names = TRUE), envir = sesja_github)
+  rm(list = ls(sesja_pracy, all.names = TRUE), envir = sesja_pracy)
   if (komunikat) message("Sesja GitHub pakietu zosta\u0142a zako\u0144czona.")
   invisible(TRUE)
 }

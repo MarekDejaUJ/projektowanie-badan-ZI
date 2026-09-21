@@ -12,7 +12,7 @@
 <meta name="author" content="Marek Deja" />
 
 
-<title>Handout W02 — Język danych, pomiar i opis</title>
+<title>Handout W02 — Rozkład, miara i pomiar</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -375,9 +375,9 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Handout W02 — Język danych, pomiar i
-opis</h1>
-<h3 class="subtitle">Mapa pojęć, wzorów i pytań</h3>
+<h1 class="title toc-ignore">Handout W02 — Rozkład, miara i pomiar</h1>
+<h3 class="subtitle">Zarządzanie informacją — wzory i pytania do
+interpretacji</h3>
 <h4 class="author">Marek Deja</h4>
 <h4 class="date">2026/27</h4>
 
@@ -385,138 +385,171 @@ opis</h1>
 
 <div id="TOC">
 <ul>
-<li><a href="#pytanie-i-g%C5%82%C3%B3wna-my%C5%9Bl" id="toc-pytanie-i-główna-myśl">1. Pytanie i główna myśl</a>
-<ul>
-<li><a href="#tok-rozumowania" id="toc-tok-rozumowania">Tok
-rozumowania</a></li>
-</ul></li>
-<li><a href="#wz%C3%B3r-i-symbole" id="toc-wzór-i-symbole">2. Wzór i
-symbole</a></li>
-<li><a href="#dwa-tory-i-efekt" id="toc-dwa-tory-i-efekt">3. Dwa tory i
-efekt</a></li>
-<li><a href="#interpretacja-i-pytania" id="toc-interpretacja-i-pytania">4. Interpretacja i pytania</a>
-<ul>
-<li><a href="#dalszy-krok" id="toc-dalszy-krok">Dalszy krok</a></li>
-<li><a href="#literatura" id="toc-literatura">Literatura</a></li>
-</ul></li>
+<li><a href="#jedna-d%C5%82uga-pr%C3%B3ba-kilka-r%C3%B3%C5%BCnych-miar" id="toc-jedna-długa-próba-kilka-różnych-miar">Jedna długa próba, kilka
+różnych miar</a></li>
+<li><a href="#wzory-czytane-zdaniem" id="toc-wzory-czytane-zdaniem">Wzory czytane zdaniem</a></li>
+<li><a href="#odczyt-indeksu" id="toc-odczyt-indeksu">Odczyt
+indeksu</a></li>
+<li><a href="#pytania-do-notatek" id="toc-pytania-do-notatek">Pytania do
+notatek</a></li>
 </ul>
 </div>
 
-<div id="pytanie-i-główna-myśl" class="section level1">
-<h1>1. Pytanie i główna myśl</h1>
-<p><strong>Pytanie:</strong> Jak opisać samoocenę, obserwowany czas,
-powodzenie i wybór kanału tak, aby miara odpowiadała skali i właściwemu
-mianownikowi?</p>
-<p>Ta sama osoba może wysoko oceniać własne kompetencje i jednocześnie
-długo wykonywać zadanie. Pomiar ankietowy oraz obserwacyjny są różnymi
-oknami na zachowanie. Dobry opis nie zaciera tej różnicy i nie sprowadza
-tabeli do jednej średniej.</p>
-<div id="tok-rozumowania" class="section level2">
-<h2>Tok rozumowania</h2>
-<ol style="list-style-type: decimal">
-<li>Pytanie i zakres wniosku.<br />
-</li>
-<li>Jednostka, zmienne, skale i braki.<br />
-</li>
-<li>Estymata oraz jednostka.<br />
-</li>
-<li>Niepewność i dwa tory, jeśli dotyczą.<br />
-</li>
-<li>Efekt, ograniczenie i odpowiedź.</li>
-</ol>
-<div style="page-break-after: always;"></div>
-</div>
-</div>
-<div id="wzór-i-symbole" class="section level1">
-<h1>2. Wzór i symbole</h1>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>i</mi></msub><mo>=</mo><mfrac><mn>1</mn><msub><mi>m</mi><mi>i</mi></msub></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mn>6</mn></munderover><msubsup><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>*</mo></msubsup><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>m</mi><mi>i</mi></msub><mo>≥</mo><mn>5</mn><mo>;</mo><mspace width="2.0em"></mspace><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>=</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><mo>∑</mo><msub><mi>x</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">I_i=\frac{1}{m_i}\sum_{j=1}^{6}x^{*}_{ij}, \quad m_i\geq5; \qquad \bar{x}=\frac{1}{N}\sum x_i</annotation></semantics></math></p>
+<p>Skrypt przygotowuje ten sam przykład liczbowy co pełny wykład.
+Zestawiamy miary opisujące różne aspekty czasu. Nie wykonujemy tutaj
+testu hipotezy.</p>
+<div id="jedna-długa-próba-kilka-różnych-miar" class="section level1">
+<h1>Jedna długa próba, kilka różnych miar</h1>
+<p>Seria A: 2, 4, 6, 8, 10 minut. Seria B: 2, 4, 6, 8, 30 minut. Zmienia
+się jedna obserwacja. Zastanów się przed odczytem, które miary reagują
+na jej wielkość, a które przede wszystkim na uporządkowanie.</p>
+<p>Poniższa tabela pochodzi z tych dwóch serii. Średnia i SD mają
+jednostkę minut, wariancja minut kwadratowych. IQR także wyrażamy w
+minutach.</p>
 <table>
 <thead>
 <tr class="header">
-<th>Symbol</th>
-<th>Nazwa</th>
-<th>Znaczenie</th>
+<th align="left">seria</th>
+<th align="right">N</th>
+<th align="right">srednia</th>
+<th align="right">mediana</th>
+<th align="right">wariancja</th>
+<th align="right">SD</th>
+<th align="right">Q1</th>
+<th align="right">Q3</th>
+<th align="right">IQR</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>*</mo></msubsup><annotation encoding="application/x-tex">x^{*}_{ij}</annotation></semantics></math></td>
-<td>pozycja po ukierunkowaniu</td>
-<td>punkty 1–5</td>
+<td align="left">A</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">3.16</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">4</td>
 </tr>
 <tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mi>i</mi></msub><annotation encoding="application/x-tex">m_i</annotation></semantics></math></td>
-<td>ważne pozycje osoby</td>
-<td>co najmniej 5</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>i</mi></msub><annotation encoding="application/x-tex">I_i</annotation></semantics></math></td>
-<td>indeks samooceny</td>
-<td>punkty 1–5</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>,</mo><mi>M</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">\bar{x},Me</annotation></semantics></math></td>
-<td>średnia i mediana</td>
-<td>położenie rozkładu</td>
+<td align="left">B</td>
+<td align="right">5</td>
+<td align="right">10</td>
+<td align="right">6</td>
+<td align="right">130</td>
+<td align="right">11.40</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">4</td>
 </tr>
 </tbody>
 </table>
-<p>Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę
-i składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani
-CI zakresu 95% osób.</p>
-<div style="page-break-after: always;"></div>
+<p>Wykres odróżnia wartości osób od średniej. Odczytaj, ile osób w serii
+B rzeczywiście miało wynik zbliżony do 10 minut. Nie traktuj średniej
+jako wyniku większości.</p>
+<p><img role="img" aria-label src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABIAAAAIGCAMAAAAbTwSXAAACK1BMVEUAAAAAADoAAGYAOjoAOmYAOpAAZrYAcrIiIiIiIk4iInUiTk4iTnUiTpoidXUidb06AAA6OgA6Ojo6OmY6ZmY6ZpA6ZrY6kJA6kLY6kNtAQEBBQWRBQYZBZGRBZIZBZKZBhsROIiJOIk5OTiJOTk5OTnVOdU5OdXVOdZpOdb1Omr1Omt5kQUFkZEFkZGRkZIZkhsRkpuJmAABmOgBmOjpmZgBmZjpmkJBmkLZmkNtmtttmtv91IiJ1TiJ1Tk51dU51dXV1dZp1mpp1mr11mt51vb11vd51vf+GQUGGZEGGhqaGpsSGpuKGxOKGxP+QOgCQOjqQZjqQkDqQkGaQtraQttuQ2/+aTiKaTk6adU6adXWamk6amnWamr2avZqavb2avd6a3t6a3v+mZEGmhmSmxOKm4v+2ZgC2Zjq2kDq2kGa2kJC2tma2tpC225C227a229u22/+2/9u2//+9dSK9dU69dZq9mk69mnW9mpq9mr29vXW9vZq9vb29vd693pq93t693v+9///EhkHEhmTEpmTE4uLE4v/E///VXgDbkDrbkGbbtmbbtpDb25Db27bb29vb2//b/7bb/9vb///emk7emnXevXXevZrevb3e3r3e3t7e3v/e/97e///g4ODipmTipobixIbixKbi4v/i////tmb/vXX/xIb/25D/27b/29v/3pr/3r3/3t7/4qb/4sT/4uL//7b//73//8T//9v//97//+L////8PuzgAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO2d/YMd1XnfF4WXXQSVQhw3LAR7jVQLS01sHNOkMsIOLgtJTeK0DhUNMcat5abuC2FpcOs4gJzaq2K7TliDFSIrSS0JRRI2oNX98zrvc86ZM3Pv7sz3nrlnP58fYO/dmXOeeeY8n52XM6OlCQBAIJZCBwAAexcEBADBQEAAEAwEBADBQEAAEAwEBADBQEAAEAwEBADBQEAAEAwEBADBQEAAEAwEBADBQEAAEAwEBADBQEAAEAwEBADB0Avo4nLCnedmW3grXfjoQD3XjWU/HRio2V2y/VQaxAPlx7mFtLuOdrxWtptXnttpP0ZvXbt9DDsQFCCgeXHR8k9sAsr0ulv/IKC9CwKaE1mFGlsWmYAu9vEPAtq7IKA5cdHZsLgElOp19/5BQHsXBDQf3vu0s13hQxqSZCff/sruVx90t8MigYACMcKQwoGA9iwIKBAjDCkcCGjPMncBXT25lnw+9Ohb5jJvnki+3P/oOWMkZqutl796wFj86tOHslu+ThtdjRXVvn3Oiia/Mb5erne2XO/KmlEOXb0VMV576f7k/4efLb/eSD7d/urVE8laj54rW0kX2X+kWqYK6Q173c4e84BrDhRfJdtTBZ98lYazcuQVu6O29Lfk2VprSsbffCTdhuX9h58p93IzAz13+07CgUVizgLaPllVzwO1kx4uvlp5zh2JV6pffW7SaKH+0sDbWD5+r3zkuXYBVcW98pwhoO7e8hh/tFYscEdR81n5/UX+7boVU7JMqZoipIeddTt7bBXQ35a/uOPVXJ/Vltu160l/S56NtaZk/MrDzV+7Gei922cPBxaL+QoovRRbUUrJ+HLlkD0SP7NWL56LwqnBxmG7v7Fs/K6srbQL6L26jFb+uBLQlN6yxg4Z9ZDfB0rLbyU7KEgOA5LPb6x5GslC2r/mrtvZY5uAjGbuNDpbrzs60Jr+ljzXa03JwZU1z6+dDPTf7TOHAwvGXAXkDJ7iL5pTVeZINMmb2LK/zArcoKWxYq12AXWv19ZbS4wbdivuUnnNOE2XjXf22CagFoyM+Wr3QNc21Gt158DtP/eonYGhdvsM4cCiMVcB5Qcij52bbL9YD9Z8yKWnJlefao7EO748mby5Vi1dPM+QtHbNaMLprNlYPmpX1idtAirWe7k+MTg6c2/mallvdfmlK+R/6bNrIcaGlIWUnnoZ607rsaBYeb2q45Vki98oS/aVYuONjura9affzXO91pSIsgOgNAGTydmH93/2S/lVGTsD/Xf7zOHAojFPAWWlWIwYZ0QVSthwR2L+fX6Ynx+q/PiPDuVf5oW9bvXV1ljWWzZRpUVAG/XXRUkfnd6bFaPRdd5xOS9my6iT/ETP+EveWHdKj2a/hrHM444DVcac2vWmvy3PxnFTZ0QXvUFaGRhit88aDiwa8xTQxWoUFaOnvj6wbnxrjkTzwo8z1HxftjX2ol1vDQFZ6+Xj3rm44A3BegCzrvkNI/RixbK1eqEt/7pTejQCNE+r8qQaTRobVNWuN/1tefbNEvBFlK1+x7P2gnYGhtjts4YDi8Y8BWTO9qgeXsx+XZ7JG9Vqfm8Xcca1bzy83Bx//sbyI/8uAWUl7QmiuzfnBl/V2ob5tdW0sdCWf90pPdYLF22awV50v7Zr15v+tjw3K94fUXkNev9vf8uY6mVlYIjdPms4sGjMU0DGpckC56KMOVitEbphKeHHT99vtuDty2hsu+i3Q0BtQXT3Zv1tN4LcML92pkFVbW/5153SY7Wsfdds3e3KJyBv+tvybIfXEZHR6ko1L8fKwBC7feZwYMEILiB7aDkjsRyhRn1ePem2YOBtrLzf0iGgtiC6e3MEVK1m2cT5220fj3gE1N1juaJzhtdXQM08G+F1R2TfzSqmP1oZGGK3zxwOLBjBBdRSxG0j8WJ+yL9y+Jm/absi0RTQA39Wfb8zAXX3NpOA7GWmCmhKj/YFoMk8BDQ1ojfuN5rMD16mC2iHu30H4cBCIRLQtR8/fcKc6VYLyDuZr+1YvDES88uV2Qz91kuijVOwb7k3fWY9BZvSm7OafQp21LvMtFOwaT2W0/eqBncqoMbEvWkVPzWihGsvnajkcsBup63fne32nYUDC4RGQOaZvP8idIV9kXZjykg0p+R7xl9bY34B1XdiWi5CT+nNdyW1ught3fea+SL0tB6tC9DuUlME5H/ic1rFT4uo5No3H6lDa56E9tvtOw8HFgSNgMzbyv7ir2i7A+4fiRv1wr5pIG2NOTEUA7+eZ9Ky3pTerHvG7m34suKMW8yTxm34xrrTerQvAE12JCD/awmmVfy0iAxqqXQdA5ppmXW37yocWAQ0AjKqzigFsxYvfuTwoy/XDy4UN4/dGWl+AeV/AF9c9oy/lsZqAZlzGp+qW/BPRJzWWy6gQmd1E/Y5R+dERPOmebrulB6NGYgFOxCQP/0zVXx7RNtnXzqxZnqkKaABdvvM4cCiIboGlA+pj5Wz74sazYsunUefPzJZT0/M5+QbT0F0CShtt7wX4lVCo7FaQMWDEcYCzqMYZ431Zustb82YP20LaMqjGHUk61N7dC5Ap+xAQB3pn1bxrREVE7Gz++955toU3Gu3zxoOLBwiATnPFBZj0Xoq2np4vLm0fyQ2nlV0ry34GzOuHDQWWG9fb1pvXQ+jHm1dKu9wy7tud4+NddZ3JCBv+qdV/JQcNH69brczzG6fORxYNFS34V80B0n1J9t+d4M5O7bgUPUmDP9INJf9Z2vL9tFAe2OGgMwQDlUVYxbJ7f9+1t6yGP9J/SIP82TMKAzbG0eNL41XeZgnY2099hSQN/3TKn5aDpyYjvoy0Hu3zx4OLBiyeUA/WnNHXIrxaq6Vx8ov61dMPXBl2kis3xv2uezHxusYvI2Z97wvloGtrG/VxVu/EOiOV7Zm7S2fzFItZL6QzPrLbL6QrHzgK++7Kl/7flhLj30F5Ev/1Ik30zJuvu2obNTNQO/dPns4sFjoJiJuv5T9fXffm3n2ZDpvbcV6CWnyZfoCziOvTKaOxPRlncvFy0eNOyJTGrMm3eSvLD38bPEm0KqBrOE0rq1Zeytn01VrNqMtuPpHaTL2H3m5+qbo232da2ePvQXkSf/0qcdTM/7myWxP7//os40pUcZO6bXbdxIOLBL82/BNZh7XzixnmDOpZh+bvhiMGASUsXHoM1962TwLmulFVwgoLBtkf+FBQBn5LZnPpQo6m529zHRpAQEFJT1x4wRswUFAGbu7u4uAgpJeGDpwbtud2w2LBALKcWalzPYPKSKgoDSeS4HFAwHlbFsTlx6Y7a8qAgpKMXcLAS0yCKhk+xsnshfbrBye+R/cREBhSR/HWDnCKdgig4AAIBgICACCgYAAIBgICACCgYAAIBgICACCgYAAIBgICACCgYAAIBgICACCgYAAIBgICACCgYAAIBgICACCgYAAIBgIaIz8JHQAUUJWBfRNKgIaI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxshk6gChBQAIQUIRsbmIgAQhIAAKKj81NDKQAAQlYfAHdVkIbOZubGEgCAhqYIYb7LgX0/uOrOff8+n/s0fvE2IgemxFTG6V/MNDgIKBhGWS49xVQwsd337u5DbvejpjaMPyDgYYGAQ3JMMO9h4CezH74+V+uFj/tirEU/ljaMP2DgQYGAQ3JSAQ0mZxe/dBPd9v7bS57vA3bPxhoWBDQgAwy3CdDCOjS6r3f3WXnjY3YxWbE1IbrHww0KAhoOAYZ7ikIaERtNPyDgYYEAQ3HiATU4xRsLIU/kjY8/sFAA4KAhmM0Avr5t3tchB5J4Y+kDa9/MNBwIKDhGIGASu75fPPXP5kJz0bcNtuaMbbR4p/NzZ2GAqBm98N9eAGtfny4m2ALe/TCEdACwBHQcAxRMhl9T8Fu/MMTqx/eXRtjKfzRtIF/tCCg4RiNgCaTd47t+iLQSAp/NG3gHykIaDhGJKDJ6V0fAo2l8MfSBvOApCCg4YhDQKOZgTyWNpgJrQQBDchA/gksoNE8gzWWNngWTAgCGpJh/BP2GtB4Cn8sbfA0vBAENCRjEdA/HOvxMOpkPO/hGUsbvA9IBgIalkGG+wDzgO756u67n4znTYRjaYM3IqpAQAMzxHDvLaBf+90+xz/gAf9oQEACFv+d0NAA/0hAQAIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsipgTgLa/h+v9uwIdgClooCsCtAJ6NpLjxxKOfyZE4fWlm9HQHOEUlFAVgXIBHRx2QIBzRNKRQFZFaAS0JU1BBQOSkUBWRWgEtCW7Z/lOxHQHKFUFJBVASIBbT+VSGfl/uQ/+w8l/11Z79kN7AhKRQFZFSAS0HufXl4+OplsLK88l52OcQY2VygVBWRVgE5AqXq2Mg2lF6SP9uwHdgKlooCsCtAJKD3oSY59DuSf7jzXsyPYAZSKArIqQCugwjzFJ5gXlIoCsipAeBH6aP6/9ewUDAHNE0pFAVkVoLoNv5Heej+X/m/l0ZNrCGi+UCoKyKoAlYDSidAHjPnQB3r2AzuBUlFAVgWoBFScg6W34zOYCDRPKBUFZFWA7Fmw7ZPpffjJxfyRjAd6dgM7glJRQFYFCF/HcS278371xPLy/sd69gI7g1JRQFYF8EKyGKFUFJBVAQgoRigVBWRVAAKKEUpFAVkVMLiA3jtx6PCr6X9tDjMPaI5QKgrIqoDhBZQ9dlHdfueFZCGgVBSQVQEIKEYoFQVkVQACihFKRQFZFTC4gLaf/sxnz6X/tfksr+OYI5SKArIqgLtgMUKpKCCrAlQC+tFjHPKEg1JRQFYF6N4HxFWfcFAqCsiqAO0bESEMlIoCsioAAcUIpaKArArQnYJlb+OAIFAqCsiqANkbEdeWV57t2TbsFkpFAVkVoBLQtTfTN5Ed+ijzgEJAqSggqwKE/zIqM6GDQakoIKsCEFCMUCoKyKoABBQjlIoCsipAJSDeBxQSSkUBWRXAs2AxQqkoIKsCEFCMUCoKyKoABBQjlIoCsipAK6C/+fM//59MAJo/lIoCsipAKKCrJ8vbX1e4BD1fKBUFZFWATkBb9f33i8sHenYDO4JSUUBWBcgEtGVMANrgydT5QqkoIKsCVAK6slYLaPupZQ6B5gqlooCsClAJKD0AeuBc/lqg7Y3l5Tu5Fj1HKBUFZFWA7n1Ay0er95Ilh0M8ijFPKBUFZFWA9o2I9v9gXlAqCsiqAAQUI5SKArIqQPg0/HplnotcA5ovlIoCsipAdRF6Y3n59lcKAV39NHfB5gulooCsCpC9Ezq9BX/4kbXllT9+JP1xvWc/sBMoFQVkVYBKQOltMN5HFgpKRQFZFSCbCW29E5GJ0POFUlFAVgXongUzjoHueKVnL7AzKBUFZFWA8nUcV0/en9hn/5GXe/YBO4VSUUBWBfBCshihVBSQVQEIKEYoFQVkVYBYQNdeOnHoo/wTzfOGUlFAVgVIBHT1ZPEKxB+tcRE6BJSKArIqQCGgrXLez0Vuw4eBUlFAVgUIBLRVTjw0pgLxKNhcoVQUkFUBwwso004moPytrIc4BJo7lIoCsipgeAFtlUc82UzExDyZkY727Ad2AqWigKwKGF5AG8vFs+/Za6HTn7Y4B5szlIoCsipgcAGlxz35CddW+RR8aiIENE8oFQVkVcDgAkpPuLIrQNkZWHUxmsfh5wmlooCsCtAJqDoDQ0Bzh1JRQFYF6ASUnYEdtb6COUGpKCCrAmTXgMp7YBOuAc0fSkUBWRWguQt2tJgFnWunui8Gc4JSUUBWBYjmAR15aa16E/Qby8wDmjOUigKyKkA0E7p+AGP73zETeu5QKgrIqgDRs2A56QFQ7iPOwOYKpaKArAoQPQ2fHfVkJ2CZgLgEPV8oFQVkVYDmfUAnEv0cyV8ClAroCP6ZL5SKArIqQP5K1vdO/DavI5s3lIoCsiqAd0LHCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhDQkGyGDqCAUlFAVgUgoAHZ3ByJgSgVBWRVAAIajs3NsRiIUlFAVgUsvoBuKwndxmZO8DgGaAN8ICABIQV0fnX1wz27N+qtR8UN0sbmZm8DjWVbwAsCEhBQQDe+srp673f7dX+bTcA2NmuCxtG/DWgBAQkIKKB3jt33xOqT/bofS9Ga/tntMdBYtgVaQEACAgro/OqHz69+6Kd9er/NJVQbm5u9DTSWbYE2EJCAcAJKzsCefOfYPV/t0Xmj3nZRcYO0sekSKI4B2oBWEJCAcAK6tHrvdxMJfaJH52Mp2oZ/dnE3fizbAq0gIAHhBHQ6vQV2vtdl6JEUrcc/OzfQSLYF2kFAAoIJ6P3H0wvQ7xzrcxl6HEXr9c+ODTSObYEOEJCAYAK6lB37JOdgvqlAP5kJT73dNtuaQ7bR4p/NeccxTBsAo2YoAZXmubTa4zL0OI4aBjkAGsm2QAccAQkIdQRUnnslZ2K7vww9kqIdwj9j2RZoBwEJCCWg86sVu58KNJaibfqH2/ARgoAEBBJQ+hhGxa4vQ4+laBvzgELFgYCUICABgQRU3/1KzsF2/0TqEPU2SBu9/TOebYE2EJCAQAI6XZ94ne4zFWiIehukjd7+Gc+2QAsISEAYAZmXni+tDncZOmAbpn8QUJQgIAFhBGTefL/xlV5PpA5RboO00fP4Z7A40I8KBCQgjIBOm84532cq0HjeInhbb/+MZ1vABwISEERA9uSfd44N8GLEMbCr+T8SKBUFZFXA4r8TekSMxT+UigSyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhBQjFAqCsiqAAQUI5SKArIqAAHFCKWigKwKQEAxQqkoIKsCEFCMUCoKyKoABBQjlIoCsioAAcUIpaKArApAQDFCqSggqwIQUIxQKgrIqgAEFCOUigKyKgABxQilooCsCkBAMUKpKCCrAhAQACwsCAgAgoGAACAYCAgAgoGAACAYCAgAgoGAACAYCAgAgoGAACAYCAgAgoGAACAYCAgAgoGAACAYCAgAgoGAACAYCAgAgoGAACAYCGhUXFr9RPnj3//z1dVf/XzIYKLgZ//hWJrHnxYfyeoQ3Ph2ktRf/9/lxz5JRUBj4v3HKwGdXs34cNB4Fp/zeRpXP5QbiKwOwc8ez9NYjNVeSUVAI+L9J6qden71ns9Pbvzlan1EBLvg0urqx//f5MbfHcvLg6wOwY2vrN73nSyNT6Yf+yUVAY2Hd45Vf1XKQ6Hzq/d+N2hMC87p4u9yUiRfJasDcSlLZpncnklFQGPhxrdXV+97ohDQpWJvJnv3yaBRLTZV+vIfyOog1FZPT2x7JhUBjYV3jt3zr5OD21xA58sz6tOcLQxBXh1kdVByAfVMKgIaC+/8zncmlYBO13uVC6YDkJzdPklWhyUZrGkWeyYVAY2JUkCViIq/MtCT7AIFWR2Sn30lO/fqm1QENCYQkIbkAOgTZHVILqVTG9JrPwgoJhCQhPefyLJIVofj0q/+2urqfV9FQHGBgBQk2czuG5PVQblxOk0rAooJBCQgOf7J562Q1WHJrkIjoJgw7oJV09y5X9OPnz1e+IesDk2mnJ5JRUBjgnlAg/POsdV7v1P8TFaHJRMQ84AiohIQc3YHIvHPfdUTAmR1COqTruyYh5nQEVHtW55aGoYkj8aFCbI6CGX68skNPAsWEeYVvVWe2+6PUxVkdQgS5dyXnNX+/bFc7v2SioDGRC2gG7y5ZgDeL15cU768hqwOQvbahoT85LZfUhHQmKgFxLv7hqCslPrtWWR1CH7+7cFeM4mAACAYCAgAgoGAACAYCAgAgoGAACAYCAgAgoGAACAYCAgAgoGAACAYCAgAgoGAACAYCAgAgoGAACAYCAgAgoGAwMe1lw4tJxx+9NwgzW0t56x3L3ZlrXWZ7FcJRweJB8YCAoIm2yeXS1Y+N0SDCAj8ICBoUBZ7zp0DHAQhIPCDgMDF9s/y8oH+Tc4ooBmCQkBxgYDAYfup7NTrseTA5+rJntoo2RrEYxsIKDoQEDhcTJ1zx6v5h61hDoEQEPhBQGCTHQCtPGd+uv3V4rDIvix09uT96YdDR14p133zRHqitHL4GfeyUS2gi9nq115MFtyfHmSdPZHebCtaqK4Bpd0lMbyZ/fLlshUEFB8ICGwyCdRHKxf3H3n2rYlHQOY3uRXee7i+d/ac3agjoP9VXNC5829ftC4O2QL68lNW8wgoRhAQ2Fz0XvVpCmjD/GLdXcQxkC0gD/nyloCc5icIKEYQENhseQ5g7N9mQshc8UAiojeWC7mkarn9y8kPb9jHUOVqpoCSFd/Mj4I+dm77z6qjHEdAK49N8l8WjSGg+EBAYLPRJaBcH5kPrn3jRH4paMM4JMoPVbb2f/Zb9lUgR0DZihtlU+99uvytLaAsiuynYioSAooPBAQ2XQLKJ+M4MxNNAbVNWnQEdLT8rnaMR0C1325/teoJAcUFAgKbDgEVJ0bmL69980TppPzs7I5n3vKs6QhovfwuN0ulLltAByb2YggoQhAQ2HRcA6ouAOWcffr+8iqxfVvs8LPdt+Hz5hEQICBwce6CXfnIR7/0lvGb6urylfqme6EP49bVyse6rgHNKKCjE3sxBBQhCAhsnHlAW5WPsmvF1VWe4tmsw8+8Ylz7uXqyeoys6y4YAoISBAQ29kzozDpZ/TsXgLJLRc+WP9UXn69985G1xpUiBAQtICBwyI55imfBtjesm1b1uVkmplwGpT6uvXny/vzXbzTeqoGAwA8CAgfjafiz2XWerPzzC0BV+dcCyn5K9FH+v/wKAcEMICBwcd8HlBohvwBUX9jJT9QemxQTmqtnM468NZlcfap2RgECAj8ICBrYBjJOwAwn2c90pYZ4z7wt5ogCAYEfBARNzHdCP5Z90xDQpHyOfeVfPVVao/1N0ggI/CAg8JH/qxgr1ZTCpoDyN/nsf/Rc5oXcLleLNwQ1/i0NBAR+EBDMAd6ICH4QEB0gtmsAAAu+SURBVMwBBAR+EBDMAf5VDPCDgGAOICDwg4BgDiAg8IOAYA4gIPCDgAAgGAgIAIKBgAAgGAgIAIKBgAAgGAgIAIKBgAAgGAgIAIKBgAAgGAgIAIKBgAAgGAgIAIKBgAAgGAgIAIKBgAAgGAgIAIKBgAAgGHtDQNd/b2nfC+WHM0u3vD6ZvPvgTX/oLvb2Qes73yIWF4xWu5a2lrOZ2kd3iMMj76CbC0tLdwfsvmBnSZg1Zl+r0/d/MnYL7vrgD2cPandcfn7WL4dizwho6dbyAwIK2kE3p7KdE5qdJWHWmPsKaEkt5+tfWzo+25fDsXcEVKXxTOt42WnxdYhl1uVGJ6CwvH1wtoyK2VGWZ154d/suGbu5dq7/4AtiA737oMc13i+HYw8JqBzaCGi8nJEO9pnZUZZnjrmngLKupHsfAalIduIHDpYnYQgIpqDJcn8BJT/f2rVsTxCQinQnnilPwuxrQNf/5BeXln7hNzMlpSPke59MPv7L7KNvkfzD0i99Mf25EEuyi25+wb90jrWcvUS51uUvHKyaTaK1FNkRohWO2/K+P/1a8qk4bE86zxs9k302+5tM/vFryadffr7swG3KDihd4nISwk3lNtrx7XvhchZf0sdvJAv9Vr6M2V8R2c1/aH+dZum1pKWbG0EZl0GyOOoOy+p0ts6zD4xOp8drZ/lCedxxKhlBzs4x89/SRfHp5i/mqbU3s2PUlD0YAqpC6cqbrykjTGtrrHVPZRm+1W6i+NJaq33fzBKLzd4RUHUnzBLQu5/Mk5eZIRkhDxkffYtU+U73Uy6W5Pfpr3xLF1jLTS5/0unjH19PYir44KQhoMsdIVrh2H0n5fCp9MTzD/LG3j6Yb/7130vDtPpLf7dUnqMWAnI32hbQvzlobKMT376vF9dLXzOum1r9lZG9YH+dZOlT+afjTlCOgMwOz/i2zrcP6k5niNfOcnkMkDTxgpMLK/91F3YA5acPlAIyNrNj1Bhj19iKbK2uvPmaMsO0tsZatxKQ2UTxpbVW+76ZIRaHvSOgNGtZmZoCSn5xU/K37/ufzL5L83pzovXXDrYukpyFp3J/ban8Y5b+3tCVvXSBtVy6xBfNPh7a90LS8QfzymoepNvLOyFa4dh9J0Nm6Vdev/7fC6OcKQbF2weTX9r9pUdmz08uP5ilJ1/cuxkFaQhGRM34fvmHk8vpsLzl+fT/xYC1+8sic76+kBbU62kc+15wgio4U21m1aFv67zBV53OGK+Z5VN5EBea5z9W/q0u6gDqT97NnJZuS0D5h668eZuywjS3ppHz4xPPOEq/NNdq3zczxOKwhwQ0KU7CTAGVR5Z5lsu/o2kej/sXOWUmPRVL6RXv0r7lyiWSzo7ng/aW18vLUvl3NvbyTohOOGbf7xbjI+k4H0B3ZQP5TPqt3V9xhpivXp4neDajIA3heXNtJ75ioFaHJsfd/srIGmGUq1ZyN04Yqk22O/RtnTf4qtNZ4nWyXMRyqpkLK/+NLvIAjE9FjRqb2TFqCiwB5R12583TVGPUllvjBmMluBpHxxtrte+bqbE47CUBFSdhhoDqi3rZyK3qP//et8ipovgykh3xp6VXvEv7lqsGQzGWzOHl21P28k6IZjhO30lbd9frJYfOX1/Kjw6MHiyplhJu3YyCJIS7jYj88ZX/t7eoGtL23WS7UHMFWkFZ/dodNrfOH7ydjinxNgZCHnbzVoI1HMouGkOm+mRWZb6ZHaOmwCOgjrz5m3LDrLbGDSb9TXMcHXfWat83M8TisJcEVPy5MwRUp/CCcTw/KZbxLZIeY/7Cb/6w/OamX6zmF/mWnjSXq8dT0sdfn1qq/opc/7//Jb2y6ArIWr4RohmO03f1sdi0W76fzrGpq6jqzx7hWQf+zTCXqEJoia++ZlC2VG+fJaX66/JeYfZrO6ji6/KIzuywuXX+4MtvZ4rXyXJecZ4zMHs4NLf5gpWg+iJ0vVTHqCkT5BdQS97aBqARprk1bjD27rHGUb1W+76ZJRaHPSWg/CTMFlBFkrl6GpwlIHORyf/Jrr/dlO3NC9W3E3+DBeZy5l5Jjov+aX4R8vIXyrVcAVnLN0I0w3H6rlbMAjuTXYU/XlaR2Z99kFIKyLMZ1RLlV2lEjfjKgrYK29q+ehXr65bBW+/CW173JKS5df7gfXZojdfNclZAZ3yzAM3hYHRhBFAfc5anWz4Btafbcw2oO2++pswwza1pEZBvHNVrte+bmWKx2VsCeje9ONZPQJPr/zm7tF+czt/830r5dwuoWs4ugB/mg/JyutpdH/i3329eA5oiICOcNgElf7vuzs7dy/87/c1BQPb2VavYX3cL6FQteqvD5tYJBJT+Nr/B1sAYDnMQkC+dMxW9Eaa5NTsQUL1W+75BQC1UOzF9btB7CpbRfQpm8L0vVLMeystvHUtbyzmnAPmgPGVd1vWH7j0FM8Nx+q4/nknvomYR3PJXDxaXEo3+Ok/BPMx4CmZfuje3r2r9lHM1u+MUrJ4D7HTY3Dp/8FNPwWwBOVlO7JbdYPNTDIem4+wOZzgF8+DMA8qd25q3rqaKMM2t6T4FsxJXr9W+b2aPpWKPCSjJ4k0PWRehzVSa1x7v9i9SUjglv72+r7oN71/aWs6+CGoPwAvNU7COi9BGT8V9NrPvevcnf8//a37zfd/XiwkrVn9lD0UH7RvtZMl/EdpT0E5/jUK90DyVsIOyEmN32Nw6f/BGHU2Nt5nlxG7/qes5rAvmsYITwKn6/KRFQJ3pbs6E7spbZ1P17atya3wCahtH9Vrt+2YHsRTsNQFlh4X1bfgz5bFh8eewGCvmLVJrEeNQqhRQeQfA12CBtZx7G94QUDqpqyGgxm1jI0Q7HLvvWkDJUg8VFw/vyr5z+qsnat9dVqR3MwqcLLnxdQio6M8VkB1G8bUTlGc2cGGJxtb5gzfqaGq87iamX+/7lOcMzM5/1UVjVJWb2SKgznSbZXzGOtXz5s3XlB2muTU+AbWNo8Za3n0zLRaXvSag7IJwLaAkUekUretfWyrGXTrD6vqfHCwOFJqLJEMgnZ7/vSzrRbrPGLqyl676NJZrTETMPJIeU/8gPU1vCMg7EbEM0QrH7ts4AD5VtHuqvIxl95dOUTLm4LVuRoExS+9WT3yegnb6MwrI/NoevGZQ71pT3uwOm1vnD75KxwzxulnOG/fVkJv/slStAJKj7t96PZuA3SagrnRXY/f6D34jn7PRmTdvU1aY5tY01r27Ef671aSJaq32fTNDLA57TkBlGosRV87LL27T7/uD/NOtaaJ9i1wvZ57nN0fKvwTV1Rx76QJrufpRgOerPoqp7Uu/Us5X8j6K8XwzRCscu29DQBeKq4/lbDunv/LjTccnVUW6G20/ivGQ0akbX1tB1/1Vkdlf24PXDKp68iDfDqtDz9Z590GdjpnitbKcN353OZR8j2IYc4YbAZQL/Yu2a0Cd6b5uvA+oeLKuM2++jbeHibE1DelnEwmbI/5Wa632fdMVizOsC/aegAoNWE8B3lQ+iLnvhe8VTyZO/ItMrr9211K5RJnubM94l86xlpv4HkbNnoNM1jlVTKez9pT78KQRohWO3bchoGKTjaNlq7/0b1Qyon6p+TBq0VRDQNmTmuUDh42HZc3clSPR7M8oVPNrZ/AaQTkCch5xbG6dbx8Y6Zger5vl+vfuzjHz73ZRB/Ca8zBqvbRv1LQJ6K7qoc7uvDU33hkm9dY46777+7mjrCbKL+u12vdNVyx7WUAwM/53RpxxBDTHgMZBxz2wBWR3WyPJAQICC/+7i04Z5/l7UkDeWYgLy+62RpIDBAQWZ3wCevvgcfPD3hPQSF4VOxC72xpNDhAQ1NQXHG3O2LOl9pqATi2N4t/qGIjdbY0qBwgIat5+MHudy5SF9pyAzhQvbouD3W2NKgcICACCgYAAIBgICACCgYAAIBgICACCgYAAIBgICACCgYAAIBgICACCgYAAIBgICACCgYAAIBgICACCgYAAIBgICACC8f8Bf7aq7U2Xcu0AAAAASUVORK5CYII=" alt width="100%" /></p>
 </div>
-<div id="dwa-tory-i-efekt" class="section level1">
-<h1>3. Dwa tory i efekt</h1>
-<p><strong>Tor klasyczny.</strong> Opis liczbowy obejmuje N, braki,
-miarę położenia i zróżnicowania. Dla skośnego czasu zestawiamy średnią z
-medianą, SD z IQR oraz histogram. Dla kategorii podajemy liczebność i
-odsetek z jawnym mianownikiem.</p>
-<p><strong>Tor permutacyjny/resampling.</strong> Na etapie pomiaru nie
-używamy testu do naprawiania złych wskaźników. Permutacja odpowie
-później na pytanie o losowy związek przy zachowanych rozkładach.
-Najpierw musi być jasne, co zostało zmierzone i które braki są
-dopuszczalne.</p>
-<p><strong>Efekt i przedział.</strong> Różnica między średnią i medianą
-opisuje asymetrię, SD i IQR zróżnicowanie. Nie są to jeszcze efekty
-przyczynowe. Jednostka miary pozwala ocenić, czy zmiana o dwie minuty
-lub pół punktu jest ważna dla usługi.</p>
-<div style="page-break-after: always;"></div>
+<div id="wzory-czytane-zdaniem" class="section level1">
+<h1>Wzory czytane zdaniem</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>=</mo><mfrac><mrow><mo>∑</mo><msub><mi>x</mi><mi>i</mi></msub></mrow><mi>n</mi></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>s</mi><mo>=</mo><msqrt><mfrac><mrow><mo>∑</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mover><mi>x</mi><mo accent="true">‾</mo></mover><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac></msqrt><mo>,</mo><mspace width="2.0em"></mspace><mi>I</mi><mi>Q</mi><mi>R</mi><mo>=</mo><msub><mi>Q</mi><mn>3</mn></msub><mo>−</mo><msub><mi>Q</mi><mn>1</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\bar{x}=\frac{\sum x_i}{n},\qquad
+s=\sqrt{\frac{\sum(x_i-\bar{x})^2}{n-1}},\qquad
+IQR=Q_3-Q_1.
+</annotation></semantics></math></p>
+<p>Średnia jest sumą ważnych wartości podzieloną przez ich liczbę. SD
+opiera się na odległościach od średniej; duże odchylenia mają duży wkład
+przez podnoszenie do kwadratu. IQR jest szerokością środkowej części
+rozkładu.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>x</mi><mo accent="true">‾</mo></mover><mrow><mi mathvariant="normal">o</mi><mi mathvariant="normal">g</mi><mi mathvariant="normal">ó</mi><mi mathvariant="normal">ł</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">m</mi></mrow></msub><mo>=</mo><mfrac><mrow><msub><mi>n</mi><mn>1</mn></msub><msub><mover><mi>x</mi><mo accent="true">‾</mo></mover><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub><msub><mover><mi>x</mi><mo accent="true">‾</mo></mover><mn>2</mn></msub></mrow><mrow><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub></mrow></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mover><mi>F</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>#</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>≤</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mi>n</mi></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\bar{x}_{\mathrm{ogółem}}
+=\frac{n_1\bar{x}_1+n_2\bar{x}_2}{n_1+n_2},
+\qquad
+\widehat F(t)=\frac{\#(x_i\leq t)}{n}.
+</annotation></semantics></math></p>
+<p>Pierwszy wzór przypomina o liczebnościach przy łączeniu średnich
+grup. Drugi podaje udział ważnych pomiarów nieprzekraczających progu.
+Dla serii B
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>F</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="prefix">(</mo><mn>8</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>4</mn><mi>/</mi><mn>5</mn><mo>=</mo><mn>80</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\widehat F(8)=4/5=80\%</annotation></semantics></math>.</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Miara</th>
+<th>Pytanie</th>
+<th>Nie oznacza</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Średnia</td>
+<td>Jaka suma przypada na obserwację?</td>
+<td>Wyniku każdej lub większości osób</td>
+</tr>
+<tr class="even">
+<td>Mediana</td>
+<td>Gdzie leży środek uporządkowanych wartości?</td>
+<td>Zawsze istniejącej wartości jednej osoby</td>
+</tr>
+<tr class="odd">
+<td>SD</td>
+<td>Jak bardzo różnią się pomiary względem średniej?</td>
+<td>Błędu standardowego średniej</td>
+</tr>
+<tr class="even">
+<td>IQR</td>
+<td>Jak szeroka jest środkowa część rozkładu?</td>
+<td>Przedziału ufności</td>
+</tr>
+<tr class="odd">
+<td>Proporcja</td>
+<td>Jaka część właściwego mianownika spełnia warunek?</td>
+<td>Liczby osób bez znajomości N</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="interpretacja-i-pytania" class="section level1">
-<h1>4. Interpretacja i pytania</h1>
-<p><strong>Przykład.</strong> Wielokrotny wybór kanałów może dać sumę
-odsetków większą niż 100%, ponieważ jedna osoba wybiera kilka opcji.
-Mianownik powinien obejmować osoby z kompletnym zestawem odpowiedzi 0/1.
-Brak w jednym kanale nie jest automatycznie odpowiedzią „nie”.</p>
-<p><strong>Pułapki.</strong> Pułapki obejmują kodowanie braku jako zera,
-odwrócenie pozycji po policzeniu indeksu, średnią z nazw kategorii,
-wykres bez jednostki, opis średniej jako wyniku większości i nazywanie
-kursowego indeksu walidowanym testem.</p>
-<p><strong>Pytanie do pracy.</strong> Oceń cztery zdania z raportu:
-wskaż skalę, mianownik, właściwą miarę oraz brakujące ograniczenie.
-Następnie porównaj, co wnosi indeks samooceny, a co obserwowany czas i
-powodzenie.</p>
-<div id="dalszy-krok" class="section level2">
-<h2>Dalszy krok</h2>
-<p>C03 zbuduje portret próby, a C04 przeprowadzi rekodację i indeks. W03
-doda język niepewności, lecz zachowa rozróżnienie pomiaru od
-wnioskowania.</p>
+<div id="odczyt-indeksu" class="section level1">
+<h1>Odczyt indeksu</h1>
+<p>Niech
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>O</mi><mi>i</mi></msub><annotation encoding="application/x-tex">O_i</annotation></semantics></math>
+oznacza ważne pozycje osoby
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>,
+a
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mi>i</mi></msub><annotation encoding="application/x-tex">m_i</annotation></semantics></math>
+ich liczbę. Indeks obliczamy według:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>i</mi></msub><mo>=</mo><mfrac><mn>1</mn><msub><mi>m</mi><mi>i</mi></msub></mfrac><munder><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><msub><mi>O</mi><mi>i</mi></msub></mrow></munder><msubsup><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>*</mo></msubsup><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">dla </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>m</mi><mi>i</mi></msub><mo>≥</mo><mn>5</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">I_i=\frac{1}{m_i}\sum_{j\in O_i}x^*_{ij}\quad\text{dla }m_i\geq5.</annotation></semantics></math></p>
+<p>Przy mniej niż pięciu odpowiedziach pozostawiamy brak. Pozycję
+odwrotną 1–5 ukierunkowujemy wzorem
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mo>*</mo></msup><mo>=</mo><mn>6</mn><mo>−</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">x^*=6-x</annotation></semantics></math>.
+Nie podstawiamy zera za brak ani nie dzielimy każdej sumy przez
+sześć.</p>
+<p>W S02 jest to dydaktyczny indeks deklarowanej użyteczności katalogu i
+radzenia sobie z nim. Nie jest zwalidowanym testem kompetencji. Wysoka
+spójność odpowiedzi nie dowodzi sama trafności takiej interpretacji.</p>
 </div>
-<div id="literatura" class="section level2">
-<h2>Literatura</h2>
-<ul>
-<li><a href="https://publications.jrc.ec.europa.eu/repository/handle/JRC128415">European
-Commission JRC (2022). DigComp 2.2</a>.</li>
-<li><a href="https://www.ala.org/acrl/standards/ilframework">Association
-of College and Research Libraries. Framework for Information
-Literacy</a>.</li>
-<li><a href="https://www.webuse.org/pdf/Hargittai-BeyondLogsSurveys2002.pdf">Hargittai,
-E. (2002). Beyond logs and surveys</a>.</li>
-<li><a href="https://ris.utwente.nl/ws/portalfiles/portal/6972069/development.pdf">van
-Deursen, Helsper &amp; Eynon. Internet Skills Scale</a>.</li>
-</ul>
-</div>
+<div id="pytania-do-notatek" class="section level1">
+<h1>Pytania do notatek</h1>
+<ol style="list-style-type: decimal">
+<li>Dlaczego średnia i mediana mogą prowadzić do innych opisów
+doświadczenia użytkownika?</li>
+<li>Dlaczego punkt poza wąsem wykresu nie jest automatycznie
+błędem?</li>
+<li>Dlaczego przy wzroście N precyzja średniej może rosnąć, mimo że SD
+osób pozostaje podobne?</li>
+<li>Jak odróżnisz ocenę filtrów od samooceny wyszukiwania i od
+obserwowanego powodzenia?</li>
+<li>Co musi być wiadomo o pytaniu wielokrotnym, żeby suma procentów
+ponad 100% była zrozumiała?</li>
+</ol>
+<p>W C03 opisujemy czas i skuteczność. W C04 sprawdzamy pozycje, regułę
+indeksu oraz mianowniki kanałów. Ramy DigComp 2.2 i ACRL oraz publikacja
+o ISS służą konstrukcji pytań, nie zastępują walidacji własnego
+narzędzia. Pełne odnośniki zawiera wykład.</p>
 </div>
 
 

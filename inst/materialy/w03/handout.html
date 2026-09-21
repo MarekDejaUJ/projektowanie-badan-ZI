@@ -12,7 +12,7 @@
 <meta name="author" content="Marek Deja" />
 
 
-<title>Handout W03 — Losowość, estymacja i dwa tory wnioskowania</title>
+<title>W03 — Estymacja i testowanie: mapa odczytu wyniku</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -375,9 +375,9 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Handout W03 — Losowość, estymacja i dwa
-tory wnioskowania</h1>
-<h3 class="subtitle">Mapa pojęć, wzorów i pytań</h3>
+<h1 class="title toc-ignore">W03 — Estymacja i testowanie: mapa odczytu
+wyniku</h1>
+<h3 class="subtitle">Zarządzanie informacją — handout — 2026/27</h3>
 <h4 class="author">Marek Deja</h4>
 <h4 class="date">2026/27</h4>
 
@@ -385,133 +385,257 @@ tory wnioskowania</h1>
 
 <div id="TOC">
 <ul>
-<li><a href="#pytanie-i-g%C5%82%C3%B3wna-my%C5%9Bl" id="toc-pytanie-i-główna-myśl">1. Pytanie i główna myśl</a>
-<ul>
-<li><a href="#tok-rozumowania" id="toc-tok-rozumowania">Tok
-rozumowania</a></li>
-</ul></li>
-<li><a href="#wz%C3%B3r-i-symbole" id="toc-wzór-i-symbole">2. Wzór i
-symbole</a></li>
-<li><a href="#dwa-tory-i-efekt" id="toc-dwa-tory-i-efekt">3. Dwa tory i
-efekt</a></li>
-<li><a href="#interpretacja-i-pytania" id="toc-interpretacja-i-pytania">4. Interpretacja i pytania</a>
-<ul>
-<li><a href="#dalszy-krok" id="toc-dalszy-krok">Dalszy krok</a></li>
-<li><a href="#literatura" id="toc-literatura">Literatura</a></li>
-</ul></li>
+<li><a href="#najpierw-wielko%C5%9B%C4%87-potem-liczba" id="toc-najpierw-wielkość-potem-liczba">Najpierw wielkość, potem
+liczba</a></li>
+<li><a href="#punkt-pole-i-granica" id="toc-punkt-pole-i-granica">Punkt,
+pole i granica</a></li>
+<li><a href="#mapa-symboli" id="toc-mapa-symboli">Mapa symboli</a></li>
+<li><a href="#przedzia%C5%82-ma-nazwany-parametr" id="toc-przedział-ma-nazwany-parametr">Przedział ma nazwany
+parametr</a></li>
+<li><a href="#dwa-przyk%C5%82ady-do-przeczytania" id="toc-dwa-przykłady-do-przeczytania">Dwa przykłady do
+przeczytania</a></li>
+<li><a href="#p-i-alfa-nie-s%C4%85-tym-samym" id="toc-p-i-alfa-nie-są-tym-samym">P i alfa nie są tym samym</a></li>
+<li><a href="#dwa-zastosowania-losowania" id="toc-dwa-zastosowania-losowania">Dwa zastosowania losowania</a></li>
+<li><a href="#pytania-przed-zapisaniem-wyniku" id="toc-pytania-przed-zapisaniem-wyniku">Pytania przed zapisaniem
+wyniku</a></li>
 </ul>
 </div>
 
-<div id="pytanie-i-główna-myśl" class="section level1">
-<h1>1. Pytanie i główna myśl</h1>
-<p><strong>Pytanie:</strong> Jak precyzyjnie oszacowano średnią
-samoocenę i czy odległość od punktu neutralnego jest skrajna w modelu
-zerowym?</p>
-<p>Estymata jest wynikiem jednej próby, a parametr dotyczy populacji
-zdefiniowanej przez projekt. Wnioskowanie nie usuwa ograniczeń doboru;
-porządkuje losową niepewność pod określonym modelem.</p>
-<div id="tok-rozumowania" class="section level2">
-<h2>Tok rozumowania</h2>
-<ol style="list-style-type: decimal">
-<li>Pytanie i zakres wniosku.<br />
-</li>
-<li>Jednostka, zmienne, skale i braki.<br />
-</li>
-<li>Estymata oraz jednostka.<br />
-</li>
-<li>Niepewność i dwa tory, jeśli dotyczą.<br />
-</li>
-<li>Efekt, ograniczenie i odpowiedź.</li>
-</ol>
-<div style="page-break-after: always;"></div>
+<div id="najpierw-wielkość-potem-liczba" class="section level1">
+<h1>Najpierw wielkość, potem liczba</h1>
+<p>Estymanda określa, co chcemy oszacować: na przykład średni czas
+wskazanego zadania w określonej populacji. Parametr
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>
+jest odpowiadającą jej wielkością populacyjną. Estymator
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>x</mi><mo accent="true">‾</mo></mover><annotation encoding="application/x-tex">\bar{x}</annotation></semantics></math>
+to reguła obliczenia, a estymata, na przykład 11,2 minuty, jest wynikiem
+dla jednej próby.</p>
+<p>Średnia wszystkich czasów i średnia czasów udanych prób odpowiadają
+na różne pytania. Wspólny indeks S02 opisuje deklarowaną użyteczność
+katalogu według reguły dydaktycznej; nie jest zwalidowanym pomiarem
+całej kompetencji cyfrowej. Test nie zmienia tego znaczenia.</p>
 </div>
+<div id="punkt-pole-i-granica" class="section level1">
+<h1>Punkt, pole i granica</h1>
+<p>W modelu trzech niezależnych prób z prawdopodobieństwem powodzenia
+0,5: dokładnie dwa powodzenia mają szansę 3/8, najwyżej dwa 7/8.
+Dystrybuanta
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">F(k)</annotation></semantics></math>
+sumuje prawdopodobieństwa do k. W modelu ciągłym prawdopodobieństwo
+przedziału to pole
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">F(b)-F(a)</annotation></semantics></math>,
+nie wysokość gęstości w jednym punkcie. Kwantyl odwraca pytanie:
+wskazuje granicę dla ustalonego udziału. W R prefiksy d/p/q/r oznaczają
+odpowiednio gęstość lub masę punktową, dystrybuantę, kwantyl i
+losowanie.</p>
 </div>
-<div id="wzór-i-symbole" class="section level1">
-<h1>2. Wzór i symbole</h1>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi><mo>=</mo><mfrac><mi>s</mi><msqrt><mi>N</mi></msqrt></mfrac><mo>,</mo><mspace width="1.0em"></mspace><mi>t</mi><mo>=</mo><mfrac><mrow><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>−</mo><msub><mi>μ</mi><mn>0</mn></msub></mrow><mrow><mi>S</mi><mi>E</mi></mrow></mfrac><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>p</mi><mrow><mi>p</mi><mi>e</mi><mi>r</mi><mi>m</mi></mrow></msub><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>#</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">|</mo><msup><mi>T</mi><mo>*</mo></msup><mo stretchy="false" form="prefix">|</mo><mo>≥</mo><mo stretchy="false" form="prefix">|</mo><msub><mi>T</mi><mrow><mi>o</mi><mi>b</mi><mi>s</mi></mrow></msub><mo stretchy="false" form="prefix">|</mo><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>B</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">SE=\frac{s}{\sqrt{N}}, \quad t=\frac{\bar{x}-\mu_0}{SE}, \quad p_{perm}=\frac{1+\#(|T^*|\geq|T_{obs}|)}{B+1}</annotation></semantics></math></p>
+<div id="mapa-symboli" class="section level1">
+<h1>Mapa symboli</h1>
 <table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>Symbol</th>
-<th>Nazwa</th>
-<th>Znaczenie</th>
+<th>Co opisuje?</th>
+<th>Jednostka</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi></mrow><annotation encoding="application/x-tex">SE</annotation></semantics></math></td>
-<td>błąd standardowy</td>
-<td>zmienność estymaty</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math></td>
+<td>Ważne niezależne jednostki analizy</td>
+<td>Osoby lub jednostki projektu</td>
 </tr>
 <tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math></td>
-<td>statystyka</td>
-<td>odległość od H0 w SE</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>x</mi><mo accent="true">‾</mo></mover><annotation encoding="application/x-tex">\bar{x}</annotation></semantics></math></td>
+<td>Średnia w próbie</td>
+<td>Minuty albo punkty</td>
 </tr>
 <tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>T</mi><mo>*</mo></msup><annotation encoding="application/x-tex">T^*</annotation></semantics></math></td>
-<td>statystyka losowa</td>
-<td>wynik po tasowaniu</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math></td>
+<td>Rozrzut obserwacji</td>
+<td>Ta sama co zmienna</td>
+</tr>
+<tr class="even">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi></mrow><annotation encoding="application/x-tex">SE</annotation></semantics></math></td>
+<td>Oszacowany rozrzut estymatora średniej</td>
+<td>Ta sama co średnia</td>
+</tr>
+<tr class="odd">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\mu_0</annotation></semantics></math></td>
+<td>Wartość w hipotezie zerowej</td>
+<td>Ta sama co średnia</td>
+</tr>
+<tr class="even">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi mathvariant="normal">Δ</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\widehat\Delta</annotation></semantics></math></td>
+<td>Średnia minus odniesienie</td>
+<td>Minuty albo punkty</td>
+</tr>
+<tr class="odd">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math></td>
+<td>Różnica wyrażona w SE</td>
+<td>Bez jednostki</td>
+</tr>
+<tr class="even">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math></td>
+<td>Różnica wyrażona w SD osób</td>
+<td>Bez jednostki</td>
+</tr>
+<tr class="odd">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>f</mi></mrow><annotation encoding="application/x-tex">df</annotation></semantics></math></td>
+<td>Stopnie swobody rozkładu odniesienia</td>
+<td>Nie są wielkością efektu</td>
 </tr>
 <tr class="even">
 <td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math></td>
-<td>replikacje</td>
-<td>liczba losowań</td>
+<td>Powtórzenia komputerowe</td>
+<td>Nie są osobami badanymi</td>
 </tr>
 </tbody>
 </table>
-<p>Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę
-i składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani
-CI zakresu 95% osób.</p>
-<div style="page-break-after: always;"></div>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi><mo>=</mo><mfrac><mi>s</mi><msqrt><mi>n</mi></msqrt></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>t</mi><mo>=</mo><mfrac><mrow><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>−</mo><msub><mi>μ</mi><mn>0</mn></msub></mrow><mrow><mi>S</mi><mi>E</mi></mrow></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>d</mi><mo>=</mo><mfrac><mrow><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>−</mo><msub><mi>μ</mi><mn>0</mn></msub></mrow><mi>s</mi></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
+SE=\frac{s}{\sqrt n},\qquad
+t=\frac{\bar{x}-\mu_0}{SE},\qquad
+d=\frac{\bar{x}-\mu_0}{s}.
+</annotation></semantics></math></p>
+<p>Wzór SE dotyczy standardowego modelu niezależnych obserwacji. Wiele
+kliknięć tej samej osoby nie daje tylu niezależnych osób, ile wierszy
+logu. Zwiększenie N nie naprawia błędu pomiaru ani samoselekcji.</p>
 </div>
-<div id="dwa-tory-i-efekt" class="section level1">
-<h1>3. Dwa tory i efekt</h1>
-<p><strong>Tor klasyczny.</strong> Tor klasyczny korzysta z rozkładu
-teoretycznego i założeń. Raportuje estymatę, CI, statystykę, df i
-p. Decyzja p&lt;alpha jest regułą procedury, a nie miarą wartości
-badania ani prawdopodobieństwem H0.</p>
-<p><strong>Tor permutacyjny/resampling.</strong> Tor permutacyjny
-zachowuje dane, lecz niszczy określony związek: zmienia znaki odchyleń,
-tasuje etykiety grup lub jedną zmienną. Statystyka musi być taka sama
-jak ta, której skrajność oceniamy. Dodanie 1 do licznika i mianownika
-zapobiega p=0.</p>
-<p><strong>Efekt i przedział.</strong> Efekt w naturalnej jednostce
-odpowiada na pytanie praktyczne, efekt standaryzowany ułatwia
-porównanie, a CI pokazuje precyzję. Wynik może być istotny i mały albo
-nieistotny i zgodny z efektami ważnymi praktycznie.</p>
-<div style="page-break-after: always;"></div>
+<div id="przedział-ma-nazwany-parametr" class="section level1">
+<h1>Przedział ma nazwany parametr</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><msub><mi>I</mi><mrow><mn>95</mn><mi>%</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>μ</mi><mo stretchy="false" form="postfix">)</mo><mo>:</mo><mspace width="1.0em"></mspace><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>±</mo><msub><mi>t</mi><mrow><mn>0</mn><mo>,</mo><mn>975</mn><mo>;</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mi>S</mi><mi>E</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">CI_{95\%}(\mu):\quad\bar{x}\pm t_{0{,}975;n-1}SE.</annotation></semantics></math></p>
+<p>Przedział różnicy
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>=</mo><mi>μ</mi><mo>−</mo><msub><mi>μ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">\Delta=\mu-\mu_0</annotation></semantics></math>
+otrzymujemy przez odjęcie
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\mu_0</annotation></semantics></math>
+od obu granic przedziału średniej. Dla średniej punktem sprawdzanym jest
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\mu_0</annotation></semantics></math>,
+dla różnicy zero.</p>
+<p>Poziom 95% opisuje działanie procedury w powtarzanych próbach przy
+jej założeniach. Nie znaczy, że 95% osób mieści się w tym przedziale,
+ani że przedział przewiduje czas nowej osoby. Wyższy poziom ufności daje
+szerszy przedział przy tych samych danych.</p>
 </div>
-<div id="interpretacja-i-pytania" class="section level1">
-<h1>4. Interpretacja i pytania</h1>
-<p><strong>Przykład.</strong> Średni indeks 3,24 przy N=146 może być o
-0,24 punktu wyższy od 3. Test t pyta o skrajność takiej różnicy względem
-SE, zmiana znaków o jej skrajność przy symetrycznym zerowym układzie
-odchyleń, a bootstrap o stabilność średniej między próbami
-empirycznymi.</p>
-<p><strong>Pułapki.</strong> Błędy to: p jako prawdopodobieństwo H0, CI
-jako zakres 95% osób, bootstrap jako test zerowy, wybór mniejszego z
-dwóch p, pominięcie efektu oraz twierdzenie o reprezentatywności na
-podstawie małego SE.</p>
-<p><strong>Pytanie do pracy.</strong> Ułóż w poprawnej kolejności osiem
-elementów wyniku: N, estymata, jednostka, CI, statystyka, df, p
-klasyczne, p permutacyjne. Następnie wyjaśnij rozbieżność obu torów bez
-uznawania jednego za automatycznie prawdziwy.</p>
-<div id="dalszy-krok" class="section level2">
-<h2>Dalszy krok</h2>
-<p>C05 zastosuje t, CI, bootstrap i zmianę znaków. W04 przeniesie tę
-logikę do porównania grup i tabel kategorii.</p>
+<div id="dwa-przykłady-do-przeczytania" class="section level1">
+<h1>Dwa przykłady do przeczytania</h1>
+<table>
+<colgroup>
+<col width="27%" />
+<col width="36%" />
+<col width="36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Wielkość</th>
+<th align="right">Indeks: przykład hipotetyczny</th>
+<th align="right">Czas: przykład hipotetyczny</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>N</td>
+<td align="right">100</td>
+<td align="right">16</td>
+</tr>
+<tr class="even">
+<td>Średnia; SD</td>
+<td align="right">3,24; 0,80 pkt</td>
+<td align="right">11,2; 6 min</td>
+</tr>
+<tr class="odd">
+<td>Odniesienie</td>
+<td align="right">3 pkt</td>
+<td align="right">10 min</td>
+</tr>
+<tr class="even">
+<td>SE</td>
+<td align="right">0,08 pkt</td>
+<td align="right">1,5 min</td>
+</tr>
+<tr class="odd">
+<td>Różnica</td>
+<td align="right">0,24 pkt</td>
+<td align="right">1,2 min</td>
+</tr>
+<tr class="even">
+<td>95% CI różnicy</td>
+<td align="right">[0,081; 0,399] pkt</td>
+<td align="right">[−2,00; 4,40] min</td>
+</tr>
+<tr class="odd">
+<td>t; df</td>
+<td align="right">3,00; 99</td>
+<td align="right">0,80; 15</td>
+</tr>
+<tr class="even">
+<td>Dwustronne p</td>
+<td align="right">Około 0,0034</td>
+<td align="right">Około 0,436</td>
+</tr>
+<tr class="odd">
+<td>d</td>
+<td align="right">0,30</td>
+<td align="right">0,20</td>
+</tr>
+</tbody>
+</table>
+<p>Pierwszy wynik jest niezgodny z zerową różnicą w stopniu opisanym
+przez test, ale nie rozstrzyga znaczenia praktycznego ani trafności
+indeksu. Drugi jest nieprecyzyjny: obejmuje różnice w obu kierunkach.
+Nie dowodzi równości ani spełnienia standardu.</p>
+<p>W obu przykładach do wnioskowania potrzebne są warunki modelu i
+uzasadnienie doboru próby. Statystyki opisowe same nie pozwalają
+sprawdzić kształtu rozkładu. Syntetyczne przykłady nie opisują
+rzeczywistej biblioteki.</p>
 </div>
-<div id="literatura" class="section level2">
-<h2>Literatura</h2>
-<ul>
-<li>Efron &amp; Tibshirani. An Introduction to the Bootstrap.</li>
-<li>Good. Permutation, Parametric and Bootstrap Tests of
-Hypotheses.</li>
-<li>Materiały kursowe zestawiają klasyczne i permutacyjne
-wnioskowanie.</li>
-</ul>
+<div id="p-i-alfa-nie-są-tym-samym" class="section level1">
+<h1>P i alfa nie są tym samym</h1>
+<p>P to warunkowa ocena skrajności statystyki przy H0 i założeniach
+modelu. Dwustronne p uwzględnia wyniki co najmniej tak skrajne w obu
+kierunkach. Nie jest prawdopodobieństwem H0, miarą efektu ani szansą
+powtórzenia rezultatu.</p>
+<p>Alfa jest wcześniej określoną regułą kontroli błędu I rodzaju. Moc
+dotyczy szansy odrzucenia H0 przy określonej alternatywie, zmienności, N
+i procedurze. Brak odrzucenia nie dowodzi braku efektu. Wybór
+najniższego p spośród wielu analiz zmienia działanie procedury.</p>
 </div>
+<div id="dwa-zastosowania-losowania" class="section level1">
+<h1>Dwa zastosowania losowania</h1>
+<p>Bootstrap losuje obserwacje z powtórzeniami, aby przybliżyć zmienność
+estymatora. Prosty przedział percentylowy wykorzystuje kwantyle estymat
+bootstrapowych. Nie symuluje automatycznie H0 i nie usuwa obciążenia
+doboru próby.</p>
+<p>Zmiana znaków odchyleń od
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\mu_0</annotation></semantics></math>
+buduje rozkład zerowy przy odpowiednich warunkach, w tym symetrii i
+niezależności odchyleń. Sama równość średniej do odniesienia nie
+zapewnia symetrii. Dla innych projektów schemat przestawień musi
+zachować właściwą strukturę.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">C</mi></mrow></msub><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>#</mi><mo stretchy="false" form="prefix">{</mo><mo stretchy="false" form="prefix">|</mo><msubsup><mi>T</mi><mi>b</mi><mo>*</mo></msubsup><mo stretchy="false" form="prefix">|</mo><mo>≥</mo><mo stretchy="false" form="prefix">|</mo><msub><mi>T</mi><mrow><mi mathvariant="normal">o</mi><mi mathvariant="normal">b</mi><mi mathvariant="normal">s</mi></mrow></msub><mo stretchy="false" form="prefix">|</mo><mo stretchy="false" form="postfix">}</mo></mrow><mrow><mi>B</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">p_{\mathrm{MC}}=
+\frac{1+\#\{|T_b^*|\geq|T_{\mathrm{obs}}|\}}{B+1}.</annotation></semantics></math></p>
+<p>Dla B=1999 i 39 skrajnych replik p wynosi 0,02. Przy braku skrajnych
+replik wynosi 0,0005, nie zero. Zwiększenie B zmniejsza błąd obliczenia
+Monte Carlo, nie niepewność wynikającą z małej próby osób.</p>
+</div>
+<div id="pytania-przed-zapisaniem-wyniku" class="section level1">
+<h1>Pytania przed zapisaniem wyniku</h1>
+<p>Co jest estymandą i dla jakiej populacji? Które rekordy tworzą N?
+Jaka jest wielkość efektu w jednostce problemu? Czy przedział dotyczy
+średniej czy różnicy? Jakie założenia pozwalają odczytać p? Co
+rzeczywiście przestawiano? Czy wynik odpowiada decyzji, którą chce
+podjąć biblioteka?</p>
+<p>Odpowiedź kompletna łączy dane, liczbę i ograniczenie: „oszacowano
+tyle, z taką niepewnością, przy takim projekcie”. Samo „istotne” lub
+„nieistotne” nie realizuje tego zadania.</p>
+<p>Podstawa interpretacji p: <a href="https://doi.org/10.1080/00031305.2016.1154108">Wasserstein i
+Lazar, 2016</a>. Warunki przestawień: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4010955/">Winkler i in.,
+2014</a>. Obliczanie losowanych p: <a href="https://doi.org/10.2202/1544-6115.1585">Phipson i Smyth,
+2010</a>.</p>
 </div>
 
 

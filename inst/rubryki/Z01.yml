@@ -1,13 +1,12 @@
 id: Z01
-version: 1.0.0
+version: 1.1.0
 rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z01.1
-  title: Gotowy skrypt uruchomiono od początku; zapisany wynik potwierdza właściwy
-    projekt i dane.
-  evidence: Gotowy skrypt uruchomiono od początku; zapisany wynik potwierdza właściwy
-    projekt i dane.
+  title: "Odtwarzalna praca w jednym Rmd."
+  evidence: "Zapisany Rmd i odpowiadający mu PDF zawierają wyniki gotowych chunków oraz pięć własnych odpowiedzi S01–S05 poza kodem; analiza.R odtwarza wyniki od początku. Nie wymaga się własnego programu."
+  answer_fields: [S01, S02, S03, S04, S05]
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -15,62 +14,55 @@ criteria:
   - U2
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Uruchomiono fragment bez zapisanego wyniku.
+    observable_description: "Uruchomiono fragment, lecz nie zachowano wyników i odpowiedzi w roboczym Rmd."
   - points: 1.5
-    observable_description: Powstał wynik, lecz nie odpowiada własnemu projektowi
-      albo danym.
+    observable_description: "Część wyników jest odtwarzalna, ale PDF pomija odpowiedzi lub nie odpowiada zapisanej wersji."
   - points: 2.25
-    observable_description: Gotowy skrypt i wynik są poprawne; pominięto jedno potwierdzenie
-      projektu.
+    observable_description: "Wyniki i pięć odpowiedzi odtwarzają się; drobna usterka prezentacji nie zmienia ich sensu."
   - points: 3.0
-    observable_description: Gotowy skrypt uruchomiono od początku; zapisany wynik
-      potwierdza właściwy projekt i dane.
+    observable_description: "Zapisany Rmd i odpowiadający mu PDF zawierają wyniki gotowych chunków oraz pięć własnych odpowiedzi S01–S05 poza kodem; analiza.R odtwarza wyniki od początku. Nie wymaga się własnego programu."
 - id: Z01.2
-  title: Z gotowego wyniku poprawnie odczytano wiersz, kolumnę, wartość, jednostkę
-    i N.
-  evidence: Z gotowego wyniku poprawnie odczytano wiersz, kolumnę, wartość, jednostkę
-    i N.
+  title: "Odczyt rekordu, miar czasu i mianownika odsetka."
+  evidence: "S01–S04: poprawny odczyt rekordu p06 i dwóch adresów wartości, N osób i ważnych czasów, średniej, mediany oraz liczby i odsetka sukcesów. Jednostki i mianowniki są jawne; NA nie zastąpiono zerem."
+  answer_fields: [S01, S02, S03, S04]
   max_points: 3.0
   review_mode: mixed
   learning_outcomes: U2
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Wskazano tabelę bez poprawnego odczytu wartości.
+    observable_description: "Odczytano pojedynczą liczbę bez właściwego rekordu lub mianownika."
   - points: 1.5
-    observable_description: Odczytano wartość, lecz pomylono jednostkę albo N.
+    observable_description: "Większość liczb jest poprawna, ale pomylono ważne N, jednostkę lub wpływ zastąpienia braku zerem."
   - points: 2.25
-    observable_description: Odczyt jest poprawny; jeden element źródła wyniku pominięto.
+    observable_description: "Odczyt i porównanie reguł są poprawne; pominięto jedną jednostkę lub jedną żądaną liczbę."
   - points: 3.0
-    observable_description: Z gotowego wyniku poprawnie odczytano wiersz, kolumnę,
-      wartość, jednostkę i N.
+    observable_description: "S01–S04: poprawny odczyt rekordu p06 i dwóch adresów wartości, N osób i ważnych czasów, średniej, mediany oraz liczby i odsetka sukcesów. Jednostki i mianowniki są jawne; NA nie zastąpiono zerem."
 - id: Z01.3
-  title: W `.md` poprawnie objaśniono konsolę, skrypt i źródło jednego wyniku.
-  evidence: W `.md` poprawnie objaśniono konsolę, skrypt i źródło jednego wyniku.
+  title: "Źródło wyniku i granice wniosku o zachowaniu."
+  evidence: "S02 odróżnia kod w chunku, wynik i tekst interpretacji. S03 wskazuje brakującą informację o p04. S05 porównuje dwa konkretne rekordy, rozdziela pewność, czas i poprawność oraz proponuje dodatkowy pomiar bez diagnozowania ogólnych kompetencji."
+  answer_fields: [S02, S03, S05]
   max_points: 2.0
   review_mode: human
   learning_outcomes: W3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Nazwano konsolę lub skrypt bez wyjaśnienia roli.
+    observable_description: "Nazwano kod lub deklarację bez wskazania źródła i znaczenia wyniku."
   - points: 1.0
-    observable_description: Role wyjaśniono, lecz nie wskazano źródła wyniku.
+    observable_description: "Rozdzielono kod od tekstu, lecz wniosek o pewności i wykonaniu nie jest poparty dwoma rekordami lub uogólnia na całe kompetencje."
   - points: 1.5
-    observable_description: Role i źródło wyniku poprawne; opis pomija sposób ponownego
-      wykonania.
+    observable_description: "Poprawne źródło i ostrożny wniosek z rekordów; jedno doprecyzowanie protokołu albo dodatkowego pomiaru jest niepełne."
   - points: 2.0
-    observable_description: W `.md` poprawnie objaśniono konsolę, skrypt i źródło
-      jednego wyniku.
+    observable_description: "S02 odróżnia kod w chunku, wynik i tekst interpretacji. S03 wskazuje brakującą informację o p04. S05 porównuje dwa konkretne rekordy, rozdziela pewność, czas i poprawność oraz proponuje dodatkowy pomiar bez diagnozowania ogólnych kompetencji."
 - id: Z01.4
-  title: Wyniki i pliki należą do własnego repo/ID; student potrafi wskazać potwierdzone
-    SHA oraz status.
-  evidence: Wyniki i pliki należą do własnego repo/ID; student potrafi wskazać potwierdzone
-    SHA oraz status.
+  title: "Własne ID, pliki i potwierdzona oddana wersja."
+  evidence: "Metadane Rmd/PDF i prywatnego repozytorium odpowiadają własnemu ID. Pokwitowanie wysyłki wskazuje zdalne SHA oraz status odbioru. Nie trzeba dopisywać SHA do Rmd ani tworzyć szóstej odpowiedzi; ocenia się zapisane pliki i pokwitowanie."
+  answer_fields: [S01, S02, S03, S04, S05]
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -78,13 +70,12 @@ criteria:
   - K1
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Pliki przygotowane, lecz brak zgodności repo/ID.
+    observable_description: "Pliki istnieją, lecz nie można powiązać ich z właściwym ID i repozytorium."
   - points: 1.0
-    observable_description: Własne repo/ID, lecz wskazano tylko lokalny commit.
+    observable_description: "Własne ID i pliki są zgodne, ale dostępny jest tylko lokalny zapis lub commit, bez potwierdzenia odbioru."
   - points: 1.5
-    observable_description: Potwierdzone zdalne SHA; opis statusu niepełny.
+    observable_description: "Odbiór i ID są potwierdzone; pozostała drobna niespójność oznaczenia wersji pliku."
   - points: 2.0
-    observable_description: Wyniki i pliki należą do własnego repo/ID; student potrafi
-      wskazać potwierdzone SHA oraz status.
+    observable_description: "Metadane Rmd/PDF i prywatnego repozytorium odpowiadają własnemu ID. Pokwitowanie wysyłki wskazuje zdalne SHA oraz status odbioru. Nie trzeba dopisywać SHA do Rmd ani tworzyć szóstej odpowiedzi; ocenia się zapisane pliki i pokwitowanie."

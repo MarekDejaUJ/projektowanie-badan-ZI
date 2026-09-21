@@ -1,6 +1,6 @@
 \name{otworz_material}
 \alias{otworz_material}
-\title{Dostęp do materiału lokalnego lub Pages}
+\title{Dostep do materialu lokalnego lub Pages}
 \usage{
 otworz_material(
   id,
@@ -15,17 +15,17 @@ otworz_material(
 
 \item{format}{html, pdf, Rmd, R albo tex.}
 
-\item{handout}{Czy otworzyć handout wykładu. Ćwiczenia nie mają handoutów.}
+\item{handout}{Czy otworzyc handout wykladu. Cwiczenia nie maja handoutow.}
 
 \item{zrodlo}{lokalne albo pages.}
 
-\item{otworz}{Czy uruchomić przeglądarkę lub otworzyć plik.}
+\item{otworz}{Czy uruchomic przegladarke lub otworzyc plik.}
 }
 \value{
-Istniejąca ścieżka lub adres Pages, niewidocznie.
+Istniejaca sciezka lub adres Pages, niewidocznie.
 }
 \description{
-Dostęp do materiału lokalnego lub Pages
+Dostep do materialu lokalnego lub Pages
 }
 \examples{
 \dontrun{

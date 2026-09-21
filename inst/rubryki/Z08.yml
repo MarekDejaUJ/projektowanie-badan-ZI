@@ -1,31 +1,30 @@
 id: Z08
-version: 1.0.0
+version: 1.1.0
 rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z08.1
-  title: Dobór Pearsona/Spearmana i wykres uwzględnia skale i charakter związku.
-  evidence: Dobór Pearsona/Spearmana i wykres uwzględnia skale i charakter związku.
+  title: "Dobór miary i odczyt wykresu kompletnych par."
+  evidence: "S01 nazywa zmienne, jednostki oraz zakres pomiaru deklaracji i czasu; podaje N ważnych wartości i kompletnych par. Opisuje kierunek i rozrzut. Uzasadnia Pearsona liniową współzmiennością albo Spearmana monotonicznym uporządkowaniem, przed odczytem p."
+  answer_fields: [S01]
   max_points: 3.0
   review_mode: human
   learning_outcomes: U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Współczynnik wybrano bez sprawdzenia skal lub wykresu.
+    observable_description: "Wybrano współczynnik bez sprawdzenia zmiennych lub wykresu."
   - points: 1.5
-    observable_description: Skale opisane, ale wybór nie pasuje do widocznego związku.
+    observable_description: "Opisano skale, ale N par, zakres pomiaru lub uzasadnienie miary nie odpowiada danym."
   - points: 2.25
-    observable_description: Właściwy wybór i wykres; jedno uzasadnienie pominięte.
+    observable_description: "Miara, bilans i odczyt wykresu są poprawne; jedno uzasadnienie kierunku lub skali jest niepełne."
   - points: 3.0
-    observable_description: Dobór Pearsona/Spearmana i wykres uwzględnia skale i charakter
-      związku.
+    observable_description: "S01 nazywa zmienne, jednostki oraz zakres pomiaru deklaracji i czasu; podaje N ważnych wartości i kompletnych par. Opisuje kierunek i rozrzut. Uzasadnia Pearsona liniową współzmiennością albo Spearmana monotonicznym uporządkowaniem, przed odczytem p."
 - id: Z08.2
-  title: Współczynnik, N par, przedział, p klasyczne i p_perm odczytano poprawnie;
-    bez fikcyjnych df.
-  evidence: Współczynnik, N par, przedział, p klasyczne i p_perm odczytano poprawnie;
-    bez fikcyjnych df.
+  title: "Współczynnik, niepewność i oba sposoby testowania."
+  evidence: "S02 odczytuje parametr, N, współczynnik, właściwą statystykę, p klasyczne i CI z metodą; dla Pearsona objaśnia t i df, dla Spearmana S bez fikcyjnych df. S03 podaje k, B, (k+1)/(B+1), oba p oraz odróżnia tasowanie od bootstrapu całych par, z warunkami niezależności i wymienialności."
+  answer_fields: [S02, S03]
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -33,23 +32,19 @@ criteria:
   - U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Podano współczynnik bez poprawnej liczby par.
+    observable_description: "Podano współczynnik bez właściwego N par lub znaczenia znaku."
   - points: 1.0
-    observable_description: Współczynnik i jedno p są poprawne; brakuje drugiego toru
-      albo przedziału.
+    observable_description: "Współczynnik i jedno p są poprawne, ale pomylono drugi tor, parametr CI, statystykę albo sposób losowania."
   - points: 1.5
-    observable_description: Oba tory i przedział są poprawne; pominięto B albo jedną
-      granicę.
+    observable_description: "Oba tory, CI i losowania odczytano poprawnie; pominięto jeden element rachunku, symbol lub B."
   - points: 2.0
-    observable_description: Współczynnik, N par, przedział, p klasyczne i p_perm odczytano
-      poprawnie; bez fikcyjnych df.
+    observable_description: "S02 odczytuje parametr, N, współczynnik, właściwą statystykę, p klasyczne i CI z metodą; dla Pearsona objaśnia t i df, dla Spearmana S bez fikcyjnych df. S03 podaje k, B, (k+1)/(B+1), oba p oraz odróżnia tasowanie od bootstrapu całych par, z warunkami niezależności i wymienialności."
 - id: Z08.3
-  title: Student czyta nachylenie, jednostki, R² i podstawowy sygnał diagnostyczny
-    prostej regresji.
-  evidence: Student czyta nachylenie, jednostki, R² i podstawowy sygnał diagnostyczny
-    prostej regresji.
+  title: "Równanie regresji, jednostki i diagnostyka."
+  evidence: "S04 zapisuje równanie średniego czasu, nachylenie w minutach na punkt, SE, t, df, p i CI nachylenia. Wyjaśnia ograniczenie wyrazu wolnego przy x=0, odczytuje R² w próbie i wskazuje konkretny sygnał z wykresu reszt wraz z jego konsekwencją."
+  answer_fields: [S04]
   max_points: 3.0
   review_mode: human
   learning_outcomes:
@@ -57,35 +52,30 @@ criteria:
   - U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Odczytano nazwę współczynnika bez sensu nachylenia.
+    observable_description: "Odczytano nazwę współczynnika bez sensu nachylenia."
   - points: 1.5
-    observable_description: Nachylenie częściowo poprawne; jednostki, R² albo diagnostyka
-      błędne.
+    observable_description: "Nachylenie jest częściowo poprawne, ale jednostki, R², wyraz wolny lub diagnostyka są błędne."
   - points: 2.25
-    observable_description: Nachylenie, jednostki i R² poprawne; opis diagnostyczny
-      niepełny.
+    observable_description: "Równanie, jednostki i R² są poprawne; jeden element niepewności albo objaśnienie reszt jest niepełne."
   - points: 3.0
-    observable_description: Student czyta nachylenie, jednostki, R² i podstawowy sygnał
-      diagnostyczny prostej regresji.
+    observable_description: "S04 zapisuje równanie średniego czasu, nachylenie w minutach na punkt, SE, t, df, p i CI nachylenia. Wyjaśnia ograniczenie wyrazu wolnego przy x=0, odczytuje R² w próbie i wskazuje konkretny sygnał z wykresu reszt wraz z jego konsekwencją."
 - id: Z08.4
-  title: Interpretacja odróżnia związek, przewidywanie i przyczynowość oraz wskazuje
-    ograniczenie.
-  evidence: Interpretacja odróżnia związek, przewidywanie i przyczynowość oraz wskazuje
-    ograniczenie.
+  title: "Średnia, przewidywanie osoby i granice przyczynowości."
+  evidence: "S05 podaje modelową średnią dla x=3, CI średniej i przedział predykcji, wyjaśniając różnicę szerokości. Poprawia obietnicę indywidualnego czasu i przyczynowego wpływu samooceny. Dodaje ograniczenie pomiaru oraz potrzebną obserwację lub zmianę projektu badania."
+  answer_fields: [S05]
   max_points: 2.0
   review_mode: human
   learning_outcomes: U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Wniosek powtarza współczynnik bez interpretacji.
+    observable_description: "Wniosek jedynie powtarza współczynnik lub przewidywaną średnią."
   - points: 1.0
-    observable_description: Związek opisano, lecz przewidywanie utożsamiono z przyczyną.
+    observable_description: "Związek opisano, ale pomylono CI średniej z prognozą osoby lub regresję uznano za dowód przyczyny."
   - points: 1.5
-    observable_description: Rozróżnienie poprawne; jedno ograniczenie wymaga doprecyzowania.
+    observable_description: "Przedziały i granice wniosku są poprawne; ograniczenie albo propozycja dalszego pomiaru wymaga doprecyzowania."
   - points: 2.0
-    observable_description: Interpretacja odróżnia związek, przewidywanie i przyczynowość
-      oraz wskazuje ograniczenie.
+    observable_description: "S05 podaje modelową średnią dla x=3, CI średniej i przedział predykcji, wyjaśniając różnicę szerokości. Poprawia obietnicę indywidualnego czasu i przyczynowego wpływu samooceny. Dodaje ograniczenie pomiaru oraz potrzebną obserwację lub zmianę projektu badania."

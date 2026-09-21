@@ -12,7 +12,7 @@
 <meta name="author" content="Marek Deja" />
 
 
-<title>W02 — Język danych, pomiar i opis</title>
+<title>W02 — Język danych: rozkład, miara i sens pomiaru</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -375,7 +375,8 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">W02 — Język danych, pomiar i opis</h1>
+<h1 class="title toc-ignore">W02 — Język danych: rozkład, miara i sens
+pomiaru</h1>
 <h3 class="subtitle">Zarządzanie informacją — część ilościowa —
 2026/27</h3>
 <h4 class="author">Marek Deja</h4>
@@ -385,278 +386,657 @@ display: none;
 
 <div id="TOC">
 <ul>
-<li><a href="#odcinek-wsp%C3%B3lnej-opowie%C5%9Bci" id="toc-odcinek-wspólnej-opowieści">1. Odcinek wspólnej
-opowieści</a></li>
-<li><a href="#dlaczego-to-jest-pytanie-lis" id="toc-dlaczego-to-jest-pytanie-lis">2. Dlaczego to jest pytanie
-LIS</a></li>
-<li><a href="#pytanie-przed-metod%C4%85" id="toc-pytanie-przed-metodą">3. Pytanie przed metodą</a></li>
-<li><a href="#projekt-wyznacza-granic%C4%99-wniosku" id="toc-projekt-wyznacza-granicę-wniosku">4. Projekt wyznacza granicę
-wniosku</a></li>
-<li><a href="#pomiar-samoocena-i-obserwacja" id="toc-pomiar-samoocena-i-obserwacja">5. Pomiar: samoocena i
-obserwacja</a></li>
-<li><a href="#wz%C3%B3r-jako-zdanie" id="toc-wzór-jako-zdanie">6. Wzór
-jako zdanie</a></li>
-<li><a href="#tok-analizy" id="toc-tok-analizy">7. Tok analizy</a></li>
-<li><a href="#przyk%C5%82ad-prowadzony" id="toc-przykład-prowadzony">8.
-Przykład prowadzony</a></li>
-<li><a href="#tor-klasyczny" id="toc-tor-klasyczny">9. Tor
-klasyczny</a></li>
-<li><a href="#tor-permutacyjny-i-resampling" id="toc-tor-permutacyjny-i-resampling">10. Tor permutacyjny i
-resampling</a></li>
-<li><a href="#efekt-przedzia%C5%82-i-znaczenie" id="toc-efekt-przedział-i-znaczenie">11. Efekt, przedział i
-znaczenie</a></li>
-<li><a href="#jak-nie-pisa%C4%87-wyniku" id="toc-jak-nie-pisać-wyniku">12. Jak nie pisać wyniku</a></li>
-<li><a href="#aktywno%C5%9B%C4%87-podczas-wyk%C5%82adu" id="toc-aktywność-podczas-wykładu">13. Aktywność podczas
-wykładu</a></li>
-<li><a href="#most-do-%C4%87wicze%C5%84-i-projektu" id="toc-most-do-ćwiczeń-i-projektu">14. Most do ćwiczeń i projektu</a>
+<li><a href="#jedna-%C5%9Brednia-nie-opisuje-ca%C5%82ej-us%C5%82ugi" id="toc-jedna-średnia-nie-opisuje-całej-usługi">Jedna średnia nie
+opisuje całej usługi</a></li>
+<li><a href="#najpierw-ustalamy-co-opisuje-rozk%C5%82ad" id="toc-najpierw-ustalamy-co-opisuje-rozkład">Najpierw ustalamy, co
+opisuje rozkład</a></li>
+<li><a href="#%C5%9Brednia-suma-jednostka-i-wra%C5%BCliwo%C5%9B%C4%87" id="toc-średnia-suma-jednostka-i-wrażliwość">Średnia: suma, jednostka i
+wrażliwość</a>
 <ul>
-<li><a href="#literatura-i-ramy" id="toc-literatura-i-ramy">Literatura i
-ramy</a></li>
+<li><a href="#%C5%9Brednia-dw%C3%B3ch-grup-wymaga-wag" id="toc-średnia-dwóch-grup-wymaga-wag">Średnia dwóch grup wymaga
+wag</a></li>
 </ul></li>
+<li><a href="#mediana-i-kwartyle-pytania-o-kolejno%C5%9B%C4%87" id="toc-mediana-i-kwartyle-pytania-o-kolejność">Mediana i kwartyle:
+pytania o kolejność</a></li>
+<li><a href="#zr%C3%B3%C5%BCnicowanie-dlaczego-%C5%9Brednie-mog%C4%85-nie-wystarczy%C4%87" id="toc-zróżnicowanie-dlaczego-średnie-mogą-nie-wystarczyć">Zróżnicowanie:
+dlaczego średnie mogą nie wystarczyć</a></li>
+<li><a href="#sd-nie-jest-b%C5%82%C4%99dem-standardowym" id="toc-sd-nie-jest-błędem-standardowym">SD nie jest błędem
+standardowym</a></li>
+<li><a href="#rozk%C5%82ad-asymetria-i-granice-intuicji" id="toc-rozkład-asymetria-i-granice-intuicji">Rozkład, asymetria i
+granice intuicji</a></li>
+<li><a href="#wykres-odpowiada-na-okre%C5%9Blone-pytanie" id="toc-wykres-odpowiada-na-określone-pytanie">Wykres odpowiada na
+określone pytanie</a></li>
+<li><a href="#skala-odpowiedzi-a-narz%C4%99dzie-pomiarowe" id="toc-skala-odpowiedzi-a-narzędzie-pomiarowe">Skala odpowiedzi a
+narzędzie pomiarowe</a></li>
+<li><a href="#czytanie-wzoru-indeksu" id="toc-czytanie-wzoru-indeksu">Czytanie wzoru indeksu</a></li>
+<li><a href="#trafno%C5%9B%C4%87-rzetelno%C5%9B%C4%87-i-b%C5%82%C4%85d-pomiaru" id="toc-trafność-rzetelność-i-błąd-pomiaru">Trafność, rzetelność i błąd
+pomiaru</a></li>
+<li><a href="#kr%C3%B3tkie-por%C3%B3wnanie-sposob%C3%B3w-skalowania" id="toc-krótkie-porównanie-sposobów-skalowania">Krótkie porównanie
+sposobów skalowania</a></li>
+<li><a href="#od-opisu-do-decyzji-instytucji" id="toc-od-opisu-do-decyzji-instytucji">Od opisu do decyzji
+instytucji</a></li>
+<li><a href="#learn-redakcja-czterech-zda%C5%84" id="toc-learn-redakcja-czterech-zdań">LEARN: redakcja czterech
+zdań</a></li>
+<li><a href="#przygotowanie-do-c03-i-c04" id="toc-przygotowanie-do-c03-i-c04">Przygotowanie do C03 i C04</a></li>
 </ul>
 </div>
 
-<div id="odcinek-wspólnej-opowieści" class="section level1">
-<h1>1. Odcinek wspólnej opowieści</h1>
-<p>Ta sama osoba może wysoko oceniać własne kompetencje i jednocześnie
-długo wykonywać zadanie. Pomiar ankietowy oraz obserwacyjny są różnymi
-oknami na zachowanie. Dobry opis nie zaciera tej różnicy i nie sprowadza
-tabeli do jednej średniej.</p>
-<p><strong>Pytanie wykładu:</strong> Jak opisać samoocenę, obserwowany
-czas, powodzenie i wybór kanału tak, aby miara odpowiadała skali i
-właściwemu mianownikowi?</p>
+<p>Przykłady liczbowe w wykładzie są obliczane przez towarzyszący
+skrypt. Małe serie są odrębnymi demonstracjami syntetycznymi, a nie
+wynikami badań cytowanych w bibliografii. Podczas wykładu czytamy wynik
+i uzasadnienie; samodzielna praca z gotowymi funkcjami pojawi się w C03
+i C04.</p>
+<div id="jedna-średnia-nie-opisuje-całej-usługi" class="section level1">
+<h1>Jedna średnia nie opisuje całej usługi</h1>
+<p>Zespół biblioteki otrzymuje komunikat: „Średni czas wyszukiwania
+wynosi sześć minut”. Pierwsza osoba uważa, że niemal każdy znajduje
+dokument w sześć minut. Druga zakłada, że połowa potrzebuje mniej czasu,
+a połowa więcej. Trzecia chce pomnożyć sześć minut przez liczbę
+obsługiwanych zadań. Te trzy odczytania nie są równoważne.</p>
+<p>Średnia jest sumą podzieloną przez liczbę wartości. Nie mówi sama,
+ile osób miało wynik bliski średniej ani gdzie przebiega połowa
+uporządkowanej próby. Może być użyteczna do myślenia o łącznym nakładzie
+czasu, ale nie zastępuje opisu jego zróżnicowania. W bibliotece
+niewielka grupa bardzo długich prób może być ważnym problemem, nawet gdy
+większość użytkowników działa szybko.</p>
+<p>W W01 ustaliliśmy pytanie i sposób pomiaru. W C02 sprawdziliśmy,
+które rekordy i wartości pozostają w analizie. Teraz pytamy, jak opisać
+ich rozkład, żeby nie zgubić informacji ważnej dla działania usługi. C03
+zastosuje ten język do czasu i powodzenia. C04 sprawdzi, jak tworzymy
+wynik z kilku pozycji ankiety.</p>
+<p>Na 90 minut wykładu składa się około 10 minut powrotu do problemu, 25
+minut miar położenia i rozproszenia, 20 minut rozkładów i wykresów, 20
+minut pomiaru deklaracji oraz 15 minut interpretacji przypadków. Pełny
+tekst jest materiałem do ponownego przeczytania po spotkaniu.</p>
+</div>
+<div id="najpierw-ustalamy-co-opisuje-rozkład" class="section level1">
+<h1>Najpierw ustalamy, co opisuje rozkład</h1>
+<p>Rozkład zmiennej mówi, jakie wartości występują i jak często. Rozkład
+czasu dotyczy minut wykonania zadania. Rozkład oceny dotyczy kategorii
+odpowiedzi. Rozkład powodzenia dotyczy liczebności dwóch wyników. Zanim
+narysujemy wykres, musimy znać poziom obserwacji i mianownik.</p>
+<p>Szereg punktowy zestawia poszczególne wartości lub kategorie z
+liczebnościami. Jest naturalny dla ocen 1–5. Szereg przedziałowy grupuje
+wartości w przedziały, np. czasy od 0 do 5, od 5 do 10 i od 10 do 15
+minut. Grupowanie upraszcza obraz, ale ukrywa położenie poszczególnych
+osób wewnątrz przedziału.</p>
+<p>Poniższa tabela przedstawia dwadzieścia odpowiedzi na pojedynczą
+pozycję oceny. Liczebność mówi, ile osób wybrało kategorię, procent
+odnosi tę liczbę do wszystkich ważnych odpowiedzi. Procent skumulowany
+odpowiada na inne pytanie: jaki udział odpowiedzi nie przekracza danej
+kategorii.</p>
 <table>
 <thead>
 <tr class="header">
-<th align="right">Minuty</th>
-<th>Część</th>
+<th align="right">odpowiedz</th>
+<th align="right">liczba</th>
+<th align="right">procent</th>
+<th align="right">procent_skumulowany</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0–15</td>
-<td>problem i ramy LIS</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">10</td>
 </tr>
 <tr class="even">
-<td align="right">15–35</td>
-<td>projekt, pomiar i symbole</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">15</td>
+<td align="right">25</td>
 </tr>
 <tr class="odd">
-<td align="right">35–55</td>
-<td>metoda oraz przykład</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">25</td>
+<td align="right">50</td>
 </tr>
 <tr class="even">
-<td align="right">55–70</td>
-<td>tor klasyczny i permutacyjny</td>
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">35</td>
+<td align="right">85</td>
 </tr>
 <tr class="odd">
-<td align="right">70–85</td>
-<td>interpretacja, błędy i dyskusja</td>
-</tr>
-<tr class="even">
-<td align="right">85–90</td>
-<td>most do ćwiczeń</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">15</td>
+<td align="right">100</td>
 </tr>
 </tbody>
 </table>
-<div style="page-break-after: always;"></div>
+<p>Nie należy przedstawiać skumulowanych odsetków dla kategorii bez
+uzasadnionego porządku. Dla ocen 1–5 kolejność jest określona. Dla
+kanałów „e-mail”, „strona WWW” i „kontakt osobisty” suma „do kanału
+trzeciego” zależy od arbitralnego ustawienia etykiet i zwykle nie ma
+znaczenia badawczego.</p>
+<p>Częstość względną kategorii
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+zapisujemy jako
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>j</mi></msub><mo>=</mo><msub><mi>n</mi><mi>j</mi></msub><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">f_j=n_j/n</annotation></semantics></math>.
+Suma częstości wynosi 1, jeśli kategorie są rozłączne i obejmują
+wszystkie ważne odpowiedzi. Przy wielokrotnym wyborze jedna osoba może
+wejść do kilku liczników, więc suma procentów respondentów może
+przekroczyć 100%. Tę różnicę będziemy odczytywać w C04.</p>
 </div>
-<div id="dlaczego-to-jest-pytanie-lis" class="section level1">
-<h1>2. Dlaczego to jest pytanie LIS</h1>
-<p>DigComp 2.2 i ACRL Framework pomagają rozdzielić wyszukiwanie, ocenę,
-wykorzystanie i refleksję nad informacją. Internet Skills Scale oraz
-badania bezpośredniego wykonania pokazują, że deklaracja i umiejętność
-nie są tożsame. Pozycje kursowe wykorzystują ten język, ale nie kopiują
-zwalidowanej skali.</p>
-<p>Library and information science bada relację osób, informacji,
-technologii i instytucji. W kursie nie tworzymy wyniku o konkretnej
-bibliotece. Używamy syntetycznego badania, aby ćwiczyć przejście od
-konstruktu do wskaźnika oraz od liczby do ostrożnego wniosku.</p>
-<div style="page-break-after: always;"></div>
+<div id="średnia-suma-jednostka-i-wrażliwość" class="section level1">
+<h1>Średnia: suma, jednostka i wrażliwość</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>x</mi><mi>i</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i.
+</annotation></semantics></math></p>
+<p>Wzór mówi, żeby dodać ważne pomiary i podzielić przez ich liczbę.
+Jeśli mierzymy czas w minutach, średnia pozostaje w minutach. Nie jest
+liczbą osób, procentem ani prawdopodobieństwem. Uczymy się czytać symbol
+razem z jednostką.</p>
+<p>W serii A czasy wynoszą 2, 4, 6, 8 i 10 minut. Suma 30 podzielona
+przez pięć daje 6 minut. W serii B zmieniamy wyłącznie ostatni czas z 10
+na 30 minut. Suma rośnie do 50, a średnia do 10 minut. Cztery osoby
+działają dokładnie tak samo jak wcześniej, lecz zmiana jednej długiej
+próby przesuwa średnią całego zbioru.</p>
+<p>To nie oznacza, że średnia „kłamie”. Odpowiada poprawnie na swoje
+pytanie o sumę w przeliczeniu na obserwację. Jeżeli długie zadanie
+rzeczywiście obciąża użytkownika lub personel wsparcia, jego udział w
+średniej może być istotny. Błędem jest przypisanie średniej własności,
+których nie ma, np. wyniku większości osób.</p>
+<p>Wykres porównuje obie serie na wspólnej osi czasu. Niebieskie punkty
+oznaczają osoby, a pomarańczowy romb średnią. Zwróć uwagę, że w serii B
+średnia znajduje się poza skupieniem czterech szybszych obserwacji.</p>
+<p><img role="img" aria-label src="data:image/png;base64,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c3yAFyOOgV3d/yOBUlFAqgL2/juhR8RY/EOpSCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEIyCKUigJSFYCALEKpKCBVAQjIIpSKAlIVgIAsQqkoIFUBCMgilIoCUhWAgCxCqSggVQEICAD2LAgIAKKBgAAgGggIAKKB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" alt width="100%" /></p>
+<div id="średnia-dwóch-grup-wymaga-wag" class="section level2">
+<h2>Średnia dwóch grup wymaga wag</h2>
+<p>Jeśli w jednej grupie jest 10 osób ze średnią 4 minuty, a w drugiej
+30 osób ze średnią 8 minut, ogólna średnia nie wynosi 6 minut. Druga
+grupa wnosi trzy razy więcej pomiarów. Łącznie mamy
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>⋅</mo><mn>4</mn><mo>+</mo><mn>30</mn><mo>⋅</mo><mn>8</mn><mo>=</mo><mn>280</mn></mrow><annotation encoding="application/x-tex">10\cdot4+30\cdot8=280</annotation></semantics></math>
+minut, więc średnia czterdziestu osób wynosi 7 minut.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>x</mi><mo accent="true">‾</mo></mover><mrow><mi mathvariant="normal">o</mi><mi mathvariant="normal">g</mi><mi mathvariant="normal">ó</mi><mi mathvariant="normal">ł</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">m</mi></mrow></msub><mo>=</mo><mfrac><mrow><msub><mi>n</mi><mn>1</mn></msub><msub><mover><mi>x</mi><mo accent="true">‾</mo></mover><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub><msub><mover><mi>x</mi><mo accent="true">‾</mo></mover><mn>2</mn></msub></mrow><mrow><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\bar{x}_{\mathrm{ogółem}}
+=\frac{n_1\bar{x}_1+n_2\bar{x}_2}{n_1+n_2}.
+</annotation></semantics></math></p>
+<p>Wagi są tu liczebnościami ważnych pomiarów, a nie oceną ważności
+grup. Błąd nieważonego uśredniania może pojawić się, gdy porównujemy
+filie biblioteki, kierunki studiów albo kanały obsługi o różnych
+liczbach użytkowników. Równe traktowanie dwóch średnich nie musi
+oznaczać równego traktowania osób.</p>
 </div>
-<div id="pytanie-przed-metodą" class="section level1">
-<h1>3. Pytanie przed metodą</h1>
-<p>Jak opisać samoocenę, obserwowany czas, powodzenie i wybór kanału
-tak, aby miara odpowiadała skali i właściwemu mianownikowi?</p>
-<p>Pytanie powinno wskazywać jednostkę, wynik, porównanie lub związek,
-populację i okres. Hipoteza dodaje przewidywany kierunek wtedy, gdy ma
-podstawę teoretyczną. Analiza eksploracyjna też jest dopuszczalna, lecz
-trzeba ją nazwać i nie przedstawiać późniejszego odkrycia jako
-wcześniejszej prognozy.</p>
-<div style="page-break-after: always;"></div>
 </div>
-<div id="projekt-wyznacza-granicę-wniosku" class="section level1">
-<h1>4. Projekt wyznacza granicę wniosku</h1>
-<p>Pomiar zaczyna się od definicji konstruktu i mapy: konstrukt → wymiar
-→ wskaźnik → pozycja lub obserwacja → kod. Trafność dotyczy
-interpretacji wyniku, rzetelność jego powtarzalności, a błąd pomiaru
-może powstać w instrukcji, zadaniu, urządzeniu lub odpowiedzi.</p>
-<p>Losowość doboru dotyczy uogólnienia na populację, a losowy przydział
-warunku wniosku przyczynowego. Dostępna próba nie staje się
-reprezentatywna przez duże N. Braki, odmowa udziału i samoselekcja mogą
-zmieniać obraz nawet przy poprawnie wykonanym teście.</p>
-<div style="page-break-after: always;"></div>
+<div id="mediana-i-kwartyle-pytania-o-kolejność" class="section level1">
+<h1>Mediana i kwartyle: pytania o kolejność</h1>
+<p>Mediana dzieli uporządkowane wartości w środku. Dla pięciu czasów
+wybieramy trzeci. W obu naszych seriach jest to 6 minut. Długi czas 30
+minut zmienił średnią, ale nie zmienił pozycji środkowej. Dlatego
+mediana bywa przydatna, gdy chcemy opisać środek skośnego rozkładu
+czasu.</p>
+<p>Dla parzystej liczby pomiarów standardowo uśredniamy dwie środkowe
+wartości. Mediana czasów 2, 4, 8 i 10 minut wynosi 6 minut, chociaż
+żadna osoba nie miała dokładnie takiego wyniku. Zdanie „osoba medianowa
+potrzebowała sześciu minut” należy wtedy traktować jako skrót, a nie
+opis istniejącego rekordu.</p>
+<p>Kwartyle wyznaczają położenia około jednej czwartej i trzech
+czwartych uporządkowanego rozkładu. W małych próbach różne konwencje
+interpolacji mogą dawać nieco inne wartości. W naszych obliczeniach
+używamy domyślnej konwencji <code>quantile()</code> w R. Podanie metody
+jest szczególnie ważne, kiedy próbujesz ręcznie odtworzyć kwartyle kilku
+liczb.</p>
+<p>Zakres międzykwartylowy to:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mi>Q</mi><mi>R</mi><mo>=</mo><msub><mi>Q</mi><mn>3</mn></msub><mo>−</mo><msub><mi>Q</mi><mn>1</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">IQR=Q_3-Q_1.</annotation></semantics></math></p>
+<p>Mierzy szerokość środkowej części rozkładu, a nie niepewność
+średniej. Jeśli
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">Q_1=4</annotation></semantics></math>
+i
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mn>3</mn></msub><mo>=</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">Q_3=8</annotation></semantics></math>
+minut, IQR wynosi 4 minuty. Nie piszemy, że „95% użytkowników
+potrzebowało od 4 do 8 minut”; kwartyle nie definiują takiego
+zakresu.</p>
+<p>Percentyl 90. może odpowiadać pytaniu o czas, którego nie przekracza
+większość prób. W małej próbie jego oszacowanie jest jednak bardzo
+wrażliwe na pojedyncze obserwacje i sposób interpolacji. Nie należy
+formułować precyzyjnej normy obsługi na podstawie pięciu czasów tylko
+dlatego, że program zwrócił wynik z dwoma miejscami po przecinku.</p>
 </div>
-<div id="pomiar-samoocena-i-obserwacja" class="section level1">
-<h1>5. Pomiar: samoocena i obserwacja</h1>
-<p>Skala nominalna klasyfikuje, porządkowa ustawia kolejność, a
-ilorazowa zachowuje sens zera i ilorazów. Pozycja Likerta jest
-porządkowa. Średni indeks wielu ukierunkowanych pozycji bywa analizowany
-ilościowo po jawnym uzasadnieniu. Czas ma jednostkę minut.</p>
-<p>Wspólny zbiór łączy sześć pozycji, częstość korzystania, kanały,
-grupę, obserwowany czas i powodzenie zadania. Pozycje są przykładem
-dydaktycznym. Nie przypisujemy im walidacji ani nie wnioskujemy o całej
-kompetencji na podstawie jednego zadania.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="wzór-jako-zdanie" class="section level1">
-<h1>6. Wzór jako zdanie</h1>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>i</mi></msub><mo>=</mo><mfrac><mn>1</mn><msub><mi>m</mi><mi>i</mi></msub></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mn>6</mn></munderover><msubsup><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>*</mo></msubsup><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>m</mi><mi>i</mi></msub><mo>≥</mo><mn>5</mn><mo>;</mo><mspace width="2.0em"></mspace><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>=</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><mo>∑</mo><msub><mi>x</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">I_i=\frac{1}{m_i}\sum_{j=1}^{6}x^{*}_{ij}, \quad m_i\geq5; \qquad \bar{x}=\frac{1}{N}\sum x_i</annotation></semantics></math></p>
+<div id="zróżnicowanie-dlaczego-średnie-mogą-nie-wystarczyć" class="section level1">
+<h1>Zróżnicowanie: dlaczego średnie mogą nie wystarczyć</h1>
+<p>Dwie grupy mogą mieć średnią 6 minut, a bardzo różne czasy
+pojedynczych osób. W pierwszej wszystkie pomiary wynoszą 6. W drugiej
+połowa osób działa bardzo szybko, a połowa długo. Sama średnia nie
+wskazuje, czy usługa działa podobnie dla wszystkich.</p>
+<p>Wariancja w próbie opiera się na kwadratach odchyleń od średniej:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mover><mi>x</mi><mo accent="true">‾</mo></mover><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>s</mi><mo>=</mo><msqrt><msup><mi>s</mi><mn>2</mn></msup></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">
+s^2=\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1},
+\qquad
+s=\sqrt{s^2}.
+</annotation></semantics></math></p>
+<p>Czytamy kolejno: odejmij średnią od każdej wartości, podnieś
+odchylenia do kwadratu, dodaj je i podziel przez
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>.
+Pierwiastek daje odchylenie standardowe. Wariancja czasu ma jednostkę
+minut kwadratowych, a odchylenie standardowe wraca do minut.</p>
+<p>Dlaczego nie sumujemy zwykłych odchyleń? Dodatnie i ujemne odchylenia
+od średniej znoszą się. Ich suma wynosi zero także wtedy, gdy osoby
+znacznie się różnią. Kwadraty zachowują informację o wielkości odchyleń
+i nadają większą wagę dużym odległościom.</p>
+<p>Tabela pokazuje składniki dla serii A. Wskaż sumę ostatniej kolumny.
+Dzieląc 40 przez cztery, otrzymujemy wariancję 10, a po
+spierwiastkowaniu odchylenie standardowe około 3,16 minuty.</p>
 <table>
 <thead>
 <tr class="header">
-<th>Symbol</th>
-<th>Nazwa</th>
-<th>Znaczenie</th>
+<th align="right">czas</th>
+<th align="right">odchylenie</th>
+<th align="right">kwadrat</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>*</mo></msubsup><annotation encoding="application/x-tex">x^{*}_{ij}</annotation></semantics></math></td>
-<td>pozycja po ukierunkowaniu</td>
-<td>punkty 1–5</td>
+<td align="right">2</td>
+<td align="right">-4</td>
+<td align="right">16</td>
 </tr>
 <tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mi>i</mi></msub><annotation encoding="application/x-tex">m_i</annotation></semantics></math></td>
-<td>ważne pozycje osoby</td>
-<td>co najmniej 5</td>
+<td align="right">4</td>
+<td align="right">-2</td>
+<td align="right">4</td>
 </tr>
 <tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>i</mi></msub><annotation encoding="application/x-tex">I_i</annotation></semantics></math></td>
-<td>indeks samooceny</td>
-<td>punkty 1–5</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>,</mo><mi>M</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">\bar{x},Me</annotation></semantics></math></td>
-<td>średnia i mediana</td>
-<td>położenie rozkładu</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="right">4</td>
+<td align="right">16</td>
 </tr>
 </tbody>
 </table>
-<p>Odczyt wzoru zaczyna się od nazwania wyniku, następnie składników,
-punktu odniesienia i jednostki. Student nie musi ręcznie odtwarzać
-algorytmu. Ma rozpoznać, co zwiększa statystykę, co oznacza znak i gdzie
-w gotowym wyniku znajduje N, efekt oraz niepewność.</p>
-<div style="page-break-after: always;"></div>
+<p>Dzielenie przez
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>
+wiąże się z estymacją średniej z tych samych danych. Po ustaleniu
+średniej i
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>
+odchyleń ostatnie jest już wyznaczone warunkiem sumy zero. Korekta daje
+nieobciążony estymator wariancji przy zwykłych założeniach niezależnych
+obserwacji z tej samej populacji; nie oznacza, że sam pierwiastek jest
+dokładnie nieobciążonym estymatorem odchylenia.</p>
+<p>W serii B wariancja wynosi 130, a SD około 11,40 minuty. Mediana i
+IQR pozostały takie same jak w A. Te miary akcentują różne fragmenty
+danych: SD reaguje na wszystkie odległości od średniej, IQR na położenie
+środkowych kwartyli.</p>
+<p>Poniższe podsumowanie zestawia te wyniki. Czytając je, nie wybieraj
+miary tylko dlatego, że daje spokojniejszy obraz. Najpierw powiedz, czy
+pytasz o przeciętny nakład czasu, środek rozkładu czy jego
+zróżnicowanie.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">seria</th>
+<th align="right">N</th>
+<th align="right">srednia</th>
+<th align="right">mediana</th>
+<th align="right">wariancja</th>
+<th align="right">SD</th>
+<th align="right">Q1</th>
+<th align="right">Q3</th>
+<th align="right">IQR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">A</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">3.16</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">B</td>
+<td align="right">5</td>
+<td align="right">10</td>
+<td align="right">6</td>
+<td align="right">130</td>
+<td align="right">11.40</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">4</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="tok-analizy" class="section level1">
-<h1>7. Tok analizy</h1>
-<p>Opis liczbowy obejmuje N, braki, miarę położenia i zróżnicowania. Dla
-skośnego czasu zestawiamy średnią z medianą, SD z IQR oraz histogram.
-Dla kategorii podajemy liczebność i odsetek z jawnym mianownikiem.</p>
-<p>Kolejność jest stała: pytanie → projekt → pomiar → dane i braki →
-opis → estymata → niepewność → wniosek → ograniczenie. Przestawienie tej
-kolejności sprzyja dobieraniu pytania do wyniku i raportowaniu
-przypadkowej liczby bez znaczenia badawczego.</p>
-<div style="page-break-after: always;"></div>
+<div id="sd-nie-jest-błędem-standardowym" class="section level1">
+<h1>SD nie jest błędem standardowym</h1>
+<p>Odchylenie standardowe opisuje rozrzut pomiarów między osobami. Błąd
+standardowy opisuje zmienność estymatora między hipotetycznymi
+powtórzeniami próby. Te wielkości mogą mieć tę samą jednostkę, ale inne
+znaczenie.</p>
+<p>Dla średniej z niezależnych obserwacji zwykłe oszacowanie błędu
+standardowego ma postać
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi><mo>=</mo><mi>s</mi><mi>/</mi><msqrt><mi>n</mi></msqrt></mrow><annotation encoding="application/x-tex">SE=s/\sqrt{n}</annotation></semantics></math>.
+Przy większej próbie SE może maleć, mimo że osoby nadal bardzo różnią
+się czasem. Nie wolno wtedy pisać, że użytkownicy „działają coraz
+bardziej podobnie” tylko dlatego, że średnia jest oszacowana
+precyzyjniej.</p>
+<p>W03 rozwinie rolę SE w przedziałach i testach. Na etapie opisu próby
+podajemy SD albo IQR jako miarę zróżnicowania danych. Jeśli wykres
+pokazuje kreski niepewności średniej, podpis musi wyjaśniać, czy są to
+SE, czy przedziały ufności. Nie nazywamy ich zakresem czasów
+użytkowników.</p>
 </div>
-<div id="przykład-prowadzony" class="section level1">
-<h1>8. Przykład prowadzony</h1>
-<p>Wielokrotny wybór kanałów może dać sumę odsetków większą niż 100%,
-ponieważ jedna osoba wybiera kilka opcji. Mianownik powinien obejmować
-osoby z kompletnym zestawem odpowiedzi 0/1. Brak w jednym kanale nie
-jest automatycznie odpowiedzią „nie”.</p>
-<p>Przykład czytamy w trzech warstwach. Warstwa liczbowa nazywa estymatę
-i jednostkę. Warstwa badawcza odpowiada na pytanie o zachowanie lub
-usługę. Warstwa krytyczna wskazuje ograniczenie projektu, pomiaru i
-syntetyczności. Każda z nich jest potrzebna do pełnego wyniku.</p>
-<div style="page-break-after: always;"></div>
+<div id="rozkład-asymetria-i-granice-intuicji" class="section level1">
+<h1>Rozkład, asymetria i granice intuicji</h1>
+<p>Czas nie może być dowolnie ujemny, a nieliczne trudne próby mogą
+trwać bardzo długo. Dlatego w badaniach wyszukiwania często rozważamy
+rozkłady z prawym ogonem. W konkretnych danych trzeba ten kształt
+obejrzeć, a nie zakładać go wyłącznie na podstawie nazwy zmiennej.</p>
+<p>W rozkładzie z kilkoma dużymi wartościami średnia często przewyższa
+medianę. Nie jest to jednak definicja prawostronnej asymetrii ani
+niezawodny test kształtu. Rozkłady wielomodalne, dyskretne lub nietypowe
+mogą łamać proste reguły ze schematycznych rysunków. Zestawiamy miary z
+wykresem.</p>
+<p>Rozkład symetryczny nie musi mieć jednego szczytu. Dwie symetrycznie
+położone grupy użytkowników mogą tworzyć dwa skupienia. W takim
+przypadku pojedyncza średnia leży pomiędzy nimi i może nie opisywać
+wielu realnych osób. Warto sprawdzić, czy dane mieszają odmienne
+zadania, urządzenia lub poziomy doświadczenia.</p>
+<p>Minimum i maksimum pokazują skrajne zaobserwowane wartości, ale są
+silnie zależne od liczebności. Większa próba daje więcej okazji do
+zaobserwowania bardzo długiego czasu. Porównanie maksimów dwóch grup bez
+podania ich N może więc prowadzić do zbyt szybkiej diagnozy.</p>
 </div>
-<div id="tor-klasyczny" class="section level1">
-<h1>9. Tor klasyczny</h1>
-<p>Opis liczbowy obejmuje N, braki, miarę położenia i zróżnicowania. Dla
-skośnego czasu zestawiamy średnią z medianą, SD z IQR oraz histogram.
-Dla kategorii podajemy liczebność i odsetek z jawnym mianownikiem.</p>
-<p>Klasyczny wynik może zawierać statystykę t, chi-kwadrat, r, F lub
-współczynnik regresji. Stopnie swobody mówią, z jakiego rozkładu
-odniesienia korzysta procedura. Wartość p opisujemy warunkowo przy H0;
-nie mierzy ona wielkości efektu, jakości pomiaru ani prawdopodobieństwa
-powtórzenia wyniku.</p>
-<div style="page-break-after: always;"></div>
+<div id="wykres-odpowiada-na-określone-pytanie" class="section level1">
+<h1>Wykres odpowiada na określone pytanie</h1>
+<p>Histogram pokazuje liczebności lub gęstość w przedziałach wartości.
+Szerokość przedziału wpływa na wygląd: drobne przedziały uwidaczniają
+szczegóły, ale także przypadkowe nierówności; szerokie wygładzają obraz
+i mogą połączyć odrębne skupienia. Nie szukamy jednego ustawienia, które
+„udowodni normalność”.</p>
+<p>Na osi gęstości pole pod słupkami lub krzywą, a nie sama wysokość,
+odpowiada udziałowi obserwacji. Wysokość gęstości może przekraczać 1 i
+nie jest wtedy prawdopodobieństwem większym niż 100%. Przy czasie
+mierzonym w minutach gęstość ma jednostkę odwrotną do minuty.</p>
+<p>Wykres pudełkowy pokazuje medianę, kwartyle i wąsy według przyjętej
+konwencji. W popularnej wersji wąsy sięgają najdalszych obserwacji
+mieszczących się w granicach
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mn>1</mn></msub><mo>−</mo><mn>1</mn><mo>,</mo><mn>5</mn><mi>I</mi><mi>Q</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">Q_1-1{,}5IQR</annotation></semantics></math>
+oraz
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mn>3</mn></msub><mo>+</mo><mn>1</mn><mo>,</mo><mn>5</mn><mi>I</mi><mi>Q</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">Q_3+1{,}5IQR</annotation></semantics></math>.
+Punkty poza nimi nie są automatycznie błędami. Pudełko może też ukryć
+dwa skupienia, dlatego warto zestawić je z punktami albo
+histogramem.</p>
+<p>Dystrybuanta empiryczna odpowiada na pytanie: „jaka część obserwacji
+nie przekracza tej wartości?”. Zapisujemy ją jako:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>F</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mn mathvariant="bold">𝟏</mn><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>≤</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\widehat F(t)=\frac{1}{n}\sum_{i=1}^{n}\mathbf{1}(x_i\leq t).
+</annotation></semantics></math></p>
+<p>Symbol
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn mathvariant="bold">𝟏</mn><annotation encoding="application/x-tex">\mathbf{1}</annotation></semantics></math>
+wnosi jedynkę, jeśli warunek w nawiasie jest spełniony, i zero w
+przeciwnym razie. Dla pięciu czasów 2, 4, 6, 8 i 30 minut wartość
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>F</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="prefix">(</mo><mn>8</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\widehat F(8)</annotation></semantics></math>
+wynosi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>/</mi><mn>5</mn><mo>=</mo><mn>0</mn><mo>,</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">4/5=0{,}8</annotation></semantics></math>.
+Czytamy: „80% zarejestrowanych czasów nie przekroczyło ośmiu minut”. Nie
+znaczy to jeszcze, że wszystkie te próby zakończyły się powodzeniem.</p>
+<p>Wykres słupkowy kategorii pokazuje liczebności albo procenty. Jeśli
+porównujemy grupy różnej wielkości, same wysokości słupków liczby
+powodzeń mogą być mylące. Większa grupa może mieć więcej powodzeń i
+jednocześnie niższy odsetek sukcesów. Podpis powinien wskazywać
+mianownik.</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Wykres</th>
+<th>Główne pytanie</th>
+<th>Typowa pułapka</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Histogram</td>
+<td>Gdzie skupiają się czasy i jaki mają kształt?</td>
+<td>Uznanie wyglądu zależnego od koszyków za dowód</td>
+</tr>
+<tr class="even">
+<td>Pudełkowy</td>
+<td>Jak różnią się położenie i rozrzut grup?</td>
+<td>Usuwanie punktów poza wąsami bez dowodu błędu</td>
+</tr>
+<tr class="odd">
+<td>Dystrybuanta empiryczna</td>
+<td>Jaki odsetek nie przekracza progu?</td>
+<td>Pominięcie powodzenia przy interpretacji czasu</td>
+</tr>
+<tr class="even">
+<td>Słupki kategorii</td>
+<td>Ile osób lub jaki odsetek wybrał odpowiedź?</td>
+<td>Porównywanie liczników przy różnych mianownikach</td>
+</tr>
+<tr class="odd">
+<td>Rozrzut</td>
+<td>Jak współwystępują dwie cechy tej samej osoby?</td>
+<td>Przyczynowa interpretacja samego układu punktów</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="tor-permutacyjny-i-resampling" class="section level1">
-<h1>10. Tor permutacyjny i resampling</h1>
-<p>Na etapie pomiaru nie używamy testu do naprawiania złych wskaźników.
-Permutacja odpowie później na pytanie o losowy związek przy zachowanych
-rozkładach. Najpierw musi być jasne, co zostało zmierzone i które braki
-są dopuszczalne.</p>
-<p>Bootstrap odtwarza próbki empiryczne, aby ocenić niepewność estymaty.
-Permutacja narzuca model zerowy przez zmianę znaków, etykiet, par lub
-tabel. Oba korzystają z losowania komputerowego, ale odpowiadają na inne
-pytania. Zakres kursu kończy się na zestawieniu tych dwóch torów.</p>
-<div style="page-break-after: always;"></div>
+<div id="skala-odpowiedzi-a-narzędzie-pomiarowe" class="section level1">
+<h1>Skala odpowiedzi a narzędzie pomiarowe</h1>
+<p>Pięć kategorii pod jedną pozycją nie jest tym samym co wielopozycyjna
+skala. Pojedyncza pozycja pyta o określony aspekt. Wynik złożony
+agreguje kilka odpowiedzi według reguły, która wymaga uzasadnienia. Sama
+liczba pozycji nie zapewnia trafności.</p>
+<p>Rozważ stwierdzenia „potrafię dobrać słowa kluczowe” i „nazwy filtrów
+są zrozumiałe”. Pierwsze dotyczy samooceny działania, drugie oceny
+interfejsu. Mogą ze sobą korelować, ale nie mierzą automatycznie tej
+samej cechy. Jeśli je uśrednimy, musimy nazwać wynik tak, aby nie zgubić
+tej różnicy.</p>
+<p>W S02 wynik opisujemy jako dydaktyczny indeks deklarowanej
+użyteczności katalogu. Zawiera on również elementy oceny własnego
+radzenia sobie. Nie jest testem całej kompetencji cyfrowej. Jego
+interpretację będziemy kontrolować przed każdym wnioskiem o związku z
+czasem i powodzeniem.</p>
+<p>DigComp 2.2 porządkuje obszary kompetencji cyfrowych i przykłady
+wiedzy, umiejętności oraz postaw. ACRL Framework dostarcza perspektywy
+pracy z informacją, w tym wyszukiwania jako strategicznego działania i
+oceny autorytetu w kontekście. Obie ramy mogą pomagać w projektowaniu
+zadań, lecz żadna nie nadaje automatycznie własnemu zestawowi pytań
+statusu zwalidowanej skali. <a href="https://publications.jrc.ec.europa.eu/repository/handle/JRC128415">DigComp
+2.2</a>, <a href="https://www.ala.org/acrl/standards/ilframework">ACRL
+Framework</a>.</p>
+<p>Internet Skills Scale jest przykładem osobnej pracy nad konstrukcją i
+walidacją narzędzia. Korzystamy z niej jako lektury o rozróżnianiu
+wymiarów umiejętności. Nie nazywamy naszych pozycji wersją ISS i nie
+przypisujemy im dowodów uzyskanych dla tamtej skali. <a href="https://doi.org/10.1080/1369118X.2015.1078834">van Deursen,
+Helsper i Eynon, 2016</a>.</p>
 </div>
-<div id="efekt-przedział-i-znaczenie" class="section level1">
-<h1>11. Efekt, przedział i znaczenie</h1>
-<p>Różnica między średnią i medianą opisuje asymetrię, SD i IQR
-zróżnicowanie. Nie są to jeszcze efekty przyczynowe. Jednostka miary
-pozwala ocenić, czy zmiana o dwie minuty lub pół punktu jest ważna dla
-usługi.</p>
-<p>Efekt prowadzimy przed p. Najpierw pytamy o kierunek i wielkość w
-naturalnej jednostce, potem o standaryzację, a następnie o przedział.
-Znaczenie praktyczne ustala kontekst instytucji, nie uniwersalna
-etykieta. Szeroki przedział wymaga języka dopuszczającego różne
-wielkości.</p>
-<div style="page-break-after: always;"></div>
+<div id="czytanie-wzoru-indeksu" class="section level1">
+<h1>Czytanie wzoru indeksu</h1>
+<p>Niech
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>O</mi><mi>i</mi></msub><annotation encoding="application/x-tex">O_i</annotation></semantics></math>
+oznacza zbiór pozycji z ważną odpowiedzią osoby
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>,
+a
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>m</mi><mi>i</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">|</mo><msub><mi>O</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">m_i=|O_i|</annotation></semantics></math>
+ich liczbę. Po ukierunkowaniu pozycji średni indeks zapisujemy:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>i</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mfrac><mn>1</mn><msub><mi>m</mi><mi>i</mi></msub></mfrac><munder><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><msub><mi>O</mi><mi>i</mi></msub></mrow></munder><msubsup><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>*</mo></msubsup><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><msub><mi>m</mi><mi>i</mi></msub><mo>≥</mo><mn>5</mn><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mrow><mi mathvariant="normal">N</mi><mi mathvariant="normal">A</mi></mrow><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><msub><mi>m</mi><mi>i</mi></msub><mo>&lt;</mo><mn>5</mn><mi>.</mi></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">
+I_i=
+\begin{cases}
+\displaystyle\frac{1}{m_i}\sum_{j\in O_i}x^*_{ij}, &amp; m_i\geq5,\\
+\mathrm{NA}, &amp; m_i&lt;5.
+\end{cases}
+</annotation></semantics></math></p>
+<p>Czytamy: „dla osoby z co najmniej pięcioma ważnymi odpowiedziami
+uśrednij jej ważne, zgodnie ukierunkowane pozycje; w przeciwnym razie
+pozostaw brak indeksu”. Sumowanie tylko po
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>O</mi><mi>i</mi></msub><annotation encoding="application/x-tex">O_i</annotation></semantics></math>
+jest istotne: nie wstawiamy zera za brak i nie dzielimy każdej sumy
+automatycznie przez sześć.</p>
+<p>Gwiazdka przy
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>*</mo></msubsup><annotation encoding="application/x-tex">x^*_{ij}</annotation></semantics></math>
+oznacza tutaj odpowiedź po uzgodnieniu kierunku, a nie istotność
+statystyczną. W negatywnie sformułowanej pozycji 1–5 stosujemy
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mo>*</mo></msup><mo>=</mo><mn>6</mn><mo>−</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">x^*=6-x</annotation></semantics></math>.
+Odpowiedź 1 staje się 5, 2 staje się 4, środek pozostaje 3. Brak nadal
+jest brakiem.</p>
+<p>Reguła pięciu z sześciu pozycji jest jawną decyzją dydaktycznego
+indeksu. Nie jest uniwersalną zasadą skal psychologicznych. W
+rzeczywistym narzędziu stosujemy reguły wynikające z jego konstrukcji i
+dostępnych dowodów; przy nowym narzędziu badamy konsekwencje przyjętej
+reguły.</p>
+<p>Jeśli jedna osoba odpowiedziała na wszystkie sześć pozycji, a druga
+na pięć, ich średnie odnoszą się do nieco innego zestawu treści.
+Dopuszczenie takiego porównania zakłada, że różnica nie przekreśla
+interpretacji wyniku. W C04 zobaczymy, jak ten problem opisać zamiast
+ukrywać go za pojedynczą liczbą.</p>
 </div>
-<div id="jak-nie-pisać-wyniku" class="section level1">
-<h1>12. Jak nie pisać wyniku</h1>
-<p>Pułapki obejmują kodowanie braku jako zera, odwrócenie pozycji po
-policzeniu indeksu, średnią z nazw kategorii, wykres bez jednostki, opis
-średniej jako wyniku większości i nazywanie kursowego indeksu
-walidowanym testem.</p>
-<p>Unikamy zdań: „H0 jest prawdziwa”, „95% wyników leży w CI”, „grupy są
-takie same”, „korelacja pokazuje wpływ” i „V oznacza procent”.
-Poprawione zdanie zawiera N, estymatę, jednostkę, CI, statystykę, p,
-efekt i granicę wniosku w zakresie potrzebnym danej metodzie.</p>
-<div style="page-break-after: always;"></div>
+<div id="trafność-rzetelność-i-błąd-pomiaru" class="section level1">
+<h1>Trafność, rzetelność i błąd pomiaru</h1>
+<p>Trafność dotyczy uzasadnienia interpretacji wyniku w określonym
+zastosowaniu. Czy wynik ma znaczyć samoocenę umiejętności, opinię o
+systemie czy poprawność działania? Dowody mogą obejmować treść pozycji,
+sposób rozumienia pytań, strukturę wyników i związki z innymi pomiarami.
+Jeden współczynnik nie zamyka tej oceny.</p>
+<p>Rzetelność dotyczy precyzji lub spójności pomiaru w odpowiednim
+modelu. Narzędzie może dawać powtarzalne wyniki i systematycznie mierzyć
+coś innego, niż zamierzaliśmy. Podobnie stoper może zawsze spóźniać
+start o tę samą liczbę sekund: powtarzalność nie usuwa obciążenia.</p>
+<p>Alfa Cronbacha odnosi się do struktury współzmienności pozycji i jest
+interpretowana przy określonych założeniach. Wysoka alfa może wynikać
+także z dużej liczby podobnych pytań. Nie dowodzi jednowymiarowości,
+trafności ani poprawnego tłumaczenia narzędzia. W rdzeniu kursu
+ważniejsze jest przeczytanie treści pozycji i reguły indeksu niż
+automatyczne uzyskanie wysokiego współczynnika.</p>
+<p>Pomiar obserwacyjny również może być błędny. Dwoje oceniających może
+różnie rozumieć, co oznacza „znaleźć właściwe źródło”. Dlatego
+potrzebujemy kryteriów: zgodny tytuł, właściwe wydanie, pełny tekst,
+poprawna identyfikacja autora lub inny uzasadniony warunek. Wybór
+kryterium definiuje wynik i powinien poprzedzać ogląd danych.</p>
 </div>
-<div id="aktywność-podczas-wykładu" class="section level1">
-<h1>13. Aktywność podczas wykładu</h1>
-<p>Oceń cztery zdania z raportu: wskaż skalę, mianownik, właściwą miarę
-oraz brakujące ograniczenie. Następnie porównaj, co wnosi indeks
-samooceny, a co obserwowany czas i powodzenie.</p>
-<p>Odpowiedź przedstawiamy bez uruchamiania nowego testu. Zadaniem jest
-dobór języka oraz argumentacja. Każda grupa wskazuje także jeden
-element, którego nie da się rozstrzygnąć z przedstawionych danych i
-jedną dodatkową informację, która rzeczywiście wzmocniłaby projekt.</p>
-<div style="page-break-after: always;"></div>
+<div id="krótkie-porównanie-sposobów-skalowania" class="section level1">
+<h1>Krótkie porównanie sposobów skalowania</h1>
+<p>W kursie ćwiczymy przede wszystkim pozycje typu Likerta i prosty
+indeks. Pozostałe sposoby skalowania poznajemy jako odmienne pomysły na
+relację między odpowiedzią i cechą. Nie są dodatkowymi wymaganymi
+analizami projektu.</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Podejście</th>
+<th>Idea</th>
+<th>Pytanie krytyczne</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pozycje typu Likerta</td>
+<td>Stopień zgody lub częstości; możliwy wynik złożony</td>
+<td>Czy pozycje odnoszą się do uzasadnionego wspólnego konstruktu?</td>
+</tr>
+<tr class="even">
+<td>Skala dystansu Bogardusa</td>
+<td>Uporządkowane formy akceptacji relacji społecznych</td>
+<td>Czy przyjęta kolejność ma sens w danym kontekście?</td>
+</tr>
+<tr class="odd">
+<td>Skalowanie Guttmana</td>
+<td>W idealnym układzie odpowiedź na „trudniejszy” element implikuje
+odpowiedzi na wcześniejsze</td>
+<td>Czy wzór kumulacyjny jest rzeczywiście obecny w danych?</td>
+</tr>
+<tr class="even">
+<td>Podejście Thurstone’a</td>
+<td>Skalowanie treści stwierdzeń, m.in. przez oceny sędziów i pozornie
+równe odstępy</td>
+<td>Jak uzasadniono położenie stwierdzeń na kontinuum?</td>
+</tr>
+</tbody>
+</table>
+<p>W przykładzie kompetencji moglibyśmy oczekiwać, że osoba potrafiąca
+wykonać złożoną strategię wyszukiwania umie również wskazać słowa
+kluczowe. Taka intuicja przypomina myślenie kumulacyjne, ale nie dowodzi
+skali Guttmana. Rzeczywiste strategie mogą być nierówne: ktoś świetnie
+ocenia źródła, lecz słabo zna konkretny interfejs.</p>
+<p>Historyczne punkty odniesienia to <a href="https://brocku.ca/MeadProject/Bogardus/Bogardus_1925c.html">Bogardus
+(1925)</a>, <a href="https://brocku.ca/MeadProject/Thurstone/Thurstone_1928a.html">Thurstone
+(1928)</a> oraz <a href="https://doi.org/10.2307/2086306">Guttman
+(1944)</a>. Zestawienie pokazuje różnice założeń pomiarowych; nie
+ustanawia rankingu „lepszych” skal.</p>
 </div>
-<div id="most-do-ćwiczeń-i-projektu" class="section level1">
-<h1>14. Most do ćwiczeń i projektu</h1>
-<p>C03 zbuduje portret próby, a C04 przeprowadzi rekodację i indeks. W03
-doda język niepewności, lecz zachowa rozróżnienie pomiaru od
-wnioskowania.</p>
-<p>W projekcie każda liczba ma odpowiadać pytaniu, a każdy wniosek ma
-odsyłać do zapisanego pliku wyniku. Gotowy kod wyrównuje obciążenie
-techniczne; samodzielne pozostają wybór dozwolonego parametru, odczyt
-statystyki, interpretacja i krytyczna ocena.</p>
-<div id="literatura-i-ramy" class="section level2">
-<h2>Literatura i ramy</h2>
-<ul>
-<li><a href="https://publications.jrc.ec.europa.eu/repository/handle/JRC128415">European
-Commission JRC (2022). DigComp 2.2</a>.</li>
-<li><a href="https://www.ala.org/acrl/standards/ilframework">Association
-of College and Research Libraries. Framework for Information
-Literacy</a>.</li>
-<li><a href="https://www.webuse.org/pdf/Hargittai-BeyondLogsSurveys2002.pdf">Hargittai,
-E. (2002). Beyond logs and surveys</a>.</li>
-<li><a href="https://ris.utwente.nl/ws/portalfiles/portal/6972069/development.pdf">van
-Deursen, Helsper &amp; Eynon. Internet Skills Scale</a>.</li>
-</ul>
-<p>Źródła wyznaczają język pojęć. Pozycje, dane i wyniki kursowe są
-syntetyczne; nie przedstawiamy ich jako rezultatów cytowanych badań.</p>
+<div id="od-opisu-do-decyzji-instytucji" class="section level1">
+<h1>Od opisu do decyzji instytucji</h1>
+<p>Wyobraź sobie, że średni czas jest długi, mediana krótka, a histogram
+ma prawy ogon. Możliwa interpretacja brzmi: większość prób przebiega
+stosunkowo sprawnie, lecz część użytkowników napotyka duże trudności.
+Rekomendacją może być sprawdzenie tych sytuacji, a nie automatyczna
+przebudowa całej usługi.</p>
+<p>Jeżeli odsetek powodzeń jest wysoki, a ocena użyteczności niska,
+system może umożliwiać wykonanie zadania przy dużym wysiłku lub
+frustracji. Jeżeli ocena jest wysoka, a powodzenie niskie, użytkownicy
+mogą nie rozpoznawać błędu albo oceniać inny aspekt usługi. Oba wzorce
+wymagają dodatkowego rozpoznania. Nie ustalamy prawdy przez głosowanie,
+który wskaźnik wygląda korzystniej.</p>
+<p>W transformacji cyfrowej warto rozróżnić dostęp, użycie, jakość
+działania i korzyść. Liczba założonych kont mierzy coś innego niż
+odnalezienie informacji, a liczba odnalezionych rekordów coś innego niż
+poprawna decyzja na ich podstawie. W raporcie zapisujemy, na którym
+poziomie znajduje się nasz dowód.</p>
 </div>
+<div id="learn-redakcja-czterech-zdań" class="section level1">
+<h1>LEARN: redakcja czterech zdań</h1>
+<p><strong>„Średnia wynosi 10 minut, więc większość osób potrzebuje
+około 10 minut”.</strong> W serii B cztery osoby mają czasy od 2 do 8
+minut, a jedna 30. Poprawiona wersja podaje średnią 10 i medianę 6 minut
+oraz informuje o długiej próbie. Nie utożsamia średniej z najczęstszym
+doświadczeniem.</p>
+<p><strong>„SD wynosi 3 minuty, więc średni czas oszacowano z błędem 3
+minut”.</strong> SD opisuje zróżnicowanie pomiarów. Do precyzji średniej
+potrzebna jest inna wielkość, zależna także od N. Odpowiedź powinna
+rozdzielić rozrzut osób od niepewności estymaty.</p>
+<p><strong>„Indeks wynosi 4,2, zatem kompetencja wynosi 84%”.</strong>
+Podzielenie wyniku skali 1–5 przez pięć nie tworzy procentu opanowanej
+kompetencji. Skala nie zaczyna się od zera, a punktacja nie jest
+proporcją rozwiązanych zadań. Należy nazwać treść indeksu i podać jego
+zakres.</p>
+<p><strong>„Suma odpowiedzi o kanałach przekroczyła 100%, więc w danych
+jest błąd”.</strong> Jeśli można wybrać kilka kanałów, suma odsetków
+respondentów może przekraczać 100%. Trzeba sprawdzić konstrukcję pytania
+i mianownik każdej opcji, a nie zmieniać liczby tak, żeby pasowały do
+wykresu kołowego.</p>
+</div>
+<div id="przygotowanie-do-c03-i-c04" class="section level1">
+<h1>Przygotowanie do C03 i C04</h1>
+<p>Do C03 zapamiętaj relację pytania i miary: średnia opisuje sumę na
+obserwację, mediana położenie środkowe, SD rozrzut względem średniej,
+IQR szerokość środkowej części, a odsetek licznik względem określonego
+mianownika. Każda wielkość potrzebuje N i jednostki lub kodowania.</p>
+<p>Do C04 przygotuj dwa pytania o każdą pozycję ankiety: „o czym
+dokładnie mówi odpowiedź?” i „czy można połączyć ją z pozostałymi bez
+zmiany znaczenia?”. Wzór indeksu jest prosty. Uzasadnienie, co jego
+wynik pozwala powiedzieć o użytkowniku lub usłudze, jest właściwym
+zadaniem badawczym.</p>
+<p>Pełne opisy lektur LIS są w wykazie <a href="../wspolne/literatura.md">literatura</a>. Dane i przykłady wykładu
+mają charakter dydaktyczny; nie przypisujemy ich wynikom przywołanych
+publikacji.</p>
 </div>
 
 

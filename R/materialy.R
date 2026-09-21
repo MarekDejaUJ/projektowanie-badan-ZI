@@ -52,13 +52,15 @@ otworz_material <- function(id, format = c("html", "pdf", "Rmd", "R", "tex"),
   if (!id %in% katalog$id) stop("Nie ma takiej jednostki w katalogu materia\u0142\u00f3w.", call. = FALSE)
   typ <- katalog$typ[match(id, katalog$id)]
   if (handout && typ != "wyklad") stop("Handout jest dost\u0119pny tylko dla wyk\u0142adu.", call. = FALSE)
-  if (format == "R" && typ != "cwiczenie") stop("Gotowy skrypt R jest cz\u0119\u015bci\u0105 \u0107wicze\u0144.", call. = FALSE)
   if (format == "R" && handout) stop("Handout nie ma osobnego skryptu R.", call. = FALSE)
   if (format == "tex" && !handout) stop("Plik tex jest \u017ar\u00f3d\u0142em handoutu wyk\u0142adu.", call. = FALSE)
   nazwa <- if (handout) "handout" else if (format == "R") "analiza" else "pelne"
   rel <- file.path("materialy", tolower(id), paste0(nazwa, ".", format))
+  lokalny <- system.file(rel, package = "badaniaZI")
+  if (!nzchar(lokalny) || !file.exists(lokalny))
+    stop("Ta jednostka nie udost\u0119pnia wybranego formatu materia\u0142u.", call. = FALSE)
   if (zrodlo == "lokalne") {
-    sciezka <- zasob(rel)
+    sciezka <- lokalny
   } else sciezka <- paste0("https://MarekDejaUJ.github.io/projektowanie-badan-ZI/", gsub("\\\\", "/", rel))
   if (otworz) utils::browseURL(sciezka)
   invisible(sciezka)
@@ -66,20 +68,26 @@ otworz_material <- function(id, format = c("html", "pdf", "Rmd", "R", "tex"),
 
 #' Kontrola srodowiska pracy
 #'
-#' Nie instaluje pakietow ani nie zmienia konfiguracji. LaTeX jest potrzebny
-#' do budowania PDF, lecz nie do wykonywania zadan lub korzystania z gotowych materialow.
+#' Nie instaluje pakietow, nie laczy sie z siecia ani nie zmienia konfiguracji.
+#' R Markdown, knitr, Pandoc i XeLaTeX sa potrzebne do utworzenia wlasnego PDF
+#' przy oddawaniu pracy. W sali zapewnia je informatyk. Czytanie gotowych
+#' materialow HTML/PDF nie wymaga tych narzedzi.
 #' @return Tabela narzedzi, stanow i znaczenia brakow.
 #' @export
 #' @examples
 #' sprawdz_srodowisko()
 sprawdz_srodowisko <- function() {
-  narzedzie <- c("R >= 4.3", "badaniaZI", "Git/libgit2", "GitHub CLI", "R Markdown", "XeLaTeX", "katalog roboczy", "IDE")
+  narzedzie <- c("R >= 4.3", "badaniaZI", "Git/libgit2", "GitHub CLI", "R Markdown",
+                "knitr", "Pandoc", "XeLaTeX", "katalog roboczy", "IDE")
   pakiet <- function(x) requireNamespace(x, quietly = TRUE)
-  ide <- Sys.getenv("RSTUDIO") == "1" || nzchar(Sys.getenv("POSITRON_VERSION"))
+  ide <- pakiet("rstudioapi") && isTRUE(tryCatch(rstudioapi::isAvailable(), error = function(e) FALSE))
+  pandoc <- pakiet("rmarkdown") && isTRUE(tryCatch(rmarkdown::pandoc_available(), error = function(e) FALSE))
   ok <- c(getRversion() >= "4.3.0", TRUE, pakiet("gert"), nzchar(Sys.which("gh")),
-          pakiet("rmarkdown"), nzchar(Sys.which("xelatex")), file.access(getwd(), 2) == 0L, ide)
+          pakiet("rmarkdown"), pakiet("knitr"), pandoc, nzchar(Sys.which("xelatex")),
+          file.access(getwd(), 2) == 0L, ide)
   data.frame(narzedzie = narzedzie, dostepne = ok,
              znaczenie = c("Wymagane", "Zainstalowany pakiet kursu", "Wymagane do pobierania i oddawania",
-               "Wymagane dla logowania gh; alternatywa device z client ID", "Opcjonalne: budowanie w\u0142asnego HTML/PDF",
-               "Opcjonalne: budowanie PDF", "Wymagane do zapisania pracy", "RStudio zalecane; konsola R r\u00f3wnie\u017c dzia\u0142a"))
+               "Wymagane dla logowania gh; alternatywa device z client ID",
+               rep("Wymagane do PDF oddawanej pracy; w sali zapewnia informatyk", 4),
+               "Wymagane do zapisania pracy", "RStudio lub Positron zalecane; konsola R r\u00f3wnie\u017c dzia\u0142a"))
 }

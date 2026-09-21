@@ -25,7 +25,8 @@ scenariusz <- function(id) {
 #' Indywidualne syntetyczne dane ankietowe i obserwacyjne
 #'
 #' Dane służą do ćwiczenia analizy, a nie opisania rzeczywistej instytucji.
-#' Łączą samoocenę z obserwowanym wykonaniem krótkiego zadania wyszukiwawczego.
+#' Łączą ankietę z czasem zadania; pole 0/1 jest obserwacją lub deklaracją
+#' zgodnie z kartą scenariusza. Kod 1 nie zawsze oznacza sukces.
 #' Zawierają kontrolowane braki, dwa duplikaty i dwa nietypowe czasy.
 #' Identyfikator jest pseudonimem przydzielonym na zajęciach, nie numerem albumu.
 #' @param id Pseudonim studenta, np. "s017".
@@ -96,12 +97,22 @@ hash_tabeli <- function(dane) {
 }
 
 slownik_scenariusza <- function(opis) {
+  typ_binarnego <- if(identical(opis$rodzaj_binarnego, 'deklaracja'))
+    'Deklaracja respondenta:' else if(identical(opis$rodzaj_binarnego, 'obserwacja'))
+      'Zapis obserwatora:' else 'Pole 0/1; \u017ar\u00f3d\u0142o pomiaru okre\u015bla karta:'
+  opis_binarnego <- paste(typ_binarnego, opis$pytanie_binarne)
+  if(!is.null(opis$kod_1)) opis_binarnego <- paste(opis_binarnego,
+    '1 =', opis$kod_1, '; 0 =', opis$kod_0)
+  opis_czasu <- if(!is.null(opis$protokol_czasu))
+    paste(opis$nazwa_czasu, opis$protokol_czasu) else
+      'Czas w minutach; pocz\u0105tek i koniec pomiaru okre\u015bla karta scenariusza'
   nazwy <- c("id_odpowiedzi", "grupa", "czestosc_korzystania", "czas_wyszukiwania",
              paste0("pozycja_", 1:6), "powodzenie", paste0("kanal_", 1:4))
   data.frame(zmienna = nazwy,
     opis = c("Identyfikator odpowiedzi; identyczne powt\u00f3rzenie to duplikat", "Grupa por\u00f3wnania",
-             "Cz\u0119sto\u015b\u0107 korzystania z zasobu", "Obserwowany czas wykonania zadania wyszukiwawczego w minutach",
-             unlist(opis$pozycje), paste("Obserwowany wynik zadania:", opis$pytanie_binarne), paste("Wybrano kana\u0142:", unlist(opis$kanaly))),
+             if(!is.null(opis$opis_czestosci)) opis$opis_czestosci else "Cz\u0119sto\u015b\u0107 korzystania z zasobu",
+             opis_czasu, unlist(opis$pozycje), opis_binarnego,
+             paste("Wybrano kana\u0142:", unlist(opis$kanaly))),
     skala = c("identyfikator", "nominalna", "porz\u0105dkowa", "ilorazowa",
               rep("porz\u0105dkowa", 6), "nominalna", rep("nominalna", 4)),
     kodowanie = c("o001...", paste(opis$grupy, collapse = " / "),
@@ -114,7 +125,12 @@ slownik_scenariusza <- function(opis) {
     odwrocona = nazwy == "pozycja_3", stringsAsFactors = FALSE)
 }
 
-#' Zapis danych i manifestu
+#' Zapis niezmiennego wariantu projektu
+#'
+#' Zachowuje dane CSV/RDS, słownik, kartę scenariusza i manifest z hashami
+#' wszystkich czterech plików. Późniejszy odczyt nie korzysta z bieżącego
+#' generatora ani katalogu scenariuszy, dzięki czemu aktualizacja pakietu
+#' nie zmienia wariantu rozpoczętego projektu.
 #' @param dane Wynik generuj_dane().
 #' @param katalog Nowy katalog docelowy; istniejący nie jest nadpisywany.
 #' @return Ścieżka katalogu, niewidocznie.
@@ -135,12 +151,74 @@ zapisz_dane <- function(dane, katalog) {
   pisz_csv(dane$dane, file.path(tmp, "surowe.csv"))
   pisz_csv(dane$slownik, file.path(tmp, "slownik.csv"))
   saveRDS(dane$dane, file.path(tmp, "surowe.rds"), version = 2)
+  pisz_linie(yaml::as.yaml(dane$scenariusz), file.path(tmp, "scenariusz.yml"))
   manifest <- dane$manifest
   manifest$sha256_csv <- digest::digest(file = file.path(tmp, "surowe.csv"), algo = "sha256")
   manifest$sha256_rds <- digest::digest(file = file.path(tmp, "surowe.rds"), algo = "sha256")
-  jsonlite::write_json(manifest, file.path(tmp, "manifest.json"), auto_unbox = TRUE, pretty = TRUE)
+  manifest$sha256_slownik <- digest::digest(file = file.path(tmp, "slownik.csv"), algo = "sha256")
+  manifest$sha256_scenariusz <- digest::digest(file = file.path(tmp, "scenariusz.yml"), algo = "sha256")
+  pisz_linie(jsonlite::toJSON(manifest, auto_unbox = TRUE, pretty = TRUE), file.path(tmp, "manifest.json"))
   if (!file.rename(tmp, katalog)) stop("Nie mo\u017cna przenie\u015b\u0107 danych do katalogu docelowego.", call. = FALSE)
   invisible(normalizePath(katalog, winslash = "/"))
+}
+
+#' Odczyt zachowanego wariantu bez ponownego losowania
+#'
+#' Kontroluje kompletność, hashe plików i zgodność wartości CSV/RDS.
+#' Hashe służą wykrywaniu zmian, nie są podpisem autora ani oceną pracy.
+#' Nie naprawia i nie regeneruje brakujących lub zmienionych danych.
+#' @param katalog Katalog utworzony przez zapisz_dane().
+#' @param id Oczekiwane ID lub NULL, jeśli nie podano.
+#' @param scenariusz Oczekiwany kod S01--S20 lub NULL.
+#' @param rocznik Oczekiwany rocznik lub NULL.
+#' @return Obiekt badaniaZI_dane z zapisanymi danymi, słownikiem, kartą i manifestem.
+#' @export
+#' @examples
+#' k <- tempfile("wariant-")
+#' zapisz_dane(generuj_dane("s017", "S02"), k)
+#' x <- wczytaj_dane(k, id = "s017")
+#' unlink(k, recursive = TRUE)
+wczytaj_dane <- function(katalog, id = NULL, scenariusz = NULL, rocznik = NULL) {
+  pliki <- c("surowe.csv", "surowe.rds", "slownik.csv", "scenariusz.yml", "manifest.json")
+  if (!dir.exists(katalog) || !all(file.exists(file.path(katalog, pliki))))
+    stop("Brak pe\u0142nego zapisu wariantu: dane, s\u0142ownik, karta i manifest musz\u0105 pozosta\u0107 razem. Odtw\u00f3rz zapis z w\u0142asnej pracy; nie losuj nowego wariantu.", call. = FALSE)
+  for (p in pliki) sciezka_pracy(katalog, p)
+  m <- jsonlite::read_json(file.path(katalog, "manifest.json"), simplifyVector = TRUE)
+  sprawdz_id(m$id, "ID w manife\u015bcie")
+  sprawdz_id(m$scenariusz, "scenariusz w manife\u015bcie", "^S(0[1-9]|1[0-9]|20)$")
+  sprawdz_id(m$rocznik, "rocznik w manife\u015bcie", "^[0-9]{4}-[0-9]{2}$")
+  sprawdz_id(m$wersja_generatora, "wersja generatora", "^[0-9]+[.][0-9]+[.][0-9]+$")
+  if (!is.numeric(m$n) || length(m$n) != 1L || !is.finite(m$n) ||
+      m$n < 120L || m$n > 180L || m$n != as.integer(m$n))
+    stop("Manifest ma nieprawid\u0142ow\u0105 liczb\u0119 rekord\u00f3w.", call. = FALSE)
+  klucz <- digest::digest(paste(m$id, m$scenariusz, m$rocznik,
+                                m$wersja_generatora, m$n, sep = "|"),
+                          algo = "sha256", serialize = FALSE)
+  if (!identical(m$klucz_wariantu, klucz) ||
+      !identical(m$seed, strtoi(substr(klucz, 1L, 7L), base = 16L)))
+    stop("Metadane i klucz zapisanego wariantu s\u0105 niezgodne. Nie zmieniaj ID w manife\u015bcie.", call. = FALSE)
+  for (pole in c("id", "scenariusz", "rocznik")) {
+    oczekiwane <- get(pole)
+    if (!is.null(oczekiwane) && !identical(m[[pole]], oczekiwane))
+      stop(paste0("Zapisany wariant ma inne ", pole, ". Zachowano pliki bez zmian."), call. = FALSE)
+  }
+  hashe <- c("sha256_csv", "sha256_rds", "sha256_slownik", "sha256_scenariusz")
+  for (i in seq_along(hashe)) {
+    if (!identical(m[[hashe[i]]], digest::digest(file = file.path(katalog, pliki[i]), algo = "sha256")))
+      stop(paste0("Niezgodny hash pliku ", pliki[i], ". Odtw\u00f3rz zachowany wariant; dane nie zosta\u0142y nadpisane."), call. = FALSE)
+  }
+  dane <- readRDS(file.path(katalog, "surowe.rds"))
+  csv <- utils::read.csv(file.path(katalog, "surowe.csv"), encoding = "UTF-8", stringsAsFactors = FALSE)
+  karta <- czytaj_yaml(file.path(katalog, "scenariusz.yml"))
+  slownik <- utils::read.csv(file.path(katalog, "slownik.csv"), encoding = "UTF-8",
+                           stringsAsFactors = FALSE, na.strings = character())
+  if (!is.data.frame(dane) || !identical(hash_tabeli(dane), m$hash_danych) ||
+      !isTRUE(all.equal(dane, csv, tolerance = 1e-12)) ||
+      !identical(karta$id, m$scenariusz) || !isTRUE(m$syntetyczne) ||
+      !identical(as.integer(nrow(dane)), m$n))
+    stop("Warto\u015bci danych, karta i manifest nie opisuj\u0105 jednego wariantu. Zachowano pliki bez zmian.", call. = FALSE)
+  structure(list(dane = dane, slownik = slownik, scenariusz = karta, manifest = m),
+            class = "badaniaZI_dane")
 }
 
 pisz_csv <- function(x, plik) {

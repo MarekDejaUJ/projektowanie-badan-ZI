@@ -5,19 +5,19 @@
 przygotuj_repo_studenta(
   id_studenta,
   login_github,
-  scenariusz = "S01",
+  scenariusz = NULL,
   nazwa = NULL,
   rocznik = "2026-27"
 )
 }
 \arguments{
-\item{id_studenta}{Pseudonim używany w danych i nazwie repozytorium.}
+\item{id_studenta}{Pseudonim uzywany w danych i nazwie repozytorium.}
 
 \item{login_github}{Login konta GitHub studenta.}
 
-\item{scenariusz}{S01--S20.}
+\item{scenariusz}{Opcjonalna propozycja S01--S20 na C09; bez generowania danych.}
 
-\item{nazwa}{Opcjonalna nazwa repozytorium; domyślnie `ZI-ID`.}
+\item{nazwa}{Opcjonalna nazwa repozytorium; domyslnie `ZI-ID`.}
 
 \item{rocznik}{Rocznik konfiguracji kursu.}
 }
@@ -25,13 +25,14 @@ przygotuj_repo_studenta(
 Niewidocznie lista z adresem repozytorium i stanem zaproszenia.
 }
 \description{
-Funkcja jest przeznaczona dla prowadzącego. Tworzy zwykłe prywatne
-repozytorium na jego koncie, umieszcza w nim indywidualny projekt i wysyła
+Funkcja jest przeznaczona dla prowadzacego. Tworzy zwykle prywatne
+repozytorium na jego koncie, umieszcza w nim konfiguracje przestrzeni cwiczen i wysyla
 zaproszenie do wskazanego konta studenta. Nie wymaga organizacji GitHub.
+Nie generuje danych ani raportu: projekt badawczy rozpoczyna sie na C09.
 }
 \examples{
 \dontrun{
 zaloguj_github()
-przygotuj_repo_studenta("s017", "login-studenta", "S02")
+przygotuj_repo_studenta("s017", "login-studenta")
 }
 }

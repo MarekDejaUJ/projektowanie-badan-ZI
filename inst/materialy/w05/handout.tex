@@ -41,8 +41,6 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{longtable,booktabs,array}
-\usepackage{caption}
-\captionsetup[table]{skip=6pt}
 \newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -122,136 +120,222 @@
 \@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
 \makeatother
 \hypersetup{
-  pdftitle={Handout W05 --- Korelacja{,} regresja i raport ilościowy},
+  pdftitle={Handout W05 --- Korelacja{,} regresja i język raportu},
   pdfauthor={Marek Deja},
   pdflang={pl-PL},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Handout W05 --- Korelacja, regresja i raport ilościowy}
+\title{Handout W05 --- Korelacja, regresja i język raportu}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\subtitle{Mapa pojęć, wzorów i pytań}
+\subtitle{Mapa pojęć i sprawdziany rozumienia}
 \author{Marek Deja}
 \date{2026/27}
 
 \begin{document}
 \maketitle
 
-\section{1. Pytanie i główna
-myśl}\label{pytanie-i-gux142uxf3wna-myux15bl}
+\section{Co chcemy wiedzieć?}\label{co-chcemy-wiedzieux107}
 
-\textbf{Pytanie:} Czy wyższa samoocena współwystępuje z krótszym czasem
-i jak zmienia się przewidywany czas na jeden punkt indeksu?
+W S02 x oznacza deklarowaną użyteczność katalogu, a y obserwowany czas.
+Indeks nie jest testem całej kompetencji. Ujemny związek oznacza
+współwystępowanie wyższej oceny z krótszym czasem; krótki czas
+porzuconego zadania nie jest sukcesem.
 
-Ostatni wykład łączy samoocenę z wykonaniem oraz wynik statystyczny z
-raportem. Korelacja opisuje współzmienność, regresja zapisuje warunkową
-średnią, a żadna z nich sama nie tworzy przyczynowości.
-
-\subsection{Tok rozumowania}\label{tok-rozumowania}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Pytanie i zakres wniosku.\\
-\item
-  Jednostka, zmienne, skale i braki.\\
-\item
-  Estymata oraz jednostka.\\
-\item
-  Niepewność i dwa tory, jeśli dotyczą.\\
-\item
-  Efekt, ograniczenie i odpowiedź.
-\end{enumerate}
-
-\newpage
-
-\section{2. Wzór i symbole}\label{wzuxf3r-i-symbole}
-
-\[r=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum(x_i-\bar{x})^2\sum(y_i-\bar{y})^2}}, \quad \widehat{y}=b_0+b_1x\]
+Jednostką jest osoba z kompletną parą. Pytanie o korelację, średnią
+przewidywaną i zgodność pomiarów wymaga różnych odpowiedzi. Przed
+obliczeniem ustal konstrukt, skalę, populację i regułę braków.
 
 {\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}lll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
-Symbol & Nazwa & Znaczenie \\
+\begin{minipage}[b]{\linewidth}\raggedright
+Pytanie
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Estymanda
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Wynik próbny
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\(r,\rho\) & korelacja & siła i kierunek związku \\
-\(b_0\) & wyraz wolny & przewidywane y przy x=0 \\
-\(b_1\) & nachylenie & zmiana y na jednostkę x \\
-\(R^2\) & dopasowanie & udział zmienności y \\
+Jak silna jest liniowa współzmienność? & \(\rho_P\) & r Pearsona \\
+Jak zgodna jest kolejność? & \(\rho_S\) & \(r_S\) Spearmana \\
+O ile różni się średni y na jednostkę x? & \(\beta_1\) & nachylenie
+\(b_1\) \\
+Czy samoocena trafnie podaje poziom? & np. średni błąd w porównywalnej
+skali & różnice, nie samo r \\
 \end{longtable}
 }
 
-Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę i
-składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani
-CI zakresu 95\% osób.
+\section{Przeczytaj wzór zdaniem}\label{przeczytaj-wzuxf3r-zdaniem}
 
-\newpage
+\[
+r=\frac{\sum(x_i-\bar x)(y_i-\bar y)}
+{\sqrt{\sum(x_i-\bar x)^2\sum(y_i-\bar y)^2}}.
+\]
 
-\section{3. Dwa tory i efekt}\label{dwa-tory-i-efekt}
+Licznik łączy odchylenia obu zmiennych od ich średnich; mianownik
+standaryzuje wynik. r jest bez jednostki, ma zakres {[}−1; 1{]}, opisuje
+liniowość. Zero nie wyklucza zależności w kształcie U. Spearman jest
+korelacją rang, przy remisach średnich rang. Wybór metody nie sprowadza
+się do wyniku testu normalności.
 
-\textbf{Tor klasyczny.} Korelacja podaje współczynnik, CI, p i N par.
-Prosta regresja dodaje nachylenie w naturalnej jednostce, jego SE, t i p
-oraz R2. Wyraz wolny może nie mieć praktycznego sensu, jeśli x=0 leży
-poza skalą.
+\[
+t=r\sqrt{\frac{n-2}{1-r^2}},\quad df=n-2.
+\]
 
-\textbf{Tor permutacyjny/resampling.} Tasowanie y względem x niszczy
-pary, zachowując oba rozkłady. Dla każdej permutacji liczymy ten sam r
-lub rho. p\_perm opisuje skrajność obserwowanego współczynnika przy
-braku związku par.
+To klasyczny test zerowej korelacji Pearsona; model niezależnych par
+dwuwymiarowo normalnych uzasadnia rozkład t. Dla wyniku Spearmana
+odczytujemy właściwy wynik programu, nie dopisujemy fikcyjnych df do
+statystyki S.
 
-\textbf{Efekt i przedział.} r/rho jest wielkością efektu, nachylenie
-mówi o jednostkach, a CI o precyzji. R2 nie jest odsetkiem poprawnie
-sklasyfikowanych osób ani częścią związku wyjaśnioną przyczynowo.
+\section{Dwa losowania, dwa pytania}\label{dwa-losowania-dwa-pytania}
 
-\newpage
+W permutacji przestawiamy y względem x. Zachowujemy rozkłady, zmieniamy
+parowanie pod hipotezą niezależności i wymienialności. W Monte Carlo
+dwustronne p ma postać \((k+1)/(B+1)\), gdzie k liczy \(|r^*|\geq|r|\).
+W pełnej enumeracji dzielimy liczbę skrajnych układów przez wszystkie
+układy bez poprawki +1.
 
-\section{4. Interpretacja i pytania}\label{interpretacja-i-pytania}
+W bootstrapie losujemy całe pary ze zwracaniem. Zachowujemy relację
+wewnątrz osoby, aby przybliżyć niepewność współczynnika. Oddzielne
+losowanie kolumn zniszczyłoby tę relację. Raportujemy metodę CI i liczbę
+prawidłowych replik.
 
-\textbf{Przykład.} rho=−.25 oznacza słabą do umiarkowanej monotoniczną
-tendencję: wraz z wyższą samooceną czas bywa krótszy. Nachylenie −1,4
-min/punkt opisuje liniową zmianę przewidywanego czasu, nie indywidualną
-gwarancję.
+Swobodne tasowanie nie uwzględnia automatycznie powtarzanych pomiarów
+ani klastrów. Zerowa korelacja i niezależność nie są równoważne dla
+wszystkich rozkładów. Zgodne p nie usuwają problemu pomiaru lub doboru
+próby.
 
-\textbf{Pułapki.} Pułapki to przyczynowość z korelacji, ignorowanie
-znaku skali czasu, ekstrapolacja poza 1--5, p bez wykresu, R2 jako
-jakość całego badania, usuwanie punktu wpływowego bez reguły i wybór
-metody po p.
+\section{Czytamy model}\label{czytamy-model}
 
-\textbf{Pytanie do pracy.} Odczytaj tabelę korelacji i regresji w
-kolejności N, efekt, CI, statystyka, p, p\_perm, nachylenie i R2. Zapisz
-jedno zdanie wyniku, jedno ograniczenie i warunkową rekomendację dla
-usługi.
+\[
+E(Y\mid X=x)=\beta_0+\beta_1x,\qquad
+\widehat y=b_0+b_1x,\qquad e_i=y_i-\widehat y_i.
+\]
 
-\subsection{Dalszy krok}\label{dalszy-krok}
+\(b_1\) ma jednostkę y na jednostkę x, tutaj minuty/punkt. \(b_0\)
+dotyczy x=0, które może leżeć poza skalą. Reszta jest różnicą wyniku
+zaobserwowanego i przewidywanego, nie błędem wpisania danych.
 
-C08 wykona analizę samooceny i czasu. C09 zaplanuje indywidualny
-projekt, a C10 połączy dwa wyniki, ograniczenia, wersje i oddanie w
-spójny raport Markdown.
+\[
+R^2=1-\frac{\sum e_i^2}{\sum(y_i-\bar y)^2}.
+\]
 
-\subsection{Literatura}\label{literatura}
+Dla OLS z wyrazem wolnym jest to część sumy kwadratów zmienności y
+odtworzona przez model w próbie. W regresji prostej na tych samych
+parach \(R^2=r_P^2\), nie \(r_S^2\). Nie oznacza procentu poprawnie
+sklasyfikowanych osób ani siły dowodu przyczynowego.
 
-\begin{itemize}
-\tightlist
-\item
-  \href{https://www.webuse.org/pdf/Hargittai-BeyondLogsSurveys2002.pdf}{Hargittai,
-  E. (2002). Beyond logs and surveys}.
-\item
-  \href{https://ris.utwente.nl/ws/portalfiles/portal/6972069/development.pdf}{van
-  Deursen, Helsper \& Eynon. Internet Skills Scale}.
-\item
-  \href{https://www.ala.org/acrl/standards/ilframework}{ACRL Framework}
-  oraz
-  \href{https://publications.jrc.ec.europa.eu/repository/handle/JRC128415}{DigComp
-  2.2} jako język konstruktu, nie gotowy test kursowy.
-\end{itemize}
+\section{Mały przykład
+wykładowy}\label{maux142y-przykux142ad-wykux142adowy}
+
+Sześć par: x=(1,2,2,3,4,5), y=(15,12,14,10,9,6). To celowo regularne
+dane dydaktyczne, inne niż pełny zbiór C08.
+
+Pearson: r≈−0,974; t(4)≈−8,668; p≈0,000975. Wszystkie 720 permutacji
+indeksów dają 4 wyniki co najmniej tak skrajne: p\_perm≈0,00556. Różne
+procedury korzystają z różnych rozkładów odniesienia.
+
+Model: \(\widehat y=17{,}277-2{,}215x\). Nachylenie około −2,22
+min/punkt, 95\% CI {[}−2,93; −1,51{]}. To różnica przewidywanej średniej
+między poziomami x, nie efekt podniesienia czyjejś odpowiedzi
+ankietowej.
+
+Dla x=3: prognoza 10,63 min, CI średniej {[}9,67; 11,59{]}, przedział
+nowej osoby {[}8,11; 13,16{]}. Szerszy przedział zawiera dodatkową
+zmienność indywidualną. Nie ekstrapolujemy na x=8 na skali 1--5.
+
+\section{Co sprawdzamy na wykresie?}\label{co-sprawdzamy-na-wykresie}
+
+Krzywiznę, rozrzut zależny od poziomu, skupienia, nietypowe punkty i
+zakres. Dźwignia dotyczy nietypowego x, reszta odchylenia y od prostej,
+wpływ zmiany dopasowania. Punktu nie usuwa się tylko dlatego, że zmienia
+p.
+
+Klasyczne przedziały regresji wymagają założeń o średniej, niezależności
+i wariancji błędów; dokładne małopróbkowe wnioskowanie t również ich
+normalności. Test normalności nie sprawdza reprezentatywności ani
+trafności narzędzia.
+
+\section{Trzy zdania do poprawienia}\label{trzy-zdania-do-poprawienia}
+
+„r=−0,30 to spadek kompetencji o 30\%''. Korelacja nie jest procentem
+zmiany, a użyteczność katalogu nie jest całym konstruktem kompetencji.
+
+„r=1 dowodzi trafnej samooceny''. Można idealnie zachować kolejność i
+zawyżać każdy wynik o 20 punktów procentowych. Korelacja nie mierzy
+zgodności poziomów.
+
+„CI obejmuje zero, więc nie ma żadnego związku''. Przedział pokazuje
+niepewność konkretnego parametru; dodatkowo liniowa miara może pomijać
+nieliniowy wzorzec.
+
+\section{Akapit wyniku}\label{akapit-wyniku}
+
+Podaj N kompletnych par, miarę, CI i jego metodę, odpowiedni test i p,
+p\_perm i B. Dla regresji dodaj nachylenie z jednostką i CI, R² oraz
+ograniczenie diagnostyczne. Następnie odpowiedz na pytanie merytoryczne
+bez zamiany związku w przyczynę.
+
+Kontekst: Hargittai (2002), Internet Skills Scale, DigComp 2.2 i ACRL.
+Odsyłacze: \href{../wspolne/literatura.md}{bibliografia kursu}. C08
+rozwija odczyt wyników, C09 planuje argument, C10 sprawdza raport i jego
+odtwarzalność.
+
+Generatywna SI nie zmienia reguł odczytu: sprawdź nazwę konstruktu,
+liczby, N, metodę CI i zgodność czasownika z projektem. Zdanie „p=0,08
+oznacza 8\% szans braku efektu'' jest błędne niezależnie od jego autora.
+Nie dopisuj brakujących wyników; interpretację piszesz samodzielnie.
+
+\section{Mapa rozwinięć --- bez dodatkowego
+zadania}\label{mapa-rozwiniux119ux107-bez-dodatkowego-zadania}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Obraz lub model
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Co odczytujemy?
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Główna pułapka
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(a+b\exp(-cx)\) & Zmienne tempo spadku średniej czasu & Asymptota nie
+jest zmierzonym minimum \\
+Wiolina & Gęstość i kształt rozkładu & Szerokość nie musi oznaczać N \\
+Pareto & Uporządkowane częstości i kumulację & Najczęstsza bariera nie
+musi być najpoważniejsza \\
+Koło & Rozłączny podział jednej całości & Wielokrotny wybór osób nie
+sumuje się do 100\% \\
+Mapa cieplna & Wartość według wspólnej skali koloru & Ten sam procent
+może mieć inne N \\
+Wydajność & Opóźnienie i przepustowość przy obciążeniu & Czas serwera
+nie jest czasem pracy osoby \\
+Reszty cząstkowe & \(e_i+b_1x_i\) względem x & Składnik modelu nie jest
+całkowitym czasem ani dowodem przyczynowym \\
+\end{longtable}
+}
+
+Pełny wykład zawiera gotowe wykresy, liczby i komentarze do każdego
+przypadku. Galeria służy rozpoznawaniu sposobów prezentacji, nie oznacza
+obowiązku stosowania wszystkich metod w projekcie.
 
 \end{document}

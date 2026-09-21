@@ -39,3 +39,14 @@ test_that("błędne terminy i nieokreślona zasada SI dają kontrolowany raport"
   cfg$zasady_si <- NULL
   expect_error(sprawdz_konfiguracje(cfg, publikacja = TRUE), "zasady_si")
 })
+test_that("wersje wydania wiążą pakiet, sylabus, generator i każdą rubrykę", {
+  k <- konfiguracja_kursu()
+  w <- yaml::read_yaml(system.file("kurs", "wydanie.yml", package = "badaniaZI"), eval.expr = FALSE)
+  expect_identical(w$pakiet, as.character(utils::packageVersion("badaniaZI")))
+  expect_identical(w$pakiet, k$wersja_pakietu)
+  expect_identical(w$generator, k$wersja_generatora)
+  expect_identical(w$zestaw_rubryk, k$wersja_rubryk)
+  expect_identical(w$kod_sylabusa, k$kod)
+  expect_identical(w$zakres_sylabusa, k$zakres_sylabusa)
+  for (id in names(w$rubryki)) expect_identical(w$rubryki[[id]], rubryka(id)$version)
+})

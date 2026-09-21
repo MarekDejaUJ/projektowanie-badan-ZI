@@ -1,11 +1,12 @@
 id: Z05
-version: 1.0.0
+version: 1.1.0
 rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z05.1
-  title: Estymata i przedział dla wskazanej zmiennej są poprawne, z właściwym N.
-  evidence: Estymata i przedział dla wskazanej zmiennej są poprawne, z właściwym N.
+  title: "Estymanda, estymata, SE i właściwie nazwany przedział."
+  evidence: "S01 podaje estymandę, N osób i indeksów, średnią, SD, SE i różnicę od 3, objaśniając wzór SE. S02 odczytuje oba 95% CI średniej oraz klasyczny CI różnicy; nie myli przedziału parametru z zakresem 95% indywidualnych wyników."
+  answer_fields: [S01, S02]
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -13,22 +14,19 @@ criteria:
   - U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Estymata bez poprawnego N lub przedziału.
+    observable_description: "Podano estymatę bez właściwego N lub nazwy parametru."
   - points: 1.5
-    observable_description: Estymata poprawna; błędny błąd standardowy albo granica
-      przedziału.
+    observable_description: "Estymata jest poprawna, ale SE pomylono z SD lub przedział średniej z przedziałem różnicy albo osób."
   - points: 2.25
-    observable_description: Estymata, N i granice poprawne; pominięty poziom ufności.
+    observable_description: "Estymanda, liczby i sens przedziałów są poprawne; pominięto jeden symbol, jednostkę lub poziom ufności."
   - points: 3.0
-    observable_description: Estymata i przedział dla wskazanej zmiennej są poprawne,
-      z właściwym N.
+    observable_description: "S01 podaje estymandę, N osób i indeksów, średnią, SD, SE i różnicę od 3, objaśniając wzór SE. S02 odczytuje oba 95% CI średniej oraz klasyczny CI różnicy; nie myli przedziału parametru z zakresem 95% indywidualnych wyników."
 - id: Z05.2
-  title: Poprawnie odczytano bootstrap średniej i permutacyjną zmianę znaków, wraz
-    z B i ich odmiennym celem.
-  evidence: Poprawnie odczytano bootstrap średniej i permutacyjną zmianę znaków, wraz
-    z B i ich odmiennym celem.
+  title: "Odmienny cel bootstrapu i zmiany znaków."
+  evidence: "S04 opisuje jedną replikę i sposób jej tworzenia na każdym wykresie: bootstrap średniej służy CI, a zmiana znaków ocenie skrajności pod H0. Odróżnia N osób od B replik, odwołując się także do wydruku S03."
+  answer_fields: [S03, S04]
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -36,23 +34,19 @@ criteria:
   - U2
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Pomylono bootstrap z permutacją albo poziom losowania.
+    observable_description: "Bootstrap i zmianę znaków potraktowano jako nowe pomiary osób."
   - points: 1.0
-    observable_description: Oba wyniki odnaleziono, lecz pomylono ich cel lub pominięto
-      B.
+    observable_description: "Rozpoznano dwa sposoby losowania, ale pomylono ich cel lub N z B."
   - points: 1.5
-    observable_description: Bootstrap, zmiana znaków i B są poprawne; jedno wyjaśnienie
-      procedury jest niepełne.
+    observable_description: "Cel i poziom obu losowań są poprawne; jeden odczyt wykresu lub liczby replik jest niepełny."
   - points: 2.0
-    observable_description: Poprawnie odczytano bootstrap średniej i permutacyjną
-      zmianę znaków, wraz z B i ich odmiennym celem.
+    observable_description: "S04 opisuje jedną replikę i sposób jej tworzenia na każdym wykresie: bootstrap średniej służy CI, a zmiana znaków ocenie skrajności pod H0. Odróżnia N osób od B replik, odwołując się także do wydruku S03."
 - id: Z05.3
-  title: Wynik klasyczny i permutacyjny zawiera N, efekt, CI, t, df, p oraz p_perm
-    i jest poprawnie objaśniony.
-  evidence: Wynik klasyczny i permutacyjny zawiera N, efekt, CI, t, df, p oraz p_perm
-    i jest poprawnie objaśniony.
+  title: "Hipoteza, statystyki, oba p i założenia."
+  evidence: "S03 podaje H0, t, df, p klasyczne, obserwowane T, B i p_MC oraz dwustronną regułę skrajności. Wyjaśnia p warunkowo względem H0 i modelu oraz wymaganą symetrię odchyleń przy zmianie znaków. S05 nie pomija różnicy wyników przy granicy 0,05."
+  answer_fields: [S03, S05]
   max_points: 3.0
   review_mode: human
   learning_outcomes:
@@ -60,37 +54,30 @@ criteria:
   - U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Podano tylko jedno p bez N, efektu i przedziału.
+    observable_description: "Podano tylko p lub etykietę istotności, bez hipotezy i statystyki."
   - points: 1.5
-    observable_description: Oba tory są obecne, lecz statystyka, df albo znaczenie
-      p jest błędne.
+    observable_description: "Oba wyniki są obecne, ale błędnie objaśniono p, df, regułę skrajności lub założenie zmiany znaków."
   - points: 2.25
-    observable_description: Kompletny odczyt obu torów; jedno objaśnienie niepewności
-      jest niepełne.
+    observable_description: "Statystyki, oba p i ich sens są poprawne; jedno objaśnienie warunku lub wyniku przy progu jest niepełne."
   - points: 3.0
-    observable_description: Wynik klasyczny i permutacyjny zawiera N, efekt, CI, t,
-      df, p oraz p_perm i jest poprawnie objaśniony.
+    observable_description: "S03 podaje H0, t, df, p klasyczne, obserwowane T, B i p_MC oraz dwustronną regułę skrajności. Wyjaśnia p warunkowo względem H0 i modelu oraz wymaganą symetrię odchyleń przy zmianie znaków. S05 nie pomija różnicy wyników przy granicy 0,05."
 - id: Z05.4
-  title: Wniosek odróżnia precyzję od znaczenia praktycznego i wskazuje ograniczenie
-    próby.
-  evidence: Wniosek odróżnia precyzję od znaczenia praktycznego i wskazuje ograniczenie
-    próby.
+  title: "Precyzja i znaczenie praktyczne w kontekście portalu."
+  evidence: "S05 odróżnia różnicę od odniesienia 3 od osiągnięcia umownego celu 3,5, wykorzystując efekt w punktach, d, CI i oba testy. Z S02 wiąże szerokość CI z precyzją. Podaje ograniczenie pomiaru i próby, bez rzeczywistej rekomendacji wdrożeniowej z symulacji."
+  answer_fields: [S02, S05]
   max_points: 2.0
   review_mode: human
   learning_outcomes: U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Wniosek powtarza estymatę bez oceny precyzji.
+    observable_description: "Wniosek jedynie powtarza średnią lub etykietę istotności."
   - points: 1.0
-    observable_description: Precyzja opisana; pominięte ograniczenie lub znaczenie
-      praktyczne.
+    observable_description: "Opisano precyzję, ale wynik wobec 3 uznano za dowód osiągnięcia 3,5 lub pominięto ograniczenia."
   - points: 1.5
-    observable_description: Precyzja, znaczenie i ograniczenie poprawne; niewielka
-      luka uzasadnienia.
+    observable_description: "Oba odniesienia, efekt i ograniczenia odczytano poprawnie; drobna luka dotyczy uzasadnienia znaczenia użytkowego."
   - points: 2.0
-    observable_description: Wniosek odróżnia precyzję od znaczenia praktycznego i
-      wskazuje ograniczenie próby.
+    observable_description: "S05 odróżnia różnicę od odniesienia 3 od osiągnięcia umownego celu 3,5, wykorzystując efekt w punktach, d, CI i oba testy. Z S02 wiąże szerokość CI z precyzją. Podaje ograniczenie pomiaru i próby, bez rzeczywistej rekomendacji wdrożeniowej z symulacji."

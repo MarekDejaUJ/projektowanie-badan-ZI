@@ -1,6 +1,6 @@
 ---
-title: 'W04 — Porównania grup i zależności kategorii'
-subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
+title: 'W04 — Kogo z kim porównujemy: średnie, pary i kategorie'
+subtitle: 'Zarządzanie informacją — wykład — 2026/27'
 author: 'Marek Deja'
 date: '2026/27'
 lang: pl-PL
@@ -9,136 +9,337 @@ papersize: a4
 geometry: margin=2cm
 ---
 
-# 1. Odcinek wspólnej opowieści
+Skrypt towarzyszący oblicza małe demonstracje porównań. Są to osobne dane syntetyczne, nie rekordy wspólnego S02. Wszystkie znaki i przedziały wynikają z jawnie zapisanej kolejności odejmowania.
 
-Pytanie o różnicę wymaga wskazania wyniku, grup, kolejności oraz projektu. Pytanie o współwystępowanie kategorii wymaga tabeli i właściwego mianownika. Test jest końcem tego rozumowania, nie początkiem.
+```{r przygotowanie, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+                     fig.width = 6, fig.height = 3.2, fig.align = "center")
+source("analiza.R", local = knitr::knit_global(), encoding = "UTF-8")
+```
 
-**Pytanie wykładu:** Czy dwie grupy różnią się indeksem lub czasem oraz czy powodzenie zadania zależy od grupy? Jak duży i precyzyjny jest wzorzec?
+# Jedna usługa, trzy projekty porównania
 
-| Minuty | Część |
-|---:|---|
-| 0–15 | problem i ramy LIS |
-| 15–35 | projekt, pomiar i symbole |
-| 35–55 | metoda oraz przykład |
-| 55–70 | tor klasyczny i permutacyjny |
-| 70–85 | interpretacja, błędy i dyskusja |
-| 85–90 | most do ćwiczeń |
+Biblioteka chce poprawić korzystanie z katalogu. Może porównać nowych i doświadczonych użytkowników, zaprosić te same osoby do zadania przed instruktażem i po nim albo losowo przydzielić dwie wersje pomocy. W każdym projekcie pojawia się słowo „porównanie”, lecz nie ta sama informacja.
 
-\newpage
+Istniejące grupy mogą różnić się wieloma cechami. Przed–po zachowuje osobę, ale łączy zmianę usługi z uczeniem się i upływem czasu. Losowy przydział warunku może wzmacniać wniosek przyczynowy, jeśli wykonanie badania respektuje założenia. Żaden z tych projektów nie zapewnia automatycznie uogólnienia na wszystkich użytkowników.
 
-# 2. Dlaczego to jest pytanie LIS
+Na wykładzie najpierw rozpoznajemy jednostkę i strukturę danych. Następnie uczymy się różnicy średnich oraz testu Welcha, porównania par i tabeli kategorii. Testy rangowe oraz wiele grup tworzą mapę do czytania literatury; ich szczegółowa implementacja nie jest rdzeniem C06–C07.
 
-W badaniach usług informacyjnych grupy mogą wynikać z doświadczenia, szkolenia, kanału lub typu użytkownika. Istniejące grupy rzadko są wymienne jak warunki eksperymentalne. Różnica opisuje wzorzec, a projekt określa, czy wolno mówić o przyczynie.
+W 90 minut przeznaczamy około 15 na projekty, 25 na średnie i niepewność, 10 na pary, 25 na kategorie oraz 15 na dobór języka i dyskusję. Fragmenty o rangach, wielu grupach i ilorazach stanowią także materiał do powtórki.
 
-Library and information science bada relację osób, informacji, technologii i instytucji. W kursie nie tworzymy wyniku o konkretnej bibliotece. Używamy syntetycznego badania, aby ćwiczyć przejście od konstruktu do wskaźnika oraz od liczby do ostrożnego wniosku.
+# Projekt przed nazwą testu
 
-\newpage
-
-# 3. Pytanie przed metodą
-
-Czy dwie grupy różnią się indeksem lub czasem oraz czy powodzenie zadania zależy od grupy? Jak duży i precyzyjny jest wzorzec?
-
-Pytanie powinno wskazywać jednostkę, wynik, porównanie lub związek, populację i okres. Hipoteza dodaje przewidywany kierunek wtedy, gdy ma podstawę teoretyczną. Analiza eksploracyjna też jest dopuszczalna, lecz trzeba ją nazwać i nie przedstawiać późniejszego odkrycia jako wcześniejszej prognozy.
-
-\newpage
-
-# 4. Projekt wyznacza granicę wniosku
-
-Dla dwóch niezależnych grup porównujemy inne osoby. Dla pomiarów zależnych porównujemy tę samą osobę lub dobrane pary. Wielu grup nie redukujemy do serii nieplanowanych testów; najpierw potrzebny jest wynik ogólny i kontrola wielokrotności.
-
-Losowość doboru dotyczy uogólnienia na populację, a losowy przydział warunku wniosku przyczynowego. Dostępna próba nie staje się reprezentatywna przez duże N. Braki, odmowa udziału i samoselekcja mogą zmieniać obraz nawet przy poprawnie wykonanym teście.
-
-\newpage
-
-# 5. Pomiar: samoocena i obserwacja
-
-Wynik ilościowy prowadzi do różnicy średnich lub rozkładów. Dwie kategorie prowadzą do tabeli liczebności. Skala, niezależność, rozkład i liczebności oczekiwane są przesłankami doboru metody.
-
-Wspólny zbiór łączy sześć pozycji, częstość korzystania, kanały, grupę, obserwowany czas i powodzenie zadania. Pozycje są przykładem dydaktycznym. Nie przypisujemy im walidacji ani nie wnioskujemy o całej kompetencji na podstawie jednego zadania.
-
-\newpage
-
-# 6. Wzór jako zdanie
-
-$$t_W=\frac{\bar{x}_1-\bar{x}_2}{\sqrt{s_1^2/N_1+s_2^2/N_2}}, \quad \chi^2=\sum\frac{(O-E)^2}{E}$$
-
-| Symbol | Nazwa | Znaczenie |
+| Sytuacja | Jednostka i powiązanie | Co porównujemy? |
 |---|---|---|
-| $\Delta$ | różnica | grupa 2 minus grupa 1 |
-| $g$ | Hedges g | standaryzowana różnica |
-| $O,E$ | liczebności | obserwowane i oczekiwane |
-| $V$ | V Cramera | siła związku kategorii |
+| Nowi i doświadczeni | Inne osoby w dwóch grupach | Średnie lub rozkłady wyników |
+| Ta sama osoba przed i po | Para pomiarów jednej osoby | Zmianę wewnątrz osoby |
+| Dwa warunki losowane | Osoby przydzielone według projektu | Wyniki między warunkami |
+| Powodzenie w dwóch grupach | Jedna kategoria wyniku osoby | Proporcje lub strukturę tabeli |
+| Trzy wersje usługi | Trzy grupy albo powtarzane warunki | Zależnie od schematu badania |
 
-Odczyt wzoru zaczyna się od nazwania wyniku, następnie składników, punktu odniesienia i jednostki. Student nie musi ręcznie odtwarzać algorytmu. Ma rozpoznać, co zwiększa statystykę, co oznacza znak i gdzie w gotowym wyniku znajduje N, efekt oraz niepewność.
+Równa liczebność grup nie oznacza sparowania. Dziesięciu nowych i dziesięciu doświadczonych użytkowników to nadal dwie niezależne grupy, jeśli nie istnieje merytoryczna para. Odwrotnie, brak jednego pomiaru po zadaniu nie zamienia pozostałych par w niezależne osoby.
 
-\newpage
+Niezależność ustala projekt, nie test normalności. Wiele prób tej samej osoby albo użytkownicy pracujący wspólnie w grupach mogą tworzyć zależności. Użycie prostego wzoru z N równym liczbie wierszy może wtedy dać nadmiernie wąskie przedziały.
 
-# 7. Tok analizy
+# Różnica średnich ma ustalony kierunek
 
-Welch porównuje średnie bez założenia równych wariancji. Test rangowy odpowiada na pytanie o rozkłady/rangi i nie jest automatyczną wersją testu średnich. Chi-kwadrat porównuje obserwowane komórki z oczekiwanymi przy niezależności, Fisher służy małym układom.
+W porównaniu nowych i doświadczonych przyjmujemy:
 
-Kolejność jest stała: pytanie → projekt → pomiar → dane i braki → opis → estymata → niepewność → wniosek → ograniczenie. Przestawienie tej kolejności sprzyja dobieraniu pytania do wyniku i raportowaniu przypadkowej liczby bez znaczenia badawczego.
+$$\Delta=\mu_N-\mu_D,\qquad
+\widehat\Delta=\bar{x}_N-\bar{x}_D.$$
 
-\newpage
+Indeksy N i D oznaczają grupy, nie liczebność. Liczebności zapisujemy $n_N$ i $n_D$. Dodatnia różnica czasu oznacza, że nowi potrzebowali przeciętnie więcej minut. Dodatnia różnica indeksu oznacza wyższą deklarowaną ocenę w kierunku skali. Sens znaku zależy od wyniku, nie od samego testu.
 
-# 8. Przykład prowadzony
+Hipoteza zerowa standardowego porównania średnich to $H_0:\Delta=0$. Dwustronna alternatywa dopuszcza różnicę w obu kierunkach. W materiale zawsze sprawdzamy, czy znak estymaty zgadza się ze znakiem statystyki t oraz położeniem przedziału.
 
-Nowi użytkownicy mogą mieć niższy indeks i mniejszy odsetek powodzenia. Dwa wyniki dotyczą różnych aspektów: samooceny i wykonania. Zgodność zwiększa spójność opisu, lecz nadal nie dowodzi, że doświadczenie samo spowodowało wynik.
+## Mały przykład czasu
 
-Przykład czytamy w trzech warstwach. Warstwa liczbowa nazywa estymatę i jednostkę. Warstwa badawcza odpowiada na pytanie o zachowanie lub usługę. Warstwa krytyczna wskazuje ograniczenie projektu, pomiaru i syntetyczności. Każda z nich jest potrzebna do pełnego wyniku.
+Nowi mają czasy 8, 10, 12, 14 i 16 minut, a doświadczeni 4, 6, 8, 10 i 12. Każda wartość dotyczy innej osoby. Zestawienie pokazuje N, średnią i SD w obu grupach.
 
-\newpage
+```{r opis-dwoch-grup}
+knitr::kable(opis_grup, digits = 3)
+```
 
-# 9. Tor klasyczny
+Średnie różnią się o 4 minuty, ale część indywidualnych czasów się pokrywa. To nie sprzeczność. Różnica grupowa nie oznacza, że każdy nowy użytkownik ma dłuższy czas od każdego doświadczonego.
 
-Welch porównuje średnie bez założenia równych wariancji. Test rangowy odpowiada na pytanie o rozkłady/rangi i nie jest automatyczną wersją testu średnich. Chi-kwadrat porównuje obserwowane komórki z oczekiwanymi przy niezależności, Fisher służy małym układom.
+Na wykresie każda kropka oznacza osobę. Odczytaj wspólne wartości 8, 10 i 12 minut oraz przesunięcie całych zestawów. Same kropki nie mówią, dlaczego grupy się różnią.
 
-Klasyczny wynik może zawierać statystykę t, chi-kwadrat, r, F lub współczynnik regresji. Stopnie swobody mówią, z jakiego rozkładu odniesienia korzysta procedura. Wartość p opisujemy warunkowo przy H0; nie mierzy ona wielkości efektu, jakości pomiaru ani prawdopodobieństwa powtórzenia wyniku.
+```{r punkty-dwoch-grup, fig.height=2.6}
+wykres_grup
+```
 
-\newpage
+Jeżeli celem biblioteki jest wsparcie wszystkich osób z długimi próbami, sama etykieta grupy może być niewystarczająca do kwalifikacji pomocy. Opis rozkładów pomaga dostrzec zróżnicowanie wewnątrz każdej grupy. Późniejszy test nie unieważnia tej informacji.
 
-# 10. Tor permutacyjny i resampling
+# Test Welcha: niepewność z obu grup
 
-Dla dwóch grup tasujemy etykiety przy zachowanych wynikach. Dla tabeli Monte Carlo tworzy tabele zgodne z hipotezą niezależności i marginesami procedury. Odczyt p pozostaje warunkowy względem H0.
+$$
+SE(\widehat\Delta)=
+\sqrt{\frac{s_N^2}{n_N}+\frac{s_D^2}{n_D}},
+\qquad
+t_W=\frac{\widehat\Delta-0}{SE(\widehat\Delta)}.
+$$
 
-Bootstrap odtwarza próbki empiryczne, aby ocenić niepewność estymaty. Permutacja narzuca model zerowy przez zmianę znaków, etykiet, par lub tabel. Oba korzystają z losowania komputerowego, ale odpowiadają na inne pytania. Zakres kursu kończy się na zestawieniu tych dwóch torów.
+W C05 porównywaliśmy średnią ze znaną liczbą. Teraz obie średnie są oszacowane. Ich niepewności w standardowym modelu niezależnych grup składają się pod pierwiastkiem. Większy rozrzut lub mniejsze N w którejkolwiek grupie może zwiększać SE różnicy.
 
-\newpage
+Welch nie wymaga równości wariancji grupowych. Nie oznacza to braku innych warunków: nadal potrzebujemy właściwej jednostki, niezależności i odpowiedniego uzasadnienia rozkładowego lub przybliżenia. Bardzo małe skośne próby z wpływowymi obserwacjami wymagają ostrożności.
 
-# 11. Efekt, przedział i znaczenie
+Stopnie swobody są wyznaczane przybliżeniem:
 
-Raportujemy różnicę w punktach lub minutach, Hedges g oraz CI. Dla tabeli V Cramera nie ma kierunku, dlatego trzeba podać odsetki w grupach i ewentualnie różnicę ryzyka dla 2×2.
+$$
+\nu=
+\frac{(s_N^2/n_N+s_D^2/n_D)^2}
+{\dfrac{(s_N^2/n_N)^2}{n_N-1}+
+ \dfrac{(s_D^2/n_D)^2}{n_D-1}}.
+$$
 
-Efekt prowadzimy przed p. Najpierw pytamy o kierunek i wielkość w naturalnej jednostce, potem o standaryzację, a następnie o przedział. Znaczenie praktyczne ustala kontekst instytucji, nie uniwersalna etykieta. Szeroki przedział wymaga języka dopuszczającego różne wielkości.
+Nie musimy liczyć tego wzoru ręcznie, ale powinniśmy rozumieć, dlaczego df może być niecałkowite. To wynik przybliżenia uwzględniającego niepewność wariancji, nie błąd eksportu. Nie zaokrąglamy df do liczby osób przed obliczeniem p.
 
-\newpage
+## Przedział, t i p w jednej historii
 
-# 12. Jak nie pisać wyniku
+Przedział różnicy ma postać $\widehat\Delta\pm t_{0{,}975;\nu}SE$. W małym przykładzie SE=2 minuty, t=2, a df=8. Przedział jest szeroki, ponieważ obie grupy liczą tylko po pięć osób.
 
-Błędy obejmują zmianę kolejności grup bez zmiany znaku, raportowanie p bez średnich, V jako procent różnicy, test chi-kwadrat na procentach zamiast liczebnościach, ignorowanie oczekiwanych komórek i przyczynowy język.
+Tabela rozdziela efekt, SE, granice przedziału, statystykę i p. Wszystkie wielkości dotyczą kierunku nowi minus doświadczeni. Odczytaj znak przed spojrzeniem na istotność.
 
-Unikamy zdań: „H0 jest prawdziwa”, „95% wyników leży w CI”, „grupy są takie same”, „korelacja pokazuje wpływ” i „V oznacza procent”. Poprawione zdanie zawiera N, estymatę, jednostkę, CI, statystykę, p, efekt i granicę wniosku w zakresie potrzebnym danej metodzie.
+```{r welch-wynik}
+knitr::kable(pionowo(welch))
+```
 
-\newpage
+Otrzymujemy różnicę 4 minut z 95% CI około [−0,61; 8,61] minuty i p około 0,081. Jest to dodatnia estymata z dużą niepewnością. Nie wolno napisać, że czas jest identyczny w populacjach, ani że doświadczenie na pewno skraca go o 4 minuty.
 
-# 13. Aktywność podczas wykładu
+W tym modelu wartości zgodne z przedziałem obejmują zarówno niewielką różnicę przeciwną, jak i duże wydłużenie czasu u nowych. Wynik może być ważny jako sygnał do lepiej zaprojektowanego badania. Nie jest wystarczającą podstawą do kategorycznego przypisania przyczyny.
 
-Dla czterech pytań wybierz: opis, Welch, test rangowy, chi-kwadrat/Fisher lub brak testu. Uzasadnij decyzję pytaniem, skalą, niezależnością i mianownikiem, a następnie wskaż efekt oraz wersję permutacyjną.
+## Dlaczego nie wybieramy testu tylko po p z testu założeń
 
-Odpowiedź przedstawiamy bez uruchamiania nowego testu. Zadaniem jest dobór języka oraz argumentacja. Każda grupa wskazuje także jeden element, którego nie da się rozstrzygnąć z przedstawionych danych i jedną dodatkową informację, która rzeczywiście wzmocniłaby projekt.
+Test Shapiro–Wilka może informować o odchyleniu od normalności, ale nie mierzy wszystkich problemów wnioskowania. Przy małym N może nie wykryć ważnej cechy rozkładu, a przy dużym wykryć drobną. Nie traktujemy p>0,05 jako dowodu normalności.
 
-\newpage
+Analogicznie test wariancji nie jest automatycznym przełącznikiem między dowolnymi analizami. W rdzeniu porównania średnich używamy jawnie wybranej wersji Welcha. Ocenę projektu, wykresów, braków i wpływowych obserwacji wykonujemy niezależnie od tego wyboru.
 
-# 14. Most do ćwiczeń i projektu
+# Efekt standaryzowany i jego mianownik
 
-C06 przeprowadzi jedno porównanie dwóch grup, C07 tabelę kategorii. W05 pokaże związki dwóch zmiennych ilościowych i prostą regresję.
+Dla dwóch niezależnych grup można podzielić różnicę przez łączone SD:
 
-W projekcie każda liczba ma odpowiadać pytaniu, a każdy wniosek ma odsyłać do zapisanego pliku wyniku. Gotowy kod wyrównuje obciążenie techniczne; samodzielne pozostają wybór dozwolonego parametru, odczyt statystyki, interpretacja i krytyczna ocena.
+$$
+s_p=\sqrt{\frac{(n_N-1)s_N^2+(n_D-1)s_D^2}{n_N+n_D-2}},
+\qquad d=\frac{\widehat\Delta}{s_p}.
+$$
 
-## Literatura i ramy
+Korekta Hedgesa ogranicza obciążenie małopróbkowego estymatora standaryzowanej różnicy w odpowiednim modelu. W kursie wykorzystujemy przybliżenie:
 
-- Agresti. An Introduction to Categorical Data Analysis.
-- [Lakens (2013). Calculating and reporting effect sizes](https://doi.org/10.3389/fpsyg.2013.00863).
-- Kontekst LIS pochodzi ze scenariuszy usług cyfrowych i obserwowanego zadania wyszukiwawczego.
+$$
+g\approx\left(1-\frac{3}{4(n_N+n_D)-9}\right)d.
+$$
 
-Źródła wyznaczają język pojęć. Pozycje, dane i wyniki kursowe są syntetyczne; nie przedstawiamy ich jako rezultatów cytowanych badań.
+Nie jest to ten sam mianownik co SE Welcha. Dlatego g opisuje wielkość względną do rozrzutu osób, a t relację różnicy do niepewności jej oszacowania. Przy nierównych wariancjach warto szczególnie jasno nazwać sposób standaryzacji i zachować naturalną różnicę na pierwszym planie.
+
+W małym przykładzie g wynosi około 1,14, mimo że dwustronne p przekracza 0,05. To możliwe: standaryzowana różnica może być duża, a jej oszacowanie nieprecyzyjne. Nie zastępujemy przedziału etykietą „duży efekt”.
+
+Różne mianowniki efektów dla projektów niezależnych i zależnych trzeba odróżniać także przy czytaniu publikacji. [Lakens (2013)](https://doi.org/10.3389/fpsyg.2013.00863) jest przydatnym źródłem dotyczącym ich raportowania. Własny opis musi podawać projekt i zastosowaną definicję, nie tylko literę d.
+
+# Permutacja etykiet: co musi być wymienialne
+
+W dwóch niezależnych grupach możemy połączyć wyniki, losowo przestawić etykiety z zachowaniem liczebności i ponownie policzyć różnicę średnich. Powtarzamy tę samą statystykę w tych samych jednostkach. Dwustronną skrajność oceniamy przez wartość bezwzględną.
+
+Uzasadnienie wymaga dopuszczalności takich przestawień pod rozpatrywaną hipotezą zerową. W prostym modelu dwóch prób wspólny rozkład pod H0 daje wymienialność. W eksperymencie regułę przestawień może wyznaczać rzeczywisty mechanizm losowego przydziału i odpowiednia hipoteza randomizacyjna.
+
+Równość samych średnich nie gwarantuje wspólnego rozkładu. Jeśli wariancje znacznie się różnią, zwłaszcza przy nierównych liczebnościach, surowe tasowanie różnicy średnich nie jest automatycznie odpornym odpowiednikiem Welcha. Istnieją odpowiednio standaryzowane i asymptotyczne procedury, ale nie należy przypisywać ich własności prostemu algorytmowi.
+
+W obserwacyjnych grupach nowi–doświadczeni samo przetasowanie etykiet nie tworzy randomizowanego badania. Nawet poprawnie uzasadniony test nie usuwa różnic wieku, zadań czy wcześniejszego korzystania z usługi. W C06 opiszemy tor losowany wraz z jego ograniczeniem.
+
+Bootstrap różnicy działa inaczej: losujemy osoby z powtórzeniami osobno w każdej grupie, zachowując jej tożsamość. Powstaje przybliżenie niepewności różnicy. Nie zrywamy w nim związku między grupą a wynikiem po to, by narzucić zero.
+
+# Te same osoby przed i po: analizujemy różnice
+
+W drugim projekcie sześć osób wykonuje zadanie przed instruktażem i po nim. Dane mają identyfikator osoby oraz dwa czasy. Wybieramy kierunek po minus przed, zatem liczba ujemna oznacza skrócenie.
+
+Tabela pokazuje każdy rekord i jego różnicę. Nie dobieramy par przez sortowanie czasów; parę definiuje osoba. N wynosi sześć par, nie dwanaście niezależnych respondentów.
+
+```{r pary}
+knitr::kable(pary)
+```
+
+Różnice to −1, −2, −1, −3, −2 i −4 minuty. Pytanie dotyczy średniej tych różnic. Wcześniejsze poziomy osób mogą się mocno różnić, ale dzięki sparowaniu porównujemy każdą osobę z nią samą.
+
+Wykres zachowuje połączenia między pomiarami. Linie pokazują, kto zmienił wynik i o ile. Odczytaj kierunek sześciu zmian bez nazywania go jeszcze skutkiem instruktażu.
+
+```{r wykres-par}
+wykres_par
+```
+
+Test t dla par jest testem jednej średniej różnic:
+
+$$d_i=x_{i,\mathrm{po}}-x_{i,\mathrm{przed}},
+\qquad
+t=\frac{\bar d}{s_d/\sqrt{n_{\mathrm{par}}}}.
+$$
+
+Warunek normalności dla dokładnego modelu dotyczy rozkładu różnic, nie osobno obu surowych kolumn. Różnice między osobami powinny być niezależne. Przy brakach analizę tworzą kompletne pary, których N należy podać.
+
+Wynik odczytujemy w minutach zmiany. Przedział i t mają kierunek zgodny z po minus przed. Zauważ, że SD różnic jest inną liczbą niż SD wszystkich czasów połączonych w jedną kolumnę.
+
+```{r wynik-par}
+knitr::kable(pionowo(wynik_par))
+```
+
+Średnia zmiana wynosi około −2,17 minuty. Nie wynika z tego automatycznie, że instruktaż ją spowodował: osoby mogły zapamiętać zadanie lub oswoić się z procedurą. Projekt z kontrolą lub losowaniem kolejności może lepiej rozdzielać te mechanizmy.
+
+W torze zmian znaków dla par przekształcamy różnice wewnątrz osób przy odpowiednim uzasadnieniu symetrii lub randomizacji. Nie tasujemy wszystkich pomiarów dowolnie między osobami. Struktura projektu określa, co wolno zmienić.
+
+# Rangi: inne spojrzenie, nie automatyczny test median
+
+Jeśli interesuje nas porządek wyników, możemy użyć rang. W dwóch niezależnych grupach test sumy rang Wilcoxona, nazywany też testem Manna–Whitneya, opiera się na położeniu obserwacji w uporządkowanym wspólnym zbiorze. Remisy wymagają odpowiedniego uwzględnienia w obliczeniu.
+
+Użyteczną miarą probabilistyczną jest:
+
+$$
+\theta=P(X_N>X_D)+\tfrac12P(X_N=X_D).
+$$
+
+Szacujemy, jak często losowo wybrany nowy użytkownik ma wyższy wynik od losowo wybranego doświadczonego, z połową wagi dla remisu. Dla czasu „wyższy” oznacza dłuższy, a nie lepszy. Wartość 0,5 tej miary nie zapewnia identyczności wszystkich cech rozkładów.
+
+Standardowy rangowy test zerowy ma warunki dotyczące rozkładów i wymienialności. Nie jest uniwersalnym testem równości samych median. Interpretacja jako przesunięcie położenia lub różnica median wymaga dodatkowych warunków, takich jak porównywalny kształt. Dwie grupy mogą mieć tę samą medianę, a inną strukturę rang.
+
+W parowanym teście rang podpisanych wykorzystuje się znaki i rangi bezwzględnych różnic. Również tu ważna jest symetria dla typowej interpretacji przesunięcia. Nie jest to automatycznie metoda bez warunków dla dowolnego zbioru różnic. Szczegóły i definicje estymowanych wielkości podaje [dokumentacja wilcox.test](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html).
+
+## Jak wybrać pytanie, nie tylko nazwę
+
+Jeśli biblioteka planuje przeciętny nakład minut na obsługę, średnia ma bezpośrednią interpretację. Jeśli porównuje uporządkowanie odpowiedzi porządkowych, podejście rangowe może odpowiadać innemu sensownemu pytaniu. Samo stwierdzenie skośności nie rozstrzyga, który cel jest ważniejszy.
+
+Można przedstawić analizę dodatkową, ale trzeba nazwać zmianę estymandy lub hipotezy. Nie piszemy, że dwa testy „potwierdzają tę samą średnią”, jeśli jeden nie testuje średniej. Zgodne kierunki są informacją, lecz nie usuwają różnicy pytań.
+
+# Wiele grup: co mówi test ogólny
+
+Trzy wersje katalogu mogą wymagać porównania trzech średnich. W klasycznej jednoczynnikowej analizie wariancji hipoteza zerowa mówi o równości wszystkich średnich. Alternatywa: nie wszystkie są równe. Wynik ogólny nie identyfikuje automatycznie różniącej się pary.
+
+$$
+F=\frac{MS_{\mathrm{między}}}{MS_{\mathrm{wewnątrz}}}.
+$$
+
+W liczniku znajduje się zmienność średnich grupowych przeliczona na odpowiednie stopnie swobody, w mianowniku zmienność wewnątrz grup. F jest ilorazem, nie różnicą w minutach. Dlatego obok niego potrzebujemy średnich, kontrastów i ich niepewności.
+
+W dodatkowej małej demonstracji trzy grupy mają czasy A: 4, 5, 6; B: 7, 8, 9; C: 4, 6, 8. Tabela pokazuje rozkład sum kwadratów i statystykę ogólną. Jest to ćwiczenie rachunku przy klasycznym modelu, nie ocena stabilnego rezultatu z dziewięciu osób.
+
+```{r anova}
+knitr::kable(anova_tabela, digits = 3)
+```
+
+Suma kwadratów między grupami wynosi 14, a wewnątrz 12. Przy df równych 2 i 6 otrzymujemy F=3,5. Udział międzygrupowej sumy kwadratów w całkowitej, $\eta^2=14/26\approx0{,}538$, jest opisem zróżnicowania w tym modelu, nie procentem osób, którym pomogła usługa.
+
+Klasyczna ANOVA zakłada między innymi odpowiednią niezależność i wspólną wariancję błędów. Wersja Welcha pozwala na nierówność wariancji, a test Kruskala–Wallisa pracuje na rangach i nie jest automatycznie testem średnich ani samych median. Powtarzane pomiary tych samych osób wymagają osobnego modelu lub procedury zachowującej bloki.
+
+Zaplanowane kontrasty można analizować zgodnie z wcześniej określoną procedurą; nie zawsze wymagają uprzednio istotnego testu ogólnego. Natomiast wybieranie po wyniku wielu par i raportowanie tylko korzystnej wymaga kontroli wielokrotności oraz uczciwego opisu. Sama istotna ANOVA nie legalizuje dowolnej liczby niekorygowanych testów.
+
+# Kategorie: najpierw tabela z liczebnościami
+
+Przechodzimy od czasu do powodzenia zadania. W osobnym przykładzie nowi mają 18 sukcesów na 30 osób, a doświadczeni 32 na 40. Jedna osoba wnosi jeden wynik w tabeli dwóch rozłącznych kategorii.
+
+Tabela zawiera liczebności, nie procenty. Sumy wierszy to liczebności grup, a sumy kolumn pokazują łączną liczbę sukcesów i niepowodzeń. Zanim obliczymy test, trzeba sprawdzić te mianowniki.
+
+```{r tabela-liczebnosci}
+knitr::kable(tab)
+```
+
+W pierwszej grupie sukces odnosi 60%, w drugiej 80%. Różnica nowi minus doświadczeni wynosi −20 punktów procentowych. To nie znaczy, że nowi mają o 20% mniej sukcesów w sensie względnym, ani że każdy nowy użytkownik radzi sobie gorzej.
+
+Wykres pokazuje udziały na wspólnej osi 0–100%. Podpis nad słupkiem zawiera licznik i mianownik. Liczby bezwzględne oraz procenty służą odmiennym pytaniom, więc zachowujemy obie informacje.
+
+```{r procenty}
+wykres_proporcji
+```
+
+Jeśli zamiast procentu w grupie obliczylibyśmy udział nowych wśród wszystkich sukcesów, otrzymalibyśmy inne pytanie. To nadal dopuszczalny opis, lecz nie miara skuteczności nowych. Mianownik musi odpowiadać zdaniu w raporcie.
+
+# Chi-kwadrat: porównujemy O z E
+
+Przy niezależności grupy i wyniku oczekiwana liczebność komórki wynosi:
+
+$$
+E_{ij}=\frac{n_{i\cdot}n_{\cdot j}}{N}.
+$$
+
+W pierwszej komórce oczekiwalibyśmy $30\cdot50/70\approx21{,}43$ sukcesu nowych, gdyby udziały wynikały z niezależności przy tych marginesach. Ułamkowa oczekiwana liczebność jest poprawna: to wartość modelowa, nie część konkretnej osoby.
+
+Tabela oczekiwań odpowiada tej samej strukturze co tabela obserwacji. Porównaj komórki zamiast tylko sum wierszy. Sumy są zachowane, ale rozmieszczenie sukcesów może odbiegać od niezależności.
+
+```{r oczekiwane}
+knitr::kable(oczekiwane, digits = 2)
+```
+
+Statystyka sumuje wkłady:
+
+$$
+\chi^2=\sum_{i,j}\frac{(O_{ij}-E_{ij})^2}{E_{ij}}.
+$$
+
+Kwadrat usuwa znak, a podzielenie przez E odnosi odchylenie do skali oczekiwanej komórki. Chi-kwadrat nie mówi więc samo, która grupa ma wyższą skuteczność. Kierunek odczytujemy z proporcji i różnic.
+
+Poniżej każdy element tabeli jest wkładem do sumy chi-kwadrat. Zwróć uwagę, że podobna różnica liczebności może mieć większy wkład przy mniejszym E. To jeden z powodów, dla których nie podajemy do funkcji tabeli procentów zamiast liczebności.
+
+```{r wklady}
+knitr::kable(wklady, digits = 3)
+```
+
+Dla tabeli r na c stopnie swobody wynoszą $(r-1)(c-1)$. W 2 na 2 jest to 1. W standardowym przybliżeniu porównujemy obliczoną statystykę z odpowiednim rozkładem chi-kwadrat. Przy małych oczekiwanych liczebnościach przybliżenie może być niewłaściwe.
+
+# Fisher i Monte Carlo: inne rozkłady odniesienia
+
+Dokładny test Fishera dla tabeli 2 na 2 wyznacza wynik warunkowo przy ustalonych marginesach. Nie wymaga użycia dużopróbkowego przybliżenia chi-kwadrat dla rzadkich komórek. Nadal wymaga odpowiedniego projektu, niezależnych jednostek i poprawnej tabeli.
+
+W wersji Monte Carlo testu niezależności losujemy tabele przy ustalonych marginesach i porównujemy ich statystykę chi-kwadrat z obserwowaną. Nie jest to bootstrap respondentów ani tworzenie tabel o dowolnych sumach. [Dokumentacja chisq.test](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/chisq.test.html) określa ten schemat i rolę B.
+
+Tabela zestawia wyniki dla przykładu 18/30 i 32/40. Klasyczny chi-kwadrat obliczono bez korekty ciągłości; metoda i korekta są częścią opisu. Różnice między p nie dają prawa wyboru najniższej wartości po obejrzeniu wyniku.
+
+```{r testy-tabeli}
+knitr::kable(pionowo(testy_kategorii))
+```
+
+Dla rzadkiej tabeli wybór procedury staje się szczególnie ważny. W kolejnej demonstracji pierwsza grupa ma 1 sukces na 10, druga 7 na 10. Oczekiwane liczebności sukcesów wynoszą po 4, więc część komórek jest mała.
+
+```{r rzadka-tabela}
+knitr::kable(rzadka)
+```
+
+Sama obecność małej liczby obserwowanej nie jest całą diagnozą; w chi-kwadrat sprawdzamy oczekiwania. Praktyczne reguły liczebności są wskazówką jakości przybliżenia, nie prawem interpretacji. Dla tej małej tabeli można sięgnąć po dokładny test Fishera i jasno podać używaną metodę.
+
+Wynik Fishera ma warunkową interpretację i własną definicję dwustronnej skrajności. Nie jest dokładnym odpowiednikiem dowolnego innego p wyłącznie z powodu słowa „dokładny”. Szczegóły znajdują się w [dokumentacji fisher.test](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/fisher.test.html).
+
+# Wielkość związku: V oraz kierunkowe różnice
+
+V Craméra ma postać:
+
+$$
+V=\sqrt{\frac{\chi^2}{N\min(r-1,c-1)}}.
+$$
+
+W tabeli 2 na 2 mianownik pod pierwiastkiem upraszcza się do N. V jest nieujemne i nie ma jednostki. Nie mówi, która grupa ma większy odsetek, ani nie oznacza procentu sukcesów czy procentu wyjaśnionej zmienności.
+
+Dla dwóch proporcji warto pokazać naturalną różnicę. Można także obliczyć ich iloraz albo iloraz szans, ale są to różne miary. Poniższe zestawienie zachowuje kierunek nowi względem doświadczonych; CI dotyczy różnicy proporcji z przybliżenia bez korekty ciągłości.
+
+```{r efekty-kategorii}
+knitr::kable(pionowo(efekty_kategorii))
+```
+
+Iloraz proporcji $0{,}60/0{,}80=0{,}75$ oznacza, że udział sukcesów nowych stanowi 75% udziału doświadczonych, czyli jest względnie o 25% niższy. Różnica bezwzględna nadal wynosi −20 punktów procentowych.
+
+Szanse sukcesu to stosunek sukcesów do niepowodzeń. Iloraz szans wynosi $(18/12)/(32/8)=0{,}375$. Nie oznacza proporcji sukcesu 37,5% ani takiego samego ilorazu prawdopodobieństw. Przy częstym wyniku szansa i prawdopodobieństwo wyraźnie się różnią.
+
+## Ostrożnie z przedziałem bootstrapowym dla V
+
+Prosty percentylowy bootstrap V może dać dodatnią dolną granicę także przy braku związku w populacji. V jest ograniczone od dołu zerem, a losowe próby zwykle wykazują pewne dodatnie odchylenie od dokładnej niezależności. Taki przedział nie powinien służyć jako automatyczny test „czy V różni się od zera”.
+
+W C07 pokażemy niepewność kierunkowej różnicy proporcji i osobno opisową miarę V. Jeśli oglądamy percentyle bootstrapu V, nazywamy ograniczenie przy granicy parametru. Nie stawiamy diagnozy istotności na podstawie dodatniego końca takiego przedziału.
+
+# Cztery pytania do czytania artykułu LIS
+
+Artykuł podaje średni czas dwóch grup, ale nie opisuje powiązań pomiarów. Zanim przeczytasz t, zapytaj, czy to inne osoby, czy dwa zadania tych samych osób. Bez tej informacji nie można ocenić mianownika statystyki.
+
+Drugi artykuł nazywa wynik testu rangowego różnicą średnich. Sprawdź, czy metoda rzeczywiście estymuje średnią oraz jak autor definiuje efekt. Być może liczby są policzone poprawnie, ale język przypisuje im inne pytanie.
+
+Trzeci przedstawia chi-kwadrat i p bez tabeli. Nie możesz z nich odczytać kierunku ani skali różnicy skuteczności. Potrzebujesz liczebności, proporcji i miary efektu w kontekście usługi.
+
+Czwarty pisze, że doświadczenie „wpływa” na skuteczność na podstawie grup obserwacyjnych. Nawet małe p, duży efekt i wąski przedział nie zastępują projektu przyczynowego. Poprawny opis związku jest wartościowy bez dopisywania nieuzasadnionej przyczyny.
+
+# Most do C06 i C07
+
+C06 przeprowadzi porównanie dwóch grup z jednym ustalonym kierunkiem efektu, klasycznym Welchem, przedziałami i tasowaniem etykiet. C07 przejdzie od liczebności do proporcji, oczekiwań, testu niezależności i efektu. Każde ćwiczenie zachowa własne mianowniki oraz ograniczenia.
+
+W obu przypadkach pełne zdanie wyniku powinno dać się sprawdzić w tabeli. Nazwa metody nie jest odpowiedzią na problem biblioteki. Odpowiedź wymaga wielkości, niepewności oraz jasnego wskazania, kogo i w jakich warunkach porównano.

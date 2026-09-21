@@ -1,6 +1,6 @@
 ---
-title: 'Handout W01 — Od potrzeby informacyjnej do projektu badania'
-subtitle: 'Mapa pojęć, wzorów i pytań'
+title: 'Handout W01 — Pytanie, pomiar i projekt'
+subtitle: 'Zarządzanie informacją — mapa wykładu i pytania do notatek'
 author: 'Marek Deja'
 date: '2026/27'
 lang: pl-PL
@@ -9,67 +9,68 @@ papersize: a4
 geometry: margin=2cm
 ---
 
-# 1. Pytanie i główna myśl
+# Problem, do którego wracamy
 
-**Pytanie:** Czy użytkownicy nowi i doświadczeni różnią się samooceną oraz powodzeniem krótkiego zadania w katalogu? Jakiego projektu potrzeba, aby opisać różnicę, a jakiego, aby mówić o skutku instrukcji?
+Biblioteka otrzymuje sygnały, że trudno znaleźć dokument w katalogu. Rozważa zmianę filtrów, film instruktażowy lub szkolenie. Zanim wybierze rozwiązanie, musi rozpoznać barierę: interfejs, przygotowanie użytkownika, zadanie albo dostępność informacji. Wspólne dane S02 są syntetycznym przykładem ankiety i obserwacji zadania; nie opisują rzeczywistej biblioteki.
 
-Punktem wyjścia nie jest test statystyczny, lecz sytuacja osoby, która potrzebuje informacji i działa w określonym środowisku. Projekt badania ma połączyć problem instytucji z obserwowalnym zachowaniem, samoopisem i decyzją, której wynik ma służyć.
+| Etap rozumowania | Pytanie do zapisania |
+|---|---|
+| Problem instytucji | Jaka decyzja wymaga informacji? |
+| Konstrukt | Co oznacza „sprawność” albo „użyteczność”? |
+| Wskaźnik | Co dokładnie obserwujemy lub o co pytamy? |
+| Projekt i próba | Kogo badamy, kiedy i w jakich warunkach? |
+| Estymanda | Jaką wielkość chcemy oszacować? |
+| Wniosek | Co pozwala stwierdzić taki projekt? |
 
-## Tok rozumowania
+W S02 indeks sześciu pozycji dotyczy deklarowanej użyteczności katalogu i radzenia sobie z nim. Nie jest zwalidowaną skalą ogólnej kompetencji. Czas oraz powodzenie to wskaźniki wykonania konkretnego zadania. Zgodność deklaracji i wykonania jest pytaniem do zbadania.
 
-1. Pytanie i zakres wniosku.  
-2. Jednostka, zmienne, skale i braki.  
-3. Estymata oraz jednostka.  
-4. Niepewność i dwa tory, jeśli dotyczą.  
-5. Efekt, ograniczenie i odpowiedź.
+# Język wzoru
 
-\newpage
+$$\widehat{\Delta}=\bar{x}_N-\bar{x}_D.$$
 
-# 2. Wzór i symbole
+Czytamy: „szacowana różnica to średni czas nowych minus średni czas doświadczonych użytkowników”. Dodatni wynik oznacza dłuższy czas nowych osób. Przy średnich 9 i 7 minut estymata różnicy wynosi 2 minuty.
 
-$$P(Y\mid G) \neq P(Y) \quad \text{oznacza związek, nie automatycznie przyczynę}$$
+| Pojęcie | Znaczenie w przykładzie |
+|---|---|
+| Estymanda | Różnica średnich czasów w określonej populacji i zadaniu |
+| Parametry $\mu_N,\mu_D$ | Średnie populacyjne w grupach |
+| Estymator $\bar{x}_N-\bar{x}_D$ | Reguła obliczenia różnicy z próby |
+| Estymata $\widehat{\Delta}=2$ min | Liczba uzyskana z konkretnych danych |
+| $n_N,n_D$ | Liczby ważnych obserwacji we właściwych grupach |
 
-| Symbol | Nazwa | Znaczenie |
+Zamiana grup zmienia znak. Przeliczenie minut na sekundy zmienia jednostkę i liczbową wartość różnicy, lecz nie relację między grupami. Do pełnego wyniku potrzebna będzie także miara niepewności.
+
+# Projekty tej samej usługi
+
+| Projekt | Przykład pytania | Granica wniosku |
 |---|---|---|
-| $Y$ | wynik | indeks, czas albo powodzenie |
-| $G$ | grupa/warunek | dwa poziomy porównania |
-| $X$ | zmienna towarzysząca | np. częstość korzystania |
-| $N$ | próba | liczba analizowanych osób |
+| Opis | Jaki odsetek nowych osób znajduje dokument? | Opis próby lub określonej populacji przy uzasadnionym doborze |
+| Porównanie obserwacyjne | O ile różnią się nowi i doświadczeni? | Związek; możliwe zakłócenie przez inne cechy |
+| Losowy przydział instrukcji | Czy udostępnienie instrukcji zmienia powodzenie? | Silniejsza podstawa wniosku przyczynowego o przydzielonej interwencji |
+| Przed–po | Jak zmienił się czas tych samych osób? | Trzeba uwzględnić zależność, wprawę i zmiany warunków |
 
-Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę i składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani CI zakresu 95% osób.
+Losowy dobór osób dotyczy podstaw uogólnienia. Losowy przydział warunku dotyczy porównania przyczynowego. Można mieć jedno bez drugiego.
 
-\newpage
+Quasi-eksperyment porównuje zmianę bez randomizacji: w przykładzie dwóch filii różnica zmian wynosi $(7-10)-(7-8)=-2$ minuty. Nie jest skutkiem interwencji bez uzasadnienia równoległych trendów i kontroli innych zmian. Eksperyment naturalny wykorzystuje przydział wynikający z warunków zewnętrznych; trzeba poznać jego mechanizm.
 
-# 3. Dwa tory i efekt
+Piramida dowodów podpowiada, gdzie szukać badań skutków interwencji, lecz nie zastępuje oceny jakości. Przegląd systematyczny ma jawną procedurę, a metaanaliza liczbowo łączy oszacowania. Pytanie o lokalną częstość bariery może najlepiej adresować dobre aktualne badanie obserwacyjne.
 
-**Tor klasyczny.** 
-Najpierw definiujemy populację, ramę doboru, jednostkę, okres odniesienia i kryteria włączenia. Potem zapisujemy pytanie w języku zmiennych oraz przewidujemy, jaka estymata odpowie na nie bez nadmiarowych procedur.
+# Kontrole, które poprzedzają test
 
-**Tor permutacyjny/resampling.** 
-Dwa tory analizy pojawią się później. Już teraz trzeba rozumieć hipotezę zerową jako model braku określonego związku. Permutacja będzie zmieniała tylko ten element danych, który reprezentuje związek podlegający testowi.
+Jedna osoba wykonująca cztery zadania daje cztery rekordy, lecz pomiary nie są niezależne. Brak wyniku nie oznacza niepowodzenia. Średnia udanych prób opisuje inną wielkość niż średnia wszystkich prób. Sama nazwa kolumny nie jest definicją konstruktu.
 
-**Efekt i przedział.** 
-Przed zebraniem danych warto nazwać różnicę praktycznie ważną: ile minut, punktów indeksu lub punktów procentowych mogłoby zmienić decyzję o usłudze. Dzięki temu p nie stanie się jedynym kryterium wniosku.
+Przy czasach 2, 3, 3 i 20 minut średnia wynosi 7, a mediana 3 minuty. Wybór miary zależy od pytania: przeciętny nakład czasu i środek uporządkowanej grupy nie są tym samym.
 
-\newpage
+**Do omówienia:** „80% respondentów dobrze ocenia katalog, więc 80% studentów ma wysokie kompetencje”. Wskaż błąd dotyczący populacji oraz odrębny błąd pomiaru. Zapisz własną poprawioną wersję, podając licznik i mianownik.
 
-# 4. Interpretacja i pytania
+**Do własnej powtórki:** zapisz jedno pytanie o usługę informacyjną, jego estymandę i jednostkę. Dopisz informację, której zaplanowane dane nie pozwolą uzyskać. Nie oddajesz osobnego pliku; projekt indywidualny poznasz w C09.
 
-**Przykład.** 
-Biblioteka rozważa krótką instrukcję filtrowania. Pytanie opisowe dotyczy aktualnego czasu nowych użytkowników. Pytanie porównawcze dotyczy dwóch istniejących grup. Pytanie przyczynowe wymaga przydziału instrukcji i wspólnego zadania. Te trzy pytania mogą używać podobnej tabeli, ale prowadzą do innego wniosku.
+**Generatywna SI:** pomoc w zrozumieniu pojęcia lub błędu kodu jest dopuszczalna; interpretacja pozostaje własna. Oznacz rzeczywiście wykorzystane treści i chroń dane. Nie ma obowiązku korzystania z narzędzia. Przykład i [zasady UJ](https://bip.uj.edu.pl/documents/1384597/159749054/zarz_115_2025.pdf) omówiono w wykładzie.
 
-**Pułapki.** 
-Najczęstsze błędy to rozpoczynanie od nazwy testu, utożsamienie dostępnej próby z populacją, zmiana pytania po zobaczeniu p, nazywanie samooceny kompetencją oraz język wpływu w badaniu obserwacyjnym.
+# Lektury i notatki
 
-**Pytanie do pracy.** 
-W zespołach przekształć ogólne zdanie „katalog jest trudny” w pytanie opisowe, porównawcze i przyczynowe. Dla każdego wskaż jednostkę, zmienne, źródło danych, jedną estymatę i ograniczenie.
+Wilson (1999) pomaga odróżnić zachowanie informacyjne od wyszukiwania w systemie; Kuhlthau (1991) zwraca uwagę na moment pomiaru w procesie; Hargittai (2002) uzasadnia łączenie ankiety z obserwacją; Vial (2019) dostarcza perspektywy zmiany organizacyjnej. Pełne odnośniki i omówienie znajdują się w wykładzie.
 
-## Dalszy krok
+Notatka: jakie dwie różne przyczyny mogą dać taki sam długi czas wyszukiwania?
 
-C01 pokaże pojedynczy rekord i przepływ pracy, a C02 odtworzy przejście od surowego eksportu do danych analitycznych. W01 dostarcza pytania, do których te techniczne czynności mają prowadzić.
-
-## Literatura
-
-- [Wilson, T.D. (1999). Models in information behaviour research](https://www.informationr.net/tdw/publ/papers/1999JDoc.html).
-- [Kuhlthau, C.C. (1991). Inside the search process](https://doi.org/10.1002/(SICI)1097-4571(199106)42:5%3C361::AID-ASI6%3E3.0.CO;2-%23).
-- [Savolainen, R. (1995). Everyday life information seeking](https://doi.org/10.1016/0740-8188(95)90048-9).
+Notatka: jakiego dodatkowego pomiaru potrzebujesz, aby je rozróżnić?

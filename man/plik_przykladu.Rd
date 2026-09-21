@@ -1,6 +1,6 @@
 \name{plik_przykladu}
 \alias{plik_przykladu}
-\title{Plik przykładowych danych}
+\title{Plik przykladowych danych}
 \usage{
 plik_przykladu(format = c("csv", "xlsx"))
 }
@@ -8,10 +8,10 @@ plik_przykladu(format = c("csv", "xlsx"))
 \item{format}{CSV albo XLSX.}
 }
 \value{
-Ścieżka do pliku z pakietu.
+Sciezka do pliku z pakietu.
 }
 \description{
-Plik przykładowych danych
+Plik przykladowych danych
 }
 \examples{
 plik_przykladu("csv")

@@ -1,6 +1,6 @@
 \name{zapisz_dane}
 \alias{zapisz_dane}
-\title{Zapis danych i manifestu}
+\title{Zapis niezmiennego wariantu projektu}
 \usage{
 zapisz_dane(dane, katalog)
 }
@@ -13,7 +13,10 @@ zapisz_dane(dane, katalog)
 Ścieżka katalogu, niewidocznie.
 }
 \description{
-Zapis danych i manifestu
+Zachowuje dane CSV/RDS, słownik, kartę scenariusza i manifest z hashami
+wszystkich czterech plików. Późniejszy odczyt nie korzysta z bieżącego
+generatora ani katalogu scenariuszy, dzięki czemu aktualizacja pakietu
+nie zmienia wariantu rozpoczętego projektu.
 }
 \examples{
 katalog <- tempfile("ankieta-")

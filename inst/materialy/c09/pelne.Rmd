@@ -1,243 +1,552 @@
 ---
-title: 'C09 — Warsztat projektu: od scenariusza do dwóch małych analiz'
-subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
-author: 'Marek Deja'
+title: 'C09 — Warsztat projektu: problem, pomiar i dwie uzasadnione analizy'
+subtitle: 'Zarządzanie informacją — ćwiczenie i karta projektu Z09 — 2026/27'
+author: 'ID: [UZUPELNIJ_ID]'
 date: '2026/27'
 lang: pl-PL
 fontsize: 11pt
 papersize: a4
 geometry: margin=2cm
+params:
+  id_studenta: 'DEMO_C09'
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document: default
 ---
 
+<!-- start-sesji -->
+# Początek pracy na tych zajęciach
+
+Otwórz RStudio. Pakiet kursu jest już zainstalowany w sali; nie instalujesz go ponownie. W konsoli poniżej edytora wpisz swoje ID i adres prywatnego repozytorium otrzymany w kursie, a następnie wykonaj polecenia. Ten blok jest instrukcją do konsoli, nie chunkiem uruchamianym przy tworzeniu PDF.
+
+```r
+library(badaniaZI)
+ID <- "TWOJE_ID"
+zaloguj_github()
+rozpocznij_zajecia(
+  "C09", id_studenta = ID,
+  repo_url = "ADRES_TWOJEGO_PRYWATNEGO_REPOZYTORIUM"
+)
+```
+
+Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie tam, nie w konsoli R. Sprawdź potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w tej sesji; pliki pracy mają je zachować także po zamknięciu RStudio.
+
+Polecenie otwiera własny `zadanie.Rmd` i zapamiętuje katalog pracy. Nie przełączaj teraz projektu przez `.Rproj`, bo nowa sesja R utraci logowanie. Pracuj w otwartym Rmd, nie w źródłach pakietu. Uruchom pierwszy chunk przygotowania, potem wykonuj LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; nie usuwaj pracy ani nie wpisuj cudzego ID.
+<!-- /start-sesji -->
+
+
+Pomocniczy plik `analiza.R` przygotowuje karty planu, opis przykładowych danych i małe demonstracje. Nie piszesz nowego programu statystycznego. Twoim zadaniem jest uzasadnienie decyzji badawczych i odczyt wyników gotowych procedur.
+
 ```{r przygotowanie, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, digits = 3)
-source('analiza.R', local = knitr::knit_global(), encoding = 'UTF-8')
+source(badaniaZI::plik_pracy("Z09", "analiza.R"),
+       local = knitr::knit_global(), encoding = "UTF-8")
+ustaw_material()
 ```
 
-# 1. Miejsce w opowieści
+# Historia: instytucja potrzebuje pytania, nie listy testów
 
-Każdy student ma jeden z dwudziestu scenariuszy i indywidualne dane. Budujemy plan, w którym pytanie, operacjonalizacja, zmienne, metoda i interpretacja tworzą jedną sekwencję.
+Biblioteka słyszy, że nowi użytkownicy mają trudności z katalogiem. Dyrekcja rozważa szkolenie, zmianę opisów filtrów albo rozbudowanie pomocy. Każda propozycja zakłada inny mechanizm problemu. Sama informacja, że „użytkownicy są niezadowoleni”, nie pozwala wybrać rozwiązania.
 
-**Pytanie przewodnie:** Jak zaplanować projekt ilościowy, aby dwie analizy odpowiadały pytaniom i nie wykraczały poza dane syntetyczne?
+Zadanie badacza polega na przełożeniu problemu na pytania, które dostępne dane mogą rzeczywiście rozstrzygnąć. Różnica ocen między nowymi i doświadczonymi nie jest jeszcze efektem szkolenia. Różnica sukcesu w zadaniu nie jest pełnym pomiarem kompetencji. Czas wyszukiwania nie oddziela automatycznie trudności interfejsu od staranności użytkownika.
 
-Rdzeń zajęć trwa 90 minut. Strony oznaczone jako „po zajęciach” służą utrwaleniu; podczas spotkania uruchamiamy gotowy kod, czytamy liczby i zapisujemy własne wyjaśnienie.
+Dziś powstaje plan indywidualnego projektu ilościowego. Wybierasz jeden z dwudziestu scenariuszy, zachowujesz jego konstrukty i schemat danych, planujesz rzeczywiste badanie, lecz analizujesz wyłącznie własny wariant danych syntetycznych. Na potrzeby projektu nie zbierasz odpowiedzi od ludzi.
 
-| Minuty | Praca |
-|---:|---|
-| 0–10 | Powrót do poprzedniego odcinka i pytanie |
-| 10–30 | Zmienne, wzór i symbole |
-| 30–55 | Gotowe wyniki i dwa tory, jeśli dotyczą |
-| 55–80 | Zadanie na indywidualnych danych |
-| 80–90 | Kontrola, oddanie i zapowiedź kolejnego kroku |
+Do tej pory korzystanie z projektu RStudio oznaczało otwarcie technicznego katalogu pracy. Od dziś słowo „projekt” oznacza także twoje indywidualne opracowanie badawcze: plan i analizę danych syntetycznych. Nie zakładamy, że wybrałeś temat albo przygotowałeś dane na wcześniejszych spotkaniach.
 
-\newpage
+Końcowym rezultatem będzie raport PDF z własnym opisem problemu, planu pomiaru i próby, przygotowania danych, dwóch analiz, ograniczeń i rekomendacji. Razem z nim przekazujesz Rmd, pomocniczy R oraz dane i manifest pozwalające odtworzyć wynik. Nie piszesz samodzielnie programu czyszczącego ani funkcji testów. Wykonujesz gotowy tok analizy i odpowiadasz za znaczenie swoich akapitów.
 
-# 2. Scena badawcza
+Z09 jest początkiem tego opracowania: pięć odpowiedzi tworzy kartę planu z pierwszym opisem własnego wariantu. C10 służy uruchomieniu i odczytaniu obu analiz oraz korekcie raportu. Projekt końcowy rozwija te same pytania i dane; nie jest dodatkowym, niepowiązanym badaniem. Nie obowiązuje limit słów: zakres akapitu wynika z pytania, a raport nie musi być tak długi jak materiał dydaktyczny.
 
-Każdy student ma jeden z dwudziestu scenariuszy i indywidualne dane. Budujemy plan, w którym pytanie, operacjonalizacja, zmienne, metoda i interpretacja tworzą jedną sekwencję.
+## Co robimy w 90 minut
 
-Badana osoba wykonuje krótkie zadanie wyszukiwawcze w cyfrowej usłudze informacyjnej, a potem odpowiada na sześć pozycji samooceny. Rejestrujemy czas i powodzenie jako pomiar obserwacyjny. Częstość korzystania, samoocena oraz wybrane kanały są deklaracjami. Rozdzielenie tych źródeł jest częścią interpretacji, ponieważ wysoka pewność nie musi oznaczać sprawnego wykonania.
+Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć LEARN, 50 minut na pięć CHALLENGE i 5 minut na zapis oraz oddanie. W LEARN czytasz plan i wyniki znanego przykładu S02. W CHALLENGE wybierasz scenariusz, uruchamiasz własny wariant i piszesz pięć krótkich akapitów w tym samym Rmd. Pracujesz indywidualnie; w razie niejasności pytasz prowadzącego. Rozwinięcia po części obowiązkowej służą powtórce, bez nowych odpowiedzi.
 
-Dane demonstracyjne dotyczą scenariusza S02 i są syntetyczne. Ich rozkłady przygotowano do nauki, dlatego nie wolno opisywać nimi realnej biblioteki ani użytkowników UJ. Jednostką analizy jest osoba po usunięciu identycznych duplikatów. Każdy brak pozostaje brakiem, dopóki słownik nie podaje jawnej reguły.
+# LEARN 1: od problemu do dwóch estymand
 
-\newpage
+**Problem instytucji:** część odbiorców nie potrafi odnaleźć dokumentu lub nie chce korzystać z usługi. Jest to szerszy problem informacyjny obejmujący osoby, zadanie, system oraz warunki dostępu. Może wymagać kilku badań, a nie jednego testu.
 
-# 3. Pytanie, jednostka i zmienne
+**Projekt badania:** określamy populację, rekrutację, standaryzowane zadanie, pomiar deklaracji i obserwację. Ten poziom odpowiada na pytanie, jakie dane należałoby zebrać, aby wiarygodnie rozważyć problem. Tutaj uzasadniamy operacjonalizację i ograniczenia.
 
-Analizowane zmienne: **wynik porównania, grupa, indeks, czas, powodzenie, druga analiza scenariusza**.
+**Analiza dydaktyczna:** generator dostarcza syntetyczne odpowiedzi do ćwiczenia statystyki. Potrafimy opisać ten zbiór, oszacować efekty i odczytać niepewność procedur. Wyniki nie są jednak dowodem, że rzeczywista biblioteka ma określony problem.
 
-Przed spojrzeniem na wynik odpowiedz głośno na cztery pytania: kto jest obserwacją, co jest zmienną, jaka jest skala i w jakiej jednostce pojawi się rezultat. Nazwa kolumny jest technicznym adresem; znaczenie pochodzi z operacjonalizacji oraz słownika danych.
+Zdanie „zbadano 150 użytkowników biblioteki” byłoby nieprawdziwe, jeśli chodzi o rekordy generatora. Poprawnie: „zaplanowano badanie użytkowników; tok analizy przeprowadzono na syntetycznych danych dla scenariusza”. Nie ukrywaj tej informacji wyłącznie w końcowych ograniczeniach.
 
-| Element | Pytanie kontrolne | Odpowiedź w tej historii |
-|---|---|---|
-| Jednostka | Co zajmuje jeden wiersz? | jedna osoba i jedno zadanie |
-| Samoopis | Co osoba deklaruje? | pozycje, częstość, kanały |
-| Obserwacja | Co zapisuje procedura? | czas i powodzenie |
-| Granica wniosku | O czym mówią dane? | o syntetycznej próbie dydaktycznej |
+## Próba odczytu
 
-Skala pomiarowa ogranicza sens działań. Dla kategorii liczymy osoby i odsetki; dla uporządkowanych odpowiedzi możemy porównywać kolejność; dla czasu sens mają różnice i ilorazy. Indeks 1–5 traktujemy w kursie jako przybliżoną zmienną ilościową, ale pamiętamy, że powstał z pozycji porządkowych. Nazwanie skali przed analizą chroni przed mechanicznym wyborem testu.
+Porównaj trzy zdania: „biblioteka ma problem z filtrowaniem”, „badanie sprawdziłoby zrozumiałość nazw filtrów”, „w syntetycznej próbie średnia odpowiedź na pozycję wyniosła 3,4”. Pierwsze jest twierdzeniem o instytucji, drugie planem, trzecie opisem demonstracji. Tylko trzecie można uzasadnić samym plikiem ćwiczeniowym.
 
-\newpage
+Źródła LIS uzasadniają sens pytania i pojęć. Wilson pomaga myśleć o zachowaniu informacyjnym w kontekście, Kuhlthau o procesie poszukiwania, Hargittai o pomiarze umiejętności, a Vial o zmianie organizacyjnej związanej z technologią. Nie dostarczają automatycznie lokalnego wyniku o twojej instytucji.
 
-# 4. Słownik statystyczny
+## problem zmieniamy w dwa pytania
 
-Statystyka jest językiem skrótu. Symbol ma nazwę, znaczenie w badaniu i jednostkę. Odczytuj wzór zdaniem, zanim podstawisz liczby.
+Słabe pytanie brzmi: „Czy katalog jest dobry?”. Nie wskazuje odbiorcy, zadania, wskaźnika ani kryterium. Jeszcze słabszy plan brzmi: „Wykonam test t, korelację i chi-kwadrat”, ponieważ zaczyna od procedur bez określenia problemu.
 
-| Symbol | Nazwa | Znaczenie w przykładzie | Jednostka |
-|---|---|---|---|
-| $Y$ | wynik | indeks albo czas | punkty/minuty |
-| $G$ | grupa | dwa poziomy scenariusza | kategoria |
-| $X$ | drugi predyktor | częstość, czas lub indeks | zależnie od skali |
-| $\theta$ | efekt | różnica, V albo korelacja | jednostka metody |
+W scenariuszu S02 pierwsze pytanie może dotyczyć różnicy średniego indeksu deklarowanej użyteczności między nowymi i doświadczonymi. Drugie dotyczy różnicy prawdopodobieństwa sukcesu zadania między tymi grupami. Jedno opiera się na deklaracji złożonej, drugie na obserwacji.
 
-Wartość p nie jest prawdopodobieństwem prawdziwości hipotezy. Przedział nie jest zakresem środkowych 95% obserwacji. Efekt nie jest tym samym co istotność. Te trzy rozróżnienia wracają w każdej analizie.
+Karta poniżej pokazuje mapowanie pytania na wynik, porównanie i niepewność. Przeczytaj ją wierszami. Dwa pytania nie są powtórzeniem jednego testu na tej samej liczbie.
 
-**Notatnik pojęć.** Dla każdego symbolu dopisz jedną liczbę z gotowego wyniku i przeczytaj ją bez skrótu. Zamiast „t równa się” powiedz „obserwowana różnica leży tyle błędów standardowych od wartości zerowej”. Zamiast „V równa się” powiedz „znormalizowana siła związku w tabeli wynosi”. Taki przekład jest ważniejszy niż pamięciowe odtwarzanie wzoru.
-
-\newpage
-
-# 5. Wzór czytany jak zdanie
-
-$$\text{pytanie} \rightarrow \text{zmienne} \rightarrow \text{estymata} \rightarrow \text{niepewność} \rightarrow \text{wniosek}$$
-
-Czytamy od lewej do prawej, nazywając licznik, mianownik i jednostkę. Znak wyniku ma sens dopiero po ustaleniu kolejności grup lub kierunku skali. Jeżeli we wzorze jest N, chodzi o przypadki rzeczywiście użyte w danym obliczeniu, a nie automatycznie o wszystkie wiersze surowego pliku.
-
-**Ćwiczenie ustne.** Wskaż w formule estymatę, element niepewności i punkt odniesienia. Jeżeli dana metoda ich nie ma, powiedz to wprost. Następnie przewidź, co stanie się z wynikiem po zwiększeniu N, zmianie jednostki albo odwróceniu kolejności grup.
-
-Czytanie wzoru ma pięć kroków: (1) nazwij wynik po lewej stronie, (2) nazwij obserwowane wielkości po prawej, (3) wskaż porównanie lub wartość zerową, (4) ustal jednostkę, (5) powiedz, jaka zmiana danych zwiększa wynik. Nie wykonujemy ręcznie długich obliczeń. Wzór ma odsłonić logikę liczby zwracanej przez gotową funkcję.
-
-\newpage
-
-# 6. Gotowy skrypt pomocniczy
-
-Pierwszy chunk materiału załadował towarzyszący plik `analiza.R`. Zawiera przygotowanie danych, obiekty i funkcje potrzebne na zajęciach. Uruchamiasz kolejne fragmenty i odczytujesz wynik. Nie implementujesz testu ani pętli permutacyjnej.
-
-```{r struktura}
-wynik_glowny
+```{r karta}
+widok <- karta_pytan_do_odczytu()
+print(widok)
 ```
 
-W zadaniu indywidualnym analogiczny skrypt powstaje przez `przygotuj_zadanie()`. Wolno zmienić jedynie wartości oznaczone komentarzem jako parametry. Dzięki temu przedmiot ocenia rozumienie wyniku, a nie biegłość w programowaniu.
+Nazwij populację docelową, np. osoby uprawnione do korzystania z katalogu w określonym semestrze. Następnie ustal kryterium „nowi” i „doświadczeni” przed rekrutacją. Sama etykieta kolumny nie mówi, czy granicą są miesiące korzystania, liczba sesji czy samookreślenie.
 
-Po zmianie parametru uruchom cały skrypt od początku. Pojedyncze obiekty pozostawione w Environment mogą pochodzić ze starszej próby, dlatego nie są dowodem odtwarzalności. Zapisany plik w `wyniki` ma powstać ponownie w świeżej sesji. Jeśli nazwa zmiennej jest niedozwolona, funkcja zatrzymuje analizę i podaje listę dopuszczalnych wartości.
+Pytanie musi pasować do danych. Nie można badać poprawy po szkoleniu, jeśli zbiór zawiera tylko dwie grupy zaobserwowane raz. Nie można badać trajektorii wyszukiwania, jeśli zapisano jedynie łączny czas i sukces. Czasem właściwą decyzją jest zawężenie pytania, a nie dołożenie bardziej złożonej metody.
 
-\newpage
+## Dwa pytania a dwie wersje tej samej analizy
 
-# 7. Dane, braki i mianownik
+Welch i permutacja etykiet to dwa sposoby oceny wyniku porównania grup, nie dwa odrębne problemy badawcze. Podobnie Pearson i Spearman mogą opisywać różne aspekty tej samej pary zmiennych, ale nie zastąpią automatycznie dwóch merytorycznie uzasadnionych pytań projektu.
 
-```{r dane}
-knitr::kable(head(tabela_glowna, 10), digits = 3)
+W projekcie pierwsza analiza porównuje grupy, a druga wynika ze scenariusza: korelacja albo tabela kategorii. Nie trzeba wykonywać wszystkich metod kursu. Dwóch dobrze uzasadnionych analiz nie ulepsza lista dodatkowych testów bez pytania.
+
+## estymanda porządkuje plan
+
+Estymanda to precyzyjnie określona wielkość, o której chcemy się dowiedzieć. Dla pierwszego pytania:
+
+$$
+\Delta_\mu=\mu_{\mathrm{nowi}}-\mu_{\mathrm{doświadczeni}}.
+$$
+
+Odczytaj: różnica populacyjnych średnich indeksu nowych i doświadczonych użytkowników w ustalonych warunkach. Wybór kolejności grup nadaje znakowi znaczenie. Ujemna estymata oznacza niższą średnią nowych, nie „ujemną użyteczność”.
+
+Dla drugiego pytania:
+
+$$
+\Delta_\pi=\pi_{\mathrm{nowi}}-\pi_{\mathrm{doświadczeni}}.
+$$
+
+Różnica proporcji ma skalę od −1 do 1; po pomnożeniu przez 100 wyrażamy ją w punktach procentowych. V Craméra opisuje natężenie związku bez kierunku, więc nie zastępuje $\Delta_\pi$ w odpowiedzi „która grupa i o ile”.
+
+W scenariuszu korelacyjnym estymandą może być rangowy związek częstości korzystania z indeksem. Dla porządkowej częstości nie zakładamy automatycznie równych odstępów między „rzadko” i „czasami” oraz „często” i „bardzo często”. Wybór Spearmana można wtedy uzasadnić znaczeniem skali.
+
+Estymator jest regułą obliczenia, np. różnicą średnich próbnych. Estymata jest konkretną liczbą po zastosowaniu reguły. Statystyka testowa odnosi wynik do modelu zerowego. W raporcie te terminy nie muszą występować w każdym zdaniu, ale rozumowanie powinno je rozróżniać.
+
+## Ważne doprecyzowanie populacji
+
+„Średni czas użytkowników” i „średni czas osób, które odniosły sukces” to różne estymandy. Wykluczenie porażek zmienia zakres pytania. Nie powinno być ukrytą decyzją czyszczącą tylko dlatego, że rozkład staje się ładniejszy.
+
+Podobnie indeks obliczany przy minimum pięciu odpowiedziach dotyczy osób z wystarczającą liczbą pozycji. Czy ich brak może wiązać się z trudnością oceny usługi? Reguła indeksu jest jawna, ale nie usuwa sama problemu selekcji.
+
+## hipoteza, przewidywanie i eksploracja
+
+Hipoteza zerowa dla porównania średnich to $\Delta_\mu=0$. Hipoteza badawcza może przewidywać niższą ocenę nowych, jeśli uzasadnia to teoria albo wcześniejsze badanie. Kierunek powinien wynikać z argumentu przed analizą, nie ze znaku już zobaczonej estymaty.
+
+Dwustronny test odpowiada pytaniu o różnicę w obu kierunkach. Nie zmieniamy go po obliczeniu na jednostronny w celu obniżenia p. Jeżeli kierunek jest rzeczywiście częścią wcześniejszego planu, należy go jasno uzasadnić, wraz z konsekwencjami wyniku przeciwnego.
+
+Analiza eksploracyjna jest dopuszczalnym sposobem uczenia się o danych. Musi być nazwana eksploracyjną. Odkryty wzorzec może prowadzić do nowego pytania, lecz nie staje się wstecznie trafną prognozą.
+
+W kursie znasz już demonstracyjny zbiór S02. Nie udawaj, że jego wyniki są dla ciebie całkowicie nieznane. W planie rzeczywistego badania oddziel uzasadnienie merytoryczne od obserwacji dydaktycznej. Przy własnym wariancie zapisuj decyzje, zanim zaczniesz przeszukiwać tabele pod kątem istotności.
+
+**Wzorcowa korekta planu.** Propozycja „Porównam wszystkie zmienne i napiszę hipotezę dla tej, która ma p<0,05” jest wyborem hipotezy po wyniku. Poprawny plan określa pytanie główne, wynik i metodę wcześniej; dodatkowe przeglądy oznacza jako eksplorację oraz uwzględnia problem wielokrotności.
+
+# LEARN 2: jednostka, populacja i rama doboru
+
+Populacja docelowa to zbiór osób, o których chcemy wnioskować. Rama doboru to dostępny wykaz lub sposób dotarcia do nich. Próba zrealizowana obejmuje osoby, które rzeczywiście uczestniczyły. Te trzy zbiory rzadko są idealnie identyczne.
+
+Zaproszenie tylko przez ekran katalogu dociera do osób już z niego korzystających. Może pomijać tych, którzy zrezygnowali albo nie wiedzą o usłudze. Badanie tak rekrutowane nie opisuje automatycznie barier wszystkich uprawnionych odbiorców.
+
+Zaproszenie przez bibliotekarza przy stanowisku pomocy może nadreprezentować osoby z problemami. Newsletter może nadreprezentować osoby zainteresowane ofertą. Nie wystarczy napisać „próba losowa”, jeśli nie określono mechanizmu losowania i ramy.
+
+Jednostką analizy w rdzeniu jest osoba z jednym zadaniem. Pięć prób tej samej osoby nie zwiększa automatycznie N niezależnych uczestników o pięć. Jeśli rzeczywisty projekt miałby powtarzane pomiary, trzeba zaplanować ich agregację albo odpowiednią analizę zależności.
+
+## Liczebność nie naprawia selekcji
+
+Większa liczba odpowiedzi zmniejsza część losowej niepewności, ale nie uzupełnia głosów osób pominiętych przez sposób rekrutacji. Dla katalogu rekrutacja wyłącznie przez jego ekran nie obejmie wszystkich, którzy z usługi zrezygnowali. W opisie planu trzeba nazwać ten mechanizm, a nie tylko napisać „próba jest mała”. Liczbowy przykład różnicy średniej 3,3 i 3,8 znajduje się w rozwinięciu.
+
+## pomiar deklaracji i pomiar obserwacyjny
+
+Dla każdej zmiennej zapisz konstrukt, operacyjną definicję, skalę, zakres, kod braku i sposób uzyskania. „Kompetencje cyfrowe — skala 1–5” jest niewystarczające. Nie wiadomo, jakie działanie, wiedzę czy poczucie sprawności mierzą odpowiedzi.
+
+W S02 sześć pozycji odnosi się do użyteczności katalogu. Pozycja 3 jest odwrócona, więc wyższa odpowiedź surowa ma przeciwny kierunek. Po rekodacji $6-x$ wszystkie pozycje mają wspólny kierunek, a indeks jest średnią przy minimum pięciu ważnych odpowiedziach.
+
+Indeks jest roboczym narzędziem dydaktycznym. Jego średnia, wariancja czy nawet wysoka zgodność pozycji nie stanowią pełnej walidacji. Trafność wymaga argumentu, że zawartość i sposób odpowiedzi pasują do konstruktu oraz planowanego użycia wyniku.
+
+Obserwowany sukces wymaga kryterium. „Znalazł informację” może oznaczać otwarcie strony, wskazanie właściwego dokumentu albo znalezienie poprawnej lokalizacji i warunków dostępu. Różne kryteria dają różne proporcje, więc muszą być ustalone przed pomiarem.
+
+Tabela przedstawia elementy przyszłego protokołu. To propozycja planistyczna, nie opis czynności rzeczywiście wykonanych na syntetycznych rekordach. Dopasuj ją do konkretnego scenariusza.
+
+```{r protokol}
+widok <- protokol_do_odczytu()
+print(widok)
 ```
 
-Zanim przeczytasz statystykę, ustal N i braki. Dla średniej N oznacza ważne liczby. Dla korelacji są to kompletne pary. Dla tabeli jest to suma analizowanych komórek. Dla indeksu przypadek musi mieć co najmniej pięć odpowiedzi po właściwym ukierunkowaniu.
+Czas zaczynamy mierzyć w jednoznacznym momencie. Trzeba ustalić, czy wliczamy czytanie instrukcji, przerwy, oczekiwanie systemu i pomoc obserwatora. Brak standaryzacji może stworzyć różnice, które błędnie przypiszemy użytkownikom.
 
-Dwa wyniki mogą używać różnych N w tym samym raporcie. Nie jest to sprzeczność, jeśli wynika z braków i zostało jawnie opisane. Nie wolno dopasowywać reguły braków po zobaczeniu, która wersja daje korzystniejsze p.
+Limit czasu wymaga odróżnienia czasu ukończenia od informacji „nie ukończono do limitu”. Wartość 15 przy limicie 15 minut nie musi być zwykłym czasem ukończenia. Nie podstawiamy jej automatycznie jako równoważnej obserwacjom 8 czy 12 minut.
 
-Brak może dotyczyć jednej pozycji, całego indeksu albo pary zmiennych. Duplikat jest powtórzeniem rekordu, a obserwacja odstająca nadal może być prawdziwą obserwacją. Te pojęcia wymagają innych decyzji. Dziennik czyszczenia powinien pozwolić odtworzyć, ile elementów zmieniła każda reguła i dlaczego wynikowe N jest właściwym mianownikiem.
+## kwestionariusz ma odpowiadać planowi
 
-\newpage
+Krótki kwestionariusz powinien wskazywać obiekt i okres odniesienia. „Zwykle dobrze radzę sobie z informacją” jest znacznie szersze niż „potrafię znaleźć lokalizację dokumentu w tym katalogu”. Ogólna pewność i ocena pojedynczej funkcji to różne konstrukty.
 
-# 8. Tor klasyczny
+Unikaj pytań łączących dwie treści, np. „filtry i komunikaty są jasne”. Osoba może dobrze rozumieć filtry, ale nie komunikaty. Jedna odpowiedź nie pokaże, który element wymaga poprawy.
 
-Plan przewiduje jedną analizę porównania i jedną analizę związku właściwą scenariuszowi. Dla każdej zapisujemy wymagane N, statystykę, p, efekt i przedział.
+Pozycja odwrócona wymaga jasnego języka. Podwójne przeczenie zwiększa obciążenie i może mierzyć niezrozumienie zdania. Rekodacja matematyczna nie naprawia niejasności semantycznej.
 
-```{r klasyczny}
-knitr::kable(formatuj_wynik(wynik_klasyczny), digits = 4)
+Pytanie wielokrotnego wyboru o kanały ma osobną logikę. Cztery zera oznaczają brak wskazania przy ważnej odpowiedzi, a cztery braki pominięcie pytania. Odsetki wskazań kanałów względem osób mogą sumować się powyżej 100%, ponieważ jedna osoba wybiera kilka odpowiedzi.
+
+W projekcie zachowujesz wspólny schemat sześciu pozycji i dwóch grup. Możesz doprecyzować opis planowanego pomiaru, ale nie przypisuj istniejącym syntetycznym kolumnom nowych treści bez zgodności ze słownikiem. Własny pomysł na inne narzędzie przedstaw jako kierunek dalszego badania.
+
+### Próba poznawcza bez zbierania danych w projekcie
+
+W opisie planu możesz zaproponować pilotaż sprawdzający, jak przyszli uczestnicy rozumieją instrukcję i pytania. Nie pisz, że pilotaż przeprowadzono, jeśli tego nie zrobiono. Projekt kursowy analizuje syntetyczne dane, a opis pilotażu pozostaje planem.
+
+Wskaż, czego szukałby taki pilotaż: niejasnej kategorii „nowy”, niejednoznacznego końca zadania, mylenia użyteczności z satysfakcją albo trudności pozycji odwróconej. Konkretny problem pomiaru jest cenniejszy niż ogólne hasło „narzędzie będzie rzetelne”.
+
+# LEARN 3: dane, manifest i tożsamość wariantu
+
+Manifest zapisuje pochodzenie wariantu: ID, scenariusz, rocznik, wersję generatora, klucz losowania i informacje potrzebne do odtworzenia. Nie jest certyfikatem jakości pomiaru ani reprezentatywności. Potwierdza, jakie dane analizowano.
+
+ID jest pseudonimem kursowym, nie numerem albumu wpisywanym do publicznego materiału. Projekt i oceny pozostają w indywidualnym prywatnym repozytorium. Nie dodawaj do analizy danych identyfikujących prawdziwych uczestników, bo projekt nie wymaga ich zbierania.
+
+Nie losuj kolejnych wariantów do chwili uzyskania „ciekawego” wyniku. To selekcja danych według efektu, a nie plan badania. Własny scenariusz i ID pozostają spójne od Z09 przez dalszą pracę nad projektem; wcześniejsze ćwiczenia korzystały z osobnych dostarczonych przykładów.
+
+Jeżeli wersja pakietu lub generatora zmienia dane, trzeba zachować informację o wersji użytej w pracy. Dwa pliki o tej samej nazwie nie muszą zawierać tych samych wartości. Hash pomaga rozpoznać zawartość, a nazwa folderu sama tego nie zapewnia.
+
+Nie wpisuj fikcyjnego zdalnego SHA do planu. Potwierdzenie oddania dotyczy rzeczywiście przesłanej wersji. Z09 przygotowuje argument i pierwszy dowód; C10 dopnie kontrolę raportu oraz odtworzenia.
+
+## Manifest przykładu, który już znasz
+
+Teraz wyświetlamy tożsamość wspólnego wariantu S02, a nie twojej pracy. Wiersz ID ma wartość demo001; tę samą demonstrację wykorzystywały wcześniejsze zajęcia. Klucz wariantu określa wejście generatora, a hash danych rozpoznaje ich zawartość — żadna z tych liczb nie potwierdza reprezentatywności.
+
+```{r manifest-demo}
+print(wariant_demo)
 ```
 
-Odczytaj wynik bez etykiety „dobry” lub „zły”. Powiedz, jaka estymata odpowiada pytaniu, co mierzy statystyka oraz jakie założenie projektu ogranicza interpretację. Jeżeli widzisz p, opisz je warunkowo: przy modelu zerowym i przyjętej procedurze.
+Manifest wskazuje 150 rekordów surowych. To nie znaczy 150 różnych osób: dwa rekordy są identycznymi powtórzeniami. Gotowa funkcja wykonuje reguły poznane na C02–C04. W projekcie przenosisz umiejętność ich odczytu i uzasadnienia, nie obowiązek samodzielnego napisania programu.
 
-**Karta odczytu toru klasycznego.** Zapisz: (a) nazwę metody, (b) N lub liczebności grup, (c) estymatę i jednostkę, (d) statystykę wraz z df, jeśli występują, (e) p, (f) jedno założenie. Jeżeli metoda na tej stronie nie jest testem, wpisz „nie dotyczy” zamiast wymyślać p. Kompletność wyniku jest oceniana oddzielnie od jego istotności.
+## reguły danych zapisujemy przed wynikiem
 
-\newpage
+Plan czyszczenia powinien mówić, co jest nieprawidłową wartością, co brakiem, co duplikatem i co dopuszczalną nietypową obserwacją. Te kategorie wymagają innych działań. Nie można ich połączyć w hasło „usunięto błędne dane”.
 
-# 9. Tor permutacyjny lub decyzja o jego braku
+Wartość 99 jest brakiem tylko tam, gdzie przewiduje to słownik. Czas 99 minut może być prawidłowy w skali 0–120. Reguła globalnego zastępowania każdej liczby 99 przez NA uszkodziłaby dane.
 
-Każda analiza inferencyjna ma odpowiadający tor permutacyjny: zmiana znaków, tasowanie grup, Monte Carlo tabeli albo tasowanie jednej zmiennej. Typ tasowania wynika z hipotezy zerowej.
+Poniższa karta zbiera decyzje znane z C02–C04. Przeczytaj każde uzasadnienie jako regułę, którą można zastosować bez znajomości p. Jeżeli decyzja zależy od tego, czy wynik „poprawi się”, nie jest neutralnym czyszczeniem.
 
-```{r permutacyjny}
-knitr::kable(formatuj_wynik(wynik_permutacyjny), digits = 4)
+```{r reguly}
+widok <- reguly_do_odczytu()
+print(widok)
 ```
 
-W analizie inferencyjnej liczba B określa rozdzielczość szacowanego p. Za każdym razem trzeba powiedzieć, co dokładnie tasowano i jaki związek został zerwany. Nazwa „permutacyjny” nie zwalnia z wyjaśnienia hipotezy zerowej.
+Identyczny duplikat można rozpoznać po zgodności rekordu i regule identyfikacji. Dwa różne rekordy z tym samym ID wymagają wyjaśnienia konfliktu, nie przypadkowego wyboru pierwszego. Długi, lecz prawidłowo zmierzony czas pozostaje obserwacją.
 
-**Karta odczytu toru permutacyjnego.** Uzupełnij zdanie: „Przy braku związku lub różnicy wielokrotnie zmieniano znaki, tasowano etykiety lub losowano tabele, za każdym razem liczono tę samą statystykę, a określony odsetek wyników był co najmniej tak skrajny jak obserwowany”. Następnie porównaj wniosek z torem klasycznym bez wybierania mniejszego p.
+Dziennik powinien pokazywać N przed i po usunięciu rekordów oraz liczbę zmienionych komórek. Zamiana kodu braku nie zawsze zmniejsza liczbę osób. Brak indeksu jednej osoby nie musi wykluczać jej z tabeli sukcesu.
 
-\newpage
+W planie określ odrębnie kompletność potrzebną do każdej analizy. Nie wymuszaj identycznego N w całym raporcie kosztem niepotrzebnego usuwania danych. Jeśli stosujesz wspólną próbę do porównania modeli, uzasadnij ten wybór.
 
-# 10. Efekt i przedział
+Surowy plik pozostaje niezmieniony. Odtwarzalność oznacza możliwość ponownego przejścia od niego do wyników przy tych samych regułach. Ręczne poprawianie CSV z wynikami nie jest poprawą analizy.
 
-Projekt musi nazwać główny efekt przed oglądaniem p. Różnica w naturalnej jednostce ma pierwszeństwo interpretacyjne, a standaryzowany efekt ułatwia porównanie. CI wskazuje precyzję.
+Poniższy wynik pokazuje faktyczne działania skryptu, nie samą listę zamierzeń. Najpierw czytamy liczbę rekordów i duplikatów, potem zmiany komórek. Zamiana nieprawidłowego czasu na NA nie usuwa całej osoby ze wszystkich analiz.
 
-```{r efekt}
-knitr::kable(formatuj_wynik(efekt), digits = 4)
+```{r dziennik-demo}
+widok <- przygotowanie_wariantu(wariant_demo)
+print(widok)
 ```
 
-Znaczenie praktyczne oceniamy w kontekście usługi: minuty, punkty skali, różnica odsetków albo siła związku. Uniwersalne etykiety mały/średni/duży nie zastępują pytania, czy efekt zmienia decyzję instytucji i jak precyzyjnie został oszacowany.
+W demonstracji usunięto dwa identyczne powtórzenia, cztery kody 99 w pozycjach zamieniono na braki, a dwa czasy spoza zakresu oznaczono jako NA. Pozostało 148 osób. Surowa tabela nie została nadpisana. Twój wariant ma te same jawne reguły, ale liczby ważnych indeksów i par musisz odczytać z własnego wyniku.
 
-Przedział szeroki obejmuje wiele możliwych wielkości efektu i wymaga ostrożniejszego języka. Przedział wąski może nadal koncentrować się wokół efektu praktycznie małego. Gdy przedział przecina zero, nie zapisujemy automatycznie „brak efektu”; podajemy zakres zgodnych wartości i oceniamy, czy obejmuje skutki istotne dla usługi informacyjnej.
+# LEARN 4: plan pierwszej analizy
 
-\newpage
+Pierwsza analiza porównuje dwie niezależne grupy według indeksu albo czasu, zgodnie z dozwolonym parametrem i uzasadnieniem. W S02 naturalnym wyborem jest indeks użyteczności. Zapisz kierunek „nowi minus doświadczeni”, jednostkę i N wymaganych wartości.
 
-# 11. Wykres jako część argumentu
+Klasyczny wynik obejmuje test Welcha oraz CI różnicy średnich. Nie zakładamy równości wariancji tylko dlatego, że obie grupy używały tej samej ankiety. Test Welcha dopuszcza różne wariancje i liczebności, ale nadal wymaga uzasadnienia niezależności i sposobu wnioskowania.
 
-```{r wykres, fig.height=4.6}
-wykres_glowny
+Tor permutacyjny tasuje etykiety grup. Jego prosta wersja jest uzasadniona przy wymienialności pod modelem zerowym, np. równości rozkładów albo właściwym mechanizmie randomizacji. Sama równość średnich przy odmiennych rozkładach nie gwarantuje poprawności dowolnego tasowania surowej różnicy.
+
+Efekt naturalny to różnica w punktach indeksu lub minutach. Hedges g daje standaryzowaną miarę tej różnicy. Nie ma jednostki minut i nie powinien zastępować efektu, który odbiorca potrafi odnieść do działania usługi.
+
+W planie wpisz, jak odczytasz wynik, jeśli CI obejmie zero. Nie będzie to automatyczny dowód równości. Jeśli CI nie obejmie zera, nadal trzeba zapytać o wielkość, praktyczne znaczenie i brak podstaw do przyczynowości.
+
+## Pierwszy odtwarzalny opis
+
+Przed wnioskowaniem sprawdzamy liczebności i opis grup. Poniższa tabela dotyczy wspólnej demonstracji S02, nie indywidualnego projektu. Student porównuje jej strukturę ze swoim wynikiem, a nie kopiuje wartości.
+
+```{r opis-grup}
+widok <- pierwszy_opis_wariantu(wariant_demo, z_wykresem = FALSE)
+print(widok)
 ```
 
-Wykres odpowiada na pytanie o położenie, kształt, nakładanie się grup lub kierunek związku. Tytuł, osie i jednostki są częścią wyniku. Nie wnioskuj o istotności tylko z wyglądu, lecz sprawdź, czy obraz jest spójny z tabelą i estymatą.
+W przykładzie liczba osób w obu grupach jest równa, ale N ważnych indeksów już nie. Ten szczegół ma znaczenie dla SE i df. Nie wpisujemy „po 74” do każdej analizy tylko dlatego, że taka jest liczba uczestników po czyszczeniu.
 
-Przeczytaj wykres w trzech warstwach. Najpierw opisz elementy widoczne bez testu: zakres, skupienie i nietypowe obserwacje. Potem połącz je z estymatą w tabeli. Na końcu nazwij rzecz, której wykres nie rozstrzyga, np. przyczynowość, błąd pomiaru albo zachowanie wyniku w nowej próbie. Nie usuwaj obserwacji tylko dlatego, że psuje prostą historię.
+Wykres pokazuje położenie i zróżnicowanie indeksu. Nie jest testem skuteczności szkolenia. Zaznacz, co w obrazie można opisać bez p, a czego nie można na jego podstawie rozstrzygnąć.
 
-\newpage
-
-# 12. Wynik czytany linia po linii
-
-Karta planu powinna pozwolić obcej osobie przewidzieć, które kolumny wejdą do analizy, jaki wiersz wyniku odpowie na pytanie i jakie ograniczenie będzie konieczne.
-
-Schemat pełnego zdania: „W analizie N osób oszacowano [efekt] w [jednostce], 95% CI [dolna; górna]. Statystyka klasyczna wyniosła [symbol i df], p=[wartość], a procedura permutacyjna B losowań dała p_perm=[wartość]. Wynik opisuje [zakres] i nie rozstrzyga [ograniczenie]”.
-
-Podczas zajęć jedna osoba czyta tabelę, druga sprawdza znak i jednostkę, a trzecia wskazuje granicę wniosku. Dopiero po tej kontroli zapisujemy odpowiedź do pliku Markdown.
-
-Dobra interpretacja ma trzy warstwy. Warstwa liczbowa mówi, co oszacowano. Warstwa badawcza odpowiada na pytanie o zachowanie informacyjne lub wykonanie zadania. Warstwa krytyczna wskazuje, czego projekt, pomiar i syntetyczność nie pozwalają stwierdzić. Pominięcie którejkolwiek warstwy tworzy tekst technicznie poprawny, lecz metodologicznie niepełny.
-
-\newpage
-
-# 13. Błędy interpretacji
-
-Błąd: „wykonam wszystkie testy i wybiorę istotny”. Poprawnie: „dla pytania o grupy wybieram indeks i test Welcha z permutacją etykiet; druga analiza wynika z przypisanego scenariusza”.
-
-Dodatkowe pułapki: traktowanie braku istotności jako dowodu równości, pomijanie N, raportowanie samego p, utożsamienie samooceny z kompetencją oraz zamiana obserwacyjnego związku w przyczynę. Poprawa polega na dodaniu liczby, jednostki, zakresu i ograniczenia, a nie na bardziej stanowczym czasowniku.
-
-Porównaj dwie konstrukcje: „test wykazał efekt” i „oszacowana różnica wyniosła..., a wynik testu był...”. Druga oddziela wielkość od decyzji. Podobnie „grupy były takie same” zastępujemy opisem przedziału i precyzji. W raporcie nie używamy słowa „trend” jako sposobu ratowania p nieco większego od .05; opisujemy rzeczywisty efekt i jego niepewność.
-
-**Po zajęciach.** Znajdź w swoim szkicu jedno zdanie zawierające „wpływa”, „udowadnia”, „brak różnicy” albo „95% wyników”. Przepisz je tak, aby odpowiadało projektowi i rzeczywistemu znaczeniu statystyki.
-
-\newpage
-
-# 14. Próba prowadzona
-
-1. Otwórz gotowy skrypt i wskaż sekcję parametrów.  
-2. Uruchom cały plik bez zmiany dalszej części.  
-3. Otwórz zapisany CSV i odnajdź N, estymatę oraz jednostkę.  
-4. Jeżeli analiza jest inferencyjna, porównaj p klasyczne i permutacyjne.  
-5. Odczytaj efekt i przedział.  
-6. Napisz jedno zdanie wyniku oraz jedno zdanie ograniczenia.
-
-Jeżeli skrypt zgłasza błąd, najpierw sprawdź katalog projektu, nazwę parametru i dozwoloną wartość. Nie poprawiaj wnętrza funkcji statystycznej. Błąd parametru jest informacją o niedozwolonym wyborze, a nie zaproszeniem do przepisania procedury.
-
-Podział czasu próby: 3 minuty na uruchomienie, 4 na odnalezienie właściwego CSV, 5 na głośny odczyt tabeli, 5 na szkic interpretacji i 3 na kontrolę ograniczenia. Jeśli grupa utknie, wraca do pytania, jednostki i znaku efektu. Celem jest krótkie, sprawdzalne rozumowanie, nie zwiększanie liczby wykonanych poleceń.
-
-\newpage
-
-# 15. Zadanie Z09
-
-Uruchom Z09, wybierając jeden dozwolony wynik. W odpowiedziach zapisz dwa pytania, zmienne i skale, oba tory analiz, efekt, spodziewany plik oraz ograniczenia doboru, pomiaru i symulacji.
-
-Przygotuj pliki poleceniem poniżej. Uruchom zapisany `analiza.R`, a następnie uzupełnij wszystkie pola `[UZUPELNIJ]` w `odpowiedzi.md`. Nie wklejaj kodu ani zrzutu całej konsoli.
-
-```{r zadanie, eval=FALSE}
-przygotuj_zadanie('Z09', katalog = '.')
-sprawdz_zadanie('Z09', katalog = '.')
-oddaj_zadanie('Z09', katalog = '.')
+```{r pierwszy-wykres}
+widok <- pokaz_wykres(wykres_grup)
+print(widok)
 ```
 
-\newpage
+Wzorcowy opis brzmi: w demonstracji średnia indeksu wynosi około 3,510 dla 74 doświadczonych i 3,072 dla 73 nowych z ważnym indeksem, czyli nowe osoby uzyskały opisowo średnią niższą o około 0,438 punktu. Te liczby nie identyfikują efektu szkolenia. W analizie inferencyjnej dołączamy CI oraz oba tory oceny skrajności, zamiast zmieniać opisową różnicę w pewną cechę populacji.
 
-# 16. Rubryka, kontrola i dalszy krok
+## plan drugiej analizy
 
-| Kryterium | Punkty |
-|---|---:|
-| Z09.1: Indywidualny scenariusz i manifest danych zgodne z ID, rocznikiem i wersją. | 2 |
-| Z09.2: Problem, pytania i hipotezy są konkretne i pasują do instytucji oraz dostępnych zmiennych. | 3 |
-| Z09.3: Plan próby i operacjonalizacja/kwestionariusz nadają się do planowanego badania. | 3 |
-| Z09.4: Dwie analizy mają uzasadnione tory klasyczne i permutacyjne, efekt, przedział oraz ograniczenie. | 2 |
+W scenariuszu tabeli 2 × 2 określ kategorie, mianownik procentów i kategorię sukcesu. Test niezależności odpowiada pytaniu o związek. Różnica proporcji oraz jej CI opisują kierunek i wielkość w jednostkach zrozumiałych dla instytucji.
 
-Automatyczna kontrola sprawdza pliki, parametry, odtwarzalność i zgodność eksportu. Prowadzący ocenia dobór języka, odczyt liczb, interpretację efektu oraz ograniczenie. Poprawny skrypt bez własnego wyjaśnienia nie realizuje zadania.
+Sprawdzenie oczekiwanych liczebności poprzedza wybór asymptotycznego chi-kwadrat albo dokładnego Fishera. Monte Carlo generuje tabele przy ustalonych marginesach; p zależy od określonej statystyki i definicji skrajności. Nie nazywaj go „dokładnym”, jeśli użyto skończonej liczby losowań.
 
-Po wysyłce sprawdź `status_oddania()` i zdalne SHA. Na współdzielonym komputerze wywołaj `wyloguj_github()`, wyloguj przeglądarkę i zamknij RStudio bez `.RData`. Następne ćwiczenie rozpoczyna się od pobrania potwierdzonej wersji.
+V Craméra jest nieujemne i nie określa kierunku. Proste percentyle jego bootstrapu mogą zachowywać się źle przy niezależności. Jak w C07, nie wykorzystujemy dodatniej dolnej granicy do automatycznego ogłoszenia związku; niepewność kierunkową pokazujemy właściwym przedziałem różnicy proporcji.
 
-## Źródło kontekstu
+W scenariuszu korelacyjnym określ parę zmiennych i liczbę kompletnych par. Współczynnik dobierz do skali oraz kształtu. CI korelacji i p z tasowania jednej zmiennej muszą dotyczyć tej samej wybranej miary.
 
-Dwadzieścia scenariuszy różni kontekst i konstrukty, ale zachowuje równoważny ciężar analityczny. Każdy projekt jest indywidualny i wyłącznie ilościowy.
+Jeśli dodatkowo pokazujesz regresję, wyjaśnij jednostkę nachylenia i ograniczenia średniej liniowej. Druga analiza projektu nie musi być rozszerzona o wszystkie elementy C08. Nie dopisujemy obowiązkowego modelu wielozmiennowego tylko dlatego, że interpretacja ma ograniczenia.
 
-Materiały odwołują się do: Wilsona (1999), Kuhlthau (1991), Savolainen (1995), Hargittai (2002), DigComp 2.2, ACRL Framework oraz Internet Skills Scale. Są to ramy pojęciowe; dane i pozycje kursowe pozostają syntetyczne i dydaktyczne.
+## Gdy nazwa techniczna myli
+
+Wspólna kolumna `powodzenie` ma różne etykiety merytoryczne w scenariuszach. Może oznaczać sukces zadania, deklarację ponownego użycia albo napotkanie problemu. Kod 1 nie musi zawsze oznaczać korzystnego wyniku.
+
+Przed opisem kierunku przeczytaj słownik. Większa proporcja nieudanych prób dostępu ma inne znaczenie niż większa proporcja znalezionych dokumentów. Wspólny schemat kodu ułatwia analizę, ale nie znosi konieczności rozumienia pomiaru.
+
+Podobnie wspólny `indeks` może opisywać pewność, przejrzystość, zaufanie albo użyteczność dokumentacji. Nie zamieniaj tych nazw na jedną ogólną „satysfakcję”. Każdy konstrukt uzasadnia inne pytanie i inne ograniczenie.
+
+# LEARN 5: przygotowujemy własną kartę projektu
+
+Wybierasz jeden scenariusz z poniższej listy. Każdy obejmuje dwie grupy, sześć pozycji ankietowych i drugie pytanie o związek. Temat zmienia sens pomiaru, ale nie wymaga innego poziomu programowania. Na tym etapie porównujesz indeks; nie trzeba wyszukiwać dodatkowych testów.
+
+```{r katalog}
+widok <- katalog_projektow()
+print(widok)
+```
+
+W CHALLENGE 1 zmieniasz jedynie kod scenariusza w gotowym wywołaniu. Funkcja wykorzystuje ID podane na początku sesji. W roboczym Rmd to samo ID ma być zapisane przez przygotowanie zadania, tak aby render w nowej sesji nie zależał od obiektu pozostawionego w konsoli. W publicznym podglądzie CHALLENGE używa oznaczenia DEMO_C09; to przykład, nie ID do oddania.
+
+Ponowne wywołanie z tym samym ID, scenariuszem, rocznikiem i wersją odtwarza ten sam wariant. Uruchomienie chunka nie oznacza wylosowania nowych danych „na próbę”. Jeśli po zapisaniu pytań zmieniasz temat z uzasadnionego powodu, musisz ponownie sprawdzić wszystkie dalsze odpowiedzi — nie mieszać manifestu jednego scenariusza z opisem drugiego.
+
+## Przykład krótkiej karty planu dla S02
+
+Problemem jest możliwość nierównej dostępności wyszukiwania dla nowych i doświadczonych odbiorców katalogu. W przyszłym badaniu populację stanowiliby uprawnieni użytkownicy w określonym semestrze; kryterium grupy należałoby ustalić przed rekrutacją. Zaproszenie przez więcej niż jeden kanał ograniczałoby pomijanie osób niekorzystających aktywnie z katalogu, choć nadal wymagałoby oceny nieodpowiedzi.
+
+Pierwsze pytanie dotyczyłoby różnicy średniej deklarowanej użyteczności, drugie różnicy prawdopodobieństwa znalezienia wskazanego dokumentu. W obu przypadkach kierunek to nowi minus doświadczeni, z jednostką punktów indeksu albo punktów procentowych. Ankieta i obserwacja tego samego zadania opisują różne aspekty korzystania z usługi; nie dowodzą automatycznie ogólnych kompetencji ani efektu szkolenia.
+
+Analiza dydaktyczna używa wariantu syntetycznego. Gotowy skrypt porządkuje dane, odwraca pozycję 3 i oblicza indeks przy minimum pięciu odpowiedziach. Plan zakłada porównanie średnich metodą Welcha z przedziałem oraz tasowaniem etykiet, a następnie tabelę grupy i powodzenia z kontrolą oczekiwań, p Monte Carlo i kierunkowym CI. Ewentualna rekomendacja dotyczyłaby tego, jak zaplanować sprawdzenie problemu w instytucji, nie wdrożenia uzasadnionego samą symulacją.
+
+## Literatura potrzebna do uzasadnienia
+
+Zacznij od problemu, np. „samoopis a obserwowane umiejętności wyszukiwania”, a nie od szukania artykułu z identycznym p. Zidentyfikuj pojęcie, sposób operacjonalizacji i projekt wcześniejszego badania. Dopiero potem zdecyduj, co można przenieść do własnego planu.
+
+Publikacja często cytowana może być dobrym punktem wejścia do literatury, lecz liczba cytowań nie dowodzi jakości każdego jej twierdzenia. Wysoko cytowana rama transformacji cyfrowej nie zastępuje badania użyteczności konkretnego katalogu. Potrzebne jest dopasowanie poziomu argumentu.
+
+Dla każdego wykorzystanego źródła zapisz cztery informacje: pełny opis, link lub DOI, pojęcie wykorzystywane w projekcie i granicę przeniesienia. Na przykład źródło o samoopisie umiejętności może pomóc odróżnić konstrukty, ale nie nadaje walidacji własnym sześciu pozycjom.
+
+Nie przypisuj autorowi liczb z generatora. Zdanie „zgodnie z Hargittai nowi użytkownicy uzyskali średnio 3,07” byłoby fałszywym połączeniem literatury z dydaktycznymi danymi. Oddziel tło teoretyczne, projekt i wynik symulacyjny.
+
+## Krótka procedura szukania
+
+Przygotuj zestaw pojęć polskich i angielskich, np. information seeking, search task performance, perceived skills, observed internet skills, digital inclusion. Dodaj kontekst instytucjonalny wtedy, gdy zawęża pytanie, nie tylko dlatego, że brzmi naukowo.
+
+Sprawdź oryginalną publikację lub repozytorium autora. Ustal, czy przeczytany tekst jest badaniem empirycznym, przeglądem czy ramą normatywną. Zacytuj tę część, na której rzeczywiście opierasz decyzję, zamiast dodawać ogólny link do wyszukiwarki.
+
+Jeżeli dostępny jest tylko abstrakt, nie udawaj znajomości pełnego narzędzia i wszystkich ograniczeń. Zaznacz zakres wykorzystania albo wybierz dostępne źródło. Notatka bibliograficzna ma ułatwić weryfikację przez czytelnika.
+
+Do krótkiej karty możesz wykorzystać konkretną podstawę z lektur kursu. [Hargittai (2002), „Beyond logs and surveys”](https://webuse.org/p/a09/) pomaga uzasadnić, dlaczego samoopis warto rozpatrywać obok obserwowanego wykonania. Nie wynika z tego, że indeks deklarowanej użyteczności mierzy te same umiejętności co narzędzie autorki.
+
+[van Deursen, Helsper i Eynon (2016), „Development and validation of the Internet Skills Scale”](https://eprints.lse.ac.uk/64485/) jest punktem odniesienia dla rozróżniania wymiarów i uzasadniania interpretacji skali. Własne sześć pozycji kursowych nie dziedziczy walidacji tego narzędzia. [Wilson (1999), „Models in information behaviour research”](https://www.informationr.net/tdw/publ/papers/1999JDoc.html) pomaga natomiast odróżnić pojedynczy wskaźnik zadania od szerszego zachowania informacyjnego w jego kontekście.
+
+## Dlaczego karta Z09 nie jest jeszcze końcowym raportem
+
+Karta ustala pytania, estymandy, pomiar, reguły i pierwszy opis danych. C10 dołoży odczyt właściwych wyników obu analiz oraz korektę wniosków. W końcowym raporcie potrzebne będą też czytelne wykresy, źródła i informacje umożliwiające odtworzenie. Nie rozpoczynamy od drugiego, niepowiązanego tematu.
+
+Poniższa tabela pokazuje wagę składowych projektu końcowego. Nie oznacza siedmiu osobnych prac ani dodatkowych zadań na dziś. Planowanie, pomiar i interpretacja pozostają oceniane obok samego wyniku testu.
+
+```{r mapa-rubryki}
+widok <- pokaz_tabele(budzet, "Projekt końcowy — 100 punktów", digits = 0)
+print(widok)
+```
+
+# CHALLENGE: Z09 — pierwsza własna karta projektu
+
+Wybierz scenariusz z katalogu powyżej. Nie musisz wymyślać nowego narzędzia ani zbierać odpowiedzi od ludzi. Zmieniasz wskazany kod, uruchamiasz gotowe obliczenia i na podstawie wyświetlonej karty oraz danych zapisujesz własny plan. Dwa pytania i ich sens formułujesz samodzielnie; funkcja nie generuje akapitu do oddania.
+
+Wszystkie pięć odpowiedzi wpisujesz tutaj, poza chunkami, zastępując znaczniki. Karta ma być spójnym początkiem jednego projektu. Nie wybieraj osobnego tematu dla każdej odpowiedzi i nie kopiuj liczb z LEARN, jeśli twój wariant daje inne wyniki.
+
+## CHALLENGE 1: wybór scenariusza i pochodzenie danych
+
+W poniższym wywołaniu zmień tylko `"S02"` na kod wybranego scenariusza, jeśli wybierasz inny temat. ID pochodzi z początku sesji, a przy renderowaniu z konfiguracji zapisanej w roboczym Rmd. Najpierw sprawdź, czy manifest pokazuje twoje ID i wybrany kod; podgląd z ID DEMO_C09 nie jest własną pracą.
+
+Pierwsze uruchomienie tego chunku zapisuje twój wariant wraz ze słownikiem i kartą scenariusza. Następne uruchomienia odczytują ten sam zapis, także po aktualizacji pakietu. Wybierz temat przed pierwszym uruchomieniem i zapisz zmieniony kod w Rmd; nie zmieniaj scenariusza po obejrzeniu wyników. PDF odczytuje zapisane dane, nie tworzy ich ponownie. Przy brakującym lub niezgodnym zapisie poproś o pomoc — nie usuwaj plików, aby wymusić nowe losowanie.
+
+```{r challenge-1}
+projekt <- przygotuj_wariant_projektu(scenariusz = "S02")
+print(projekt)
+```
+
+**Twoja odpowiedź.** W jednym krótkim akapicie opisz problem informacyjny wybranej usługi i decyzję, której mogłoby służyć przyszłe badanie. Podaj ID, scenariusz, rocznik i wersję generatora odczytane z manifestu; nie przepisuj całych skrótów SHA. Wyraźnie rozdziel plan prawdziwego badania od analizy syntetycznych rekordów i wyjaśnij, co manifest potwierdza, a czego nie dowodzi.
+
+<!-- odpowiedz:S01 -->
+[UZUPELNIJ_S01]
+<!-- /odpowiedz:S01 -->
+
+## CHALLENGE 2: pytania, estymandy i hipotezy
+
+Wyświetl kartę obu planowanych analiz. Nie są to dwa różne scenariusze: oba pytania odnoszą się do twojej wybranej usługi. Kierunek porównania jest zapisany nazwami grup; nazwa funkcji testującej nie zastępuje pytania badawczego.
+
+```{r challenge-2}
+plan <- plan_wariantu(projekt)
+print(plan)
+```
+
+**Twoja odpowiedź.** W jednym krótkim akapicie sformułuj dwa pytania odpowiadające kartom. Dla pierwszego nazwij różnicę średnich, kolejność grup, jednostkę i H0; dla drugiego odpowiedni parametr związku albo różnicę proporcji, właściwe zmienne i H0. Wyjaśnij, dlaczego wynik klasyczny i permutacyjny jednego porównania nie stanowią dwóch merytorycznie różnych analiz. Nie dopisuj przewidywanego kierunku wyłącznie na podstawie liczb, które zobaczysz później.
+
+<!-- odpowiedz:S02 -->
+[UZUPELNIJ_S02]
+<!-- /odpowiedz:S02 -->
+
+## CHALLENGE 3: populacja i pomiar pasujący do pytań
+
+Poniższa karta pokazuje rzeczywistą treść sześciu pozycji oraz pozostałe pomiary scenariusza. Nie tworzysz nowego kwestionariusza zamiast dostarczonego. Proponujesz plan użycia tego narzędzia i rozpoznajesz granice wniosku, jakie wynikają z jego treści.
+
+```{r challenge-3}
+pomiar <- pomiar_wariantu(projekt)
+print(pomiar)
+```
+
+**Twoja odpowiedź.** W jednym krótkim akapicie określ populację i okres, ramę dotarcia, kryterium obu grup oraz jeden mechanizm możliwej selekcji. Odwołaj się do jednej konkretnej pozycji ankiety, uzasadniając nazwę konstruktu i wskazując, czego nie mierzy. Doprecyzuj sposób pomiaru zmiennej potrzebnej do drugiego pytania: kryterium wyniku 0/1 albo okres częstości, albo start i koniec czasu. Odróżnij deklarację od obserwacji; nie pisz, że faktyczne badanie lub pilotaż już wykonano.
+
+<!-- odpowiedz:S03 -->
+[UZUPELNIJ_S03]
+<!-- /odpowiedz:S03 -->
+
+## CHALLENGE 4: co skrypt zrobił z twoimi danymi
+
+Uruchom wydruk dziennika i bilansu. Pierwsza tabela opisuje reguły oraz liczbę zmienionych rekordów lub komórek, a kolejne pokazują dane dostępne do analiz. Nie trzeba ręcznie usuwać wartości ani poprawiać źródłowego CSV.
+
+```{r challenge-4}
+przygotowanie <- przygotowanie_wariantu(projekt)
+print(przygotowanie)
+liczebnosci <- bilans_wariantu(projekt)
+print(liczebnosci)
+```
+
+**Twoja odpowiedź.** W jednym krótkim akapicie podaj N surowe i po usunięciu identycznych powtórzeń, liczbę kodów 99 oraz czasów oznaczonych jako braki. Wyjaśnij różnicę między usunięciem duplikatu a zmianą komórki na NA. Odczytaj ważne N indeksu i drugiej analizy, a regułę `6-x` oraz minimum 5 z 6 powiąż z treścią pozycji. Uzasadnij, dlaczego długi czas mieszczący się w zakresie nie znika tylko dlatego, że pogarsza wygląd rozkładu.
+
+<!-- odpowiedz:S04 -->
+[UZUPELNIJ_S04]
+<!-- /odpowiedz:S04 -->
+
+## CHALLENGE 5: pierwszy własny wynik i następny krok
+
+Na końcu wyświetl opis indeksu w swoich grupach oraz jego rozkład. Jest to pierwszy wynik opisowy, jeszcze nie pełne wnioskowanie. Do planu inferencji wrócisz na C10 z tym samym scenariuszem i wariantem.
+
+```{r challenge-5}
+opis <- pierwszy_opis_wariantu(projekt)
+print(opis)
+```
+
+**Twoja odpowiedź.** W jednym krótkim akapicie porównaj średnie, SD i ważne N indeksu, określając znak różnicy zgodnie z kartą. Dodaj jeden konkretny odczyt wykresu. Zapowiedz odpowiednie tory klasyczne i losowane dla obu pytań, efekt oraz jego CI; nazwij warunek, którego sam wykres nie sprawdza. Wyjaśnij, jak opiszesz wynik, jeśli przedział obejmie zero, i wskaż jeden argument lub ograniczenie pomiaru uzasadnione wybranym źródłem z bibliografii kursu.
+
+<!-- odpowiedz:S05 -->
+[UZUPELNIJ_S05]
+<!-- /odpowiedz:S05 -->
+
+## Co jest oceniane i co zostaje do projektu
+
+Z09 ma 10 punktów: 2 za scenariusz i manifest, 3 za problem oraz pytania, 3 za próbę, operacjonalizację i odczyt reguł przygotowania danych, 2 za pierwszy opis i uzasadniony plan dwóch analiz. Tabele, wykres i pięć akapitów są dowodem wykonania karty. Oceniany jest sens decyzji i odczytu, nie sam fakt wygenerowania danych ani przyszłe p<0,05.
+
+Na C10 wykorzystasz zapisany wybór i plan do dwóch analiz oraz interpretacji. W projekcie końcowym dopracujesz spójny raport z tej samej pracy. Nie trzeba teraz kończyć wszystkich analiz ani pisać dodatkowego pliku z odpowiedziami. Jeśli zmienisz pytanie lub definicję pomiaru, jawnie zapisz powód i sprawdź zgodność z dostarczonymi zmiennymi.
+
+## Zapis i oddanie Z09
+
+Zapisz Rmd z wybranym kodem scenariusza oraz pięcioma własnymi akapitami. W konsoli RStudio, nie w chunku dokumentu, wykonaj:
+
+```r
+oddaj_zadanie("Z09")
+```
+
+Funkcja oddania ma odtworzyć PDF z zapisanej wersji, sprawdzić tożsamość oraz kompletność i wysłać PDF ze źródłami oraz danymi potrzebnymi do odtworzenia wariantu. Poczekaj na potwierdzenie odbioru ze zdalnym SHA. Lokalny commit nie jest potwierdzeniem wysyłki. W razie błędu zachowaj pliki i pokaż komunikat prowadzącemu; nie zmieniaj ID ani nie losuj innego tematu jako sposobu obejścia problemu.
+
+Po potwierdzeniu wykonaj `wyloguj_github()` w konsoli i wyloguj konto w przeglądarce współdzielonego komputera. Wybór scenariusza, ID i zapisane odpowiedzi mają być odtworzone na następnym spotkaniu.
+
+# Rozwinięcia do powtórki — poza zadaniem ocenianym
+
+Te przykłady pomagają rozpoznać selekcję, planować precyzję i odróżnić treść pomiarów. Nie wymagają dodatkowych odpowiedzi w Z09.
+
+## Liczebność nie naprawia selekcji
+
+W hipotetycznej populacji jest 700 nowych i 300 doświadczonych osób. Przyjmijmy dla demonstracji średnie grupowe 3 i 4 oraz to, że odpowiadający są reprezentatywni wewnątrz swojej grupy. Do udziału zaproszono po 100 osób, ale odpowiedziało 20 nowych i 80 doświadczonych.
+
+Tabela pokazuje, jak zmienia się struktura próby. Druga tabela porównuje średnią w całej hipotetycznej populacji z nieważoną średnią odpowiadających. To nie jest wynik rzeczywistej biblioteki.
+
+```{r selekcja}
+widok <- selekcja_do_odczytu()
+print(widok)
+```
+
+Średnia populacyjna wynosi 3,3, a średnia odpowiadających 3,8. Różnica nie powstała przez błąd wzoru na średnią, lecz przez inne udziały grup. Powiększenie tak samo selektywnej próby może dać bardziej precyzyjne oszacowanie niewłaściwego celu.
+
+Ważenie do znanej struktury mogłoby skorygować ten konkretny problem przy przyjętym założeniu reprezentatywności wewnątrz grup. Nie naprawia automatycznie różnic między odpowiadającymi i nieodpowiadającymi w tej samej grupie. To rozszerzenie planu, a nie uniwersalny przycisk „reprezentatywność”.
+
+W projekcie opisz przynajmniej jeden konkretny mechanizm selekcji i jego możliwy wpływ na interpretację. Zdanie „próba jest mała” nie zastępuje wyjaśnienia, kogo nie objęto badaniem.
+
+## precyzja jest częścią planu
+
+Liczebność dobieramy do potrzebnego zakresu niepewności, możliwego efektu, projektu i zasobów. Nie do obietnicy, że „wynik będzie istotny”. W projekcie kursowym N generatora jest ustalone dla porównywalnej trudności, a plan rzeczywistego badania może uzasadniać własne potrzeby.
+
+Dla dwóch równych niezależnych grup, przy roboczym SD=0,8, przybliżone SE różnicy średnich ma postać:
+
+$$
+SE(\widehat\Delta)\approx0{,}8\sqrt{\frac{2}{n_g}}.
+$$
+
+Przybliżona połowa szerokości 95% CI to $1{,}96SE$. Używamy tego rachunku do intuicji planistycznej. Nie jest to dokładna analiza mocy ani obietnica rzeczywistego przedziału przy nieznanym SD i nielosowej próbie.
+
+Tabela porównuje cztery liczebności. Założenie SD jest takie samo, więc zmienia się tylko ilość informacji. Zauważ, że podwojenie N nie zmniejsza szerokości przedziału o połowę.
+
+```{r precyzja}
+widok <- precyzja_do_odczytu()
+print(widok)
+```
+
+Aby w tym przybliżeniu zmniejszyć SE dwukrotnie, potrzeba czterokrotnie większej liczebności. Niepewność pomiaru i selekcja uczestników nie znikają w takim rachunku. Wąski CI może nadal opisywać źle zdefiniowany konstrukt albo niewłaściwą populację.
+
+Moc to prawdopodobieństwo odrzucenia hipotezy zerowej przy określonym alternatywnym efekcie i planie badania. Nie jest prawdopodobieństwem, że otrzymany istotny wynik jest prawdziwy. Jej planowanie wymaga wskazania efektu, wariancji, poziomu alfa i projektu; samo N nie wystarcza.
+
+## Próg praktycznej ważności
+
+Instytucja może uznać skrócenie przeciętnego czasu o dwie minuty za warte dalszego badania. Próg powinien wynikać z kosztu czasu, rodzaju zadania i konsekwencji błędu, a nie z tego, gdzie skończył się CI.
+
+Jeżeli CI różnicy czasu wynosi [−1; 3] minuty, nie rozstrzyga jednoznacznie, czy efekt przekracza taki próg w wybranym kierunku. Jeżeli wynosi [0,1; 0,3], może być precyzyjny i niezerowy, lecz mały praktycznie. Zapisanie progu przed wynikiem pomaga uniknąć późniejszego dopasowania narracji.
+
+Nie każda skala ma oczywistą minimalnie ważną różnicę. Dla roboczego indeksu 1–5 trzeba uczciwie przyznać, że interpretacja dziesiątych części punktu wymaga wiedzy o narzędziu. Standaryzowana etykieta „średni efekt” nie zastąpi tej wiedzy.
+
+# Inne scenariusze: co zmienia się w rozumowaniu
+
+## Portal studencki: czas i przejrzystość
+
+Instytucja chce ułatwić odnajdywanie procedur. Porównanie pierwszego i kolejnych lat może pokazać różnice deklarowanej przejrzystości, a korelacja indeksu z czasem współzmienność oceny oraz wykonania. Nie identyfikuje efektu przeprojektowania strony.
+
+W planie trzeba ustalić tę samą procedurę do odnalezienia. Jeżeli starsi studenci szukają trudniejszych informacji, czas będzie mieszaniną doświadczenia i zadania. Możliwa poprawa przyszłego projektu to porównywalne zadania oraz odnotowanie wcześniejszej znajomości procedury.
+
+Krótszy czas przy niższej ocenie przejrzystości nie musi być sprzecznością. Użytkownik może znać ścieżkę na pamięć, a zarazem uważać układ za niejasny. Dwa wskaźniki opisują inne aspekty doświadczenia.
+
+## Repozytorium: szkolenie i deklarowana znajomość zasad
+
+Grupy przeszkolonych i nieprzeszkolonych są zaobserwowane, nie losowo przydzielone. Osoby korzystające ze szkolenia mogą mieć inną motywację lub potrzeby. Wyższy indeks nie dowodzi, że szkolenie samo spowodowało różnicę.
+
+Dodatkowo deklarowana znajomość zasad otwartego dostępu nie jest tym samym co poprawne rozwiązanie zadania licencyjnego. Jeśli plan obejmowałby test zadaniowy, trzeba uzasadnić jego treść i kryterium odpowiedzi. Nie dopisujemy takiego pomiaru do zbioru, który zawiera wyłącznie deklaracje.
+
+Uzasadniona rekomendacja może proponować przyszłe badanie efektu szkolenia z odpowiednim przydziałem lub porównaniem w czasie. Wynik syntetyczny służy pokazaniu analizy, a nie ocenie istniejącej oferty uczelni.
+
+## Informacja miejska: wiele kanałów i sprzeczne komunikaty
+
+Osoby korzystające z wielu kanałów mogą częściej zgłaszać sprzeczną informację, ponieważ częściej mają okazję ją zauważyć. Większa proporcja zgłoszeń nie dowodzi gorszej kompetencji ani szkodliwości samego korzystania z kilku kanałów.
+
+Plan powinien odróżniać liczbę okazji kontaktu, zakres porównywanych informacji i kryterium sprzeczności. Wspólne techniczne pole 0/1 opisuje tu napotkanie problemu, więc większa wartość nie oznacza automatycznie sukcesu.
+
+Alternatywne wyjaśnienie wiąże się tu z większą liczbą okazji zetknięcia się ze sprzecznością. Pomiar liczby takich okazji pomógłby je ocenić. Nie trzeba natychmiast budować złożonego modelu. Ważne, żeby rekomendacja nie pomyliła obserwacji z mechanizmem.
+
+## Przykład krytycznej oceny propozycji SI
+
+Przeczytaj celowo wadliwą propozycję:
+
+> Przeprowadziliśmy losową ankietę 150 użytkowników. Wysoka rzetelność sześciu pytań potwierdza kompetencje cyfrowe. Test t pokaże, że szkolenie poprawia wyszukiwanie. Jeśli p będzie większe od 0,05, zastosujemy Spearmana. Dodatkowo sprawdzimy wszystkie kanały i wybierzemy najważniejszy wynik.
+
+W propozycji występuje kilka odrębnych problemów. W projekcie nie zebrano realnej próby; nie wykazano losowości; treść pytań nie musi dotyczyć kompetencji; rzetelność nie jest trafnością; porównanie grup obserwacyjnych nie identyfikuje szkolenia; zmiana testu po p nie wynika z pytania; wiele analiz wymaga jawnego statusu eksploracyjnego.
+
+Poprawiona propozycja określa plan badania i odrębnie analizę syntetyczną. Nazywa właściwy indeks, dwie konkretne estymandy, metody wraz z warunkami i ograniczenie przyczynowe. Nie wystarczy zamienić kilka słów na ostrożniejsze.
+
+SI może pomóc znaleźć niejasne zdanie lub wyjaśnić symbol, ale nie jest źródłem wyniku ani dowodem wykonania badania. Sprawdź każdą liczbę w pliku, każdy tytuł w publikacji i każdy wniosek w projekcie. Opisz rzeczywisty zakres pomocy zgodnie z zasadami raportu.
+
+# Po spotkaniu
+
+W karcie Z09 masz już wybrany temat, pochodzenie danych, pytania, projekt pomiaru i pierwsze liczby własnego wariantu. Jeśli wyniki nie będą istotne, plan nadal pozostaje wykonalny: opiszesz estymaty, przedziały, precyzję i ograniczenia. Nie trzeba wymieniać danych ani szukać innego testu w celu uzyskania istotności.
+
+C10 wykorzysta tę kartę i ten sam wariant. Zamiast rozszerzać liczbę testów, przejdziemy od przygotowania do obu analiz, pisemnego odczytu oraz sprawdzenia zgodności tabel, wykresów i tekstu. Źródła tła i pomiaru wraz z pełnymi opisami są w [bibliografii kursu](../wspolne/literatura.md).

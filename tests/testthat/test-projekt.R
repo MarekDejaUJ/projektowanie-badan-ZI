@@ -1,18 +1,31 @@
-test_that("projekt ma indywidualne dane, konkretne szablony i nie nadpisuje pracy", {
+test_that("przestrzeń ćwiczeń nie rozpoczyna projektu badawczego", {
   katalog <- tempfile("moje badania ")
   on.exit(unlink(katalog, recursive = TRUE))
-  p <- utworz_projekt("s017", "S03", katalog, repo = "uczelnie/moje-badania-s017")
+  p <- utworz_projekt("s017", katalog = katalog, repo = "uczelnie/moje-badania-s017")
   expect_true(file.exists(p))
   cfg <- badaniaZI:::czytaj_yaml(file.path(katalog, "kurs.yml"))
   expect_equal(cfg$id, "s017")
-  expect_equal(cfg$scenariusz, "S03")
+  expect_identical(cfg$format_pracy, "rmd-1")
+  expect_null(cfg$scenariusz)
+  expect_null(cfg$proponowany_scenariusz)
   expect_equal(cfg$repo, "uczelnie/moje-badania-s017")
-  for (plik in c("raport.md", "kwestionariusz.md", "analiza.R")) {
-    tekst <- readLines(file.path(katalog, "projekty", "ilosciowy", plik), encoding = "UTF-8")
-    expect_false(any(grepl("{{", tekst, fixed = TRUE)))
-    expect_true(any(grepl("s017", tekst, fixed = TRUE)))
-  }
-  expect_error(utworz_projekt("s017", "S03", katalog), "istnieje")
-  expect_true(file.exists(file.path(katalog, "dane", "manifest.json")))
+  expect_error(utworz_projekt("s017", katalog = katalog), "istnieje")
+  expect_false(dir.exists(file.path(katalog, "dane")))
+  expect_false(dir.exists(file.path(katalog, "projekty")))
   expect_false(dir.exists(file.path(katalog, ".github")))
+  for (plik in c("kurs.yml", "moje-badania.Rproj", ".gitignore", ".gitattributes")) {
+    bajty <- readBin(file.path(katalog, plik), "raw", n = 10000L)
+    expect_false(as.raw(13) %in% bajty)
+  }
+})
+
+test_that("propozycja scenariusza nie losuje danych przed C09", {
+  k <- tempfile("propozycja-")
+  on.exit(unlink(k, recursive = TRUE), add = TRUE)
+  utworz_projekt("s017", "S03", k)
+  cfg <- badaniaZI:::czytaj_yaml(file.path(k, "kurs.yml"))
+  expect_identical(cfg$proponowany_scenariusz, "S03")
+  expect_false(dir.exists(file.path(k, "dane")))
+  expect_error(utworz_projekt("s017", "S21", tempfile()), "scenariusz")
+  expect_error(utworz_projekt("", katalog = tempfile()), "id_studenta")
 })

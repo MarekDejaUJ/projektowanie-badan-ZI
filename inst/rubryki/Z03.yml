@@ -1,11 +1,12 @@
 id: Z03
-version: 1.0.0
+version: 1.1.0
 rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z03.1
-  title: Z gotowego opisu poprawnie odczytano N, braki oraz miary położenia i zróżnicowania.
-  evidence: Z gotowego opisu poprawnie odczytano N, braki oraz miary położenia i zróżnicowania.
+  title: "N, położenie i zróżnicowanie czasu."
+  evidence: "S01–S03 poprawnie odczytują N osób i czasów, średnią, medianę, SD, Q1, Q3, IQR i P90 z jednostkami oraz zmiany po wyłączeniu potwierdzonego czasu 24. Zakresy kwantyli dotyczą próby, nie gwarancji dla przyszłych osób."
+  answer_fields: [S01, S02, S03]
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -13,22 +14,19 @@ criteria:
   - U2
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Odczytano jedną miarę, lecz pomylono N lub braki.
+    observable_description: "Odczytano pojedynczą miarę bez poprawnego N lub jednostki."
   - points: 1.5
-    observable_description: Miary położenia są poprawne; miara zróżnicowania albo
-      N jest błędne.
+    observable_description: "Miary położenia są poprawne, lecz pomylono miarę zróżnicowania, ważne N albo sens P90."
   - points: 2.25
-    observable_description: Odczyt liczb jest poprawny; jedna jednostka została pominięta.
+    observable_description: "Liczby i ich znaczenie są poprawne; pominięto jedną jednostkę lub żądaną miarę."
   - points: 3.0
-    observable_description: Z gotowego opisu poprawnie odczytano N, braki oraz miary
-      położenia i zróżnicowania.
+    observable_description: "S01–S03 poprawnie odczytują N osób i czasów, średnią, medianę, SD, Q1, Q3, IQR i P90 z jednostkami oraz zmiany po wyłączeniu potwierdzonego czasu 24. Zakresy kwantyli dotyczą próby, nie gwarancji dla przyszłych osób."
 - id: Z03.2
-  title: Dwa gotowe wykresy poprawnie odczytano, z uwzględnieniem osi, jednostek i
-    kształtu rozkładu.
-  evidence: Dwa gotowe wykresy poprawnie odczytano, z uwzględnieniem osi, jednostek
-    i kształtu rozkładu.
+  title: "Odczyt dystrybuanty oraz wykresu czasu i sukcesu."
+  evidence: "S02 wiąże dystrybuantę z odsetkiem zarejestrowanych czasów i poprawia twierdzenie o gwarancji dla przyszłych osób. S05 odczytuje konkretną własność drugiego wykresu, rozróżniając czas i sukces oraz jednostki osi. Nie wymaga się samodzielnego tworzenia wykresów."
+  answer_fields: [S02, S05]
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -36,56 +34,48 @@ criteria:
   - U2
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Nazwano jeden wykres bez odczytu osi lub jednostki.
+    observable_description: "Nazwano wykres bez odczytu jego osi lub konkretnej własności danych."
   - points: 1.5
-    observable_description: Dwa wykresy opisano, lecz jeden wniosek nie odpowiada
-      widocznemu rozkładowi.
+    observable_description: "Odczytano oba wykresy, lecz jeden wniosek nie odpowiada osiom lub przenosi rozkład próby na gwarancję przyszłych wyników."
   - points: 2.25
-    observable_description: Oba wykresy odczytano poprawnie; brakuje jednej etykiety
-      lub różnicy między nimi.
+    observable_description: "Oba wykresy odczytano poprawnie; jedno objaśnienie osi lub zakresu wniosku jest niepełne."
   - points: 3.0
-    observable_description: Dwa gotowe wykresy poprawnie odczytano, z uwzględnieniem
-      osi, jednostek i kształtu rozkładu.
+    observable_description: "S02 wiąże dystrybuantę z odsetkiem zarejestrowanych czasów i poprawia twierdzenie o gwarancji dla przyszłych osób. S05 odczytuje konkretną własność drugiego wykresu, rozróżniając czas i sukces oraz jednostki osi. Nie wymaga się samodzielnego tworzenia wykresów."
 - id: Z03.3
-  title: Uzasadnienie wyboru średniej/mediany lub częstości uwzględnia typ i asymetrię.
-  evidence: Uzasadnienie wyboru średniej/mediany lub częstości uwzględnia typ i asymetrię.
+  title: "Uzasadnienie doboru miar i zachowania potwierdzonego czasu."
+  evidence: "S01 wyjaśnia różnicę między średnią i medianą przy asymetrii. S03 interpretuje zmianę N, średniej, mediany i SD po pominięciu 24 minut oraz uzasadnia zachowanie potwierdzonej obserwacji w analizie głównej."
+  answer_fields: [S01, S03]
   max_points: 2.0
   review_mode: human
   learning_outcomes: W2
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Wymieniono średnią lub medianę bez argumentu.
+    observable_description: "Wymieniono średnią lub medianę bez argumentu dotyczącego danych."
   - points: 1.0
-    observable_description: Argument opiera się na skali, lecz pomija asymetrię widoczną
-      w danych.
+    observable_description: "Rozpoznano asymetrię, ale wyłączono potwierdzony pomiar wyłącznie dla poprawy średniej lub wyglądu rozkładu."
   - points: 1.5
-    observable_description: Wybór uzasadniony skalą i asymetrią; brakuje odniesienia
-      do jednej liczby.
+    observable_description: "Dobór miar i zachowanie pomiaru są uzasadnione; brak odwołania do jednej liczby z porównania."
   - points: 2.0
-    observable_description: Uzasadnienie wyboru średniej/mediany lub częstości uwzględnia
-      typ i asymetrię.
+    observable_description: "S01 wyjaśnia różnicę między średnią i medianą przy asymetrii. S03 interpretuje zmianę N, średniej, mediany i SD po pominięciu 24 minut oraz uzasadnia zachowanie potwierdzonej obserwacji w analizie głównej."
 - id: Z03.4
-  title: Własny opis danych odnosi się do liczb, bez wniosków wykraczających poza
-    próbę.
-  evidence: Własny opis danych odnosi się do liczb, bez wniosków wykraczających poza
-    próbę.
+  title: "Mianowniki, synteza i granice opisu próby."
+  evidence: "S04 rozróżnia sukces, krótki czas i sukces do 10 minut, podając trzy właściwe mianowniki i wybierając kryterium łączne. S05 łączy czas, zmienność i skuteczność z liczbami, ograniczeniem oraz propozycją dodatkowego pomiaru, bez wniosku przyczynowego."
+  answer_fields: [S04, S05]
   max_points: 2.0
   review_mode: human
   learning_outcomes: U2
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Opis ogólny bez liczb.
+    observable_description: "Opis jest ogólny, bez liczb i rozróżnienia kryteriów."
   - points: 1.0
-    observable_description: Opis częściowo zgodny z liczbami, lecz uogólnia na populację.
+    observable_description: "Podano część wyników, ale pomylono mianownik kryterium łącznego lub uogólniono opis na populację bądź przyczynę."
   - points: 1.5
-    observable_description: Własny opis liczbowy w granicach próby; jedno pominięcie
-      zakresu.
+    observable_description: "Własna synteza i mianowniki są poprawne; jedno ograniczenie lub propozycja pomiaru wymagają doprecyzowania."
   - points: 2.0
-    observable_description: Własny opis danych odnosi się do liczb, bez wniosków wykraczających
-      poza próbę.
+    observable_description: "S04 rozróżnia sukces, krótki czas i sukces do 10 minut, podając trzy właściwe mianowniki i wybierając kryterium łączne. S05 łączy czas, zmienność i skuteczność z liczbami, ograniczeniem oraz propozycją dodatkowego pomiaru, bez wniosku przyczynowego."

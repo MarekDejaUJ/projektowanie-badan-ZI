@@ -2,12 +2,12 @@
 \alias{pobierz_ocene}
 \title{Pobranie prywatnej oceny}
 \usage{
-pobierz_ocene(id, katalog = ".", sha = NULL)
+pobierz_ocene(id, katalog = NULL, sha = NULL)
 }
 \arguments{
 \item{id}{Z01--Z10 albo PROJEKT.}
 
-\item{katalog}{Katalog projektu.}
+\item{katalog}{Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.}
 
 \item{sha}{SHA ocenionej pracy; domyślnie lokalne HEAD.}
 }

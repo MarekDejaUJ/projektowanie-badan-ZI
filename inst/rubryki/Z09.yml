@@ -1,11 +1,12 @@
 id: Z09
-version: 1.0.0
+version: 1.1.0
 rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z09.1
-  title: Indywidualny scenariusz i manifest danych zgodne z ID, rocznikiem i wersją.
-  evidence: Indywidualny scenariusz i manifest danych zgodne z ID, rocznikiem i wersją.
+  title: "Własny scenariusz i pochodzenie syntetycznego wariantu."
+  evidence: "S01 wiąże wybrany scenariusz z własnym ID, rocznikiem i wersją generatora w manifeście. Odróżnia potwierdzenie pochodzenia pliku od dowodu przeprowadzenia prawdziwego badania; nie przedstawia wariantu demonstracyjnego jako własnego."
+  answer_fields: [S01]
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -13,21 +14,19 @@ criteria:
   - K2
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Wybrano scenariusz bez manifestu.
+    observable_description: "Wybrano scenariusz, lecz nie wskazano pochodzenia danych."
   - points: 1.0
-    observable_description: Manifest istnieje; ID lub wersja nie odpowiada projektowi.
+    observable_description: "Manifest jest dostępny, ale ID lub wersja nie odpowiada pracy albo symulację przedstawiono jako zebrane odpowiedzi."
   - points: 1.5
-    observable_description: Zgodne ID i wersje; opis syntetyczności niepełny.
+    observable_description: "ID i wersje są zgodne; wyjaśnienie zakresu informacji z manifestu jest niepełne."
   - points: 2.0
-    observable_description: Indywidualny scenariusz i manifest danych zgodne z ID,
-      rocznikiem i wersją.
+    observable_description: "S01 wiąże wybrany scenariusz z własnym ID, rocznikiem i wersją generatora w manifeście. Odróżnia potwierdzenie pochodzenia pliku od dowodu przeprowadzenia prawdziwego badania; nie przedstawia wariantu demonstracyjnego jako własnego."
 - id: Z09.2
-  title: Problem, pytania i hipotezy są konkretne i pasują do instytucji oraz dostępnych
-    zmiennych.
-  evidence: Problem, pytania i hipotezy są konkretne i pasują do instytucji oraz dostępnych
-    zmiennych.
+  title: "Problem, dwa pytania, estymandy i hipotezy."
+  evidence: "S01 opisuje problem usługi i decyzję badawczą. S02 formułuje dwa pytania dla dostępnych zmiennych, estymandy i H0, kolejność grup i jednostki. Odróżnia dwie relacje merytoryczne od klasycznej i permutacyjnej procedury dla jednego pytania."
+  answer_fields: [S01, S02]
   max_points: 3.0
   review_mode: human
   learning_outcomes:
@@ -35,41 +34,37 @@ criteria:
   - U1
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Temat ogólny bez operacyjnego pytania.
+    observable_description: "Wskazano ogólny temat bez operacyjnych pytań."
   - points: 1.5
-    observable_description: Pytanie konkretne, lecz hipoteza nie odpowiada dostępnym
-      zmiennym.
+    observable_description: "Jedno pytanie jest poprawne, ale drugie, estymanda lub H0 nie odpowiada dostępnym zmiennym."
   - points: 2.25
-    observable_description: Spójny problem i pytania; jeden element celu nieprecyzyjny.
+    observable_description: "Problem i oba pytania są spójne; pominięto jeden element jednostki, kolejności grup lub hipotezy."
   - points: 3.0
-    observable_description: Problem, pytania i hipotezy są konkretne i pasują do instytucji
-      oraz dostępnych zmiennych.
+    observable_description: "S01 opisuje problem usługi i decyzję badawczą. S02 formułuje dwa pytania dla dostępnych zmiennych, estymandy i H0, kolejność grup i jednostki. Odróżnia dwie relacje merytoryczne od klasycznej i permutacyjnej procedury dla jednego pytania."
 - id: Z09.3
-  title: Plan próby i operacjonalizacja/kwestionariusz nadają się do planowanego badania.
-  evidence: Plan próby i operacjonalizacja/kwestionariusz nadają się do planowanego
-    badania.
+  title: "Plan próby, rzeczywista treść pomiaru i reguły danych."
+  evidence: "S03 określa populację, okres, ramę dotarcia, grupy i selekcję; odwołuje się do konkretnej pozycji i definicji drugiego pomiaru. S04 odczytuje N surowe i po duplikatach, 99, nieprawidłowe czasy oraz ważne N, wyjaśnia 6-x i 5/6 oraz zachowanie ważnych długich czasów. Nie wymaga się własnego czyszczenia ani nowego kwestionariusza."
+  answer_fields: [S03, S04]
   max_points: 3.0
   review_mode: human
   learning_outcomes: U1
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Wymieniono odbiorców bez planu próby i pomiaru.
+    observable_description: "Wymieniono odbiorców i zmienne bez planu doboru lub sensu pomiaru."
   - points: 1.5
-    observable_description: Próba i ankieta częściowe; jedno pytanie nie mierzy konstruktu.
+    observable_description: "Plan jest częściowy; pomylono deklarację z obserwacją, regułę indeksu lub zmianę komórki z usunięciem osoby."
   - points: 2.25
-    observable_description: Plan i pomiar poprawne; ograniczenie selekcji niepełne.
+    observable_description: "Plan, pomiar i bilans są poprawne; jedna liczebność, definicja protokołu lub przesłanka selekcji jest niepełna."
   - points: 3.0
-    observable_description: Plan próby i operacjonalizacja/kwestionariusz nadają się
-      do planowanego badania.
+    observable_description: "S03 określa populację, okres, ramę dotarcia, grupy i selekcję; odwołuje się do konkretnej pozycji i definicji drugiego pomiaru. S04 odczytuje N surowe i po duplikatach, 99, nieprawidłowe czasy oraz ważne N, wyjaśnia 6-x i 5/6 oraz zachowanie ważnych długich czasów. Nie wymaga się własnego czyszczenia ani nowego kwestionariusza."
 - id: Z09.4
-  title: Dwie analizy mają uzasadnione tory klasyczne i permutacyjne, efekt, przedział
-    oraz ograniczenie.
-  evidence: Dwie analizy mają uzasadnione tory klasyczne i permutacyjne, efekt, przedział
-    oraz ograniczenie.
+  title: "Pierwszy opis i uzasadniony plan dwóch analiz."
+  evidence: "S05 porównuje średnie, SD, ważne N i wykres zgodnie z kierunkiem kontrastu. Zapowiada oba tory dla każdej z dwóch relacji, efekt i właściwy CI oraz warunek niesprawdzany samym wykresem. Wyjaśnia możliwy CI obejmujący zero i wiąże ograniczenie z wybranym źródłem kursu; nie wymaga się wyników testów przed C10."
+  answer_fields: [S05]
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -77,15 +72,12 @@ criteria:
   - U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Nazwano jedną analizę bez odpowiadającego toru i efektu.
+    observable_description: "Nazwano analizę bez opisu danych i planu drugiej relacji."
   - points: 1.0
-    observable_description: Dwie analizy są wskazane; brakuje wersji permutacyjnej,
-      efektu albo ograniczenia.
+    observable_description: "Dwie analizy są wskazane, ale brakuje jednego toru, właściwego efektu, CI lub uzasadnienia pomiaru."
   - points: 1.5
-    observable_description: Oba plany są spójne; jedno uzasadnienie tasowania lub
-      przedziału jest niepełne.
+    observable_description: "Opis i oba plany są spójne; jeden warunek, odczyt wykresu albo argument ze źródła jest niepełny."
   - points: 2.0
-    observable_description: Dwie analizy mają uzasadnione tory klasyczne i permutacyjne,
-      efekt, przedział oraz ograniczenie.
+    observable_description: "S05 porównuje średnie, SD, ważne N i wykres zgodnie z kierunkiem kontrastu. Zapowiada oba tory dla każdej z dwóch relacji, efekt i właściwy CI oraz warunek niesprawdzany samym wykresem. Wyjaśnia możliwy CI obejmujący zero i wiąże ograniczenie z wybranym źródłem kursu; nie wymaga się wyników testów przed C10."

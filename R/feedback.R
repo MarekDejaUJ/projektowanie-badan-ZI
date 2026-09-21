@@ -42,13 +42,14 @@ wystaw_ocene <- function(repo, sha, id, formularz, komentarz = "") {
 #' Odczytuje tylko komentarze uwierzytelnionego właściciela repozytorium,
 #' powiązane z żądanym SHA i wersją rubryki. Brak feedbacku nie oznacza zera.
 #' @param id Z01--Z10 albo PROJEKT.
-#' @param katalog Katalog projektu.
+#' @param katalog Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.
 #' @param sha SHA ocenionej pracy; domyślnie lokalne HEAD.
 #' @return Lista ze stanem i oceną, jeśli opublikowano.
 #' @export
 #' @examples
 #' \dontrun{ pobierz_ocene("Z01", "moje-badania") }
-pobierz_ocene <- function(id, katalog = ".", sha = NULL) {
+pobierz_ocene <- function(id, katalog = NULL, sha = NULL) {
+  katalog <- katalog_kursu(katalog)
   id <- toupper(id)
   r <- rubryka(id)
   cfg <- sprawdz_repo(katalog)

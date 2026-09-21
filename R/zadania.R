@@ -1,183 +1,126 @@
-#' Przygotowanie lokalnego zadania
+#' Przygotowanie pełnego roboczego Rmd
+#'
+#' Kopiuje ćwiczenie LEARN i CHALLENGE do jednego pliku zadanie.Rmd wraz
+#' z gotowym analiza.R. ID jest pobierane z kurs.yml; nie trzeba wpisywać
+#' go ponownie w nagłówku. Ponowne wywołanie nie nadpisuje odpowiedzi ani
+#' przypiętego skryptu. Stare pliki Markdown wymagają osobnej migracji.
+#' Z10 wymaga zapisanego wariantu Z09 i zachowuje jego kopię bez losowania.
 #' @param id Z01--Z10.
-#' @param katalog Katalog wlasnego projektu.
-#' @return Sciezka odpowiedzi Markdown, niewidocznie. Istniejaca praca pozostaje zachowana.
+#' @param katalog Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.
+#' @return Bezwzględna ścieżka zadanie.Rmd, niewidocznie.
 #' @export
 #' @examples
 #' k <- tempfile("zadania-")
 #' utworz_projekt("s017", katalog = k)
 #' przygotuj_zadanie("Z01", k)
 #' unlink(k, recursive = TRUE)
-przygotuj_zadanie <- function(id, katalog = ".") {
+przygotuj_zadanie <- function(id, katalog = NULL) {
   id <- toupper(id)
   sprawdz_id(id, "zadanie", "^Z(0[1-9]|10)$")
+  katalog <- katalog_kursu(katalog)
   cfg <- czytaj_yaml(file.path(katalog, "kurs.yml"))
   sprawdz_id(cfg$id, "id")
-  folder <- file.path(katalog, "zadania", tolower(id))
-  if (dir.exists(folder)) return(invisible(file.path(folder, "odpowiedzi.md")))
-  dir.create(file.path(folder, "wyniki"), recursive = TRUE)
-  r <- rubryka(id)
-  tekst <- c(paste0("# ", id, " \u2014 odpowiedzi"), "", paste("ID:", cfg$id), paste("Rocznik:", cfg$rocznik), "",
-             "Uruchom gotowy `analiza.R`. Zmieniaj wy\u0142\u0105cznie warto\u015bci parametr\u00f3w wskazane w komentarzu.",
-             "Nie przepisuj ani nie rozbudowuj procedury statystycznej. Odczytaj zapisane wyniki i odpowiedz w\u0142asnymi s\u0142owami.",
-             "Odpowied\u017a: 350\u2013650 s\u0142\u00f3w bez kodu. Ka\u017cd\u0105 liczb\u0119 po\u0142\u0105cz z jej znaczeniem dla pytania badawczego.")
-  for (k in r$criteria) tekst <- c(tekst, "", paste0("## ", k$id, " \u2014 ", k$max_points, " pkt"), "", k$evidence, "", "[UZUPELNIJ]")
-  writeLines(enc2utf8(tekst), file.path(folder, "odpowiedzi.md"), useBytes = TRUE)
-  skrypt <- readLines(zasob("szablony", "zadania", id, "analiza.R"),
-                      encoding = "UTF-8", warn = FALSE)
-  wartosci <- c(ID = cfg$id, SCENARIUSZ = cfg$scenariusz, ROCZNIK = cfg$rocznik)
-  for (pole in names(wartosci))
-    skrypt <- gsub(paste0("{{", pole, "}}"), wartosci[[pole]], skrypt, fixed = TRUE)
-  writeLines(enc2utf8(skrypt), file.path(folder, "analiza.R"), useBytes = TRUE)
-  invisible(file.path(folder, "odpowiedzi.md"))
+  konfiguracja_kursu(cfg$rocznik)
+  folder <- sciezka_pracy(katalog, file.path("zadania", tolower(id)))
+  if (file.exists(folder)) {
+    sprawdz_zapisana_prace(folder, id, cfg)
+    if (id == "Z10") odczytaj_wariant_zadania(folder, cfg)
+    return(invisible(file.path(folder, "zadanie.Rmd")))
+  }
+  dir.create(dirname(folder), recursive = TRUE, showWarnings = FALSE)
+  tmp <- tempfile(paste0(tolower(id), "-"), tmpdir = dirname(folder))
+  if (!dir.create(tmp)) stop("Nie mo\u017cna utworzy\u0107 katalogu zadania.", call. = FALSE)
+  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
+  jednostka <- sub("^Z", "c", id)
+  wzorzec <- zasob("materialy", jednostka, "pelne.Rmd")
+  helper <- zasob("materialy", jednostka, "analiza.R")
+  if (id == "Z10") {
+    poprzedni <- sciezka_pracy(katalog, "zadania/z09")
+    sprawdz_zapisana_prace(poprzedni, "Z09", cfg)
+    kopiuj_wariant_zadania(poprzedni, tmp, cfg)
+  }
+  tekst <- readLines(wzorzec, encoding = "UTF-8", warn = FALSE)
+  tekst <- lokalne_odnosniki(rmd_z_id(tekst, cfg$id))
+  pisz_linie(tekst, file.path(tmp, "zadanie.Rmd"))
+  if (!file.copy(helper, file.path(tmp, "analiza.R")))
+    stop("Nie mo\u017cna skopiowa\u0107 gotowego skryptu. Zachowano istniej\u0105c\u0105 prac\u0119.", call. = FALSE)
+  zapisz_literature_pracy(tmp)
+  meta <- list(format_pracy = "rmd-1", zadanie = id, id_studenta = cfg$id,
+    rocznik = cfg$rocznik, wersja_pakietu = as.character(utils::packageVersion("badaniaZI")),
+    plik = "zadanie.Rmd", pomocniczy_R = "analiza.R",
+    sha256_wzorca = digest::digest(file = wzorzec, algo = "sha256"),
+    sha256_analiza = digest::digest(file = helper, algo = "sha256"))
+  pisz_linie(yaml::as.yaml(meta), file.path(tmp, "zadanie.yml"))
+  sprawdz_zapisana_prace(tmp, id, cfg)
+  if (!file.rename(tmp, folder))
+    stop("Nie mo\u017cna zapisa\u0107 nowego zadania. Nie nadpisuj\u0119 istniej\u0105cego katalogu.", call. = FALSE)
+  invisible(file.path(folder, "zadanie.Rmd"))
 }
 
-#' Lokalna kontrola zadania lub projektu
+#' Lokalna kontrola Rmd i utworzenie aktualnego PDF
 #'
-#' Kontrola nie przyznaje punktow za interpretacje. Opcjonalne wykonanie skryptu
-#' odbywa sie w kopii pracy i swiezym procesie R; wyniki w oryginale musza byc zapisane.
-#' Wykonuj w ten sposob gotowy skrypt po ustawieniu wskazanych parametrow.
-#' Kontrole prac oddanych wykonuje CI bez poswiadczen kursu.
+#' Sprawdza własne pola odpowiedzi oraz zgodność gotowego kodu, ID i danych.
+#' Nie ocenia sensu interpretacji ani długości akapitów. Domyślnie tworzy PDF
+#' od początku w świeżym procesie R, bez logowania i bez dostępu do tokenu
+#' sesji. Wymaga narzędzi PDF przygotowanych przez informatyka.
+#' Kontrola nie wysyła pracy. Brak sieci nie blokuje tworzenia PDF.
 #' @param id Z01--Z10 albo PROJEKT.
-#' @param katalog Katalog projektu.
-#' @param uruchom Czy wykonac zapisany skrypt (domyslnie tak).
-#' @return Lista: ok, tabela kontroli i jawna lista plikow.
+#' @param katalog Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.
+#' @param uruchom Czy utworzyć aktualny PDF. FALSE tylko sprawdza zapisany
+#'   PDF i jego zgodność z bieżącymi wejściami, bez wykonywania kodu.
+#' @return Lista: ok, tabela kontroli i jawna lista plików oddania.
 #' @export
 #' @examples
 #' k <- tempfile("kontrola-")
 #' utworz_projekt("s017", katalog = k)
-#' sprawdz_zadanie("PROJEKT", k, uruchom = FALSE)$ok
+#' przygotuj_zadanie("Z01", k)
+#' sprawdz_zadanie("Z01", k, uruchom = FALSE)$ok
 #' unlink(k, recursive = TRUE)
-sprawdz_zadanie <- function(id, katalog = ".", uruchom = TRUE) {
+sprawdz_zadanie <- function(id, katalog = NULL, uruchom = TRUE) {
+  katalog <- katalog_kursu(katalog)
   id <- toupper(id)
   sprawdz_id(id, "zadanie", "^(Z(0[1-9]|10)|PROJEKT)$")
+  if (!is.logical(uruchom) || length(uruchom) != 1L || is.na(uruchom))
+    stop("uruchom musi mie\u0107 warto\u015b\u0107 TRUE albo FALSE.", call. = FALSE)
   kontrole <- data.frame(element = character(), ok = logical(), opis = character())
-  dodaj <- function(element, ok, opis) {
-    kontrole <<- rbind(kontrole, data.frame(element = element, ok = isTRUE(ok), opis = opis))
+  etap <- function(nazwa, kod) {
+    blad <- NULL
+    wynik <- tryCatch(kod(), error = function(e) {
+      blad <<- conditionMessage(e)
+      NULL
+    })
+    kontrole <<- rbind(kontrole, data.frame(element = nazwa, ok = is.null(blad),
+      opis = if (is.null(blad)) "Poprawnie." else blad))
+    wynik
   }
-  cfg <- tryCatch(czytaj_yaml(file.path(katalog, "kurs.yml")), error = function(e) NULL)
-  dodaj("konfiguracja", !is.null(cfg$id) && !is.null(cfg$scenariusz), "kurs.yml musi zawiera\u0107 w\u0142asne ID i scenariusz")
-  folder <- if (id == "PROJEKT") "projekty/ilosciowy" else paste0("zadania/", tolower(id))
-  md <- if (id == "PROJEKT") c("raport.md", "kwestionariusz.md") else "odpowiedzi.md"
-  katalog_zadan <- czytaj_yaml(zasob("zadania", "katalog.yml"))$zadania
-  artefakty <- unlist(katalog_zadan[[id]]$wyniki, use.names = FALSE)
-  wymagane <- c("kurs.yml", paste0(folder, "/", c(md, "analiza.R")),
-               "dane/surowe.csv", "dane/slownik.csv", "dane/manifest.json",
-               if (length(artefakty)) paste0(folder, "/wyniki/", artefakty))
-  for (p in wymagane) dodaj(p, file.exists(file.path(katalog, p)), "Wymagany zapisany plik")
-  for (p in paste0(folder, "/", md)) if (file.exists(file.path(katalog, p))) {
-    tekst <- readLines(file.path(katalog, p), encoding = "UTF-8", warn = FALSE)
-    dodaj(paste0(p, ": uzupe\u0142nienie"), !any(grepl("UZUPELNIJ|\\{\\{[A-Z]+\\}\\}", tekst)) && sum(nchar(tekst)) > 250,
-          "Zast\u0105p wszystkie znaczniki w\u0142asnymi odpowiedziami")
-    naglowki <- if (id == "PROJEKT" && basename(p) == "raport.md") paste0("## ", 1:9, ".") else
-      if (id != "PROJEKT") paste0("## ", id, ".", 1:4) else character()
-    dodaj(paste0(p, ": sekcje"), all(vapply(naglowki, function(h) any(startsWith(tekst, h)), logical(1))), "Zachowaj sekcje wymagane w szablonie")
-    dodaj(paste0(p, ": ID"), !is.null(cfg$id) && any(grepl(paste0("ID: ", cfg$id), tekst, fixed = TRUE)), "Wpisz w\u0142asne ID")
-  }
-  manifest <- tryCatch(jsonlite::read_json(file.path(katalog, "dane", "manifest.json")), error = function(e) NULL)
-  if (!is.null(cfg) && !is.null(manifest)) {
-    dodaj("manifest ID", identical(manifest$id, cfg$id) && identical(manifest$scenariusz, cfg$scenariusz) && identical(manifest$rocznik, cfg$rocznik), "Dane i konfiguracja musz\u0105 nale\u017ce\u0107 do tego samego wariantu")
-    oryginal <- tryCatch(generuj_dane(cfg$id, cfg$scenariusz, cfg$rocznik, manifest$n), error = function(e) NULL)
-    dodaj("wariant generatora", !is.null(oryginal) && identical(oryginal$manifest$hash_danych, manifest$hash_danych) &&
-            identical(oryginal$manifest$wersja_generatora, cfg$wersja_generatora), "U\u017cyj przypi\u0119tej wersji generatora i w\u0142asnego ID")
-    hash <- if (file.exists(file.path(katalog, "dane", "surowe.csv"))) digest::digest(file = file.path(katalog, "dane", "surowe.csv"), algo = "sha256") else NULL
-    dodaj("surowe CSV", identical(hash, manifest$sha256_csv), "Surowych danych nie zmienia si\u0119 po wygenerowaniu")
-    tabela <- tryCatch(utils::read.csv(file.path(katalog, "dane", "surowe.csv"), encoding = "UTF-8", stringsAsFactors = FALSE), error = function(e) NULL)
-    dodaj("warto\u015bci danych", !is.null(tabela) && identical(hash_tabeli(tabela), manifest$hash_danych), "Manifest musi odpowiada\u0107 rzeczywistym warto\u015bciom surowego pliku")
-  }
-  pliki <- tryCatch(pliki_oddania(id, katalog), error = function(e) character())
-  dodaj("lista plik\u00f3w", length(pliki) >= length(wymagane), "Dopuszczalne pliki i \u015bcie\u017cki wewn\u0105trz projektu")
-  for (p in pliki[grepl("[.](R|md|csv|json|yml)$", pliki)]) {
-    tekst <- readLines(file.path(katalog, p), encoding = "UTF-8", warn = FALSE)
-    dodaj(paste0(p, ": po\u015bwiadczenia"), !any(grepl("(gh[pousr]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,})", tekst)), "Pliki nie mog\u0105 zawiera\u0107 token\u00f3w GitHub")
-  }
-  skrypt <- file.path(katalog, folder, "analiza.R")
-  if (file.exists(skrypt)) {
-    syntax <- tryCatch({ parse(skrypt, encoding = "UTF-8"); TRUE }, error = function(e) FALSE)
-    dodaj("sk\u0142adnia R", syntax, "Popraw sk\u0142adni\u0119 zapisanego skryptu")
-    struktura <- syntax && sprawdz_strukture_analizy(id, skrypt)
-    dodaj("gotowy tok analizy", struktura,
-          "Zachowaj gotowy skrypt; zmieniaj wy\u0142\u0105cznie warto\u015bci w li\u015bcie parametry")
-    if (uruchom && syntax && all(kontrole$ok)) {
-      tmp <- tempfile("kontrola-pracy-")
-      dir.create(tmp)
-      on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
-      # Wyniki musza powstac ponownie, wiec nie trafiaja do wejscia swiezej sesji.
-      for (p in pliki[!startsWith(pliki, paste0(folder, "/wyniki/"))]) {
-        dir.create(dirname(file.path(tmp, p)), recursive = TRUE, showWarnings = FALSE)
-        file.copy(file.path(katalog, p), file.path(tmp, p))
-      }
-      r <- tryCatch(processx::run(rscript_bin(),
-        c("--vanilla", paste0(folder, "/analiza.R")), wd = tmp,
-        env = c("current", GH_TOKEN = "", GITHUB_TOKEN = "", GITHUB_PAT = "",
-                GH_ENTERPRISE_TOKEN = "", GITHUB_ENTERPRISE_TOKEN = "",
-                GH_CONFIG_DIR = file.path(tmp, ".logowanie"), R_TESTS = ""),
-        timeout = 120000, error_on_status = FALSE), error = function(e) NULL)
-      dodaj("wykonanie R", !is.null(r) && r$status == 0L, "Skrypt musi wykona\u0107 si\u0119 od pocz\u0105tku w \u015bwie\u017cej sesji; przy b\u0142\u0119dzie uruchom go w RStudio i popraw komunikat")
-      for (p in pliki[startsWith(pliki, paste0(folder, "/wyniki/"))]) {
-        nowy <- file.path(tmp, p)
-        istnieje <- file.exists(nowy) && !is.na(file.info(nowy)$size) && file.info(nowy)$size > 0
-        dodaj(paste0(p, ": odtworzenie"), istnieje, "Skrypt musi ponownie utworzy\u0107 zapisany wynik z surowych danych")
-        if (istnieje && grepl("[.]csv$", p)) {
-          czytaj <- function(f) utils::read.csv(f, encoding = "UTF-8", stringsAsFactors = FALSE)
-          zgodne <- tryCatch(isTRUE(all.equal(czytaj(file.path(katalog, p)), czytaj(nowy),
-                                              tolerance = 1e-10)), error = function(e) FALSE)
-          dodaj(paste0(p, ": zgodno\u015b\u0107 CSV"), zgodne, "Odtworzona tabela musi zgadza\u0107 si\u0119 z zapisan\u0105; zapisz aktualne wyniki przed oddaniem")
-        }
-      }
+  wejscia <- etap("Rmd, odpowiedzi, gotowy kod i wej\u015bcia", function() kontroluj_wejscia_rmd(id, katalog))
+  pliki <- character()
+  if (!is.null(wejscia)) {
+    etap("Zapis edytora", function() sprawdz_zapis_edytora(file.path(wejscia$folder, wejscia$rmd)))
+    if (all(kontrole$ok)) {
+      etap(if (uruchom) "Odtworzenie PDF" else "Aktualno\u015b\u0107 PDF", function() {
+        if (uruchom) renderuj_prace(wejscia)
+        sprawdz_aktualnosc_pdf(wejscia)
+      })
     }
+    if (all(kontrole$ok)) pliki <- etap("Jawna lista plik\u00f3w", function() pliki_oddania(id, katalog))
   }
   list(ok = all(kontrole$ok), kontrole = kontrole, pliki = pliki)
 }
 
-sprawdz_strukture_analizy <- function(id, plik) {
-  wzorzec <- if (id == "PROJEKT") zasob("szablony", "projekt", "analiza.R") else
-    zasob("szablony", "zadania", id, "analiza.R")
-  kandydat <- tryCatch(parse(plik, encoding = "UTF-8"), error = function(e) NULL)
-  referencja <- tryCatch(parse(wzorzec, encoding = "UTF-8"), error = function(e) NULL)
-  if (is.null(kandydat) || is.null(referencja) || length(kandydat) != length(referencja))
-    return(FALSE)
-  znajdz_parametry <- function(x) {
-    which(vapply(as.list(x), function(z)
-      is.call(z) && identical(z[[1L]], as.name("<-")) &&
-        identical(z[[2L]], as.name("parametry")), logical(1)))
-  }
-  ik <- znajdz_parametry(kandydat)
-  ir <- znajdz_parametry(referencja)
-  if (length(ik) != 1L || length(ir) != 1L) return(FALSE)
-  pk <- kandydat[[ik]][[3L]]
-  pr <- referencja[[ir]][[3L]]
-  if (!is.call(pk) || !identical(pk[[1L]], as.name("list")) ||
-      !is.call(pr) || !identical(pr[[1L]], as.name("list"))) return(FALSE)
-  ak <- as.list(pk)[-1L]
-  ar <- as.list(pr)[-1L]
-  if (!identical(names(ak), names(ar)) ||
-      any(!vapply(ak, function(z) is.atomic(z) && length(z) == 1L, logical(1))))
-    return(FALSE)
-  kandydat[[ik]][[3L]] <- quote(list())
-  referencja[[ir]][[3L]] <- quote(list())
-  identical(as.list(kandydat), as.list(referencja))
-}
 
 rscript_bin <- function() {
   file.path(R.home("bin"), if (.Platform$OS.type == "windows") "Rscript.exe" else "Rscript")
 }
 
 pliki_oddania <- function(id, katalog) {
-  folder <- if (id == "PROJEKT") "projekty/ilosciowy" else paste0("zadania/", tolower(id))
-  wzorzec <- "[.](R|md|csv|png|json|rds|pdf)$"
-  lokalne <- list.files(file.path(katalog, folder), recursive = TRUE, all.files = TRUE)
-  if (any(!grepl(wzorzec, lokalne)) || any(grepl("(^|/)\\.", lokalne))) stop("Nieobs\u0142ugiwany plik oddania.", call. = FALSE)
-  pliki <- c("kurs.yml", paste0(folder, "/", lokalne),
-             paste0("dane/", c("surowe.csv", "slownik.csv", "manifest.json")))
-  root <- normalizePath(katalog, winslash = "/", mustWork = TRUE)
+  id <- toupper(id)
+  sprawdz_id(id, "zadanie", "^(Z(0[1-9]|10)|PROJEKT)$")
+  root <- katalog_kursu(katalog)
+  pliki <- c(pliki_wejscia_pracy(id), pliki_pdf_pracy(id))
   for (p in pliki) {
-    full <- file.path(katalog, p)
-    if (!file.exists(full)) next
-    resolved <- normalizePath(full, winslash = "/", mustWork = TRUE)
-    if (!startsWith(tolower(resolved), paste0(tolower(root), "/"))) stop("Plik poza projektem.", call. = FALSE)
-    link <- Sys.readlink(full)
-    if (!is.na(link) && nzchar(link)) stop("Dowi\u0105zania nie s\u0105 plikami oddania.", call. = FALSE)
+    f <- sciezka_pracy(root, p)
+    if (!file.exists(f) || dir.exists(f)) stop("Brakuje pliku oddania: ", p, ".", call. = FALSE)
   }
-  unique(pliki[file.exists(file.path(katalog, pliki))])
+  pliki
 }

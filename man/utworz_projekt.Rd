@@ -4,7 +4,7 @@
 \usage{
 utworz_projekt(
   id_studenta,
-  scenariusz = "S01",
+  scenariusz = NULL,
   katalog = "moje-badania",
   rocznik = "2026-27",
   repo = NULL
@@ -13,7 +13,7 @@ utworz_projekt(
 \arguments{
 \item{id_studenta}{Pseudonim studenta.}
 
-\item{scenariusz}{S01--S20.}
+\item{scenariusz}{Opcjonalna propozycja S01--S20 na C09. Nie generuje danych.}
 
 \item{katalog}{Nowy katalog projektu.}
 
@@ -25,10 +25,11 @@ utworz_projekt(
 Ścieżka do projektu RStudio, niewidocznie.
 }
 \description{
-Utworzenie indywidualnej przestrzeni pracy
+Przestrzeń przechowuje ćwiczenia, ale nie rozpoczyna jeszcze projektu
+badawczego. Własny wariant danych wybiera się dopiero na C09.
 }
 \examples{
 katalog <- tempfile("projekt-")
-utworz_projekt("s017", "S03", katalog)
+utworz_projekt("s017", katalog = katalog)
 unlink(katalog, recursive = TRUE)
 }

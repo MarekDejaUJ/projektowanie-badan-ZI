@@ -1,242 +1,598 @@
 ---
-title: 'C04 — Od pozycji do konstruktu: samoocena i wykonanie zadania'
-subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
-author: 'Marek Deja'
+title: 'C04 — Co właściwie mierzymy: odpowiedź, indeks i wykonanie'
+subtitle: 'Zarządzanie informacją — ćwiczenie i zadanie Z04 — 2026/27'
+author: 'ID: [UZUPELNIJ_ID]'
 date: '2026/27'
 lang: pl-PL
 fontsize: 11pt
 papersize: a4
 geometry: margin=2cm
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document: default
 ---
 
+<!-- start-sesji -->
+# Początek pracy na tych zajęciach
+
+Otwórz RStudio. Pakiet kursu jest już zainstalowany w sali; nie instalujesz go ponownie. W konsoli poniżej edytora wpisz swoje ID i adres prywatnego repozytorium otrzymany w kursie, a następnie wykonaj polecenia. Ten blok jest instrukcją do konsoli, nie chunkiem uruchamianym przy tworzeniu PDF.
+
+```r
+library(badaniaZI)
+ID <- "TWOJE_ID"
+zaloguj_github()
+rozpocznij_zajecia(
+  "C04", id_studenta = ID,
+  repo_url = "ADRES_TWOJEGO_PRYWATNEGO_REPOZYTORIUM"
+)
+```
+
+Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie tam, nie w konsoli R. Sprawdź potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w tej sesji; pliki pracy mają je zachować także po zamknięciu RStudio.
+
+Polecenie otwiera własny `zadanie.Rmd` i zapamiętuje katalog pracy. Nie przełączaj teraz projektu przez `.Rproj`, bo nowa sesja R utraci logowanie. Pracuj w otwartym Rmd, nie w źródłach pakietu. Uruchom pierwszy chunk przygotowania, potem wykonuj LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; nie usuwaj pracy ani nie wpisuj cudzego ID.
+<!-- /start-sesji -->
+
+
+Skrypt towarzyszący przygotowuje wspólne dane S02 oraz małe przykłady do odczytu wzorów. Zawiera gotowe funkcje rekodacji, audytu indeksu i liczenia odpowiedzi wielokrotnych. Uruchomienie nie wymaga pisania algorytmu ani zmieniania pliku surowego.
+
 ```{r przygotowanie, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, digits = 3)
-source('analiza.R', local = knitr::knit_global(), encoding = 'UTF-8')
+source(badaniaZI::plik_pracy("Z04", "analiza.R"),
+       local = knitr::knit_global(), encoding = "UTF-8")
+ustaw_material()
 ```
 
-# 1. Miejsce w opowieści
+# Biblioteka pyta o kompetencje, ankieta pyta o katalog
 
-Sześć pozycji ankiety opisuje samoocenę kompetencji. Jedna jest sformułowana przeciwnie, a indeks powstaje dopiero po rekodacji i zastosowaniu jawnej reguły minimum pięciu odpowiedzi.
+Po poprzednim spotkaniu wiemy, jak opisać czas i powodzenie. Zespół biblioteki chce teraz ustalić, czy trudności są związane z kompetencjami użytkowników. Ktoś proponuje: „Policzmy średnią z sześciu odpowiedzi; wysoki wynik oznacza wysokie kompetencje cyfrowe”. Zanim wykonamy obliczenie, musimy przeczytać same pytania.
 
-**Pytanie przewodnie:** Co mierzy indeks samooceny i dlaczego nie jest tym samym co obserwowany wynik zadania?
+W S02 pytania dotyczą znajdowania pola wyszukiwania, zrozumiałości filtrów, odczytywania rekordu, lokalizacji dokumentu, komunikatów i wsparcia zadania. Część odnosi się do deklarowanego działania osoby, część do oceny interfejsu. Nie obejmują całego obszaru kompetencji cyfrowych ani informacyjnych. Dlatego wynik nazywamy tutaj **indeksem deklarowanej użyteczności katalogu**. Jest to nazwa robocza podsumowania dydaktycznych pozycji, nie informacja o walidacji skali.
 
-Rdzeń zajęć trwa 90 minut. Strony oznaczone jako „po zajęciach” służą utrwaleniu; podczas spotkania uruchamiamy gotowy kod, czytamy liczby i zapisujemy własne wyjaśnienie.
+Ta korekta nie jest kosmetyką. Gdyby niski wynik przypisać automatycznie brakowi kompetencji użytkownika, biblioteka mogłaby zaplanować szkolenie tam, gdzie potrzebna jest poprawa etykiet lub komunikatów. Gdyby wysoki wynik uznać za dowód sprawności wyszukiwania, można byłoby przeoczyć niepoprawne wykonanie zadania. Pomiar określa zakres dopuszczalnej decyzji.
 
-| Minuty | Praca |
-|---:|---|
-| 0–10 | Powrót do poprzedniego odcinka i pytanie |
-| 10–30 | Zmienne, wzór i symbole |
-| 30–55 | Gotowe wyniki i dwa tory, jeśli dotyczą |
-| 55–80 | Zadanie na indywidualnych danych |
-| 80–90 | Kontrola, oddanie i zapowiedź kolejnego kroku |
+Wszystkie dane kursowe są syntetyczne. Publikacje o zachowaniach informacyjnych i pomiarze umiejętności dostarczają kontekstu, ale nie są źródłem tych rekordów. Małe przykłady oznaczone jako demonstracje również nie przedstawiają realnych uczestników.
 
-\newpage
+## Plan 90 minut
 
-# 2. Scena badawcza
+Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN, 50 minut na pięć CHALLENGE i 5 minut na zapis oraz oddanie. W LEARN uruchamiasz gotowe analizy i sprawdzasz sposób odczytu na przykładach. W CHALLENGE piszesz samodzielnie pięć krótkich akapitów pod wynikami w tym samym Rmd. W razie trudności pytasz prowadzącego. Rozwinięcia po części obowiązkowej służą powtórce, bez dodatkowych zadań. Projekt zaliczeniowy poznasz na C09.
 
-Sześć pozycji ankiety opisuje samoocenę kompetencji. Jedna jest sformułowana przeciwnie, a indeks powstaje dopiero po rekodacji i zastosowaniu jawnej reguły minimum pięciu odpowiedzi.
+Po spotkaniu masz umieć przeczytać wzór indeksu, prześledzić jeden rekord, uzasadnić mianownik i nazwać ograniczenie pomiaru. Nie musisz konstruować własnego testu psychometrycznego ani programować funkcji. Najważniejsze jest to, żebyś potrafił wyjaśnić, jaka informacja zostaje w indeksie, a jaka ginie.
 
-Badana osoba wykonuje krótkie zadanie wyszukiwawcze w cyfrowej usłudze informacyjnej, a potem odpowiada na sześć pozycji samooceny. Rejestrujemy czas i powodzenie jako pomiar obserwacyjny. Częstość korzystania, samoocena oraz wybrane kanały są deklaracjami. Rozdzielenie tych źródeł jest częścią interpretacji, ponieważ wysoka pewność nie musi oznaczać sprawnego wykonania.
+# LEARN 1: od konstruktu do konkretnego zdania
 
-Dane demonstracyjne dotyczą scenariusza S02 i są syntetyczne. Ich rozkłady przygotowano do nauki, dlatego nie wolno opisywać nimi realnej biblioteki ani użytkowników UJ. Jednostką analizy jest osoba po usunięciu identycznych duplikatów. Każdy brak pozostaje brakiem, dopóki słownik nie podaje jawnej reguły.
+Konstrukt jest pojęciem teoretycznym, takim jak kompetencja informacyjna, poczucie skuteczności czy postrzegana użyteczność usługi. Wskaźnik jest obserwowalną odpowiedzią lub zachowaniem, które ma dostarczać informacji o tym pojęciu. Operacjonalizacja opisuje procedurę uzyskania i interpretacji wskaźnika.
 
-\newpage
+Wypowiedź „umiem znaleźć wiarygodne źródło” jest deklaracją. Prawidłowe wskazanie autora, daty i podstawy twierdzenia w konkretnym zadaniu jest obserwacją wykonania. Liczba kliknięć jest śladem interakcji. Każdy z tych pomiarów może być przydatny, lecz żaden samodzielnie nie wyczerpuje szerokiego konstruktu.
 
-# 3. Pytanie, jednostka i zmienne
+[Hargittai (2002)](https://webuse.org/p/a09/) stanowi punkt odniesienia dla łączenia informacji o użytkowniku z obserwacją wykonywania zadań. [Internet Skills Scale](https://eprints.lse.ac.uk/64485/) pokazuje przykład osobnego procesu opracowania i walidacji narzędzia. Nie wystarczy użyć podobnych słów w sześciu pytaniach, aby przejąć dowody jakości innej skali.
 
-Analizowane zmienne: **pozycje Likerta, indeks, czas, powodzenie, kanały informacji**.
+## Audyt rzeczywistych pozycji S02
 
-Przed spojrzeniem na wynik odpowiedz głośno na cztery pytania: kto jest obserwacją, co jest zmienną, jaka jest skala i w jakiej jednostce pojawi się rezultat. Nazwa kolumny jest technicznym adresem; znaczenie pochodzi z operacjonalizacji oraz słownika danych.
-
-| Element | Pytanie kontrolne | Odpowiedź w tej historii |
+| Pozycja | Treść w słowniku | Co deklaruje osoba? |
 |---|---|---|
-| Jednostka | Co zajmuje jeden wiersz? | jedna osoba i jedno zadanie |
-| Samoopis | Co osoba deklaruje? | pozycje, częstość, kanały |
-| Obserwacja | Co zapisuje procedura? | czas i powodzenie |
-| Granica wniosku | O czym mówią dane? | o syntetycznej próbie dydaktycznej |
+| 1 | Szybko znajduję pole wyszukiwania w katalogu. | Własną łatwość odnalezienia elementu |
+| 2 | Nazwy filtrów są dla mnie zrozumiałe. | Zrozumiałość etykiet |
+| 3 | Odczytanie rekordu wymaga ode mnie zgadywania. | Trudność interpretacji rekordu |
+| 4 | Potrafię znaleźć lokalizację dokumentu. | Własną możliwość wykonania czynności |
+| 5 | Komunikaty katalogu pomagają mi poprawić zapytanie. | Przydatność pomocy systemu |
+| 6 | Katalog wspiera wykonanie mojego zadania. | Ogólną ocenę wsparcia |
 
-Skala pomiarowa ogranicza sens działań. Dla kategorii liczymy osoby i odsetki; dla uporządkowanych odpowiedzi możemy porównywać kolejność; dla czasu sens mają różnice i ilorazy. Indeks 1–5 traktujemy w kursie jako przybliżoną zmienną ilościową, ale pamiętamy, że powstał z pozycji porządkowych. Nazwanie skali przed analizą chroni przed mechanicznym wyborem testu.
+Zauważ, że pozycja 3 ma przeciwny kierunek. Wysoka odpowiedź oznacza większą trudność, podczas gdy w pozostałych wysoka odpowiedź ma znaczenie korzystne. To problem techniczny, który można rozwiązać rekodacją. Natomiast różnorodność treści pozycji jest problemem interpretacyjnym: odwrócenie liczb nie dowodzi, że wszystkie pozycje mierzą jedną cechę.
 
-\newpage
+Rozróżnienie widać na przykładzie pozycji 4. „Osoba twierdzi, że potrafi znaleźć lokalizację” jest zgodne z pytaniem. „Osoba prawidłowo znalazła lokalizację” wymagałoby sprawdzenia jej działania. W raporcie te zdania nie są zamienne.
 
-# 4. Słownik statystyczny
+Nazwy techniczne pozostają krótkie: `pozycja_1`, `indeks`, `powodzenie`. Długie znaczenie zapisujemy w słowniku i tekście. W innym badaniu identyczna nazwa kolumny może dotyczyć innych treści, dlatego nie kopiuj automatycznie nazwy konstruktu z S02.
 
-Statystyka jest językiem skrótu. Symbol ma nazwę, znaczenie w badaniu i jednostkę. Odczytuj wzór zdaniem, zanim podstawisz liczby.
+## Jedna odpowiedź i jej rozkład
 
-| Symbol | Nazwa | Znaczenie w przykładzie | Jednostka |
-|---|---|---|---|
-| $x^{*}_{ij}$ | ukierunkowana odpowiedź | pozycja j osoby i | punkty 1–5 |
-| $m_i$ | ważne pozycje | liczba odpowiedzi osoby i | pozycje |
-| $I_i$ | indeks samooceny | średnia co najmniej 5 pozycji | punkty 1–5 |
+Pojedyncza pozycja ma pięć uporządkowanych odpowiedzi: od zdecydowanego zaprzeczenia do zdecydowanego potwierdzenia. Kod 5 oznacza większe nasilenie potwierdzenia niż 4, ale nie mamy automatycznego dowodu, że odległość psychologiczna między 1 i 2 jest identyczna jak między 4 i 5. Numery nie zmieniają skali porządkowej w pomiar z naturalną jednostką.
 
-Wartość p nie jest prawdopodobieństwem prawdziwości hipotezy. Przedział nie jest zakresem środkowych 95% obserwacji. Efekt nie jest tym samym co istotność. Te trzy rozróżnienia wracają w każdej analizie.
+Zanim zsumujemy pozycje, opisujemy ich rozkłady. Pozwala to zobaczyć brak odpowiedzi, skupienie na krańcach lub kategorię wybieraną przez prawie wszystkich. Średnia indeksu może później ukryć te różnice.
 
-**Notatnik pojęć.** Dla każdego symbolu dopisz jedną liczbę z gotowego wyniku i przeczytaj ją bez skrótu. Zamiast „t równa się” powiedz „obserwowana różnica leży tyle błędów standardowych od wartości zerowej”. Zamiast „V równa się” powiedz „znormalizowana siła związku w tabeli wynosi”. Taki przekład jest ważniejszy niż pamięciowe odtwarzanie wzoru.
+Tabela dotyczy oryginalnego brzmienia pozycji 3, jeszcze przed odwróceniem. Każdy procent ma mianownik równy liczbie ważnych odpowiedzi na tę pozycję. Kolumna braków przypomina, że nie każdy wiersz zbioru wnosi odpowiedź.
 
-\newpage
-
-# 5. Wzór czytany jak zdanie
-
-$$I_i=\frac{1}{m_i}\sum_{j=1}^{6}x^{*}_{ij}, \qquad m_i\geq 5$$
-
-Czytamy od lewej do prawej, nazywając licznik, mianownik i jednostkę. Znak wyniku ma sens dopiero po ustaleniu kolejności grup lub kierunku skali. Jeżeli we wzorze jest N, chodzi o przypadki rzeczywiście użyte w danym obliczeniu, a nie automatycznie o wszystkie wiersze surowego pliku.
-
-**Ćwiczenie ustne.** Wskaż w formule estymatę, element niepewności i punkt odniesienia. Jeżeli dana metoda ich nie ma, powiedz to wprost. Następnie przewidź, co stanie się z wynikiem po zwiększeniu N, zmianie jednostki albo odwróceniu kolejności grup.
-
-Czytanie wzoru ma pięć kroków: (1) nazwij wynik po lewej stronie, (2) nazwij obserwowane wielkości po prawej, (3) wskaż porównanie lub wartość zerową, (4) ustal jednostkę, (5) powiedz, jaka zmiana danych zwiększa wynik. Nie wykonujemy ręcznie długich obliczeń. Wzór ma odsłonić logikę liczby zwracanej przez gotową funkcję.
-
-\newpage
-
-# 6. Gotowy skrypt pomocniczy
-
-Pierwszy chunk materiału załadował towarzyszący plik `analiza.R`. Zawiera przygotowanie danych, obiekty i funkcje potrzebne na zajęciach. Uruchamiasz kolejne fragmenty i odczytujesz wynik. Nie implementujesz testu ani pętli permutacyjnej.
-
-```{r struktura}
-wynik_glowny
+```{r rozklad-pozycji}
+pozycja <- pokaz_tabele(pozycja_3_opis, "Oryginalna pozycja 3 — stopień zgody")
+print(pozycja)
 ```
 
-W zadaniu indywidualnym analogiczny skrypt powstaje przez `przygotuj_zadanie()`. Wolno zmienić jedynie wartości oznaczone komentarzem jako parametry. Dzięki temu przedmiot ocenia rozumienie wyniku, a nie biegłość w programowaniu.
+Wysoki udział odpowiedzi 4 i 5 oznacza częste deklarowanie konieczności zgadywania. Nie interpretujemy go jako wysokiej oceny czytelności. Najpierw czytamy brzmienie, dopiero potem numer.
 
-Po zmianie parametru uruchom cały skrypt od początku. Pojedyncze obiekty pozostawione w Environment mogą pochodzić ze starszej próby, dlatego nie są dowodem odtwarzalności. Zapisany plik w `wyniki` ma powstać ponownie w świeżej sesji. Jeśli nazwa zmiennej jest niedozwolona, funkcja zatrzymuje analizę i podaje listę dopuszczalnych wartości.
+Wykres używa kategorii na osi poziomej i procentów na pionowej. Nie łączy odpowiedzi linią ciągłą, która sugerowałaby obserwacje pomiędzy kategoriami. Porównaj obraz z tabelą i nazwij najczęstszą odpowiedź.
 
-\newpage
-
-# 7. Dane, braki i mianownik
-
-```{r dane}
-knitr::kable(head(tabela_glowna, 10), digits = 3)
+```{r wykres-pozycji}
+odpowiedzi <- pokaz_wykres(wykres_pozycji)
+print(odpowiedzi)
 ```
 
-Zanim przeczytasz statystykę, ustal N i braki. Dla średniej N oznacza ważne liczby. Dla korelacji są to kompletne pary. Dla tabeli jest to suma analizowanych komórek. Dla indeksu przypadek musi mieć co najmniej pięć odpowiedzi po właściwym ukierunkowaniu.
+W pozycji porządkowej można sensownie odczytać dominantę, skumulowany udział odpowiedzi lub kategorię środkową przy uzgodnionej konwencji. Średnia kodów bywa stosowana jako przybliżenie, ale jej interpretacja zależy od założenia o odległościach. W ćwiczeniu nie rozstrzygamy jakości skali przez sam wybór jednej statystyki.
 
-Dwa wyniki mogą używać różnych N w tym samym raporcie. Nie jest to sprzeczność, jeśli wynika z braków i zostało jawnie opisane. Nie wolno dopasowywać reguły braków po zobaczeniu, która wersja daje korzystniejsze p.
+**Przykładowy opis pozycji 3:** „Odpowiedzi udzieliły 144 osoby, a 4 odpowiedzi brakowały. Najczęstsza była kategoria 3: 58 ze 144, czyli około 40,3%. Kategorie 4 i 5 wybrało łącznie 29 osób, około 20,1% ważnych odpowiedzi. Jest to deklarowanie trudności odczytania rekordu, nie bezpośredni pomiar błędów w zadaniu”.
 
-Brak może dotyczyć jednej pozycji, całego indeksu albo pary zmiennych. Duplikat jest powtórzeniem rekordu, a obserwacja odstająca nadal może być prawdziwą obserwacją. Te pojęcia wymagają innych decyzji. Dziennik czyszczenia powinien pozwolić odtworzyć, ile elementów zmieniła każda reguła i dlaczego wynikowe N jest właściwym mianownikiem.
 
-\newpage
+# LEARN 2: odwrócenie jest zmianą kierunku, nie naprawą pytania
 
-# 8. Tor klasyczny
+Dla zakresu od 1 do 5 rekodacja ma postać:
 
-Klasyczny tor pomiaru obejmuje słownik, rozkłady pozycji, rekodację 6−x i indeks. Odpowiedzi wielokrotne liczymy z jawnym mianownikiem kompletnych respondentów, dlatego suma odsetków może przekraczać 100%.
+$$x^*_{i3}=1+5-x_{i3}=6-x_{i3}.$$
 
-```{r klasyczny}
-knitr::kable(formatuj_wynik(wynik_klasyczny), digits = 4)
+Czytamy: „ukierunkowana odpowiedź osoby i na pozycję trzecią jest równa sumie końców skali minus odpowiedź pierwotna”. Dzięki temu pierwotne 5, oznaczające największą trudność, staje się 1 w kierunku korzystnej oceny. Środek 3 pozostaje bez zmiany.
+
+Tabela pokazuje wszystkie możliwe przejścia. Odczytaj parę 2 i 4 w obu kierunkach. Jeśli ponownie zastosujesz odwrócenie, wrócisz do oryginalnego kodu, dlatego przypadkowe dwukrotne wykonanie rekodacji jest błędem.
+
+```{r mapa-rekodacji}
+kierunek <- pokaz_tabele(odwrocenie, "Ta sama odpowiedź w przeciwnym kierunku")
+print(kierunek)
 ```
 
-Odczytaj wynik bez etykiety „dobry” lub „zły”. Powiedz, jaka estymata odpowiada pytaniu, co mierzy statystyka oraz jakie założenie projektu ogranicza interpretację. Jeżeli widzisz p, opisz je warunkowo: przy modelu zerowym i przyjętej procedurze.
+Ogólna reguła dla skali od a do b to $a+b-x$. Dla zakresu 0–4 byłoby to $4-x$, nie $6-x$. Przepisanie funkcji z innego badania bez sprawdzenia zakresu może zatem tworzyć wartości, których narzędzie nie dopuszcza.
 
-**Karta odczytu toru klasycznego.** Zapisz: (a) nazwę metody, (b) N lub liczebności grup, (c) estymatę i jednostkę, (d) statystykę wraz z df, jeśli występują, (e) p, (f) jedno założenie. Jeżeli metoda na tej stronie nie jest testem, wpisz „nie dotyczy” zamiast wymyślać p. Kompletność wyniku jest oceniana oddzielnie od jego istotności.
+Brak pozostaje brakiem. Kod 99 musi zostać rozpoznany i zamieniony na `NA` przed rekodacją, ponieważ $6-99=-93$ nie jest odpowiedzią. Nie odwracamy wszystkich pozycji, tylko te wskazane treścią i słownikiem. Nie wybieramy kierunku po obejrzeniu korelacji z pożądanym wynikiem.
 
-\newpage
+Odwrócone sformułowanie nie gwarantuje lepszej ankiety. Respondent może przeoczyć przeczenie albo zrozumieć je inaczej. Przekształcenie kodu porządkuje kierunek liczbowy, ale nie usuwa potencjalnego błędu rozumienia pytania.
 
-# 9. Tor permutacyjny lub decyzja o jego braku
+## Śledzimy sześć małych rekordów
 
-Permutacja nie naprawia słabego pomiaru. Przed testowaniem trzeba ustalić znaczenie pozycji, kierunek skali i regułę braków. Dopiero C08 użyje tasowania, aby sprawdzić związek indeksu z wykonaniem.
+Przed pełnym zbiorem obejrzyj sześć dodatkowych, syntetycznych osób. Litery a–f są wyłącznie identyfikatorami demonstracji. W tabeli znajdują się pierwotne odpowiedzi oraz braki; trzecia kolumna pozycji jest jeszcze skierowana przeciwnie.
 
-```{r permutacyjny}
-knitr::kable(formatuj_wynik(wynik_permutacyjny), digits = 4)
+```{r mini-surowe}
+odpowiedzi <- pokaz_tabele(mini, "Pierwotne odpowiedzi a–f")
+print(odpowiedzi)
 ```
 
-W analizie inferencyjnej liczba B określa rozdzielczość szacowanego p. Za każdym razem trzeba powiedzieć, co dokładnie tasowano i jaki związek został zerwany. Nazwa „permutacyjny” nie zwalnia z wyjaśnienia hipotezy zerowej.
+Dla osoby a odpowiedź 1 na pozycję trzecią oznacza zdecydowany brak potrzeby zgadywania. Po ukierunkowaniu wnosi więc 5, zgodnie z pozostałymi korzystnymi odpowiedziami. Osoba b ma brak piątej pozycji, a c ma dwa braki.
 
-**Karta odczytu toru permutacyjnego.** Uzupełnij zdanie: „Przy braku związku lub różnicy wielokrotnie zmieniano znaki, tasowano etykiety lub losowano tabele, za każdym razem liczono tę samą statystykę, a określony odsetek wyników był co najmniej tak skrajny jak obserwowany”. Następnie porównaj wniosek z torem klasycznym bez wybierania mniejszego p.
+Teraz porównaj te same osoby po rekodacji. Liczba ważnych odpowiedzi się nie zmienia, ponieważ odwrócenie zachowuje braki. Zmienia się wyłącznie znaczenie liczb w pozycji trzeciej.
 
-\newpage
-
-# 10. Efekt i przedział
-
-Indeks zachowuje jednostkę punktów 1–5. Różnica jednego punktu ma znaczenie opisowe, lecz nie dowodzi równych odległości psychologicznych ani trafności konstruktu.
-
-```{r efekt}
-knitr::kable(formatuj_wynik(efekt), digits = 4)
+```{r mini-ukierunkowane}
+ukierunkowane <- pokaz_tabele(mini_ukierunkowane, "Po odwróceniu wyłącznie p3")
+print(ukierunkowane)
 ```
 
-Znaczenie praktyczne oceniamy w kontekście usługi: minuty, punkty skali, różnica odsetków albo siła związku. Uniwersalne etykiety mały/średni/duży nie zastępują pytania, czy efekt zmienia decyzję instytucji i jak precyzyjnie został oszacowany.
+Prześledzenie pojedynczego rekordu jest ważniejsze niż oglądanie kilkuset wierszy konsoli. Jeśli potrafisz wyjaśnić osobę a, b i c, możesz zrozumieć regułę stosowaną do całego zbioru. Samo pojawienie się tabeli bez błędu wykonania nie jest jeszcze dowodem poprawnej interpretacji.
 
-Przedział szeroki obejmuje wiele możliwych wielkości efektu i wymaga ostrożniejszego języka. Przedział wąski może nadal koncentrować się wokół efektu praktycznie małego. Gdy przedział przecina zero, nie zapisujemy automatycznie „brak efektu”; podajemy zakres zgodnych wartości i oceniamy, czy obejmuje skutki istotne dla usługi informacyjnej.
+**Przykładowy odczyt rekodacji:** „Osoba a zaznaczyła 1 przy zdaniu o konieczności zgadywania. W korzystnym kierunku skali otrzymuje tu 5, ponieważ $6-1=5$. Nie zmieniono jej odpowiedzi na inne pytania ani nie uzupełniono braków. Zmienił się sposób liczbowego wyrażenia tej samej odpowiedzi”.
 
-\newpage
 
-# 11. Wykres jako część argumentu
+# LEARN 3: wzór indeksu czytany jak instrukcja pomiaru
 
-```{r wykres, fig.height=4.6}
-wykres_glowny
+Niech $O_i$ oznacza zbiór pozycji z ważną odpowiedzią osoby i, a $m_i$ liczbę takich pozycji. W kursie stosujemy:
+
+$$
+I_i=\frac{\sum_{j\in O_i}x^*_{ij}}{m_i}
+\quad\text{gdy }m_i\geq5;
+\qquad I_i=\mathrm{NA}\quad\text{gdy }m_i<5.
+$$
+
+Sumujemy wyłącznie ważne, zgodnie ukierunkowane odpowiedzi. Dzielimy przez liczbę odpowiedzi faktycznie użytych dla tej osoby. Warunek pięciu pozycji jest częścią definicji indeksu, a nie późniejszą poprawką statystyczną.
+
+| Element | Odczyt w badaniu |
+|---|---|
+| i | Osoba, dla której obliczamy wynik |
+| j | Pozycja ankiety, nie kolejna osoba |
+| $x^*_{ij}$ | Odpowiedź po potrzebnym ukierunkowaniu |
+| $O_i$ | Pozycje dostępne u tej osoby |
+| $m_i$ | Liczba dostępnych pozycji |
+| $I_i$ | Średni wynik osoby, w punktach 1–5 |
+
+We wzorze nie ma wartości p, estymatora niepewności ani statystyki testowej. Jest reguła tworzenia zmiennej. Dopiero później możemy pytać o średnią tego indeksu w określonej populacji, różnicę grup albo związek z wykonaniem zadania.
+
+Gotowa funkcja ujawnia licznik, mianownik i wynik dla każdej małej osoby. Porównaj sumę z liczbą ważnych pozycji. Nie dziel wszystkich sum przez sześć, gdy odpowiedzi jest pięć.
+
+```{r mini-indeks}
+indeksy <- pokaz_tabele(mini_wynik, "Licznik, mianownik i reguła 5/6")
+print(indeksy)
 ```
 
-Wykres odpowiada na pytanie o położenie, kształt, nakładanie się grup lub kierunek związku. Tytuł, osie i jednostki są częścią wyniku. Nie wnioskuj o istotności tylko z wyglądu, lecz sprawdź, czy obraz jest spójny z tabelą i estymatą.
+Dla osoby a suma 27 dzielona przez 6 daje 4,5. Dla b suma 20 z pięciu ważnych pozycji daje 4. Dla c cztery ważne odpowiedzi mają sumę 20, ale indeks nie jest raportowany: reguła minimum nie została spełniona. Zapis `NA` nie oznacza, że osoba ma wynik zero lub niską użyteczność.
 
-Przeczytaj wykres w trzech warstwach. Najpierw opisz elementy widoczne bez testu: zakres, skupienie i nietypowe obserwacje. Potem połącz je z estymatą w tabeli. Na końcu nazwij rzecz, której wykres nie rozstrzyga, np. przyczynowość, błąd pomiaru albo zachowanie wyniku w nowej próbie. Nie usuwaj obserwacji tylko dlatego, że psuje prostą historię.
+Dla osoby d otrzymujemy $8/6\approx1{,}33$. Osoba e ma wynik 3, a f około 3,67. Wartość indeksu może zatem wypaść między kategoriami pojedynczej odpowiedzi. Nie znaczy to, że respondent zaznaczył w ankiecie „3,67”; jest to podsumowanie kilku pozycji.
 
-\newpage
+## Co by się stało bez rekodacji
 
-# 12. Wynik czytany linia po linii
+W błędnej wersji korzystne odpowiedzi na większość pytań mogą być częściowo znoszone przez przeciwnie skierowaną pozycję. Poniższa tabela celowo zestawia poprawny indeks z niepoprawnym obliczeniem. Wersja błędna jest wyłącznie demonstracją, nie alternatywnym wynikiem do wyboru.
 
-Dla indeksu podajemy regułę, zakres, N ważnych przypadków i liczbę pozycji. Wynik obserwacyjny odczytujemy oddzielnie; zgodność samooceny z wykonaniem jest pytaniem empirycznym.
-
-Schemat pełnego zdania: „W analizie N osób oszacowano [efekt] w [jednostce], 95% CI [dolna; górna]. Statystyka klasyczna wyniosła [symbol i df], p=[wartość], a procedura permutacyjna B losowań dała p_perm=[wartość]. Wynik opisuje [zakres] i nie rozstrzyga [ograniczenie]”.
-
-Podczas zajęć jedna osoba czyta tabelę, druga sprawdza znak i jednostkę, a trzecia wskazuje granicę wniosku. Dopiero po tej kontroli zapisujemy odpowiedź do pliku Markdown.
-
-Dobra interpretacja ma trzy warstwy. Warstwa liczbowa mówi, co oszacowano. Warstwa badawcza odpowiada na pytanie o zachowanie informacyjne lub wykonanie zadania. Warstwa krytyczna wskazuje, czego projekt, pomiar i syntetyczność nie pozwalają stwierdzić. Pominięcie którejkolwiek warstwy tworzy tekst technicznie poprawny, lecz metodologicznie niepełny.
-
-\newpage
-
-# 13. Błędy interpretacji
-
-Błąd: „indeks mierzy prawdziwe kompetencje cyfrowe”. Poprawnie: „indeks podsumowuje dydaktyczne pozycje samooceny; trafność wymaga osobnych dowodów, a wykonanie oceniamy czasem i powodzeniem”.
-
-Dodatkowe pułapki: traktowanie braku istotności jako dowodu równości, pomijanie N, raportowanie samego p, utożsamienie samooceny z kompetencją oraz zamiana obserwacyjnego związku w przyczynę. Poprawa polega na dodaniu liczby, jednostki, zakresu i ograniczenia, a nie na bardziej stanowczym czasowniku.
-
-Porównaj dwie konstrukcje: „test wykazał efekt” i „oszacowana różnica wyniosła..., a wynik testu był...”. Druga oddziela wielkość od decyzji. Podobnie „grupy były takie same” zastępujemy opisem przedziału i precyzji. W raporcie nie używamy słowa „trend” jako sposobu ratowania p nieco większego od .05; opisujemy rzeczywisty efekt i jego niepewność.
-
-**Po zajęciach.** Znajdź w swoim szkicu jedno zdanie zawierające „wpływa”, „udowadnia”, „brak różnicy” albo „95% wyników”. Przepisz je tak, aby odpowiadało projektowi i rzeczywistemu znaczeniu statystyki.
-
-\newpage
-
-# 14. Próba prowadzona
-
-1. Otwórz gotowy skrypt i wskaż sekcję parametrów.  
-2. Uruchom cały plik bez zmiany dalszej części.  
-3. Otwórz zapisany CSV i odnajdź N, estymatę oraz jednostkę.  
-4. Jeżeli analiza jest inferencyjna, porównaj p klasyczne i permutacyjne.  
-5. Odczytaj efekt i przedział.  
-6. Napisz jedno zdanie wyniku oraz jedno zdanie ograniczenia.
-
-Jeżeli skrypt zgłasza błąd, najpierw sprawdź katalog projektu, nazwę parametru i dozwoloną wartość. Nie poprawiaj wnętrza funkcji statystycznej. Błąd parametru jest informacją o niedozwolonym wyborze, a nie zaproszeniem do przepisania procedury.
-
-Podział czasu próby: 3 minuty na uruchomienie, 4 na odnalezienie właściwego CSV, 5 na głośny odczyt tabeli, 5 na szkic interpretacji i 3 na kontrolę ograniczenia. Jeśli grupa utknie, wraca do pytania, jednostki i znaku efektu. Celem jest krótkie, sprawdzalne rozumowanie, nie zwiększanie liczby wykonanych poleceń.
-
-\newpage
-
-# 15. Zadanie Z04
-
-Uruchom Z04. Wyjaśnij rekodację pozycji 3, regułę 5/6, znaczenie jednego wiersza indeks.csv oraz mianownik w kanaly.csv. Porównaj samoocenę i obserwację bez twierdzenia, że są zamienne.
-
-Przygotuj pliki poleceniem poniżej. Uruchom zapisany `analiza.R`, a następnie uzupełnij wszystkie pola `[UZUPELNIJ]` w `odpowiedzi.md`. Nie wklejaj kodu ani zrzutu całej konsoli.
-
-```{r zadanie, eval=FALSE}
-przygotuj_zadanie('Z04', katalog = '.')
-sprawdz_zadanie('Z04', katalog = '.')
-oddaj_zadanie('Z04', katalog = '.')
+```{r skutek-rekodacji}
+blad_kierunku <- pokaz_tabele(kierunek_demo, "Skutek pominięcia rekodacji")
+print(blad_kierunku)
 ```
 
-\newpage
+Dla osoby a pominięcie odwrócenia obniża wynik, choć jej odpowiedź wskazuje brak trudności. Dla d dzieje się odwrotnie. Nie jest to losowy szum, który zawsze „uśredni się” w dużej próbie. Błąd ma związek z treścią odpowiedzi i może zmieniać relacje między osobami.
 
-# 16. Rubryka, kontrola i dalszy krok
+**Sprawdź rozumienie:** dlaczego osobie e rekodacja nie zmienia indeksu? Odpowiedź na trzecią pozycję wynosi 3, a $6-3=3$. To szczególny przypadek, nie dowód, że rekodacja jest zbędna.
 
-| Kryterium | Punkty |
-|---|---:|
-| Z04.1: Słownik definiuje pozycje, skale, zakresy, kody braków i pytanie badawcze. | 3 |
-| Z04.2: Poprawnie odczytano rekodację pozycji odwróconej i uzasadniono regułę indeksu przy brakach. | 3 |
-| Z04.3: Pytanie wielokrotnego wyboru ma poprawne liczebności, odsetki i mianownik. | 2 |
-| Z04.4: Student rozróżnia pojedynczą pozycję porządkową od wyniku złożonego i wskazuje ograniczenie pomiaru. | 2 |
+## Minimum odpowiedzi i N całego indeksu
 
-Automatyczna kontrola sprawdza pliki, parametry, odtwarzalność i zgodność eksportu. Prowadzący ocenia dobór języka, odczyt liczb, interpretację efektu oraz ograniczenie. Poprawny skrypt bez własnego wyjaśnienia nie realizuje zadania.
+Reguła 5/6 dopuszcza jeden brak i odrzuca wynik osoby przy co najmniej dwóch brakach. Jest kompromisem dydaktycznym między zachowaniem osób a porównywalnością treści. Nie jest uniwersalnym standardem psychometrycznym ani właściwością każdej sześciopozycyjnej skali.
 
-Po wysyłce sprawdź `status_oddania()` i zdalne SHA. Na współdzielonym komputerze wywołaj `wyloguj_github()`, wyloguj przeglądarkę i zamknij RStudio bez `.RData`. Następne ćwiczenie rozpoczyna się od pobrania potwierdzonej wersji.
+Rozkład liczby odpowiedzi pokazuje, jak reguła działa w S02. Wiersze z liczbą pięć i sześć składają się na N ważnego indeksu. Pozostałe osoby zostają w tabeli danych, ale nie wnoszą indeksu do średniej.
 
-## Źródło kontekstu
+```{r dostepnosc-indeksu}
+kompletnosc <- pokaz_tabele(liczba_odpowiedzi, "Liczba ważnych pozycji u osób z S02")
+print(kompletnosc)
+```
 
-DigComp 2.2 i ACRL Framework dostarczają języka obszarów kompetencji, a skale samooceny przypominają o psychometrycznej jakości. Pozycje kursowe są przykładem dydaktycznym, nie walidowanym testem.
+Jeżeli dwie osoby mają po pięć odpowiedzi, mogą brakować im różne pozycje. Ich średnie podsumowują wtedy nieidentyczny zestaw treści. Reguła minimum nie usuwa tego ograniczenia; trzeba o nim pamiętać zwłaszcza przy systematycznym pomijaniu konkretnego pytania.
 
-Materiały odwołują się do: Wilsona (1999), Kuhlthau (1991), Savolainen (1995), Hargittai (2002), DigComp 2.2, ACRL Framework oraz Internet Skills Scale. Są to ramy pojęciowe; dane i pozycje kursowe pozostają syntetyczne i dydaktyczne.
+Poniżej widzisz początek tabeli wynikowej S02. Wskaż jeden wiersz i przeczytaj go jako „osoba o tym ID ma tyle ważnych odpowiedzi i taki indeks”. Nie myl liczby pozycji z liczbą osób.
+
+```{r indeks-s02}
+podglad <- podglad_indeksu()
+print(podglad)
+```
+
+Wykres przedstawia rozkład ważnych indeksów. Oś pozioma ma zakres punktów skali, nie procentów kompetencji. Wysokość słupka oznacza liczbę osób w przedziale wartości indeksu.
+
+```{r rozklad-indeksu}
+rozklad <- pokaz_wykres(wykres_indeksu)
+print(rozklad)
+```
+
+Indeks równy 4 nie oznacza „80% kompetencji”. Skala zaczyna się od 1, nie od naturalnego zera, a treść pozycji nie pokrywa całego konstruktu. Przeskalowanie 1–5 na 0–100 zmieniłoby jednostkę prezentacji, ale nie dostarczyłoby brakujących dowodów trafności.
+
+## Analiza wrażliwości: pięć czy sześć odpowiedzi
+
+Możemy sprawdzić, co zmieniłaby bardziej restrykcyjna reguła kompletności. Nie wybieramy wersji po to, by uzyskać wyższą średnią. Obowiązującą regułą Z04 pozostaje minimum pięciu; porównanie służy zrozumieniu konsekwencji.
+
+Tabela zestawia liczbę ważnych indeksów i opis rozkładu przy obu progach. Zmiana N wskazuje osoby, które wypadają po zaostrzeniu wymagania. Różnica średnich może wynikać ze zmiany składu osób, nie z samego przeliczenia tych samych pełnych odpowiedzi.
+
+```{r wrazliwosc-brakow}
+reguly <- pokaz_tabele(wrazliwosc_minimum, "Wariant 5/6 i wariant 6/6 w S02")
+print(reguly)
+```
+
+Dla osób z sześcioma odpowiedziami indeks jest identyczny w obu wariantach. Dla osób z pięcioma wersja restrykcyjna daje brak zamiast liczby. To ważne rozróżnienie: nie modyfikujemy ich odpowiedzi, lecz zmieniamy kryterium włączenia do podsumowania.
+
+Jeśli wynik opisowy jest podobny, można napisać, że w tym zbiorze podsumowanie niewiele zmieniło się po tej konkretnej zmianie reguły. Nie znaczy to, że braki są losowe ani że każda inna decyzja będzie obojętna. Jeśli różnica jest duża, trzeba pokazać ją i zbadać, czym różnią się zachowane i pominięte przypadki.
+
+Przypisanie brakowi wartości środkowej 3 nie jest neutralne. Sprowadza nieznaną odpowiedź do deklaracji „ani tak, ani nie” i może zmniejszać zróżnicowanie. W naszym zadaniu nie stosujemy takiej imputacji. Reguła średniej z dostępnych pozycji także ma ograniczenia, ale jest jawna i nie udaje obserwacji, której nie zarejestrowano.
+
+**Przykładowa interpretacja reguły:** „W S02 regułę minimum pięciu odpowiedzi spełnia 147 ze 148 osób: 125 ma komplet sześciu pozycji, a 22 ma po pięć. Wariant wymagający sześciu odpowiedzi zostawia 125 indeksów. Dla tych osób wartości się nie zmieniają; zmienia się zbiór osób opisany średnią. Żadna z reguł nie dowodzi, że pominięte odpowiedzi były losowe”.
+
+
+# LEARN 4: kilka kanałów to nie kilka osób
+
+Pytanie o kanały informacji pozwala wybrać więcej niż jedną odpowiedź. Każdy kanał jest osobną kolumną 0/1: jedynka oznacza wybór, zero brak wyboru, a `NA` brak znanej odpowiedzi. Jedna osoba może więc wnieść kilka jedynek.
+
+W S02 są to strona WWW, e-mail, media społecznościowe i kontakt bezpośredni. Nie tworzą skali od „gorszego” do „lepszego” kanału. Numer kolumny nie jest rangą, a suma wybranych kanałów nie jest bez dodatkowego uzasadnienia miarą kompetencji.
+
+Poniższy mały przykład obejmuje sześć osób. Trzecia wybrała jawnie żaden kanał, czwarta ma odpowiedź częściową, piąta nie udzieliła żadnej odpowiedzi. Odróżnij zapis czterech zer od czterech braków.
+
+```{r male-kanaly}
+kanaly_osob <- dane_kanalow(kanaly_demo)
+print(kanaly_osob)
+```
+
+W kursowej regule używamy wspólnego mianownika kompletnych respondentów: wszystkich, dla których znamy cztery wartości. Są to osoby 1, 2, 3 i 6. Osoba 3 pozostaje w mianowniku, chociaż nie wnosi żadnego wskazania. Nie zamieniamy jej zera w brak tylko dlatego, że utrudnia interpretację.
+
+Osoby 4 i 5 są pomijane w całej tabeli odsetków według tej reguły. To jawny wybór analityczny, nie jedyna możliwa definicja. Inne badanie mogłoby stosować odrębne mianowniki dla każdego kanału, ale wyniki odpowiadałyby wówczas innemu pytaniu i wymagałyby pokazania tych mianowników.
+
+## Dwa procenty, dwa różne pytania
+
+Niech $n_k$ oznacza liczbę kompletnych osób wybierających kanał k, a $N_c$ liczbę kompletnych osób. Odsetek respondentów wybierających kanał ma postać:
+
+$$P_k=100\%\frac{n_k}{N_c}.$$
+
+Jeśli natomiast podzielimy liczbę wskazań kanału przez sumę wszystkich wskazań, otrzymamy udział kanału w puli wyborów:
+
+$$U_k=100\%\frac{n_k}{\sum_h n_h}.$$
+
+Pierwszy wzór odpowiada na pytanie o osoby, drugi o wskazania. Nie wolno podpisywać obu rezultatów „procent użytkowników”. W drugim mianowniku osoba wybierająca trzy kanały wnosi trzy jednostki.
+
+Gotowa tabela zestawia oba wyniki dla małego przykładu. Procent respondentów używa czterech osób, a procent wskazań sześciu wskazań. Sprawdź WWW: dwie osoby to połowa kompletnych respondentów, ale tylko jedna trzecia wskazań.
+
+```{r dwa-mianowniki}
+mianowniki <- opis_kanalow(kanaly_demo_wynik)
+print(mianowniki)
+```
+
+Suma procentów respondentów wynosi 150%. Jest poprawna, ponieważ wybory mogą współwystępować. Suma udziałów wskazań wynosi 100%, o ile istnieje co najmniej jedno wskazanie. Jeśli nikt nie wybierze żadnego kanału, udziałów w puli wskazań nie da się policzyć przez dzielenie przez zero.
+
+Zdanie „50% osób wybiera WWW” wymaga dopowiedzenia „wśród czterech osób z kompletną odpowiedzią”. Zdanie „WWW ma 33,3% wskazań” dotyczy innej jednostki. W praktyce odbiorcy często mylą te dwa mianowniki, więc dobry podpis tabeli powinien je wyjaśniać.
+
+## Wspólny zbiór S02
+
+W pełnych danych obowiązuje ta sama reguła, ale konkretne N i liczebności są inne. Poniższa tabela zawiera również liczbę pominiętych niepełnych odpowiedzi. Odczytaj ją przed porównaniem popularności kanałów.
+
+```{r kanaly-s02}
+wybory <- opis_kanalow(kanaly)
+print(wybory)
+```
+
+Wykres pokazuje procent kompletnych respondentów, nie podział jednej zamkniętej całości. Nie używamy wykresu kołowego, ponieważ kanały nie tworzą rozłącznych części populacji. Ta sama osoba może należeć do kilku słupków.
+
+```{r wykres-kanalow}
+popularnosc <- pokaz_wykres(wykres_kanalow)
+print(popularnosc)
+```
+
+Nie wnioskuj, że bardziej popularny kanał jest skuteczniejszy. Wybór kanału jest deklaracją korzystania lub preferencji zależnie od treści pytania. Skuteczność wymagałaby osobnego kryterium, na przykład poprawności uzyskanej informacji lub wykonania zadania po kontakcie.
+
+**Próba:** w ankiecie 30 z 50 osób wybiera e-mail, a 25 z 50 WWW. Czy co najmniej pięć osób musiało wybrać oba? Tak, przy tych samych pięćdziesięciu osobach suma 55 wskazań przekracza N o pięć. Nie znamy jednak dokładnej liczby wspólnych wyborów z samych dwóch marginalnych liczebności. Może być większa.
+
+**Przykładowy akapit o kanałach:** „W małej demonstracji kompletne odpowiedzi pochodzą od czterech z sześciu osób. Dwie z czterech wskazały WWW, czyli 50% kompletnych respondentów. Te dwa wybory stanowią jedną trzecią sześciu wskazań wszystkich kanałów. Osoba z czterema zerami pozostaje w mianowniku, a dwie osoby z niepełną odpowiedzią są pominięte zgodnie z przyjętą regułą”.
+
+
+# LEARN 5: deklaracja i obserwacja odpowiadają na różne pytania
+
+## Co dokładnie znaczy „znalazł dokument”
+
+Przygotujmy hipotetyczne zadanie: „Znajdź wskazaną publikację i podaj miejsce, z którego można uzyskać pełny tekst”. Sukces trzeba zdefiniować przed obejrzeniem zachowania osoby. Kliknięcie dowolnego rekordu nie musi oznaczać właściwego wyniku.
+
+| Element protokołu | Przykładowa decyzja |
+|---|---|
+| Początek czasu | Wyświetlenie pełnej instrukcji i sygnał rozpoczęcia |
+| Koniec czasu | Zgłoszenie odpowiedzi albo określony limit |
+| Sukces | Właściwy dokument i prawidłowa droga dostępu |
+| Podpowiedź | Zapisana osobno, z momentem udzielenia |
+| Rezygnacja | Osobny status, nie dowolny brak |
+| Problem techniczny | Osobna adnotacja i reguła dalszego traktowania |
+| Ocena obserwatora | Wspólne kryteria i kontrola zgodności |
+
+To propozycja przyszłego protokołu, a nie opis dodatkowych kolumn S02. W obecnych danych mamy między innymi czas i binarne powodzenie. Nie możemy odtworzyć z nich momentu podpowiedzi ani rodzaju błędu, jeśli nie zostały zapisane.
+
+Obserwacja ma inne ograniczenia niż samoopis. Osoba może działać inaczej w obecności prowadzącego, a różne zadania mogą mieć różną trudność. Urządzenie i połączenie wpływają na czas. Dwie osoby oceniające mogą inaczej uznać częściowo poprawną odpowiedź. „Obserwacyjne” nie znaczy „pozbawione błędu”.
+
+## Dwie osoby oceniające to nadal to samo wykonanie
+
+Jeśli dwóch obserwatorów ocenia tę samą próbę, nie powstają dwie niezależne osoby badane. Jednostką wykonania pozostaje jedna próba. Podwójne kodowanie może pomóc ocenić zgodność oceny, ale nie wolno podwoić N w analizie skuteczności.
+
+Wyobraź sobie dziesięć prób ocenionych przez dwie osoby. Zgodzili się w ośmiu przypadkach. Procent zgodności wynosi 80%, lecz nie mówi wszystkiego o procesie: trzeba zobaczyć, czy spór dotyczy tych samych kryteriów i jak często występują poszczególne kategorie. Na dalszym poziomie istnieją miary uwzględniające strukturę zgodności; tu wystarczy poprawne rozpoznanie jednostki i ograniczenia prostego odsetka.
+
+Podobnie pięć zadań jednej osoby nie jest pięcioma niezależnymi respondentami. Możemy analizować zadania, osoby lub zmianę między zadaniami, ale trzeba uwzględnić powiązanie. W bieżącym ćwiczeniu pozostajemy przy jednej obserwowanej próbie na osobę. Nie zwiększamy liczebności osób przez przemianowanie powtórnych ocen na nowych respondentów.
+
+## Odczyt dwóch wskaźników tej samej osoby
+
+Do małej syntetycznej demonstracji a–f dołączono przykładowe czasy i powodzenie jednego zadania. To nadal dane dydaktyczne, nie wynik rzeczywistej obserwacji. Zestaw indeks osoby z czasem i poprawnością; nie dodawaj minut do punktów skali.
+
+```{r mini-pomiar}
+pomiar <- deklaracja_i_obserwacja()
+print(pomiar)
+```
+
+**Przykładowa interpretacja:** „Osoba a ma indeks deklarowanej użyteczności 4,5 i poprawne wykonanie po 6 minutach. Osoba b ma również korzystny indeks 4, lecz nie odniosła sukcesu po 12 minutach. Wysoka deklarowana użyteczność nie jest więc gwarancją wykonania konkretnego zadania. Osoba c odniosła sukces po 8 minutach, chociaż z powodu braków nie ma indeksu: nie zamieniamy braku deklaracji w brak wyniku obserwacyjnego”.
+
+Nie nazywamy osób ogólnie kompetentnymi na podstawie pojedynczej próby. Do badania wybranego obszaru kompetencji potrzebne byłyby zadania o zdefiniowanej treści i trudności oraz kryteria poprawności. Indeks oceny usługi może uzupełniać taki pomiar, ale go nie zastępuje.
+
+
+# CHALLENGE — samodzielny audyt pomiaru
+
+W pięciu zadaniach wpisujesz własne krótkie akapity pod wynikami. Zastąp znaczniki odpowiedzi tekstem poza chunkiem. Nie przepisuj liczb z S02 ani demonstracji a–f: cyfrowe archiwum ma osiem innych osób, oznaczonych a1–a8.
+
+## Scenariusz: użyteczność cyfrowego archiwum
+
+Osiem hipotetycznych osób ocenia interfejs archiwum. Pozycje to: p1 łatwo znaleźć pole wyszukiwania; p2 etykiety filtrów są zrozumiałe; p3 odczytanie rekordu wymaga zgadywania; p4 łatwo ustalić dostęp do obiektu; p5 komunikaty pomagają zmienić zapytanie; p6 interfejs wspiera wykonanie zadania. Odpowiedzi oznaczają: 1 zdecydowanie nie, 2 raczej nie, 3 ani tak, ani nie, 4 raczej tak, 5 zdecydowanie tak. Braki zapisano jako NA, nie jako środkową kategorię. Z góry przyjęto średnią co najmniej pięciu ukierunkowanych pozycji, przy czym tylko p3 wymaga odwrócenia.
+
+## CHALLENGE 1: Opisz rozkład pojedynczej pozycji
+
+Pojedyncza pozycja nie jest całym indeksem. Dla p2 mamy również brak odpowiedzi, więc mianownik będzie mniejszy od ośmiu. Przeczytaj treść pozycji przed interpretacją tabeli.
+
+```{r s01-pozycja}
+pozycja_archiwum <- opis_pozycji_archiwum()
+print(pozycja_archiwum)
+```
+
+**Napisz krótki akapit:** nazwij treść i porządkową skalę pozycji, podaj zakres kodów, N, braki i odsetek zgadzających się, jeśli z góry definiujemy zgodę jako odpowiedzi 4 lub 5. Wyjaśnij, dlaczego brak nie oznacza oceny negatywnej.
+
+<!-- odpowiedz:S01 -->
+[UZUPELNIJ_S01]
+<!-- /odpowiedz:S01 -->
+
+## CHALLENGE 2: Audyt kierunku i mianownika
+
+Analityk policzył średnią pozycji przed odwróceniem p3. Poprawiony wynik ma odzwierciedlać wspólny kierunek wszystkich sześciu stwierdzeń. Zwróć uwagę także na osobę z dwiema brakującymi odpowiedziami.
+
+Tabela pokazuje wynik audytu i porównanie wersji. Odczytaj osobę a1 oraz a5. Brak indeksu nie jest wartością zero i nie powinien obniżać średniej przez podstawienie zera.
+
+```{r s02-konstrukcja}
+indeks_archiwum <- konstrukcja_indeksu_archiwum()
+print(indeks_archiwum)
+```
+
+**Napisz krótki akapit:** odtwórz słownie licznik i mianownik poprawnego indeksu a1, porównaj z błędną wersją i uzasadnij status a5. Nazwij dokładnie konstrukt, nie używając skrótu „ogólna kompetencja”.
+
+<!-- odpowiedz:S02 -->
+[UZUPELNIJ_S02]
+<!-- /odpowiedz:S02 -->
+
+## CHALLENGE 3: Reguła 5/6 wobec 6/6
+
+Zaostrzenie reguły kompletności zmienia zestaw osób z indeksem. Nie oznacza automatycznie poprawy jakości pomiaru: można wykluczyć osoby mające specyficzne trudności. Reguły nie wybieramy po to, aby otrzymać pożądaną średnią.
+
+Porównaj dwa poprawnie ukierunkowane warianty. Odczytaj liczbę indeksów i wskaż konkretną osobę zmieniającą status. W tym zadaniu analiza podstawowa pozostaje zgodna z regułą z opisu badania.
+
+```{r s03-kompletnosc}
+reguly_archiwum <- kompletnosc_archiwum()
+print(reguly_archiwum)
+```
+
+**Napisz krótki akapit:** podaj N obu wariantów i opisz skutek dla a7. Uzasadnij wybór analizy podstawowej i powiedz, jak przedstawić drugi wariant jako analizę wrażliwości.
+
+<!-- odpowiedz:S03 -->
+[UZUPELNIJ_S03]
+<!-- /odpowiedz:S03 -->
+
+## CHALLENGE 4: Kanały pomocy
+
+Archiwum pyta o wykorzystanie WWW, e-maila, mediów i bezpośredniego kontaktu. Dopuszcza wiele wskazań. Obowiązuje wspólny mianownik kompletnych respondentów, tak jak w LEARN.
+
+Poniżej znajdują się surowe zera, jedynki i braki oraz gotowy opis. Prześledź osobę z czterema zerami oraz osobę z częściowym brakiem. Sprawdź, czy licznik i mianownik mają tę samą jednostkę.
+
+```{r s04-kanaly}
+kanaly_archiwum <- kanaly_pomocy_archiwum()
+print(kanaly_archiwum)
+```
+
+**Napisz krótki akapit:** podaj N, liczbę i procent korzystających z WWW oraz jego udział we wszystkich wskazaniach. Objaśnij różnicę tych procentów i traktowanie zer oraz braków.
+
+<!-- odpowiedz:S04 -->
+[UZUPELNIJ_S04]
+<!-- /odpowiedz:S04 -->
+
+## CHALLENGE 5: „Zmierzyliśmy kompetencje” — czy na pewno?
+
+Kierownik chce opisać wysoki indeks jako dowód kompetencji cyfrowej. Tymczasem pozycje odnoszą się do deklarowanej użyteczności archiwum, a wykonanie pojedynczego zadania mierzymy osobno. Dobre nazwanie konstruktu ogranicza zakres wniosku.
+
+Tabela zestawia indeks z czasem i sukcesem. Wybierz dwa konkretne rekordy pokazujące, dlaczego te pomiary nie są zamienne. Nie obliczamy tu jeszcze zależności statystycznej.
+
+```{r s05-trafnosc}
+pomiar_archiwum <- pokaz_tabele(archiwum_pomiar, "Indeks deklaracji i wynik zadania")
+print(pomiar_archiwum)
+```
+
+**Napisz krótki akapit:** popraw tezę kierownika, wykorzystując wartości dla co najmniej dwóch osób. Podaj dwa dodatkowe elementy projektu potrzebne do badania kompetencji: treść zadań i sposób oceny ich wykonania. Nie nazywaj własnego indeksu zwalidowaną skalą.
+
+<!-- odpowiedz:S05 -->
+[UZUPELNIJ_S05]
+<!-- /odpowiedz:S05 -->
+
+# Zapis i oddanie
+
+Przeczytaj pięć własnych odpowiedzi i porównaj liczby z tabelami. Nazwa indeksu ma odpowiadać treści pytań, a każdy procent — wskazanemu mianownikowi. Zapisz ten Rmd; nie przepisuj odpowiedzi do osobnego formularza.
+
+W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy PDF z zapisanej pracy, sprawdza kompletność i wysyła go wraz z Rmd oraz `analiza.R` do Twojego prywatnego repozytorium z dostępem prowadzącego.
+
+```r
+oddaj_zadanie("Z04")
+```
+
+Odczytaj potwierdzenie odbioru i SHA. Błąd nie oznacza oddania. Po poprawce zapisz plik i wykonaj ponownie to samo polecenie; nie trzeba osobno wywoływać renderu, kontroli i statusu.
+
+Po potwierdzonym oddaniu wykonaj w konsoli `wyloguj_github()`. Na komputerze współdzielonym wyloguj także przeglądarkę i zamknij RStudio bez zachowywania `.RData`. Przy braku sieci zachowaj źródła przed czyszczeniem komputera i poproś prowadzącego o pomoc.
+
+## Rubryka i autokontrola
+
+| Kryterium | Oczekiwany dowód | Punkty |
+|---|---|---:|
+| Z04.1 | Odczyt gotowego słownika: treść pozycji, skala, braki i odsetek zgody | 3 |
+| Z04.2 | Sens rekodacji, reguły 5/6 i odczyt wyniku | 3 |
+| Z04.3 | Liczebności, procent i właściwy mianownik kanałów | 2 |
+| Z04.4 | Rozróżnienie pozycji i indeksu oraz ograniczenie pomiaru | 2 |
+
+Przed wysyłką sprawdź, czy każde stwierdzenie o „kompetencji”, „skuteczności” lub „ocenie” ma właściwy wskaźnik. Usuń zdania, które przypisują indeksowi treść nieobecną w pytaniach. Dopisz jednostki i mianowniki tam, gdzie sam numer nie wystarcza.
+
+# Rozwinięcia do powtórki — poza rdzeniem spotkania
+
+Poniższe wyjaśnienia rozwijają problem pomiaru i nie dodają obowiązkowych odpowiedzi. Możesz wrócić do wybranego przykładu przy wątpliwości o znaczeniu indeksu, zgodności pomiarów lub utracie informacji w podsumowaniu.
+
+## Ten sam indeks może ukrywać odmienne odpowiedzi
+
+Dwie hipotetyczne osoby mają po sześć ukierunkowanych odpowiedzi. Pierwsza wszędzie zaznacza 3, druga odpowiada 1, 5, 3, 5, 1, 3. Obie uzyskują średnią 3, lecz ich profile nie są podobne.
+
+Wykres łączy punkty tylko po to, aby łatwiej porównać profile pozycji. Oś pozioma nie przedstawia czasu ani ciągłego natężenia cechy. Równa średnia nie usuwa różnic widocznych w poszczególnych pytaniach.
+
+```{r profile-pozycji}
+profile <- pokaz_wykres(wykres_profili)
+print(profile)
+```
+
+Dla diagnozy usługi profil może być ważniejszy niż jedna liczba. Niska ocena filtrów i wysoka ocena lokalizacji dokumentu sugerują inne pytania projektowe niż jednolite odpowiedzi środkowe. Nie przypisujemy jednak przyczyn na podstawie samego profilu: potrzebne są dalsze dane.
+
+Indeks jest skrótem, który ułatwia analizę, ale kosztuje utratę szczegółu. W raporcie warto uzasadnić, dlaczego taki skrót odpowiada pytaniu. Jeśli celem jest konkretna poprawa etykiet filtrów, osobna pozycja i obserwacja zadania mogą być bardziej adekwatne niż ogólny wynik.
+
+## Jakość pomiaru
+
+## Rzetelność nie jest trafnością
+
+Rzetelność dotyczy spójności lub precyzji pomiaru rozpatrywanej w określonym modelu. Trafność dotyczy uzasadnienia interpretacji wyniku do konkretnego celu. Narzędzie może konsekwentnie mierzyć coś innego niż to, co chcemy opisać.
+
+Wyobraź sobie ankietę z sześcioma niemal identycznymi pytaniami o zadowolenie z kolorystyki katalogu. Odpowiedzi mogą silnie współwystępować. Nawet bardzo wysoka zgodność nie pokaże, czy osoba umie ocenić wiarygodność źródła, znaleźć dokument lub sformułować skuteczne zapytanie. Powtarzalność treści może zwiększać podobieństwo odpowiedzi bez poszerzania pomiaru.
+
+W artykułach spotkasz współczynnik alfa Cronbacha. Jego wartość zależy między innymi od współzmienności pozycji i ich liczby; interpretacja jako miary rzetelności wymaga odpowiednich założeń. Alfa nie jest testem jednowymiarowości, nie dowodzi trafności i nie daje automatycznego pozwolenia na dowolne sumowanie pytań. Nie stosujemy zasady „przekroczony jeden próg, więc skala jest dobra”.
+
+W Z04 nie obliczamy współczynnika po to, by ogłosić walidację sztucznego indeksu. Najpierw czytamy treść, kierunek i regułę braków. Osobne badanie jakości narzędzia mogłoby obejmować ocenę treści przez ekspertów, sprawdzenie rozumienia pytań, strukturę odpowiedzi, związki z zewnętrznymi kryteriami i działanie w różnych grupach.
+
+## Błąd losowy, błąd systematyczny i kontekst odpowiedzi
+
+Osoba może raz zaznaczyć 3, a innym razem 4 z powodu chwilowego wahania. Inna może systematycznie zawyżać ocenę, chcąc wypaść dobrze. Jeszcze inna interpretuje „szybko” według zupełnie innego punktu odniesienia. Te mechanizmy nie są tym samym i nie znikają automatycznie po zwiększeniu N.
+
+W modelowym zapisie $X=T+E$ obserwowany wynik jest przedstawiany jako suma wyniku prawdziwego w znaczeniu danego modelu oraz błędu. Nie oznacza to, że znamy osobno obie części dla konkretnej osoby. Zapis ma przypomnieć, że liczba w arkuszu nie jest doskonałym odczytem cechy.
+
+Sposób zadania pytania również wpływa na interpretację. „Zawsze bez trudu znajduję wiarygodne źródła” łączy bardzo mocny kwantyfikator z szerokim zadaniem. „W ostatnim zadaniu potrafiłem wskazać autora i datę publikacji” jest węższe i osadzone w sytuacji. Żadne zdanie samo w sobie nie tworzy jeszcze zwalidowanej skali, ale drugie precyzyjniej określa odniesienie.
+
+## Treść pozycji a szerokie ramy kompetencji
+
+[DigComp 2.2](https://publications.jrc.ec.europa.eu/repository/handle/JRC128415) oraz [ACRL Framework](https://www.ala.org/acrl/standards/ilframework) pomagają sformułować obszary zainteresowania. Nie są tabelą przeliczeniową z sześciu ocen katalogu na pełną kompetencję. Możemy użyć ich do postawienia pytania o to, czego nasz pomiar nie obejmuje.
+
+Jeśli badamy ocenę źródła, potrzebujemy wskaźników odnoszących się do tej czynności. Jeśli badamy współpracę cyfrową, sam czas znalezienia sygnatury niewiele mówi o tym obszarze. Jeśli badamy transformację usługi, powinniśmy rozdzielić wdrożenie narzędzia, korzystanie, doświadczenie i rezultat. Jedna ankieta po zadaniu nie dostarcza odpowiedzi na wszystkie te pytania.
+
+Nie ma sprzeczności między używaniem prostego indeksu na zajęciach a krytycznym traktowaniem jego zakresu. Prostota pozwala nauczyć się rachunku i języka. Krytyczny opis chroni przed przypisywaniem tej liczbie większego znaczenia niż pozwala procedura.
+
+## Dodatkowe przykłady: od liczby do sensu
+
+## Próba A: „wysokie kompetencje, bo średnia 4,2”
+
+Autor podaje indeks 4,2 i pisze, że użytkownicy są bardzo kompetentni cyfrowo. Brakuje najpierw informacji, czy 4,2 jest wynikiem jednej osoby, czy średnią w próbie. Brakuje też treści pozycji, N i reguły braków.
+
+Poprawiony opis dla S02 powinien mówić o deklarowanej użyteczności katalogu i wskazać, że indeks jest dydaktyczny. Można napisać, że odpowiedzi są przeciętnie bliższe korzystnemu końcowi przy przyjętej regule. Nie można dopisać wniosku o wszystkich kompetencjach ani o rzeczywistym wykonaniu bez odpowiednich pomiarów.
+
+## Próba B: „wszyscy zaznaczyli 3, więc nie mają zdania”
+
+W kodowaniu S02 odpowiedź 3 oznacza „ani tak, ani nie”. Może odzwierciedlać zrównoważoną ocenę, niepewność albo inny sposób rozumienia skali, ale nie jest automatycznie brakiem wiedzy. Nie mamy osobnego pytania o motyw wyboru kategorii.
+
+Poprawny opis podaje częstość kategorii, a interpretację mechanizmu pozostawia otwartą. Jeżeli w następnym badaniu chcemy rozdzielić ocenę neutralną od „nie dotyczy” i „nie umiem ocenić”, trzeba zaprojektować te opcje i ich kodowanie. Nie wolno odzyskać tego rozróżnienia samym testem statystycznym po zebraniu danych.
+
+## Próba C: „kanały muszą sumować się do stu”
+
+Autor dzieli wszystkie procenty respondentów przez ich sumę, żeby wykres wyglądał poprawnie. W rezultacie otrzymuje procenty wskazań, ale nadal podpisuje je jako procenty użytkowników. Zmienił więc pytanie bez zmiany opisu.
+
+Poprawa polega na pozostawieniu oryginalnego mianownika albo na jawnym nazwaniu nowej wielkości. W małym przykładzie WWW wybiera 50% kompletnych respondentów, a WWW stanowi 33,3% wszystkich wskazań. Oba wyniki są poprawne; błędem jest ich utożsamienie.
+
+## Próba D: wysoka ocena i niepowodzenie
+
+Osoba wysoko ocenia katalog, ale nie znajduje właściwego dokumentu. Czy rekord jest sprzeczny i należy go usunąć? Nie. Ocena doświadczenia oraz rezultat konkretnego działania mogą się różnić. Być może osoba nie rozpoznała błędu, zadanie było nietypowe albo kryterium sukcesu inne niż jej własne.
+
+Te możliwości nie są rozstrzygnięciem. Zachowujemy rekord, o ile nie narusza reguł jakości danych, i opisujemy rozbieżność jako pytanie badawcze. C08 zajmie się związkiem wskaźników; nawet silna korelacja nie uczyni ich zamiennymi pomiarami.
+
+## Próba E: „indeks wzrósł, więc interfejs pomógł”
+
+W innym, hipotetycznym projekcie badamy ocenę przed zmianą i po zmianie interfejsu. Sam wzrost średniej nie wystarcza do przypisania przyczyny. Mogli zmienić się użytkownicy, zadania, sposób zaproszenia do ankiety lub warunki.
+
+Jeśli to te same osoby, trzeba zachować pary. Jeśli inne, mamy dwa zbiory o potencjalnie innym składzie. Dopiero opis projektu pozwala ustalić, jakie porównanie ma sens. Indeks nie niesie w sobie informacji o randomizacji, czasie ani kontroli alternatywnych wyjaśnień.
+
+## Pracownia recenzenta: czy liczba zachowuje to samo znaczenie
+
+## Średnia osób czy średnia wszystkich odpowiedzi
+
+Załóżmy, że w dodatkowej demonstracji jedna osoba ma sześć ważnych odpowiedzi o średniej 2, a druga pięć odpowiedzi o średniej 5. Obie spełniają regułę minimum. Chcemy opisać przeciętny indeks osoby, nie przeciętną odpowiedź wyjętą z całej puli.
+
+| Osoba | Liczba pozycji | Suma odpowiedzi | Indeks |
+|---|---:|---:|---:|
+| Pierwsza | 6 | 12 | 2 |
+| Druga | 5 | 25 | 5 |
+
+Średnia indeksów wynosi $(2+5)/2=3{,}5$. Każda osoba otrzymuje tę samą wagę. Jeśli zamiast tego zsumujemy wszystkie odpowiedzi i podzielimy przez wszystkie ważne pozycje, otrzymamy $37/11\approx3{,}36$. W drugim obliczeniu pierwsza osoba ma większą wagę, ponieważ odpowiedziała na więcej pytań.
+
+Oba rachunki można wykonać, ale nie oznaczają tej samej wielkości. W kursie najpierw tworzymy indeks osoby, a później opisujemy rozkład indeksów osób. N średniej wynosi więc dwa, nie jedenaście. Jedenaście odpowiedzi nie jest jedenastoma niezależnymi uczestnikami.
+
+Ten przykład łączy pomiar z pojęciem estymandy. „Przeciętny wynik osoby” określa jednostkę ważenia. Nawet poprawne rekodowanie i usunięcie kodu 99 nie chronią przed zmianą pytania, jeżeli później nieuważnie połączymy dane. W raporcie warto krótko napisać, co było uśredniane i w jakiej kolejności.
+
+## Czy odpowiedź 4 oznacza to samo dla początkującego i eksperta
+
+Początkujący użytkownik może oceniać „szybkie wyszukiwanie” w odniesieniu do pierwszej wizyty. Ekspert może porównywać katalog z narzędziem używanym zawodowo. Identyczny kod nie gwarantuje identycznego sposobu rozumienia pytania. To możliwość wymagająca sprawdzenia, a nie powód do automatycznego odrzucenia porównania.
+
+Przed porównywaniem średnich warto zapytać, czy instrukcja, kontekst zadania i treść pozycji są porównywalne. W zaawansowanych badaniach ocenia się także niezmienniczość pomiaru. W tym kursie nie wykonujemy takich modeli, lecz rozpoznajemy problem: różnica indeksów może łączyć różnicę oceny z różnicą używania skali.
+
+Nie należy go „naprawiać” przez osobne standaryzowanie wyników w każdej grupie bez zmiany pytania. Gdy odejmiemy każdej grupie jej własną średnią, średnie standaryzowane będą równe zeru z definicji. Zniknie więc właśnie różnica położenia, o którą chcieliśmy zapytać. Transformacja nie jest neutralnym zabiegiem kosmetycznym.
+
+## Efekt podłogowy i sufitowy
+
+Jeśli prawie wszystkie osoby uzyskują indeks bliski 5, skala ma mało miejsca na dalszy wzrost. Brak zmiany po poprawie katalogu nie musi wtedy oznaczać braku jakiejkolwiek poprawy doświadczenia. Narzędzie może nie rozróżniać górnej części zakresu. Analogiczny problem przy dolnej granicy nazywamy efektem podłogowym.
+
+To kolejny powód, aby obejrzeć rozkład pozycji i indeksu. Małe SD może wynikać z rzeczywiście podobnych ocen, ale może też wiązać się z ograniczeniem zakresu albo pytaniami zbyt łatwymi do potwierdzenia. Sam odczyt SD nie rozstrzyga między tymi wyjaśnieniami.
+
+Rozwiązaniem przyszłego projektu nie musi być zwiększenie liczby kategorii z pięciu do dziesięciu. Potrzebne może być precyzyjniejsze pytanie, inny zakres trudności zadań lub dodatkowy wskaźnik obserwacyjny. Każdą zmianę narzędzia trzeba jednak opisać, bo utrudnia bezpośrednie porównanie z wcześniejszym pomiarem.
+
+## Miniaturowa recenzja narzędzia
+
+Przeczytaj następujący opis: „Badani oceniali sześć stwierdzeń od 1 do 5. Zsumowaliśmy wszystkie odpowiedzi, brakom przypisaliśmy 3, a wysoki wynik nazwaliśmy kompetencją cyfrową. Następnie porównaliśmy go z liczbą kliknięć i ustaliliśmy, kto jest dobrym użytkownikiem”.
+
+Wskaż cztery niezależne problemy. Po pierwsze, brak treści i kierunku pozycji uniemożliwia ocenę znaczenia sumy. Po drugie, zastępowanie braków kategorią środkową udaje obserwację. Po trzecie, szeroka nazwa konstruktu nie ma przedstawionego uzasadnienia. Po czwarte, sama liczba kliknięć nie określa jakości działania.
+
+Lepsza wersja nie musi być długa: definiuje treść indeksu, jawnie opisuje rekodację i minimum, podaje N osób oraz porównuje deklarację z określonym wynikiem zadania. Unika etykietowania uczestników. Cel recenzji nie polega na znalezieniu bardziej zaawansowanego testu, lecz na sprawdzeniu, czy podstawowy pomiar odpowiada problemowi.
+
+## Co zabieramy do C05
+
+C05 wprowadzi niepewność średniej i porównanie z umownym punktem odniesienia. Wartość p nie oceni za nas treści pytań. Wąski przedział nie sprawi, że indeks użyteczności stanie się pomiarem całej kompetencji cyfrowej. Precyzja statystyczna i trafność pomiaru pozostają różnymi sprawami.
+
+Zachowaj trzy zdania jako własną kontrolę: „wiem, co oznacza wysoka wartość”, „wiem, które odpowiedzi tworzą wynik” i „wiem, czego ten wynik nie mierzy”. Dopiero wtedy testowanie staje się rozmową o problemie badawczym, a nie tylko operacją na kolumnie.

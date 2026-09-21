@@ -5,9 +5,11 @@ lokalną w RStudio, indywidualne dane syntetyczne, materiały, zadania, rubryki
 oraz oddawanie z konsoli R do prywatnego repozytorium GitHub.
 
 Katalog `materialy()` wskazuje jednostki dostępne w zainstalowanej wersji.
-Wydanie obejmuje 5 wykładów i 10 ćwiczeń po 90 minut z pełną treścią HTML/PDF
-i gotowym skryptem R. Każdy zestaw ćwiczeniowy ma 15–20 stron i prowadzi od
-pytania badawczego przez odczyt wyniku do samodzielnej interpretacji.
+Kurs obejmuje 5 wykładów i 10 ćwiczeń po 90 minut z pełną treścią HTML/PDF.
+Każde ćwiczenie ma co najmniej 15 stron, jeden roboczy Rmd i gotowy silnik
+`analiza.R`. Pięć części LEARN pokazuje odczytywanie i opisywanie wyników;
+pięć CHALLENGE wymaga własnych pisemnych interpretacji. Student pracuje
+indywidualnie przed komputerem, z możliwością konsultacji z prowadzącym.
 Osobne handouty HTML/PDF są przeznaczone dla pięciu wykładów.
 
 Materiały online: <https://MarekDejaUJ.github.io/projektowanie-badan-ZI/>
@@ -23,16 +25,24 @@ remotes::install_github("MarekDejaUJ/projektowanie-badan-ZI",
 ```
 
 Publiczny pakiet można pobrać bez logowania do prywatnej pracy.
+Instaluj wersję wskazaną dla swojego rocznika; nie aktualizuj pakietu w trakcie
+rozwiązywania zadania. Polecenie powyżej pobiera bieżącą gałąź repozytorium.
+Do oddania własnego PDF potrzebne są również Pandoc i XeLaTeX; nie instaluje
+ich polecenie `oddaj_zadanie()`. W sali cały zestaw przygotowuje informatyk.
+Kontrola `sprawdz_srodowisko()` pokazuje dostępne narzędzia, niczego nie instaluje.
+
+## Przygotowanie przez prowadzącego
 
 Prowadzący przygotowuje zwykłe prywatne repozytorium i zaproszenie bez
 organizacji GitHub. Po zalogowaniu do własnego konta wykonuje:
 
 ```r
-przygotuj_repo_studenta("s017", "login-studenta", "S02")
+przygotuj_repo_studenta("s017", "login-studenta")
 ```
 
-Funkcja umieszcza w repozytorium indywidualne dane, gotowe skrypty i szablony
-raportu. Student przyjmuje zaproszenie przed C01.
+Funkcja umieszcza w repozytorium konfigurację technicznej przestrzeni ćwiczeń.
+Nie losuje danych ani nie rozpoczyna projektu badawczego. Student przyjmuje
+zaproszenie przed C01; własny scenariusz projektu poznaje i wybiera na C09.
 
 ## Praca i materiały
 
@@ -41,43 +51,83 @@ library(badaniaZI)
 sprawdz_srodowisko()
 materialy()
 otworz_material("C01")
-utworz_projekt("s017", "S02", katalog = "moje-badania-lokalnie")
 ```
 
-Przykładowe ID zastąp pseudonimem otrzymanym na zajęciach. Materiały lokalne,
-generator i obliczenia działają bez sieci. Gotowe PDF/HTML nie wymagają LaTeX.
+Materiały lokalne i obliczenia działają bez sieci. Czytanie gotowych PDF/HTML
+nie wymaga LaTeX. Tworzenie własnego PDF przy oddawaniu wymaga narzędzi
+wymienionych w instrukcji instalacji.
 
-## Odtworzenie i oddanie
+## Początek każdych ćwiczeń
 
 Przygotuj konto GitHub i 2FA przed C01. Przyjmij zaproszenie do zwykłego
 prywatnego repozytorium przygotowanego przez prowadzącego; kurs nie wymaga
 organizacji GitHub. Na czyszczonym komputerze użyj otrzymanego adresu:
 
 ```r
+library(badaniaZI)
+ID <- "TWOJE_ID"
 zaloguj_github()
-rozpocznij_zajecia("C01", "s017",
-  "https://github.com/MarekDejaUJ/ZI-s017.git")
+rozpocznij_zajecia(
+  "C01", id_studenta = ID,
+  repo_url = "ADRES_TWOJEGO_PRYWATNEGO_REPOZYTORIUM"
+)
 ```
 
 Hasło oraz drugi składnik podaje się wyłącznie na stronie GitHub. Logowanie
 z R korzysta z GitHub CLI zainstalowanego w sali; wariant device wymaga
-skonfigurowanej aplikacji. Otwórz główny `.Rproj`. W przygotowanym `analiza.R`
-zmieniaj wyłącznie wskazane parametry, wykonaj cały skrypt od początku i
-uzupełnij interpretację w pliku Markdown. Następnie uruchom:
+skonfigurowanej aplikacji. Wpisz własne ID i otrzymany adres, a `C01` zastąp
+numerem aktualnych ćwiczeń. Pełna instrukcja powtarza się na początku
+każdego zestawu; nie trzeba pamiętać poleceń z poprzedniego spotkania.
+
+Funkcja otwiera własny `zadanie.Rmd` w bieżącej sesji. Nie otwieraj następnie
+`.Rproj`, bo przełączenie projektu uruchomi nową sesję i utracisz logowanie.
+Uruchom pierwszy chunk, który wczytuje `analiza.R`, a następnie gotowe chunki
+LEARN i CHALLENGE. Wynik pojawia się jako tabela lub wykres. Pod każdym
+CHALLENGE wpisz swój akapit w oznaczonym miejscu **poza chunkiem**,
+zastępując znacznik odpowiedzi. Zmieniaj tylko jawnie wskazane parametry
+w Rmd, nie zawartość silnika `analiza.R`.
+
+Orientacyjny podział 90 minut: 5 minut na start, 30 na LEARN, 50 na pięć
+CHALLENGE i 5 na oddanie. Dodatkowe przykłady i rozszerzenia nie są
+dodatkowymi obowiązkowymi odpowiedziami.
+
+## Oddanie zapisanej pracy
+
+Zapisz Rmd (Ctrl+S; na macOS Cmd+S). W konsoli wystarczy:
 
 ```r
-sprawdz_zadanie("Z01")
 oddaj_zadanie("Z01")
-status_oddania("Z01")
-pobierz_ocene("Z01")
-wyloguj_github()
 ```
 
-Pokwitowanie zawiera zdalne SHA i czas serwera. Odbiór, kontrola kodu i ocena
-są osobnymi informacjami. Kontrola wykonuje gotowy skrypt w świeżej sesji R
-przed wysłaniem; GitHub przechowuje commit, pokwitowanie i prywatny feedback.
-Brak oceny nie oznacza zera punktów. Wyloguj też przeglądarkę przed
-opuszczeniem sali.
+Funkcja sprawdza komplet odpowiedzi, tworzy świeży PDF z zapisanego Rmd
+w osobnym procesie R i wysyła jawny komplet plików do prywatnego repozytorium.
+Prowadzący otrzymuje PDF z wynikami i własnymi akapitami studenta oraz źródła
+potrzebne do odtworzenia pracy. Nie trzeba osobno eksportować tabel ani
+przepisywać odpowiedzi do drugiego formularza.
+
+Pokwitowanie zawiera zdalne SHA i czas serwera. Odbiór i ocena są osobnymi
+informacjami: brak oceny nie oznacza zera punktów. Jeśli wysyłka się nie uda,
+zachowaj lokalny katalog; sam utworzony PDF nie potwierdza odbioru przez GitHub.
+Opcjonalnie `sprawdz_zadanie("Z01")` tworzy i sprawdza PDF bez wysyłania,
+`status_oddania("Z01")` sprawdza odbiór, a `pobierz_ocene("Z01")` pobiera feedback.
+Przed opuszczeniem sali wykonaj `wyloguj_github()` i wyloguj także przeglądarkę.
+
+## Projekt od C09 do raportu
+
+C01–C08 mają podane scenariusze do nauki interpretacji; nie wymagają pracy
+nad nieznanym jeszcze projektem. Na C09 wybierasz scenariusz, generujesz
+własny syntetyczny wariant i zapisujesz plan. C10 odczytuje dokładnie te same
+dane: nie losuj ich ponownie. Po wykonaniu obu zadań:
+
+```r
+przygotuj_raport()
+```
+
+Otwórz plik `projekty/ilosciowy/raport.Rmd` w swojej przestrzeni ćwiczeń.
+Funkcja tworzy go i jednorazowo przenosi dziesięć własnych odpowiedzi
+Z09/Z10 do odpowiednich części. Uporządkuj je w spójny raport, uzupełnij P11
+(bibliografia i zakres wsparcia), uruchom gotowe analizy, zapisz plik i użyj
+`oddaj_projekt()`. Ponowne przygotowanie nie nadpisuje już istniejącego raportu.
 
 ## Ocena i terminy 2026/27
 

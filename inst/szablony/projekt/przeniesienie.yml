@@ -1,0 +1,36 @@
+version: 1.0.0
+format_docelowy: raport.Rmd
+zasada: Tekst jest kopiowany raz do nowego raportu, bez nadpisywania późniejszych poprawek.
+odpowiedzi:
+  - pole: P01
+    zadanie: Z09
+    odpowiedz: S01
+  - pole: P02
+    zadanie: Z09
+    odpowiedz: S02
+  - pole: P03
+    zadanie: Z09
+    odpowiedz: S03
+  - pole: P04
+    zadanie: Z09
+    odpowiedz: S04
+  - pole: P05
+    zadanie: Z10
+    odpowiedz: S01
+  - pole: P06
+    zadanie: Z09
+    odpowiedz: S05
+  - pole: P07
+    zadanie: Z10
+    odpowiedz: S02
+  - pole: P08
+    zadanie: Z10
+    odpowiedz: S03
+  - pole: P09
+    zadanie: Z10
+    odpowiedz: S04
+  - pole: P10
+    zadanie: Z10
+    odpowiedz: S05
+nowe_pola:
+  - P11

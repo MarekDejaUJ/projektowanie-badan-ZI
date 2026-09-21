@@ -12,7 +12,7 @@
 <meta name="author" content="Marek Deja" />
 
 
-<title>Handout W05 — Korelacja, regresja i raport ilościowy</title>
+<title>Handout W05 — Korelacja, regresja i język raportu</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -375,9 +375,9 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Handout W05 — Korelacja, regresja i raport
-ilościowy</h1>
-<h3 class="subtitle">Mapa pojęć, wzorów i pytań</h3>
+<h1 class="title toc-ignore">Handout W05 — Korelacja, regresja i język
+raportu</h1>
+<h3 class="subtitle">Mapa pojęć i sprawdziany rozumienia</h3>
 <h4 class="author">Marek Deja</h4>
 <h4 class="date">2026/27</h4>
 
@@ -385,134 +385,243 @@ ilościowy</h1>
 
 <div id="TOC">
 <ul>
-<li><a href="#pytanie-i-g%C5%82%C3%B3wna-my%C5%9Bl" id="toc-pytanie-i-główna-myśl">1. Pytanie i główna myśl</a>
-<ul>
-<li><a href="#tok-rozumowania" id="toc-tok-rozumowania">Tok
-rozumowania</a></li>
-</ul></li>
-<li><a href="#wz%C3%B3r-i-symbole" id="toc-wzór-i-symbole">2. Wzór i
-symbole</a></li>
-<li><a href="#dwa-tory-i-efekt" id="toc-dwa-tory-i-efekt">3. Dwa tory i
-efekt</a></li>
-<li><a href="#interpretacja-i-pytania" id="toc-interpretacja-i-pytania">4. Interpretacja i pytania</a>
-<ul>
-<li><a href="#dalszy-krok" id="toc-dalszy-krok">Dalszy krok</a></li>
-<li><a href="#literatura" id="toc-literatura">Literatura</a></li>
-</ul></li>
+<li><a href="#co-chcemy-wiedzie%C4%87" id="toc-co-chcemy-wiedzieć">Co
+chcemy wiedzieć?</a></li>
+<li><a href="#przeczytaj-wz%C3%B3r-zdaniem" id="toc-przeczytaj-wzór-zdaniem">Przeczytaj wzór zdaniem</a></li>
+<li><a href="#dwa-losowania-dwa-pytania" id="toc-dwa-losowania-dwa-pytania">Dwa losowania, dwa pytania</a></li>
+<li><a href="#czytamy-model" id="toc-czytamy-model">Czytamy
+model</a></li>
+<li><a href="#ma%C5%82y-przyk%C5%82ad-wyk%C5%82adowy" id="toc-mały-przykład-wykładowy">Mały przykład wykładowy</a></li>
+<li><a href="#co-sprawdzamy-na-wykresie" id="toc-co-sprawdzamy-na-wykresie">Co sprawdzamy na wykresie?</a></li>
+<li><a href="#trzy-zdania-do-poprawienia" id="toc-trzy-zdania-do-poprawienia">Trzy zdania do poprawienia</a></li>
+<li><a href="#akapit-wyniku" id="toc-akapit-wyniku">Akapit
+wyniku</a></li>
+<li><a href="#mapa-rozwini%C4%99%C4%87-bez-dodatkowego-zadania" id="toc-mapa-rozwinięć-bez-dodatkowego-zadania">Mapa rozwinięć — bez
+dodatkowego zadania</a></li>
 </ul>
 </div>
 
-<div id="pytanie-i-główna-myśl" class="section level1">
-<h1>1. Pytanie i główna myśl</h1>
-<p><strong>Pytanie:</strong> Czy wyższa samoocena współwystępuje z
-krótszym czasem i jak zmienia się przewidywany czas na jeden punkt
-indeksu?</p>
-<p>Ostatni wykład łączy samoocenę z wykonaniem oraz wynik statystyczny z
-raportem. Korelacja opisuje współzmienność, regresja zapisuje warunkową
-średnią, a żadna z nich sama nie tworzy przyczynowości.</p>
-<div id="tok-rozumowania" class="section level2">
-<h2>Tok rozumowania</h2>
-<ol style="list-style-type: decimal">
-<li>Pytanie i zakres wniosku.<br />
-</li>
-<li>Jednostka, zmienne, skale i braki.<br />
-</li>
-<li>Estymata oraz jednostka.<br />
-</li>
-<li>Niepewność i dwa tory, jeśli dotyczą.<br />
-</li>
-<li>Efekt, ograniczenie i odpowiedź.</li>
-</ol>
-<div style="page-break-after: always;"></div>
-</div>
-</div>
-<div id="wzór-i-symbole" class="section level1">
-<h1>2. Wzór i symbole</h1>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mfrac><mrow><mo>∑</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo accent="true">‾</mo></mover><mo stretchy="false" form="postfix">)</mo></mrow><msqrt><mrow><mo>∑</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mover><mi>x</mi><mo accent="true">‾</mo></mover><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>∑</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo accent="true">‾</mo></mover><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></msqrt></mfrac><mo>,</mo><mspace width="1.0em"></mspace><mover><mi>y</mi><mo accent="true">̂</mo></mover><mo>=</mo><msub><mi>b</mi><mn>0</mn></msub><mo>+</mo><msub><mi>b</mi><mn>1</mn></msub><mi>x</mi></mrow><annotation encoding="application/x-tex">r=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum(x_i-\bar{x})^2\sum(y_i-\bar{y})^2}}, \quad \widehat{y}=b_0+b_1x</annotation></semantics></math></p>
+<div id="co-chcemy-wiedzieć" class="section level1">
+<h1>Co chcemy wiedzieć?</h1>
+<p>W S02 x oznacza deklarowaną użyteczność katalogu, a y obserwowany
+czas. Indeks nie jest testem całej kompetencji. Ujemny związek oznacza
+współwystępowanie wyższej oceny z krótszym czasem; krótki czas
+porzuconego zadania nie jest sukcesem.</p>
+<p>Jednostką jest osoba z kompletną parą. Pytanie o korelację, średnią
+przewidywaną i zgodność pomiarów wymaga różnych odpowiedzi. Przed
+obliczeniem ustal konstrukt, skalę, populację i regułę braków.</p>
 <table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
 <thead>
 <tr class="header">
-<th>Symbol</th>
-<th>Nazwa</th>
-<th>Znaczenie</th>
+<th>Pytanie</th>
+<th>Estymanda</th>
+<th>Wynik próbny</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>,</mo><mi>ρ</mi></mrow><annotation encoding="application/x-tex">r,\rho</annotation></semantics></math></td>
-<td>korelacja</td>
-<td>siła i kierunek związku</td>
+<td>Jak silna jest liniowa współzmienność?</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ρ</mi><mi>P</mi></msub><annotation encoding="application/x-tex">\rho_P</annotation></semantics></math></td>
+<td>r Pearsona</td>
 </tr>
 <tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mn>0</mn></msub><annotation encoding="application/x-tex">b_0</annotation></semantics></math></td>
-<td>wyraz wolny</td>
-<td>przewidywane y przy x=0</td>
+<td>Jak zgodna jest kolejność?</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ρ</mi><mi>S</mi></msub><annotation encoding="application/x-tex">\rho_S</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>r</mi><mi>S</mi></msub><annotation encoding="application/x-tex">r_S</annotation></semantics></math>
+Spearmana</td>
 </tr>
 <tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mn>1</mn></msub><annotation encoding="application/x-tex">b_1</annotation></semantics></math></td>
-<td>nachylenie</td>
-<td>zmiana y na jednostkę x</td>
+<td>O ile różni się średni y na jednostkę x?</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\beta_1</annotation></semantics></math></td>
+<td>nachylenie
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mn>1</mn></msub><annotation encoding="application/x-tex">b_1</annotation></semantics></math></td>
 </tr>
 <tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">R^2</annotation></semantics></math></td>
-<td>dopasowanie</td>
-<td>udział zmienności y</td>
+<td>Czy samoocena trafnie podaje poziom?</td>
+<td>np. średni błąd w porównywalnej skali</td>
+<td>różnice, nie samo r</td>
 </tr>
 </tbody>
 </table>
-<p>Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę
-i składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani
-CI zakresu 95% osób.</p>
-<div style="page-break-after: always;"></div>
 </div>
-<div id="dwa-tory-i-efekt" class="section level1">
-<h1>3. Dwa tory i efekt</h1>
-<p><strong>Tor klasyczny.</strong> Korelacja podaje współczynnik, CI, p
-i N par. Prosta regresja dodaje nachylenie w naturalnej jednostce, jego
-SE, t i p oraz R2. Wyraz wolny może nie mieć praktycznego sensu, jeśli
-x=0 leży poza skalą.</p>
-<p><strong>Tor permutacyjny/resampling.</strong> Tasowanie y względem x
-niszczy pary, zachowując oba rozkłady. Dla każdej permutacji liczymy ten
-sam r lub rho. p_perm opisuje skrajność obserwowanego współczynnika przy
-braku związku par.</p>
-<p><strong>Efekt i przedział.</strong> r/rho jest wielkością efektu,
-nachylenie mówi o jednostkach, a CI o precyzji. R2 nie jest odsetkiem
-poprawnie sklasyfikowanych osób ani częścią związku wyjaśnioną
-przyczynowo.</p>
-<div style="page-break-after: always;"></div>
+<div id="przeczytaj-wzór-zdaniem" class="section level1">
+<h1>Przeczytaj wzór zdaniem</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mfrac><mrow><mo>∑</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo accent="true">‾</mo></mover><mo stretchy="false" form="postfix">)</mo></mrow><msqrt><mrow><mo>∑</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mover><mi>x</mi><mo accent="true">‾</mo></mover><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>∑</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo accent="true">‾</mo></mover><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></msqrt></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
+r=\frac{\sum(x_i-\bar x)(y_i-\bar y)}
+{\sqrt{\sum(x_i-\bar x)^2\sum(y_i-\bar y)^2}}.
+</annotation></semantics></math></p>
+<p>Licznik łączy odchylenia obu zmiennych od ich średnich; mianownik
+standaryzuje wynik. r jest bez jednostki, ma zakres [−1; 1], opisuje
+liniowość. Zero nie wyklucza zależności w kształcie U. Spearman jest
+korelacją rang, przy remisach średnich rang. Wybór metody nie sprowadza
+się do wyniku testu normalności.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mi>r</mi><msqrt><mfrac><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow><mrow><mn>1</mn><mo>−</mo><msup><mi>r</mi><mn>2</mn></msup></mrow></mfrac></msqrt><mo>,</mo><mspace width="1.0em"></mspace><mi>d</mi><mi>f</mi><mo>=</mo><mi>n</mi><mo>−</mo><mn>2</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">
+t=r\sqrt{\frac{n-2}{1-r^2}},\quad df=n-2.
+</annotation></semantics></math></p>
+<p>To klasyczny test zerowej korelacji Pearsona; model niezależnych par
+dwuwymiarowo normalnych uzasadnia rozkład t. Dla wyniku Spearmana
+odczytujemy właściwy wynik programu, nie dopisujemy fikcyjnych df do
+statystyki S.</p>
 </div>
-<div id="interpretacja-i-pytania" class="section level1">
-<h1>4. Interpretacja i pytania</h1>
-<p><strong>Przykład.</strong> rho=−.25 oznacza słabą do umiarkowanej
-monotoniczną tendencję: wraz z wyższą samooceną czas bywa krótszy.
-Nachylenie −1,4 min/punkt opisuje liniową zmianę przewidywanego czasu,
-nie indywidualną gwarancję.</p>
-<p><strong>Pułapki.</strong> Pułapki to przyczynowość z korelacji,
-ignorowanie znaku skali czasu, ekstrapolacja poza 1–5, p bez wykresu, R2
-jako jakość całego badania, usuwanie punktu wpływowego bez reguły i
-wybór metody po p.</p>
-<p><strong>Pytanie do pracy.</strong> Odczytaj tabelę korelacji i
-regresji w kolejności N, efekt, CI, statystyka, p, p_perm, nachylenie i
-R2. Zapisz jedno zdanie wyniku, jedno ograniczenie i warunkową
-rekomendację dla usługi.</p>
-<div id="dalszy-krok" class="section level2">
-<h2>Dalszy krok</h2>
-<p>C08 wykona analizę samooceny i czasu. C09 zaplanuje indywidualny
-projekt, a C10 połączy dwa wyniki, ograniczenia, wersje i oddanie w
-spójny raport Markdown.</p>
+<div id="dwa-losowania-dwa-pytania" class="section level1">
+<h1>Dwa losowania, dwa pytania</h1>
+<p>W permutacji przestawiamy y względem x. Zachowujemy rozkłady,
+zmieniamy parowanie pod hipotezą niezależności i wymienialności. W Monte
+Carlo dwustronne p ma postać
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mi>B</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(k+1)/(B+1)</annotation></semantics></math>,
+gdzie k liczy
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msup><mi>r</mi><mo>*</mo></msup><mo stretchy="false" form="prefix">|</mo><mo>≥</mo><mo stretchy="false" form="prefix">|</mo><mi>r</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|r^*|\geq|r|</annotation></semantics></math>.
+W pełnej enumeracji dzielimy liczbę skrajnych układów przez wszystkie
+układy bez poprawki +1.</p>
+<p>W bootstrapie losujemy całe pary ze zwracaniem. Zachowujemy relację
+wewnątrz osoby, aby przybliżyć niepewność współczynnika. Oddzielne
+losowanie kolumn zniszczyłoby tę relację. Raportujemy metodę CI i liczbę
+prawidłowych replik.</p>
+<p>Swobodne tasowanie nie uwzględnia automatycznie powtarzanych pomiarów
+ani klastrów. Zerowa korelacja i niezależność nie są równoważne dla
+wszystkich rozkładów. Zgodne p nie usuwają problemu pomiaru lub doboru
+próby.</p>
 </div>
-<div id="literatura" class="section level2">
-<h2>Literatura</h2>
-<ul>
-<li><a href="https://www.webuse.org/pdf/Hargittai-BeyondLogsSurveys2002.pdf">Hargittai,
-E. (2002). Beyond logs and surveys</a>.</li>
-<li><a href="https://ris.utwente.nl/ws/portalfiles/portal/6972069/development.pdf">van
-Deursen, Helsper &amp; Eynon. Internet Skills Scale</a>.</li>
-<li><a href="https://www.ala.org/acrl/standards/ilframework">ACRL
-Framework</a> oraz <a href="https://publications.jrc.ec.europa.eu/repository/handle/JRC128415">DigComp
-2.2</a> jako język konstruktu, nie gotowy test kursowy.</li>
-</ul>
+<div id="czytamy-model" class="section level1">
+<h1>Czytamy model</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo stretchy="false" form="prefix">(</mo><mi>Y</mi><mo>∣</mo><mi>X</mi><mo>=</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>β</mi><mn>0</mn></msub><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><mi>x</mi><mo>,</mo><mspace width="2.0em"></mspace><mover><mi>y</mi><mo accent="true">̂</mo></mover><mo>=</mo><msub><mi>b</mi><mn>0</mn></msub><mo>+</mo><msub><mi>b</mi><mn>1</mn></msub><mi>x</mi><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>e</mi><mi>i</mi></msub><mo>=</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+E(Y\mid X=x)=\beta_0+\beta_1x,\qquad
+\widehat y=b_0+b_1x,\qquad e_i=y_i-\widehat y_i.
+</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mn>1</mn></msub><annotation encoding="application/x-tex">b_1</annotation></semantics></math>
+ma jednostkę y na jednostkę x, tutaj minuty/punkt.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mn>0</mn></msub><annotation encoding="application/x-tex">b_0</annotation></semantics></math>
+dotyczy x=0, które może leżeć poza skalą. Reszta jest różnicą wyniku
+zaobserwowanego i przewidywanego, nie błędem wpisania danych.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>R</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mo>∑</mo><msubsup><mi>e</mi><mi>i</mi><mn>2</mn></msubsup></mrow><mrow><mo>∑</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo accent="true">‾</mo></mover><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
+R^2=1-\frac{\sum e_i^2}{\sum(y_i-\bar y)^2}.
+</annotation></semantics></math></p>
+<p>Dla OLS z wyrazem wolnym jest to część sumy kwadratów zmienności y
+odtworzona przez model w próbie. W regresji prostej na tych samych
+parach
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>R</mi><mn>2</mn></msup><mo>=</mo><msubsup><mi>r</mi><mi>P</mi><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">R^2=r_P^2</annotation></semantics></math>,
+nie
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>r</mi><mi>S</mi><mn>2</mn></msubsup><annotation encoding="application/x-tex">r_S^2</annotation></semantics></math>.
+Nie oznacza procentu poprawnie sklasyfikowanych osób ani siły dowodu
+przyczynowego.</p>
 </div>
+<div id="mały-przykład-wykładowy" class="section level1">
+<h1>Mały przykład wykładowy</h1>
+<p>Sześć par: x=(1,2,2,3,4,5), y=(15,12,14,10,9,6). To celowo regularne
+dane dydaktyczne, inne niż pełny zbiór C08.</p>
+<p>Pearson: r≈−0,974; t(4)≈−8,668; p≈0,000975. Wszystkie 720 permutacji
+indeksów dają 4 wyniki co najmniej tak skrajne: p_perm≈0,00556. Różne
+procedury korzystają z różnych rozkładów odniesienia.</p>
+<p>Model:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>y</mi><mo accent="true">̂</mo></mover><mo>=</mo><mn>17</mn><mo>,</mo><mn>277</mn><mo>−</mo><mn>2</mn><mo>,</mo><mn>215</mn><mi>x</mi></mrow><annotation encoding="application/x-tex">\widehat y=17{,}277-2{,}215x</annotation></semantics></math>.
+Nachylenie około −2,22 min/punkt, 95% CI [−2,93; −1,51]. To różnica
+przewidywanej średniej między poziomami x, nie efekt podniesienia
+czyjejś odpowiedzi ankietowej.</p>
+<p>Dla x=3: prognoza 10,63 min, CI średniej [9,67; 11,59], przedział
+nowej osoby [8,11; 13,16]. Szerszy przedział zawiera dodatkową zmienność
+indywidualną. Nie ekstrapolujemy na x=8 na skali 1–5.</p>
+</div>
+<div id="co-sprawdzamy-na-wykresie" class="section level1">
+<h1>Co sprawdzamy na wykresie?</h1>
+<p>Krzywiznę, rozrzut zależny od poziomu, skupienia, nietypowe punkty i
+zakres. Dźwignia dotyczy nietypowego x, reszta odchylenia y od prostej,
+wpływ zmiany dopasowania. Punktu nie usuwa się tylko dlatego, że zmienia
+p.</p>
+<p>Klasyczne przedziały regresji wymagają założeń o średniej,
+niezależności i wariancji błędów; dokładne małopróbkowe wnioskowanie t
+również ich normalności. Test normalności nie sprawdza
+reprezentatywności ani trafności narzędzia.</p>
+</div>
+<div id="trzy-zdania-do-poprawienia" class="section level1">
+<h1>Trzy zdania do poprawienia</h1>
+<p>„r=−0,30 to spadek kompetencji o 30%”. Korelacja nie jest procentem
+zmiany, a użyteczność katalogu nie jest całym konstruktem
+kompetencji.</p>
+<p>„r=1 dowodzi trafnej samooceny”. Można idealnie zachować kolejność i
+zawyżać każdy wynik o 20 punktów procentowych. Korelacja nie mierzy
+zgodności poziomów.</p>
+<p>„CI obejmuje zero, więc nie ma żadnego związku”. Przedział pokazuje
+niepewność konkretnego parametru; dodatkowo liniowa miara może pomijać
+nieliniowy wzorzec.</p>
+</div>
+<div id="akapit-wyniku" class="section level1">
+<h1>Akapit wyniku</h1>
+<p>Podaj N kompletnych par, miarę, CI i jego metodę, odpowiedni test i
+p, p_perm i B. Dla regresji dodaj nachylenie z jednostką i CI, R² oraz
+ograniczenie diagnostyczne. Następnie odpowiedz na pytanie merytoryczne
+bez zamiany związku w przyczynę.</p>
+<p>Kontekst: Hargittai (2002), Internet Skills Scale, DigComp 2.2 i
+ACRL. Odsyłacze: <a href="../wspolne/literatura.md">bibliografia
+kursu</a>. C08 rozwija odczyt wyników, C09 planuje argument, C10
+sprawdza raport i jego odtwarzalność.</p>
+<p>Generatywna SI nie zmienia reguł odczytu: sprawdź nazwę konstruktu,
+liczby, N, metodę CI i zgodność czasownika z projektem. Zdanie „p=0,08
+oznacza 8% szans braku efektu” jest błędne niezależnie od jego autora.
+Nie dopisuj brakujących wyników; interpretację piszesz samodzielnie.</p>
+</div>
+<div id="mapa-rozwinięć-bez-dodatkowego-zadania" class="section level1">
+<h1>Mapa rozwinięć — bez dodatkowego zadania</h1>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Obraz lub model</th>
+<th>Co odczytujemy?</th>
+<th>Główna pułapka</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi mathvariant="normal">exp</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>c</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a+b\exp(-cx)</annotation></semantics></math></td>
+<td>Zmienne tempo spadku średniej czasu</td>
+<td>Asymptota nie jest zmierzonym minimum</td>
+</tr>
+<tr class="even">
+<td>Wiolina</td>
+<td>Gęstość i kształt rozkładu</td>
+<td>Szerokość nie musi oznaczać N</td>
+</tr>
+<tr class="odd">
+<td>Pareto</td>
+<td>Uporządkowane częstości i kumulację</td>
+<td>Najczęstsza bariera nie musi być najpoważniejsza</td>
+</tr>
+<tr class="even">
+<td>Koło</td>
+<td>Rozłączny podział jednej całości</td>
+<td>Wielokrotny wybór osób nie sumuje się do 100%</td>
+</tr>
+<tr class="odd">
+<td>Mapa cieplna</td>
+<td>Wartość według wspólnej skali koloru</td>
+<td>Ten sam procent może mieć inne N</td>
+</tr>
+<tr class="even">
+<td>Wydajność</td>
+<td>Opóźnienie i przepustowość przy obciążeniu</td>
+<td>Czas serwera nie jest czasem pracy osoby</td>
+</tr>
+<tr class="odd">
+<td>Reszty cząstkowe</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mi>i</mi></msub><mo>+</mo><msub><mi>b</mi><mn>1</mn></msub><msub><mi>x</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">e_i+b_1x_i</annotation></semantics></math>
+względem x</td>
+<td>Składnik modelu nie jest całkowitym czasem ani dowodem
+przyczynowym</td>
+</tr>
+</tbody>
+</table>
+<p>Pełny wykład zawiera gotowe wykresy, liczby i komentarze do każdego
+przypadku. Galeria służy rozpoznawaniu sposobów prezentacji, nie oznacza
+obowiązku stosowania wszystkich metod w projekcie.</p>
 </div>
 
 

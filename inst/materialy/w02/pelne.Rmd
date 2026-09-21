@@ -1,5 +1,5 @@
 ---
-title: 'W02 — Język danych, pomiar i opis'
+title: 'W02 — Język danych: rozkład, miara i sens pomiaru'
 subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
 author: 'Marek Deja'
 date: '2026/27'
@@ -9,137 +9,240 @@ papersize: a4
 geometry: margin=2cm
 ---
 
-# 1. Odcinek wspólnej opowieści
+Przykłady liczbowe w wykładzie są obliczane przez towarzyszący skrypt. Małe serie są odrębnymi demonstracjami syntetycznymi, a nie wynikami badań cytowanych w bibliografii. Podczas wykładu czytamy wynik i uzasadnienie; samodzielna praca z gotowymi funkcjami pojawi się w C03 i C04.
 
-Ta sama osoba może wysoko oceniać własne kompetencje i jednocześnie długo wykonywać zadanie. Pomiar ankietowy oraz obserwacyjny są różnymi oknami na zachowanie. Dobry opis nie zaciera tej różnicy i nie sprowadza tabeli do jednej średniej.
+```{r przygotowanie, include=FALSE}
+source("analiza.R", local = knitr::knit_global(), encoding = "UTF-8")
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+                     fig.width = 6, fig.height = 3.2)
+```
 
-**Pytanie wykładu:** Jak opisać samoocenę, obserwowany czas, powodzenie i wybór kanału tak, aby miara odpowiadała skali i właściwemu mianownikowi?
+# Jedna średnia nie opisuje całej usługi
 
-| Minuty | Część |
-|---:|---|
-| 0–15 | problem i ramy LIS |
-| 15–35 | projekt, pomiar i symbole |
-| 35–55 | metoda oraz przykład |
-| 55–70 | tor klasyczny i permutacyjny |
-| 70–85 | interpretacja, błędy i dyskusja |
-| 85–90 | most do ćwiczeń |
+Zespół biblioteki otrzymuje komunikat: „Średni czas wyszukiwania wynosi sześć minut”. Pierwsza osoba uważa, że niemal każdy znajduje dokument w sześć minut. Druga zakłada, że połowa potrzebuje mniej czasu, a połowa więcej. Trzecia chce pomnożyć sześć minut przez liczbę obsługiwanych zadań. Te trzy odczytania nie są równoważne.
 
-\newpage
+Średnia jest sumą podzieloną przez liczbę wartości. Nie mówi sama, ile osób miało wynik bliski średniej ani gdzie przebiega połowa uporządkowanej próby. Może być użyteczna do myślenia o łącznym nakładzie czasu, ale nie zastępuje opisu jego zróżnicowania. W bibliotece niewielka grupa bardzo długich prób może być ważnym problemem, nawet gdy większość użytkowników działa szybko.
 
-# 2. Dlaczego to jest pytanie LIS
+W W01 ustaliliśmy pytanie i sposób pomiaru. W C02 sprawdziliśmy, które rekordy i wartości pozostają w analizie. Teraz pytamy, jak opisać ich rozkład, żeby nie zgubić informacji ważnej dla działania usługi. C03 zastosuje ten język do czasu i powodzenia. C04 sprawdzi, jak tworzymy wynik z kilku pozycji ankiety.
 
-DigComp 2.2 i ACRL Framework pomagają rozdzielić wyszukiwanie, ocenę, wykorzystanie i refleksję nad informacją. Internet Skills Scale oraz badania bezpośredniego wykonania pokazują, że deklaracja i umiejętność nie są tożsame. Pozycje kursowe wykorzystują ten język, ale nie kopiują zwalidowanej skali.
+Na 90 minut wykładu składa się około 10 minut powrotu do problemu, 25 minut miar położenia i rozproszenia, 20 minut rozkładów i wykresów, 20 minut pomiaru deklaracji oraz 15 minut interpretacji przypadków. Pełny tekst jest materiałem do ponownego przeczytania po spotkaniu.
 
-Library and information science bada relację osób, informacji, technologii i instytucji. W kursie nie tworzymy wyniku o konkretnej bibliotece. Używamy syntetycznego badania, aby ćwiczyć przejście od konstruktu do wskaźnika oraz od liczby do ostrożnego wniosku.
+# Najpierw ustalamy, co opisuje rozkład
 
-\newpage
+Rozkład zmiennej mówi, jakie wartości występują i jak często. Rozkład czasu dotyczy minut wykonania zadania. Rozkład oceny dotyczy kategorii odpowiedzi. Rozkład powodzenia dotyczy liczebności dwóch wyników. Zanim narysujemy wykres, musimy znać poziom obserwacji i mianownik.
 
-# 3. Pytanie przed metodą
+Szereg punktowy zestawia poszczególne wartości lub kategorie z liczebnościami. Jest naturalny dla ocen 1–5. Szereg przedziałowy grupuje wartości w przedziały, np. czasy od 0 do 5, od 5 do 10 i od 10 do 15 minut. Grupowanie upraszcza obraz, ale ukrywa położenie poszczególnych osób wewnątrz przedziału.
 
-Jak opisać samoocenę, obserwowany czas, powodzenie i wybór kanału tak, aby miara odpowiadała skali i właściwemu mianownikowi?
+Poniższa tabela przedstawia dwadzieścia odpowiedzi na pojedynczą pozycję oceny. Liczebność mówi, ile osób wybrało kategorię, procent odnosi tę liczbę do wszystkich ważnych odpowiedzi. Procent skumulowany odpowiada na inne pytanie: jaki udział odpowiedzi nie przekracza danej kategorii.
 
-Pytanie powinno wskazywać jednostkę, wynik, porównanie lub związek, populację i okres. Hipoteza dodaje przewidywany kierunek wtedy, gdy ma podstawę teoretyczną. Analiza eksploracyjna też jest dopuszczalna, lecz trzeba ją nazwać i nie przedstawiać późniejszego odkrycia jako wcześniejszej prognozy.
+```{r rozklad-ocen}
+knitr::kable(oceny, digits = 1)
+```
 
-\newpage
+Nie należy przedstawiać skumulowanych odsetków dla kategorii bez uzasadnionego porządku. Dla ocen 1–5 kolejność jest określona. Dla kanałów „e-mail”, „strona WWW” i „kontakt osobisty” suma „do kanału trzeciego” zależy od arbitralnego ustawienia etykiet i zwykle nie ma znaczenia badawczego.
 
-# 4. Projekt wyznacza granicę wniosku
+Częstość względną kategorii $j$ zapisujemy jako $f_j=n_j/n$. Suma częstości wynosi 1, jeśli kategorie są rozłączne i obejmują wszystkie ważne odpowiedzi. Przy wielokrotnym wyborze jedna osoba może wejść do kilku liczników, więc suma procentów respondentów może przekroczyć 100%. Tę różnicę będziemy odczytywać w C04.
 
-Pomiar zaczyna się od definicji konstruktu i mapy: konstrukt → wymiar → wskaźnik → pozycja lub obserwacja → kod. Trafność dotyczy interpretacji wyniku, rzetelność jego powtarzalności, a błąd pomiaru może powstać w instrukcji, zadaniu, urządzeniu lub odpowiedzi.
+# Średnia: suma, jednostka i wrażliwość
 
-Losowość doboru dotyczy uogólnienia na populację, a losowy przydział warunku wniosku przyczynowego. Dostępna próba nie staje się reprezentatywna przez duże N. Braki, odmowa udziału i samoselekcja mogą zmieniać obraz nawet przy poprawnie wykonanym teście.
+$$
+\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i.
+$$
 
-\newpage
+Wzór mówi, żeby dodać ważne pomiary i podzielić przez ich liczbę. Jeśli mierzymy czas w minutach, średnia pozostaje w minutach. Nie jest liczbą osób, procentem ani prawdopodobieństwem. Uczymy się czytać symbol razem z jednostką.
 
-# 5. Pomiar: samoocena i obserwacja
+W serii A czasy wynoszą 2, 4, 6, 8 i 10 minut. Suma 30 podzielona przez pięć daje 6 minut. W serii B zmieniamy wyłącznie ostatni czas z 10 na 30 minut. Suma rośnie do 50, a średnia do 10 minut. Cztery osoby działają dokładnie tak samo jak wcześniej, lecz zmiana jednej długiej próby przesuwa średnią całego zbioru.
 
-Skala nominalna klasyfikuje, porządkowa ustawia kolejność, a ilorazowa zachowuje sens zera i ilorazów. Pozycja Likerta jest porządkowa. Średni indeks wielu ukierunkowanych pozycji bywa analizowany ilościowo po jawnym uzasadnieniu. Czas ma jednostkę minut.
+To nie oznacza, że średnia „kłamie”. Odpowiada poprawnie na swoje pytanie o sumę w przeliczeniu na obserwację. Jeżeli długie zadanie rzeczywiście obciąża użytkownika lub personel wsparcia, jego udział w średniej może być istotny. Błędem jest przypisanie średniej własności, których nie ma, np. wyniku większości osób.
 
-Wspólny zbiór łączy sześć pozycji, częstość korzystania, kanały, grupę, obserwowany czas i powodzenie zadania. Pozycje są przykładem dydaktycznym. Nie przypisujemy im walidacji ani nie wnioskujemy o całej kompetencji na podstawie jednego zadania.
+Wykres porównuje obie serie na wspólnej osi czasu. Niebieskie punkty oznaczają osoby, a pomarańczowy romb średnią. Zwróć uwagę, że w serii B średnia znajduje się poza skupieniem czterech szybszych obserwacji.
 
-\newpage
+```{r serie}
+wykres_serii
+```
 
-# 6. Wzór jako zdanie
+## Średnia dwóch grup wymaga wag
 
-$$I_i=\frac{1}{m_i}\sum_{j=1}^{6}x^{*}_{ij}, \quad m_i\geq5; \qquad \bar{x}=\frac{1}{N}\sum x_i$$
+Jeśli w jednej grupie jest 10 osób ze średnią 4 minuty, a w drugiej 30 osób ze średnią 8 minut, ogólna średnia nie wynosi 6 minut. Druga grupa wnosi trzy razy więcej pomiarów. Łącznie mamy $10\cdot4+30\cdot8=280$ minut, więc średnia czterdziestu osób wynosi 7 minut.
 
-| Symbol | Nazwa | Znaczenie |
+$$
+\bar{x}_{\mathrm{ogółem}}
+=\frac{n_1\bar{x}_1+n_2\bar{x}_2}{n_1+n_2}.
+$$
+
+Wagi są tu liczebnościami ważnych pomiarów, a nie oceną ważności grup. Błąd nieważonego uśredniania może pojawić się, gdy porównujemy filie biblioteki, kierunki studiów albo kanały obsługi o różnych liczbach użytkowników. Równe traktowanie dwóch średnich nie musi oznaczać równego traktowania osób.
+
+# Mediana i kwartyle: pytania o kolejność
+
+Mediana dzieli uporządkowane wartości w środku. Dla pięciu czasów wybieramy trzeci. W obu naszych seriach jest to 6 minut. Długi czas 30 minut zmienił średnią, ale nie zmienił pozycji środkowej. Dlatego mediana bywa przydatna, gdy chcemy opisać środek skośnego rozkładu czasu.
+
+Dla parzystej liczby pomiarów standardowo uśredniamy dwie środkowe wartości. Mediana czasów 2, 4, 8 i 10 minut wynosi 6 minut, chociaż żadna osoba nie miała dokładnie takiego wyniku. Zdanie „osoba medianowa potrzebowała sześciu minut” należy wtedy traktować jako skrót, a nie opis istniejącego rekordu.
+
+Kwartyle wyznaczają położenia około jednej czwartej i trzech czwartych uporządkowanego rozkładu. W małych próbach różne konwencje interpolacji mogą dawać nieco inne wartości. W naszych obliczeniach używamy domyślnej konwencji `quantile()` w R. Podanie metody jest szczególnie ważne, kiedy próbujesz ręcznie odtworzyć kwartyle kilku liczb.
+
+Zakres międzykwartylowy to:
+
+$$IQR=Q_3-Q_1.$$
+
+Mierzy szerokość środkowej części rozkładu, a nie niepewność średniej. Jeśli $Q_1=4$ i $Q_3=8$ minut, IQR wynosi 4 minuty. Nie piszemy, że „95% użytkowników potrzebowało od 4 do 8 minut”; kwartyle nie definiują takiego zakresu.
+
+Percentyl 90. może odpowiadać pytaniu o czas, którego nie przekracza większość prób. W małej próbie jego oszacowanie jest jednak bardzo wrażliwe na pojedyncze obserwacje i sposób interpolacji. Nie należy formułować precyzyjnej normy obsługi na podstawie pięciu czasów tylko dlatego, że program zwrócił wynik z dwoma miejscami po przecinku.
+
+# Zróżnicowanie: dlaczego średnie mogą nie wystarczyć
+
+Dwie grupy mogą mieć średnią 6 minut, a bardzo różne czasy pojedynczych osób. W pierwszej wszystkie pomiary wynoszą 6. W drugiej połowa osób działa bardzo szybko, a połowa długo. Sama średnia nie wskazuje, czy usługa działa podobnie dla wszystkich.
+
+Wariancja w próbie opiera się na kwadratach odchyleń od średniej:
+
+$$
+s^2=\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1},
+\qquad
+s=\sqrt{s^2}.
+$$
+
+Czytamy kolejno: odejmij średnią od każdej wartości, podnieś odchylenia do kwadratu, dodaj je i podziel przez $n-1$. Pierwiastek daje odchylenie standardowe. Wariancja czasu ma jednostkę minut kwadratowych, a odchylenie standardowe wraca do minut.
+
+Dlaczego nie sumujemy zwykłych odchyleń? Dodatnie i ujemne odchylenia od średniej znoszą się. Ich suma wynosi zero także wtedy, gdy osoby znacznie się różnią. Kwadraty zachowują informację o wielkości odchyleń i nadają większą wagę dużym odległościom.
+
+Tabela pokazuje składniki dla serii A. Wskaż sumę ostatniej kolumny. Dzieląc 40 przez cztery, otrzymujemy wariancję 10, a po spierwiastkowaniu odchylenie standardowe około 3,16 minuty.
+
+```{r odchylenia}
+knitr::kable(skladniki)
+```
+
+Dzielenie przez $n-1$ wiąże się z estymacją średniej z tych samych danych. Po ustaleniu średniej i $n-1$ odchyleń ostatnie jest już wyznaczone warunkiem sumy zero. Korekta daje nieobciążony estymator wariancji przy zwykłych założeniach niezależnych obserwacji z tej samej populacji; nie oznacza, że sam pierwiastek jest dokładnie nieobciążonym estymatorem odchylenia.
+
+W serii B wariancja wynosi 130, a SD około 11,40 minuty. Mediana i IQR pozostały takie same jak w A. Te miary akcentują różne fragmenty danych: SD reaguje na wszystkie odległości od średniej, IQR na położenie środkowych kwartyli.
+
+Poniższe podsumowanie zestawia te wyniki. Czytając je, nie wybieraj miary tylko dlatego, że daje spokojniejszy obraz. Najpierw powiedz, czy pytasz o przeciętny nakład czasu, środek rozkładu czy jego zróżnicowanie.
+
+```{r porownanie-miar}
+knitr::kable(opis_serii, digits = 2)
+```
+
+# SD nie jest błędem standardowym
+
+Odchylenie standardowe opisuje rozrzut pomiarów między osobami. Błąd standardowy opisuje zmienność estymatora między hipotetycznymi powtórzeniami próby. Te wielkości mogą mieć tę samą jednostkę, ale inne znaczenie.
+
+Dla średniej z niezależnych obserwacji zwykłe oszacowanie błędu standardowego ma postać $SE=s/\sqrt{n}$. Przy większej próbie SE może maleć, mimo że osoby nadal bardzo różnią się czasem. Nie wolno wtedy pisać, że użytkownicy „działają coraz bardziej podobnie” tylko dlatego, że średnia jest oszacowana precyzyjniej.
+
+W03 rozwinie rolę SE w przedziałach i testach. Na etapie opisu próby podajemy SD albo IQR jako miarę zróżnicowania danych. Jeśli wykres pokazuje kreski niepewności średniej, podpis musi wyjaśniać, czy są to SE, czy przedziały ufności. Nie nazywamy ich zakresem czasów użytkowników.
+
+# Rozkład, asymetria i granice intuicji
+
+Czas nie może być dowolnie ujemny, a nieliczne trudne próby mogą trwać bardzo długo. Dlatego w badaniach wyszukiwania często rozważamy rozkłady z prawym ogonem. W konkretnych danych trzeba ten kształt obejrzeć, a nie zakładać go wyłącznie na podstawie nazwy zmiennej.
+
+W rozkładzie z kilkoma dużymi wartościami średnia często przewyższa medianę. Nie jest to jednak definicja prawostronnej asymetrii ani niezawodny test kształtu. Rozkłady wielomodalne, dyskretne lub nietypowe mogą łamać proste reguły ze schematycznych rysunków. Zestawiamy miary z wykresem.
+
+Rozkład symetryczny nie musi mieć jednego szczytu. Dwie symetrycznie położone grupy użytkowników mogą tworzyć dwa skupienia. W takim przypadku pojedyncza średnia leży pomiędzy nimi i może nie opisywać wielu realnych osób. Warto sprawdzić, czy dane mieszają odmienne zadania, urządzenia lub poziomy doświadczenia.
+
+Minimum i maksimum pokazują skrajne zaobserwowane wartości, ale są silnie zależne od liczebności. Większa próba daje więcej okazji do zaobserwowania bardzo długiego czasu. Porównanie maksimów dwóch grup bez podania ich N może więc prowadzić do zbyt szybkiej diagnozy.
+
+# Wykres odpowiada na określone pytanie
+
+Histogram pokazuje liczebności lub gęstość w przedziałach wartości. Szerokość przedziału wpływa na wygląd: drobne przedziały uwidaczniają szczegóły, ale także przypadkowe nierówności; szerokie wygładzają obraz i mogą połączyć odrębne skupienia. Nie szukamy jednego ustawienia, które „udowodni normalność”.
+
+Na osi gęstości pole pod słupkami lub krzywą, a nie sama wysokość, odpowiada udziałowi obserwacji. Wysokość gęstości może przekraczać 1 i nie jest wtedy prawdopodobieństwem większym niż 100%. Przy czasie mierzonym w minutach gęstość ma jednostkę odwrotną do minuty.
+
+Wykres pudełkowy pokazuje medianę, kwartyle i wąsy według przyjętej konwencji. W popularnej wersji wąsy sięgają najdalszych obserwacji mieszczących się w granicach $Q_1-1{,}5IQR$ oraz $Q_3+1{,}5IQR$. Punkty poza nimi nie są automatycznie błędami. Pudełko może też ukryć dwa skupienia, dlatego warto zestawić je z punktami albo histogramem.
+
+Dystrybuanta empiryczna odpowiada na pytanie: „jaka część obserwacji nie przekracza tej wartości?”. Zapisujemy ją jako:
+
+$$
+\widehat F(t)=\frac{1}{n}\sum_{i=1}^{n}\mathbf{1}(x_i\leq t).
+$$
+
+Symbol $\mathbf{1}$ wnosi jedynkę, jeśli warunek w nawiasie jest spełniony, i zero w przeciwnym razie. Dla pięciu czasów 2, 4, 6, 8 i 30 minut wartość $\widehat F(8)$ wynosi $4/5=0{,}8$. Czytamy: „80% zarejestrowanych czasów nie przekroczyło ośmiu minut”. Nie znaczy to jeszcze, że wszystkie te próby zakończyły się powodzeniem.
+
+Wykres słupkowy kategorii pokazuje liczebności albo procenty. Jeśli porównujemy grupy różnej wielkości, same wysokości słupków liczby powodzeń mogą być mylące. Większa grupa może mieć więcej powodzeń i jednocześnie niższy odsetek sukcesów. Podpis powinien wskazywać mianownik.
+
+| Wykres | Główne pytanie | Typowa pułapka |
 |---|---|---|
-| $x^{*}_{ij}$ | pozycja po ukierunkowaniu | punkty 1–5 |
-| $m_i$ | ważne pozycje osoby | co najmniej 5 |
-| $I_i$ | indeks samooceny | punkty 1–5 |
-| $\bar{x},Me$ | średnia i mediana | położenie rozkładu |
+| Histogram | Gdzie skupiają się czasy i jaki mają kształt? | Uznanie wyglądu zależnego od koszyków za dowód |
+| Pudełkowy | Jak różnią się położenie i rozrzut grup? | Usuwanie punktów poza wąsami bez dowodu błędu |
+| Dystrybuanta empiryczna | Jaki odsetek nie przekracza progu? | Pominięcie powodzenia przy interpretacji czasu |
+| Słupki kategorii | Ile osób lub jaki odsetek wybrał odpowiedź? | Porównywanie liczników przy różnych mianownikach |
+| Rozrzut | Jak współwystępują dwie cechy tej samej osoby? | Przyczynowa interpretacja samego układu punktów |
 
-Odczyt wzoru zaczyna się od nazwania wyniku, następnie składników, punktu odniesienia i jednostki. Student nie musi ręcznie odtwarzać algorytmu. Ma rozpoznać, co zwiększa statystykę, co oznacza znak i gdzie w gotowym wyniku znajduje N, efekt oraz niepewność.
+# Skala odpowiedzi a narzędzie pomiarowe
 
-\newpage
+Pięć kategorii pod jedną pozycją nie jest tym samym co wielopozycyjna skala. Pojedyncza pozycja pyta o określony aspekt. Wynik złożony agreguje kilka odpowiedzi według reguły, która wymaga uzasadnienia. Sama liczba pozycji nie zapewnia trafności.
 
-# 7. Tok analizy
+Rozważ stwierdzenia „potrafię dobrać słowa kluczowe” i „nazwy filtrów są zrozumiałe”. Pierwsze dotyczy samooceny działania, drugie oceny interfejsu. Mogą ze sobą korelować, ale nie mierzą automatycznie tej samej cechy. Jeśli je uśrednimy, musimy nazwać wynik tak, aby nie zgubić tej różnicy.
 
-Opis liczbowy obejmuje N, braki, miarę położenia i zróżnicowania. Dla skośnego czasu zestawiamy średnią z medianą, SD z IQR oraz histogram. Dla kategorii podajemy liczebność i odsetek z jawnym mianownikiem.
+W S02 wynik opisujemy jako dydaktyczny indeks deklarowanej użyteczności katalogu. Zawiera on również elementy oceny własnego radzenia sobie. Nie jest testem całej kompetencji cyfrowej. Jego interpretację będziemy kontrolować przed każdym wnioskiem o związku z czasem i powodzeniem.
 
-Kolejność jest stała: pytanie → projekt → pomiar → dane i braki → opis → estymata → niepewność → wniosek → ograniczenie. Przestawienie tej kolejności sprzyja dobieraniu pytania do wyniku i raportowaniu przypadkowej liczby bez znaczenia badawczego.
+DigComp 2.2 porządkuje obszary kompetencji cyfrowych i przykłady wiedzy, umiejętności oraz postaw. ACRL Framework dostarcza perspektywy pracy z informacją, w tym wyszukiwania jako strategicznego działania i oceny autorytetu w kontekście. Obie ramy mogą pomagać w projektowaniu zadań, lecz żadna nie nadaje automatycznie własnemu zestawowi pytań statusu zwalidowanej skali. [DigComp 2.2](https://publications.jrc.ec.europa.eu/repository/handle/JRC128415), [ACRL Framework](https://www.ala.org/acrl/standards/ilframework).
 
-\newpage
+Internet Skills Scale jest przykładem osobnej pracy nad konstrukcją i walidacją narzędzia. Korzystamy z niej jako lektury o rozróżnianiu wymiarów umiejętności. Nie nazywamy naszych pozycji wersją ISS i nie przypisujemy im dowodów uzyskanych dla tamtej skali. [van Deursen, Helsper i Eynon, 2016](https://doi.org/10.1080/1369118X.2015.1078834).
 
-# 8. Przykład prowadzony
+# Czytanie wzoru indeksu
 
-Wielokrotny wybór kanałów może dać sumę odsetków większą niż 100%, ponieważ jedna osoba wybiera kilka opcji. Mianownik powinien obejmować osoby z kompletnym zestawem odpowiedzi 0/1. Brak w jednym kanale nie jest automatycznie odpowiedzią „nie”.
+Niech $O_i$ oznacza zbiór pozycji z ważną odpowiedzią osoby $i$, a $m_i=|O_i|$ ich liczbę. Po ukierunkowaniu pozycji średni indeks zapisujemy:
 
-Przykład czytamy w trzech warstwach. Warstwa liczbowa nazywa estymatę i jednostkę. Warstwa badawcza odpowiada na pytanie o zachowanie lub usługę. Warstwa krytyczna wskazuje ograniczenie projektu, pomiaru i syntetyczności. Każda z nich jest potrzebna do pełnego wyniku.
+$$
+I_i=
+\begin{cases}
+\displaystyle\frac{1}{m_i}\sum_{j\in O_i}x^*_{ij}, & m_i\geq5,\\
+\mathrm{NA}, & m_i<5.
+\end{cases}
+$$
 
-\newpage
+Czytamy: „dla osoby z co najmniej pięcioma ważnymi odpowiedziami uśrednij jej ważne, zgodnie ukierunkowane pozycje; w przeciwnym razie pozostaw brak indeksu”. Sumowanie tylko po $O_i$ jest istotne: nie wstawiamy zera za brak i nie dzielimy każdej sumy automatycznie przez sześć.
 
-# 9. Tor klasyczny
+Gwiazdka przy $x^*_{ij}$ oznacza tutaj odpowiedź po uzgodnieniu kierunku, a nie istotność statystyczną. W negatywnie sformułowanej pozycji 1–5 stosujemy $x^*=6-x$. Odpowiedź 1 staje się 5, 2 staje się 4, środek pozostaje 3. Brak nadal jest brakiem.
 
-Opis liczbowy obejmuje N, braki, miarę położenia i zróżnicowania. Dla skośnego czasu zestawiamy średnią z medianą, SD z IQR oraz histogram. Dla kategorii podajemy liczebność i odsetek z jawnym mianownikiem.
+Reguła pięciu z sześciu pozycji jest jawną decyzją dydaktycznego indeksu. Nie jest uniwersalną zasadą skal psychologicznych. W rzeczywistym narzędziu stosujemy reguły wynikające z jego konstrukcji i dostępnych dowodów; przy nowym narzędziu badamy konsekwencje przyjętej reguły.
 
-Klasyczny wynik może zawierać statystykę t, chi-kwadrat, r, F lub współczynnik regresji. Stopnie swobody mówią, z jakiego rozkładu odniesienia korzysta procedura. Wartość p opisujemy warunkowo przy H0; nie mierzy ona wielkości efektu, jakości pomiaru ani prawdopodobieństwa powtórzenia wyniku.
+Jeśli jedna osoba odpowiedziała na wszystkie sześć pozycji, a druga na pięć, ich średnie odnoszą się do nieco innego zestawu treści. Dopuszczenie takiego porównania zakłada, że różnica nie przekreśla interpretacji wyniku. W C04 zobaczymy, jak ten problem opisać zamiast ukrywać go za pojedynczą liczbą.
 
-\newpage
+# Trafność, rzetelność i błąd pomiaru
 
-# 10. Tor permutacyjny i resampling
+Trafność dotyczy uzasadnienia interpretacji wyniku w określonym zastosowaniu. Czy wynik ma znaczyć samoocenę umiejętności, opinię o systemie czy poprawność działania? Dowody mogą obejmować treść pozycji, sposób rozumienia pytań, strukturę wyników i związki z innymi pomiarami. Jeden współczynnik nie zamyka tej oceny.
 
-Na etapie pomiaru nie używamy testu do naprawiania złych wskaźników. Permutacja odpowie później na pytanie o losowy związek przy zachowanych rozkładach. Najpierw musi być jasne, co zostało zmierzone i które braki są dopuszczalne.
+Rzetelność dotyczy precyzji lub spójności pomiaru w odpowiednim modelu. Narzędzie może dawać powtarzalne wyniki i systematycznie mierzyć coś innego, niż zamierzaliśmy. Podobnie stoper może zawsze spóźniać start o tę samą liczbę sekund: powtarzalność nie usuwa obciążenia.
 
-Bootstrap odtwarza próbki empiryczne, aby ocenić niepewność estymaty. Permutacja narzuca model zerowy przez zmianę znaków, etykiet, par lub tabel. Oba korzystają z losowania komputerowego, ale odpowiadają na inne pytania. Zakres kursu kończy się na zestawieniu tych dwóch torów.
+Alfa Cronbacha odnosi się do struktury współzmienności pozycji i jest interpretowana przy określonych założeniach. Wysoka alfa może wynikać także z dużej liczby podobnych pytań. Nie dowodzi jednowymiarowości, trafności ani poprawnego tłumaczenia narzędzia. W rdzeniu kursu ważniejsze jest przeczytanie treści pozycji i reguły indeksu niż automatyczne uzyskanie wysokiego współczynnika.
 
-\newpage
+Pomiar obserwacyjny również może być błędny. Dwoje oceniających może różnie rozumieć, co oznacza „znaleźć właściwe źródło”. Dlatego potrzebujemy kryteriów: zgodny tytuł, właściwe wydanie, pełny tekst, poprawna identyfikacja autora lub inny uzasadniony warunek. Wybór kryterium definiuje wynik i powinien poprzedzać ogląd danych.
 
-# 11. Efekt, przedział i znaczenie
+# Krótkie porównanie sposobów skalowania
 
-Różnica między średnią i medianą opisuje asymetrię, SD i IQR zróżnicowanie. Nie są to jeszcze efekty przyczynowe. Jednostka miary pozwala ocenić, czy zmiana o dwie minuty lub pół punktu jest ważna dla usługi.
+W kursie ćwiczymy przede wszystkim pozycje typu Likerta i prosty indeks. Pozostałe sposoby skalowania poznajemy jako odmienne pomysły na relację między odpowiedzią i cechą. Nie są dodatkowymi wymaganymi analizami projektu.
 
-Efekt prowadzimy przed p. Najpierw pytamy o kierunek i wielkość w naturalnej jednostce, potem o standaryzację, a następnie o przedział. Znaczenie praktyczne ustala kontekst instytucji, nie uniwersalna etykieta. Szeroki przedział wymaga języka dopuszczającego różne wielkości.
+| Podejście | Idea | Pytanie krytyczne |
+|---|---|---|
+| Pozycje typu Likerta | Stopień zgody lub częstości; możliwy wynik złożony | Czy pozycje odnoszą się do uzasadnionego wspólnego konstruktu? |
+| Skala dystansu Bogardusa | Uporządkowane formy akceptacji relacji społecznych | Czy przyjęta kolejność ma sens w danym kontekście? |
+| Skalowanie Guttmana | W idealnym układzie odpowiedź na „trudniejszy” element implikuje odpowiedzi na wcześniejsze | Czy wzór kumulacyjny jest rzeczywiście obecny w danych? |
+| Podejście Thurstone'a | Skalowanie treści stwierdzeń, m.in. przez oceny sędziów i pozornie równe odstępy | Jak uzasadniono położenie stwierdzeń na kontinuum? |
 
-\newpage
+W przykładzie kompetencji moglibyśmy oczekiwać, że osoba potrafiąca wykonać złożoną strategię wyszukiwania umie również wskazać słowa kluczowe. Taka intuicja przypomina myślenie kumulacyjne, ale nie dowodzi skali Guttmana. Rzeczywiste strategie mogą być nierówne: ktoś świetnie ocenia źródła, lecz słabo zna konkretny interfejs.
 
-# 12. Jak nie pisać wyniku
+Historyczne punkty odniesienia to [Bogardus (1925)](https://brocku.ca/MeadProject/Bogardus/Bogardus_1925c.html), [Thurstone (1928)](https://brocku.ca/MeadProject/Thurstone/Thurstone_1928a.html) oraz [Guttman (1944)](https://doi.org/10.2307/2086306). Zestawienie pokazuje różnice założeń pomiarowych; nie ustanawia rankingu „lepszych” skal.
 
-Pułapki obejmują kodowanie braku jako zera, odwrócenie pozycji po policzeniu indeksu, średnią z nazw kategorii, wykres bez jednostki, opis średniej jako wyniku większości i nazywanie kursowego indeksu walidowanym testem.
+# Od opisu do decyzji instytucji
 
-Unikamy zdań: „H0 jest prawdziwa”, „95% wyników leży w CI”, „grupy są takie same”, „korelacja pokazuje wpływ” i „V oznacza procent”. Poprawione zdanie zawiera N, estymatę, jednostkę, CI, statystykę, p, efekt i granicę wniosku w zakresie potrzebnym danej metodzie.
+Wyobraź sobie, że średni czas jest długi, mediana krótka, a histogram ma prawy ogon. Możliwa interpretacja brzmi: większość prób przebiega stosunkowo sprawnie, lecz część użytkowników napotyka duże trudności. Rekomendacją może być sprawdzenie tych sytuacji, a nie automatyczna przebudowa całej usługi.
 
-\newpage
+Jeżeli odsetek powodzeń jest wysoki, a ocena użyteczności niska, system może umożliwiać wykonanie zadania przy dużym wysiłku lub frustracji. Jeżeli ocena jest wysoka, a powodzenie niskie, użytkownicy mogą nie rozpoznawać błędu albo oceniać inny aspekt usługi. Oba wzorce wymagają dodatkowego rozpoznania. Nie ustalamy prawdy przez głosowanie, który wskaźnik wygląda korzystniej.
 
-# 13. Aktywność podczas wykładu
+W transformacji cyfrowej warto rozróżnić dostęp, użycie, jakość działania i korzyść. Liczba założonych kont mierzy coś innego niż odnalezienie informacji, a liczba odnalezionych rekordów coś innego niż poprawna decyzja na ich podstawie. W raporcie zapisujemy, na którym poziomie znajduje się nasz dowód.
 
-Oceń cztery zdania z raportu: wskaż skalę, mianownik, właściwą miarę oraz brakujące ograniczenie. Następnie porównaj, co wnosi indeks samooceny, a co obserwowany czas i powodzenie.
+# LEARN: redakcja czterech zdań
 
-Odpowiedź przedstawiamy bez uruchamiania nowego testu. Zadaniem jest dobór języka oraz argumentacja. Każda grupa wskazuje także jeden element, którego nie da się rozstrzygnąć z przedstawionych danych i jedną dodatkową informację, która rzeczywiście wzmocniłaby projekt.
+**„Średnia wynosi 10 minut, więc większość osób potrzebuje około 10 minut”.** W serii B cztery osoby mają czasy od 2 do 8 minut, a jedna 30. Poprawiona wersja podaje średnią 10 i medianę 6 minut oraz informuje o długiej próbie. Nie utożsamia średniej z najczęstszym doświadczeniem.
 
-\newpage
+**„SD wynosi 3 minuty, więc średni czas oszacowano z błędem 3 minut”.** SD opisuje zróżnicowanie pomiarów. Do precyzji średniej potrzebna jest inna wielkość, zależna także od N. Odpowiedź powinna rozdzielić rozrzut osób od niepewności estymaty.
 
-# 14. Most do ćwiczeń i projektu
+**„Indeks wynosi 4,2, zatem kompetencja wynosi 84%”.** Podzielenie wyniku skali 1–5 przez pięć nie tworzy procentu opanowanej kompetencji. Skala nie zaczyna się od zera, a punktacja nie jest proporcją rozwiązanych zadań. Należy nazwać treść indeksu i podać jego zakres.
 
-C03 zbuduje portret próby, a C04 przeprowadzi rekodację i indeks. W03 doda język niepewności, lecz zachowa rozróżnienie pomiaru od wnioskowania.
+**„Suma odpowiedzi o kanałach przekroczyła 100%, więc w danych jest błąd”.** Jeśli można wybrać kilka kanałów, suma odsetków respondentów może przekraczać 100%. Trzeba sprawdzić konstrukcję pytania i mianownik każdej opcji, a nie zmieniać liczby tak, żeby pasowały do wykresu kołowego.
 
-W projekcie każda liczba ma odpowiadać pytaniu, a każdy wniosek ma odsyłać do zapisanego pliku wyniku. Gotowy kod wyrównuje obciążenie techniczne; samodzielne pozostają wybór dozwolonego parametru, odczyt statystyki, interpretacja i krytyczna ocena.
+# Przygotowanie do C03 i C04
 
-## Literatura i ramy
+Do C03 zapamiętaj relację pytania i miary: średnia opisuje sumę na obserwację, mediana położenie środkowe, SD rozrzut względem średniej, IQR szerokość środkowej części, a odsetek licznik względem określonego mianownika. Każda wielkość potrzebuje N i jednostki lub kodowania.
 
-- [European Commission JRC (2022). DigComp 2.2](https://publications.jrc.ec.europa.eu/repository/handle/JRC128415).
-- [Association of College and Research Libraries. Framework for Information Literacy](https://www.ala.org/acrl/standards/ilframework).
-- [Hargittai, E. (2002). Beyond logs and surveys](https://www.webuse.org/pdf/Hargittai-BeyondLogsSurveys2002.pdf).
-- [van Deursen, Helsper & Eynon. Internet Skills Scale](https://ris.utwente.nl/ws/portalfiles/portal/6972069/development.pdf).
+Do C04 przygotuj dwa pytania o każdą pozycję ankiety: „o czym dokładnie mówi odpowiedź?” i „czy można połączyć ją z pozostałymi bez zmiany znaczenia?”. Wzór indeksu jest prosty. Uzasadnienie, co jego wynik pozwala powiedzieć o użytkowniku lub usłudze, jest właściwym zadaniem badawczym.
 
-Źródła wyznaczają język pojęć. Pozycje, dane i wyniki kursowe są syntetyczne; nie przedstawiamy ich jako rezultatów cytowanych badań.
+Pełne opisy lektur LIS są w wykazie [literatura](../wspolne/literatura.md). Dane i przykłady wykładu mają charakter dydaktyczny; nie przypisujemy ich wynikom przywołanych publikacji.

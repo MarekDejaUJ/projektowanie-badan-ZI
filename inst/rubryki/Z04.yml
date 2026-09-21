@@ -1,11 +1,12 @@
 id: Z04
-version: 1.0.0
+version: 1.1.0
 rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z04.1
-  title: Słownik definiuje pozycje, skale, zakresy, kody braków i pytanie badawcze.
-  evidence: Słownik definiuje pozycje, skale, zakresy, kody braków i pytanie badawcze.
+  title: "Odczyt gotowego słownika i znaczenia pozycji."
+  evidence: "S01 rozpoznaje porządkowy charakter p2, treść mierzonej oceny, zakres 1–5, N i braki oraz odsetek zgody 4–5. S02 łączy przeciwny kierunek p3 z jej treścią. Nie wymaga się tworzenia osobnego słownika lub nowego kwestionariusza."
+  answer_fields: [S01, S02]
   max_points: 3.0
   review_mode: human
   learning_outcomes:
@@ -14,40 +15,37 @@ criteria:
   - U1
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Podano nazwy pozycji bez skal i kodowania.
+    observable_description: "Podano nazwę pozycji bez skali, treści i kodowania."
   - points: 1.5
-    observable_description: Pozycje i skale opisane; braki albo pytanie badawcze niejasne.
+    observable_description: "Odczyt treści jest częściowo poprawny, ale brak odpowiedzi uznano za negatywną ocenę lub pomylono mianownik zgody."
   - points: 2.25
-    observable_description: Słownik i pytanie poprawne; jedna definicja niedoprecyzowana.
+    observable_description: "Skala, treść i odsetek są poprawne; jedna definicja albo jednostka N jest niedoprecyzowana."
   - points: 3.0
-    observable_description: Słownik definiuje pozycje, skale, zakresy, kody braków
-      i pytanie badawcze.
+    observable_description: "S01 rozpoznaje porządkowy charakter p2, treść mierzonej oceny, zakres 1–5, N i braki oraz odsetek zgody 4–5. S02 łączy przeciwny kierunek p3 z jej treścią. Nie wymaga się tworzenia osobnego słownika lub nowego kwestionariusza."
 - id: Z04.2
-  title: Poprawnie odczytano rekodację pozycji odwróconej i uzasadniono regułę indeksu
-    przy brakach.
-  evidence: Poprawnie odczytano rekodację pozycji odwróconej i uzasadniono regułę
-    indeksu przy brakach.
+  title: "Rekodacja i reguła indeksu przy brakach."
+  evidence: "S02 wyjaśnia 6-x, licznik i mianownik indeksu a1 oraz brak indeksu a5. S03 porównuje N i status a7 przy 5/6 oraz 6/6; zachowuje ustaloną regułę 5/6 jako główną, nie dobierając jej do korzystniejszej średniej."
+  answer_fields: [S02, S03]
   max_points: 3.0
   review_mode: mixed
   learning_outcomes: U2
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Kierunek pozycji opisano błędnie.
+    observable_description: "Kierunek rekodacji lub sposób liczenia indeksu opisano błędnie."
   - points: 1.5
-    observable_description: Rekodacja jest poprawna; pomylono minimum ważnych odpowiedzi.
+    observable_description: "Rekodacja jest poprawna, ale pomylono minimum ważnych odpowiedzi albo uznano dowolną średnią za prawidłowy indeks."
   - points: 2.25
-    observable_description: Rekodacja i minimum są poprawne; uzasadnienie jednej reguły
-      jest niepełne.
+    observable_description: "Rekodacja, indeks i porównanie reguł są poprawne; uzasadnienie jednego przypadku jest niepełne."
   - points: 3.0
-    observable_description: Poprawnie odczytano rekodację pozycji odwróconej i uzasadniono
-      regułę indeksu przy brakach.
+    observable_description: "S02 wyjaśnia 6-x, licznik i mianownik indeksu a1 oraz brak indeksu a5. S03 porównuje N i status a7 przy 5/6 oraz 6/6; zachowuje ustaloną regułę 5/6 jako główną, nie dobierając jej do korzystniejszej średniej."
 - id: Z04.3
-  title: Pytanie wielokrotnego wyboru ma poprawne liczebności, odsetki i mianownik.
-  evidence: Pytanie wielokrotnego wyboru ma poprawne liczebności, odsetki i mianownik.
+  title: "Mianowniki odpowiedzi wielokrotnych."
+  evidence: "S04 podaje liczbę wskazań WWW, procent respondentów i procent wszystkich wskazań z osobnymi mianownikami. Odróżnia komplet zer od częściowego braku i wyjaśnia wpływ przyjętej reguły na N."
+  answer_fields: [S04]
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -55,23 +53,19 @@ criteria:
   - U2
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Liczono wskazania bez mianownika.
+    observable_description: "Podano liczbę wskazań bez mianownika."
   - points: 1.0
-    observable_description: Liczebności poprawne; procenty odnoszą się do wskazań
-      zamiast respondentów.
+    observable_description: "Liczebność jest poprawna, ale procent wskazań pomylono z procentem respondentów lub komplet zer z brakami."
   - points: 1.5
-    observable_description: Liczebności i procenty respondentów poprawne; opis braków
-      niepełny.
+    observable_description: "Oba procenty i mianowniki są poprawne; opis częściowych braków jest niepełny."
   - points: 2.0
-    observable_description: Pytanie wielokrotnego wyboru ma poprawne liczebności,
-      odsetki i mianownik.
+    observable_description: "S04 podaje liczbę wskazań WWW, procent respondentów i procent wszystkich wskazań z osobnymi mianownikami. Odróżnia komplet zer od częściowego braku i wyjaśnia wpływ przyjętej reguły na N."
 - id: Z04.4
-  title: Student rozróżnia pojedynczą pozycję porządkową od wyniku złożonego i wskazuje
-    ograniczenie pomiaru.
-  evidence: Student rozróżnia pojedynczą pozycję porządkową od wyniku złożonego i
-    wskazuje ograniczenie pomiaru.
+  title: "Ocena usługi, indeks i obserwowane wykonanie."
+  evidence: "S05 poprawia twierdzenie o kompetencjach na podstawie dwóch konkretnych rekordów indeks–czas–sukces. Rozdziela pojedynczą pozycję, wynik złożony i obserwację oraz proponuje treść zadania i kryterium oceny poprawności. Nie uznaje indeksu za zwalidowany test kompetencji."
+  answer_fields: [S01, S05]
   max_points: 2.0
   review_mode: human
   learning_outcomes:
@@ -79,14 +73,12 @@ criteria:
   - U1
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Nazwano skalę bez rozróżnienia pozycji i indeksu.
+    observable_description: "Nazwano indeks bez rozróżnienia deklaracji i obserwacji."
   - points: 1.0
-    observable_description: Rozróżnienie poprawne; uznano indeks za zwalidowaną skalę.
+    observable_description: "Rozróżnienie jest częściowe, ale indeks nadal uznano za zwalidowaną miarę kompetencji lub wniosek nie ma oparcia w rekordach."
   - points: 1.5
-    observable_description: Rozróżnienie i ograniczenie poprawne; brak argumentu o
-      kodowaniu.
+    observable_description: "Poprawna korekta z rekordami i ograniczeniem; jeden element proponowanego pomiaru jest nieprecyzyjny."
   - points: 2.0
-    observable_description: Student rozróżnia pojedynczą pozycję porządkową od wyniku
-      złożonego i wskazuje ograniczenie pomiaru.
+    observable_description: "S05 poprawia twierdzenie o kompetencjach na podstawie dwóch konkretnych rekordów indeks–czas–sukces. Rozdziela pojedynczą pozycję, wynik złożony i obserwację oraz proponuje treść zadania i kryterium oceny poprawności. Nie uznaje indeksu za zwalidowany test kompetencji."

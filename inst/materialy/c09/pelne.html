@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Marek Deja" />
+<meta name="author" content="ID: [UZUPELNIJ_ID]" />
 
 
-<title>C09 — Warsztat projektu: od scenariusza do dwóch małych analiz</title>
+<title>C09 — Warsztat projektu: problem, pomiar i dwie uzasadnione analizy</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -375,577 +375,2113 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">C09 — Warsztat projektu: od scenariusza do
-dwóch małych analiz</h1>
-<h3 class="subtitle">Zarządzanie informacją — część ilościowa —
-2026/27</h3>
-<h4 class="author">Marek Deja</h4>
+<h1 class="title toc-ignore">C09 — Warsztat projektu: problem, pomiar i
+dwie uzasadnione analizy</h1>
+<h3 class="subtitle">Zarządzanie informacją — ćwiczenie i karta projektu
+Z09 — 2026/27</h3>
+<h4 class="author">ID: [UZUPELNIJ_ID]</h4>
 <h4 class="date">2026/27</h4>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#miejsce-w-opowie%C5%9Bci" id="toc-miejsce-w-opowieści">1.
-Miejsce w opowieści</a></li>
-<li><a href="#scena-badawcza" id="toc-scena-badawcza">2. Scena
-badawcza</a></li>
-<li><a href="#pytanie-jednostka-i-zmienne" id="toc-pytanie-jednostka-i-zmienne">3. Pytanie, jednostka i
-zmienne</a></li>
-<li><a href="#s%C5%82ownik-statystyczny" id="toc-słownik-statystyczny">4. Słownik statystyczny</a></li>
-<li><a href="#wz%C3%B3r-czytany-jak-zdanie" id="toc-wzór-czytany-jak-zdanie">5. Wzór czytany jak zdanie</a></li>
-<li><a href="#gotowy-skrypt-pomocniczy" id="toc-gotowy-skrypt-pomocniczy">6. Gotowy skrypt pomocniczy</a></li>
-<li><a href="#dane-braki-i-mianownik" id="toc-dane-braki-i-mianownik">7.
-Dane, braki i mianownik</a></li>
-<li><a href="#tor-klasyczny" id="toc-tor-klasyczny">8. Tor
-klasyczny</a></li>
-<li><a href="#tor-permutacyjny-lub-decyzja-o-jego-braku" id="toc-tor-permutacyjny-lub-decyzja-o-jego-braku">9. Tor permutacyjny
-lub decyzja o jego braku</a></li>
-<li><a href="#efekt-i-przedzia%C5%82" id="toc-efekt-i-przedział">10.
-Efekt i przedział</a></li>
-<li><a href="#wykres-jako-cz%C4%99%C5%9B%C4%87-argumentu" id="toc-wykres-jako-część-argumentu">11. Wykres jako część
-argumentu</a></li>
-<li><a href="#wynik-czytany-linia-po-linii" id="toc-wynik-czytany-linia-po-linii">12. Wynik czytany linia po
-linii</a></li>
-<li><a href="#b%C5%82%C4%99dy-interpretacji" id="toc-błędy-interpretacji">13. Błędy interpretacji</a></li>
-<li><a href="#pr%C3%B3ba-prowadzona" id="toc-próba-prowadzona">14. Próba
-prowadzona</a></li>
-<li><a href="#zadanie-z09" id="toc-zadanie-z09">15. Zadanie Z09</a></li>
-<li><a href="#rubryka-kontrola-i-dalszy-krok" id="toc-rubryka-kontrola-i-dalszy-krok">16. Rubryka, kontrola i dalszy
-krok</a>
+<li><a href="#pocz%C4%85tek-pracy-na-tych-zaj%C4%99ciach" id="toc-początek-pracy-na-tych-zajęciach">Początek pracy na tych
+zajęciach</a></li>
+<li><a href="#historia-instytucja-potrzebuje-pytania-nie-listy-test%C3%B3w" id="toc-historia-instytucja-potrzebuje-pytania-nie-listy-testów">Historia:
+instytucja potrzebuje pytania, nie listy testów</a>
 <ul>
-<li><a href="#%C5%BAr%C3%B3d%C5%82o-kontekstu" id="toc-źródło-kontekstu">Źródło kontekstu</a></li>
+<li><a href="#co-robimy-w-90-minut" id="toc-co-robimy-w-90-minut">Co
+robimy w 90 minut</a></li>
 </ul></li>
+<li><a href="#learn-1-od-problemu-do-dw%C3%B3ch-estymand" id="toc-learn-1-od-problemu-do-dwóch-estymand">LEARN 1: od problemu do
+dwóch estymand</a>
+<ul>
+<li><a href="#pr%C3%B3ba-odczytu" id="toc-próba-odczytu">Próba
+odczytu</a></li>
+<li><a href="#problem-zmieniamy-w-dwa-pytania" id="toc-problem-zmieniamy-w-dwa-pytania">problem zmieniamy w dwa
+pytania</a></li>
+<li><a href="#dwa-pytania-a-dwie-wersje-tej-samej-analizy" id="toc-dwa-pytania-a-dwie-wersje-tej-samej-analizy">Dwa pytania a dwie
+wersje tej samej analizy</a></li>
+<li><a href="#estymanda-porz%C4%85dkuje-plan" id="toc-estymanda-porządkuje-plan">estymanda porządkuje plan</a></li>
+<li><a href="#wa%C5%BCne-doprecyzowanie-populacji" id="toc-ważne-doprecyzowanie-populacji">Ważne doprecyzowanie
+populacji</a></li>
+<li><a href="#hipoteza-przewidywanie-i-eksploracja" id="toc-hipoteza-przewidywanie-i-eksploracja">hipoteza, przewidywanie i
+eksploracja</a></li>
+</ul></li>
+<li><a href="#learn-2-jednostka-populacja-i-rama-doboru" id="toc-learn-2-jednostka-populacja-i-rama-doboru">LEARN 2: jednostka,
+populacja i rama doboru</a>
+<ul>
+<li><a href="#liczebno%C5%9B%C4%87-nie-naprawia-selekcji" id="toc-liczebność-nie-naprawia-selekcji">Liczebność nie naprawia
+selekcji</a></li>
+<li><a href="#pomiar-deklaracji-i-pomiar-obserwacyjny" id="toc-pomiar-deklaracji-i-pomiar-obserwacyjny">pomiar deklaracji i
+pomiar obserwacyjny</a></li>
+<li><a href="#kwestionariusz-ma-odpowiada%C4%87-planowi" id="toc-kwestionariusz-ma-odpowiadać-planowi">kwestionariusz ma
+odpowiadać planowi</a></li>
+</ul></li>
+<li><a href="#learn-3-dane-manifest-i-to%C5%BCsamo%C5%9B%C4%87-wariantu" id="toc-learn-3-dane-manifest-i-tożsamość-wariantu">LEARN 3: dane,
+manifest i tożsamość wariantu</a>
+<ul>
+<li><a href="#manifest-przyk%C5%82adu-kt%C3%B3ry-ju%C5%BC-znasz" id="toc-manifest-przykładu-który-już-znasz">Manifest przykładu, który
+już znasz</a></li>
+<li><a href="#regu%C5%82y-danych-zapisujemy-przed-wynikiem" id="toc-reguły-danych-zapisujemy-przed-wynikiem">reguły danych
+zapisujemy przed wynikiem</a></li>
+</ul></li>
+<li><a href="#learn-4-plan-pierwszej-analizy" id="toc-learn-4-plan-pierwszej-analizy">LEARN 4: plan pierwszej
+analizy</a>
+<ul>
+<li><a href="#pierwszy-odtwarzalny-opis" id="toc-pierwszy-odtwarzalny-opis">Pierwszy odtwarzalny opis</a></li>
+<li><a href="#plan-drugiej-analizy" id="toc-plan-drugiej-analizy">plan
+drugiej analizy</a></li>
+<li><a href="#gdy-nazwa-techniczna-myli" id="toc-gdy-nazwa-techniczna-myli">Gdy nazwa techniczna myli</a></li>
+</ul></li>
+<li><a href="#learn-5-przygotowujemy-w%C5%82asn%C4%85-kart%C4%99-projektu" id="toc-learn-5-przygotowujemy-własną-kartę-projektu">LEARN 5:
+przygotowujemy własną kartę projektu</a>
+<ul>
+<li><a href="#przyk%C5%82ad-kr%C3%B3tkiej-karty-planu-dla-s02" id="toc-przykład-krótkiej-karty-planu-dla-s02">Przykład krótkiej karty
+planu dla S02</a></li>
+<li><a href="#literatura-potrzebna-do-uzasadnienia" id="toc-literatura-potrzebna-do-uzasadnienia">Literatura potrzebna do
+uzasadnienia</a></li>
+<li><a href="#kr%C3%B3tka-procedura-szukania" id="toc-krótka-procedura-szukania">Krótka procedura szukania</a></li>
+<li><a href="#dlaczego-karta-z09-nie-jest-jeszcze-ko%C5%84cowym-raportem" id="toc-dlaczego-karta-z09-nie-jest-jeszcze-końcowym-raportem">Dlaczego
+karta Z09 nie jest jeszcze końcowym raportem</a></li>
+</ul></li>
+<li><a href="#challenge-z09-pierwsza-w%C5%82asna-karta-projektu" id="toc-challenge-z09-pierwsza-własna-karta-projektu">CHALLENGE: Z09 —
+pierwsza własna karta projektu</a>
+<ul>
+<li><a href="#challenge-1-wyb%C3%B3r-scenariusza-i-pochodzenie-danych" id="toc-challenge-1-wybór-scenariusza-i-pochodzenie-danych">CHALLENGE 1:
+wybór scenariusza i pochodzenie danych</a></li>
+<li><a href="#challenge-2-pytania-estymandy-i-hipotezy" id="toc-challenge-2-pytania-estymandy-i-hipotezy">CHALLENGE 2: pytania,
+estymandy i hipotezy</a></li>
+<li><a href="#challenge-3-populacja-i-pomiar-pasuj%C4%85cy-do-pyta%C5%84" id="toc-challenge-3-populacja-i-pomiar-pasujący-do-pytań">CHALLENGE 3:
+populacja i pomiar pasujący do pytań</a></li>
+<li><a href="#challenge-4-co-skrypt-zrobi%C5%82-z-twoimi-danymi" id="toc-challenge-4-co-skrypt-zrobił-z-twoimi-danymi">CHALLENGE 4: co
+skrypt zrobił z twoimi danymi</a></li>
+<li><a href="#challenge-5-pierwszy-w%C5%82asny-wynik-i-nast%C4%99pny-krok" id="toc-challenge-5-pierwszy-własny-wynik-i-następny-krok">CHALLENGE 5:
+pierwszy własny wynik i następny krok</a></li>
+<li><a href="#co-jest-oceniane-i-co-zostaje-do-projektu" id="toc-co-jest-oceniane-i-co-zostaje-do-projektu">Co jest oceniane i co
+zostaje do projektu</a></li>
+<li><a href="#zapis-i-oddanie-z09" id="toc-zapis-i-oddanie-z09">Zapis i
+oddanie Z09</a></li>
+</ul></li>
+<li><a href="#rozwini%C4%99cia-do-powt%C3%B3rki-poza-zadaniem-ocenianym" id="toc-rozwinięcia-do-powtórki-poza-zadaniem-ocenianym">Rozwinięcia do
+powtórki — poza zadaniem ocenianym</a>
+<ul>
+<li><a href="#liczebno%C5%9B%C4%87-nie-naprawia-selekcji-1" id="toc-liczebność-nie-naprawia-selekcji-1">Liczebność nie naprawia
+selekcji</a></li>
+<li><a href="#precyzja-jest-cz%C4%99%C5%9Bci%C4%85-planu" id="toc-precyzja-jest-częścią-planu">precyzja jest częścią
+planu</a></li>
+<li><a href="#pr%C3%B3g-praktycznej-wa%C5%BCno%C5%9Bci" id="toc-próg-praktycznej-ważności">Próg praktycznej ważności</a></li>
+</ul></li>
+<li><a href="#inne-scenariusze-co-zmienia-si%C4%99-w-rozumowaniu" id="toc-inne-scenariusze-co-zmienia-się-w-rozumowaniu">Inne scenariusze:
+co zmienia się w rozumowaniu</a>
+<ul>
+<li><a href="#portal-studencki-czas-i-przejrzysto%C5%9B%C4%87" id="toc-portal-studencki-czas-i-przejrzystość">Portal studencki: czas i
+przejrzystość</a></li>
+<li><a href="#repozytorium-szkolenie-i-deklarowana-znajomo%C5%9B%C4%87-zasad" id="toc-repozytorium-szkolenie-i-deklarowana-znajomość-zasad">Repozytorium:
+szkolenie i deklarowana znajomość zasad</a></li>
+<li><a href="#informacja-miejska-wiele-kana%C5%82%C3%B3w-i-sprzeczne-komunikaty" id="toc-informacja-miejska-wiele-kanałów-i-sprzeczne-komunikaty">Informacja
+miejska: wiele kanałów i sprzeczne komunikaty</a></li>
+<li><a href="#przyk%C5%82ad-krytycznej-oceny-propozycji-si" id="toc-przykład-krytycznej-oceny-propozycji-si">Przykład krytycznej
+oceny propozycji SI</a></li>
+</ul></li>
+<li><a href="#po-spotkaniu" id="toc-po-spotkaniu">Po spotkaniu</a></li>
 </ul>
 </div>
 
-<div id="miejsce-w-opowieści" class="section level1">
-<h1>1. Miejsce w opowieści</h1>
-<p>Każdy student ma jeden z dwudziestu scenariuszy i indywidualne dane.
-Budujemy plan, w którym pytanie, operacjonalizacja, zmienne, metoda i
-interpretacja tworzą jedną sekwencję.</p>
-<p><strong>Pytanie przewodnie:</strong> Jak zaplanować projekt
-ilościowy, aby dwie analizy odpowiadały pytaniom i nie wykraczały poza
-dane syntetyczne?</p>
-<p>Rdzeń zajęć trwa 90 minut. Strony oznaczone jako „po zajęciach” służą
-utrwaleniu; podczas spotkania uruchamiamy gotowy kod, czytamy liczby i
-zapisujemy własne wyjaśnienie.</p>
+<!-- start-sesji -->
+<div id="początek-pracy-na-tych-zajęciach" class="section level1">
+<h1>Początek pracy na tych zajęciach</h1>
+<p>Otwórz RStudio. Pakiet kursu jest już zainstalowany w sali; nie
+instalujesz go ponownie. W konsoli poniżej edytora wpisz swoje ID i
+adres prywatnego repozytorium otrzymany w kursie, a następnie wykonaj
+polecenia. Ten blok jest instrukcją do konsoli, nie chunkiem
+uruchamianym przy tworzeniu PDF.</p>
+<pre class="r"><code>library(badaniaZI)
+ID &lt;- &quot;TWOJE_ID&quot;
+zaloguj_github()
+rozpocznij_zajecia(
+  &quot;C09&quot;, id_studenta = ID,
+  repo_url = &quot;ADRES_TWOJEGO_PRYWATNEGO_REPOZYTORIUM&quot;
+)</code></pre>
+<p>Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i
+drugi składnik podajesz wyłącznie tam, nie w konsoli R. Sprawdź
+potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w tej sesji;
+pliki pracy mają je zachować także po zamknięciu RStudio.</p>
+<p>Polecenie otwiera własny <code>zadanie.Rmd</code> i zapamiętuje
+katalog pracy. Nie przełączaj teraz projektu przez <code>.Rproj</code>,
+bo nowa sesja R utraci logowanie. Pracuj w otwartym Rmd, nie w źródłach
+pakietu. Uruchom pierwszy chunk przygotowania, potem wykonuj LEARN i
+CHALLENGE. Przy problemie poproś prowadzącego o pomoc; nie usuwaj pracy
+ani nie wpisuj cudzego ID. <!-- /start-sesji --></p>
+<p>Pomocniczy plik <code>analiza.R</code> przygotowuje karty planu, opis
+przykładowych danych i małe demonstracje. Nie piszesz nowego programu
+statystycznego. Twoim zadaniem jest uzasadnienie decyzji badawczych i
+odczyt wyników gotowych procedur.</p>
+</div>
+<div id="historia-instytucja-potrzebuje-pytania-nie-listy-testów" class="section level1">
+<h1>Historia: instytucja potrzebuje pytania, nie listy testów</h1>
+<p>Biblioteka słyszy, że nowi użytkownicy mają trudności z katalogiem.
+Dyrekcja rozważa szkolenie, zmianę opisów filtrów albo rozbudowanie
+pomocy. Każda propozycja zakłada inny mechanizm problemu. Sama
+informacja, że „użytkownicy są niezadowoleni”, nie pozwala wybrać
+rozwiązania.</p>
+<p>Zadanie badacza polega na przełożeniu problemu na pytania, które
+dostępne dane mogą rzeczywiście rozstrzygnąć. Różnica ocen między nowymi
+i doświadczonymi nie jest jeszcze efektem szkolenia. Różnica sukcesu w
+zadaniu nie jest pełnym pomiarem kompetencji. Czas wyszukiwania nie
+oddziela automatycznie trudności interfejsu od staranności
+użytkownika.</p>
+<p>Dziś powstaje plan indywidualnego projektu ilościowego. Wybierasz
+jeden z dwudziestu scenariuszy, zachowujesz jego konstrukty i schemat
+danych, planujesz rzeczywiste badanie, lecz analizujesz wyłącznie własny
+wariant danych syntetycznych. Na potrzeby projektu nie zbierasz
+odpowiedzi od ludzi.</p>
+<p>Do tej pory korzystanie z projektu RStudio oznaczało otwarcie
+technicznego katalogu pracy. Od dziś słowo „projekt” oznacza także twoje
+indywidualne opracowanie badawcze: plan i analizę danych syntetycznych.
+Nie zakładamy, że wybrałeś temat albo przygotowałeś dane na
+wcześniejszych spotkaniach.</p>
+<p>Końcowym rezultatem będzie raport PDF z własnym opisem problemu,
+planu pomiaru i próby, przygotowania danych, dwóch analiz, ograniczeń i
+rekomendacji. Razem z nim przekazujesz Rmd, pomocniczy R oraz dane i
+manifest pozwalające odtworzyć wynik. Nie piszesz samodzielnie programu
+czyszczącego ani funkcji testów. Wykonujesz gotowy tok analizy i
+odpowiadasz za znaczenie swoich akapitów.</p>
+<p>Z09 jest początkiem tego opracowania: pięć odpowiedzi tworzy kartę
+planu z pierwszym opisem własnego wariantu. C10 służy uruchomieniu i
+odczytaniu obu analiz oraz korekcie raportu. Projekt końcowy rozwija te
+same pytania i dane; nie jest dodatkowym, niepowiązanym badaniem. Nie
+obowiązuje limit słów: zakres akapitu wynika z pytania, a raport nie
+musi być tak długi jak materiał dydaktyczny.</p>
+<div id="co-robimy-w-90-minut" class="section level2">
+<h2>Co robimy w 90 minut</h2>
+<p>Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć LEARN,
+50 minut na pięć CHALLENGE i 5 minut na zapis oraz oddanie. W LEARN
+czytasz plan i wyniki znanego przykładu S02. W CHALLENGE wybierasz
+scenariusz, uruchamiasz własny wariant i piszesz pięć krótkich akapitów
+w tym samym Rmd. Pracujesz indywidualnie; w razie niejasności pytasz
+prowadzącego. Rozwinięcia po części obowiązkowej służą powtórce, bez
+nowych odpowiedzi.</p>
+</div>
+</div>
+<div id="learn-1-od-problemu-do-dwóch-estymand" class="section level1">
+<h1>LEARN 1: od problemu do dwóch estymand</h1>
+<p><strong>Problem instytucji:</strong> część odbiorców nie potrafi
+odnaleźć dokumentu lub nie chce korzystać z usługi. Jest to szerszy
+problem informacyjny obejmujący osoby, zadanie, system oraz warunki
+dostępu. Może wymagać kilku badań, a nie jednego testu.</p>
+<p><strong>Projekt badania:</strong> określamy populację, rekrutację,
+standaryzowane zadanie, pomiar deklaracji i obserwację. Ten poziom
+odpowiada na pytanie, jakie dane należałoby zebrać, aby wiarygodnie
+rozważyć problem. Tutaj uzasadniamy operacjonalizację i
+ograniczenia.</p>
+<p><strong>Analiza dydaktyczna:</strong> generator dostarcza syntetyczne
+odpowiedzi do ćwiczenia statystyki. Potrafimy opisać ten zbiór,
+oszacować efekty i odczytać niepewność procedur. Wyniki nie są jednak
+dowodem, że rzeczywista biblioteka ma określony problem.</p>
+<p>Zdanie „zbadano 150 użytkowników biblioteki” byłoby nieprawdziwe,
+jeśli chodzi o rekordy generatora. Poprawnie: „zaplanowano badanie
+użytkowników; tok analizy przeprowadzono na syntetycznych danych dla
+scenariusza”. Nie ukrywaj tej informacji wyłącznie w końcowych
+ograniczeniach.</p>
+<div id="próba-odczytu" class="section level2">
+<h2>Próba odczytu</h2>
+<p>Porównaj trzy zdania: „biblioteka ma problem z filtrowaniem”,
+„badanie sprawdziłoby zrozumiałość nazw filtrów”, „w syntetycznej próbie
+średnia odpowiedź na pozycję wyniosła 3,4”. Pierwsze jest twierdzeniem o
+instytucji, drugie planem, trzecie opisem demonstracji. Tylko trzecie
+można uzasadnić samym plikiem ćwiczeniowym.</p>
+<p>Źródła LIS uzasadniają sens pytania i pojęć. Wilson pomaga myśleć o
+zachowaniu informacyjnym w kontekście, Kuhlthau o procesie poszukiwania,
+Hargittai o pomiarze umiejętności, a Vial o zmianie organizacyjnej
+związanej z technologią. Nie dostarczają automatycznie lokalnego wyniku
+o twojej instytucji.</p>
+</div>
+<div id="problem-zmieniamy-w-dwa-pytania" class="section level2">
+<h2>problem zmieniamy w dwa pytania</h2>
+<p>Słabe pytanie brzmi: „Czy katalog jest dobry?”. Nie wskazuje
+odbiorcy, zadania, wskaźnika ani kryterium. Jeszcze słabszy plan brzmi:
+„Wykonam test t, korelację i chi-kwadrat”, ponieważ zaczyna od procedur
+bez określenia problemu.</p>
+<p>W scenariuszu S02 pierwsze pytanie może dotyczyć różnicy średniego
+indeksu deklarowanej użyteczności między nowymi i doświadczonymi. Drugie
+dotyczy różnicy prawdopodobieństwa sukcesu zadania między tymi grupami.
+Jedno opiera się na deklaracji złożonej, drugie na obserwacji.</p>
+<p>Karta poniżej pokazuje mapowanie pytania na wynik, porównanie i
+niepewność. Przeczytaj ją wierszami. Dwa pytania nie są powtórzeniem
+jednego testu na tej samej liczbie.</p>
+<pre class="r"><code>widok &lt;- karta_pytan_do_odczytu()
+print(widok)</code></pre>
+<p><strong>S02 — pytanie 1</strong></p>
+<p><strong>Pytanie:</strong> Różnica oceny katalogu</p>
+<p><strong>Wynik:</strong> Indeks użyteczności</p>
+<p><strong>Porównanie:</strong> Nowi minus doświadczeni</p>
+<p><strong>Estymanda:</strong> Różnica średnich</p>
+<p><strong>Jednostka efektu:</strong> Punkty indeksu</p>
+<p><strong>N analizy:</strong> Ważny indeks i grupa</p>
+<p><strong>Klasyczny wynik:</strong> Welch i CI różnicy</p>
+<p><strong>Losowanie:</strong> Tasowanie etykiet grup</p>
+<p><strong>S02 — pytanie 2</strong></p>
+<p><strong>Pytanie:</strong> Różnica skuteczności</p>
+<p><strong>Wynik:</strong> Sukces 0/1</p>
+<p><strong>Porównanie:</strong> Nowi minus doświadczeni</p>
+<p><strong>Estymanda:</strong> Różnica proporcji</p>
+<p><strong>Jednostka efektu:</strong> Punkty procentowe</p>
+<p><strong>N analizy:</strong> Ważny sukces i grupa</p>
+<p><strong>Klasyczny wynik:</strong> Chi-kwadrat / Fisher</p>
+<p><strong>Losowanie:</strong> Tabele przy stałych marginesach</p>
+<p>Nazwij populację docelową, np. osoby uprawnione do korzystania z
+katalogu w określonym semestrze. Następnie ustal kryterium „nowi” i
+„doświadczeni” przed rekrutacją. Sama etykieta kolumny nie mówi, czy
+granicą są miesiące korzystania, liczba sesji czy samookreślenie.</p>
+<p>Pytanie musi pasować do danych. Nie można badać poprawy po szkoleniu,
+jeśli zbiór zawiera tylko dwie grupy zaobserwowane raz. Nie można badać
+trajektorii wyszukiwania, jeśli zapisano jedynie łączny czas i sukces.
+Czasem właściwą decyzją jest zawężenie pytania, a nie dołożenie bardziej
+złożonej metody.</p>
+</div>
+<div id="dwa-pytania-a-dwie-wersje-tej-samej-analizy" class="section level2">
+<h2>Dwa pytania a dwie wersje tej samej analizy</h2>
+<p>Welch i permutacja etykiet to dwa sposoby oceny wyniku porównania
+grup, nie dwa odrębne problemy badawcze. Podobnie Pearson i Spearman
+mogą opisywać różne aspekty tej samej pary zmiennych, ale nie zastąpią
+automatycznie dwóch merytorycznie uzasadnionych pytań projektu.</p>
+<p>W projekcie pierwsza analiza porównuje grupy, a druga wynika ze
+scenariusza: korelacja albo tabela kategorii. Nie trzeba wykonywać
+wszystkich metod kursu. Dwóch dobrze uzasadnionych analiz nie ulepsza
+lista dodatkowych testów bez pytania.</p>
+</div>
+<div id="estymanda-porządkuje-plan" class="section level2">
+<h2>estymanda porządkuje plan</h2>
+<p>Estymanda to precyzyjnie określona wielkość, o której chcemy się
+dowiedzieć. Dla pierwszego pytania:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Δ</mi><mi>μ</mi></msub><mo>=</mo><msub><mi>μ</mi><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">w</mi><mi mathvariant="normal">i</mi></mrow></msub><mo>−</mo><msub><mi>μ</mi><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">ś</mi><mi mathvariant="normal">w</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">d</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">z</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">i</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\Delta_\mu=\mu_{\mathrm{nowi}}-\mu_{\mathrm{doświadczeni}}.
+</annotation></semantics></math></p>
+<p>Odczytaj: różnica populacyjnych średnich indeksu nowych i
+doświadczonych użytkowników w ustalonych warunkach. Wybór kolejności
+grup nadaje znakowi znaczenie. Ujemna estymata oznacza niższą średnią
+nowych, nie „ujemną użyteczność”.</p>
+<p>Dla drugiego pytania:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Δ</mi><mi>π</mi></msub><mo>=</mo><msub><mi>π</mi><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">w</mi><mi mathvariant="normal">i</mi></mrow></msub><mo>−</mo><msub><mi>π</mi><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">ś</mi><mi mathvariant="normal">w</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">d</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">z</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">i</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\Delta_\pi=\pi_{\mathrm{nowi}}-\pi_{\mathrm{doświadczeni}}.
+</annotation></semantics></math></p>
+<p>Różnica proporcji ma skalę od −1 do 1; po pomnożeniu przez 100
+wyrażamy ją w punktach procentowych. V Craméra opisuje natężenie związku
+bez kierunku, więc nie zastępuje
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Δ</mi><mi>π</mi></msub><annotation encoding="application/x-tex">\Delta_\pi</annotation></semantics></math>
+w odpowiedzi „która grupa i o ile”.</p>
+<p>W scenariuszu korelacyjnym estymandą może być rangowy związek
+częstości korzystania z indeksem. Dla porządkowej częstości nie
+zakładamy automatycznie równych odstępów między „rzadko” i „czasami”
+oraz „często” i „bardzo często”. Wybór Spearmana można wtedy uzasadnić
+znaczeniem skali.</p>
+<p>Estymator jest regułą obliczenia, np. różnicą średnich próbnych.
+Estymata jest konkretną liczbą po zastosowaniu reguły. Statystyka
+testowa odnosi wynik do modelu zerowego. W raporcie te terminy nie muszą
+występować w każdym zdaniu, ale rozumowanie powinno je rozróżniać.</p>
+</div>
+<div id="ważne-doprecyzowanie-populacji" class="section level2">
+<h2>Ważne doprecyzowanie populacji</h2>
+<p>„Średni czas użytkowników” i „średni czas osób, które odniosły
+sukces” to różne estymandy. Wykluczenie porażek zmienia zakres pytania.
+Nie powinno być ukrytą decyzją czyszczącą tylko dlatego, że rozkład
+staje się ładniejszy.</p>
+<p>Podobnie indeks obliczany przy minimum pięciu odpowiedziach dotyczy
+osób z wystarczającą liczbą pozycji. Czy ich brak może wiązać się z
+trudnością oceny usługi? Reguła indeksu jest jawna, ale nie usuwa sama
+problemu selekcji.</p>
+</div>
+<div id="hipoteza-przewidywanie-i-eksploracja" class="section level2">
+<h2>hipoteza, przewidywanie i eksploracja</h2>
+<p>Hipoteza zerowa dla porównania średnich to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Δ</mi><mi>μ</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\Delta_\mu=0</annotation></semantics></math>.
+Hipoteza badawcza może przewidywać niższą ocenę nowych, jeśli uzasadnia
+to teoria albo wcześniejsze badanie. Kierunek powinien wynikać z
+argumentu przed analizą, nie ze znaku już zobaczonej estymaty.</p>
+<p>Dwustronny test odpowiada pytaniu o różnicę w obu kierunkach. Nie
+zmieniamy go po obliczeniu na jednostronny w celu obniżenia p. Jeżeli
+kierunek jest rzeczywiście częścią wcześniejszego planu, należy go jasno
+uzasadnić, wraz z konsekwencjami wyniku przeciwnego.</p>
+<p>Analiza eksploracyjna jest dopuszczalnym sposobem uczenia się o
+danych. Musi być nazwana eksploracyjną. Odkryty wzorzec może prowadzić
+do nowego pytania, lecz nie staje się wstecznie trafną prognozą.</p>
+<p>W kursie znasz już demonstracyjny zbiór S02. Nie udawaj, że jego
+wyniki są dla ciebie całkowicie nieznane. W planie rzeczywistego badania
+oddziel uzasadnienie merytoryczne od obserwacji dydaktycznej. Przy
+własnym wariancie zapisuj decyzje, zanim zaczniesz przeszukiwać tabele
+pod kątem istotności.</p>
+<p><strong>Wzorcowa korekta planu.</strong> Propozycja „Porównam
+wszystkie zmienne i napiszę hipotezę dla tej, która ma p&lt;0,05” jest
+wyborem hipotezy po wyniku. Poprawny plan określa pytanie główne, wynik
+i metodę wcześniej; dodatkowe przeglądy oznacza jako eksplorację oraz
+uwzględnia problem wielokrotności.</p>
+</div>
+</div>
+<div id="learn-2-jednostka-populacja-i-rama-doboru" class="section level1">
+<h1>LEARN 2: jednostka, populacja i rama doboru</h1>
+<p>Populacja docelowa to zbiór osób, o których chcemy wnioskować. Rama
+doboru to dostępny wykaz lub sposób dotarcia do nich. Próba zrealizowana
+obejmuje osoby, które rzeczywiście uczestniczyły. Te trzy zbiory rzadko
+są idealnie identyczne.</p>
+<p>Zaproszenie tylko przez ekran katalogu dociera do osób już z niego
+korzystających. Może pomijać tych, którzy zrezygnowali albo nie wiedzą o
+usłudze. Badanie tak rekrutowane nie opisuje automatycznie barier
+wszystkich uprawnionych odbiorców.</p>
+<p>Zaproszenie przez bibliotekarza przy stanowisku pomocy może
+nadreprezentować osoby z problemami. Newsletter może nadreprezentować
+osoby zainteresowane ofertą. Nie wystarczy napisać „próba losowa”, jeśli
+nie określono mechanizmu losowania i ramy.</p>
+<p>Jednostką analizy w rdzeniu jest osoba z jednym zadaniem. Pięć prób
+tej samej osoby nie zwiększa automatycznie N niezależnych uczestników o
+pięć. Jeśli rzeczywisty projekt miałby powtarzane pomiary, trzeba
+zaplanować ich agregację albo odpowiednią analizę zależności.</p>
+<div id="liczebność-nie-naprawia-selekcji" class="section level2">
+<h2>Liczebność nie naprawia selekcji</h2>
+<p>Większa liczba odpowiedzi zmniejsza część losowej niepewności, ale
+nie uzupełnia głosów osób pominiętych przez sposób rekrutacji. Dla
+katalogu rekrutacja wyłącznie przez jego ekran nie obejmie wszystkich,
+którzy z usługi zrezygnowali. W opisie planu trzeba nazwać ten
+mechanizm, a nie tylko napisać „próba jest mała”. Liczbowy przykład
+różnicy średniej 3,3 i 3,8 znajduje się w rozwinięciu.</p>
+</div>
+<div id="pomiar-deklaracji-i-pomiar-obserwacyjny" class="section level2">
+<h2>pomiar deklaracji i pomiar obserwacyjny</h2>
+<p>Dla każdej zmiennej zapisz konstrukt, operacyjną definicję, skalę,
+zakres, kod braku i sposób uzyskania. „Kompetencje cyfrowe — skala 1–5”
+jest niewystarczające. Nie wiadomo, jakie działanie, wiedzę czy poczucie
+sprawności mierzą odpowiedzi.</p>
+<p>W S02 sześć pozycji odnosi się do użyteczności katalogu. Pozycja 3
+jest odwrócona, więc wyższa odpowiedź surowa ma przeciwny kierunek. Po
+rekodacji
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6</mn><mo>−</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">6-x</annotation></semantics></math>
+wszystkie pozycje mają wspólny kierunek, a indeks jest średnią przy
+minimum pięciu ważnych odpowiedziach.</p>
+<p>Indeks jest roboczym narzędziem dydaktycznym. Jego średnia, wariancja
+czy nawet wysoka zgodność pozycji nie stanowią pełnej walidacji.
+Trafność wymaga argumentu, że zawartość i sposób odpowiedzi pasują do
+konstruktu oraz planowanego użycia wyniku.</p>
+<p>Obserwowany sukces wymaga kryterium. „Znalazł informację” może
+oznaczać otwarcie strony, wskazanie właściwego dokumentu albo
+znalezienie poprawnej lokalizacji i warunków dostępu. Różne kryteria
+dają różne proporcje, więc muszą być ustalone przed pomiarem.</p>
+<p>Tabela przedstawia elementy przyszłego protokołu. To propozycja
+planistyczna, nie opis czynności rzeczywiście wykonanych na
+syntetycznych rekordach. Dopasuj ją do konkretnego scenariusza.</p>
+<pre class="r"><code>widok &lt;- protokol_do_odczytu()
+print(widok)</code></pre>
+<p><strong>Elementy planowanego protokołu obserwacji</strong></p>
+<p><strong>Start:</strong> Po odczytaniu instrukcji</p>
+<p><strong>Koniec:</strong> Zgłoszenie wyniku lub zakończenia próby</p>
+<p><strong>Sukces:</strong> Wskazany dokument i poprawna lokalizacja</p>
+<p><strong>Pomoc:</strong> Zapis rodzaju i momentu</p>
+<p><strong>Przerwa:</strong> Oddzielny kod, nie sukces=0 bez
+sprawdzenia</p>
+<p><strong>Limit czasu:</strong> Jawny przed badaniem; cenzorowanie</p>
+<p><strong>Urządzenie:</strong> Warunki odnotowane</p>
+<p><strong>Jednostka:</strong> Osoba, jedno zadanie</p>
+<p>Czas zaczynamy mierzyć w jednoznacznym momencie. Trzeba ustalić, czy
+wliczamy czytanie instrukcji, przerwy, oczekiwanie systemu i pomoc
+obserwatora. Brak standaryzacji może stworzyć różnice, które błędnie
+przypiszemy użytkownikom.</p>
+<p>Limit czasu wymaga odróżnienia czasu ukończenia od informacji „nie
+ukończono do limitu”. Wartość 15 przy limicie 15 minut nie musi być
+zwykłym czasem ukończenia. Nie podstawiamy jej automatycznie jako
+równoważnej obserwacjom 8 czy 12 minut.</p>
+</div>
+<div id="kwestionariusz-ma-odpowiadać-planowi" class="section level2">
+<h2>kwestionariusz ma odpowiadać planowi</h2>
+<p>Krótki kwestionariusz powinien wskazywać obiekt i okres odniesienia.
+„Zwykle dobrze radzę sobie z informacją” jest znacznie szersze niż
+„potrafię znaleźć lokalizację dokumentu w tym katalogu”. Ogólna pewność
+i ocena pojedynczej funkcji to różne konstrukty.</p>
+<p>Unikaj pytań łączących dwie treści, np. „filtry i komunikaty są
+jasne”. Osoba może dobrze rozumieć filtry, ale nie komunikaty. Jedna
+odpowiedź nie pokaże, który element wymaga poprawy.</p>
+<p>Pozycja odwrócona wymaga jasnego języka. Podwójne przeczenie zwiększa
+obciążenie i może mierzyć niezrozumienie zdania. Rekodacja matematyczna
+nie naprawia niejasności semantycznej.</p>
+<p>Pytanie wielokrotnego wyboru o kanały ma osobną logikę. Cztery zera
+oznaczają brak wskazania przy ważnej odpowiedzi, a cztery braki
+pominięcie pytania. Odsetki wskazań kanałów względem osób mogą sumować
+się powyżej 100%, ponieważ jedna osoba wybiera kilka odpowiedzi.</p>
+<p>W projekcie zachowujesz wspólny schemat sześciu pozycji i dwóch grup.
+Możesz doprecyzować opis planowanego pomiaru, ale nie przypisuj
+istniejącym syntetycznym kolumnom nowych treści bez zgodności ze
+słownikiem. Własny pomysł na inne narzędzie przedstaw jako kierunek
+dalszego badania.</p>
+<div id="próba-poznawcza-bez-zbierania-danych-w-projekcie" class="section level3">
+<h3>Próba poznawcza bez zbierania danych w projekcie</h3>
+<p>W opisie planu możesz zaproponować pilotaż sprawdzający, jak przyszli
+uczestnicy rozumieją instrukcję i pytania. Nie pisz, że pilotaż
+przeprowadzono, jeśli tego nie zrobiono. Projekt kursowy analizuje
+syntetyczne dane, a opis pilotażu pozostaje planem.</p>
+<p>Wskaż, czego szukałby taki pilotaż: niejasnej kategorii „nowy”,
+niejednoznacznego końca zadania, mylenia użyteczności z satysfakcją albo
+trudności pozycji odwróconej. Konkretny problem pomiaru jest cenniejszy
+niż ogólne hasło „narzędzie będzie rzetelne”.</p>
+</div>
+</div>
+</div>
+<div id="learn-3-dane-manifest-i-tożsamość-wariantu" class="section level1">
+<h1>LEARN 3: dane, manifest i tożsamość wariantu</h1>
+<p>Manifest zapisuje pochodzenie wariantu: ID, scenariusz, rocznik,
+wersję generatora, klucz losowania i informacje potrzebne do
+odtworzenia. Nie jest certyfikatem jakości pomiaru ani
+reprezentatywności. Potwierdza, jakie dane analizowano.</p>
+<p>ID jest pseudonimem kursowym, nie numerem albumu wpisywanym do
+publicznego materiału. Projekt i oceny pozostają w indywidualnym
+prywatnym repozytorium. Nie dodawaj do analizy danych identyfikujących
+prawdziwych uczestników, bo projekt nie wymaga ich zbierania.</p>
+<p>Nie losuj kolejnych wariantów do chwili uzyskania „ciekawego” wyniku.
+To selekcja danych według efektu, a nie plan badania. Własny scenariusz
+i ID pozostają spójne od Z09 przez dalszą pracę nad projektem;
+wcześniejsze ćwiczenia korzystały z osobnych dostarczonych
+przykładów.</p>
+<p>Jeżeli wersja pakietu lub generatora zmienia dane, trzeba zachować
+informację o wersji użytej w pracy. Dwa pliki o tej samej nazwie nie
+muszą zawierać tych samych wartości. Hash pomaga rozpoznać zawartość, a
+nazwa folderu sama tego nie zapewnia.</p>
+<p>Nie wpisuj fikcyjnego zdalnego SHA do planu. Potwierdzenie oddania
+dotyczy rzeczywiście przesłanej wersji. Z09 przygotowuje argument i
+pierwszy dowód; C10 dopnie kontrolę raportu oraz odtworzenia.</p>
+<div id="manifest-przykładu-który-już-znasz" class="section level2">
+<h2>Manifest przykładu, który już znasz</h2>
+<p>Teraz wyświetlamy tożsamość wspólnego wariantu S02, a nie twojej
+pracy. Wiersz ID ma wartość demo001; tę samą demonstrację wykorzystywały
+wcześniejsze zajęcia. Klucz wariantu określa wejście generatora, a hash
+danych rozpoznaje ich zawartość — żadna z tych liczb nie potwierdza
+reprezentatywności.</p>
+<pre class="r"><code>print(wariant_demo)</code></pre>
+<p><strong>Karta wybranego wariantu</strong></p>
+<p><strong>Scenariusz:</strong> S02 Katalog biblioteczny: użyteczność
+wyszukiwania</p>
+<p><strong>Problem usługi:</strong> Biblioteka chce ustalić, czy katalog
+wymaga dodatkowego wsparcia przy pierwszych kontaktach. Porównuje ocenę
+katalogu i wykonanie jednego zadania, ponieważ pozytywna opinia o
+interfejsie nie musi oznaczać poprawnego odnalezienia dokumentu.</p>
+<p><strong>Konstrukt indeksu:</strong> Ocena użyteczności katalogu</p>
+<p><strong>Kontrast pierwszego porównania:</strong> nowi minus
+doświadczeni</p>
+<p><strong>Druga relacja:</strong> grupa × powodzenie znalezienia
+dokumentu</p>
+<p><strong>Wersja opisu pomiaru:</strong> 1.1.0</p>
+<p><strong>Klucz wariantu (grupy znaków):</strong> f3aa8363 f1ceefda
+b4e79609 e117acc0 9e85ff34 949f94eb 62fe0035 0249611d</p>
+<p><strong>SHA-256 danych (grupy znaków):</strong> 5f8f14d1 6bfc7fc1
+e3eb3930 6fa1610d fea065a7 068c689c e093e4bb 6c7a0c20</p>
+<p><strong>Manifest: pochodzenie, nie jakość pomiaru</strong></p>
 <table>
 <thead>
-<tr class="header">
-<th align="right">Minuty</th>
-<th>Praca</th>
+<tr>
+<th style="text-align:left;">
+pole
+</th>
+<th style="text-align:left;">
+wartosc
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">0–10</td>
-<td>Powrót do poprzedniego odcinka i pytanie</td>
+<tr>
+<td style="text-align:left;">
+ID
+</td>
+<td style="text-align:left;">
+demo001
+</td>
 </tr>
-<tr class="even">
-<td align="right">10–30</td>
-<td>Zmienne, wzór i symbole</td>
+<tr>
+<td style="text-align:left;">
+Scenariusz
+</td>
+<td style="text-align:left;">
+S02
+</td>
 </tr>
-<tr class="odd">
-<td align="right">30–55</td>
-<td>Gotowe wyniki i dwa tory, jeśli dotyczą</td>
+<tr>
+<td style="text-align:left;">
+Rocznik
+</td>
+<td style="text-align:left;">
+2026-27
+</td>
 </tr>
-<tr class="even">
-<td align="right">55–80</td>
-<td>Zadanie na indywidualnych danych</td>
+<tr>
+<td style="text-align:left;">
+Generator
+</td>
+<td style="text-align:left;">
+1.0.0
+</td>
 </tr>
-<tr class="odd">
-<td align="right">80–90</td>
-<td>Kontrola, oddanie i zapowiedź kolejnego kroku</td>
+<tr>
+<td style="text-align:left;">
+Rekordy surowe
+</td>
+<td style="text-align:left;">
+150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wersja R
+</td>
+<td style="text-align:left;">
+4.5.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Syntetyczne
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
 </tr>
 </tbody>
 </table>
-<div style="page-break-after: always;"></div>
+<p>Manifest wskazuje 150 rekordów surowych. To nie znaczy 150 różnych
+osób: dwa rekordy są identycznymi powtórzeniami. Gotowa funkcja wykonuje
+reguły poznane na C02–C04. W projekcie przenosisz umiejętność ich
+odczytu i uzasadnienia, nie obowiązek samodzielnego napisania
+programu.</p>
 </div>
-<div id="scena-badawcza" class="section level1">
-<h1>2. Scena badawcza</h1>
-<p>Każdy student ma jeden z dwudziestu scenariuszy i indywidualne dane.
-Budujemy plan, w którym pytanie, operacjonalizacja, zmienne, metoda i
-interpretacja tworzą jedną sekwencję.</p>
-<p>Badana osoba wykonuje krótkie zadanie wyszukiwawcze w cyfrowej
-usłudze informacyjnej, a potem odpowiada na sześć pozycji samooceny.
-Rejestrujemy czas i powodzenie jako pomiar obserwacyjny. Częstość
-korzystania, samoocena oraz wybrane kanały są deklaracjami. Rozdzielenie
-tych źródeł jest częścią interpretacji, ponieważ wysoka pewność nie musi
-oznaczać sprawnego wykonania.</p>
-<p>Dane demonstracyjne dotyczą scenariusza S02 i są syntetyczne. Ich
-rozkłady przygotowano do nauki, dlatego nie wolno opisywać nimi realnej
-biblioteki ani użytkowników UJ. Jednostką analizy jest osoba po
-usunięciu identycznych duplikatów. Każdy brak pozostaje brakiem, dopóki
-słownik nie podaje jawnej reguły.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="pytanie-jednostka-i-zmienne" class="section level1">
-<h1>3. Pytanie, jednostka i zmienne</h1>
-<p>Analizowane zmienne: <strong>wynik porównania, grupa, indeks, czas,
-powodzenie, druga analiza scenariusza</strong>.</p>
-<p>Przed spojrzeniem na wynik odpowiedz głośno na cztery pytania: kto
-jest obserwacją, co jest zmienną, jaka jest skala i w jakiej jednostce
-pojawi się rezultat. Nazwa kolumny jest technicznym adresem; znaczenie
-pochodzi z operacjonalizacji oraz słownika danych.</p>
+<div id="reguły-danych-zapisujemy-przed-wynikiem" class="section level2">
+<h2>reguły danych zapisujemy przed wynikiem</h2>
+<p>Plan czyszczenia powinien mówić, co jest nieprawidłową wartością, co
+brakiem, co duplikatem i co dopuszczalną nietypową obserwacją. Te
+kategorie wymagają innych działań. Nie można ich połączyć w hasło
+„usunięto błędne dane”.</p>
+<p>Wartość 99 jest brakiem tylko tam, gdzie przewiduje to słownik. Czas
+99 minut może być prawidłowy w skali 0–120. Reguła globalnego
+zastępowania każdej liczby 99 przez NA uszkodziłaby dane.</p>
+<p>Poniższa karta zbiera decyzje znane z C02–C04. Przeczytaj każde
+uzasadnienie jako regułę, którą można zastosować bez znajomości
+p. Jeżeli decyzja zależy od tego, czy wynik „poprawi się”, nie jest
+neutralnym czyszczeniem.</p>
+<pre class="r"><code>widok &lt;- reguly_do_odczytu()
+print(widok)</code></pre>
+<p><strong>Reguły przed obejrzeniem p</strong></p>
+<p><strong>Identyczny duplikat:</strong> Zachowaj jeden rekord zgodnie z
+regułą</p>
+<p><strong>Kod 99:</strong> NA tylko w polu objętym słownikiem</p>
+<p><strong>Czas poza zakresem:</strong> Oznacz i udokumentuj jako
+brak</p>
+<p><strong>Długi prawidłowy czas:</strong> Zachowaj; sprawdź
+protokół</p>
+<p><strong>Brak pozycji:</strong> Indeks przy minimum 5 z 6</p>
+<p><strong>Brak sukcesu:</strong> Wyłącz z tabeli, nie zamieniaj na
+zero</p>
+<p><strong>Wielokrotne kanały:</strong> Jawny wspólny mianownik osób</p>
+<p>Identyczny duplikat można rozpoznać po zgodności rekordu i regule
+identyfikacji. Dwa różne rekordy z tym samym ID wymagają wyjaśnienia
+konfliktu, nie przypadkowego wyboru pierwszego. Długi, lecz prawidłowo
+zmierzony czas pozostaje obserwacją.</p>
+<p>Dziennik powinien pokazywać N przed i po usunięciu rekordów oraz
+liczbę zmienionych komórek. Zamiana kodu braku nie zawsze zmniejsza
+liczbę osób. Brak indeksu jednej osoby nie musi wykluczać jej z tabeli
+sukcesu.</p>
+<p>W planie określ odrębnie kompletność potrzebną do każdej analizy. Nie
+wymuszaj identycznego N w całym raporcie kosztem niepotrzebnego usuwania
+danych. Jeśli stosujesz wspólną próbę do porównania modeli, uzasadnij
+ten wybór.</p>
+<p>Surowy plik pozostaje niezmieniony. Odtwarzalność oznacza możliwość
+ponownego przejścia od niego do wyników przy tych samych regułach.
+Ręczne poprawianie CSV z wynikami nie jest poprawą analizy.</p>
+<p>Poniższy wynik pokazuje faktyczne działania skryptu, nie samą listę
+zamierzeń. Najpierw czytamy liczbę rekordów i duplikatów, potem zmiany
+komórek. Zamiana nieprawidłowego czasu na NA nie usuwa całej osoby ze
+wszystkich analiz.</p>
+<pre class="r"><code>widok &lt;- przygotowanie_wariantu(wariant_demo)
+print(widok)</code></pre>
+<p><strong>Reguły przygotowania wykonane przez gotowy
+skrypt</strong></p>
 <table>
-<colgroup>
-<col width="33%" />
-<col width="33%" />
-<col width="33%" />
-</colgroup>
 <thead>
-<tr class="header">
-<th>Element</th>
-<th>Pytanie kontrolne</th>
-<th>Odpowiedź w tej historii</th>
+<tr>
+<th style="text-align:left;">
+regula
+</th>
+<th style="text-align:right;">
+liczba
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td>Jednostka</td>
-<td>Co zajmuje jeden wiersz?</td>
-<td>jedna osoba i jedno zadanie</td>
+<tr>
+<td style="text-align:left;">
+N przed czyszczeniem
+</td>
+<td style="text-align:right;">
+150
+</td>
 </tr>
-<tr class="even">
-<td>Samoopis</td>
-<td>Co osoba deklaruje?</td>
-<td>pozycje, częstość, kanały</td>
+<tr>
+<td style="text-align:left;">
+Usunięte identyczne duplikaty
+</td>
+<td style="text-align:right;">
+2
+</td>
 </tr>
-<tr class="odd">
-<td>Obserwacja</td>
-<td>Co zapisuje procedura?</td>
-<td>czas i powodzenie</td>
+<tr>
+<td style="text-align:left;">
+Kod 99 zamieniony na NA
+</td>
+<td style="text-align:right;">
+4
+</td>
 </tr>
-<tr class="even">
-<td>Granica wniosku</td>
-<td>O czym mówią dane?</td>
-<td>o syntetycznej próbie dydaktycznej</td>
+<tr>
+<td style="text-align:left;">
+Czas poza 0–120 minut zamieniony na NA
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N po czyszczeniu
+</td>
+<td style="text-align:right;">
+148
+</td>
 </tr>
 </tbody>
 </table>
-<p>Skala pomiarowa ogranicza sens działań. Dla kategorii liczymy osoby i
-odsetki; dla uporządkowanych odpowiedzi możemy porównywać kolejność; dla
-czasu sens mają różnice i ilorazy. Indeks 1–5 traktujemy w kursie jako
-przybliżoną zmienną ilościową, ale pamiętamy, że powstał z pozycji
-porządkowych. Nazwanie skali przed analizą chroni przed mechanicznym
-wyborem testu.</p>
-<div style="page-break-after: always;"></div>
+<p>W demonstracji usunięto dwa identyczne powtórzenia, cztery kody 99 w
+pozycjach zamieniono na braki, a dwa czasy spoza zakresu oznaczono jako
+NA. Pozostało 148 osób. Surowa tabela nie została nadpisana. Twój
+wariant ma te same jawne reguły, ale liczby ważnych indeksów i par
+musisz odczytać z własnego wyniku.</p>
 </div>
-<div id="słownik-statystyczny" class="section level1">
-<h1>4. Słownik statystyczny</h1>
-<p>Statystyka jest językiem skrótu. Symbol ma nazwę, znaczenie w badaniu
-i jednostkę. Odczytuj wzór zdaniem, zanim podstawisz liczby.</p>
+</div>
+<div id="learn-4-plan-pierwszej-analizy" class="section level1">
+<h1>LEARN 4: plan pierwszej analizy</h1>
+<p>Pierwsza analiza porównuje dwie niezależne grupy według indeksu albo
+czasu, zgodnie z dozwolonym parametrem i uzasadnieniem. W S02 naturalnym
+wyborem jest indeks użyteczności. Zapisz kierunek „nowi minus
+doświadczeni”, jednostkę i N wymaganych wartości.</p>
+<p>Klasyczny wynik obejmuje test Welcha oraz CI różnicy średnich. Nie
+zakładamy równości wariancji tylko dlatego, że obie grupy używały tej
+samej ankiety. Test Welcha dopuszcza różne wariancje i liczebności, ale
+nadal wymaga uzasadnienia niezależności i sposobu wnioskowania.</p>
+<p>Tor permutacyjny tasuje etykiety grup. Jego prosta wersja jest
+uzasadniona przy wymienialności pod modelem zerowym, np. równości
+rozkładów albo właściwym mechanizmie randomizacji. Sama równość średnich
+przy odmiennych rozkładach nie gwarantuje poprawności dowolnego
+tasowania surowej różnicy.</p>
+<p>Efekt naturalny to różnica w punktach indeksu lub minutach. Hedges g
+daje standaryzowaną miarę tej różnicy. Nie ma jednostki minut i nie
+powinien zastępować efektu, który odbiorca potrafi odnieść do działania
+usługi.</p>
+<p>W planie wpisz, jak odczytasz wynik, jeśli CI obejmie zero. Nie
+będzie to automatyczny dowód równości. Jeśli CI nie obejmie zera, nadal
+trzeba zapytać o wielkość, praktyczne znaczenie i brak podstaw do
+przyczynowości.</p>
+<div id="pierwszy-odtwarzalny-opis" class="section level2">
+<h2>Pierwszy odtwarzalny opis</h2>
+<p>Przed wnioskowaniem sprawdzamy liczebności i opis grup. Poniższa
+tabela dotyczy wspólnej demonstracji S02, nie indywidualnego projektu.
+Student porównuje jej strukturę ze swoim wynikiem, a nie kopiuje
+wartości.</p>
+<pre class="r"><code>widok &lt;- pierwszy_opis_wariantu(wariant_demo, z_wykresem = FALSE)
+print(widok)</code></pre>
+<p><strong>Opis indeksu w grupach</strong></p>
 <table>
-<colgroup>
-<col width="25%" />
-<col width="25%" />
-<col width="25%" />
-<col width="25%" />
-</colgroup>
 <thead>
-<tr class="header">
-<th>Symbol</th>
-<th>Nazwa</th>
-<th>Znaczenie w przykładzie</th>
-<th>Jednostka</th>
+<tr>
+<th style="text-align:left;">
+grupa
+</th>
+<th style="text-align:right;">
+N_osob
+</th>
+<th style="text-align:right;">
+N_indeks
+</th>
+<th style="text-align:right;">
+srednia
+</th>
+<th style="text-align:right;">
+SD
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math></td>
-<td>wynik</td>
-<td>indeks albo czas</td>
-<td>punkty/minuty</td>
+<tr>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+3.510
+</td>
+<td style="text-align:right;">
+0.704
+</td>
 </tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math></td>
-<td>grupa</td>
-<td>dwa poziomy scenariusza</td>
-<td>kategoria</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math></td>
-<td>drugi predyktor</td>
-<td>częstość, czas lub indeks</td>
-<td>zależnie od skali</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math></td>
-<td>efekt</td>
-<td>różnica, V albo korelacja</td>
-<td>jednostka metody</td>
+<tr>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+73
+</td>
+<td style="text-align:right;">
+3.072
+</td>
+<td style="text-align:right;">
+0.687
+</td>
 </tr>
 </tbody>
 </table>
-<p>Wartość p nie jest prawdopodobieństwem prawdziwości hipotezy.
-Przedział nie jest zakresem środkowych 95% obserwacji. Efekt nie jest
-tym samym co istotność. Te trzy rozróżnienia wracają w każdej
-analizie.</p>
-<p><strong>Notatnik pojęć.</strong> Dla każdego symbolu dopisz jedną
-liczbę z gotowego wyniku i przeczytaj ją bez skrótu. Zamiast „t równa
-się” powiedz „obserwowana różnica leży tyle błędów standardowych od
-wartości zerowej”. Zamiast „V równa się” powiedz „znormalizowana siła
-związku w tabeli wynosi”. Taki przekład jest ważniejszy niż pamięciowe
-odtwarzanie wzoru.</p>
-<div style="page-break-after: always;"></div>
+<p>W przykładzie liczba osób w obu grupach jest równa, ale N ważnych
+indeksów już nie. Ten szczegół ma znaczenie dla SE i df. Nie wpisujemy
+„po 74” do każdej analizy tylko dlatego, że taka jest liczba uczestników
+po czyszczeniu.</p>
+<p>Wykres pokazuje położenie i zróżnicowanie indeksu. Nie jest testem
+skuteczności szkolenia. Zaznacz, co w obrazie można opisać bez p, a
+czego nie można na jego podstawie rozstrzygnąć.</p>
+<pre class="r"><code>widok &lt;- pokaz_wykres(wykres_grup)
+print(widok)</code></pre>
+<p><img role="img" aria-label src="data:image/png;base64,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" alt width="100%" style="display: block; margin: auto;" /></p>
+<p>Wzorcowy opis brzmi: w demonstracji średnia indeksu wynosi około
+3,510 dla 74 doświadczonych i 3,072 dla 73 nowych z ważnym indeksem,
+czyli nowe osoby uzyskały opisowo średnią niższą o około 0,438 punktu.
+Te liczby nie identyfikują efektu szkolenia. W analizie inferencyjnej
+dołączamy CI oraz oba tory oceny skrajności, zamiast zmieniać opisową
+różnicę w pewną cechę populacji.</p>
 </div>
-<div id="wzór-czytany-jak-zdanie" class="section level1">
-<h1>5. Wzór czytany jak zdanie</h1>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">pytanie</mtext><mo>→</mo><mtext mathvariant="normal">zmienne</mtext><mo>→</mo><mtext mathvariant="normal">estymata</mtext><mo>→</mo><mtext mathvariant="normal">niepewność</mtext><mo>→</mo><mtext mathvariant="normal">wniosek</mtext></mrow><annotation encoding="application/x-tex">\text{pytanie} \rightarrow \text{zmienne} \rightarrow \text{estymata} \rightarrow \text{niepewność} \rightarrow \text{wniosek}</annotation></semantics></math></p>
-<p>Czytamy od lewej do prawej, nazywając licznik, mianownik i jednostkę.
-Znak wyniku ma sens dopiero po ustaleniu kolejności grup lub kierunku
-skali. Jeżeli we wzorze jest N, chodzi o przypadki rzeczywiście użyte w
-danym obliczeniu, a nie automatycznie o wszystkie wiersze surowego
-pliku.</p>
-<p><strong>Ćwiczenie ustne.</strong> Wskaż w formule estymatę, element
-niepewności i punkt odniesienia. Jeżeli dana metoda ich nie ma, powiedz
-to wprost. Następnie przewidź, co stanie się z wynikiem po zwiększeniu
-N, zmianie jednostki albo odwróceniu kolejności grup.</p>
-<p>Czytanie wzoru ma pięć kroków: (1) nazwij wynik po lewej stronie, (2)
-nazwij obserwowane wielkości po prawej, (3) wskaż porównanie lub wartość
-zerową, (4) ustal jednostkę, (5) powiedz, jaka zmiana danych zwiększa
-wynik. Nie wykonujemy ręcznie długich obliczeń. Wzór ma odsłonić logikę
-liczby zwracanej przez gotową funkcję.</p>
-<div style="page-break-after: always;"></div>
+<div id="plan-drugiej-analizy" class="section level2">
+<h2>plan drugiej analizy</h2>
+<p>W scenariuszu tabeli 2 × 2 określ kategorie, mianownik procentów i
+kategorię sukcesu. Test niezależności odpowiada pytaniu o związek.
+Różnica proporcji oraz jej CI opisują kierunek i wielkość w jednostkach
+zrozumiałych dla instytucji.</p>
+<p>Sprawdzenie oczekiwanych liczebności poprzedza wybór asymptotycznego
+chi-kwadrat albo dokładnego Fishera. Monte Carlo generuje tabele przy
+ustalonych marginesach; p zależy od określonej statystyki i definicji
+skrajności. Nie nazywaj go „dokładnym”, jeśli użyto skończonej liczby
+losowań.</p>
+<p>V Craméra jest nieujemne i nie określa kierunku. Proste percentyle
+jego bootstrapu mogą zachowywać się źle przy niezależności. Jak w C07,
+nie wykorzystujemy dodatniej dolnej granicy do automatycznego ogłoszenia
+związku; niepewność kierunkową pokazujemy właściwym przedziałem różnicy
+proporcji.</p>
+<p>W scenariuszu korelacyjnym określ parę zmiennych i liczbę kompletnych
+par. Współczynnik dobierz do skali oraz kształtu. CI korelacji i p z
+tasowania jednej zmiennej muszą dotyczyć tej samej wybranej miary.</p>
+<p>Jeśli dodatkowo pokazujesz regresję, wyjaśnij jednostkę nachylenia i
+ograniczenia średniej liniowej. Druga analiza projektu nie musi być
+rozszerzona o wszystkie elementy C08. Nie dopisujemy obowiązkowego
+modelu wielozmiennowego tylko dlatego, że interpretacja ma
+ograniczenia.</p>
 </div>
-<div id="gotowy-skrypt-pomocniczy" class="section level1">
-<h1>6. Gotowy skrypt pomocniczy</h1>
-<p>Pierwszy chunk materiału załadował towarzyszący plik
-<code>analiza.R</code>. Zawiera przygotowanie danych, obiekty i funkcje
-potrzebne na zajęciach. Uruchamiasz kolejne fragmenty i odczytujesz
-wynik. Nie implementujesz testu ani pętli permutacyjnej.</p>
-<pre class="r"><code>wynik_glowny</code></pre>
-<pre><code>##   scenariusz                                                       projekt
-## 1        S02 Obserwacyjne badanie przekrojowe; grupy nie są randomizowane.
-##     druga_analiza
-## 1 tabela krzyżowa</code></pre>
-<p>W zadaniu indywidualnym analogiczny skrypt powstaje przez
-<code>przygotuj_zadanie()</code>. Wolno zmienić jedynie wartości
-oznaczone komentarzem jako parametry. Dzięki temu przedmiot ocenia
-rozumienie wyniku, a nie biegłość w programowaniu.</p>
-<p>Po zmianie parametru uruchom cały skrypt od początku. Pojedyncze
-obiekty pozostawione w Environment mogą pochodzić ze starszej próby,
-dlatego nie są dowodem odtwarzalności. Zapisany plik w
-<code>wyniki</code> ma powstać ponownie w świeżej sesji. Jeśli nazwa
-zmiennej jest niedozwolona, funkcja zatrzymuje analizę i podaje listę
-dopuszczalnych wartości.</p>
-<div style="page-break-after: always;"></div>
+<div id="gdy-nazwa-techniczna-myli" class="section level2">
+<h2>Gdy nazwa techniczna myli</h2>
+<p>Wspólna kolumna <code>powodzenie</code> ma różne etykiety
+merytoryczne w scenariuszach. Może oznaczać sukces zadania, deklarację
+ponownego użycia albo napotkanie problemu. Kod 1 nie musi zawsze
+oznaczać korzystnego wyniku.</p>
+<p>Przed opisem kierunku przeczytaj słownik. Większa proporcja
+nieudanych prób dostępu ma inne znaczenie niż większa proporcja
+znalezionych dokumentów. Wspólny schemat kodu ułatwia analizę, ale nie
+znosi konieczności rozumienia pomiaru.</p>
+<p>Podobnie wspólny <code>indeks</code> może opisywać pewność,
+przejrzystość, zaufanie albo użyteczność dokumentacji. Nie zamieniaj
+tych nazw na jedną ogólną „satysfakcję”. Każdy konstrukt uzasadnia inne
+pytanie i inne ograniczenie.</p>
 </div>
-<div id="dane-braki-i-mianownik" class="section level1">
-<h1>7. Dane, braki i mianownik</h1>
-<pre class="r"><code>knitr::kable(head(tabela_glowna, 10), digits = 3)</code></pre>
+</div>
+<div id="learn-5-przygotowujemy-własną-kartę-projektu" class="section level1">
+<h1>LEARN 5: przygotowujemy własną kartę projektu</h1>
+<p>Wybierasz jeden scenariusz z poniższej listy. Każdy obejmuje dwie
+grupy, sześć pozycji ankietowych i drugie pytanie o związek. Temat
+zmienia sens pomiaru, ale nie wymaga innego poziomu programowania. Na
+tym etapie porównujesz indeks; nie trzeba wyszukiwać dodatkowych
+testów.</p>
+<pre class="r"><code>widok &lt;- katalog_projektow()
+print(widok)</code></pre>
+<p><strong>Dwadzieścia scenariuszy; w każdym pierwsza analiza porównuje
+indeks</strong></p>
 <table>
 <thead>
-<tr class="header">
-<th align="left">etap</th>
-<th align="left">wartosc</th>
+<tr>
+<th style="text-align:left;">
+ID
+</th>
+<th style="text-align:left;">
+Temat
+</th>
+<th style="text-align:left;">
+Druga analiza
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">pytanie 1</td>
-<td align="left">Czy grupy różnią się indeksem?</td>
+<tr>
+<td style="text-align:left;">
+S01
+</td>
+<td style="text-align:left;">
+Wsparcie biblioteki w wyszukiwaniu
+</td>
+<td style="text-align:left;">
+Spearman
+</td>
 </tr>
-<tr class="even">
-<td align="left">wynik</td>
-<td align="left">indeks</td>
+<tr>
+<td style="text-align:left;">
+S02
+</td>
+<td style="text-align:left;">
+Użyteczność katalogu
+</td>
+<td style="text-align:left;">
+Tabela 2 na 2
+</td>
 </tr>
-<tr class="odd">
-<td align="left">predyktor</td>
-<td align="left">grupa</td>
+<tr>
+<td style="text-align:left;">
+S03
+</td>
+<td style="text-align:left;">
+Deklarowana znajomość otwartego dostępu
+</td>
+<td style="text-align:left;">
+Spearman
+</td>
 </tr>
-<tr class="even">
-<td align="left">metoda klasyczna</td>
-<td align="left">Welch</td>
+<tr>
+<td style="text-align:left;">
+S04
+</td>
+<td style="text-align:left;">
+Informacja o wydarzeniach
+</td>
+<td style="text-align:left;">
+Tabela 2 na 2
+</td>
 </tr>
-<tr class="odd">
-<td align="left">metoda permutacyjna</td>
-<td align="left">tasowanie etykiet</td>
+<tr>
+<td style="text-align:left;">
+S05
+</td>
+<td style="text-align:left;">
+Przejrzystość procedur w portalu
+</td>
+<td style="text-align:left;">
+Spearman
+</td>
 </tr>
-<tr class="even">
-<td align="left">efekt</td>
-<td align="left">różnica i Hedges g</td>
+<tr>
+<td style="text-align:left;">
+S06
+</td>
+<td style="text-align:left;">
+Przydatność newslettera
+</td>
+<td style="text-align:left;">
+Tabela 2 na 2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S07
+</td>
+<td style="text-align:left;">
+Zrozumiałość opisów archiwum
+</td>
+<td style="text-align:left;">
+Spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S08
+</td>
+<td style="text-align:left;">
+Informacja w kolekcji muzealnej
+</td>
+<td style="text-align:left;">
+Tabela 2 na 2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S09
+</td>
+<td style="text-align:left;">
+Nawigacja w BIP
+</td>
+<td style="text-align:left;">
+Spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S10
+</td>
+<td style="text-align:left;">
+Dokumentacja danych badawczych
+</td>
+<td style="text-align:left;">
+Tabela 2 na 2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S11
+</td>
+<td style="text-align:left;">
+Instrukcje korzystania z e-zasobów
+</td>
+<td style="text-align:left;">
+Spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S12
+</td>
+<td style="text-align:left;">
+Materiały na platformie nauczania
+</td>
+<td style="text-align:left;">
+Tabela 2 na 2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S13
+</td>
+<td style="text-align:left;">
+Adekwatność FAQ
+</td>
+<td style="text-align:left;">
+Tabela 2 na 2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S14
+</td>
+<td style="text-align:left;">
+Kontrola wyszukiwania przez filtry
+</td>
+<td style="text-align:left;">
+Spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S15
+</td>
+<td style="text-align:left;">
+Aktualność instrukcji w bazie wiedzy
+</td>
+<td style="text-align:left;">
+Spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S16
+</td>
+<td style="text-align:left;">
+Spójność informacji miejskiej
+</td>
+<td style="text-align:left;">
+Tabela 2 na 2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S17
+</td>
+<td style="text-align:left;">
+Czytelność opisów otwartych danych
+</td>
+<td style="text-align:left;">
+Tabela 2 na 2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S18
+</td>
+<td style="text-align:left;">
+Jasność zasad dostępu
+</td>
+<td style="text-align:left;">
+Tabela 2 na 2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S19
+</td>
+<td style="text-align:left;">
+Trafność rekomendacji lektur
+</td>
+<td style="text-align:left;">
+Spearman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S20
+</td>
+<td style="text-align:left;">
+Informacja o konferencji
+</td>
+<td style="text-align:left;">
+Tabela 2 na 2
+</td>
 </tr>
 </tbody>
 </table>
-<p>Zanim przeczytasz statystykę, ustal N i braki. Dla średniej N oznacza
-ważne liczby. Dla korelacji są to kompletne pary. Dla tabeli jest to
-suma analizowanych komórek. Dla indeksu przypadek musi mieć co najmniej
-pięć odpowiedzi po właściwym ukierunkowaniu.</p>
-<p>Dwa wyniki mogą używać różnych N w tym samym raporcie. Nie jest to
-sprzeczność, jeśli wynika z braków i zostało jawnie opisane. Nie wolno
-dopasowywać reguły braków po zobaczeniu, która wersja daje
-korzystniejsze p.</p>
-<p>Brak może dotyczyć jednej pozycji, całego indeksu albo pary
-zmiennych. Duplikat jest powtórzeniem rekordu, a obserwacja odstająca
-nadal może być prawdziwą obserwacją. Te pojęcia wymagają innych decyzji.
-Dziennik czyszczenia powinien pozwolić odtworzyć, ile elementów zmieniła
-każda reguła i dlaczego wynikowe N jest właściwym mianownikiem.</p>
-<div style="page-break-after: always;"></div>
+<p>W CHALLENGE 1 zmieniasz jedynie kod scenariusza w gotowym wywołaniu.
+Funkcja wykorzystuje ID podane na początku sesji. W roboczym Rmd to samo
+ID ma być zapisane przez przygotowanie zadania, tak aby render w nowej
+sesji nie zależał od obiektu pozostawionego w konsoli. W publicznym
+podglądzie CHALLENGE używa oznaczenia DEMO_C09; to przykład, nie ID do
+oddania.</p>
+<p>Ponowne wywołanie z tym samym ID, scenariuszem, rocznikiem i wersją
+odtwarza ten sam wariant. Uruchomienie chunka nie oznacza wylosowania
+nowych danych „na próbę”. Jeśli po zapisaniu pytań zmieniasz temat z
+uzasadnionego powodu, musisz ponownie sprawdzić wszystkie dalsze
+odpowiedzi — nie mieszać manifestu jednego scenariusza z opisem
+drugiego.</p>
+<div id="przykład-krótkiej-karty-planu-dla-s02" class="section level2">
+<h2>Przykład krótkiej karty planu dla S02</h2>
+<p>Problemem jest możliwość nierównej dostępności wyszukiwania dla
+nowych i doświadczonych odbiorców katalogu. W przyszłym badaniu
+populację stanowiliby uprawnieni użytkownicy w określonym semestrze;
+kryterium grupy należałoby ustalić przed rekrutacją. Zaproszenie przez
+więcej niż jeden kanał ograniczałoby pomijanie osób niekorzystających
+aktywnie z katalogu, choć nadal wymagałoby oceny nieodpowiedzi.</p>
+<p>Pierwsze pytanie dotyczyłoby różnicy średniej deklarowanej
+użyteczności, drugie różnicy prawdopodobieństwa znalezienia wskazanego
+dokumentu. W obu przypadkach kierunek to nowi minus doświadczeni, z
+jednostką punktów indeksu albo punktów procentowych. Ankieta i
+obserwacja tego samego zadania opisują różne aspekty korzystania z
+usługi; nie dowodzą automatycznie ogólnych kompetencji ani efektu
+szkolenia.</p>
+<p>Analiza dydaktyczna używa wariantu syntetycznego. Gotowy skrypt
+porządkuje dane, odwraca pozycję 3 i oblicza indeks przy minimum pięciu
+odpowiedziach. Plan zakłada porównanie średnich metodą Welcha z
+przedziałem oraz tasowaniem etykiet, a następnie tabelę grupy i
+powodzenia z kontrolą oczekiwań, p Monte Carlo i kierunkowym CI.
+Ewentualna rekomendacja dotyczyłaby tego, jak zaplanować sprawdzenie
+problemu w instytucji, nie wdrożenia uzasadnionego samą symulacją.</p>
 </div>
-<div id="tor-klasyczny" class="section level1">
-<h1>8. Tor klasyczny</h1>
-<p>Plan przewiduje jedną analizę porównania i jedną analizę związku
-właściwą scenariuszowi. Dla każdej zapisujemy wymagane N, statystykę, p,
-efekt i przedział.</p>
-<pre class="r"><code>knitr::kable(formatuj_wynik(wynik_klasyczny), digits = 4)</code></pre>
+<div id="literatura-potrzebna-do-uzasadnienia" class="section level2">
+<h2>Literatura potrzebna do uzasadnienia</h2>
+<p>Zacznij od problemu, np. „samoopis a obserwowane umiejętności
+wyszukiwania”, a nie od szukania artykułu z identycznym p. Zidentyfikuj
+pojęcie, sposób operacjonalizacji i projekt wcześniejszego badania.
+Dopiero potem zdecyduj, co można przenieść do własnego planu.</p>
+<p>Publikacja często cytowana może być dobrym punktem wejścia do
+literatury, lecz liczba cytowań nie dowodzi jakości każdego jej
+twierdzenia. Wysoko cytowana rama transformacji cyfrowej nie zastępuje
+badania użyteczności konkretnego katalogu. Potrzebne jest dopasowanie
+poziomu argumentu.</p>
+<p>Dla każdego wykorzystanego źródła zapisz cztery informacje: pełny
+opis, link lub DOI, pojęcie wykorzystywane w projekcie i granicę
+przeniesienia. Na przykład źródło o samoopisie umiejętności może pomóc
+odróżnić konstrukty, ale nie nadaje walidacji własnym sześciu
+pozycjom.</p>
+<p>Nie przypisuj autorowi liczb z generatora. Zdanie „zgodnie z
+Hargittai nowi użytkownicy uzyskali średnio 3,07” byłoby fałszywym
+połączeniem literatury z dydaktycznymi danymi. Oddziel tło teoretyczne,
+projekt i wynik symulacyjny.</p>
+</div>
+<div id="krótka-procedura-szukania" class="section level2">
+<h2>Krótka procedura szukania</h2>
+<p>Przygotuj zestaw pojęć polskich i angielskich, np. information
+seeking, search task performance, perceived skills, observed internet
+skills, digital inclusion. Dodaj kontekst instytucjonalny wtedy, gdy
+zawęża pytanie, nie tylko dlatego, że brzmi naukowo.</p>
+<p>Sprawdź oryginalną publikację lub repozytorium autora. Ustal, czy
+przeczytany tekst jest badaniem empirycznym, przeglądem czy ramą
+normatywną. Zacytuj tę część, na której rzeczywiście opierasz decyzję,
+zamiast dodawać ogólny link do wyszukiwarki.</p>
+<p>Jeżeli dostępny jest tylko abstrakt, nie udawaj znajomości pełnego
+narzędzia i wszystkich ograniczeń. Zaznacz zakres wykorzystania albo
+wybierz dostępne źródło. Notatka bibliograficzna ma ułatwić weryfikację
+przez czytelnika.</p>
+<p>Do krótkiej karty możesz wykorzystać konkretną podstawę z lektur
+kursu. <a href="https://webuse.org/p/a09/">Hargittai (2002), „Beyond
+logs and surveys”</a> pomaga uzasadnić, dlaczego samoopis warto
+rozpatrywać obok obserwowanego wykonania. Nie wynika z tego, że indeks
+deklarowanej użyteczności mierzy te same umiejętności co narzędzie
+autorki.</p>
+<p><a href="https://eprints.lse.ac.uk/64485/">van Deursen, Helsper i
+Eynon (2016), „Development and validation of the Internet Skills
+Scale”</a> jest punktem odniesienia dla rozróżniania wymiarów i
+uzasadniania interpretacji skali. Własne sześć pozycji kursowych nie
+dziedziczy walidacji tego narzędzia. <a href="https://www.informationr.net/tdw/publ/papers/1999JDoc.html">Wilson
+(1999), „Models in information behaviour research”</a> pomaga natomiast
+odróżnić pojedynczy wskaźnik zadania od szerszego zachowania
+informacyjnego w jego kontekście.</p>
+</div>
+<div id="dlaczego-karta-z09-nie-jest-jeszcze-końcowym-raportem" class="section level2">
+<h2>Dlaczego karta Z09 nie jest jeszcze końcowym raportem</h2>
+<p>Karta ustala pytania, estymandy, pomiar, reguły i pierwszy opis
+danych. C10 dołoży odczyt właściwych wyników obu analiz oraz korektę
+wniosków. W końcowym raporcie potrzebne będą też czytelne wykresy,
+źródła i informacje umożliwiające odtworzenie. Nie rozpoczynamy od
+drugiego, niepowiązanego tematu.</p>
+<p>Poniższa tabela pokazuje wagę składowych projektu końcowego. Nie
+oznacza siedmiu osobnych prac ani dodatkowych zadań na dziś. Planowanie,
+pomiar i interpretacja pozostają oceniane obok samego wyniku testu.</p>
+<pre class="r"><code>widok &lt;- pokaz_tabele(budzet, &quot;Projekt końcowy — 100 punktów&quot;, digits = 0)
+print(widok)</code></pre>
+<p><strong>Projekt końcowy — 100 punktów</strong></p>
 <table>
 <thead>
-<tr class="header">
-<th align="left">analiza</th>
-<th align="left">wynik</th>
+<tr>
+<th style="text-align:left;">
+element
+</th>
+<th style="text-align:right;">
+punkty
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">porównanie grup</td>
-<td align="left">indeks</td>
+<tr>
+<td style="text-align:left;">
+Plan i pytania
+</td>
+<td style="text-align:right;">
+15
+</td>
 </tr>
-<tr class="even">
-<td align="left">tabela kategorii</td>
-<td align="left">powodzenie</td>
+<tr>
+<td style="text-align:left;">
+Pomiar
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Czyszczenie
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Opis
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dwie analizy
+</td>
+<td style="text-align:right;">
+20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wnioski
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Odtworzenie
+</td>
+<td style="text-align:right;">
+10
+</td>
 </tr>
 </tbody>
 </table>
-<p>Odczytaj wynik bez etykiety „dobry” lub „zły”. Powiedz, jaka estymata
-odpowiada pytaniu, co mierzy statystyka oraz jakie założenie projektu
-ogranicza interpretację. Jeżeli widzisz p, opisz je warunkowo: przy
-modelu zerowym i przyjętej procedurze.</p>
-<p><strong>Karta odczytu toru klasycznego.</strong> Zapisz: (a) nazwę
-metody, (b) N lub liczebności grup, (c) estymatę i jednostkę, (d)
-statystykę wraz z df, jeśli występują, (e) p, (f) jedno założenie.
-Jeżeli metoda na tej stronie nie jest testem, wpisz „nie dotyczy”
-zamiast wymyślać p. Kompletność wyniku jest oceniana oddzielnie od jego
-istotności.</p>
-<div style="page-break-after: always;"></div>
 </div>
-<div id="tor-permutacyjny-lub-decyzja-o-jego-braku" class="section level1">
-<h1>9. Tor permutacyjny lub decyzja o jego braku</h1>
-<p>Każda analiza inferencyjna ma odpowiadający tor permutacyjny: zmiana
-znaków, tasowanie grup, Monte Carlo tabeli albo tasowanie jednej
-zmiennej. Typ tasowania wynika z hipotezy zerowej.</p>
-<pre class="r"><code>knitr::kable(formatuj_wynik(wynik_permutacyjny), digits = 4)</code></pre>
+</div>
+<div id="challenge-z09-pierwsza-własna-karta-projektu" class="section level1">
+<h1>CHALLENGE: Z09 — pierwsza własna karta projektu</h1>
+<p>Wybierz scenariusz z katalogu powyżej. Nie musisz wymyślać nowego
+narzędzia ani zbierać odpowiedzi od ludzi. Zmieniasz wskazany kod,
+uruchamiasz gotowe obliczenia i na podstawie wyświetlonej karty oraz
+danych zapisujesz własny plan. Dwa pytania i ich sens formułujesz
+samodzielnie; funkcja nie generuje akapitu do oddania.</p>
+<p>Wszystkie pięć odpowiedzi wpisujesz tutaj, poza chunkami, zastępując
+znaczniki. Karta ma być spójnym początkiem jednego projektu. Nie
+wybieraj osobnego tematu dla każdej odpowiedzi i nie kopiuj liczb z
+LEARN, jeśli twój wariant daje inne wyniki.</p>
+<div id="challenge-1-wybór-scenariusza-i-pochodzenie-danych" class="section level2">
+<h2>CHALLENGE 1: wybór scenariusza i pochodzenie danych</h2>
+<p>W poniższym wywołaniu zmień tylko <code>&quot;S02&quot;</code> na kod wybranego
+scenariusza, jeśli wybierasz inny temat. ID pochodzi z początku sesji, a
+przy renderowaniu z konfiguracji zapisanej w roboczym Rmd. Najpierw
+sprawdź, czy manifest pokazuje twoje ID i wybrany kod; podgląd z ID
+DEMO_C09 nie jest własną pracą.</p>
+<p>Pierwsze uruchomienie tego chunku zapisuje twój wariant wraz ze
+słownikiem i kartą scenariusza. Następne uruchomienia odczytują ten sam
+zapis, także po aktualizacji pakietu. Wybierz temat przed pierwszym
+uruchomieniem i zapisz zmieniony kod w Rmd; nie zmieniaj scenariusza po
+obejrzeniu wyników. PDF odczytuje zapisane dane, nie tworzy ich
+ponownie. Przy brakującym lub niezgodnym zapisie poproś o pomoc — nie
+usuwaj plików, aby wymusić nowe losowanie.</p>
+<pre class="r"><code>projekt &lt;- przygotuj_wariant_projektu(scenariusz = &quot;S02&quot;)
+print(projekt)</code></pre>
+<p><strong>Karta wybranego wariantu</strong></p>
+<p><strong>Scenariusz:</strong> S02 Katalog biblioteczny: użyteczność
+wyszukiwania</p>
+<p><strong>Problem usługi:</strong> Biblioteka chce ustalić, czy katalog
+wymaga dodatkowego wsparcia przy pierwszych kontaktach. Porównuje ocenę
+katalogu i wykonanie jednego zadania, ponieważ pozytywna opinia o
+interfejsie nie musi oznaczać poprawnego odnalezienia dokumentu.</p>
+<p><strong>Konstrukt indeksu:</strong> Ocena użyteczności katalogu</p>
+<p><strong>Kontrast pierwszego porównania:</strong> nowi minus
+doświadczeni</p>
+<p><strong>Druga relacja:</strong> grupa × powodzenie znalezienia
+dokumentu</p>
+<p><strong>Wersja opisu pomiaru:</strong> 1.1.0</p>
+<p><strong>Klucz wariantu (grupy znaków):</strong> 999176fc 931c08a7
+2d4c8ca6 3841b145 8ce3d9c2 ad700c7a aa0fa883 5676db7e</p>
+<p><strong>SHA-256 danych (grupy znaków):</strong> 34a356aa 295b519c
+dc7ed550 aca663be 4a20b960 8da81cc8 6a0b2019 4542358d</p>
+<p><strong>Manifest: pochodzenie, nie jakość pomiaru</strong></p>
 <table>
 <thead>
-<tr class="header">
-<th align="left">analiza</th>
-<th align="left">procedura</th>
+<tr>
+<th style="text-align:left;">
+pole
+</th>
+<th style="text-align:left;">
+wartosc
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">porównanie grup</td>
-<td align="left">tasowanie grup</td>
+<tr>
+<td style="text-align:left;">
+ID
+</td>
+<td style="text-align:left;">
+DEMO_C09
+</td>
 </tr>
-<tr class="even">
-<td align="left">tabela kategorii</td>
-<td align="left">Monte Carlo</td>
+<tr>
+<td style="text-align:left;">
+Scenariusz
+</td>
+<td style="text-align:left;">
+S02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rocznik
+</td>
+<td style="text-align:left;">
+2026-27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Generator
+</td>
+<td style="text-align:left;">
+1.0.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rekordy surowe
+</td>
+<td style="text-align:left;">
+150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wersja R
+</td>
+<td style="text-align:left;">
+4.5.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Syntetyczne
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
 </tr>
 </tbody>
 </table>
-<p>W analizie inferencyjnej liczba B określa rozdzielczość szacowanego
-p. Za każdym razem trzeba powiedzieć, co dokładnie tasowano i jaki
-związek został zerwany. Nazwa „permutacyjny” nie zwalnia z wyjaśnienia
-hipotezy zerowej.</p>
-<p><strong>Karta odczytu toru permutacyjnego.</strong> Uzupełnij zdanie:
-„Przy braku związku lub różnicy wielokrotnie zmieniano znaki, tasowano
-etykiety lub losowano tabele, za każdym razem liczono tę samą
-statystykę, a określony odsetek wyników był co najmniej tak skrajny jak
-obserwowany”. Następnie porównaj wniosek z torem klasycznym bez
-wybierania mniejszego p.</p>
-<div style="page-break-after: always;"></div>
+<p><strong>Twoja odpowiedź.</strong> W jednym krótkim akapicie opisz
+problem informacyjny wybranej usługi i decyzję, której mogłoby służyć
+przyszłe badanie. Podaj ID, scenariusz, rocznik i wersję generatora
+odczytane z manifestu; nie przepisuj całych skrótów SHA. Wyraźnie
+rozdziel plan prawdziwego badania od analizy syntetycznych rekordów i
+wyjaśnij, co manifest potwierdza, a czego nie dowodzi.</p>
+<!-- odpowiedz:S01 -->
+<p>[UZUPELNIJ_S01] <!-- /odpowiedz:S01 --></p>
 </div>
-<div id="efekt-i-przedział" class="section level1">
-<h1>10. Efekt i przedział</h1>
-<p>Projekt musi nazwać główny efekt przed oglądaniem p. Różnica w
-naturalnej jednostce ma pierwszeństwo interpretacyjne, a standaryzowany
-efekt ułatwia porównanie. CI wskazuje precyzję.</p>
-<pre class="r"><code>knitr::kable(formatuj_wynik(efekt), digits = 4)</code></pre>
+<div id="challenge-2-pytania-estymandy-i-hipotezy" class="section level2">
+<h2>CHALLENGE 2: pytania, estymandy i hipotezy</h2>
+<p>Wyświetl kartę obu planowanych analiz. Nie są to dwa różne
+scenariusze: oba pytania odnoszą się do twojej wybranej usługi. Kierunek
+porównania jest zapisany nazwami grup; nazwa funkcji testującej nie
+zastępuje pytania badawczego.</p>
+<pre class="r"><code>plan &lt;- plan_wariantu(projekt)
+print(plan)</code></pre>
+<p><strong>Plan analizy 1 — porównanie grup</strong></p>
+<p><strong>Wynik:</strong> Ocena użyteczności katalogu</p>
+<p><strong>Kontrast:</strong> nowi minus doświadczeni</p>
+<p><strong>Efekt i CI:</strong> Różnica średnich w punktach indeksu; CI
+Welcha oraz bootstrapu osób w grupach.</p>
+<p><strong>Dwa tory:</strong> Test Welcha; tasowanie etykiet grup z
+jawnym założeniem wymienialności.</p>
+<p><strong>N:</strong> Osoby ze znaną grupą i ważnym indeksem, osobne N
+grup.</p>
+<p><strong>Plan analizy 2 — relacja ze scenariusza</strong></p>
+<p><strong>Zmienne:</strong> Grupa i odpowiedź 0/1: Czy udało się
+znaleźć wskazany dokument?</p>
+<p><strong>Efekt i CI:</strong> Różnica proporcji kodu 1 w punktach
+procentowych i CI; V osobno, bez kierunku.</p>
+<p><strong>Dwa tory:</strong> Chi-kwadrat albo Fisher według oczekiwań;
+tabele Monte Carlo o stałych marginesach.</p>
+<p><strong>N:</strong> Osoby ze znaną grupą i wynikiem 0/1; procenty
+liczone w grupach.</p>
+<p><strong>Twoja odpowiedź.</strong> W jednym krótkim akapicie sformułuj
+dwa pytania odpowiadające kartom. Dla pierwszego nazwij różnicę
+średnich, kolejność grup, jednostkę i H0; dla drugiego odpowiedni
+parametr związku albo różnicę proporcji, właściwe zmienne i H0.
+Wyjaśnij, dlaczego wynik klasyczny i permutacyjny jednego porównania nie
+stanowią dwóch merytorycznie różnych analiz. Nie dopisuj przewidywanego
+kierunku wyłącznie na podstawie liczb, które zobaczysz później.</p>
+<!-- odpowiedz:S02 -->
+<p>[UZUPELNIJ_S02] <!-- /odpowiedz:S02 --></p>
+</div>
+<div id="challenge-3-populacja-i-pomiar-pasujący-do-pytań" class="section level2">
+<h2>CHALLENGE 3: populacja i pomiar pasujący do pytań</h2>
+<p>Poniższa karta pokazuje rzeczywistą treść sześciu pozycji oraz
+pozostałe pomiary scenariusza. Nie tworzysz nowego kwestionariusza
+zamiast dostarczonego. Proponujesz plan użycia tego narzędzia i
+rozpoznajesz granice wniosku, jakie wynikają z jego treści.</p>
+<pre class="r"><code>pomiar &lt;- pomiar_wariantu(projekt)
+print(pomiar)</code></pre>
+<p><strong>Kwestionariusz i pomiary w wybranym scenariuszu</strong></p>
+<p><strong>Pozycja 1:</strong> Szybko znajduję pole wyszukiwania w
+katalogu.</p>
+<p><strong>Pozycja 2:</strong> Nazwy filtrów są dla mnie zrozumiałe.</p>
+<p><strong>Pozycja 3:</strong> Odczytanie rekordu wymaga ode mnie
+zgadywania.</p>
+<p><strong>Pozycja 4:</strong> Potrafię znaleźć lokalizację
+dokumentu.</p>
+<p><strong>Pozycja 5:</strong> Komunikaty katalogu pomagają mi poprawić
+zapytanie.</p>
+<p><strong>Pozycja 6:</strong> Katalog wspiera wykonanie mojego
+zadania.</p>
+<p><strong>Kontekst pozycji:</strong> Po zadaniu oceń zasób i własne
+doświadczenie korzystania. Pozycje dotyczące historii odnieś do
+ostatnich czterech tygodni. Jeśli treści nie da się ocenić, pozostaw
+brak zamiast zgadywać lub wybierać 3; ustal tę zasadę jednakowo dla obu
+grup.</p>
+<p><strong>Odpowiedzi na pozycje:</strong> 1 zdecydowanie nie, 2 raczej
+nie, 3 ani tak, ani nie, 4 raczej tak, 5 zdecydowanie tak.</p>
+<p><strong>Kierunek i kompletność:</strong> Pozycja 3: 6-x po obsłudze
+braków. Średnia przy minimum 5 z 6 ważnych pozycji.</p>
+<p><strong>Definicja grup:</strong> Nowi: korzystający z tego katalogu
+po raz pierwszy; doświadczeni: korzystający wcześniej. Doświadczenie
+dotyczy konkretnego katalogu, nie ogólnej sprawności cyfrowej.
+Rekrutacja tylko przy stanowisku pomocy może nadreprezentować osoby
+mające trudności.</p>
+<p><strong>Częstość korzystania:</strong> Deklarowana częstość
+korzystania z opisanego zasobu w ostatnich czterech tygodniach przed
+zadaniem: 1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często. Są to
+kategorie porządkowe, nie liczba wizyt.</p>
+<p><strong>Czas:</strong> Czas do zakończenia próby</p>
+<p><strong>Protokół czasu:</strong> Od udostępnienia zadania do
+zgłoszenia odpowiedzi lub zakończenia próby, w minutach, niezależnie od
+jej wyniku. Czas nie jest automatycznie czasem dojścia do poprawnej
+odpowiedzi.</p>
+<p><strong>Treść pola 0/1:</strong> Czy udało się znaleźć wskazany
+dokument?</p>
+<p><strong>Źródło pola 0/1:</strong> obserwacja</p>
+<p><strong>Kod 1:</strong> wskazano właściwą publikację i jej
+lokalizację lub dostęp</p>
+<p><strong>Kod 0:</strong> zakończono próbę bez poprawnego wskazania</p>
+<p><strong>Granica odczytu:</strong> Wynik zależy od tego konkretnego
+zadania i katalogu; nie uzasadnia diagnozy wszystkich umiejętności
+użytkownika.</p>
+<p><strong>Kanały:</strong> strona WWW, e-mail, media społecznościowe,
+kontakt bezpośredni</p>
+<p><strong>Twoja odpowiedź.</strong> W jednym krótkim akapicie określ
+populację i okres, ramę dotarcia, kryterium obu grup oraz jeden
+mechanizm możliwej selekcji. Odwołaj się do jednej konkretnej pozycji
+ankiety, uzasadniając nazwę konstruktu i wskazując, czego nie mierzy.
+Doprecyzuj sposób pomiaru zmiennej potrzebnej do drugiego pytania:
+kryterium wyniku 0/1 albo okres częstości, albo start i koniec czasu.
+Odróżnij deklarację od obserwacji; nie pisz, że faktyczne badanie lub
+pilotaż już wykonano.</p>
+<!-- odpowiedz:S03 -->
+<p>[UZUPELNIJ_S03] <!-- /odpowiedz:S03 --></p>
+</div>
+<div id="challenge-4-co-skrypt-zrobił-z-twoimi-danymi" class="section level2">
+<h2>CHALLENGE 4: co skrypt zrobił z twoimi danymi</h2>
+<p>Uruchom wydruk dziennika i bilansu. Pierwsza tabela opisuje reguły
+oraz liczbę zmienionych rekordów lub komórek, a kolejne pokazują dane
+dostępne do analiz. Nie trzeba ręcznie usuwać wartości ani poprawiać
+źródłowego CSV.</p>
+<pre class="r"><code>przygotowanie &lt;- przygotowanie_wariantu(projekt)
+print(przygotowanie)</code></pre>
+<p><strong>Reguły przygotowania wykonane przez gotowy
+skrypt</strong></p>
 <table>
 <thead>
-<tr class="header">
-<th align="left">analiza</th>
-<th align="left">miara</th>
+<tr>
+<th style="text-align:left;">
+regula
+</th>
+<th style="text-align:right;">
+liczba
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">porównanie grup</td>
-<td align="left">różnica + g</td>
+<tr>
+<td style="text-align:left;">
+N przed czyszczeniem
+</td>
+<td style="text-align:right;">
+150
+</td>
 </tr>
-<tr class="even">
-<td align="left">tabela kategorii</td>
-<td align="left">V Cramera</td>
+<tr>
+<td style="text-align:left;">
+Usunięte identyczne duplikaty
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kod 99 zamieniony na NA
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Czas poza 0–120 minut zamieniony na NA
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N po czyszczeniu
+</td>
+<td style="text-align:right;">
+148
+</td>
 </tr>
 </tbody>
 </table>
-<p>Znaczenie praktyczne oceniamy w kontekście usługi: minuty, punkty
-skali, różnica odsetków albo siła związku. Uniwersalne etykiety
-mały/średni/duży nie zastępują pytania, czy efekt zmienia decyzję
-instytucji i jak precyzyjnie został oszacowany.</p>
-<p>Przedział szeroki obejmuje wiele możliwych wielkości efektu i wymaga
-ostrożniejszego języka. Przedział wąski może nadal koncentrować się
-wokół efektu praktycznie małego. Gdy przedział przecina zero, nie
-zapisujemy automatycznie „brak efektu”; podajemy zakres zgodnych
-wartości i oceniamy, czy obejmuje skutki istotne dla usługi
-informacyjnej.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="wykres-jako-część-argumentu" class="section level1">
-<h1>11. Wykres jako część argumentu</h1>
-<pre class="r"><code>wykres_glowny</code></pre>
-<p><img role="img" aria-label src="data:image/png;base64,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" alt width="100%" /></p>
-<p>Wykres odpowiada na pytanie o położenie, kształt, nakładanie się grup
-lub kierunek związku. Tytuł, osie i jednostki są częścią wyniku. Nie
-wnioskuj o istotności tylko z wyglądu, lecz sprawdź, czy obraz jest
-spójny z tabelą i estymatą.</p>
-<p>Przeczytaj wykres w trzech warstwach. Najpierw opisz elementy
-widoczne bez testu: zakres, skupienie i nietypowe obserwacje. Potem
-połącz je z estymatą w tabeli. Na końcu nazwij rzecz, której wykres nie
-rozstrzyga, np. przyczynowość, błąd pomiaru albo zachowanie wyniku w
-nowej próbie. Nie usuwaj obserwacji tylko dlatego, że psuje prostą
-historię.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="wynik-czytany-linia-po-linii" class="section level1">
-<h1>12. Wynik czytany linia po linii</h1>
-<p>Karta planu powinna pozwolić obcej osobie przewidzieć, które kolumny
-wejdą do analizy, jaki wiersz wyniku odpowie na pytanie i jakie
-ograniczenie będzie konieczne.</p>
-<p>Schemat pełnego zdania: „W analizie N osób oszacowano [efekt] w
-[jednostce], 95% CI [dolna; górna]. Statystyka klasyczna wyniosła
-[symbol i df], p=[wartość], a procedura permutacyjna B losowań dała
-p_perm=[wartość]. Wynik opisuje [zakres] i nie rozstrzyga
-[ograniczenie]”.</p>
-<p>Podczas zajęć jedna osoba czyta tabelę, druga sprawdza znak i
-jednostkę, a trzecia wskazuje granicę wniosku. Dopiero po tej kontroli
-zapisujemy odpowiedź do pliku Markdown.</p>
-<p>Dobra interpretacja ma trzy warstwy. Warstwa liczbowa mówi, co
-oszacowano. Warstwa badawcza odpowiada na pytanie o zachowanie
-informacyjne lub wykonanie zadania. Warstwa krytyczna wskazuje, czego
-projekt, pomiar i syntetyczność nie pozwalają stwierdzić. Pominięcie
-którejkolwiek warstwy tworzy tekst technicznie poprawny, lecz
-metodologicznie niepełny.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="błędy-interpretacji" class="section level1">
-<h1>13. Błędy interpretacji</h1>
-<p>Błąd: „wykonam wszystkie testy i wybiorę istotny”. Poprawnie: „dla
-pytania o grupy wybieram indeks i test Welcha z permutacją etykiet;
-druga analiza wynika z przypisanego scenariusza”.</p>
-<p>Dodatkowe pułapki: traktowanie braku istotności jako dowodu równości,
-pomijanie N, raportowanie samego p, utożsamienie samooceny z kompetencją
-oraz zamiana obserwacyjnego związku w przyczynę. Poprawa polega na
-dodaniu liczby, jednostki, zakresu i ograniczenia, a nie na bardziej
-stanowczym czasowniku.</p>
-<p>Porównaj dwie konstrukcje: „test wykazał efekt” i „oszacowana różnica
-wyniosła…, a wynik testu był…”. Druga oddziela wielkość od decyzji.
-Podobnie „grupy były takie same” zastępujemy opisem przedziału i
-precyzji. W raporcie nie używamy słowa „trend” jako sposobu ratowania p
-nieco większego od .05; opisujemy rzeczywisty efekt i jego
-niepewność.</p>
-<p><strong>Po zajęciach.</strong> Znajdź w swoim szkicu jedno zdanie
-zawierające „wpływa”, „udowadnia”, „brak różnicy” albo „95% wyników”.
-Przepisz je tak, aby odpowiadało projektowi i rzeczywistemu znaczeniu
-statystyki.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="próba-prowadzona" class="section level1">
-<h1>14. Próba prowadzona</h1>
-<ol style="list-style-type: decimal">
-<li>Otwórz gotowy skrypt i wskaż sekcję parametrów.<br />
-</li>
-<li>Uruchom cały plik bez zmiany dalszej części.<br />
-</li>
-<li>Otwórz zapisany CSV i odnajdź N, estymatę oraz jednostkę.<br />
-</li>
-<li>Jeżeli analiza jest inferencyjna, porównaj p klasyczne i
-permutacyjne.<br />
-</li>
-<li>Odczytaj efekt i przedział.<br />
-</li>
-<li>Napisz jedno zdanie wyniku oraz jedno zdanie ograniczenia.</li>
-</ol>
-<p>Jeżeli skrypt zgłasza błąd, najpierw sprawdź katalog projektu, nazwę
-parametru i dozwoloną wartość. Nie poprawiaj wnętrza funkcji
-statystycznej. Błąd parametru jest informacją o niedozwolonym wyborze, a
-nie zaproszeniem do przepisania procedury.</p>
-<p>Podział czasu próby: 3 minuty na uruchomienie, 4 na odnalezienie
-właściwego CSV, 5 na głośny odczyt tabeli, 5 na szkic interpretacji i 3
-na kontrolę ograniczenia. Jeśli grupa utknie, wraca do pytania,
-jednostki i znaku efektu. Celem jest krótkie, sprawdzalne rozumowanie,
-nie zwiększanie liczby wykonanych poleceń.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="zadanie-z09" class="section level1">
-<h1>15. Zadanie Z09</h1>
-<p>Uruchom Z09, wybierając jeden dozwolony wynik. W odpowiedziach zapisz
-dwa pytania, zmienne i skale, oba tory analiz, efekt, spodziewany plik
-oraz ograniczenia doboru, pomiaru i symulacji.</p>
-<p>Przygotuj pliki poleceniem poniżej. Uruchom zapisany
-<code>analiza.R</code>, a następnie uzupełnij wszystkie pola
-<code>[UZUPELNIJ]</code> w <code>odpowiedzi.md</code>. Nie wklejaj kodu
-ani zrzutu całej konsoli.</p>
-<pre class="r"><code>przygotuj_zadanie(&#39;Z09&#39;, katalog = &#39;.&#39;)
-sprawdz_zadanie(&#39;Z09&#39;, katalog = &#39;.&#39;)
-oddaj_zadanie(&#39;Z09&#39;, katalog = &#39;.&#39;)</code></pre>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="rubryka-kontrola-i-dalszy-krok" class="section level1">
-<h1>16. Rubryka, kontrola i dalszy krok</h1>
+<pre class="r"><code>liczebnosci &lt;- bilans_wariantu(projekt)
+print(liczebnosci)</code></pre>
+<p><strong>Bilans analiz</strong></p>
 <table>
-<colgroup>
-<col width="42%" />
-<col width="57%" />
-</colgroup>
 <thead>
-<tr class="header">
-<th>Kryterium</th>
-<th align="right">Punkty</th>
+<tr>
+<th style="text-align:left;">
+zakres
+</th>
+<th style="text-align:right;">
+N
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td>Z09.1: Indywidualny scenariusz i manifest danych zgodne z ID,
-rocznikiem i wersją.</td>
-<td align="right">2</td>
+<tr>
+<td style="text-align:left;">
+Rekordy surowe
+</td>
+<td style="text-align:right;">
+150
+</td>
 </tr>
-<tr class="even">
-<td>Z09.2: Problem, pytania i hipotezy są konkretne i pasują do
-instytucji oraz dostępnych zmiennych.</td>
-<td align="right">3</td>
+<tr>
+<td style="text-align:left;">
+Osoby po usunięciu duplikatów
+</td>
+<td style="text-align:right;">
+148
+</td>
 </tr>
-<tr class="odd">
-<td>Z09.3: Plan próby i operacjonalizacja/kwestionariusz nadają się do
-planowanego badania.</td>
-<td align="right">3</td>
+<tr>
+<td style="text-align:left;">
+Ważny indeks
+</td>
+<td style="text-align:right;">
+147
+</td>
 </tr>
-<tr class="even">
-<td>Z09.4: Dwie analizy mają uzasadnione tory klasyczne i permutacyjne,
-efekt, przedział oraz ograniczenie.</td>
-<td align="right">2</td>
+<tr>
+<td style="text-align:left;">
+Ważny czas
+</td>
+<td style="text-align:right;">
+142
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dane do drugiego pytania
+</td>
+<td style="text-align:right;">
+148
+</td>
 </tr>
 </tbody>
 </table>
-<p>Automatyczna kontrola sprawdza pliki, parametry, odtwarzalność i
-zgodność eksportu. Prowadzący ocenia dobór języka, odczyt liczb,
-interpretację efektu oraz ograniczenie. Poprawny skrypt bez własnego
-wyjaśnienia nie realizuje zadania.</p>
-<p>Po wysyłce sprawdź <code>status_oddania()</code> i zdalne SHA. Na
-współdzielonym komputerze wywołaj <code>wyloguj_github()</code>, wyloguj
-przeglądarkę i zamknij RStudio bez <code>.RData</code>. Następne
-ćwiczenie rozpoczyna się od pobrania potwierdzonej wersji.</p>
-<div id="źródło-kontekstu" class="section level2">
-<h2>Źródło kontekstu</h2>
-<p>Dwadzieścia scenariuszy różni kontekst i konstrukty, ale zachowuje
-równoważny ciężar analityczny. Każdy projekt jest indywidualny i
-wyłącznie ilościowy.</p>
-<p>Materiały odwołują się do: Wilsona (1999), Kuhlthau (1991),
-Savolainen (1995), Hargittai (2002), DigComp 2.2, ACRL Framework oraz
-Internet Skills Scale. Są to ramy pojęciowe; dane i pozycje kursowe
-pozostają syntetyczne i dydaktyczne.</p>
+<p><strong>Dostępne pomiary w grupach</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+grupa
+</th>
+<th style="text-align:right;">
+N_osob
+</th>
+<th style="text-align:right;">
+N_indeks
+</th>
+<th style="text-align:right;">
+N_czas
+</th>
+<th style="text-align:right;">
+N_wynik
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+69
+</td>
+<td style="text-align:right;">
+74
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+73
+</td>
+<td style="text-align:right;">
+73
+</td>
+<td style="text-align:right;">
+74
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Twoja odpowiedź.</strong> W jednym krótkim akapicie podaj N
+surowe i po usunięciu identycznych powtórzeń, liczbę kodów 99 oraz
+czasów oznaczonych jako braki. Wyjaśnij różnicę między usunięciem
+duplikatu a zmianą komórki na NA. Odczytaj ważne N indeksu i drugiej
+analizy, a regułę <code>6-x</code> oraz minimum 5 z 6 powiąż z treścią
+pozycji. Uzasadnij, dlaczego długi czas mieszczący się w zakresie nie
+znika tylko dlatego, że pogarsza wygląd rozkładu.</p>
+<!-- odpowiedz:S04 -->
+<p>[UZUPELNIJ_S04] <!-- /odpowiedz:S04 --></p>
 </div>
+<div id="challenge-5-pierwszy-własny-wynik-i-następny-krok" class="section level2">
+<h2>CHALLENGE 5: pierwszy własny wynik i następny krok</h2>
+<p>Na końcu wyświetl opis indeksu w swoich grupach oraz jego rozkład.
+Jest to pierwszy wynik opisowy, jeszcze nie pełne wnioskowanie. Do planu
+inferencji wrócisz na C10 z tym samym scenariuszem i wariantem.</p>
+<pre class="r"><code>opis &lt;- pierwszy_opis_wariantu(projekt)
+print(opis)</code></pre>
+<p><strong>Opis indeksu w grupach</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+grupa
+</th>
+<th style="text-align:right;">
+N_osob
+</th>
+<th style="text-align:right;">
+N_indeks
+</th>
+<th style="text-align:right;">
+srednia
+</th>
+<th style="text-align:right;">
+SD
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+3.403
+</td>
+<td style="text-align:right;">
+0.664
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+73
+</td>
+<td style="text-align:right;">
+3.123
+</td>
+<td style="text-align:right;">
+0.753
+</td>
+</tr>
+</tbody>
+</table>
+<p><img role="img" aria-label src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABIAAAAJ5CAMAAADhO7uDAAABp1BMVEUiIiIiIk4iInUiTk4iTnUiTpoidZoidb0zMzNAQEBBQWRBQYZBZGRBZIZBZKZBhsREk8BNnclOIiJOIk5OTiJOTk5OTnVOdU5OdXVOdZpOdb1Omr1Omt5kQUFkZEFkZGRkZIZkhoZkhqZkhsRkpsRkpuJ1IiJ1TiJ1Tk51dU51dXV1dZp1db11mpp1mr11mt51vb11vd51vf+GQUGGZEGGZGSGhkGGhmSGhqaGpqaGpsSGpuKGxOKGxP+aTiKaTk6adSKadU6adXWadZqamk6amnWamr2avZqavb2avd6a3t6a3v+mZEGmhmSmxMSmxOKm4v+9dSK9dU69mnW9mpq9mr29vZq9vb29vd693pq93t693v+9///EhkHEhmTEpmTEpobEpqbExIbExKbE4qbE4uLE4v/E///YhUTemk7emnXevXXevZrevb3evd7e3pre3r3e3t7e3v/e///g4ODij03ipmTipobixIbixKbi4qbi4sTi4uLi4v/i/8Ti////vXX/xIb/3pr/3r3/3t7/4qb/4sT/4uL//73//8T//97//+L///+dJynVAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO3d/2MUZ37Y8ZXBRQv+cqciajhUX3IxYDnni8FN28QmhfYuJvY1FnaMY45Lmrb26cAtWD7iXJtafHPMsn90Z+aZnZ0vz8zOZzXzGT2ffb9+AaTVarTPZ97szs6uRlMAGMho6A0AsLoIEIDBECAAgyFAAAZDgAAMhgABGAwBAjAYAgRgMAQIwGAIEIDBECAAgyFAAAZDgAAMhgABGAwBAjAYAgRgMH0G6NHPNzdGo9HaqTe/6vG7tPf9uXhr3l90sUf/+VcaW+OxP1q0gbvxJY55vuqY//JVjT+d7+qBHvUXoDvnR3NHr/X2fdprFaDJRxvPDRSgyeWF23fQAC346QgQlPUVoMn1UdGZvZ6+U3ttAhRnc6gA7S/evAMGaNFPR4CgrKcAJf+ZFz0/eIFaBOhh/JhxoADFt9mi+2cHC9DCn44AQVlPAdpx0Tn9WfT3u1fcPwYf7EMeoCgkz91c7usIEALVT4CSfWK+Oz06l/z7Yi/fq1NDBmhZBAjh6iVA7gFY7r/z5L5HCDs2ASJA0NRLgPYrd3hKH5l8dCH+92bh+flHVzaKH9tPv+bOhegTR87kLvvo6mb8ubVNzxP8+7kDTq6EF6vHpI65D5ydbY97/mk/d4GabfJsfeW6Gzc93viT0SePnC48MXjn9fiDoyOnfpE/VFa5nRYcA9p1G7DnvZEqP131VixdvXdLp3eTn+nNPdezs7W3ObBYLwHaqdzfcXeBZqP9241sV5glYDq5kn1s9oSZ24sfzp7OX/tZ9aLzD2baBcjta7MD48mu9PxeeRf1bJNn6+sDVN30aKeen50wPzfhYe6Uhdxlq7dTc4Dc9rsfqnojlX46361YuHrvls5/2rX3CRAOrI8AFWvj5Jo02SnvrtnXpNJRTsZ6e74TplNd2uHPTou8O0M1EsneMzsiveuuqLSL+rbJs/W1Aapu+nR6eyN/0XTbHxY+OPuo73ZqDND+xnxDPTdS8afz3or5q/du6fT7eZXW/pIA4aD6CJDbn4ojmIyo2993i/ur717EsfnX5LkRL319+ZiGd2eoRiL/GGx2BmDjLprul9Wtrw1QddMrH/fehUqz6LudmgLkbvb05vDcSMWfznsr5q7eu6We0ysIEA5CNUDJx9xnn785nd6Z7zHJ5K+9tZeewOh2wXQfOPpXs4smH3YDHj8kepy7bOk71e4M6X53sXC59BHYtHiY1rtN3q2vXHfNpqf3qdbe3Ct8OLnOo/EZC9O754+88d5X09rv1BCg9ED/zdwPXr6Rcj+d/wLzq/dvafpzxds6e4BGgHAQfQRo39OFeZR2Sjt+/MH8GTrzncBNe+mi0YR/+fNN90G3l5RmvXFn2J/vNbnvuZ/tSbld1L9Nvq2vXnfdpu/mbhn3YCZ/xLrI+53qA+R+1OxW995I+bx6LzC/ev+W5jcqvTNEgHAQ6gEqnA24k/5/v5/br5ILJHuJ24vzB35KY+39YNPOkB5scd9pJ9t/dkae+wjebfJuvee6/ZtefOotOwqVXLj8ajn/d6oN0L8q9sd/I/mfhs9dILv6mi0tFN/9wAQIB6EeIO9OsJsb9/lLMpPrmf2HXdgjEo8/Pj/yzHrDzpD+p51eZXbBZLfK3dfIHQ8pb1P9mTSe665sevGrs42bHYM+8tNP58+1+b9TbYCc8gH50o3ku87CBbKrb9rS2YdzS0KAsKTeAlR3DCg/q5nC8z3ZV+f34tz9ldiXyRkq84uWv5N/Z3DfZpbG7D7G/vxCuT3Mu03erfdct3/TS1+dJS73rdZm5+T4v9OCABXjUrmRygGqXCC7+potLX54nuiG2xxoonUQOjum4N2xGgI0u2guQI+uVC6aU78z7JYuP9uBdua75dIBKl23f9NL+Sg94Jk5fbNyDdUvKf/AqdxJhJ4bqRAg3wWyq6/Z0uKHCRAOTP08IO+OJQqQO91ltHbqF/dEx4AKB2myDzy/l1zoWO5DSwSofN3+Td/379aR2ydz32d+AEwcoOyBr/dGygfIe4HiPSAChN6pnwldH6DKAQz/XuyuKnl1g+ggdHpaYe5bp0d2kt0yH6lcgJrOcqz8eLlPNATI8xAs9ti96iLrmDhAx3Zyn/PfSOXn+CoX4CEYlPX4WrD8zuseoWSnAc3itL/2yi8+m5Z2xeLVND2OWRig3LM2xYPEua06u5v7cM1B6Ix36z3X7d/0mkO7mcefvJ5dkf871Qfo2F7+ka//Rir/dJULdHEQ2ntuBODXS4DSs9jmz4PlTtItzOfstBL/f/f+vXhn/vX15wHlD+nk9q3Shd3TX7lHYJWn4cvb5N16z3X7N919deXJ7bxsAxq+ky9A2SfdN/XfSOX7d5ULZFdfs6WNT8NXb3NgkT7fDyjbudIjJG4oc+eyZWOen/f9f33qzc/2smvxB8jtg9erTSmesng5u4DbovI9muw4z+w65ich1WyTb+s91+3f9JrT+yZ3P7qwUXkM6PtOza8Fy22x/0bK/XT+Cyx7IqL/NgcW0n9HRDes8dn8//t89h+nuw8RvzLg9vwVlQ0BGv1oL3sapzTr6d2va/NXC1z0HIB20nTMH2y4L35rOvlfNdvk2XrfddcEyPsCh/Qc5uT597vnm77TolfD72aX899IuZ/OfwHBSzHu5l+K4b3NgcUGeE9o34ssCy88L0y7/0hu5QpyKk9fXax8z9KB6fkunW139G292+TZet91+ze9uvEXfR/MH8cp/ZjNAXJb730x7NnST+e/QMOLUfMPBitf573NgcWG+K0YvrfjKL4jRW5vrezF+bb9m41R9W5N/qo2052hJkDpx3MHYmbblh0HLm2TZ+slASpd2PvB+u+08A3J9mc/Tc2NNP/p/BfIX713S/NVfu6/zD/hu82BxQb5vWDzN9qav/tW7u2v1t5yH6rZi+dvifWz5K+V1yvsz65+7eJuujPUBejhRv57TOc7WHKlnm3ybL0oQIW3+cq6l3/vnYbvtDBA87tA/hsp99N5L1D7hmTzQmdvCHT0Zv55Qs9tDizW529GffzRheTpk1M/Lf+yh+ytRvNPMt29cjK5dNaq2r34TvzV8ZuC5p/MKVz9yeSK9qaLAlR9iVnytdmWVbbJs/WyACW/MDbe/OT4WObOleSOw5FXrnnfkrXw8LXh1/LkjgZ7b6T8T+e5QPktWX1b6r4uvkUKJypUb3NgsRX/3fAtfhkp6vjrDwiseIAK91Sw0M7m9nufzd6clnjjwFY7QLc38o8isJA7iv2zOEF3L49GngNwgMTqBig7dMM+1N5++XgX8caBrG6A9tmHllA64YdHrzgYAkR/JIrnd52hPziY1Q1Q8ssAj5wunyGABSYfX0jevGjtlOfX0gIyqxsgAIMjQAAGQ4AADIYAARgMAQIwGAIEYDAECMBgCBCAwRAgAIMhQAAGQ4AADIYAARgMAQIwGAIEYDAECMBgCJC2r4feAPSJ5ZUhQNqYUNNYXhkCpI0JNY3llSFA2phQ01heGQKkjQk1jeWVIUDamFDTWF4ZAqSNCTWN5ZUhQNqYUNNYXhkCpI0JNY3llSFA2phQ01heGQKkjQk1jeWVIUDamFDTWF4ZAqSNCTWN5ZUhQNqYUNNYXhkCpI0JNY3llSFA2phQ01heGQKkjQk1jeWVIUDamFDTWF4ZAqSNCTWN5ZUhQNqYUNNYXhkCpI0JNY3llSFA2phQ01heGQKkbH19fehNQI8IkAwBUkaAbCNAMgRIGQGyjQDJECBlBMg2AiRDgJQRINsIkAwBUkaAbCNAMgRIGQGyjQDJECBlBMg2AiRDgJQRINsIkAwBUkaAbCNAMgRIGQGyjQDJECBlBMg2AiRDgJQRINsIkAwBUkaAbCNAMgRIGQGyjQDJECBlBMg2AiRDgJQRINsIkAwBUkaAbCNAMgRIGQGyjQDJECBlBMg2AiRDgJQRINNYXiECpIwJNY3lFSJAyphQ01heIQKkjAk1jeUVIkDKmFDTWF4hAqSMCTWN5RUiQMqYUNNYXiECpIwJNY3lFSJAyphQ01heIQKkjAk1jeUVIkDKmFDTWF4hAqSMCTWN5RUiQMqYUNNYXiECpIwJNY3lFSJAyphQ01heIQKkjAk1jeUVIkDKmFDTWF4hAqSMCTWN5RUiQMqYUNNYXiECpIwJNY3lFSJAyphQ01heIQKkjAk1jeUVIkDKmFDTWF4hAqSMCTWN5RUiQMqYUNNYXiECpIwJNY3lFSJAyphQ01heIQKkjAk1jeUVIkDKmFDTWF4hAqSMCTWN5RUiQMqYUNNYXiECpIwJNY3lFSJAyphQ01heIQKkjAk1jeUVIkDKmFDTWF4hAqSMCTWN5RUiQMqYUNNYXiECpIwJNY3lFSJAyphQ01heIQKkjAk1jeUVIkDKmFDTWF4hAqSMCTWN5RUiQMqYUNNYXiECpIwJNY3lFSJAyphQ01heIQKkjAk1jeUVIkDKmFDTWF4hAqSMCTWN5RUiQMqYUNNYXiECpIwJNY3lFSJAyphQ01heIQKkjAk1jeUVIkDKmFDTWF4hAqSMCTWN5RU6WIDuj1/uaDtWBhNqGssrdKAAPdkiQFJMqGksr9BBAvTsgzEBkmJCTWN5hQ4SoPtjAiTGhJrG8godIEBPL534UwIkxYSaxvIKHSBAt8bv3iJAUkyoaSyv0PIBejB+6VsCJMaEmsbyCi0doKeXjn84JUBiTKhpLK/Q0gG6NX5t6g/Q12gQTejQm4D+sLwLdBWg+AFYTYDQhP8iTWN5hZYM0LMPogdgBGgJTKhpLK/QkgFKX4NBgMSYUNNYXqHlAvRk68QX8Z8ESIwJNY3lFVouQPE50DPxsSC0xoSaxvIKESBlTKhpLK/Qwd6Og4dgYkyoaSyvEAFSxoSaxvIKESBlTKhpLK8QAVLGhJrG8grxntDKmFDTWF6hSoAmX96o9+neENtoChNqGssrVAnQ9+dG9Z771RDbaAoTahrLK0SAlDGhprG8QgRIGRNqGssr5A/Qkc2qkwSoC0yoaSyvkDdA3s7UfgISTKhpLK8QAVLGhJrG8gqtVoDWkRp6JaziphXyngfkPd2n9hPhGHqvP0SGXgqruGmFVupM6KH3+kNk6KWwiptWqDFAk0+2t7d/+pnWtvQumo4fDu4HQ2/AD3/IXtIbblqh6kOwq9vbbySPtCbX07N/jl7T365eECCHvaQ33LRC9Qehvz8/PwHxzABb1gMC5LCX9IabVqg2QJPL+VOgzw6xbZ0jQA57SW+4aYVqA7SbhGdtc9P9+f4QG9c1AuSwl/SGm1aoLkDJHaC15ODP7Y3or8f0N617BMhhL+kNN61QXYCSl4RddB/aj/76fNhnADkEyGEv6Q03rVBTgGbnPVs4BzpBgBz2kt5w0wo1PQQjQH0gQJZx0wp5A7R27avkIDQPwXpAgCzjphVqfEMyV507HITuEgGyjJtWqPkdEaMCpf++OMTGdY0AOewlveGmFVoYIHdCoolHYAQoxV7SG25aIc+LUe/duLqZBuhYeka0iUPQBGiGvaQ33LRCda+Gn9z9+PWTySswdkaj0ybu/xCgGfaS3nDTCi1+P6DfvvmVwnaoIEAOe0lvuGmFVu0NyYbe9wmQbdy0Qs0B+v7C5ikbh38SBMhhL+kNN63QggCds3L8OUGAHKt7ydJvUGvO0CvRHgHSRoD6MvBOf5gMvRTtESBtBKgvA+/0h8nQS9EeAdJGgPoS/Vi/G9xvht6A3/0uqOUlQNoIUF8IkBPU8hIgbQSoLwTICWp5CZA2AtQXAuQEtbwESBsB6gsBcoJaXgKkjQD1hQA5QS0vAdJGgPpCgJyglpcAaSNAfSFATlDLS4C0EaC+ECAnqOUlQNoIUF8IkBPU8hIgbQSoLwTICWp5CZA2AtQXAuQEtbwESBsB6gsBcoJaXgKkjQD1hQA5QS0vb8mqjQD1hQA5QS0vAdJGgPpCgJyglpcAaSNAfSFATlDLS4C0EaC+ECAnqOUlQNoIUF8IkBPU8lYCNLm67fOGhV+OSoCcoCa0PQLkBLW8lQB9f27kY+LZeALkBDWh7REgJ6jlJUDaCFBfCJAT1PISIG0EqC8EyAlqeasHoSfXk+JsFpn4Dc0EyAlqQtsjQE5Qy+t7Fuz2RhSgi+qb0j8C5AQ1oe0RICeo5fU+Db9v5TFXCQFygprQ9giQE9Ty+s8D2o0KdEx5SxQQICeoCW2PADlBLa8/QJPLo9Ha+8qb0j8C5AQ1oe0RICeo5a05E3rf5F0gAuQENaHtESAnqOWtCdDkxo0bn1o4+bmAADlBTWh7BMgJanl5LZg2AtQXAuQEtbwESBsB6gsBcoJaXgKkjQD1hQA5QS0vAdJGgPpCgJyglpcAaSNAfSFATlDLS4C0EaC+ECAnqOVdtQDBGXop+rBOgBJBLS8BWk1DL0Uf1glQIqjlJUCraeil6MM6AUoEtbwEaDUNvRR9WCdAiaCWlwCtpqGXog/rBCgR1PLWvRbsy/xLwR7f+Pk1pe3p1dB7/SEy9FL0YZ0AJYJa3poAfX8u/45kDzdGz1t4Zeo6T8MngprQ9giQE9TytgpQ8V/hIkBOUBPaHgFyglreaoAe34vcjZLz2b2Z3xp5h1YC5AQ1oe0RICeo5a0GaJdfy9MrAtQXAuQEtbyeX8tz2RcgjgF1hQD1hQA5QS2v5xjQww1PgEz8lh4C5AQ1oe0RICeo5fUdhPY8CDurvmF9IEBOUBPaHgFyglpeX4AmN258sjFae++G8+m9e+qb1Q8C5AQ1oe0RICeo5W31NLwVBMgJakLbI0BOUMvb6kxoKwiQE9SEtkeAnKCWt+1rwR5byBEBcoKa0PYIkBPU8tY9BPvjQnAm1008ICNATlAT2h4BcoJa3tpjQLkTfyYfbdg4IkSAnKAmtD0C5AS1vPUHobMC3d7gTOgOEaC+ECAnqOWtD9Do6M34b4/O81KMThGgvhzsDUpMGXop2msI0Oi5m9NHV9yJiGtnOAjdEQLUl4F3+sNk6KVor+5p+J0kO6+nJ0Kfvqm7VT1ZJ0CJoCa0vaH3+kNk6KVor/Zp+Ovz12EYyQ8BmglqQtsbeq8/RIZeivbqzwOavSLs6GeKm9OvdQKUCGpC2xt6rz9Ehl6K9hpORNxPXhV/TG9berdOgBJBTWh7Q+/1h8jQS9Fe05nQ7n05bLwQPrFOgBJBTWh76zwNnwhqeSsBmlzdzrhj0K/Ef32DZ8E6QoD6QoCcoJa3EqDkCXjekrU/BKgvBMgJankJkDYC1BcC5AS1vARIGwHqCwFyglreaoAubPqcIkAdIUB9IUBOUMu7ar8bfuh9nwD1hwA5QS0vAdJGgPpCgJyglpcAaSNAfSFATlDL2xigx59c3X7jxlda29I7AuQENaHtESAnqOVtCNDt2S8oXHvL89lnv94aj3/8P3vbsD4QICeoCW2PADlBLW9tgAq/obn6i5m/uzROvNbv5nWLADlBTWh7BMgJanlrA7RTOA2o/JLUZx+MX/x8+uzvxuN3e97ALhEgJ6gJbY8AOUEtb12A9tPybKZ/ln43/IPx8Q/jP2+NX+55A7tEgJygJrQ9AuQEtbx1AdqZvxPQ3fPVu0Cz8Nwfv/Rtj1vXMQLkBDWh7REgJ6jlbXhP6PmBn53al2IQIDEC1BcC5AS1vPUBWns/+9fDut8L9uwDHoJJEaC+ECAnqOWtD1AuOcV/zX33wfjEF/1sVy8IkBPUhLZHgJyglrf+GFDxHpDnnVkfjMfjlzz9+frQilbmB/jBD6LbYeil6EP0Y/0Gv/nNoV7etgHaz78Xa6FG8wC98Op4/OKHNVdwGHEPyAnqv8j2uAfkBLW8dQGKz0P8kTsKPble+8bQz26lT8eHgQA5QU1oewTICWp5634x4ZcfxS/EOLW9vX0y+vNI+ibRlXeGDusoNAFygprQ9giQE9TyNv1q5jbvixjU8/AEyAlqQtsjQE5Qy0uAtBGgvhAgJ6jlXS5A0SOv9FWoQb0WgwA5QU1oewTICWp56wK04J2h76cnAD3ZCun18ATICWpC2yNATlDLu+Q7Ij69FL8afvrNVkiPwAhQKqgJbY8AOUEt77JvyRrd9Um8yJnQQgSoLwTICWp5qwF6fO+e/01Yi5/4l/gdEV94J6D7PwRoJqgJbY8AOUEtr/cXE3pf+FX7iXAQICeoCW2PADlBLS8B0kaA+kKAnKCWlwBpI0B9IUBOUMvrDdDaK9tVr28QoC4QoL4QICeo5fUGqBYBOjgC1BcC5AS1vARIGwHqCwFyglpeAqSNAPWFADlBLW8lQJOrnuM/M5W34wgLAXKCmtD2CJAT1PIueyZ0kNYxM/RS9GGdACWCWl4CtJqGXoo+rBOgRFDLS4BW09BL0Yd1ApQIanlXKkCHQVDTERYC5AQ1YgRIWVDTERYC5AQ1YgRIWVDTERYC5AQ1YgRIWVDTERYC5AQ1YgRIWVDTERYC5AQ1YgRIWVDTERYC5AQ1YgRIWVDTERYC5AQ1YgRIWVDTERYC5AQ1YgRIWVDTERYC5AQ1Yi0CVPMe9VhKUNMRFgLkBDVi9QGafJy898buaDRau6a2PeYFNR1hIUBOUCNWG6CHG6OLU9efyEXFTbItqOkICwFyghqxugDF70t2dpq9PVng70R2iAQ1HWEhQE5QI1YXoP2oOs/vJX8kzqpulWFBTUdYCJAT1IjVBWgnis6ZveSPn929PBodU90qw4KajrAQICeoEasJ0ORy9ggsevT1cCO+N4QuBDUdYSFATlAjVhOgqDxr7ydHouP7PtG/OAjUkaCmIywEyAlqxOoDFCdndzS7I0SAOhLUdISFADlBjVhzgHZGsztCBKgjQU1HWA78PrV2DL0U7TUcA7qY/Tr4nRHHgLoS1HSEZei9/hAZeinaa3gW7Oh7UYVGx6Z3L4x4FqwzQU1HWIbe6w+RoZeivabzgNw50PGdIU6F7kxQ0wEplleoLkAuO8lDr50Rj8C6w4SaxvIK1b4W7NH5uD9Hf5XcGTrKIeiuMKGmsbxCDa+Gv7O9fS2+4/Nw4zT3fzrDhJrG8grxhmTKmFDTWF6htgF6zJ2gbjChprG8QnUnIv5xITiT65yI2BEm1DSWV6j2TOjc816TjzgTujNMqGksr1D9SzGyAt3e4B3JusOEmsbyCtUHaHT0Zvw393Q8AeoKE2oayyvUEKDRczenj6648xHXznAQuhtMqGksr1Ddi1F3kuy8nr4e4/RN3a0yjAk1jeUVqn0a/vooQ346xISaxvIK1Z8HlP5CntHRzxQ3xz4m1DSWV6jhRMT9+Nkv3oejY0yoaSyvUNOZ0A83+IU8nWNCTWN5hSoBmlzdzrhj0K/Ef32DZ8G6wYSaxvIKVQI0+12oJZwH1BEm1DSWV4gAKWNCTWN5hQiQMibUNJZXqBqgC5s+pwhQN5hQ01heId6QTBkTahrLK0SAlDGhprG8QgRIGRNqGssr1Bygezdu/A0nAHWKCTWN5RVqCJB7K4746a+HHILuDBNqGssrtPDFqM8lvxmMV4R1hQk1jeUVqg3Qbu4EoJ3R2vuaG2UZE2oayytUFyD3QlQXoPjXNHMXqCNMqGksr1BdgOI7QGf2vj+XBGiHXw7fGSbUNJZXqO4tWS8n78PhAhTfHeKlGB1hQk1jeYXq35Q+Tk7xD3SACTWN5RUiQMqYUNNYXqGGX8tzMSvPPseAOsOEmsbyCtUdhN5Jfi2YC9CjczwL1hkm1DSWV6guQPvxU/CnXt8Yrf1l8sasF1W3yjAm1DSWV6guQPHTYLwfWQ+YUNNYXqHaM6EL74zIidCdYUJNY3mF6l8LlrsPdJRfjdoZJtQ0lleo6e04Hl05GdXnyGl+NWqHmFDTWF4h3pBMGRNqGssrRICUMaGmsbxCBEgZE2oayyvU+KuZc/jVzB1hQk1jeYX4xYTKmFDTWF4hAqSMCTWN5RUiQMqYUNNYXqFFAdp0Z0JzDKgrTKhpLK9Q7bNg+xujo+4MxLvnR6MzahtkHRNqGssrVBeg6I7QsdmdnvhFGbwaviNMqGksr1D9m9LnXoD6cIP3A+oKE2oayytU/6b0ucPO0d0h3hGxI0yoaSyvUP1bshbvAfEsWEeYUNNYXqGG94SeP+ra4Wn4zjChprG8Qg2/F2x0+qvk74+ujHhT+s4woaaxvEJNvxl1NFrb3HQnAvEsWFeYUNNYXqGW7wnNHaCuMKGmsbxCtSciPjpHf/rAhJrG8go1vCf0lewt6d+kP51hQk1jeYWa3pBscid+b6Cffqq2MauACTWN5RXiHRGVMaGmsbxCBEgZE2oayytEgJQxoaaxvEINAZrcuzH3Kcehu8GEmsbyCtUGaP4kGO+I2CUm1DSWV6jliYgEqCtMqGksr1DzSzEIUOeYUNNYXqGmF6MSoB4woaaxvEINb8ex9tY9jjx3jgk1jeUVaggQL4DvAxNqGssr1OotWdEdJtQ0lleo7iD0zqIAfffLrfH4hXe+7X6TbGNCTWN5heoCtD8anW36uvtj5yUKJMOEmsbyCtWeiLgzGr1V/2UPxuOf/PP02T9ujV/uY6sMY0JNY3mF6o4BffnJRvyLmTdf2XZKv5r5Vhqe++PjH/a9ibYwoaaxvEINz4I1nAf09NL43eJf0BITahrLK7RcgDIESIoJNY3lFTpggJ5sESAZJtQ0lleoLkAXNotO+QN0f3ziix63ziAm1DSWV+hgb0gW3QF6rfLBr4FVFQVo6E043DoN0NO3OQ9IrLIEMIR7QEIHCdCzD3gSXo4AWUaAhA4QoOj+D/2RI0CWESChSoAmV7d93qi8M8d3l+jPMgiQZQRIqBKgyhPwNU/DP9kan/hcaSNNIUCWESChZQMU9edFnoBfBgGyjAAJLRmgp5d4/mtJBMgyAiRUDVD5FETviYicgLg0AmQZARJa7lmw6A5QpnomIpoQIMsIkNByAXqyRYCWRYAsI0BC/G54bQTIMgIkRIC0ESDLCCXaIpkAAAtbSURBVJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTIMgIkRIC0ESDLCJAQAdJGgCwjQEIESBsBsowACREgbQTINJZXhgBpY0JNY3llCJA2JtQ0lleGAGljQk1jeWUIkDYm1DSWV4YAaWNCTWN5ZQiQNibUNJZXhgBpY0JNY3llCJA2JtQ0lleGAGljQk1jeWUIkDYm1DSWV4YAaWNCTWN5ZQ4UoAfj17rajtXBhJrG8socJEBPLxEgOSbUNJZX5gABevr2mADJMaGmsbwyywfoydaYAC2BCTWN5ZVZNkDPfj0ev/g2AZJjQk1jeWWWDdCTreN//uwDAiTHhJrG8sosHaD/8PmUAC2DCTWN5ZU5yLNgBGgZTKhpLK9MDwH6GgC8FAIEAO0QIACDIUAABkOAAAyGAAEYDAECMBgCBGAwBAjAYAgQgMEQIACD4T2hAQyGAAEYDAECMBgCBGAwBAjAYAgQgMEQIACDIUAST7aOf+j9xIP631D09FLN1zReYQuNV4zDhKWqRYAkantxa/zStzVfQ4DAUtUiQBJ1vVi6IwcJEBA+AiRR14v743e7vUJgNRAgic57QYCw2ghQK8/+/t+Oxy/+9awXyT9f+LNv558b//iv56/OfXopPSR0P/r37PH/d7/cSi/mucJ/+XX0yT/8fJpcx0xyHflv9WB84otvkq9z34V4DaW4EvlVapwBVBCgNp6+7ZLwB64X36X/fPGLaa4YL8fDlgzdk61oPpNPRRdPh+/+LCs/8Vzhk63kX/EXlQL0NP+torH/U/fP+BEfUz2c4koUBqJhBlBFgFqIonD8nen099GYxYMU/zP6n++brWTU7if/mH4Tfyq9Q3M/HcwnW9EF3PBF8/iTb5NJnV1D7gqj/y1f/Hz63aW4YTP3SxeMv9WDuF/fxheMZ5upHk5xJQoDUT8D8CBALTwYu/mJQhH/ZfbPKCrvxs/Az7MRTWI8dLfGryb3w+/Hn3LDl/6/mH5N5QpPfJH7Nu5bJteUu2DyZe57PUizxVQPpbgShYGonwF4EKAWssa4uyXZP5O/3Bqf+Lx4yaeXTvxD3Bs3isXhcyXxX6H7XCIa5Xh6o2vILvhyftAJ0LCKK1EeiAUzgBwCtNj8nR+TeZv/M7lbE98bf+HP/tl95IG7E/7S77ei+zTREBYeKT37v/89PhD9bv0Vzjy9VE7SA/etkntK6YeZ6uEUVqIyEA0zgBICtFh6p3qaDlK+CvF0/WNyBPl40qDkAvfHryVf8iCpSDp83/1ydmz53fornH9D94At+kwm+lYE6LAorERpIOpnAFUEaLEFAZo++2/JkyDJjN2K/jO8FX1+9uds+L6LU/LqH/zX32+1CNCtdLwJ0GHVFKDaGYAHAVqs+SGY80+/HKfPib2c3OuO7of/v+Tedzp8syNFs+OUTQ/B7mcHo0tpIkCHRdNDsNoZgAcBaiF7qekDz0HoGTeTT7ZO/I+t5BjAiX+YHcfJ38lxz27VXKH7M30CLFZKEwE6LIorURqImhmADwFqwT137s738Dzr6hrxYHZKyL+Phy7681X3RYUAxacZvuu5wvT/yfiq0ifAnPuzB2P3OQh9mBRXonheRt0MwIcAtXFrfPzPv03Od/WeiPhO9Mc/pd24lZ6Admuczah7lBU/BPs/b2efLV1hfCLiB+4QZv5uVXyiUPwaj1+P3aAToMOhuBLFgaibAfgQoDZmr4/4j6WXYhRevPVS+not99/hg3H2TFZ6JnTijz6YneCTv8L0s8ffzb1kw13P7FslX0WADoviShQHonYG4EGA2vmm4cWo37wanwr0jrvg7EWI2SOp2dPw/y6ayj/8PDv8U7rC+MWoP47HtxQg962OJ69TJUCHRilAxYGonQFUESAAgyFAAAZDgAAMhgABGAwBAjAYAgRgMAQIwGAIEIDBECAAgyFAAAZDgAAMhgABGAwBAjAYAgRgMAQIS7pz5eQosvnGZ0NvCcJFgLCU2xujzNH3h94ahIoAYQmTy6O8tYtDbxACRYAgV+pPVCDuA2EpBAhyO0l1Tl3bm04ff5Q8Fnt+b+htQpAIEMQexs1Zeyv/rxEPwrAMAgSxnWJx9uN/Hpt94uKjv4jvHd38/lz0x9nkArvpXaT4Q2vvTz46Gf1x+ubsy++mz6bNP4LVQYAglaQl95hrcvnUm+6p+DhAfxJ/dvTcr+oC9N759LDRW+kXz48kndX/WTAwAgSp/dpY7ORaUhOgnIvFL+Fx3CoiQJDarW3FTu6uTW2A4s/f2UjuJaUHkM5En7udPY7DKiFAkNqtfd59J3ffqDZASbqS8MSfffzxBfdobofn0lYRAYLUzjxA8wdVSTtyn6kNUBqZSm8I0EoiQJDabQxQ/MAq+5QnQGfnVzK7aHQ/6JMLnE20kggQpHLHgDwBmkVkQYD2swDdvXqycCVYJQQIUrlnwQ4WoPhu1MPzuWfBCNDKIUCQSjoyf/g0D0xdgHZqAhRdhzuNenTqFzc5BrSSCBDE8k92xUQBOjb/mihAyWHra9MpB6FXFAGCmLvbkhVo8p98AUpOcT6W/S0LUHrXyV3UUymsFAIEOXf68tH41fCTOxf8x4Cy7Lhezc8DSnqTngc0D1D59R1YDQQIcpX3A4ru65QD5Cr1oz131nP+pRizj0X3hZIryk6NJkCrhwBhCZMrxfysvVk9m/nhRv4SNa8F2y98JH9kGyuBAGEp+feEXjvzlftg8TjObvrpo3+7kX8WLP1w+pKx67Pr+JPLI16NunoIEJZ09+pmXI78b8UoHUi+Gx8eOnVt72EhQNP4qNH8/YCSCx2J7kHtjHg16uohQFCTPw8IiBEgqCFAKCNAUEOAUEaAoIYAoYwAQQ0BQhkBghoChDICBGAwBAjAYAgQgMEQIACDIUAABkOAAAyGAAEYDAECMBgCBGAwBAjAYAgQgMEQIACDIUAABkOAAAyGAAEYzP8HKtgYenEfz/gAAAAASUVORK5CYII=" alt width="100%" style="display: block; margin: auto;" /></p>
+<p><strong>Twoja odpowiedź.</strong> W jednym krótkim akapicie porównaj
+średnie, SD i ważne N indeksu, określając znak różnicy zgodnie z kartą.
+Dodaj jeden konkretny odczyt wykresu. Zapowiedz odpowiednie tory
+klasyczne i losowane dla obu pytań, efekt oraz jego CI; nazwij warunek,
+którego sam wykres nie sprawdza. Wyjaśnij, jak opiszesz wynik, jeśli
+przedział obejmie zero, i wskaż jeden argument lub ograniczenie pomiaru
+uzasadnione wybranym źródłem z bibliografii kursu.</p>
+<!-- odpowiedz:S05 -->
+<p>[UZUPELNIJ_S05] <!-- /odpowiedz:S05 --></p>
+</div>
+<div id="co-jest-oceniane-i-co-zostaje-do-projektu" class="section level2">
+<h2>Co jest oceniane i co zostaje do projektu</h2>
+<p>Z09 ma 10 punktów: 2 za scenariusz i manifest, 3 za problem oraz
+pytania, 3 za próbę, operacjonalizację i odczyt reguł przygotowania
+danych, 2 za pierwszy opis i uzasadniony plan dwóch analiz. Tabele,
+wykres i pięć akapitów są dowodem wykonania karty. Oceniany jest sens
+decyzji i odczytu, nie sam fakt wygenerowania danych ani przyszłe
+p&lt;0,05.</p>
+<p>Na C10 wykorzystasz zapisany wybór i plan do dwóch analiz oraz
+interpretacji. W projekcie końcowym dopracujesz spójny raport z tej
+samej pracy. Nie trzeba teraz kończyć wszystkich analiz ani pisać
+dodatkowego pliku z odpowiedziami. Jeśli zmienisz pytanie lub definicję
+pomiaru, jawnie zapisz powód i sprawdź zgodność z dostarczonymi
+zmiennymi.</p>
+</div>
+<div id="zapis-i-oddanie-z09" class="section level2">
+<h2>Zapis i oddanie Z09</h2>
+<p>Zapisz Rmd z wybranym kodem scenariusza oraz pięcioma własnymi
+akapitami. W konsoli RStudio, nie w chunku dokumentu, wykonaj:</p>
+<pre class="r"><code>oddaj_zadanie(&quot;Z09&quot;)</code></pre>
+<p>Funkcja oddania ma odtworzyć PDF z zapisanej wersji, sprawdzić
+tożsamość oraz kompletność i wysłać PDF ze źródłami oraz danymi
+potrzebnymi do odtworzenia wariantu. Poczekaj na potwierdzenie odbioru
+ze zdalnym SHA. Lokalny commit nie jest potwierdzeniem wysyłki. W razie
+błędu zachowaj pliki i pokaż komunikat prowadzącemu; nie zmieniaj ID ani
+nie losuj innego tematu jako sposobu obejścia problemu.</p>
+<p>Po potwierdzeniu wykonaj <code>wyloguj_github()</code> w konsoli i
+wyloguj konto w przeglądarce współdzielonego komputera. Wybór
+scenariusza, ID i zapisane odpowiedzi mają być odtworzone na następnym
+spotkaniu.</p>
+</div>
+</div>
+<div id="rozwinięcia-do-powtórki-poza-zadaniem-ocenianym" class="section level1">
+<h1>Rozwinięcia do powtórki — poza zadaniem ocenianym</h1>
+<p>Te przykłady pomagają rozpoznać selekcję, planować precyzję i
+odróżnić treść pomiarów. Nie wymagają dodatkowych odpowiedzi w Z09.</p>
+<div id="liczebność-nie-naprawia-selekcji-1" class="section level2">
+<h2>Liczebność nie naprawia selekcji</h2>
+<p>W hipotetycznej populacji jest 700 nowych i 300 doświadczonych osób.
+Przyjmijmy dla demonstracji średnie grupowe 3 i 4 oraz to, że
+odpowiadający są reprezentatywni wewnątrz swojej grupy. Do udziału
+zaproszono po 100 osób, ale odpowiedziało 20 nowych i 80
+doświadczonych.</p>
+<p>Tabela pokazuje, jak zmienia się struktura próby. Druga tabela
+porównuje średnią w całej hipotetycznej populacji z nieważoną średnią
+odpowiadających. To nie jest wynik rzeczywistej biblioteki.</p>
+<pre class="r"><code>widok &lt;- selekcja_do_odczytu()
+print(widok)</code></pre>
+<p><strong>Hipotetyczna rekrutacja</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Grupa
+</th>
+<th style="text-align:right;">
+Populacja
+</th>
+<th style="text-align:right;">
+Zaproszeni
+</th>
+<th style="text-align:right;">
+Odpowiedzi
+</th>
+<th style="text-align:right;">
+Średnia
+</th>
+<th style="text-align:right;">
+Odsetek [%]
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Nowi
+</td>
+<td style="text-align:right;">
+700
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Doświadczeni
+</td>
+<td style="text-align:right;">
+300
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+80
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+80
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Średnia zależy także od składu grup</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+zakres
+</th>
+<th style="text-align:right;">
+srednia
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Cała hipotetyczna populacja
+</td>
+<td style="text-align:right;">
+3.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Próba odpowiadających
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+</tr>
+</tbody>
+</table>
+<p>Średnia populacyjna wynosi 3,3, a średnia odpowiadających 3,8.
+Różnica nie powstała przez błąd wzoru na średnią, lecz przez inne
+udziały grup. Powiększenie tak samo selektywnej próby może dać bardziej
+precyzyjne oszacowanie niewłaściwego celu.</p>
+<p>Ważenie do znanej struktury mogłoby skorygować ten konkretny problem
+przy przyjętym założeniu reprezentatywności wewnątrz grup. Nie naprawia
+automatycznie różnic między odpowiadającymi i nieodpowiadającymi w tej
+samej grupie. To rozszerzenie planu, a nie uniwersalny przycisk
+„reprezentatywność”.</p>
+<p>W projekcie opisz przynajmniej jeden konkretny mechanizm selekcji i
+jego możliwy wpływ na interpretację. Zdanie „próba jest mała” nie
+zastępuje wyjaśnienia, kogo nie objęto badaniem.</p>
+</div>
+<div id="precyzja-jest-częścią-planu" class="section level2">
+<h2>precyzja jest częścią planu</h2>
+<p>Liczebność dobieramy do potrzebnego zakresu niepewności, możliwego
+efektu, projektu i zasobów. Nie do obietnicy, że „wynik będzie istotny”.
+W projekcie kursowym N generatora jest ustalone dla porównywalnej
+trudności, a plan rzeczywistego badania może uzasadniać własne
+potrzeby.</p>
+<p>Dla dwóch równych niezależnych grup, przy roboczym SD=0,8,
+przybliżone SE różnicy średnich ma postać:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi><mo stretchy="false" form="prefix">(</mo><mover><mi mathvariant="normal">Δ</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>0</mn><mo>,</mo><mn>8</mn><msqrt><mfrac><mn>2</mn><msub><mi>n</mi><mi>g</mi></msub></mfrac></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">
+SE(\widehat\Delta)\approx0{,}8\sqrt{\frac{2}{n_g}}.
+</annotation></semantics></math></p>
+<p>Przybliżona połowa szerokości 95% CI to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>96</mn><mi>S</mi><mi>E</mi></mrow><annotation encoding="application/x-tex">1{,}96SE</annotation></semantics></math>.
+Używamy tego rachunku do intuicji planistycznej. Nie jest to dokładna
+analiza mocy ani obietnica rzeczywistego przedziału przy nieznanym SD i
+nielosowej próbie.</p>
+<p>Tabela porównuje cztery liczebności. Założenie SD jest takie samo,
+więc zmienia się tylko ilość informacji. Zauważ, że podwojenie N nie
+zmniejsza szerokości przedziału o połowę.</p>
+<pre class="r"><code>widok &lt;- precyzja_do_odczytu()
+print(widok)</code></pre>
+<p><strong>Przybliżenie przy SD=0,8</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+N grupy
+</th>
+<th style="text-align:right;">
+SE różnicy
+</th>
+<th style="text-align:right;">
+Połowa CI
+</th>
+<th style="text-align:right;">
+N razem
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+0.226
+</td>
+<td style="text-align:right;">
+0.443
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:right;">
+0.160
+</td>
+<td style="text-align:right;">
+0.314
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+0.113
+</td>
+<td style="text-align:right;">
+0.222
+</td>
+<td style="text-align:right;">
+200
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+200
+</td>
+<td style="text-align:right;">
+0.080
+</td>
+<td style="text-align:right;">
+0.157
+</td>
+<td style="text-align:right;">
+400
+</td>
+</tr>
+</tbody>
+</table>
+<p><img role="img" aria-label src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABIAAAAJ5CAMAAADhO7uDAAABm1BMVEUAcrIiIiIiIk4iInUiTk4iTnUiTpoidXUidZoidb1AQEBBQWRBQYZBZGRBZIZBZKZBhsROIiJOIk5OInVOTiJOTk5OTnVOdU5OdXVOdZpOdb1Omr1Omt5kQUFkZEFkZGRkZIZkhsRkpuJ1IiJ1Ik51TiJ1Tk51Tpp1dU51dXV1dZp1db11mpp1mr11mt51vb11vd51vf+GQUGGZEGGZGSGhkGGhqaGpsSGpuKGxOKGxP+aTiKaTk6aTnWadU6adXWadZqamk6amnWamr2amt6avZqavb2avd6avf+a3r2a3t6a3v+mZEGmhmSmxOKm4sSm4v+9dSK9dU69dZq9mk69mnW9mpq9mr29vXW9vZq9vb29vd693pq93r293t693v+9/969///EhkHEhmTEpmTE4uLE4v/E///VXgDemk7emnXemprevXXevZrevb3evd7e3pre3r3e3t7e3v/e/97e///g4ODipmTipobixIbi4v/i////vXX/xIb/3pr/3r3/3t7/4qb/4sT/4uL//73//8T//97//+L///++2JyeAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO2d/2PURprm0x2bOwtC8F7aB4yd3SVnX8yGWZvM7CywB7vkLtwlzEyaXeYusAeHJxPsHHADOeJh42+wod1/9qrqfSWVpJJa3VJJJdXz+QG61Wqp+tFbj+t7vTMGAICGeKfpBAAA3AUGBABoDBgQAKAxYEAAgMaAAQEAGgMGBABojJQBjZ7dy+b+yybSCADoKCkD+umjXjbvPmoijQCAjgIDAgA0BgwIANAYegOaG6T5AAYEAKgWrQFpfSbzAwAAmA0YEACgMWBAAIDG0I4D0g73yfwAAABmI2MktO82itkc3bt5q6b0AAAcIsOA/PqWUt06WOydqLjss6f27vcHZ28F198RBxaqvVl57ExVwFCkblm8si2dRdIj+137X9aTIB1Prw9EMueiIEzF58WHRS50dFd0FQ829Hll9HRtUXx86ftqkt0NChlQ/F0lxB6wYJ4j0LYsRNiZqgAYUAmeLCpOcynwjnR8TragnfAyuh+j3Oc8WjJC0gZ09MLnuW85D14EfFd983PqAff6m/ID27IQYWeqAmBAs7MTj8KgpK+Jz40JV7qjnLyZ+jR2warrEy0mbUCJJ8KYNyC+hW1ZiLAzVQEwoJlJxeFCxnGtq2ReKZVdEhMMls38mhaSNqDRNZ0BGWkD4ou+uLsYPXvbshAog+0GRL4wJ1ptRk9Xe1FCYvFJn+SnkbKNX7k6XNX9ZimEKEQdXjPx97y9aNqADpRKcUH3nx71AQe3lE8FBtQlbH+ae6obkBstRB9Ef3V3epN+SPQFGcwJhyF72gxfNtnmbhe6RmhNJazyIqPuAcunYnvIgmmw/WnuxIJ7JwrKRHxSLTfPNobRn2nlZYB0HTalHRiQgs6ARvfufb3Y638erEL24kX190084L2wmBUL2cMbsoO0H3Vd7vF5sktz7nysR/PwhugFnTsXjFlSo2sYXVb5a1T4+vGMdHg9sz+Vv08dskvh6KmhjL/DtaijRXuN0d21XnSUEhpkD/7LmawhL4wntQEVSNL/T15Ue2slnZpEaOXk9Ixe6p9QxnXSJ+ofjD6V8n8/tJ7LM6XcI/Hb++fSHVlxvZSyS9KAqIye/XdYlWgvfSoMKItC3fAGSDxger4JAxpdj0Kz/3Ple5sHq4nDPoer4cnzt6JzF4LfE95Pvha/borrq4GqfC3dn0rf/y6oxQadtzK3/zMd3cy8xndR5Teyk0AkKdGJl7MaUG6SNlIX1d06uqTWOHRyUnoO/uxL/RPKMrLUiRkPRptKMqDQU+cfRY0KKQOhwv7P0g2cSQMijcUBff0gDCqdXMGNoioY2oACCo2ENkCBElAiOpejE9eVVqqgqKsO5+CTlaBQGplCX5rm+krGjvVnpNrm5fcH0Qn8p06Eb/+DXpAI7TVGQzU5C0Gq++oAqWVtni1gQPlJ+j+pi+puHaFLhFZOqlovygtpnpDegDQnZjwYbSrlReeiM08o10s2ZXLXVbpwlDIgeXXx7PQGpJqOrhGIWtrDRmj0ggUUXZT+yGAv2FjfBpR40op7qPA1ksflE44q4ztK/AVHp7l+pi0m2zcyvq94y3LWNRLpWY5XMWIVjMSXCxhQfpLSF9XdOkKXCK2cfFB8WfeEtAakfZT6X6FNpb4bN/rSWP9Dlj5TP0sZ0F7wO/QGpJ6vloZCYl0758eAyaqC/VXsSY3uGBkHlOgFk2/DLBT2a46P7gQPP4zD+S/G46eL0WEqUsj2FeVwWBkP4ix87f+cqa6fsMX+hl/SV76V+F3+9x+EFYnICnuxGE5egzV4GNxYKK6olCrXK55ayIDyk5S6aN6tdYnQy0mfizGm+iek+TEZJ+ofjC6V/LD7fuXtCf9CX1UqeaTaXmK+EA2EzjAgzd8t1lOp7meMKxiFAxUnDml0icw2IEX80d1FMwMR6R6jYBxQIguNnt0cKK02VHyhOFBCTinh8DP/KRyIIb8nzg2qPOK1/NbCLNcPL8k3ys7t/MOuha8pt79LBX39NYaaGytnJls298LYL2ZA+UlKXzTn1vpEaOXcCe+hf0Ka62ScqH8wulSOFKuhH7kQfind+LsXH3QStMilDEgJhkwlcg3oIGrY0rSGO0t2I3So/hNNlbY0mpGmycpOhNJvFTUWqYfj3SFRqA178eJ/WIfXdJLmXT9KVSrQEsKEJfV0QsK7aq8Ri9rh3MXPZT9PZC3DXiyoD5Sxm0UMaEKSci+auHXG+Vo57wSfZz2h1HWyTsx4MJpU0qeUKMXNFFuMobR4C+YfRaJNYUCq8FoDeqLeBJ1gIdkGxN0l/HzMGxD/LU5noaPfrUbBp44ci2I13uwXxWfQdysuKpslNzWdEAWuH6VKbY/VDSmLBW6UkKF6WHsNXculcrmwMKdeOTi/gAFNSJLmolm3zjpfIyfXOsL2dM0TSl0n91GmH4wmlaqFKd+K31PlUOm+yxoHVLYERF//2UuMhE6QY0DCEoJn0696Am/KgM6puTPMQs9ufBCekTKIKOPpmrRDY+IW1YWhPBjPTgWvH6Uq1lMVfS3+u8LkhxcYqoe110hFvCSM5b34regSYYEpnc4pk6S5aNats85Pyxl064UlR80TSl0n68SMB6NJpeo0ak0/04B8nt/VxUGFbUBRiuNFPOfJ6oaXgvU/ZoWrr7TGDGiw9El4AyULxf8yaQIjfKqJfBdvyH73kfShzT35TaVBo/j1ZzWgMPtEV8q6ht6AwivIUTuPYkejW09jQPokaS6acevs81NyBk3/YclR84RS18k6MePBaFI5iwEJnnL65ekV94Kp5bqMJ+0omd3wyuICJtrMMp9CFIDcPNhf+uxFoo0mFYfxPJbos+p/uSf/FUHw7qOoQWOK6zdnQOrww/iIXV2ppowBpRp0tLfOPj8t5+ja+X8KTsl8QsnrZJ2YZUDpVM5qQLGJohWPA5rYS+8s2eOAAqFF9231TDYgajSUY+6TjcR6A9IV8GUsLA+jGN24Fpw5zfUTBpRTfo6nJF7fWU4eLSAItxFRGY6PcZ9edPIUbUAZSdJcVHvrceb5GjlH9zP8Q31CyevkVsE0BpRO5TQGdPT1jQ8UuSLrSD2OsMksx4CyR0JPbKN2lpyBiPQnzdBMwskGpM7JmGQQmU2c8uX8ai8spZ9d1OTVKQwoNShY97uClCRafIOvaa8R+wl7/bOfPVBP3kldVf0bWsCAJiRJ26CcvnVE6ny9nOHRrCeUuk5uI7TGgNKpnMKAduL3Vgonyfgkn5x5LliqBAQDYvJGQk+agFeGyQY0jOIlOU4nFYfx8FA7ecO/V0EtJ/xomutn/iXX/64gzBN93svqOclrxHqJlR4qajRXq0HJtpdi44Dyk6S5qO7WEanz9XImyrPpJ5S6TtaJmQaUSuUUBkTSLMffaw1IHZ2kRfn9w4wbqW1AqIIx6W15bqyHUBv0WfHyotmpGBFxA6KYuhMFaZ5B6Ia5qSOAglGvylSEqa6fzEh7f7Z06UHiJ+yFdxurPhLL7fprJE0nOD1sMVJHEcX/LhQxoPwkaS6quXXymur5ejmTI8iTT0hz37yBiDoDSqVyCgPiUddfxt6mbxeETl5tIPqCro1HeaLqMCWQsTd8GrNTMRQSzb1i5MR1Jb4y4jBzoH/wc9TpkspAu6LXT85QE6MSaI5j4jdwjhLzAKhJMzlWOfMaFOOixe2Pq6riqoWONW3FGemcKkkZIwoTt47QnK+XM0qP9gnp7ps3FUNrQMlUTtMGxAWwc6K+e3Q343aj5/STcqtN3AYWXxExMc5dfnytp0mHu9hrQKmRQsup7ylxmDw7fMBD5ctD9bOprp/MSCEZc8EilOJWaED6a6Qno8ZO1k9Zlb+mkAHlJUl30fStEw8pfr5eTiU9uiekva/+UWYbUDKV0xiQZuKqPp40300Q+4ay9I82bFAACrDXgNTY+I+LvUkl8XgsJ6r1sQmNsbbKgtdPdxunbqTc7t9Fo/tTY5VzrhHrnk/0RMcXnVApZkD5ScowoMStEw8pfr5eTs14H/VH6++rfZTZBpRM5VTd8CkHOq/cLsYsu2JkhQ1GAYWkDWhtoGOpdgOKYqP/82j+RHYcqqtYKTmGDFVdFSj+l7LY9dWMpNwoHZQ0jCW8tLr6l2pW+mt8FwapstCaulTAeGYDyk9SlgHFb514SInztXLG0pN+Qhn31T3KHANKpHK6cUCju6ozhA8jZUAF9gULH18/uEtG2JyD/4QUXQ+oagoYkFh+s8eLaoYdCzlxOD68KZbdmjsXH7iktI4mY7D49eMZ+/l1MXC/v6TZrzoYRycvHV//NF5a0l4jXJI1PUUr1oefyLNFDCg3SVkGlDVtQH++Rs5EepJPKOu+mkeZ8+ATqZx6ICLvjNofXEzcLqC/VGw3U94ZNXp6urCZw1x4laYMqKskBvJWgW7OaxxNv281SZp8axuwOZV+ARzTvvKAAVWLAQOaOHdowiSDEklqx7Qlm1PpVw/R4ZVHrgEdfX1j/eK9QqVPQFRvQE8mDgd90jNkQJNvbQNWp3Joa9HMFnIMKFzLG0tIFqdaAwrbSLI7IYPelewzZktSgVtbgOWpFGOiLHVGW8g0oFj/pKXlWwup1oDCptDsKA5Oyb7nbEkqcGsLsDyVQ93OTUAl04Big1IwcKooZgwoJ3txGWA+uwRQzoDszNkBlqfyYIDKwwSyDCh4ssF+UmhJK0a1BiQXMs/vt/1O9ldfyvk7O1uSCtzaAtqRSpBNlgGJAhCvBPR8FUUgAIAJctaEji14ZWcjHwCg1WQbUHwPGBgQAKBysg0ovlAcDAgAUDnZbUDxEhDagAAAlZPTCxZ1bWI4JwDABFkGJMYh/owXhLtj7TgLAECrydqY8JlcJmVpfX1dLiHAi0RXvTI0AMBp8rZmToOmaABAhcCAAACNAQMCADRGlgHVszI0AMBpsCIiAKAxYEAAgMZIG9DRixf6RVgzPwAAgJnQbkyobWvO/MAJfmg6AbYAIRgIQZTUAQZUDIQbAyEYCEHAgGoB4cZACAZCECYMqH92Pc3HizAgACECIARhwoAyUQ3o1Yee994VzSV3vTPy/+PbHvH+j+XSaAMINwZCMBCCaMqAtshczqSu+HqFD769DAPqHhCCgRBEQwa06528Mj7+xvMuJL4vyj1kQK9XuuA8DMKNgRAMhCCqNqDRDU37T0C4HIdfupHOs+udehz//m5YLNrXFI9aC8KNgRAMhCCqNqBi7LPx+EZ0NfbB28unfsnGs5sqHbUYhBsDIRgIQTRjQEFD83gr4TJb3tUt/mzr5FdlUmYXCDcGQjAQgmjGgLYiA4rVs/a993/kQ35Z6Le/8LyTv+pEQxDCjYEQDIQgGjGg49tBwWc31sf19rJf6mEDer3CnWCnH+su0TIQbgyEYCAEYZUByQoZG9C+X/r5zXj8akXTDf8DAMBFjBrQvnzDBhR0kPkloauaS7QM/L1jIAQDIQiLSkDHt2Wzc6JZKPW+lSDcGAjBQAjCIgPirrGk4ex2YSg0wo2BEAyEIJrqBbsQvAjd5vUK1bmqNaBtYvYLVAPCjYEQDIQg7BkHtOtFqJZTyoC2t+1wIIQbAyEYCEHYMxI6bkBhLS2qrs3A9rYlDoRwYyAEAyGIZgwoey5Yqhds3ysxIhoGZBsQgoEQRDMGJIo7+tnwY2Ug4ulvx8d/WinRCba9bYsDIdwYCMFACKKm2fDhPHjmWF0PyK9lKc08QSP0Pg+FPlNBCxAMyBYgBAMhiJrWA0ovxqqsiKg3oPGbX69kLJpYkG0YkHVACAZCEI0ZUB3AgKwDQjAQgoAB1QLCjYEQDIQgKjegtYGOpWb2w7DFfxBuARCCgRBEQ71gNQEDsg0IwUAIotsGFDlQwwlFuDEQgoEQRMcNKHCgd2BAdgAhGAhBGDag0f1y16+Id95p2IEQbgyEYCAEYcSAnq72v6RXB4u9cw/L3aISmnYghBsDIRgIQRgwoNG1Xq+3Sa93/Jf9n5e7RyXAgOwAQjAQgqjegKT/9BbozVCOAjpf7iZV0HARCOHGQAgGQhDVG9CO9JwTcvIXmVGvt1zuLlXQrAMh3BgIwUAIonIDOlgUjhM2/DxdbW4gdBwYkA1ACAZCEJUbkCwAbUTvR3dQBEK4hUAIBkIQlS/HcS1qAGKGqSPN0KQDIdwYCMFACMLEZNSgD57ZC5uEGgYG1DwQgoEQhAkDSrT4aA41Q4NFIIQbAyEYCEG4ZEANOhDCjYEQDIQgTLQBJapgol/MDgNqzoEQbgyEYCAEUXkv2DDV57VjSxvQuLlmIIQbAyEYCEEY6YaPlXfkGokWdMNLmioCIdwYCMFACMLMQMT5aALqoRiJmKiUNUhDDoRwYyAEAyGI6qdi0PSvpc9fCL5e6/UsGQbEwIAaBUIwEIKo3oA0y9Jb0gQtaaYIhHBjIAQDIQgDy3HQbDAFeypggkYcCOHGQAgGQhAmFiSTzT4R8zasSKYAA2oQCMFACMLMkqxPIwua29Cf0hxNFIEQbgyEYCAEYWpN6NGzu2JL+HuWjP+J0YADIdwYCMFACKLru2JogQE1BoRgIAThqgHVnHCEGwMhGAhBOGlA9TsQwo2BEAyEINw0oNorYQg3BkIwEIJw14BqTTrCjYEQDIQgHDWguh0I4cZACAZCEK4aUM2VMIQbAyEYCEG4bEA1Jh7hxkAIBkIQzhpQvQ6EcGMgBAMhCHcNqNZKGMKNgRAMhCDcNqDako9wYyAEAyEIhw2oTgdCuDEQgoEQROXb8qwNlh6Jf+MsWbQkWQQMqHYgBAMhCAP7gr37KL0qok1rIkbUVwRCuDEQgoEQhNMGVJ8DIdwYCMFACMJtA6qtEoZwYyAEAyGIyndGvbF+8aX4N85FGxcmG9dXBEK4MRCCgRCEy71ggpocCOHGQAgGQhCuG1BNlTCEGwMhGAhBwIBqcSCEGwMhGAhBGDSgZ9Tu89PfW7YtT4JaHAjhxkAIBkIQxgzoYJX3I9zr9c6Xu4lh6nAghBsDIRgIQZgyIN92esvy1U74ylZgQPUBIRgIQRgyIDkQaEG+HFq3OXOSGopACDcGQjAQgjBkQKLY0zshGoFG13ptKAIZdiCEGwMhGAhBmDEg4Tr9YE/mw2vsRfYCA6oLCMFACMKMAYka2Gb47mDR2qkYjPEiEMKNgRAMhCCMGZBiOfF3VmLagRBuDIRgIARRhwHZXwIyXglDuDEQgoEQhLk2oKjdeUfXBvTqQ89774rmu7vemUmnGMBwEQjhxkAIBkIQhnrBRN/7z8h0RnfCHnmFLU9yJvXN1yvBwcxTjGDWgRBuDIRgIARhyID8WpfP3GAwkC9S44B2vZNXxsffeN6FxAfHtwPLyTzFEDCgOoAQDIQgTI2EHsbWI0sWgN5eJlvZ9U49jn+yG5R5sk8xhNEiEMKNgRAMhCBMGRCNP2RSLUD77Cq+y1yNffD28qlfkgFlnmIMkw6EcGMgBAMhCGOTUUd3F9l++pdSLdC7UTtPvIK15V3dos8yTzEHDMg8EIKBEITJ9YCe3VxfX//kvuaTrchdYm3M+977P/KhrFMMYrAIhHBjIAQDIYhGFiQ7vh2UanZ9x4mOv7188is2nKxTjGLOgRBuDIRgIARhlQHJ2lYBA/rBFL4BGbs2AKAsMxjQi++LGtC+fNNgCchcEQh/7xgIwUAIwlwj9O/k7AuxLkf/VuIzvbsc3/YrYM0akDEHQrgxEIKBEIQpAzpYlNPhd6gjbDP+od5ddtXW54YMyFRPGMKNgRAMhCAqNqCf/iv//5GcDBbskJqcixp2rStdXK9XaOBP2AuWPqUGDBWBEG4MhGAgBFG1AX10Xg762aPhh3vBUMTEioi6QT67XoRf5mlgHJDEjAMh3BgIwUAIonIDomHPYiaGb0Xiv58/v5aai6Eb5pwwoPpHQjMwIJNACAZCENUbUG/+UbAch3jn174OFpOTMfImem01NBcswEgRCOHGQAgGQhAGDMj3HP8/MQFezIlf0K6I6Bd3sqa6b4Wz4TNPMYsJB0K4MRCCgRBE1b1gh9fZgITl8JZgGgM6Vhf7Ob6tdnQFBnRc73pACjAgc0AIBkIQ1XfDj+7+h8CAhr2gIJReklVZ7lBvQPWuiKhioAiEcGMgBAMhCHNLsm4GTUDChyzflidB9Q6EcGMgBAMhCHNLss5/fk0uRfZ8Tbckq93AgEwBIRgIQRgyoHAA0CatTLaZcZ6lVF4EQrgxEIKBEIQhAwoWRDxBY4HaVQMbV+9ACDcGQjAQgjA1F+xwVfjP/CNZGJq3fVewNDAgM0AIBkIQ5mbDP11fvyUKPgeL59pW/hlXXgRCuDEQgoEQRCMLkrWBah0I4cZACAZCEDCgLCp1IIQbAyEYCEGYNKDRs5v6NenbAQzIABCCgRCEOQMSkzIkbWwCElRZBEK4MRCCgRCEMQM6CLYF02zM3BIqdCCEGwMhGAhBGFyStdcFB6roSgg3BkIwEIIwPBBxkLE3czuorgiEcGMgBAMhCINTMfobwnZGTxbbNxUjoDIHQrgxEIKBEIS5yajhChxiUnzLJqOGwIAqBkIwEIIwuRxHwF5r62CVFYEQbgyEYCAEYcaA4msgalZEbA0VORDCjYEQDIQgYEATgAFVCoRgIASBKtgEqikCIdwYCMFACMJcI3ToOaP0vmBtohIHQrgxEIKBEITBbvj5L+TLP662txteAgOqEAjBQAjCkAHxpvCDwUC7N3yrqKIIhHBjIAQDIQhTUzH2eiptLgBV4kAINwZCMBCCMDYZdUfxn+VyN2kcGFBlQAgGQhAGl+NYZfuZv1XuHs1TvgiEcGMgBAMhCJMLkh3dXV9fv/Sw3B2soLQDIdwYCMFACAJLshYCBlQREIKBEERNBnTU2oGIRNkiEMKNgRAMhCAMTcX4q5jhjO60uh9eUNKBEG4MhGAgBGFqLpgy92J0d7HdA4EkMKBKgBAMhCCMTUYNHUguSNYJAyrhQAg3BkIwEIIwZkC9edn9xZ3x7Tegcg6EcGMgBAMhCHMG1Hv3Ybg1T/98yxuhBTCgCoAQDIQgDC3HMZS283GwM1gXxgKVKgIh3BgIwUAIwlQ3/J1oIkY37GdcyoEQbgyEYCAEYXwu2PyDcnewCRhQaSAEAyEIcwMR9+TWhC1eiSzN7EUghBsDIRgIQRgcCU2bo7Z9JnyMmR0I4cZACAZCEFUb0OjGegi1QZ8VLy92oBdMMKsDIdwYCMFACKJqA+KlEJN0YBwQAQMqB4RgIAQBA5qOGYtACDcGQjAQgoABTclsDoRwYyAEAyGIyg1obaBjqTMGNFslDOHGQAgGQhBYkGxaZioCIdwYCMFACAIGNDWzOBDCjYEQDIQgYEDTAwOaHQjBQAjCpAGNnt1c/+R+uRvYyAxFIIQbAyEYCEEY3JbnejAZtSODECOmdyCEGwMhGAhBGDMgmohBqwF9We4m9gEDmhUIwUAIwpQBKf7TQQeaugiEcGMgBAMhCEMGNLpG1jOg/050rRY2rQMh3BgIwUAIwpAB7Ylyz4awnZFclH6z3G3sAwY0GxCCgRCEIQMaKrMvxOyMTi0LJJiyCIRwYyAEAyEIQ2tCX1MLPXsdrINN6UAINwZCMBCCMLYrhjL9NP6uK8CAZgFCMBCCgAHNylRFIIQbAyEYCEE0VgV79aHnvXclfuz49yue9xd/4De3PeL9H8ul0RTTOBDCjYEQDIQgzDVCh54j3CjVCL1F5nJGPfbmMh28IN+9vWy5AU1TCUO4MRCCgRCEwW74+S/kyz+uarrhd72TV8bH3wRmI/GLPKe/lQevirevV6x1HmaKIhDCjYEQDIQgDBkQL4w4GAy0CyL6pRvpPLveqcfhwX3v5Ffi/y0qF+3Hi0c2UtyBEG4MhGAgBGFqKsZebEXWZAFon43HN6Kr4UE2Ht+VZNFnVy0dWQoMaFogBAMhCOM7o2r3BtsNSjdbGpdhA9qi8pDVFC4CIdwYCMFACMLgchyrwebMt1KfbUUGlKpnHd+Wx95ePvXbX3jeyV9Z3RBU1IEQbgyEYCAEYXJBsqO76+vrlx6mP/A9hgs+u6k+rje3qXr2eoU7wU4/Tn3fImBA0wEhGAhBGDKg7zby5l5kG9C+6HZ/zK9O/mY8frWi6Yb/wR5EEajpNADgCgUNaHQtd+xzjgG99+d+meercdRB5peErqYuYBHFKmH4e8dACAZCEHVMxUiRVwUbH295seZnTTORVcCApgFCMBCCsM+AglboAN0pNlGoCIRwYyAEAyEIY3PBcpdhDXvftcWbuOXYbkCFHAjhxkAIBkIQpqZiLPb66d73kNxxQG0zoCKVMIQbAyEYCEEYMqCjp2Ih1sHZdeZivFNMNxI6qpeJYlH4LjpsLQWKQAg3BkIwEIIw1gYUJ9EipJ0LpvR7XYje7Xv2j4ie7EAINwZCMBCCaMaAfHvxUrPhfVc6/W048se3ITE3/k8rlneCSSY6EMKNgRAMhCAaMqBjdT0gv5Ylm3mCwc809nmf352xvAVIAgMqCIRgIARhyIDWBnGWUp3yyoqIgQGN/1WsiPjeFXacN79eSS+aaCmTikAINwZCMBCCMDkXzCUmOBDCjYEQDIQgYEAVAQMqBIRgIAQBA6qI/CIQwo2BEAyEIIwa0It79/5n53YkzCLXgRBuDIRgIARhcEGy60H310G6CbqLwIAKACEYCEGYXpJVGNBe97aG15FXBEK4MRCCgRCEKQPaUQYADfNnpnaGHAdCuDEQgoEQhCEDOliMDEi7MWEngQFNBEIwEIIwZECiAHT+JS0LNBrqtmbuItlFIIQbAyEYCEGY2xt+OVyXzC8O5S1P1iEyHQjhxkAIBkIQRldEjP/nAjCgCUAIBkIQMKBKySoCIdwYCMFACMLcbPjN0Hn2XGkDGmc6EMKNgRAMhCAMNUIPe713H7IBHX7kSi+YAAaUC4RgIARhak1o0QW/9PFir//fPhYvN8vdpt2HDkgAACAASURBVEXoi0AINwZCMBCCMGRAohssZz2yLqN1IIQbAyEYCEGYGgkdWxPRjYHQATCgHCAEAyEIY3PBlDLQ/MNyN2kZuiIQwo2BEAyEIAwux3F4/QPffebOPSh3i/ahcSCEGwMhGAhBYEEyA8CAMoEQDIQg6jCg0bN7910ZByRJF4EQbgyEYCAEYW5XjI3onTsjoZmUAyHcGAjBQAjC4L5g519G7xwzoFQlDOHGQAgGQhAmNyYMer/cNKCYNAg3BkIwEIIwujNqfyN455oBJR0I4cZACAZCEIa3ZpbVMBcNaAwD0gIhGAhBmN4bXlTDXDUgRRyEGwMhGAhBmFsP6B96QTXMSQOKOxDCjYEQDIQgDC5I9oQXpl9204BiDoRwYyAEAyEIkysiHq6SA805syZ0HBhQGgjBQAjC6JKsozsurscRohSBEG4MhGAgBGHUgMbjoBrmpAEpDoRwYyAEAyEIwwYUVMPcNKAxDCgJhGAgBGHagLga5q4BkUIINwZCMBCCMDYZdSm0HFENc9SAQgdCuDEQgoEQRB3LcRzdc2w5DgUYUBwIwUAIAguSmYWLQAg3BkIwEIIwb0Avvi93i5ZDDoRwYyAEAyEIc4vS/042++yI2Ri3yt2k3bzzzjbRdEKsAPmOgRCEKQM6WJSbEe7QMCB39iVME/gPHEiAfMdACMKQAYnp8MvRrHhXO8EE29twoAjkOwZCEAa3Zj7xknZolhNSy92mzcCAVJDvGAhBGDKgIS1GJv77+fNrvd5Cudu0mO1tOJAC8h0DIQgzBiS2ReUamF/7OlgUpSFHgQHFQL5jIARhbCqG2A/edx5R9nF0PSDJNgwoBvIdAyEIo3PBdnpBQchZA0IJKA7yHQMhCKMGNOwFBSEYkAQDx5HvGAhBmGsD2gyagIQPudsGpDpQestm50C+YyAEYa4XbP5z34V6C+Pnaz2Xe8GSBuS4BSHfMRCCMDgOiMZAi8KQ20OhlRagd5y3IOQ7BkIQhgyIbEdWvYY9p2tg49CB5GvXLQj5joEQhKm5YLQU6/wjWRiad7YJOkCR2W0HQr5jIARhbjb80/X1W6Lgc7B4zunyjyQms8sWhHzHQAgCC5LVQkJmdy0I+Y6BEAQMqBaSMjvbFIR8x0AIAgZUC2mZHbUg5DsGQhCNGdCrDz3vvSvxY8e/X/G8v/hD3iktRSezkxaEfMdACKIpA9ryJGfUY28u08EL2ae0Fb3MDloQ8h0DIYiGDGjXO3llfPxNaDaC49ve6W/lwatZp7SWLJmdsyDkOwZCEM0Y0NvLZCu73qnH4cF97+RX4v8tWejRntJasmV2zIKQ7xgIQTRjQPvsKr7LXA0PbnFta9d7/8eMU1pLnsxOWRDyHQMhiGYMaDdo2dnSVLDIgHJPaR35MjtkQch3DIQgmjGgrchdUm3Mx7flsbxT2sckmZ2xIOQ7BkIQjRiQ7zFcqqHSjsqb27LulXdKC5kssyMWhHzHQAiiHgMa/WNsOmq2u+x7nvf+49xTfH7oJGxBTScDAHspbkBHdz8eCJbW1wbJJVlzDOi9P/e80185WAISOFAKwh9+BkIQpkpA4Ypkuq1Rc93leEt0xztpQA7MUkW+YyAEYciAxIY8MxoQtUI7akCdtyDkOwZCEIYMaCfuP70T8SXJtqLpFpouLmk5+ae0jWlk7rQFId8xEIIwtytGr/+B/8/cwP+3n1wSOn+QjzQgl8YBJehyUxDyHQMhCGP7gokdCYdZ24LphjlHlS5Z5nFnJLSG7loQ8h0DIQijWzPvSBsSDdLL8c+1E72CN69XxIeuzAXLoKsWhHzHQAjC6M6oftlngd4lt8XY9bzUVHffck5/Ox6/WqFWZ90prWUGmbtpQch3DIQgjBoQO49mb/hjdbEfv/IlLccv+khOP06d0nZmkrmLFoR8x0AIwlwj9HKwQ7OogqX3hleWOwwMaPyvYkXE9678mD6l7cwoc/csCPmOgRCEua2ZeVPC/qXrizoDcouZZe6aBSHfMRCCMLg184IyHtrhveElJWTulgUh3zEQgjC4NfMydcf3XN8bXlBK5i5ZEPIdAyEIU3PBRtdFP/x4j6ZknC93l/ZTVubOWBDyHQMhCHPLcRzJnvfDtV5vbqPcTTpA6XDrigUh3zEQgjDUC/b/yl22c1QQbt2wIOQ7BkIQxsYBLd16qf/MSSoJty44EPIdAyEIc3PBer35z+BBTEXh1n4LQr5jIARh0oDEZPhL35e7QUeoLNzabkHIdwyEIAwbkFiV49zDcvfoAtWFW8ubgpDvGAhBmOoFe35TXRPx3INyt2k9VYZbqy0I+Y6BEITBXTFGT9cylmR1j2rDrcUWhHzHQAjC8LY8QUEIBlQtrbUg5DsGQhDGDegDGNDYRLi11IKQ7xgIQRg0oMO7q6iCMSbCrZUWhHzHQAjCkAEd/W5NaYPuX0QjtAlaaEHIdwyEIMx3w5/FkGhz4dY6C0K+YyAEYdaA5jEOkTAXbi2zIOQ7BkIQRg1o/jP4D2Ey3FplQch3DIQgjFfBUAMTmA23FlkQ8h0DIQhDy3H831gb9Ln75e7SfkyHW2ssCPmOgRCEuW7453c/iDwI3fCmaYkDId8xEIIwOxDx+Y1FGJCgjnBrhQUh3zEQgjA8Enp8eB0GNK4r3FpgQch3DIQgTBqQMhsVBlQL9jcFId8xEIIwZkCHN5UmoP55x7vCags32y0I+Y6BEIShXrC/UzvBPsGKZDWGm90WhHzHQAjC9DggrMkqqTXcbLYg5DsGQhCGR0I7XvMKqTnc7LUg5DsGQhDmDAj78ijUHm62WhDyHQMhCEMG9Pe3yl23azQQbnZaEPIdAyEI0+OAgKSRcLPRgpDvGAhBGB0H9Ozm+ifOTwOTNBRu9lkQ8h0DIQhzBsRjoHu9c2gLai7cbLMg5DsGQhDGDOgg2hes/2W5m3SABsPNLgtCvmMgBGHKgA7UfQnhQI2Gm00WhHzHQAjCkAGNrpH1DOi/E67XwhoON3scCPmOgRCEIQPaE+WeDWE7oyeiLLRZ7jatp/Fws8WCGhfCFiAEYciAhsoEeDEqcaHcbVqPBeFmhwVZIIQdQAjC0GTUa2qhZw91MBvCzYqmIBuEsAIIQRibiqGsABR/5yR2hJsFFmSHEBYAIQgYUC3YEm6NW5AtQjQOhCBQBasFe8KtYQuyR4iGgRCEuUbo0HOEG6ER2h4atSCbhGgUCEEY7Iaf/0K+/OMquuEtC7cGLcguIRoEQhCGDIhXJBsMBliTXmBbuDVmQbYJ0RgQgjA1FWOvp+J6AcjCcGvIguwToiEgBGFsMuqO4j/L5W7SAWwMt0YsyEYhGgFCEAaX41hl+5nH6oiWhlsDFmSnEA0AIQiTC5Id3V1fX7+EPXnG9oZb7RZkqxC1AyEILMlaC/aGW80WZK8QNQMhCEMGdLDo/NjDGDaHW60WZLMQtQIhCIO9YGh6jrA73Gp0ILuFqBEIQVRtQD+tDQixK+ogZMnxgUC2h1ttFmS7ELUBIYjKDeijng7XRyLaH241WZD9QtQEhCBgQLXQgnCrpymoBULUA4QgGjOgVx963ntX4sfe/HpFHPxRvjm+7RHv/1gujTbQinCrw4JaIUQdQAiiagMa3VgP+bjXm+OXF5NdYltkLmfUY7sxx3l7GQZUN+YtqCVCmAdCEEbHAQ0zZ4HteievjI+/8bwL0bF9z/vLfxkf/2mFbOn1Shech2lNuJm2oNYIYRoIQRg1oNHfDZa0A6H90o10nl3v1OPw4BaXh3xz+mos/OiM7qvtpEXhZtaCWiSEWSAE0cxI6H02Ht+IrgbHwtf8YlctHbWdVoWbSQtqlRAmgRCESQMaPbu5/sl93Se7QelmS+MybEBbshzUEVoWbuYsqGVCmANCEAZnw1/nHrBz6TkZW5EBpetZr1eEAb29fOq3v/C8k7/qRENQ68LNlAW1TghTQAjCmAEpm8OntoY/vh0UfHY1fVzUMOTbEHH6cfKEFtLCcDNjQS0UwgwQgjBlQIr/pB0o14B85xEf7vuln9+Mx69WNBb1A6gDtqCmkwFASFEDEjthyEWh6b/EzPg8A3r7KR0KOsioQtZ2Wvr3rvpSUEuFqB4IQRjcFaO/IWxn9GQxtSh0jgH5HyUan3XNRK2jteFWtQW1VoiqgRCEuX3BwtkXYnZGfF+wbAPyyz/Jzi9dM1HraHG4VetALRaiWiAE0czOqGHve6J48+Zyyn9gQI1TpQW1WogqgRBEM3vDZ4wDer3info2eS0YUPNUZ0EtF6I6IATRjAHpRkJL/wn73MNaWlRdazNtD7fKmoLaLkRlQAiimSqYdi6Yf1Ap6wQf7acrZS2k/eFWkQW1X4iKgBCEuUbo0HOEGy0kPt/1vNRs+JgbyeLQt9Hc+JbThXCrxIK6IEQlQAjCYDf8/Bfy5R9XNXszH6vrAfm1LL/oE67/45Et7fNQ6DPtbwHqSrhVYEHdEKICIARhyIB4YURanF67IquyIiIZUDj3gg0oWB+xXAItoSvhVtqCuiJEaSAEYXBbHoWMZcncoTvhVtKCuiNESSAEYWwy6o7iP9ghrEvhVsqCuiREKSAEYXA5jlW2n/lb5e7RBboVbiUsqFtClABCECYXJDu6u76+fkm7JqtrdC3cZragrgkxMxCCaGZJVufoXrjNaEHdE2JGIAQBA6qFLobbTBbURSFmAkIQRqtgX99Yv3jv+3J36AbdDLcZLKibQswAhCDMGdCTYE3E/ka5e3SBrobb1A7UVSGmBkIQpgwoWBJRtyCig3Q33Ka0oO4KMSUQgjBlQMPYQMTkVDDn6HK4TWVBXRZiKiAEYXAumLImtPNDoTsdbtM0BXVaiGmAEIS52fC9+Qfy5fNVFIG6Hm7FLajjQhQHQhDGFiRTGn6G2tmoTtH5cCtqQZ0XoigQgjBmQMpeYAeLMKCmE2CeYhbkgBDFgBBEM0uyOocT4VbEgpwQoggQgjDWBhQvAaENyAkmW5AjQkwGQhDmesGiNTiG6d3hXcOZcJtkQc4IMQkIQRgyIDEO8WfUCj26gwWBXAq3fAtySIh8IARhaFeMZ3fFRIyl9fX1D/z/59aJi86OiHYq3PIsyCkh8oAQhLlueA3uNkU7Fm7ZFuSYENlACAIGVAvOhVuWBTknRBYQgoAB1YKD4aa3IAeF0AMhCEMGtDbQsQQDcgmdAzkphA4IQWBFxFpwNNzSFuSoEGkgBAEDqgVnwy1pQc4KkQRCEDCgWnA33NSmoG2i2QRZgrsREQcGVAsuh1toQdvbcKAQlyNCBQZUC26HGznQ9jYcKMLtiIiAAdWC6+EGA0riekQEwIBqAeGm+g8cCBERAAOqBYTbGAYUAxFBwIBqAeEW85/tWbaV7xaICAIGVAsIt3HCgGbaWb5DICIIGFAtINy0BuSwCyEiCBhQLSDcYg40DkcHOWtDiAiiHgMa/aOz01AJhFvSgCQOuxAigjBmQEd3P6YZ8OtrA2zLg3AbZ46ETrqQGzaEiCBMGdAeVgJSQbgJ8vrgXXMhRARhyIAOFmFAKgg3Jl8Ih1wIEUEYMqCdxFqIJ2BAQFBECCdsCBFBGNoV45pvOn25IcbA/7e/We4u7QfhxhQWousuhIggzK0JvRzsSIit4RFuIdMJ0eH2aUQEYcyAhPXs0JaEe9iZEOHGzCJEJ10IEUEYMyBR6OFN4f13J5zdkpBAuDEzC9E1F0JEEEYNiJ2H37kMwo0pG2+dsSFEBGGuEXqZ/tuUVTAYEJBUIUQnXAgRQRjqhh+KrveX4r/+peuLMCCEG1OZEG1vn0ZEEIYMSAyEXlDGQy+Uu03rQbgxFQvRXhdCRBCGDIjrYOEWza4PBEK4MSaEaKULISIIU3PBRtdFP/x4j6ZknC93l/aDcGPMCdEyG0JEEOaW4ziSPe+Ha73e3Ea5m3QAhBtjWIj2uBAigsCCZLWAcGPqEKIV7dOICAIGVAsIN6Y+ISx3IUQEAQOqBYQbU7MQ9roQIoIwZ0CjF/ci7mMqBhA0IoSNNoSIIMz1gmFBMgWEG9OcEJa5ECKCMDgOKN+AXn3oee9diR978+sVcfDHnFNaCsKNaVgIe9qnERFETSsipgxoy5OcUY/t0jHv/R8zT2krCDfGCiFscCErhLAAgysi5hnQrnfyyvj4G8+7EB3b97y//Jfx8Z9WyHN0p7QWhBtjjxANu5A9QjSLuRUR+xsvMlue314mW9n1Tj0OD25xYcd3nq8yTmktCDfGNiEasyHbhGgKcwaUN/1rn13Fd5mrwbHwNb3QndJeEG6MlUI04UJWCtEAxqpguf1eu0HLzpamgkWWk3tK60C4MfYKUXP7tL1C1Iux9YByDWgrcpd0G/PrFWFAuae0DoQbY7sQtbmQ7ULUhbn1gHLWoT++HZRqdoMuLwXZ6pN/SutAuDGtEKIOF2qFEDVgaiDisNfLngOf6y5+AejChFN+AMA4SRtqOj3Ap6ABjZ59LRYCGgzOrhMXYx1iee7y9lN5CCWgbtI2IYwVhtomhCnM9YLljAPKcRf/I9EJDwPqKK0UwkT7dCuFMIBlBuSXf6T/wIA6SouFqNaFWixEpTRiQFHXeqKL681l9p/sU9oJwo1puxCVuVDbhagKQwa0NoizFDegjEE+r1e8U9/mn9JSEG5MN4SowIa6IUR5mlmQTD/M2fef04/zT2krCDemQ0KUc6EOCVGKZgxIO9HLP6i09mAuWCfpmhAzt093TYhZaWhJ1l3PS011T1iN7pTWgnBjuinEDC7UTSGmx6QBjZ7dXP/kvvajY3Wxn+PboujjF3lCLiRPaTsIN6bDQkznQh0WYirMGdBhsCjrOe2qHMpyh2RAr1fiBoQVEbtI54UoakOdF6IgxgzoYDHsg5d7pLoNwo1xQ4gCLuSGEJMxZUCK/8CBEG4hDgmR3z7tkBC5GF6UfkD/nXB8Vx6EW4BzQmS5kHNCZGBuOY5ef0PYzuiJKAvlLY/oAgg3xk0hNC7kphBpjC1IFs2+EPMyFsrdpvUg3BiXhSg3crGjmNsVIyr07KEO5nK+i+G8EHChOMYmoyrTT+PvnMT5fBcAIQRwoRAYUC0g3zEQgvkBNiRBFawWkO8YCMEEQrjuQuYaoUPPEW6ERmgggRBMTIj8IUOdxmA3/PwX8uUfV9ENj3wXACEYjRBOupAhA+IlEQeDgXZreOdAvmMgBJMlhGsuZGoqxl5sRVbXC0DIdwEQgskXwh0bMjYZdUfxn5w9Ch0B+Y6BEEwBIZxwIYPLcayy/czfKnePLoB8x0AIpqgQXW+fNrkg2dHd9fX1Sw/L3aEbIN8xEIKZTojuulBDS7K6BvIdAyGYGYTopAvVYUCjZ/fuYyAiEEAIZmYhOmZD5vYF24jeYSoG8h0DIZhyQnTHhQzujHr+ZfQOBgQkEIKpQIhOtE+b3Jp5/mH4DgYEJBCCqUyIlruQ0b3h+xvBOxgQkEAIploh2utCRg2Iq2EwIOS7AAjBmBCijTZUtQGNnt27d/9laECyGgYDQr4LgBCMMSFa5kJVG5CwnncfCcv5h15QDYMBId8FQAjGrBDtaZ82Z0CPnvDWYMswIOS7AAjB1CFEG1zIoAGFs8HmFmFATSfAFiAEU5sQlruQSQMaj+4ETUEwICCBEEzNQlhrQ4YXpQ+qYTAgIIEQTBNC2OhCpnfF4GoYDAhIIATTmBCWtU8b35aHqmEwICCBEEzDQljjQsYmoy6FliOqYTAgIIEQjA1C2OBCdSzHcXQPy3E0nQBbgBCMPUI0a0NYkKwW7Am3hoEQjGVCNOZCMKBasCzcmgNCMDYK0UT7dOXjgGTrj1iQLMYS2oCAAEIw9gpRrwsZGIj47qNoNjwGIhL2hlvNQAjGciFqcyEYUC1YHm71ASGYVghRgw3BgGqhFeFWBxCCaY8QZl2o8vWAbqxffCn+jXMR3fBAACGYlglhrH0avWC10LJwMweEYFophAEXggHVQivDzQQQgmmvENW6EAyoFtobbhUDIZi2C1GVDcGAaqHt4VYZEILphBAVuJCBgYg6MBARSCAE0x0hyrVPm1gRUQO64YEEQjBdE2JWF4IB1ULXwm1mIATTSSFmcCEYUC10MtxmAUIwHRZiKhsyMBBRBwYiAgmEYLouRCEX2ibK3KbEd12i6+FWGAjBOCHEhPbp7e3SDgQDKoYT4VYECME4JESWC21vl3cgGFAxHAq3fCAE45oQGhcybkDPv76x/sm972e+eIdwLdwygRCMm0KoFrS9XYEDZRvQ6C7vSdjrb8x69e7gZrhpgBCMw0LUYkCja0on/AnH+8CcDrc4EIJxXYi4/2zPfJmM4zH/6fUWZr1+V3A93EIgBAMhjBrQHjvPgOthm6kzXn3oee9dSX9z37tAL45ve8T7P86aOntAuDEQgoEQRg1o6JvO/AP58vmqrgi0ReZyJnn87eXAgPxXMKDOASEYCGGyF0xMyAgbfkbD9FSMXe/klfHxN17gNgFvPw0PvV7pgvMwCDcGQjAQwrAB9b8M3x0sJg0oKOfseqceq8dfr3ihAe2ni0ftBeHGQAgGQpgcCU17Y+jfCfbZeHwjuhodPf69553+NDCg3WTpqM0g3BgIwUCIscm5YMNECSjREb8blG62VJd5vXLyb49vB0e2Tn5VImGWgXBjIAQDIQhDS7Lu9XrL4Zuh+kayFRmQUs96/TffjkMDenv51G9/4Xknf9WJhiCEGwMhGAhBmFoT+k6vxwOgR3dSIxGjYs5uso8r/Eg2BwlOx1qJWgrCjYEQDIQgjK0HtNjr9c/6/6+J5cgexCeEFTGgfb/085vx+NWKphv+BwCAi0w0oEIrIhYxoKCDzC8JXR23Hvy9YyAEAyGIRpZkLWJAIVtd6I5HuDEQgoEQhP0GlDqljSDcGAjBQAiimX3Bwt73VPEGBtRtIAQDIYhmdkbVjwMSwIC6DYRgIATRjAHpR0ILAgMKjSjtSG0E4cZACAZCEM0YUNZcME0v2L7XhRHRCDcGQjAQgjBjQD/9lwf539v1PO1s+NhAxNPfjo//tNKFTjCEWwCEYCAEYciAPur1zz3M+d6xuh6QbzphM09U49rnodBn2t8ChHALgRAMhCCMGZBYjf5SzlrQyoqIegMav/n1in7RxBaCcGMgBAMhCJMGJFZFvFXu+gAAkEmGAalr0p+b0BwEAACzkb0tz9PV0IL657E5IQCgevK64VUPmstrDgIAgFmYMA5I9aClvF4xAACYmskDEUf/FFrQ8sSTAQCgOJMM6PDmYi9qC/pywtkAADAFuQYUc5+ebntCAACYnWwDOrobuY8YDfRkMbU0NAAAlCFrHJDiPkEH2F56f1QAACjBpJHQyhCg9PaEAABQhnwDWnoQP4YqGACgQnIMaP5W3G4Ob3xyv4YUAQCcIcuA/hNGPgMATFNoRcTRs3v34UcAgKrJKgGtDQYb0Ts0PwMADJDXCH3+ZfQOBgQAqJzcXrD5h+E79wxoP1ruWln8MfWu2/CilsFyl+4Kcfx7X4i/+EPw1l0hBOGmXBXokN8N398I3jlnQMG+H2Ox91m0/HXyXbfZpd8aLLjrrhBvLtOPDbfjdFUIwesV/S+fSYdJAxFlNcxBA3r7qRftPn1S2QAk/q7b7HveX/5LtLGJu0Ic35Y7vPg/Vu6C564QAl8MNpkqdJhkQLIa5p4BvV4J/9zFt0DL3hCtg2xFgfaV00IEe9uRIA4LIdgNSjmV6JBtQO/+Qy+ohrlmQMe/97zTn7IBxTeBzd4StnuEv1H3010SQnFiURl1WIix+J2nfklyVKJDjgE9esITUpddM6DXKyf/VtnhNaziXki+cwSKKQjBBuS2EFve1a2gSl6BDnkGND7k9VjnFh0zoL/5NtrfbCsS9kzynSP4FdKrEEK2fojf6rQQ+74H8y+tRIdcAxqP7gRNQU4ZkCAwoGijRfHnL/6uqbTVjazWQ4g3t2Utw2kh3l4++RVbTDU65BsQLUMGA5I4GG6EXwC6ACH2xXAE0crhtBCyflWnAQXVMBiQi+Emefup/KmuC7H/3p973umv3BZiX/7GWg2Iq2EwIAfDTeL/ZNkH7bwQvgRbQgqHhTi+LUOhDgNaGyyFliOqYTAg98JN4pd/aAyM60IIZCu0w0Lsqq3PRg1o/N2Gsv7G0T33luNQesHC8fdnku+6z5vL7D+uC0HIzOWsEK9XaKhP2AtWgQ5Zi9Jfc6/MEwfjgASvV7xT3/Jrp4VgpAE5K0QwNZCnB5ofB+QyoQG5PO7V95/T4bh6d4WIqhfyr7uzQiQMyPhI6NIJbjNh0Dk888f/sUp13mEhgh9JAxIcFoLYMj8XzK+COb4Ps9qo5sXm/HrOzH1OxJK7QviZ67RfE321QobsrhBENDWuvA5ZjdB7i73+rXLJbDeRAR3H1jk5dmf1l7eXoxK30MJZIXh1BB+qkDoshGRL+8tn0yHLgI6eiiHQg7PrzEVne8HGzq5/F+S6aCUuR4Xw+dffY2nIkKify/SKiBGOtwgBAEwAAwIANAYMCADQGDn7gsVYggEBAKqm0M6oAABgAhgQAKAxYEAAgMbQGtDz64u9Xv/cw7oTAwBwC40BRQtBL9efHgCAQ2gMaBh1vsOBAAAGSRvQwSJG/wAAaiFtQFQAmvsARSAAgGFSBjS6JrZj/pJLQgtNpAkA4Ah6A9oUr3b8FydcmwQPyiIDqLK4qfZqwDpSBiRmgdFaZAcubobRIHu9Xv2rwMkMHu7AdC2n0LtXsE0w/7zcW5S46wxMmxRgAq0B0ROPXoE6aM6AgmxYiQENc3/FtLk+/2qlgAHZAAzIGho0IL5tFQYkys2bE+5XPNdPuFopYEA2AAOyhsiAvq/vpmRAnA+rMKCd/K7TKXP9hKuVAgZkAzAgawgMaHStxsEPbEBUzKikClbgfnbkeouS4jAwIGtgAzpcrXP0VWBAsqMJBgTqRmtAvTmxBpkcijiHBcnqggzodnJXRAAAB0ZJREFUyWK81vH8unwOA2Vq8KE8NHdJ1tQCBwl9RBzwfezpmv926UH4Jfl+7nyydhd+fXOckSVHd/27zW0EBjQMT9mJl5yW6eSBuI06jzmW2uAWzxOpI8S1Nw//Tnz0MH217DunfrIM4uVIVjbOKZIS/O5LL8O/w2rqlBsEo1Wo+1h+C/O4i6M3oDQoChlHGtDH8ZZo1V44Q0Vzhfs/H2cZ0BfX4l/6aTVxldQNxAPWGVAwM+fEEzopys/D8HLiHJno78JpPOdfalNLt/j3d/SJEVf864/CcEtcLfvO6Z887IWjh0Lfmiop4e+e/9+qAQWpyzKgz1nn/kaRJw5gQBaxF5lIyFB9BpupQ8sZBpT8kvpQ4wYjz55bVK4V/1ydGSijQF5qM7ymTGyQB3fiKdGkNpG6RKffMHZq8mrZd07/5KhBP/zWdEmJZ4PQgIJvZxhQPBGgADAga2ADOq/4j8z+4oAofpA1yGz5s5fjw4/iT2UnCHvuWN8Yj/4p/JLIO2KfSVG/i2cN8pwhXSttQHQx/3Zymzh5vyFnvYPwSFADkz/gxEP1xqnUhqmjj+JuNww+C+WIXS3zzumfHFUKw+G0MyQl9rtjqcs0IPG5/A4yTDHSUzFurOtwbmPC+tlTsx9z9Ls1KkoM1TAPc1ZUcSD3EpkonMwXTWMIq0jp6TXkOfKqCxoDim5yEOSqvV6suLMZDp6nb8uLP+EkpFNLuT4skcQnWURVq7Huavl3jv/k8Ifu8E+aLima3x1LXaYBbaYfDcgDS7Jaw04vVRGICLJIVLcYXVu6FDadUqEg6sqKXEvknSATqhNtGPYcunfagHaiv+XBxdRMH5V8/BsqAymDC6VTq6QuPddwqCiguVrmnTU/OfDccGrjdEnR/O5Y6rIMSKl4YgJbIWBAlkBNpHoDOvp6LfAX/QxhdTyz4iKcjaL6iDLVWP3mAuWehbQBKTlpR82Im/Ibou3I/5SrRmqu42SmU5tOXeJuwRHN1TLvrLlo8JtjNbDiScn63cFJWQa0PNZfD2QBA7ID/rOeNqDnN2hlJiUPpg0obAAa6/JVsllPrRyoZZXeRtKAVEcKO6GoPCXeLsuZWkGpaqh8Wemzn9KAgtM1V8u8s+6iSrFsIXntyUkZan63eoUJBmRwCm3XgAHZAZtE0oAOwu7zPAOKGoDGavtrlgHpLEb+P79axICoUCGuvSn/OViM6kGqZfi/ZXYD0l0t686anxzW14a9zBannKRof/eUBlT7tL52AgOyg58+6t9MRy13gi999jCIfp0BKd3S41kNKBwEkK6CJTOi/IooLL37SKRvIWhhMl8CyrqzzoCoehaN5jdmQOnuAZSApgAGZAc//eeXmj+bQfd5FOaa1oXYhHZdblSOpIiyWjDMZWIbkHx1djHoNpPFps1xZhtQPLVTGVCyDSjrzloDknWwJzl3m6UNaJIBLYz11wNZwICsIW1AmjBXTtqZu3g/yJVKy7ImN6qliQRRLgyGHE7qBYvOXA5dK2x1yewFC1Jb2IA0V8u8s9aAZB3s41CZ6ZISHZBnpQwo+m7Yl/aTMjALvWCFgQFZQ54BhX280d/Z4NBekCUZTW7MaZJI5MKkAenGw6gN5nvKdyhp6XFAsdQWNiDN1TLvrDWg4Pfwu+mSEv3uvfAaKQOSb+SZ0TggzRAtkAcMyBrCVphekHNogF0wtjaqhYjB0Yc8jI7iXnENTW4MrzO60z/7eWw+qpILualo4ojgIGsr8w82o8OakdBKaosbkO5qWXfWGxAXlxbU602VFPG7n8RHQoepi+uiJCg4hhpYMWBA1pA2oMQhZSYmw80sCpva3Bib0RXLGmpz647GgDRzooLLhc2/4RXvKKdq5oKdmKYKpr1axp31BpRoG5suKRlzwcLUxefIYS7YzMCArEFjQGEm7P91OIIwmtQtZ4kVMiCxyFDAfGypCNWAKMcmGouCb/b/x0eJrB1unRJ9JW82PB2awoA0V8u4s96AuAwVXm+qpESz4f+X1oBC3ef/eVHtBePDmA1fFBiQNegMiFarmbv0Um1I5mVtaNGZYgYk1gNalF9KLHyTGm+TsR7Qpe/V9emiWQkyn0Z/7Ue/o/Qq1bxYaqcyIN3VtHfO+MmpppgpkiL8alGsg/RS2w0/5iezdOvlQcyA5KJEWA+oODCglvDTKvpVpiQ18W0m9nrFerTUcUCgMDCgljBEs8K0lNhZc69/9rMH0VWKLNwKA5oJGFA78Av66FeZjiclOsNp0IGYZpZeQikDGNBMwIDawR4mF02FOk6xxPeJQsUoGNBMwIDagTLMDRSADKQ/c61VXa91vpCLwYBmAgbUEkR3+Px/bzoVreG7XtnOqOfXxZYcvblzt4qdDwOaCRgQAKAxYEAAgMaAAQEAGgMGBABoDBgQAKAxYEAAgMaAAQEAGgMGBABoDBgQAKAxYEAAgMaAAQEAGgMGBABoDBgQAKAxYEAAgMaAAQEAGuPfAEESHdq41VeLAAAAAElFTkSuQmCC" alt width="100%" style="display: block; margin: auto;" /></p>
+<p>Aby w tym przybliżeniu zmniejszyć SE dwukrotnie, potrzeba
+czterokrotnie większej liczebności. Niepewność pomiaru i selekcja
+uczestników nie znikają w takim rachunku. Wąski CI może nadal opisywać
+źle zdefiniowany konstrukt albo niewłaściwą populację.</p>
+<p>Moc to prawdopodobieństwo odrzucenia hipotezy zerowej przy określonym
+alternatywnym efekcie i planie badania. Nie jest prawdopodobieństwem, że
+otrzymany istotny wynik jest prawdziwy. Jej planowanie wymaga wskazania
+efektu, wariancji, poziomu alfa i projektu; samo N nie wystarcza.</p>
+</div>
+<div id="próg-praktycznej-ważności" class="section level2">
+<h2>Próg praktycznej ważności</h2>
+<p>Instytucja może uznać skrócenie przeciętnego czasu o dwie minuty za
+warte dalszego badania. Próg powinien wynikać z kosztu czasu, rodzaju
+zadania i konsekwencji błędu, a nie z tego, gdzie skończył się CI.</p>
+<p>Jeżeli CI różnicy czasu wynosi [−1; 3] minuty, nie rozstrzyga
+jednoznacznie, czy efekt przekracza taki próg w wybranym kierunku.
+Jeżeli wynosi [0,1; 0,3], może być precyzyjny i niezerowy, lecz mały
+praktycznie. Zapisanie progu przed wynikiem pomaga uniknąć późniejszego
+dopasowania narracji.</p>
+<p>Nie każda skala ma oczywistą minimalnie ważną różnicę. Dla roboczego
+indeksu 1–5 trzeba uczciwie przyznać, że interpretacja dziesiątych
+części punktu wymaga wiedzy o narzędziu. Standaryzowana etykieta „średni
+efekt” nie zastąpi tej wiedzy.</p>
+</div>
+</div>
+<div id="inne-scenariusze-co-zmienia-się-w-rozumowaniu" class="section level1">
+<h1>Inne scenariusze: co zmienia się w rozumowaniu</h1>
+<div id="portal-studencki-czas-i-przejrzystość" class="section level2">
+<h2>Portal studencki: czas i przejrzystość</h2>
+<p>Instytucja chce ułatwić odnajdywanie procedur. Porównanie pierwszego
+i kolejnych lat może pokazać różnice deklarowanej przejrzystości, a
+korelacja indeksu z czasem współzmienność oceny oraz wykonania. Nie
+identyfikuje efektu przeprojektowania strony.</p>
+<p>W planie trzeba ustalić tę samą procedurę do odnalezienia. Jeżeli
+starsi studenci szukają trudniejszych informacji, czas będzie mieszaniną
+doświadczenia i zadania. Możliwa poprawa przyszłego projektu to
+porównywalne zadania oraz odnotowanie wcześniejszej znajomości
+procedury.</p>
+<p>Krótszy czas przy niższej ocenie przejrzystości nie musi być
+sprzecznością. Użytkownik może znać ścieżkę na pamięć, a zarazem uważać
+układ za niejasny. Dwa wskaźniki opisują inne aspekty doświadczenia.</p>
+</div>
+<div id="repozytorium-szkolenie-i-deklarowana-znajomość-zasad" class="section level2">
+<h2>Repozytorium: szkolenie i deklarowana znajomość zasad</h2>
+<p>Grupy przeszkolonych i nieprzeszkolonych są zaobserwowane, nie losowo
+przydzielone. Osoby korzystające ze szkolenia mogą mieć inną motywację
+lub potrzeby. Wyższy indeks nie dowodzi, że szkolenie samo spowodowało
+różnicę.</p>
+<p>Dodatkowo deklarowana znajomość zasad otwartego dostępu nie jest tym
+samym co poprawne rozwiązanie zadania licencyjnego. Jeśli plan
+obejmowałby test zadaniowy, trzeba uzasadnić jego treść i kryterium
+odpowiedzi. Nie dopisujemy takiego pomiaru do zbioru, który zawiera
+wyłącznie deklaracje.</p>
+<p>Uzasadniona rekomendacja może proponować przyszłe badanie efektu
+szkolenia z odpowiednim przydziałem lub porównaniem w czasie. Wynik
+syntetyczny służy pokazaniu analizy, a nie ocenie istniejącej oferty
+uczelni.</p>
+</div>
+<div id="informacja-miejska-wiele-kanałów-i-sprzeczne-komunikaty" class="section level2">
+<h2>Informacja miejska: wiele kanałów i sprzeczne komunikaty</h2>
+<p>Osoby korzystające z wielu kanałów mogą częściej zgłaszać sprzeczną
+informację, ponieważ częściej mają okazję ją zauważyć. Większa proporcja
+zgłoszeń nie dowodzi gorszej kompetencji ani szkodliwości samego
+korzystania z kilku kanałów.</p>
+<p>Plan powinien odróżniać liczbę okazji kontaktu, zakres porównywanych
+informacji i kryterium sprzeczności. Wspólne techniczne pole 0/1 opisuje
+tu napotkanie problemu, więc większa wartość nie oznacza automatycznie
+sukcesu.</p>
+<p>Alternatywne wyjaśnienie wiąże się tu z większą liczbą okazji
+zetknięcia się ze sprzecznością. Pomiar liczby takich okazji pomógłby je
+ocenić. Nie trzeba natychmiast budować złożonego modelu. Ważne, żeby
+rekomendacja nie pomyliła obserwacji z mechanizmem.</p>
+</div>
+<div id="przykład-krytycznej-oceny-propozycji-si" class="section level2">
+<h2>Przykład krytycznej oceny propozycji SI</h2>
+<p>Przeczytaj celowo wadliwą propozycję:</p>
+<blockquote>
+<p>Przeprowadziliśmy losową ankietę 150 użytkowników. Wysoka rzetelność
+sześciu pytań potwierdza kompetencje cyfrowe. Test t pokaże, że
+szkolenie poprawia wyszukiwanie. Jeśli p będzie większe od 0,05,
+zastosujemy Spearmana. Dodatkowo sprawdzimy wszystkie kanały i
+wybierzemy najważniejszy wynik.</p>
+</blockquote>
+<p>W propozycji występuje kilka odrębnych problemów. W projekcie nie
+zebrano realnej próby; nie wykazano losowości; treść pytań nie musi
+dotyczyć kompetencji; rzetelność nie jest trafnością; porównanie grup
+obserwacyjnych nie identyfikuje szkolenia; zmiana testu po p nie wynika
+z pytania; wiele analiz wymaga jawnego statusu eksploracyjnego.</p>
+<p>Poprawiona propozycja określa plan badania i odrębnie analizę
+syntetyczną. Nazywa właściwy indeks, dwie konkretne estymandy, metody
+wraz z warunkami i ograniczenie przyczynowe. Nie wystarczy zamienić
+kilka słów na ostrożniejsze.</p>
+<p>SI może pomóc znaleźć niejasne zdanie lub wyjaśnić symbol, ale nie
+jest źródłem wyniku ani dowodem wykonania badania. Sprawdź każdą liczbę
+w pliku, każdy tytuł w publikacji i każdy wniosek w projekcie. Opisz
+rzeczywisty zakres pomocy zgodnie z zasadami raportu.</p>
+</div>
+</div>
+<div id="po-spotkaniu" class="section level1">
+<h1>Po spotkaniu</h1>
+<p>W karcie Z09 masz już wybrany temat, pochodzenie danych, pytania,
+projekt pomiaru i pierwsze liczby własnego wariantu. Jeśli wyniki nie
+będą istotne, plan nadal pozostaje wykonalny: opiszesz estymaty,
+przedziały, precyzję i ograniczenia. Nie trzeba wymieniać danych ani
+szukać innego testu w celu uzyskania istotności.</p>
+<p>C10 wykorzysta tę kartę i ten sam wariant. Zamiast rozszerzać liczbę
+testów, przejdziemy od przygotowania do obu analiz, pisemnego odczytu
+oraz sprawdzenia zgodności tabel, wykresów i tekstu. Źródła tła i
+pomiaru wraz z pełnymi opisami są w <a href="../wspolne/literatura.md">bibliografii kursu</a>.</p>
 </div>
 
 

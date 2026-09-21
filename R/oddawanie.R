@@ -1,32 +1,38 @@
 #' Oddanie zadania z konsoli R
 #'
+#' Z zapisanego Rmd tworzy aktualny PDF i wysyła go razem ze źródłami.
+#' Sprawdza własne odpowiedzi, gotowy kod i dane; nie przyznaje punktów.
 #' Wysyła wyłącznie jawną listę plików. Potwierdzeniem jest zdalny SHA oraz
 #' rekord odbioru utworzony przez GitHub, z czasem serwera. Zielony stan
 #' odbioru nie jest oceną merytoryczną ani wynikiem kontroli kodu.
 #' @param id Z01--Z10.
-#' @param katalog Katalog projektu.
+#' @param katalog Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.
 #' @return Lista z repo, SHA, ID odbioru i czasem serwera.
 #' @export
 #' @examples
 #' \dontrun{ oddaj_zadanie("Z01", "moje-badania") }
-oddaj_zadanie <- function(id, katalog = ".") {
+oddaj_zadanie <- function(id, katalog = NULL) {
   id <- toupper(id)
   sprawdz_id(id, "zadanie", "^Z(0[1-9]|10)$")
   oddaj_prace(id, katalog)
 }
 
 #' Oddanie indywidualnego projektu ilościowego
-#' @param katalog Katalog projektu.
+#' @param katalog Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.
 #' @return Pokwitowanie GitHub z SHA i czasem serwera.
 #' @export
 #' @examples
 #' \dontrun{ oddaj_projekt("moje-badania") }
-oddaj_projekt <- function(katalog = ".") oddaj_prace("PROJEKT", katalog)
+oddaj_projekt <- function(katalog = NULL) oddaj_prace("PROJEKT", katalog)
 
 oddaj_prace <- function(id, katalog) {
-  cfg <- sprawdz_repo(katalog)
+  katalog <- katalog_kursu(katalog)
   kontrola <- sprawdz_zadanie(id, katalog)
-  if (!kontrola$ok) stop("Popraw elementy oznaczone FALSE w sprawdz_zadanie(). Niczego nie wys\u0142ano.", call. = FALSE)
+  if (!kontrola$ok) stop(paste(kontrola$kontrole$opis[!kontrola$kontrole$ok], collapse = "\n"),
+                        "\nNiczego nie wys\u0142ano.", call. = FALSE)
+  hashe_oddania <- hashe_plikow(katalog, kontrola$pliki)
+  # Lokalny PDF pozostaje dostępny także wtedy, gdy logowanie lub sieć zawiedzie.
+  cfg <- sprawdz_repo(katalog)
   message("Pliki oddania:\n", paste(kontrola$pliki, collapse = "\n"))
   staged <- gert::git_status(staged = TRUE, repo = katalog)
   if (any(!staged$file %in% kontrola$pliki)) stop("W indeksie Git s\u0105 pliki spoza tego oddania. Sprawd\u017a je w zak\u0142adce Git RStudio.", call. = FALSE)
@@ -34,6 +40,11 @@ oddaj_prace <- function(id, katalog) {
   roznice <- operacja_git(gert::git_ahead_behind(upstream = "origin/main", repo = I(katalog)))
   if (roznice$behind > 0L)
     stop("Repozytorium zdalne ma nowsze commity. Zachowaj swoje pliki i uzgodnij wersje przed oddaniem; niczego nie nadpisano ani nie wys\u0142ano.", call. = FALSE)
+  baza <- operacja_git(gert::git_commit_id("origin/main", repo = I(katalog)))
+  sprawdz_historie_oddania(katalog, id, kontrola$pliki,
+    gert::git_info(repo = I(katalog))$commit, baza)
+  # Logowanie i sieć mogły trwać dłużej niż lokalny render.
+  sprawdz_aktualnosc_pdf(kontroluj_wejscia_rmd(id, katalog))
   operacja_git(gert::git_add(kontrola$pliki, repo = katalog))
   if (nrow(gert::git_status(staged = TRUE, repo = katalog))) {
     sygnatura <- gert::git_signature(sesja_github$login,
@@ -41,7 +52,9 @@ oddaj_prace <- function(id, katalog) {
     operacja_git(gert::git_commit(paste("Oddaj", id), author = sygnatura, committer = sygnatura, repo = katalog))
   }
   sha <- gert::git_info(repo = katalog)$commit
-  operacja_git(gert::git_push("origin", refspec = "refs/heads/main:refs/heads/main",
+  sprawdz_bajty_commitu(katalog, kontrola$pliki, hashe_oddania, sha)
+  sprawdz_historie_oddania(katalog, id, kontrola$pliki, sha, baza)
+  operacja_git(gert::git_push("origin", refspec = paste0(sha, ":refs/heads/main"),
                              password = token_sesji(), force = FALSE, verbose = FALSE, repo = katalog))
   remote <- github_api(paste0("repos/", cfg$repo, "/git/ref/heads/main"))$dane$object$sha
   if (!identical(remote, sha)) stop("Zdalna ga\u0142\u0105\u017a zmieni\u0142a si\u0119 podczas wysy\u0142ki. Sprawd\u017a status i zachowaj lokaln\u0105 prac\u0119.", call. = FALSE)
@@ -53,6 +66,21 @@ oddaj_prace <- function(id, katalog) {
   wynik <- pokwitowanie(cfg$repo, sha, id, odbior)
   message("Odebrano ", id, ". SHA: ", sha, ". Czas GitHub: ", wynik$czas_serwera, ".")
   wynik
+}
+
+# Odtwarzamy lokalny commit bez sieci i bez zmiany roboczego katalogu/Gita.
+# Sprawdzenie łapie m.in. zmianę końców linii przez stare reguły repozytorium.
+sprawdz_bajty_commitu <- function(katalog, pliki, hashe, sha) {
+  tmp <- tempfile("kontrola-commitu-")
+  if (file.exists(tmp)) stop("Nie mo\u017cna przygotowa\u0107 lokalnej kontroli commitu.", call. = FALSE)
+  on.exit({ gc(); unlink(tmp, recursive = TRUE) }, add = TRUE)
+  operacja_git(gert::git_clone(katalog, path = tmp, branch = "main", verbose = FALSE))
+  if (!identical(gert::git_info(repo = tmp)$commit, sha) ||
+      !identical(gert::git_info(repo = katalog)$commit, sha) ||
+      !identical(hashe_plikow(tmp, pliki), hashe) ||
+      !identical(hashe_plikow(katalog, pliki), hashe))
+    stop("Zapis w Git r\u00f3\u017cni si\u0119 od plik\u00f3w u\u017cytych do PDF. Zachowano lokaln\u0105 prac\u0119 i commit, niczego nie wys\u0142ano. Nie zmieniaj regu\u0142 repozytorium samodzielnie; popro\u015b prowadz\u0105cego o sprawdzenie ko\u0144c\u00f3w linii i wersji plik\u00f3w.", call. = FALSE)
+  invisible(TRUE)
 }
 
 lista_statusow <- function(repo, sha) {
@@ -82,13 +110,14 @@ pokwitowanie <- function(repo, sha, id, odbior) {
 
 #' Status odbioru i kontroli
 #' @param id Z01--Z10 albo PROJEKT.
-#' @param katalog Katalog projektu.
+#' @param katalog Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.
 #' @param sha Opcjonalne SHA poprzedniego oddania; domyślnie lokalne HEAD.
 #' @return Stan odbioru; wynik kontroli Actions jest osobnym polem.
 #' @export
 #' @examples
 #' \dontrun{ status_oddania("Z01", "moje-badania") }
-status_oddania <- function(id, katalog = ".", sha = NULL) {
+status_oddania <- function(id, katalog = NULL, sha = NULL) {
+  katalog <- katalog_kursu(katalog)
   id <- toupper(id)
   sprawdz_id(id, "zadanie", "^(Z(0[1-9]|10)|PROJEKT)$")
   cfg <- sprawdz_repo(katalog)

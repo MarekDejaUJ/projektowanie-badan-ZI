@@ -18,7 +18,8 @@ Lista z danymi, słownikiem, opisem scenariusza i manifestem.
 }
 \description{
 Dane służą do ćwiczenia analizy, a nie opisania rzeczywistej instytucji.
-Łączą samoocenę z obserwowanym wykonaniem krótkiego zadania wyszukiwawczego.
+Łączą ankietę z czasem zadania; pole 0/1 jest obserwacją lub deklaracją
+zgodnie z kartą scenariusza. Kod 1 nie zawsze oznacza sukces.
 Zawierają kontrolowane braki, dwa duplikaty i dwa nietypowe czasy.
 Identyfikator jest pseudonimem przydzielonym na zajęciach, nie numerem albumu.
 }

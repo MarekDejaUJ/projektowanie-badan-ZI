@@ -19,7 +19,8 @@ pobierz_zadanie <- function(repo_url, katalog = "moje-badania", id_studenta) {
   dir.create(dirname(katalog), recursive = TRUE, showWarnings = FALSE)
   tmp <- katalog
   gotowe <- FALSE
-  on.exit(if (!gotowe) { gc(); unlink(tmp, recursive = TRUE) }, add = TRUE)
+  # Wyłącznie nowy, nieudany klon; obiekty pack Gita są na Windows tylko do odczytu.
+  on.exit(if (!gotowe) { gc(); unlink(tmp, recursive = TRUE, force = TRUE) }, add = TRUE)
   operacja_git(gert::git_clone(paste0("https://", sesja_github$login, "@github.com/", repo, ".git"),
                    path = tmp, branch = "main", password = token_sesji(), verbose = FALSE))
   cfg <- czytaj_yaml(file.path(tmp, "kurs.yml"))
@@ -33,39 +34,65 @@ pobierz_zadanie <- function(repo_url, katalog = "moje-badania", id_studenta) {
 }
 
 #' Początek zajęć na czyszczonym komputerze
+#'
+#' Otwiera zadanie.Rmd w bieżącej sesji IDE, nie przełącza projektu RStudio
+#' ani nie zmienia katalogu roboczego. Dzięki temu zachowuje ID i logowanie.
+#' Zapamiętuje własną przestrzeń dla dalszych poleceń bez argumentu katalog.
+#' Jeśli istnieją niezapisane w Gicie zmiany, zachowuje je i pomija aktualizację.
 #' @param cwiczenie C01--C10.
 #' @param id_studenta Pseudonim studenta.
 #' @param repo_url URL własnego repo; dla istniejącego katalogu odczytywany z konfiguracji.
-#' @param katalog Katalog lokalny.
-#' @param otworz Czy otworzyć projekt i materiał w IDE/przeglądarce.
-#' @return Lista: projekt i identyfikator ćwiczenia, niewidocznie.
+#' @param katalog Katalog lokalny. NULL używa zapamiętanej lub bieżącej
+#'   przestrzeni kursu, a przy pierwszym pobraniu podkatalogu moje-badania.
+#' @param otworz Czy otworzyć roboczy Rmd w bieżącej sesji IDE.
+#' @return Lista: projekt, plik, cwiczenie, id, katalog i aktualizacja
+#'   (pobrano, sprawdzono albo lokalne_zmiany), niewidocznie.
 #' @export
 #' @examples
 #' \dontrun{
 #' rozpocznij_zajecia("C02", "s017", "https://github.com/prowadzacy/badania-s017.git")
 #' }
 rozpocznij_zajecia <- function(cwiczenie, id_studenta, repo_url = NULL,
-                              katalog = "moje-badania", otworz = TRUE) {
-  sprawdz_id(toupper(cwiczenie), "cwiczenie", "^C(0[1-9]|10)$")
+                              katalog = NULL, otworz = TRUE) {
+  cwiczenie <- toupper(cwiczenie)
+  sprawdz_id(cwiczenie, "cwiczenie", "^C(0[1-9]|10)$")
+  sprawdz_id(id_studenta, "id_studenta")
+  if (is.null(katalog)) {
+    katalog <- if (!is.null(sesja_pracy$katalog)) katalog_kursu() else znajdz_katalog_kursu(getwd())
+    if (is.null(katalog)) katalog <- file.path(getwd(), "moje-badania")
+  }
+  if (file.exists(katalog) && !dir.exists(katalog))
+    stop("Pod wskazan\u0105 \u015bcie\u017ck\u0105 istnieje plik, nie katalog pracy.", call. = FALSE)
+  token_sesji()
   if (!dir.exists(katalog)) {
     if (is.null(repo_url)) stop("Podaj adres prywatnego repozytorium otrzymany na zaj\u0119ciach.", call. = FALSE)
     p <- pobierz_zadanie(repo_url, katalog, id_studenta)
+    aktualizacja <- "pobrano"
   } else {
+    katalog <- katalog_kursu(katalog)
     cfg <- sprawdz_repo(katalog, id_studenta)
     if (!is.null(repo_url) && !identical(tolower(nazwa_repo(repo_url)), tolower(cfg$repo)))
       stop("Adres nie odpowiada istniej\u0105cej pracy.", call. = FALSE)
-    if (nrow(gert::git_status(repo = katalog))) stop("Masz lokalne zmiany. Najpierw zapisz i oddaj prac\u0119 albo zachowaj kopi\u0119; aktualizacja jej nie nadpisze.", call. = FALSE)
-    operacja_git(gert::git_fetch("origin", password = token_sesji(), repo = katalog, verbose = FALSE))
-    aktualizuj_repo_lokalne(katalog)
+    if (nrow(gert::git_status(repo = katalog))) {
+      aktualizacja <- "lokalne_zmiany"
+      message("Zachowano lokalne zmiany; pomini\u0119to pobranie nowszych commit\u00f3w. Pracujesz na w\u0142asnym zapisie. Przed oddaniem pakiet sprawdzi wersj\u0119 zdaln\u0105.")
+    } else {
+      operacja_git(gert::git_fetch("origin", password = token_sesji(), repo = katalog, verbose = FALSE))
+      aktualizuj_repo_lokalne(katalog)
+      # Aktualizacja mogła zmienić konfigurację: tożsamość sprawdzamy ponownie.
+      cfg_po <- czytaj_yaml(file.path(katalog, "kurs.yml"))
+      if (!identical(cfg_po[c("id", "rocznik", "repo")], cfg[c("id", "rocznik", "repo")]))
+        stop("Zdalna aktualizacja zmieni\u0142a to\u017csamo\u015b\u0107 pracy. Nie otwarto zadania; sprawd\u017a przydzielone repozytorium z prowadz\u0105cym.", call. = FALSE)
+      aktualizacja <- "sprawdzono"
+    }
     p <- normalizePath(file.path(katalog, "moje-badania.Rproj"), winslash = "/")
   }
-  przygotuj_zadanie(sub("^C", "Z", toupper(cwiczenie)), katalog)
-  if (otworz) {
-    otworz_material(toupper(cwiczenie))
-    if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) rstudioapi::openProject(p)
-    else utils::browseURL(p)
-  }
-  invisible(list(projekt = p, cwiczenie = toupper(cwiczenie)))
+  plik <- przygotuj_zadanie(sub("^C", "Z", cwiczenie), katalog)
+  katalog <- zapamietaj_prace(katalog, cwiczenie)
+  message("Praca ", cwiczenie, ", ID: ", id_studenta, ". Plik: ", plik)
+  if (otworz) otworz_plik_pracy(plik)
+  invisible(list(projekt = p, plik = plik, cwiczenie = cwiczenie,
+                 id = id_studenta, katalog = katalog, aktualizacja = aktualizacja))
 }
 
 nazwa_repo <- function(url) {

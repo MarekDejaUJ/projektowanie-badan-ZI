@@ -12,7 +12,7 @@
 <meta name="author" content="Marek Deja" />
 
 
-<title>Handout W04 — Porównania grup i zależności kategorii</title>
+<title>W04 — Porównania: mapa projektu, efektu i testu</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -375,9 +375,9 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Handout W04 — Porównania grup i zależności
-kategorii</h1>
-<h3 class="subtitle">Mapa pojęć, wzorów i pytań</h3>
+<h1 class="title toc-ignore">W04 — Porównania: mapa projektu, efektu i
+testu</h1>
+<h3 class="subtitle">Zarządzanie informacją — handout — 2026/27</h3>
 <h4 class="author">Marek Deja</h4>
 <h4 class="date">2026/27</h4>
 
@@ -385,133 +385,196 @@ kategorii</h1>
 
 <div id="TOC">
 <ul>
-<li><a href="#pytanie-i-g%C5%82%C3%B3wna-my%C5%9Bl" id="toc-pytanie-i-główna-myśl">1. Pytanie i główna myśl</a>
-<ul>
-<li><a href="#tok-rozumowania" id="toc-tok-rozumowania">Tok
-rozumowania</a></li>
-</ul></li>
-<li><a href="#wz%C3%B3r-i-symbole" id="toc-wzór-i-symbole">2. Wzór i
-symbole</a></li>
-<li><a href="#dwa-tory-i-efekt" id="toc-dwa-tory-i-efekt">3. Dwa tory i
-efekt</a></li>
-<li><a href="#interpretacja-i-pytania" id="toc-interpretacja-i-pytania">4. Interpretacja i pytania</a>
-<ul>
-<li><a href="#dalszy-krok" id="toc-dalszy-krok">Dalszy krok</a></li>
-<li><a href="#literatura" id="toc-literatura">Literatura</a></li>
-</ul></li>
+<li><a href="#najpierw-ustal-struktur%C4%99" id="toc-najpierw-ustal-strukturę">Najpierw ustal strukturę</a></li>
+<li><a href="#jeden-kierunek-we-wszystkich-wynikach" id="toc-jeden-kierunek-we-wszystkich-wynikach">Jeden kierunek we
+wszystkich wynikach</a></li>
+<li><a href="#welch-obie-%C5%9Brednie-maj%C4%85-niepewno%C5%9B%C4%87" id="toc-welch-obie-średnie-mają-niepewność">Welch: obie średnie mają
+niepewność</a></li>
+<li><a href="#pary-jedna-r%C3%B3%C5%BCnica-na-osob%C4%99" id="toc-pary-jedna-różnica-na-osobę">Pary: jedna różnica na
+osobę</a></li>
+<li><a href="#resampling-musi-pasowa%C4%87-do-projektu" id="toc-resampling-musi-pasować-do-projektu">Resampling musi pasować do
+projektu</a></li>
+<li><a href="#kategorie-od-kom%C3%B3rki-do-statystyki" id="toc-kategorie-od-komórki-do-statystyki">Kategorie: od komórki do
+statystyki</a></li>
+<li><a href="#wielko%C5%9B%C4%87-zwi%C4%85zku-nie-jest-p" id="toc-wielkość-związku-nie-jest-p">Wielkość związku nie jest
+p</a></li>
+<li><a href="#rangi-i-wiele-grup-granice-skr%C3%B3tu" id="toc-rangi-i-wiele-grup-granice-skrótu">Rangi i wiele grup: granice
+skrótu</a></li>
 </ul>
 </div>
 
-<div id="pytanie-i-główna-myśl" class="section level1">
-<h1>1. Pytanie i główna myśl</h1>
-<p><strong>Pytanie:</strong> Czy dwie grupy różnią się indeksem lub
-czasem oraz czy powodzenie zadania zależy od grupy? Jak duży i
-precyzyjny jest wzorzec?</p>
-<p>Pytanie o różnicę wymaga wskazania wyniku, grup, kolejności oraz
-projektu. Pytanie o współwystępowanie kategorii wymaga tabeli i
-właściwego mianownika. Test jest końcem tego rozumowania, nie
-początkiem.</p>
-<div id="tok-rozumowania" class="section level2">
-<h2>Tok rozumowania</h2>
-<ol style="list-style-type: decimal">
-<li>Pytanie i zakres wniosku.<br />
-</li>
-<li>Jednostka, zmienne, skale i braki.<br />
-</li>
-<li>Estymata oraz jednostka.<br />
-</li>
-<li>Niepewność i dwa tory, jeśli dotyczą.<br />
-</li>
-<li>Efekt, ograniczenie i odpowiedź.</li>
-</ol>
-<div style="page-break-after: always;"></div>
-</div>
-</div>
-<div id="wzór-i-symbole" class="section level1">
-<h1>2. Wzór i symbole</h1>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>W</mi></msub><mo>=</mo><mfrac><mrow><msub><mover><mi>x</mi><mo accent="true">‾</mo></mover><mn>1</mn></msub><mo>−</mo><msub><mover><mi>x</mi><mo accent="true">‾</mo></mover><mn>2</mn></msub></mrow><msqrt><mrow><msubsup><mi>s</mi><mn>1</mn><mn>2</mn></msubsup><mi>/</mi><msub><mi>N</mi><mn>1</mn></msub><mo>+</mo><msubsup><mi>s</mi><mn>2</mn><mn>2</mn></msubsup><mi>/</mi><msub><mi>N</mi><mn>2</mn></msub></mrow></msqrt></mfrac><mo>,</mo><mspace width="1.0em"></mspace><msup><mi>χ</mi><mn>2</mn></msup><mo>=</mo><mo>∑</mo><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mi>O</mi><mo>−</mo><mi>E</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow><mi>E</mi></mfrac></mrow><annotation encoding="application/x-tex">t_W=\frac{\bar{x}_1-\bar{x}_2}{\sqrt{s_1^2/N_1+s_2^2/N_2}}, \quad \chi^2=\sum\frac{(O-E)^2}{E}</annotation></semantics></math></p>
+<div id="najpierw-ustal-strukturę" class="section level1">
+<h1>Najpierw ustal strukturę</h1>
 <table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
 <thead>
 <tr class="header">
-<th>Symbol</th>
-<th>Nazwa</th>
-<th>Znaczenie</th>
+<th>Projekt</th>
+<th>Wielkość główna</th>
+<th>Kluczowa kontrola</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Δ</mi><annotation encoding="application/x-tex">\Delta</annotation></semantics></math></td>
-<td>różnica</td>
-<td>grupa 2 minus grupa 1</td>
+<td>Dwie niezależne grupy, wynik ilościowy</td>
+<td>Różnica średnich</td>
+<td>Inne osoby, N i SD w obu grupach</td>
 </tr>
 <tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math></td>
-<td>Hedges g</td>
-<td>standaryzowana różnica</td>
+<td>Dwa pomiary tych samych osób</td>
+<td>Średnia różnica wewnątrz par</td>
+<td>ID i kompletne pary</td>
 </tr>
 <tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>,</mo><mi>E</mi></mrow><annotation encoding="application/x-tex">O,E</annotation></semantics></math></td>
-<td>liczebności</td>
-<td>obserwowane i oczekiwane</td>
+<td>Dwie zmienne kategorialne</td>
+<td>Proporcje i związek w tabeli</td>
+<td>Liczebności, mianowniki, oczekiwania</td>
 </tr>
 <tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math></td>
-<td>V Cramera</td>
-<td>siła związku kategorii</td>
+<td>Więcej grup</td>
+<td>Zaplanowany kontrast lub porównanie ogólne</td>
+<td>Wielokrotność i właściwy model</td>
+</tr>
+<tr class="odd">
+<td>Wynik interpretowany rangowo</td>
+<td>Położenie/rangi według metody</td>
+<td>Nie utożsamiać z testem średnich</td>
 </tr>
 </tbody>
 </table>
-<p>Przeczytaj wzór zdaniem. Wskaż estymatę, punkt odniesienia, jednostkę
-i składnik niepewności. Nie przypisuj p prawdopodobieństwa hipotezie ani
-CI zakresu 95% osób.</p>
-<div style="page-break-after: always;"></div>
+<p>Równe liczebności nie tworzą par. Wielokrotne zadania tej samej osoby
+nie są niezależnymi osobami. Grupy obserwacyjne nie stają się
+randomizowane przez użycie permutacji.</p>
 </div>
-<div id="dwa-tory-i-efekt" class="section level1">
-<h1>3. Dwa tory i efekt</h1>
-<p><strong>Tor klasyczny.</strong> Welch porównuje średnie bez założenia
-równych wariancji. Test rangowy odpowiada na pytanie o rozkłady/rangi i
-nie jest automatyczną wersją testu średnich. Chi-kwadrat porównuje
-obserwowane komórki z oczekiwanymi przy niezależności, Fisher służy
-małym układom.</p>
-<p><strong>Tor permutacyjny/resampling.</strong> Dla dwóch grup tasujemy
-etykiety przy zachowanych wynikach. Dla tabeli Monte Carlo tworzy tabele
-zgodne z hipotezą niezależności i marginesami procedury. Odczyt p
-pozostaje warunkowy względem H0.</p>
-<p><strong>Efekt i przedział.</strong> Raportujemy różnicę w punktach
-lub minutach, Hedges g oraz CI. Dla tabeli V Cramera nie ma kierunku,
-dlatego trzeba podać odsetki w grupach i ewentualnie różnicę ryzyka dla
-2×2.</p>
-<div style="page-break-after: always;"></div>
+<div id="jeden-kierunek-we-wszystkich-wynikach" class="section level1">
+<h1>Jeden kierunek we wszystkich wynikach</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>=</mo><msub><mi>μ</mi><mi>N</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>D</mi></msub><mo>,</mo><mspace width="2.0em"></mspace><mover><mi mathvariant="normal">Δ</mi><mo accent="true">̂</mo></mover><mo>=</mo><msub><mover><mi>x</mi><mo accent="true">‾</mo></mover><mi>N</mi></msub><mo>−</mo><msub><mover><mi>x</mi><mo accent="true">‾</mo></mover><mi>D</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\Delta=\mu_N-\mu_D,\qquad
+\widehat\Delta=\bar{x}_N-\bar{x}_D.</annotation></semantics></math></p>
+<p>Nowi minus doświadczeni: dodatni wynik czasu oznacza dłuższy czas
+nowych, dodatni indeks — wyższą deklarację zgodnie z kierunkiem skali.
+Po odwróceniu kolejności zmieniamy znak różnicy, t, g i granice CI: [L;
+U] przechodzi w [−U; −L]. Dwustronne p pozostaje takie samo.</p>
 </div>
-<div id="interpretacja-i-pytania" class="section level1">
-<h1>4. Interpretacja i pytania</h1>
-<p><strong>Przykład.</strong> Nowi użytkownicy mogą mieć niższy indeks i
-mniejszy odsetek powodzenia. Dwa wyniki dotyczą różnych aspektów:
-samooceny i wykonania. Zgodność zwiększa spójność opisu, lecz nadal nie
-dowodzi, że doświadczenie samo spowodowało wynik.</p>
-<p><strong>Pułapki.</strong> Błędy obejmują zmianę kolejności grup bez
-zmiany znaku, raportowanie p bez średnich, V jako procent różnicy, test
-chi-kwadrat na procentach zamiast liczebnościach, ignorowanie
-oczekiwanych komórek i przyczynowy język.</p>
-<p><strong>Pytanie do pracy.</strong> Dla czterech pytań wybierz: opis,
-Welch, test rangowy, chi-kwadrat/Fisher lub brak testu. Uzasadnij
-decyzję pytaniem, skalą, niezależnością i mianownikiem, a następnie
-wskaż efekt oraz wersję permutacyjną.</p>
-<div id="dalszy-krok" class="section level2">
-<h2>Dalszy krok</h2>
-<p>C06 przeprowadzi jedno porównanie dwóch grup, C07 tabelę kategorii.
-W05 pokaże związki dwóch zmiennych ilościowych i prostą regresję.</p>
+<div id="welch-obie-średnie-mają-niepewność" class="section level1">
+<h1>Welch: obie średnie mają niepewność</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi><mo>=</mo><msqrt><mrow><mfrac><msubsup><mi>s</mi><mi>N</mi><mn>2</mn></msubsup><msub><mi>n</mi><mi>N</mi></msub></mfrac><mo>+</mo><mfrac><msubsup><mi>s</mi><mi>D</mi><mn>2</mn></msubsup><msub><mi>n</mi><mi>D</mi></msub></mfrac></mrow></msqrt><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>t</mi><mi>W</mi></msub><mo>=</mo><mfrac><mover><mi mathvariant="normal">Δ</mi><mo accent="true">̂</mo></mover><mrow><mi>S</mi><mi>E</mi></mrow></mfrac><mo>,</mo><mspace width="1.0em"></mspace><mi>C</mi><msub><mi>I</mi><mrow><mn>95</mn><mi>%</mi></mrow></msub><mo>=</mo><mover><mi mathvariant="normal">Δ</mi><mo accent="true">̂</mo></mover><mo>±</mo><msub><mi>t</mi><mrow><mn>0</mn><mo>,</mo><mn>975</mn><mo>;</mo><mi>ν</mi></mrow></msub><mi>S</mi><mi>E</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">
+SE=\sqrt{\frac{s_N^2}{n_N}+\frac{s_D^2}{n_D}},
+\quad t_W=\frac{\widehat\Delta}{SE},
+\quad CI_{95\%}=\widehat\Delta\pm t_{0{,}975;\nu}SE.
+</annotation></semantics></math></p>
+<p>Welch nie wymaga równych wariancji, ale nadal wymaga właściwego
+projektu i uzasadnienia przybliżenia. Niecałkowite df jest normalnym
+wynikiem przybliżenia, nie błędem liczebności. Test normalności nie
+ocenia niezależności i nie jest uniwersalnym przełącznikiem metod.</p>
+<p>Przykład hipotetyczny: po 5 osób, średnie czasu 12 i 8 minut, SD w
+obu grupach około 3,162. Różnica wynosi 4 minuty, SE=2, t(8)=2, p około
+0,081, CI [−0,61; 8,61] minuty. To nieprecyzyjna dodatnia estymata, nie
+dowód równości.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>p</mi></msub><mo>=</mo><msqrt><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>n</mi><mi>N</mi></msub><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><msubsup><mi>s</mi><mi>N</mi><mn>2</mn></msubsup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>n</mi><mi>D</mi></msub><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><msubsup><mi>s</mi><mi>D</mi><mn>2</mn></msubsup></mrow><mrow><msub><mi>n</mi><mi>N</mi></msub><mo>+</mo><msub><mi>n</mi><mi>D</mi></msub><mo>−</mo><mn>2</mn></mrow></mfrac></msqrt><mo>,</mo><mspace width="1.0em"></mspace><mi>g</mi><mo>≈</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mfrac><mn>3</mn><mrow><mn>4</mn><mo stretchy="false" form="prefix">(</mo><msub><mi>n</mi><mi>N</mi></msub><mo>+</mo><msub><mi>n</mi><mi>D</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mn>9</mn></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mfrac><mover><mi mathvariant="normal">Δ</mi><mo accent="true">̂</mo></mover><msub><mi>s</mi><mi>p</mi></msub></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
+s_p=\sqrt{\frac{(n_N-1)s_N^2+(n_D-1)s_D^2}{n_N+n_D-2}},
+\quad
+g\approx\left(1-\frac{3}{4(n_N+n_D)-9}\right)
+\frac{\widehat\Delta}{s_p}.
+</annotation></semantics></math></p>
+<p>G dzieli różnicę przez rozrzut osób, nie przez SE. Naturalna różnica
+w minutach lub punktach pozostaje podstawą sensu praktycznego. Duże g i
+p powyżej 0,05 mogą wystąpić jednocześnie przy małej próbie.</p>
 </div>
-<div id="literatura" class="section level2">
-<h2>Literatura</h2>
-<ul>
-<li>Agresti. An Introduction to Categorical Data Analysis.</li>
-<li><a href="https://doi.org/10.3389/fpsyg.2013.00863">Lakens (2013).
-Calculating and reporting effect sizes</a>.</li>
-<li>Kontekst LIS pochodzi ze scenariuszy usług cyfrowych i obserwowanego
-zadania wyszukiwawczego.</li>
-</ul>
+<div id="pary-jedna-różnica-na-osobę" class="section level1">
+<h1>Pary: jedna różnica na osobę</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mi>i</mi></msub><mo>=</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>,</mo><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">o</mi></mrow></mrow></msub><mo>−</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>,</mo><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">z</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">d</mi></mrow></mrow></msub><mo>,</mo><mspace width="1.0em"></mspace><mi>t</mi><mo>=</mo><mfrac><mover><mi>d</mi><mo accent="true">‾</mo></mover><mrow><msub><mi>s</mi><mi>d</mi></msub><mi>/</mi><msqrt><msub><mi>n</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi></mrow></msub></msqrt></mrow></mfrac><mo>,</mo><mspace width="1.0em"></mspace><mi>d</mi><mi>f</mi><mo>=</mo><msub><mi>n</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi></mrow></msub><mo>−</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">
+d_i=x_{i,\mathrm{po}}-x_{i,\mathrm{przed}},
+\quad t=\frac{\bar d}{s_d/\sqrt{n_{\mathrm{par}}}},
+\quad df=n_{\mathrm{par}}-1.
+</annotation></semantics></math></p>
+<p>Ujemna zmiana czasu oznacza skrócenie. Założenie normalności dla
+dokładnego modelu dotyczy różnic, nie osobno kolumn przed i po. Bez
+kontroli zmiana może odzwierciedlać także uczenie się, a nie tylko
+interwencję.</p>
 </div>
+<div id="resampling-musi-pasować-do-projektu" class="section level1">
+<h1>Resampling musi pasować do projektu</h1>
+<p>Permutacja dwóch grup przestawia etykiety przy zachowaniu
+liczebności, jeśli pod H0 dopuszcza to wymienialność lub mechanizm
+randomizacji. Sama równość średnich nie wystarcza przy dowolnie różnych
+rozkładach. Surowe tasowanie różnicy nie dziedziczy automatycznie
+odporności Welcha na nierówne wariancje.</p>
+<p>Bootstrap dwóch grup losuje z powtórzeniami osobno w każdej grupie,
+aby szacować niepewność różnicy. Dla par zachowujemy całą parę. Zmiana
+znaków różnic ma własne uzasadnienie symetrii lub randomizacji; nie jest
+dowolnym mieszaniem wszystkich wartości.</p>
+</div>
+<div id="kategorie-od-komórki-do-statystyki" class="section level1">
+<h1>Kategorie: od komórki do statystyki</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mfrac><mrow><msub><mi>n</mi><mrow><mi>i</mi><mo>⋅</mo></mrow></msub><msub><mi>n</mi><mrow><mi>⋅</mi><mi>j</mi></mrow></msub></mrow><mi>N</mi></mfrac><mo>,</mo><mspace width="2.0em"></mspace><msup><mi>χ</mi><mn>2</mn></msup><mo>=</mo><munder><mo>∑</mo><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></munder><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>O</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><msub><mi>E</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow><msub><mi>E</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>d</mi><mi>f</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">E_{ij}=\frac{n_{i\cdot}n_{\cdot j}}N,\qquad
+\chi^2=\sum_{i,j}\frac{(O_{ij}-E_{ij})^2}{E_{ij}},
+\qquad df=(r-1)(c-1).</annotation></semantics></math></p>
+<p>O to liczebność obserwowana, E oczekiwana przy niezależności. E może
+być ułamkiem. Do testu podajemy liczebności, nie procenty. Małe
+oczekiwania mogą pogarszać przybliżenie chi-kwadrat; Fisher lub
+odpowiednie Monte Carlo wymagają jawnego opisu procedury.</p>
+<p>Monte Carlo w omawianym teście tabel zachowuje marginesy. Fisher 2 na
+2 ma interpretację warunkową przy tych marginesach. Słowo „dokładny” nie
+oznacza braku wymagań dotyczących projektu lub niezależności.</p>
+</div>
+<div id="wielkość-związku-nie-jest-p" class="section level1">
+<h1>Wielkość związku nie jest p</h1>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><msqrt><mfrac><msup><mi>χ</mi><mn>2</mn></msup><mrow><mi>N</mi><mrow><mi mathvariant="normal">min</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>−</mo><mn>1</mn><mo>,</mo><mi>c</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">V=\sqrt{\frac{\chi^2}{N\min(r-1,c-1)}}.</annotation></semantics></math></p>
+<p>V jest nieujemne i nie ma kierunku. Nie jest procentem skuteczności.
+Prosty percentylowy bootstrap V może nie obejmować zera także przy
+niezależności populacyjnej, dlatego nie używamy jego dolnej granicy jako
+automatycznego testu związku.</p>
+<p>W przykładzie 18/30 wobec 32/40:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Miara: nowi względem doświadczonych</th>
+<th align="right">Wynik</th>
+<th>Odczyt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Różnica proporcji</td>
+<td align="right">−0,20</td>
+<td>O 20 punktów procentowych mniej</td>
+</tr>
+<tr class="even">
+<td>Iloraz proporcji</td>
+<td align="right">0,75</td>
+<td>Udział stanowi 75% udziału drugiej grupy</td>
+</tr>
+<tr class="odd">
+<td>Iloraz szans</td>
+<td align="right">0,375</td>
+<td>Inny iloraz: sukcesy do niepowodzeń</td>
+</tr>
+</tbody>
+</table>
+<p>Przedział każdej miary trzeba nazwać. Wartością zerową różnicy jest
+0, a brakiem związku dla ilorazów jest 1. Nie przenosimy granic między
+skalami bez odpowiedniego przekształcenia.</p>
+</div>
+<div id="rangi-i-wiele-grup-granice-skrótu" class="section level1">
+<h1>Rangi i wiele grup: granice skrótu</h1>
+<p>Test Manna–Whitneya nie jest automatycznym testem median.
+Interpretacja przesunięcia położenia wymaga dodatkowych warunków.
+Porównanie rang może odpowiadać innemu pytaniu niż przeciętny koszt
+czasu.</p>
+<p>ANOVA pyta, czy wszystkie średnie są równe; wynik ogólny nie wskazuje
+pary. Zaplanowane kontrasty i analizy po obejrzeniu wyników wymagają
+odpowiednich reguł wielokrotności. Istotny wynik ogólny nie uprawnia do
+dowolnego wybierania kolejnych p.</p>
+<p>W raporcie: projekt, grupy, N, wielkość i kierunek efektu, jednostka,
+CI, statystyka, df, p i ograniczenie. Wniosek o przyczynie wymaga
+uzasadnienia projektu, nie tylko małego p.</p>
+<p>Definicje efektów: <a href="https://doi.org/10.3389/fpsyg.2013.00863">Lakens (2013)</a>.
+Warunki przestawień: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4010955/">Winkler i in.
+(2014)</a>.</p>
 </div>
 
 

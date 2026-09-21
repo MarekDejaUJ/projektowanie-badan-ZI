@@ -1,14 +1,14 @@
 \name{materialy}
 \alias{materialy}
-\title{Katalog materiałów rocznika}
+\title{Katalog materialow rocznika}
 \usage{
 materialy()
 }
 \value{
-Tabela jednostek, tytułów i lokalnych ścieżek źródeł.
+Tabela jednostek, tytulow i lokalnych sciezek zrodel.
 }
 \description{
-Katalog materiałów rocznika
+Katalog materialow rocznika
 }
 \examples{
 materialy()

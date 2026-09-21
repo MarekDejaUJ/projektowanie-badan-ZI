@@ -1,13 +1,12 @@
 id: Z02
-version: 1.0.0
+version: 1.1.0
 rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z02.1
-  title: 'Poprawny import: separator, polskie znaki, liczba wierszy/kolumn i kontrola
-    struktury.'
-  evidence: 'Poprawny import: separator, polskie znaki, liczba wierszy/kolumn i kontrola
-    struktury.'
+  title: "Odczyt importu i struktury surowego eksportu."
+  evidence: "S01 podaje liczbę wierszy i kolumn, separator pól, znak dziesiętny oraz typ odczytanego czasu. Odróżnia rekord eksportu od osoby, uwzględniając powtórzenia; gotowy import zachowuje polskie znaki."
+  answer_fields: [S01]
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -15,21 +14,19 @@ criteria:
   - U2
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Plik odczytany, lecz separator rozdziela dane błędnie.
+    observable_description: "Wskazano rozmiar pliku bez poprawnego rozdzielenia pól."
   - points: 1.0
-    observable_description: Poprawne kolumny, ale pominięte kodowanie lub kontrola
-      N.
+    observable_description: "Struktura jest częściowo poprawna, ale liczba rekordów została uznana za liczbę różnych osób lub pomylono separator i znak dziesiętny."
   - points: 1.5
-    observable_description: Import i N poprawne; jedna kontrola struktury pominięta.
+    observable_description: "Struktura i rozróżnienie rekord–osoba są poprawne; pominięto jeden element opisu importu."
   - points: 2.0
-    observable_description: 'Poprawny import: separator, polskie znaki, liczba wierszy/kolumn
-      i kontrola struktury.'
+    observable_description: "S01 podaje liczbę wierszy i kolumn, separator pól, znak dziesiętny oraz typ odczytanego czasu. Odróżnia rekord eksportu od osoby, uwzględniając powtórzenia; gotowy import zachowuje polskie znaki."
 - id: Z02.2
-  title: Poprawnie odczytano działanie gotowych reguł dla typów, kodów braków i duplikatów.
-  evidence: Poprawnie odczytano działanie gotowych reguł dla typów, kodów braków i
-    duplikatów.
+  title: "Uzasadnienie reguł duplikatów, kodów i długiego czasu."
+  evidence: "S02 odróżnia identyczne powtórzenie a03 od sprzecznych zapisów tego samego ID. S03 wyjaśnia 0, 99, 121 i puste pole zgodnie z protokołem. S04 porównuje wynik z czasem 35 i bez niego, zachowując potwierdzony pomiar w analizie głównej."
+  answer_fields: [S02, S03, S04]
   max_points: 4.0
   review_mode: mixed
   learning_outcomes:
@@ -37,20 +34,19 @@ criteria:
   - U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 1.0
-    observable_description: Opis reguł prowadzi do nieuzasadnionej utraty odpowiedzi.
+    observable_description: "Opis reguł prowadzi do nieuzasadnionego usuwania osób albo ważnych pomiarów."
   - points: 2.0
-    observable_description: Dwie z trzech reguł odczytano poprawnie; typ, brak albo
-      duplikat nadal mylony.
+    observable_description: "Część reguł jest poprawna, ale mylony jest brak z zerem, duplikat z konfliktem lub długa obserwacja z błędem."
   - points: 3.0
-    observable_description: Wszystkie reguły odczytano poprawnie; drobna luka uzasadnienia.
+    observable_description: "Reguły i analiza wrażliwości są poprawne; uzasadnienie jednej decyzji wymaga doprecyzowania."
   - points: 4.0
-    observable_description: Poprawnie odczytano działanie gotowych reguł dla typów,
-      kodów braków i duplikatów.
+    observable_description: "S02 odróżnia identyczne powtórzenie a03 od sprzecznych zapisów tego samego ID. S03 wyjaśnia 0, 99, 121 i puste pole zgodnie z protokołem. S04 porównuje wynik z czasem 35 i bez niego, zachowując potwierdzony pomiar w analizie głównej."
 - id: Z02.3
-  title: Dziennik pokazuje reguły, N przed/po, różnicę między brakiem a zerem.
-  evidence: Dziennik pokazuje reguły, N przed/po, różnicę między brakiem a zerem.
+  title: "Bilans osób i dostępnych pomiarów."
+  evidence: "S02–S03 i synteza S05 podają N surowe, N po usunięciu powtórzeń, ważne N czasu, wyniku oraz kompletnych par czas–ocena. Odróżniają usunięcie wiersza od zmiany jednej komórki na NA i brak zapisu od zaobserwowanego niepowodzenia."
+  answer_fields: [S02, S03, S05]
   max_points: 2.0
   review_mode: human
   learning_outcomes:
@@ -58,22 +54,19 @@ criteria:
   - U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Wymieniono zmianę bez reguły i liczby wierszy.
+    observable_description: "Wymieniono zmianę bez jej liczebności i jednostki bilansu."
   - points: 1.0
-    observable_description: N przed/po poprawne, lecz brak mylony z zerem.
+    observable_description: "N przed i po jest poprawne, lecz ważne pomiary lub kompletne pary policzono jak wszystkie osoby."
   - points: 1.5
-    observable_description: Reguły i rozróżnienie brak/zero poprawne; jedna liczba
-      pominięta.
+    observable_description: "Bilans jest poprawny; pominięto jedną z wymaganych liczebności albo jedno rozróżnienie."
   - points: 2.0
-    observable_description: Dziennik pokazuje reguły, N przed/po, różnicę między brakiem
-      a zerem.
+    observable_description: "S02–S03 i synteza S05 podają N surowe, N po usunięciu powtórzeń, ważne N czasu, wyniku oraz kompletnych par czas–ocena. Odróżniają usunięcie wiersza od zmiany jednej komórki na NA i brak zapisu od zaobserwowanego niepowodzenia."
 - id: Z02.4
-  title: Gotowy skrypt odtwarza czyszczenie od surowego pliku, a zapisany CSV zgadza
-    się z dziennikiem.
-  evidence: Gotowy skrypt odtwarza czyszczenie od surowego pliku, a zapisany CSV zgadza
-    się z dziennikiem.
+  title: "Zgodność opisu z dziennikiem i odtworzenie analizy."
+  evidence: "S04 wskazuje, czego wykres nie dowodzi o poprawności czasu 35. S05 łączy reguły, wynik i ograniczenie, wyjaśniając zachowanie surowego źródła. Rmd/PDF i analiza.R odtwarzają gotowy dziennik oraz tabelę; nie wymaga się ręcznego eksportu CSV."
+  answer_fields: [S04, S05]
   max_points: 2.0
   review_mode: mixed
   learning_outcomes:
@@ -81,15 +74,12 @@ criteria:
   - U2
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Wynik zależy od ręcznej zmiany surowych danych.
+    observable_description: "Opis lub wynik zależy od nieudokumentowanej ręcznej zmiany źródła."
   - points: 1.0
-    observable_description: Skrypt działa, ale eksport nie zgadza się z jedną regułą
-      lub dziennikiem.
+    observable_description: "Gotowa analiza działa, ale synteza nie odpowiada dziennikowi lub uzasadnia usuwanie danych wyglądem wykresu."
   - points: 1.5
-    observable_description: Odtwarzalny CSV i dziennik są zgodne; pominięto instrukcję
-      wykonania.
+    observable_description: "Odtwarzalny wynik i synteza są zgodne; drobna luka dotyczy roli surowego źródła lub ograniczenia."
   - points: 2.0
-    observable_description: Gotowy skrypt odtwarza czyszczenie od surowego pliku,
-      a zapisany CSV zgadza się z dziennikiem.
+    observable_description: "S04 wskazuje, czego wykres nie dowodzi o poprawności czasu 35. S05 łączy reguły, wynik i ograniczenie, wyjaśniając zachowanie surowego źródła. Rmd/PDF i analiza.R odtwarzają gotowy dziennik oraz tabelę; nie wymaga się ręcznego eksportu CSV."

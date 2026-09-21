@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Marek Deja" />
+<meta name="author" content="ID: [UZUPELNIJ_ID]" />
 
 
-<title>C02 — Surowy eksport: braki, duplikaty i jawne czyszczenie</title>
+<title>C02 — Surowy eksport: decyzje, które zmieniają wynik</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -375,119 +375,164 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">C02 — Surowy eksport: braki, duplikaty i
-jawne czyszczenie</h1>
-<h3 class="subtitle">Zarządzanie informacją — część ilościowa —
+<h1 class="title toc-ignore">C02 — Surowy eksport: decyzje, które
+zmieniają wynik</h1>
+<h3 class="subtitle">Zarządzanie informacją — ćwiczenie i zadanie Z02 —
 2026/27</h3>
-<h4 class="author">Marek Deja</h4>
+<h4 class="author">ID: [UZUPELNIJ_ID]</h4>
 <h4 class="date">2026/27</h4>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#miejsce-w-opowie%C5%9Bci" id="toc-miejsce-w-opowieści">1.
-Miejsce w opowieści</a></li>
-<li><a href="#scena-badawcza" id="toc-scena-badawcza">2. Scena
-badawcza</a></li>
-<li><a href="#pytanie-jednostka-i-zmienne" id="toc-pytanie-jednostka-i-zmienne">3. Pytanie, jednostka i
-zmienne</a></li>
-<li><a href="#s%C5%82ownik-statystyczny" id="toc-słownik-statystyczny">4. Słownik statystyczny</a></li>
-<li><a href="#wz%C3%B3r-czytany-jak-zdanie" id="toc-wzór-czytany-jak-zdanie">5. Wzór czytany jak zdanie</a></li>
-<li><a href="#gotowy-skrypt-pomocniczy" id="toc-gotowy-skrypt-pomocniczy">6. Gotowy skrypt pomocniczy</a></li>
-<li><a href="#dane-braki-i-mianownik" id="toc-dane-braki-i-mianownik">7.
-Dane, braki i mianownik</a></li>
-<li><a href="#tor-klasyczny" id="toc-tor-klasyczny">8. Tor
-klasyczny</a></li>
-<li><a href="#tor-permutacyjny-lub-decyzja-o-jego-braku" id="toc-tor-permutacyjny-lub-decyzja-o-jego-braku">9. Tor permutacyjny
-lub decyzja o jego braku</a></li>
-<li><a href="#efekt-i-przedzia%C5%82" id="toc-efekt-i-przedział">10.
-Efekt i przedział</a></li>
-<li><a href="#wykres-jako-cz%C4%99%C5%9B%C4%87-argumentu" id="toc-wykres-jako-część-argumentu">11. Wykres jako część
-argumentu</a></li>
-<li><a href="#wynik-czytany-linia-po-linii" id="toc-wynik-czytany-linia-po-linii">12. Wynik czytany linia po
-linii</a></li>
-<li><a href="#b%C5%82%C4%99dy-interpretacji" id="toc-błędy-interpretacji">13. Błędy interpretacji</a></li>
-<li><a href="#pr%C3%B3ba-prowadzona" id="toc-próba-prowadzona">14. Próba
-prowadzona</a></li>
-<li><a href="#zadanie-z02" id="toc-zadanie-z02">15. Zadanie Z02</a></li>
-<li><a href="#rubryka-kontrola-i-dalszy-krok" id="toc-rubryka-kontrola-i-dalszy-krok">16. Rubryka, kontrola i dalszy
-krok</a>
+<li><a href="#pocz%C4%85tek-pracy-na-tych-zaj%C4%99ciach" id="toc-początek-pracy-na-tych-zajęciach">Początek pracy na tych
+zajęciach</a></li>
+<li><a href="#dlaczego-dwie-osoby-otrzyma%C5%82y-r%C3%B3%C5%BCne-%C5%9Brednie" id="toc-dlaczego-dwie-osoby-otrzymały-różne-średnie">Dlaczego dwie osoby
+otrzymały różne średnie</a></li>
+<li><a href="#zanim-cokolwiek-zmienimy" id="toc-zanim-cokolwiek-zmienimy">Zanim cokolwiek zmienimy</a></li>
+<li><a href="#learn-1-plik-csv-jest-tekstem-z-umow%C4%85" id="toc-learn-1-plik-csv-jest-tekstem-z-umową">LEARN 1: plik CSV jest
+tekstem z umową</a>
 <ul>
-<li><a href="#%C5%BAr%C3%B3d%C5%82o-kontekstu" id="toc-źródło-kontekstu">Źródło kontekstu</a></li>
+<li><a href="#separator-kolumn-a-znak-dziesi%C4%99tny" id="toc-separator-kolumn-a-znak-dziesiętny">Separator kolumn a znak
+dziesiętny</a></li>
+<li><a href="#typ-statystyczny-nie-wynika-z-klasy-r" id="toc-typ-statystyczny-nie-wynika-z-klasy-r">Typ statystyczny nie
+wynika z klasy R</a></li>
+</ul></li>
+<li><a href="#learn-2-duplikat-nie-jest-tym-samym-co-konflikt" id="toc-learn-2-duplikat-nie-jest-tym-samym-co-konflikt">LEARN 2:
+duplikat nie jest tym samym co konflikt</a></li>
+<li><a href="#learn-3-kod-braku-99-nie-jest-wysok%C4%85-ocen%C4%85" id="toc-learn-3-kod-braku-99-nie-jest-wysoką-oceną">LEARN 3: kod braku
+99 nie jest wysoką oceną</a>
+<ul>
+<li><a href="#warto%C5%9B%C4%87-niemo%C5%BCliwa-i-warto%C5%9B%C4%87-nietypowa" id="toc-wartość-niemożliwa-i-wartość-nietypowa">Wartość niemożliwa i
+wartość nietypowa</a></li>
+<li><a href="#skutek-usuni%C4%99cia-prawid%C5%82owego-d%C5%82ugiego-czasu" id="toc-skutek-usunięcia-prawidłowego-długiego-czasu">Skutek usunięcia
+prawidłowego długiego czasu</a></li>
+</ul></li>
+<li><a href="#learn-4-rachunek-liczebno%C5%9Bci" id="toc-learn-4-rachunek-liczebności">LEARN 4: rachunek liczebności</a>
+<ul>
+<li><a href="#pary-zmiennych-maj%C4%85-w%C5%82asne-n" id="toc-pary-zmiennych-mają-własne-n">Pary zmiennych mają własne
+N</a></li>
+</ul></li>
+<li><a href="#learn-5-dziennik-decyzji-kt%C3%B3ry-mo%C5%BCna-przeczyta%C4%87" id="toc-learn-5-dziennik-decyzji-który-można-przeczytać">LEARN 5:
+dziennik decyzji, który można przeczytać</a></li>
+<li><a href="#challenge-samodzielny-audyt-cyfrowego-archiwum" id="toc-challenge-samodzielny-audyt-cyfrowego-archiwum">CHALLENGE —
+samodzielny audyt cyfrowego archiwum</a>
+<ul>
+<li><a href="#scenariusz-cyfrowego-archiwum" id="toc-scenariusz-cyfrowego-archiwum">Scenariusz cyfrowego
+archiwum</a></li>
+<li><a href="#challenge-1-audyt-importu" id="toc-challenge-1-audyt-importu">CHALLENGE 1: Audyt importu</a></li>
+<li><a href="#challenge-2-powt%C3%B3rzenie-i-konflikt" id="toc-challenge-2-powtórzenie-i-konflikt">CHALLENGE 2: Powtórzenie i
+konflikt</a></li>
+<li><a href="#challenge-3-zero-99-121-i-na" id="toc-challenge-3-zero-99-121-i-na">CHALLENGE 3: Zero, 99, 121 i
+NA</a></li>
+<li><a href="#challenge-4-czy-usuni%C4%99cie-d%C5%82ugiej-pr%C3%B3by-poprawia-badanie" id="toc-challenge-4-czy-usunięcie-długiej-próby-poprawia-badanie">CHALLENGE
+4: Czy usunięcie długiej próby poprawia badanie?</a></li>
+<li><a href="#challenge-5-notatka-o-danych-gotowych-do-analizy" id="toc-challenge-5-notatka-o-danych-gotowych-do-analizy">CHALLENGE 5:
+Notatka o danych gotowych do analizy</a></li>
+</ul></li>
+<li><a href="#zapis-i-oddanie" id="toc-zapis-i-oddanie">Zapis i
+oddanie</a>
+<ul>
+<li><a href="#kryteria-oceny" id="toc-kryteria-oceny">Kryteria
+oceny</a></li>
+</ul></li>
+<li><a href="#rozwini%C4%99cia-do-powt%C3%B3rki-poza-rdzeniem-spotkania" id="toc-rozwinięcia-do-powtórki-poza-rdzeniem-spotkania">Rozwinięcia do
+powtórki — poza rdzeniem spotkania</a>
+<ul>
+<li><a href="#dziennik-pe%C5%82nego-zbioru-s02" id="toc-dziennik-pełnego-zbioru-s02">Dziennik pełnego zbioru
+S02</a></li>
+<li><a href="#csv-i-arkusz-maj%C4%85-przekazywa%C4%87-t%C4%99-sam%C4%85-informacj%C4%99" id="toc-csv-i-arkusz-mają-przekazywać-tę-samą-informację">CSV i arkusz
+mają przekazywać tę samą informację</a></li>
+<li><a href="#od-logu-zdarze%C5%84-do-wyniku-osoby" id="toc-od-logu-zdarzeń-do-wyniku-osoby">Od logu zdarzeń do wyniku
+osoby</a></li>
+<li><a href="#szeroko-d%C5%82ugo-i-w-innej-jednostce" id="toc-szeroko-długo-i-w-innej-jednostce">Szeroko, długo i w innej
+jednostce</a></li>
+<li><a href="#co-brak-danych-mo%C5%BCe-m%C3%B3wi%C4%87-o-badaniu" id="toc-co-brak-danych-może-mówić-o-badaniu">Co brak danych może mówić o
+badaniu</a></li>
+<li><a href="#dodatkowe-przyk%C5%82ady-z-rozwi%C4%85zaniem" id="toc-dodatkowe-przykłady-z-rozwiązaniem">Dodatkowe przykłady z
+rozwiązaniem</a></li>
+<li><a href="#czy-braki-wyst%C4%99puj%C4%85-tak-samo-w-obu-grupach" id="toc-czy-braki-występują-tak-samo-w-obu-grupach">Czy braki występują
+tak samo w obu grupach</a></li>
+<li><a href="#dwa-rodzaje-zdania-o-jako%C5%9Bci-danych" id="toc-dwa-rodzaje-zdania-o-jakości-danych">Dwa rodzaje zdania o
+jakości danych</a></li>
 </ul></li>
 </ul>
 </div>
 
-<div id="miejsce-w-opowieści" class="section level1">
-<h1>1. Miejsce w opowieści</h1>
-<p>Eksport ankiety i log zadania trafiają do jednej tabeli. Przed
-analizą trzeba ustalić, co jest odpowiedzią, kodem braku, identycznym
-duplikatem i niemożliwym czasem.</p>
-<p><strong>Pytanie przewodnie:</strong> Które zmiany danych wynikają ze
-słownika i jak udokumentować ich liczbę bez zmieniania surowego
-pliku?</p>
-<p>Rdzeń zajęć trwa 90 minut. Strony oznaczone jako „po zajęciach” służą
-utrwaleniu; podczas spotkania uruchamiamy gotowy kod, czytamy liczby i
-zapisujemy własne wyjaśnienie.</p>
-<table>
-<thead>
-<tr class="header">
-<th align="right">Minuty</th>
-<th>Praca</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">0–10</td>
-<td>Powrót do poprzedniego odcinka i pytanie</td>
-</tr>
-<tr class="even">
-<td align="right">10–30</td>
-<td>Zmienne, wzór i symbole</td>
-</tr>
-<tr class="odd">
-<td align="right">30–55</td>
-<td>Gotowe wyniki i dwa tory, jeśli dotyczą</td>
-</tr>
-<tr class="even">
-<td align="right">55–80</td>
-<td>Zadanie na indywidualnych danych</td>
-</tr>
-<tr class="odd">
-<td align="right">80–90</td>
-<td>Kontrola, oddanie i zapowiedź kolejnego kroku</td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
+<!-- start-sesji -->
+<div id="początek-pracy-na-tych-zajęciach" class="section level1">
+<h1>Początek pracy na tych zajęciach</h1>
+<p>Otwórz RStudio. Pakiet kursu jest już zainstalowany w sali; nie
+instalujesz go ponownie. W konsoli poniżej edytora wpisz swoje ID i
+adres prywatnego repozytorium otrzymany w kursie, a następnie wykonaj
+polecenia. Ten blok jest instrukcją do konsoli, nie chunkiem
+uruchamianym przy tworzeniu PDF.</p>
+<pre class="r"><code>library(badaniaZI)
+ID &lt;- &quot;TWOJE_ID&quot;
+zaloguj_github()
+rozpocznij_zajecia(
+  &quot;C02&quot;, id_studenta = ID,
+  repo_url = &quot;ADRES_TWOJEGO_PRYWATNEGO_REPOZYTORIUM&quot;
+)</code></pre>
+<p>Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i
+drugi składnik podajesz wyłącznie tam, nie w konsoli R. Sprawdź
+potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w tej sesji;
+pliki pracy mają je zachować także po zamknięciu RStudio.</p>
+<p>Polecenie otwiera własny <code>zadanie.Rmd</code> i zapamiętuje
+katalog pracy. Nie przełączaj teraz projektu przez <code>.Rproj</code>,
+bo nowa sesja R utraci logowanie. Pracuj w otwartym Rmd, nie w źródłach
+pakietu. Uruchom pierwszy chunk przygotowania, potem wykonuj LEARN i
+CHALLENGE. Przy problemie poproś prowadzącego o pomoc; nie usuwaj pracy
+ani nie wpisuj cudzego ID. <!-- /start-sesji --></p>
+<p>Pierwszy blok ładuje gotowe funkcje z <code>analiza.R</code> oraz
+przygotowuje wspólny zbiór S02. Osobny mały eksport pozwoli prześledzić
+każdą zmianę komórki. Nie edytuj pliku surowego; wszystkie porównania
+wykonujemy na przygotowanych kopiach w pamięci.</p>
 </div>
-<div id="scena-badawcza" class="section level1">
-<h1>2. Scena badawcza</h1>
-<p>Eksport ankiety i log zadania trafiają do jednej tabeli. Przed
-analizą trzeba ustalić, co jest odpowiedzią, kodem braku, identycznym
-duplikatem i niemożliwym czasem.</p>
-<p>Badana osoba wykonuje krótkie zadanie wyszukiwawcze w cyfrowej
-usłudze informacyjnej, a potem odpowiada na sześć pozycji samooceny.
-Rejestrujemy czas i powodzenie jako pomiar obserwacyjny. Częstość
-korzystania, samoocena oraz wybrane kanały są deklaracjami. Rozdzielenie
-tych źródeł jest częścią interpretacji, ponieważ wysoka pewność nie musi
-oznaczać sprawnego wykonania.</p>
-<p>Dane demonstracyjne dotyczą scenariusza S02 i są syntetyczne. Ich
-rozkłady przygotowano do nauki, dlatego nie wolno opisywać nimi realnej
-biblioteki ani użytkowników UJ. Jednostką analizy jest osoba po
-usunięciu identycznych duplikatów. Każdy brak pozostaje brakiem, dopóki
-słownik nie podaje jawnej reguły.</p>
-<div style="page-break-after: always;"></div>
+<div id="dlaczego-dwie-osoby-otrzymały-różne-średnie" class="section level1">
+<h1>Dlaczego dwie osoby otrzymały różne średnie</h1>
+<p>Po pierwszym spotkaniu zespół biblioteki przekazał tę samą ankietę
+dwóm analitykom. Jedna osoba potraktowała 99 jako odpowiedź na skali
+oceny. Druga rozpoznała w 99 kod braku. Ktoś usunął wszystkie wiersze z
+jakimkolwiek pustym polem, ktoś inny zachował je do analiz, w których
+miały potrzebne informacje. Z tego samego pliku powstały różne
+liczebności i różne podsumowania.</p>
+<p>Nie wszystkie różnice są błędami rachunkowymi. Część wynika z innych
+pytań: analiza czasu potrzebuje czasu, a analiza indeksu wymaga
+odpowiedniej liczby pozycji. Problem pojawia się wtedy, gdy decyzja jest
+ukryta albo nie ma uzasadnienia. Dzisiejsze ćwiczenie uczy czytać
+czyszczenie jako serię decyzji o znaczeniu danych.</p>
+<p>W C01 odróżniliśmy rekord, zmienną i brak. Teraz sprawdzimy, jak te
+pojęcia działają w surowym eksporcie. Nie uczymy się „poprawiania danych
+aż wynik będzie ładny”. Reguły mają wynikać ze słownika, projektu i
+procesu pomiaru. Wynik testu statystycznego nie jest powodem do
+usunięcia osoby.</p>
+<p>Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków
+LEARN, 50 minut na pięć CHALLENGE i 5 minut na zapis oraz oddanie. W tym
+jednym Rmd uruchamiasz gotowe analizy, w LEARN odczytujesz wzorcowe
+interpretacje, a w CHALLENGE piszesz własne krótkie akapity pod
+wynikami. Pracujesz samodzielnie; w razie trudności pytasz
+prowadzącego.</p>
+<p>Nie zakładamy wcześniejszego czyszczenia danych projektu
+zaliczeniowego: poznasz go na C09. Dzisiaj masz gotowy eksport, słownik
+i procedurę. Twoim zadaniem jest rozumieć oraz opisać jej skutki.
+Rozwinięcia po CHALLENGE służą powtórce i nie wymagają dodatkowych
+odpowiedzi.</p>
 </div>
-<div id="pytanie-jednostka-i-zmienne" class="section level1">
-<h1>3. Pytanie, jednostka i zmienne</h1>
-<p>Analizowane zmienne: <strong>pozycje 1–6, czas wykonania,
-identyfikator, kody braków</strong>.</p>
-<p>Przed spojrzeniem na wynik odpowiedz głośno na cztery pytania: kto
-jest obserwacją, co jest zmienną, jaka jest skala i w jakiej jednostce
-pojawi się rezultat. Nazwa kolumny jest technicznym adresem; znaczenie
-pochodzi z operacjonalizacji oraz słownika danych.</p>
+<div id="zanim-cokolwiek-zmienimy" class="section level1">
+<h1>Zanim cokolwiek zmienimy</h1>
+<p>W LEARN pracujemy na małym eksporcie badania katalogu: siedem
+rekordów opisuje sześć osób. CHALLENGE dotyczy osobnego badania
+cyfrowego archiwum. Pełny przykład S02 pojawia się dopiero w
+rozwinięciu. Wszystkie dane są syntetyczne: nie opisujemy ich tak, jakby
+zostały zebrane od rzeczywistych użytkowników. Znaczenie przygotowanych
+sytuacji odczytujemy ze słownika.</p>
+<p>Surowy plik jest punktem odniesienia. Zostawiamy go bez zmian, a
+reguły zapisujemy w skrypcie. Dzięki temu można odtworzyć wynik,
+porównać dwie uzasadnione decyzje i sprawdzić, czy w raporcie podano
+prawidłowe N. Ręczne usunięcie kilku komórek w arkuszu bez dziennika
+pozbawia nas tej możliwości.</p>
 <table>
 <colgroup>
 <col width="33%" />
@@ -496,440 +541,3404 @@ pochodzi z operacjonalizacji oraz słownika danych.</p>
 </colgroup>
 <thead>
 <tr class="header">
-<th>Element</th>
-<th>Pytanie kontrolne</th>
-<th>Odpowiedź w tej historii</th>
+<th>Dokument lub obiekt</th>
+<th>Co pozwala ustalić?</th>
+<th>Czego sam nie mówi?</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Jednostka</td>
-<td>Co zajmuje jeden wiersz?</td>
-<td>jedna osoba i jedno zadanie</td>
+<td>Surowy CSV</td>
+<td>Jakie wartości przekazano do analizy</td>
+<td>Dlaczego wartości są takie, a nie inne</td>
 </tr>
 <tr class="even">
-<td>Samoopis</td>
-<td>Co osoba deklaruje?</td>
-<td>pozycje, częstość, kanały</td>
+<td>Słownik</td>
+<td>Jednostki, kody, zakresy i znaczenie pól</td>
+<td>Czy każda wartość jest prawdziwa</td>
 </tr>
 <tr class="odd">
-<td>Obserwacja</td>
-<td>Co zapisuje procedura?</td>
-<td>czas i powodzenie</td>
+<td>Protokół obserwacji</td>
+<td>Początek, koniec i warunki zadania</td>
+<td>Jak wszystkie rekordy zostały wyeksportowane</td>
 </tr>
 <tr class="even">
-<td>Granica wniosku</td>
-<td>O czym mówią dane?</td>
-<td>o syntetycznej próbie dydaktycznej</td>
+<td>Skrypt przygotowania</td>
+<td>Jakie przekształcenia zastosowano</td>
+<td>Czy badawczy sens reguły jest właściwy</td>
+</tr>
+<tr class="odd">
+<td>Dziennik zmian</td>
+<td>Ile rekordów lub komórek objęła reguła</td>
+<td>Czy brak danych jest losowy</td>
+</tr>
+<tr class="even">
+<td>Tabela analityczna</td>
+<td>Z czego obliczono wynik</td>
+<td>Jak wyglądały dane przed przekształceniem</td>
 </tr>
 </tbody>
 </table>
-<p>Skala pomiarowa ogranicza sens działań. Dla kategorii liczymy osoby i
-odsetki; dla uporządkowanych odpowiedzi możemy porównywać kolejność; dla
-czasu sens mają różnice i ilorazy. Indeks 1–5 traktujemy w kursie jako
-przybliżoną zmienną ilościową, ale pamiętamy, że powstał z pozycji
-porządkowych. Nazwanie skali przed analizą chroni przed mechanicznym
-wyborem testu.</p>
-<div style="page-break-after: always;"></div>
+<p>Zwróć uwagę na różnicę między kontrolą składniową a merytoryczną.
+Program może sprawdzić, czy czas jest liczbą nieujemną. Nie dowie się
+jednak z samej wartości 8, czy zapisano minuty aktywnego szukania, czas
+całej sesji czy czas do rezygnacji. Te definicje muszą pochodzić z
+projektu.</p>
 </div>
-<div id="słownik-statystyczny" class="section level1">
-<h1>4. Słownik statystyczny</h1>
-<p>Statystyka jest językiem skrótu. Symbol ma nazwę, znaczenie w badaniu
-i jednostkę. Odczytuj wzór zdaniem, zanim podstawisz liczby.</p>
+<div id="learn-1-plik-csv-jest-tekstem-z-umową" class="section level1">
+<h1>LEARN 1: plik CSV jest tekstem z umową</h1>
+<p>CSV przechowuje tabelę jako tekst. Umowa dotyczy separatora kolumn,
+znaku dziesiętnego, zapisu braków oraz kodowania znaków. Rozszerzenie
+<code>.csv</code> nie gwarantuje, że wszystkie programy odczytają te
+elementy tak samo.</p>
+<p>Poniższy eksport używa średnika między kolumnami i przecinka w
+liczbach dziesiętnych. Puste pole oznacza brak. Odczytaj najpierw
+nagłówek, a następnie pojedynczy rekord; trzy kolejne średniki nie są
+trzema zerami.</p>
+<pre class="r"><code>eksport &lt;- tekst_eksportu(eksport_demo)
+print(eksport)</code></pre>
+<pre class="text"><code>id;grupa;czas_min;ocena;powodzenie
+u01;nowi;6,5;4;1
+u02;nowi;8,0;99;0
+u02;nowi;8,0;99;0
+u03;doświadczeni;4,5;5;1
+u04;doświadczeni;;3;
+u05;nowi;-2,0;2;0
+u06;doświadczeni;35,0;4;1</code></pre>
+<p>Wiersz u02 występuje dwa razy. W obu kopiach wszystkie pola są
+identyczne. Pozycja <code>ocena</code> zawiera 99, którego słownik
+demonstracji nie uznaje za ocenę: jest kodem braku. Wiersz u05 ma ujemny
+czas, a u06 długi, lecz mieszczący się w dopuszczalnym zakresie czas 35
+minut.</p>
+<p>Te cztery sytuacje wymagają różnych reakcji. Identyczny duplikat
+usuwa dodatkowy rekord. Kod braku zmienia znaczenie komórki. Ujemny czas
+wymaga sprawdzenia lub oznaczenia nieprawidłowego pomiaru. Długi,
+dopuszczalny czas pozostaje obserwacją, dopóki nie mamy dowodu
+błędu.</p>
+<p>Funkcja importu ma już podaną właściwą umowę. Uruchom ją i sprawdź
+pięć kolumn oraz siedem rekordów. Wartości czasu powinny być liczbami,
+mimo że w źródłowym tekście użyto przecinka.</p>
+<pre class="r"><code>dane_importu &lt;- pokaz_tabele(surowe_demo, &quot;Poprawny import&quot;)
+print(dane_importu)</code></pre>
+<p><strong>Poprawny import</strong></p>
 <table>
+<thead>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:left;">
+grupa
+</th>
+<th style="text-align:right;">
+czas_min
+</th>
+<th style="text-align:right;">
+ocena
+</th>
+<th style="text-align:right;">
+powodzenie
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+u01
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u02
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+99
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u02
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+99
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u03
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u04
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u05
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+-2.0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u06
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+35.0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>Siedem rekordów nie oznacza jeszcze siedmiu różnych osób. Liczba
+wierszy jest własnością aktualnej tabeli. Ustalenie liczby jednostek
+analizy wymaga kontroli identyfikatorów i duplikatów.</p>
+<div id="separator-kolumn-a-znak-dziesiętny" class="section level2">
+<h2>Separator kolumn a znak dziesiętny</h2>
+<p>Jeżeli wybierzemy właściwy separator kolumn, ale niewłaściwy znak
+dziesiętny, tabela może wyglądać przekonująco, a czas pozostanie
+tekstem. Jest to trudniejszy do zauważenia błąd niż całkowite sklejenie
+wszystkich pól w jedną kolumnę. Nie wystarcza więc stwierdzenie, że
+„plik się otworzył”.</p>
+<p>Poniżej celowo odczytujemy przecinki dziesiętne przy oczekiwaniu
+kropki. Nie zmieniamy oryginalnego obiektu. Porównaj klasę czasu z
+poprzednim importem, a nie tylko wygląd wartości na ekranie.</p>
+<pre class="r"><code>bledny_import &lt;- kontrola_typow(import_demo(dziesietny = &quot;.&quot;))
+print(bledny_import)</code></pre>
+<p><strong>Typ zapisu i liczba braków</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+kolumna
+</th>
+<th style="text-align:left;">
+klasa_R
+</th>
+<th style="text-align:right;">
+braki
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+id
+</td>
+<td style="text-align:left;">
+character
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+grupa
+</td>
+<td style="text-align:left;">
+character
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+czas_min
+</td>
+<td style="text-align:left;">
+character
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ocena
+</td>
+<td style="text-align:left;">
+integer
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+powodzenie
+</td>
+<td style="text-align:left;">
+integer
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>Błędny separator kolumn może dać jedną długą kolumnę albo różną
+liczbę pól w wierszach. Błędne kodowanie może uszkodzić nazwy kategorii,
+np. „doświadczeni”. Błędny znak dziesiętny może zmienić liczby w tekst.
+Każdy problem rozpoznajemy inną kontrolą.</p>
+<p>W naszym poprawnym imporcie czas i ocena są numeryczne, a ID i grupa
+tekstowe. Poniższa tabela pokazuje również braki. Pamiętaj, że kod 99
+nie jest jeszcze rozpoznawany przez program jako brak, więc nie zwiększa
+tej liczby.</p>
+<pre class="r"><code>poprawny_import &lt;- kontrola_typow(surowe_demo)
+print(poprawny_import)</code></pre>
+<p><strong>Typ zapisu i liczba braków</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+kolumna
+</th>
+<th style="text-align:left;">
+klasa_R
+</th>
+<th style="text-align:right;">
+braki
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+id
+</td>
+<td style="text-align:left;">
+character
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+grupa
+</td>
+<td style="text-align:left;">
+character
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+czas_min
+</td>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ocena
+</td>
+<td style="text-align:left;">
+integer
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+powodzenie
+</td>
+<td style="text-align:left;">
+integer
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="typ-statystyczny-nie-wynika-z-klasy-r" class="section level2">
+<h2>Typ statystyczny nie wynika z klasy R</h2>
+<p>Program widzi ocenę jako liczbę całkowitą. Badacz widzi pozycję
+porządkową z odpowiedziami 1–5. Kod 99 nadal jest liczbą całkowitą, lecz
+nie jest dopuszczalną realizacją tej skali. Poprawny typ techniczny nie
+wystarcza do uznania wartości za poprawny pomiar.</p>
+<p>Identyfikator „0012” powinien zachować zera wiodące, jeśli są częścią
+klucza. Zamiana go na liczbę 12 może uniemożliwić połączenie z inną
+tabelą. Numer karty bibliotecznej nie staje się zmienną ilościową tylko
+dlatego, że składa się z cyfr.</p>
+<p>W przypadku <code>factor</code> program przechowuje kategorie z
+poziomami. Wewnętrzny numer poziomu nie musi być wartością skali.
+Dlatego mechaniczna konwersja kategorii na liczby może stworzyć inną
+zmienną niż zamierzona. Gotowy skrypt kursu upraszcza tę pracę, ale
+Twoim zadaniem jest rozpoznać, jaki sens ma wynik.</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Kolumna</th>
+<th>Pytanie o zapis</th>
+<th>Pytanie o pomiar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ID</td>
+<td>Czy zachowano tekst i zera wiodące?</td>
+<td>Czy ID jednoznacznie wskazuje jednostkę?</td>
+</tr>
+<tr class="even">
+<td>Grupa</td>
+<td>Czy zapis etykiet jest spójny?</td>
+<td>Na jakiej podstawie przypisano doświadczenie?</td>
+</tr>
+<tr class="odd">
+<td>Czas</td>
+<td>Czy R rozpoznaje liczby?</td>
+<td>Od jakiego do jakiego zdarzenia mierzono czas?</td>
+</tr>
+<tr class="even">
+<td>Ocena</td>
+<td>Czy 99 oznaczono jako brak?</td>
+<td>Co znaczy każda kategoria odpowiedzi?</td>
+</tr>
+<tr class="odd">
+<td>Powodzenie</td>
+<td>Czy występują tylko 0/1/NA?</td>
+<td>Kto oceniał poprawność i według jakiego kryterium?</td>
+</tr>
+</tbody>
+</table>
+<p>Etykiety „nowi” i „nowi ” mogą pojawić się jako dwie różne kategorie.
+Końcowa spacja jest częścią tekstu, choć trudno ją zauważyć. Usunięcie
+nadmiarowych spacji jest uzasadnione, gdy dokumentujemy, że etykiety
+miały oznaczać tę samą kategorię. Nie wolno w ten sposób łączyć
+rzeczywiście odmiennych odpowiedzi.</p>
+</div>
+</div>
+<div id="learn-2-duplikat-nie-jest-tym-samym-co-konflikt" class="section level1">
+<h1>LEARN 2: duplikat nie jest tym samym co konflikt</h1>
+<p>Identyczny duplikat powtarza cały rekord. W demonstracji u02 ma drugi
+raz dokładnie te same dane. Jeżeli wiemy, że eksport dotyczy jednego
+pomiaru na osobę, dodatkowa kopia nie wnosi nowej obserwacji.
+Zostawienie jej nadałoby tej osobie większą wagę w średniej i
+odsetku.</p>
+<p>Poniżej oglądamy tabelę po usunięciu identycznego powtórzenia. Zwróć
+uwagę, że kod 99 i ujemny czas nadal są obecne. Jedna reguła rozwiązuje
+jeden rodzaj problemu; nie udajemy, że usunięcie duplikatu automatycznie
+oczyściło cały zbiór.</p>
+<pre class="r"><code>unikalne &lt;- pokaz_tabele(unikalne_demo, &quot;Po usunięciu identycznej kopii&quot;)
+print(unikalne)</code></pre>
+<p><strong>Po usunięciu identycznej kopii</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:left;">
+grupa
+</th>
+<th style="text-align:right;">
+czas_min
+</th>
+<th style="text-align:right;">
+ocena
+</th>
+<th style="text-align:right;">
+powodzenie
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+u01
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u02
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+99
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u03
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u04
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u05
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+-2.0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u06
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+35.0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>Teraz mamy sześć wierszy i sześć różnych identyfikatorów. Nie
+zmieniła się wartość żadnego pomiaru; usunęliśmy nadmiarową kopię. W
+dzienniku zapisujemy liczbę usuniętych rekordów, a nie liczbę komórek
+objętych kopiowaniem.</p>
+<p>Konflikt wygląda inaczej: ten sam identyfikator ma różne wartości.
+Poniższa mała tabela jest osobnym przypadkiem diagnostycznym. Nie
+wybieraj automatycznie pierwszego lub ostatniego wiersza.</p>
+<pre class="r"><code>konflikt &lt;- pokaz_tabele(konflikt_demo, &quot;Ten sam identyfikator, różne wyniki&quot;)
+print(konflikt)</code></pre>
+<p><strong>Ten sam identyfikator, różne wyniki</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:right;">
+czas_min
+</th>
+<th style="text-align:right;">
+powodzenie
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+u02
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u02
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>Wersje mogą pochodzić z poprawionego pomiaru, dwóch zadań tej samej
+osoby albo błędu przypisania ID. Żeby podjąć decyzję, potrzeba
+protokołu, numeru zadania lub informacji o wersji. Wspólna funkcja
+kursowa zatrzymuje analizę przy konfliktujących odpowiedziach tego
+samego ID. To uczciwsze niż ciche usunięcie informacji.</p>
+<p>Jeżeli osoba wykonała dwa zadania, oba rekordy mogą być poprawne.
+Wtedy zmienia się jednostka tabeli: wiersz to osoba–zadanie, a nie sama
+osoba. Trzeba zaplanować agregację albo analizę zależnych pomiarów.
+Proste usunięcie powtórzonego ID zgubiłoby część badania.</p>
+</div>
+<div id="learn-3-kod-braku-99-nie-jest-wysoką-oceną" class="section level1">
+<h1>LEARN 3: kod braku 99 nie jest wysoką oceną</h1>
+<p>Słownik demonstracji określa odpowiedzi od 1 do 5 oraz kod 99
+oznaczający brak. Zamiana 99 na <code>NA</code> nie jest imputacją,
+czyli uzupełnieniem brakującego wyniku. Jest poprawnym rozpoznaniem, że
+wyniku nie znamy.</p>
+<p>W tabeli poniżej porównujemy średnią surowych liczb ze średnią
+ważnych odpowiedzi. Nie jest to dowód, że średnia pojedynczej pozycji
+jest zawsze najlepszym opisem; używamy rachunku, aby zobaczyć skutek
+błędnego kodu. Wynik poza zakresem 1–5 powinien od razu wywołać
+kontrolę.</p>
+<pre class="r"><code>kody &lt;- pokaz_tabele(skutek_kodu, &quot;Wpływ kodu 99 na rachunek średniej&quot;)
+print(kody)</code></pre>
+<p><strong>Wpływ kodu 99 na rachunek średniej</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+wariant
+</th>
+<th style="text-align:right;">
+N
+</th>
+<th style="text-align:right;">
+srednia
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Kod 99 błędnie traktowany jak odpowiedź
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+19.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wyłącznie ważne odpowiedzi 1–5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3.6
+</td>
+</tr>
+</tbody>
+</table>
+<p>Kod 99 wpływałby nie tylko na średnią, ale także na odchylenie
+standardowe, histogram, korelację i wynik indeksu. Błąd na etapie
+przygotowania może więc przenieść się przez wszystkie późniejsze
+analizy. Większa liczba testów nie naprawi nieprawidłowej definicji
+wejścia.</p>
+<p>Nie każda liczba 99 w dowolnej kolumnie jest brakiem. Wiek 99 lat
+albo 99 minut może być rzeczywistym pomiarem, jeśli mieści się w
+definicji zmiennej. Regułę stosujemy do wskazanych pól i wskazanego
+znaczenia. Globalne zastąpienie każdej wartości 99 w całym pliku byłoby
+inną, nieuzasadnioną operacją.</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Zapis odpowiedzi</th>
+<th>Znaczenie możliwe w projekcie</th>
+<th>Postępowanie</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0 w powodzeniu</td>
+<td>Zadanie nie zakończyło się sukcesem</td>
+<td>Zachowaj jako wynik</td>
+</tr>
+<tr class="even">
+<td>0 w czasie</td>
+<td>Pomiar na dolnej granicy; wymaga kontekstu</td>
+<td>Nie myl automatycznie z brakiem</td>
+</tr>
+<tr class="odd">
+<td>99 w pozycji oceny</td>
+<td>Kod braku według słownika</td>
+<td>Zamień na NA w tej pozycji</td>
+</tr>
+<tr class="even">
+<td>Puste pole</td>
+<td>Brak zapisu</td>
+<td>Zachowaj brak i wyjaśnij jego pochodzenie</td>
+</tr>
+<tr class="odd">
+<td>„Nie dotyczy”</td>
+<td>Pytanie nie ma zastosowania</td>
+<td>Zachowaj odrębne znaczenie w protokole</td>
+</tr>
+<tr class="even">
+<td>„Nie wiem”</td>
+<td>Odpowiedź o stanie wiedzy lub brak oceny</td>
+<td>Postępuj według definicji pytania</td>
+</tr>
+</tbody>
+</table>
+<p>„Nie wiem” może być ważną kategorią w pytaniu o znajomość procedury,
+lecz nie stanowi punktu na skali od zdecydowanej niezgody do zgody.
+Decyzję o analizie trzeba podjąć na podstawie celu pytania. Nie
+dopisujemy takiej odpowiedzi jako środka skali wyłącznie po to, aby
+uniknąć <code>NA</code>.</p>
+<div id="wartość-niemożliwa-i-wartość-nietypowa" class="section level2">
+<h2>Wartość niemożliwa i wartość nietypowa</h2>
+<p>Czas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">-2</annotation></semantics></math>
+minuty nie może oznaczać dodatnio mierzonego czasu wykonania zadania.
+Może powstać przez zamianę znaczników początku i końca albo literówkę.
+Jeśli mamy zapis źródłowy pozwalający naprawić błąd, dokumentujemy
+poprawkę. Jeśli go nie mamy, nie zgadujemy „zapewne chodziło o 2”.</p>
+<p>W danych dydaktycznych obowiązuje jawna reguła: czasy poza 0–120
+minut oznaczamy jako brak. To kontrakt przygotowanego zbioru, a nie
+uniwersalne prawo badań wyszukiwania. W rzeczywistym projekcie zakres
+wynikałby z protokołu, limitu czasu i sposobu rejestracji.</p>
+<p>Poniżej widać komórki przed i po dwóch regułach: kodzie braku oraz
+dopuszczalnym czasie. Wskaż, które osoby zachowują inne ważne odpowiedzi
+mimo utraty jednej wartości. Nie usunęliśmy całych rekordów tylko
+dlatego, że jedna kolumna wymagała oznaczenia braku.</p>
+<pre class="r"><code>zmiany &lt;- pokaz_tabele(roznice_komorek, &quot;Zmiany komórek, nie usuwanie osób&quot;)
+print(zmiany)</code></pre>
+<p><strong>Zmiany komórek, nie usuwanie osób</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:right;">
+czas_przed
+</th>
+<th style="text-align:right;">
+czas_po
+</th>
+<th style="text-align:right;">
+ocena_przed
+</th>
+<th style="text-align:right;">
+ocena_po
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+u01
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u02
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+99
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u03
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u04
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u05
+</td>
+<td style="text-align:right;">
+-2.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u06
+</td>
+<td style="text-align:right;">
+35.0
+</td>
+<td style="text-align:right;">
+35.0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+</tbody>
+</table>
+<p>Czas 35 minut pozostaje w tabeli. Jest dużo dłuższy od pozostałych,
+ale mieści się w przyjętym zakresie. Nietypowość jest powodem do
+sprawdzenia kontekstu, a nie wystarczającym uzasadnieniem usunięcia. Dla
+instytucji właśnie takie długie próby mogą oznaczać istotną barierę
+usługi.</p>
+<p>Wykres pokazuje tylko ważne czasy po przygotowaniu. Odczytaj
+położenie u06 i zastanów się, jak jej usunięcie zmieniłoby obraz
+korzystania z katalogu. Nie rozstrzygaj, że punkt jest błędem, tylko
+dlatego, że utrudnia opisanie całej próby jednym zdaniem.</p>
+<pre class="r"><code>czasy_osob &lt;- pokaz_wykres(wykres_decyzji)
+print(czasy_osob)</code></pre>
+<p><img role="img" aria-label src="data:image/png;base64,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" alt width="100%" style="display: block; margin: auto;" /></p>
+<p>Automatyczne odcinanie wartości poza pudełkiem wykresu myli konwencję
+graficzną z rozpoznaniem błędu. W C03 zobaczymy, że punkty poza wąsami
+mogą być prawidłowymi obserwacjami ze skośnego rozkładu czasu. Usunięcie
+takich przypadków zmienia badane zjawisko: zaczynamy opisywać tylko
+osoby, którym poszło podobnie do większości.</p>
+</div>
+<div id="skutek-usunięcia-prawidłowego-długiego-czasu" class="section level2">
+<h2>Skutek usunięcia prawidłowego długiego czasu</h2>
+<p>Analiza wrażliwości sprawdza, jak wynik zmienia się pod wpływem jasno
+nazwanej alternatywy. Nie służy wybieraniu wersji, która daje
+najbardziej oczekiwany wniosek. Jeśli alternatywa zmienia populację
+analizowaną albo definicję wyniku, trzeba to powiedzieć przed
+porównaniem liczb.</p>
+<p>W małym przykładzie długi czas 35 minut jest dopuszczalną obserwacją.
+Poniższe porównanie pokazuje konsekwencję jej usunięcia, ale nie
+uzasadnia takiej decyzji. Przeczytaj średnią i medianę w obu wierszach,
+pamiętając o zmianie N.</p>
+<pre class="r"><code>warianty &lt;- porownanie_wrazliwosci(wrazliwosc_czasu)
+print(warianty)</code></pre>
+<p><strong>Konsekwencja wykluczenia prawidłowego pomiaru</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Wariant
+</th>
+<th style="text-align:right;">
+N
+</th>
+<th style="text-align:right;">
+Średnia [min]
+</th>
+<th style="text-align:right;">
+Mediana [min]
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Wszystkie ważne pomiary
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+13.500
+</td>
+<td style="text-align:right;">
+7.25
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Po usunięciu poprawnego czasu 35 min
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+6.333
+</td>
+<td style="text-align:right;">
+6.50
+</td>
+</tr>
+</tbody>
+</table>
+<p>Zmiana średniej jest wyraźna, ponieważ długi czas wnosi dużą część
+łącznego nakładu. Mediana reaguje inaczej, bo opiera się na kolejności.
+Na C03 rozwiniemy tę różnicę. Tutaj ważniejsze jest pytanie, którą
+historię opowiada wybrany zbiór: wszystkich osób z ważnym czasem czy
+osób po wykluczeniu najdłuższej próby.</p>
+<p>Jeżeli 35 minut wynikało z udokumentowanej przerwy technicznej, można
+zdefiniować analizę aktywnego czasu po odjęciu przerwy. Trzeba jednak
+znać jej długość. Nie zastępujemy czasu dowolną mniejszą liczbą i nie
+usuwamy osoby na podstawie przypuszczenia, że „zapewne rozmawiała przez
+telefon”.</p>
+<p>W rzeczywistym projekcie warto zaplanować rejestrację przerw, pomocy
+bibliotekarza i przerwania zadania. Takie informacje mogą pozwolić
+oddzielić trudność wyszukiwania od technicznego zakłócenia. Brak tych
+pól w aktualnym zbiorze jest ograniczeniem pomiaru, a nie zaproszeniem
+do ich odtworzenia z wyobraźni.</p>
+<p><strong>Przykładowy opis porównania:</strong> „Cztery ważne czasy
+dają średnią 13,5 minuty. Po wyłączeniu prawidłowego pomiaru 35 minut
+zostałyby trzy osoby ze średnią około 6,33 minuty. Niższa średnia nie
+świadczy o poprawie katalogu: wynika z pominięcia jednej długiej próby.
+Bez dowodu błędu zachowuję ten pomiar w opisie”.</p>
+</div>
+</div>
+<div id="learn-4-rachunek-liczebności" class="section level1">
+<h1>LEARN 4: rachunek liczebności</h1>
+<p>Dziennik powinien pozwalać odtworzyć, co stało się z wierszami i z
+poszczególnymi zmiennymi. Liczba osób oraz liczba ważnych wartości są
+różnymi wielkościami. Zmiana 99 na brak może zmniejszyć N oceny, ale nie
+zmienia liczby rekordów.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">o</mi></mrow></msub><mo>=</mo><msub><mi>N</mi><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">w</mi><mi mathvariant="normal">e</mi></mrow></msub><mo>−</mo><msub><mi>N</mi><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">p</mi><mi mathvariant="normal">l</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">k</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">ó</mi><mi mathvariant="normal">w</mi></mrow></msub><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>n</mi><mi>X</mi></msub><mo>=</mo><msub><mi>N</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">o</mi></mrow></msub><mo>−</mo><msub><mi>m</mi><mi>X</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+N_{\mathrm{po}}=N_{\mathrm{surowe}}-N_{\mathrm{duplikatów}},
+\qquad
+n_X=N_{\mathrm{po}}-m_X.
+</annotation></semantics></math></p>
+<p>W pierwszym wzorze liczymy wiersze. W drugim
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mi>X</mi></msub><annotation encoding="application/x-tex">m_X</annotation></semantics></math>
+oznacza liczbę braków zmiennej
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+po zastosowaniu reguł, a
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>X</mi></msub><annotation encoding="application/x-tex">n_X</annotation></semantics></math>
+liczbę jej ważnych wartości. Nie odejmujemy liczby zmienionych komórek
+od liczby osób bez ustalenia, co reprezentuje każda z liczb.</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>Symbol</th>
-<th>Nazwa</th>
-<th>Znaczenie w przykładzie</th>
-<th>Jednostka</th>
+<th>Odczyt</th>
+<th>Znaczenie w demonstracji</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mrow><mi>p</mi><mi>r</mi><mi>z</mi><mi>e</mi><mi>d</mi></mrow></msub><annotation encoding="application/x-tex">N_{przed}</annotation></semantics></math></td>
-<td>wiersze eksportu</td>
-<td>stan surowego pliku</td>
-<td>wiersze</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">w</mi><mi mathvariant="normal">e</mi></mrow></msub><annotation encoding="application/x-tex">N_{\mathrm{surowe}}</annotation></semantics></math></td>
+<td>liczba surowych rekordów</td>
+<td>Siedem wierszy eksportu</td>
 </tr>
 <tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mrow><mi>d</mi><mi>u</mi><mi>p</mi><mi>l</mi><mi>i</mi><mi>k</mi><mi>a</mi><mi>t</mi><mi>ó</mi><mi>w</mi></mrow></msub><annotation encoding="application/x-tex">n_{duplikatów}</annotation></semantics></math></td>
-<td>identyczne powtórzenia</td>
-<td>usunięte kopie</td>
-<td>wiersze</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">p</mi><mi mathvariant="normal">l</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">k</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">ó</mi><mi mathvariant="normal">w</mi></mrow></msub><annotation encoding="application/x-tex">N_{\mathrm{duplikatów}}</annotation></semantics></math></td>
+<td>liczba nadmiarowych kopii</td>
+<td>Jeden identyczny wiersz</td>
 </tr>
 <tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mrow><mi>p</mi><mi>o</mi></mrow></msub><annotation encoding="application/x-tex">N_{po}</annotation></semantics></math></td>
-<td>unikalne rekordy</td>
-<td>podstawa dalszych analiz</td>
-<td>osoby</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">o</mi></mrow></msub><annotation encoding="application/x-tex">N_{\mathrm{po}}</annotation></semantics></math></td>
+<td>liczba rekordów po deduplikacji</td>
+<td>Sześć osób</td>
+</tr>
+<tr class="even">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mi>X</mi></msub><annotation encoding="application/x-tex">m_X</annotation></semantics></math></td>
+<td>liczba braków zmiennej X</td>
+<td>Zależy od wybranej kolumny</td>
+</tr>
+<tr class="odd">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>X</mi></msub><annotation encoding="application/x-tex">n_X</annotation></semantics></math></td>
+<td>liczba ważnych wartości X</td>
+<td>Mianownik jej opisu</td>
+</tr>
+<tr class="even">
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mrow><mi>X</mi><mi>Y</mi></mrow></msub><annotation encoding="application/x-tex">n_{XY}</annotation></semantics></math></td>
+<td>liczba kompletnych par X i Y</td>
+<td>Podstawa analizy związku</td>
 </tr>
 </tbody>
 </table>
-<p>Wartość p nie jest prawdopodobieństwem prawdziwości hipotezy.
-Przedział nie jest zakresem środkowych 95% obserwacji. Efekt nie jest
-tym samym co istotność. Te trzy rozróżnienia wracają w każdej
-analizie.</p>
-<p><strong>Notatnik pojęć.</strong> Dla każdego symbolu dopisz jedną
-liczbę z gotowego wyniku i przeczytaj ją bez skrótu. Zamiast „t równa
-się” powiedz „obserwowana różnica leży tyle błędów standardowych od
-wartości zerowej”. Zamiast „V równa się” powiedz „znormalizowana siła
-związku w tabeli wynosi”. Taki przekład jest ważniejszy niż pamięciowe
-odtwarzanie wzoru.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="wzór-czytany-jak-zdanie" class="section level1">
-<h1>5. Wzór czytany jak zdanie</h1>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mi>p</mi><mi>o</mi></mrow></msub><mo>=</mo><msub><mi>N</mi><mrow><mi>p</mi><mi>r</mi><mi>z</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>−</mo><msub><mi>n</mi><mrow><mi>d</mi><mi>u</mi><mi>p</mi><mi>l</mi><mi>i</mi><mi>k</mi><mi>a</mi><mi>t</mi><mi>ó</mi><mi>w</mi></mrow></msub></mrow><annotation encoding="application/x-tex">N_{po} = N_{przed} - n_{duplikatów}</annotation></semantics></math></p>
-<p>Czytamy od lewej do prawej, nazywając licznik, mianownik i jednostkę.
-Znak wyniku ma sens dopiero po ustaleniu kolejności grup lub kierunku
-skali. Jeżeli we wzorze jest N, chodzi o przypadki rzeczywiście użyte w
-danym obliczeniu, a nie automatycznie o wszystkie wiersze surowego
-pliku.</p>
-<p><strong>Ćwiczenie ustne.</strong> Wskaż w formule estymatę, element
-niepewności i punkt odniesienia. Jeżeli dana metoda ich nie ma, powiedz
-to wprost. Następnie przewidź, co stanie się z wynikiem po zwiększeniu
-N, zmianie jednostki albo odwróceniu kolejności grup.</p>
-<p>Czytanie wzoru ma pięć kroków: (1) nazwij wynik po lewej stronie, (2)
-nazwij obserwowane wielkości po prawej, (3) wskaż porównanie lub wartość
-zerową, (4) ustal jednostkę, (5) powiedz, jaka zmiana danych zwiększa
-wynik. Nie wykonujemy ręcznie długich obliczeń. Wzór ma odsłonić logikę
-liczby zwracanej przez gotową funkcję.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="gotowy-skrypt-pomocniczy" class="section level1">
-<h1>6. Gotowy skrypt pomocniczy</h1>
-<p>Pierwszy chunk materiału załadował towarzyszący plik
-<code>analiza.R</code>. Zawiera przygotowanie danych, obiekty i funkcje
-potrzebne na zajęciach. Uruchamiasz kolejne fragmenty i odczytujesz
-wynik. Nie implementujesz testu ani pętli permutacyjnej.</p>
-<pre class="r"><code>wynik_glowny</code></pre>
-<pre><code>##   N_surowe N_analityczne braki_czasu
-## 1      150           148           6</code></pre>
-<p>W zadaniu indywidualnym analogiczny skrypt powstaje przez
-<code>przygotuj_zadanie()</code>. Wolno zmienić jedynie wartości
-oznaczone komentarzem jako parametry. Dzięki temu przedmiot ocenia
-rozumienie wyniku, a nie biegłość w programowaniu.</p>
-<p>Po zmianie parametru uruchom cały skrypt od początku. Pojedyncze
-obiekty pozostawione w Environment mogą pochodzić ze starszej próby,
-dlatego nie są dowodem odtwarzalności. Zapisany plik w
-<code>wyniki</code> ma powstać ponownie w świeżej sesji. Jeśli nazwa
-zmiennej jest niedozwolona, funkcja zatrzymuje analizę i podaje listę
-dopuszczalnych wartości.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="dane-braki-i-mianownik" class="section level1">
-<h1>7. Dane, braki i mianownik</h1>
-<pre class="r"><code>knitr::kable(head(tabela_glowna, 10), digits = 3)</code></pre>
+<p>Tabela etapów sprawdza oba rodzaje liczebności. Odczytaj zmianę
+między etapem „surowe” a „unikalne”, następnie między „unikalne” a
+„oczyszczone”. Pierwsza dotyczy powtórzonej osoby, druga znaczenia
+wybranych komórek.</p>
+<pre class="r"><code>liczebnosci &lt;- pokaz_etapy(etapy_demo)
+print(liczebnosci)</code></pre>
+<p><strong>Rekordy oraz niebrakujące wartości na kolejnych
+etapach</strong></p>
 <table>
 <thead>
-<tr class="header">
-<th align="left">regula</th>
-<th align="right">liczba</th>
+<tr>
+<th style="text-align:left;">
+Etap
+</th>
+<th style="text-align:right;">
+Rekordy
+</th>
+<th style="text-align:right;">
+Czas
+</th>
+<th style="text-align:right;">
+Ocena
+</th>
+<th style="text-align:right;">
+Powodzenie
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">N przed czyszczeniem</td>
-<td align="right">150</td>
+<tr>
+<td style="text-align:left;">
+surowe
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+6
+</td>
 </tr>
-<tr class="even">
-<td align="left">Usunięte identyczne duplikaty</td>
-<td align="right">2</td>
+<tr>
+<td style="text-align:left;">
+unikalne
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+5
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Kod 99 zamieniony na NA</td>
-<td align="right">4</td>
-</tr>
-<tr class="even">
-<td align="left">Czas poza 0–120 minut zamieniony na NA</td>
-<td align="right">2</td>
-</tr>
-<tr class="odd">
-<td align="left">N po czyszczeniu</td>
-<td align="right">148</td>
+<tr>
+<td style="text-align:left;">
+oczyszczone
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
 </tr>
 </tbody>
 </table>
-<p>Zanim przeczytasz statystykę, ustal N i braki. Dla średniej N oznacza
-ważne liczby. Dla korelacji są to kompletne pary. Dla tabeli jest to
-suma analizowanych komórek. Dla indeksu przypadek musi mieć co najmniej
-pięć odpowiedzi po właściwym ukierunkowaniu.</p>
-<p>Dwa wyniki mogą używać różnych N w tym samym raporcie. Nie jest to
-sprzeczność, jeśli wynika z braków i zostało jawnie opisane. Nie wolno
-dopasowywać reguły braków po zobaczeniu, która wersja daje
-korzystniejsze p.</p>
-<p>Brak może dotyczyć jednej pozycji, całego indeksu albo pary
-zmiennych. Duplikat jest powtórzeniem rekordu, a obserwacja odstająca
-nadal może być prawdziwą obserwacją. Te pojęcia wymagają innych decyzji.
-Dziennik czyszczenia powinien pozwolić odtworzyć, ile elementów zmieniła
-każda reguła i dlaczego wynikowe N jest właściwym mianownikiem.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="tor-klasyczny" class="section level1">
-<h1>8. Tor klasyczny</h1>
-<p>Klasyczna kontrola jakości porównuje zakres, typ i częstości z
-regułami słownika. Kod 99 staje się brakiem tylko tam, gdzie słownik tak
-stanowi; czas −5 lub 999 jest oznaczany jako brak po udokumentowaniu
-reguły 0–120.</p>
-<pre class="r"><code>knitr::kable(formatuj_wynik(wynik_klasyczny), digits = 4)</code></pre>
+<p>Przed rekodacją kolumna oceny może mieć pozornie kompletne dane: 99
+jest przecież niepustą liczbą. Dopiero odczyt słownika ujawnia, że jeden
+wynik był nieznany. Dlatego liczba <code>NA</code> po imporcie nie
+zawsze odpowiada rzeczywistej liczbie braków pomiaru.</p>
+<p>W naszym przykładzie nowy brak czasu u05 nie oznacza, że nie znamy
+wyniku jej zadania. Nadal mamy powodzenie 0 oraz ocenę 2. Globalne
+usunięcie u05 pozbawiłoby analizę kategorii ważnej informacji.</p>
+<div id="pary-zmiennych-mają-własne-n" class="section level2">
+<h2>Pary zmiennych mają własne N</h2>
+<p>Do opisania czasu potrzebujemy ważnego czasu. Do sprawdzenia związku
+czasu i oceny potrzebujemy obu wartości dla tej samej osoby. Nie można
+połączyć czasu jednej osoby z oceną innej tylko dlatego, że oba wektory
+po pominięciu braków mają podobną długość.</p>
+<p>Poniższa tabela oznacza kompletne pary. Odczytaj, które
+identyfikatory wchodzą do przyszłej analizy związku. Nie wykonujemy
+jeszcze korelacji; sprawdzamy, z jakich danych mogłaby zostać
+obliczona.</p>
+<pre class="r"><code>pary &lt;- pokaz_tabele(pary_demo, &quot;Czas i ocena tej samej osoby&quot;)
+print(pary)</code></pre>
+<p><strong>Czas i ocena tej samej osoby</strong></p>
 <table>
 <thead>
-<tr class="header">
-<th align="left">regula</th>
-<th align="right">liczba</th>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:right;">
+czas
+</th>
+<th style="text-align:right;">
+ocena
+</th>
+<th style="text-align:left;">
+kompletna_para
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">N przed czyszczeniem</td>
-<td align="right">150</td>
+<tr>
+<td style="text-align:left;">
+u01
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
 </tr>
-<tr class="even">
-<td align="left">Usunięte identyczne duplikaty</td>
-<td align="right">2</td>
+<tr>
+<td style="text-align:left;">
+u02
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Kod 99 zamieniony na NA</td>
-<td align="right">4</td>
+<tr>
+<td style="text-align:left;">
+u03
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
 </tr>
-<tr class="even">
-<td align="left">Czas poza 0–120 minut zamieniony na NA</td>
-<td align="right">2</td>
+<tr>
+<td style="text-align:left;">
+u04
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
 </tr>
-<tr class="odd">
-<td align="left">N po czyszczeniu</td>
-<td align="right">148</td>
+<tr>
+<td style="text-align:left;">
+u05
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u06
+</td>
+<td style="text-align:right;">
+35.0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
 </tr>
 </tbody>
 </table>
-<p>Odczytaj wynik bez etykiety „dobry” lub „zły”. Powiedz, jaka estymata
-odpowiada pytaniu, co mierzy statystyka oraz jakie założenie projektu
-ogranicza interpretację. Jeżeli widzisz p, opisz je warunkowo: przy
-modelu zerowym i przyjętej procedurze.</p>
-<p><strong>Karta odczytu toru klasycznego.</strong> Zapisz: (a) nazwę
-metody, (b) N lub liczebności grup, (c) estymatę i jednostkę, (d)
-statystykę wraz z df, jeśli występują, (e) p, (f) jedno założenie.
-Jeżeli metoda na tej stronie nie jest testem, wpisz „nie dotyczy”
-zamiast wymyślać p. Kompletność wyniku jest oceniana oddzielnie od jego
-istotności.</p>
-<div style="page-break-after: always;"></div>
+<p>Jeżeli usuniemy braki oddzielnie z każdej kolumny, pozycje w
+wektorach mogą się przesunąć. Wtedy pozornie poprawne działanie funkcji
+obliczy związek między nieodpowiadającymi sobie osobami. Warunek
+kompletności dotyczy wiersza pary, a nie oddzielnych list liczb.</p>
+<p>Wzór logiczny można zapisać jako
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">I_i=1</annotation></semantics></math>,
+gdy osoba
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+ma ważne
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+i ważne
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>,
+oraz
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>i</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_i=0</annotation></semantics></math>
+w przeciwnym razie. Wtedy
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mrow><mi>X</mi><mi>Y</mi></mrow></msub><mo>=</mo><msub><mo>∑</mo><mi>i</mi></msub><msub><mi>I</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">n_{XY}=\sum_i I_i</annotation></semantics></math>.
+Symbol
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>i</mi></msub><annotation encoding="application/x-tex">I_i</annotation></semantics></math>
+jest wskaźnikiem spełnienia warunku, a nie nową skalą kompetencji. Suma
+jedynek liczy osoby spełniające oba warunki.</p>
+<p><strong>Przykładowy odczyt:</strong> „Po przygotowaniu pozostaje
+sześć osób, cztery ważne czasy i pięć ważnych ocen. Do wspólnej analizy
+czasu oraz oceny mamy trzy kompletne pary: u01, u03 i u06. U02 ma czas,
+ale nie ma ważnej oceny; u05 ma ocenę, ale nie ma ważnego czasu. Osoby
+te mogą nadal wnosić informację do opisów pojedynczych zmiennych”.</p>
 </div>
-<div id="tor-permutacyjny-lub-decyzja-o-jego-braku" class="section level1">
-<h1>9. Tor permutacyjny lub decyzja o jego braku</h1>
-<p>Nie tasujemy danych podczas czyszczenia. Permutacja zakłada już
-poprawny zbiór i służy później do budowy rozkładu zerowego. Losowe
-przestawienie wartości przed kontrolą jakości utrudniłoby wykrycie
-duplikatów i konfliktów.</p>
-<pre class="r"><code>knitr::kable(formatuj_wynik(wynik_permutacyjny), digits = 4)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">status</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">permutacja następuje po czyszczeniu</td>
-</tr>
-</tbody>
-</table>
-<p>W analizie inferencyjnej liczba B określa rozdzielczość szacowanego
-p. Za każdym razem trzeba powiedzieć, co dokładnie tasowano i jaki
-związek został zerwany. Nazwa „permutacyjny” nie zwalnia z wyjaśnienia
-hipotezy zerowej.</p>
-<p><strong>Karta odczytu toru permutacyjnego.</strong> Uzupełnij zdanie:
-„Przy braku związku lub różnicy wielokrotnie zmieniano znaki, tasowano
-etykiety lub losowano tabele, za każdym razem liczono tę samą
-statystykę, a określony odsetek wyników był co najmniej tak skrajny jak
-obserwowany”. Następnie porównaj wniosek z torem klasycznym bez
-wybierania mniejszego p.</p>
-<div style="page-break-after: always;"></div>
 </div>
-<div id="efekt-i-przedział" class="section level1">
-<h1>10. Efekt i przedział</h1>
-<p>Dziennik zmian podaje liczby i mianowniki: ile wierszy usunięto, ile
-kodów zmieniono i ile czasów oznaczono jako brak. To opis zakresu
-ingerencji, jeszcze nie wielkość efektu statystycznego.</p>
-<pre class="r"><code>knitr::kable(formatuj_wynik(efekt), digits = 4)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="right">zmienione_elementy</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">8</td>
-</tr>
-</tbody>
-</table>
-<p>Znaczenie praktyczne oceniamy w kontekście usługi: minuty, punkty
-skali, różnica odsetków albo siła związku. Uniwersalne etykiety
-mały/średni/duży nie zastępują pytania, czy efekt zmienia decyzję
-instytucji i jak precyzyjnie został oszacowany.</p>
-<p>Przedział szeroki obejmuje wiele możliwych wielkości efektu i wymaga
-ostrożniejszego języka. Przedział wąski może nadal koncentrować się
-wokół efektu praktycznie małego. Gdy przedział przecina zero, nie
-zapisujemy automatycznie „brak efektu”; podajemy zakres zgodnych
-wartości i oceniamy, czy obejmuje skutki istotne dla usługi
-informacyjnej.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="wykres-jako-część-argumentu" class="section level1">
-<h1>11. Wykres jako część argumentu</h1>
-<pre class="r"><code>wykres_glowny</code></pre>
-<p><img role="img" aria-label src="data:image/png;base64,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" alt width="100%" /></p>
-<p>Wykres odpowiada na pytanie o położenie, kształt, nakładanie się grup
-lub kierunek związku. Tytuł, osie i jednostki są częścią wyniku. Nie
-wnioskuj o istotności tylko z wyglądu, lecz sprawdź, czy obraz jest
-spójny z tabelą i estymatą.</p>
-<p>Przeczytaj wykres w trzech warstwach. Najpierw opisz elementy
-widoczne bez testu: zakres, skupienie i nietypowe obserwacje. Potem
-połącz je z estymatą w tabeli. Na końcu nazwij rzecz, której wykres nie
-rozstrzyga, np. przyczynowość, błąd pomiaru albo zachowanie wyniku w
-nowej próbie. Nie usuwaj obserwacji tylko dlatego, że psuje prostą
-historię.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="wynik-czytany-linia-po-linii" class="section level1">
-<h1>12. Wynik czytany linia po linii</h1>
-<p>Każdy wiersz dziennika czytamy jako regułę, liczbę dotkniętych
-elementów i wynikowe N. Jeżeli N zmienia się po rekodacji pojedynczej
-komórki, procedura wymaga sprawdzenia.</p>
-<p>Schemat pełnego zdania: „W analizie N osób oszacowano [efekt] w
-[jednostce], 95% CI [dolna; górna]. Statystyka klasyczna wyniosła
-[symbol i df], p=[wartość], a procedura permutacyjna B losowań dała
-p_perm=[wartość]. Wynik opisuje [zakres] i nie rozstrzyga
-[ograniczenie]”.</p>
-<p>Podczas zajęć jedna osoba czyta tabelę, druga sprawdza znak i
-jednostkę, a trzecia wskazuje granicę wniosku. Dopiero po tej kontroli
-zapisujemy odpowiedź do pliku Markdown.</p>
-<p>Dobra interpretacja ma trzy warstwy. Warstwa liczbowa mówi, co
-oszacowano. Warstwa badawcza odpowiada na pytanie o zachowanie
-informacyjne lub wykonanie zadania. Warstwa krytyczna wskazuje, czego
-projekt, pomiar i syntetyczność nie pozwalają stwierdzić. Pominięcie
-którejkolwiek warstwy tworzy tekst technicznie poprawny, lecz
-metodologicznie niepełny.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="błędy-interpretacji" class="section level1">
-<h1>13. Błędy interpretacji</h1>
-<p>Błąd: „usunęliśmy wszystkie NA, aby dane były czyste”. Poprawnie:
-„kod 99 w pozycji 2 zastąpiono NA zgodnie ze słownikiem; brak pozostaje
-informacją o nieudzielonej odpowiedzi”.</p>
-<p>Dodatkowe pułapki: traktowanie braku istotności jako dowodu równości,
-pomijanie N, raportowanie samego p, utożsamienie samooceny z kompetencją
-oraz zamiana obserwacyjnego związku w przyczynę. Poprawa polega na
-dodaniu liczby, jednostki, zakresu i ograniczenia, a nie na bardziej
-stanowczym czasowniku.</p>
-<p>Porównaj dwie konstrukcje: „test wykazał efekt” i „oszacowana różnica
-wyniosła…, a wynik testu był…”. Druga oddziela wielkość od decyzji.
-Podobnie „grupy były takie same” zastępujemy opisem przedziału i
-precyzji. W raporcie nie używamy słowa „trend” jako sposobu ratowania p
-nieco większego od .05; opisujemy rzeczywisty efekt i jego
-niepewność.</p>
-<p><strong>Po zajęciach.</strong> Znajdź w swoim szkicu jedno zdanie
-zawierające „wpływa”, „udowadnia”, „brak różnicy” albo „95% wyników”.
-Przepisz je tak, aby odpowiadało projektowi i rzeczywistemu znaczeniu
-statystyki.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="próba-prowadzona" class="section level1">
-<h1>14. Próba prowadzona</h1>
-<ol style="list-style-type: decimal">
-<li>Otwórz gotowy skrypt i wskaż sekcję parametrów.<br />
-</li>
-<li>Uruchom cały plik bez zmiany dalszej części.<br />
-</li>
-<li>Otwórz zapisany CSV i odnajdź N, estymatę oraz jednostkę.<br />
-</li>
-<li>Jeżeli analiza jest inferencyjna, porównaj p klasyczne i
-permutacyjne.<br />
-</li>
-<li>Odczytaj efekt i przedział.<br />
-</li>
-<li>Napisz jedno zdanie wyniku oraz jedno zdanie ograniczenia.</li>
-</ol>
-<p>Jeżeli skrypt zgłasza błąd, najpierw sprawdź katalog projektu, nazwę
-parametru i dozwoloną wartość. Nie poprawiaj wnętrza funkcji
-statystycznej. Błąd parametru jest informacją o niedozwolonym wyborze, a
-nie zaproszeniem do przepisania procedury.</p>
-<p>Podział czasu próby: 3 minuty na uruchomienie, 4 na odnalezienie
-właściwego CSV, 5 na głośny odczyt tabeli, 5 na szkic interpretacji i 3
-na kontrolę ograniczenia. Jeśli grupa utknie, wraca do pytania,
-jednostki i znaku efektu. Celem jest krótkie, sprawdzalne rozumowanie,
-nie zwiększanie liczby wykonanych poleceń.</p>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="zadanie-z02" class="section level1">
-<h1>15. Zadanie Z02</h1>
-<p>Uruchom Z02 bez pisania procedury czyszczenia. Odczytaj pięć wierszy
-dziennika, podaj N przed i po oraz wyjaśnij oddzielnie duplikat, kod
-braku i wartość poza zakresem. Uzasadnij, dlaczego surowy CSV pozostaje
-niezmieniony.</p>
-<p>Przygotuj pliki poleceniem poniżej. Uruchom zapisany
-<code>analiza.R</code>, a następnie uzupełnij wszystkie pola
-<code>[UZUPELNIJ]</code> w <code>odpowiedzi.md</code>. Nie wklejaj kodu
-ani zrzutu całej konsoli.</p>
-<pre class="r"><code>przygotuj_zadanie(&#39;Z02&#39;, katalog = &#39;.&#39;)
-sprawdz_zadanie(&#39;Z02&#39;, katalog = &#39;.&#39;)
-oddaj_zadanie(&#39;Z02&#39;, katalog = &#39;.&#39;)</code></pre>
-<div style="page-break-after: always;"></div>
-</div>
-<div id="rubryka-kontrola-i-dalszy-krok" class="section level1">
-<h1>16. Rubryka, kontrola i dalszy krok</h1>
+<div id="learn-5-dziennik-decyzji-który-można-przeczytać" class="section level1">
+<h1>LEARN 5: dziennik decyzji, który można przeczytać</h1>
+<p>Słaby zapis brzmi: „oczyszczono bazę, usuwając błędy”. Nie pozwala
+ustalić, kto i dlaczego pozostał w analizie. Dobry zapis rozdziela
+regułę, podstawę, zakres zmiany i konsekwencję dla wyniku.</p>
 <table>
 <colgroup>
-<col width="42%" />
-<col width="57%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Reguła</th>
+<th>Podstawa</th>
+<th>Co liczymy?</th>
+<th>Co zapisujemy we wniosku?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Identyczny rekord występuje ponownie</td>
+<td>Jeden pomiar na osobę, kopia eksportu</td>
+<td>Nadmiarowe wiersze</td>
+<td>Ile kopii usunięto</td>
+</tr>
+<tr class="even">
+<td>Pozycja ma kod 99</td>
+<td>Słownik pozycji 1–5</td>
+<td>Komórki z kodem</td>
+<td>Że zmalało N ważnych odpowiedzi</td>
+</tr>
+<tr class="odd">
+<td>Czas jest poza 0–120</td>
+<td>Kontrakt danych kursowych</td>
+<td>Pomiar czasu</td>
+<td>Że pozostałe pola osoby zachowano</td>
+</tr>
+<tr class="even">
+<td>To samo ID ma różne wyniki</td>
+<td>Konflikt klucza</td>
+<td>Identyfikatory do wyjaśnienia</td>
+<td>Że analiza wymaga rozstrzygnięcia</td>
+</tr>
+<tr class="odd">
+<td>Czas jest długi, ale dopuszczalny</td>
+<td>Brak dowodu błędu</td>
+<td>Obserwacje do sprawdzenia</td>
+<td>Że nie usunięto ich z powodu nietypowości</td>
+</tr>
+</tbody>
+</table>
+<p>Opis dla małej demonstracji może brzmieć: „Siedem rekordów obejmowało
+jedną identyczną kopię, więc po deduplikacji pozostało sześć osób. Kod
+99 w ocenie oznaczono jako brak. Ujemny czas uznano za niedopuszczalny
+pomiar i również oznaczono jako brak, zachowując pozostałe odpowiedzi
+tej osoby”.</p>
+<p>Uzupełnienie wzorcowego opisu brzmi: „Dostępne są cztery ważne czasy,
+pięć ocen i pięć wyników powodzenia. Do analizy związku czasu i oceny
+pozostają trzy kompletne pary. Reguły nie wyjaśniają przyczyny
+pierwotnego braku u04 ani źródła ujemnego czasu u05”. To interpretacja
+małej demonstracji, nie gotowa odpowiedź do cyfrowego archiwum.</p>
+<p>Nie sumuj liczby kodów 99 i liczby niedopuszczalnych czasów jako
+liczby „usuniętych osób”. Komórki mogą dotyczyć tych samych rekordów, a
+reguły nie muszą usuwać żadnego wiersza. Właśnie dlatego w tabeli
+dziennika nazwa działania jest równie ważna jak liczba.</p>
+<p>Gotowy wynik poniżej zbiera bilans rekordów i ważnych wartości.
+Sprawdź, jak każde zdanie przykładowej notatki odsyła do konkretnej
+komórki. W CHALLENGE sporządzisz analogiczną notatkę dla nowego
+eksportu, zachowując jego reguły i liczebności.</p>
+<pre class="r"><code>notatka &lt;- podsumowanie_przygotowania(czyste_demo, etapy_demo)
+print(notatka)</code></pre>
+<p><strong>Etapy przygotowania</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Etap
+</th>
+<th style="text-align:right;">
+Rekordy
+</th>
+<th style="text-align:right;">
+Czas
+</th>
+<th style="text-align:right;">
+Ocena
+</th>
+<th style="text-align:right;">
+Powodzenie
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+surowe
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+unikalne
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+oczyszczone
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Dane do krótkiej notatki</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+miara
+</th>
+<th style="text-align:right;">
+wartosc
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Osoby po przygotowaniu
+</td>
+<td style="text-align:right;">
+6.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ważne czasy
+</td>
+<td style="text-align:right;">
+4.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Średnia czasu [min]
+</td>
+<td style="text-align:right;">
+13.50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mediana czasu [min]
+</td>
+<td style="text-align:right;">
+7.25
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ważne oceny
+</td>
+<td style="text-align:right;">
+5.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ważne wyniki zadania
+</td>
+<td style="text-align:right;">
+5.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powodzenia
+</td>
+<td style="text-align:right;">
+3.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powodzenia [% ważnych wyników]
+</td>
+<td style="text-align:right;">
+60.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pary czasu i oceny
+</td>
+<td style="text-align:right;">
+3.00
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="challenge-samodzielny-audyt-cyfrowego-archiwum" class="section level1">
+<h1>CHALLENGE — samodzielny audyt cyfrowego archiwum</h1>
+<p>Pięć pól odpowiedzi uzupełniasz własnymi krótkimi akapitami. Pisz pod
+wynikami poza blokami R, zastępując znaczniki odpowiedzi. Nie zmieniaj
+surowych danych, aby dopasować je do własnego opisu.</p>
+<div id="scenariusz-cyfrowego-archiwum" class="section level2">
+<h2>Scenariusz cyfrowego archiwum</h2>
+<p>Instytucja sprawdza, czy opis kolekcji ułatwia znalezienie wskazanego
+obiektu. W eksporcie zapisano grupę doświadczenia, czas, ocenę
+zrozumiałości 1–5 i sukces 0/1. Kod 99 oznacza brak oceny; puste pole
+oznacza brak danej wartości. Czas 0–120 jest dopuszczalny, ale zero
+wymaga odczytania w kontekście zadania.</p>
+<p>W przykładzie 0 minut oznacza rzeczywiście zarejestrowane
+natychmiastowe zakończenie bez sukcesu, nie brak pomiaru. Długi czas 35
+minut jest potwierdzonym pomiarem. Surowego eksportu nie zmieniamy, a
+wszystkie reguły dokumentujemy.</p>
+</div>
+<div id="challenge-1-audyt-importu" class="section level2">
+<h2>CHALLENGE 1: Audyt importu</h2>
+<p>Najpierw trzeba sprawdzić, czy eksport został poprawnie rozdzielony
+na kolumny. Odczyt 7,5 minuty jako tekstu albo rozdzielenie go na dwa
+pola zmieniłoby dalszą analizę. Nie zaczynamy od średniej.</p>
+<p>Blok pokazuje surowe dane i ich strukturę. Przeczytaj nazwy, liczbę
+kolumn i typ czasu. W odpowiedzi podaj dowody z wydruku, a nie samo
+„import jest poprawny”.</p>
+<pre class="r"><code>import_archiwum &lt;- kontrola_importu_archiwum()
+print(import_archiwum)</code></pre>
+<p><strong>Import archiwum</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:left;">
+grupa
+</th>
+<th style="text-align:right;">
+czas_min
+</th>
+<th style="text-align:right;">
+ocena
+</th>
+<th style="text-align:right;">
+powodzenie
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+a01
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a02
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+7.5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a03
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+99
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a03
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+99
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a04
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a05
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+121.0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a06
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+35.0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Typy kolumn</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+kolumna
+</th>
+<th style="text-align:left;">
+klasa_R
+</th>
+<th style="text-align:right;">
+braki
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+id
+</td>
+<td style="text-align:left;">
+character
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+grupa
+</td>
+<td style="text-align:left;">
+character
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+czas_min
+</td>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ocena
+</td>
+<td style="text-align:left;">
+integer
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+powodzenie
+</td>
+<td style="text-align:left;">
+integer
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="text"><code>id;grupa;czas_min;ocena;powodzenie
+a01;nowi;0,0;3;0
+a02;nowi;7,5;4;1
+a03;doświadczeni;12,0;99;1
+a03;doświadczeni;12,0;99;1
+a04;nowi;;2;
+a05;doświadczeni;121,0;5;0
+a06;doświadczeni;35,0;4;1</code></pre>
+<p><strong>Napisz krótki akapit:</strong> podaj liczbę rekordów i
+kolumn, regułę separatora i dziesiętną oraz typ czasu. Wyjaśnij,
+dlaczego liczba rekordów nie musi jeszcze oznaczać liczby różnych
+osób.</p>
+<!-- odpowiedz:S01 -->
+<p>[UZUPELNIJ_S01] <!-- /odpowiedz:S01 --></p>
+</div>
+<div id="challenge-2-powtórzenie-i-konflikt" class="section level2">
+<h2>CHALLENGE 2: Powtórzenie i konflikt</h2>
+<p>W surowym eksporcie a03 występuje dwa razy identycznie. Dodatkowa
+tabela pokazuje inną możliwą sytuację: to samo ID, ale odmienne wyniki.
+Musisz odróżnić te problemy, zanim zdecydujesz o utracie informacji.</p>
+<p>Uruchom blok i porównaj surowy etap z etapem bez duplikatu. Następnie
+przeczytaj konflikt. Ta druga tabela jest osobną ilustracją i nie
+została automatycznie dołączona do analizowanego zbioru.</p>
+<pre class="r"><code>powtorzenia &lt;- kontrola_powtorzen_archiwum()
+print(powtorzenia)</code></pre>
+<p><strong>Etapy przygotowania</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Etap
+</th>
+<th style="text-align:right;">
+Rekordy
+</th>
+<th style="text-align:right;">
+Czas
+</th>
+<th style="text-align:right;">
+Ocena
+</th>
+<th style="text-align:right;">
+Powodzenie
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+surowe
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bez_duplikatu
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+po_regulach
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Odrębny przykład konfliktu</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:right;">
+czas_min
+</th>
+<th style="text-align:right;">
+powodzenie
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+a03
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a03
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Napisz krótki akapit:</strong> uzasadnij usunięcie
+identycznego powtórzenia, podaj N przed i po oraz wyjaśnij, dlaczego
+konflikt wymaga innej decyzji. Wskaż, jakie źródło informacji pomogłoby
+go rozstrzygnąć.</p>
+<!-- odpowiedz:S02 -->
+<p>[UZUPELNIJ_S02] <!-- /odpowiedz:S02 --></p>
+</div>
+<div id="challenge-3-zero-99-121-i-na" class="section level2">
+<h2>CHALLENGE 3: Zero, 99, 121 i NA</h2>
+<p>W archiwum występują cztery różne sytuacje: obserwowane zero, kod
+braku oceny, czas poza zakresem i puste pole. Każda ma własne znaczenie.
+Usunięcie wszystkich czterech osób z całej analizy byłoby
+nieuzasadnionym uproszczeniem.</p>
+<p>Poniższa tabela pokazuje wynik zastosowania reguł. Zestaw ją z tabelą
+surową z CHALLENGE 1. Wskaż dokładnie, które pola zostały zmienione, a
+które zachowano.</p>
+<pre class="r"><code>reguly &lt;- kontrola_regul_archiwum()
+print(reguly)</code></pre>
+<p><strong>Po zastosowaniu reguł</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:left;">
+grupa
+</th>
+<th style="text-align:right;">
+czas_min
+</th>
+<th style="text-align:right;">
+ocena
+</th>
+<th style="text-align:right;">
+powodzenie
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+a01
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a02
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+7.5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a03
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a04
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a05
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a06
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+35.0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kompletność par czasu i oceny</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:right;">
+czas
+</th>
+<th style="text-align:right;">
+ocena
+</th>
+<th style="text-align:left;">
+para
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+a01
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a02
+</td>
+<td style="text-align:right;">
+7.5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a03
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a04
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a05
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a06
+</td>
+<td style="text-align:right;">
+35.0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Napisz krótki akapit:</strong> opisz obsługę wartości 0, 99,
+121 i pustej komórki. Podaj N ważnych czasów oraz kompletnych par czasu
+i oceny. Nie utożsamiaj braku pomiaru z porażką zadania.</p>
+<!-- odpowiedz:S03 -->
+<p>[UZUPELNIJ_S03] <!-- /odpowiedz:S03 --></p>
+</div>
+<div id="challenge-4-czy-usunięcie-długiej-próby-poprawia-badanie" class="section level2">
+<h2>CHALLENGE 4: Czy usunięcie długiej próby poprawia badanie?</h2>
+<p>Osoba redagująca raport chce usunąć 35 minut, ponieważ „reszta
+użytkowników szukała krócej”. Instytucję interesuje jednak także koszt
+trudnych, długich poszukiwań. Prawidłowa decyzja nie wynika z samego
+wpływu obserwacji na średnią.</p>
+<p>Chunk porównuje dwa zakresy danych i pokazuje czasy osób. Przy
+odczycie zachowaj również obserwowane zero. Średnia ma opisywać jawnie
+określony zbiór, nie wybrany estetycznie fragment.</p>
+<pre class="r"><code>dlugi_czas &lt;- wrazliwosc_archiwum()
+print(dlugi_czas)</code></pre>
+<p><strong>Z prawidłowym długim czasem i bez niego</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Wariant
+</th>
+<th style="text-align:right;">
+N
+</th>
+<th style="text-align:right;">
+Średnia [min]
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Wszystkie ważne czasy
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+13.625
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bez prawidłowych 35 minut
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+6.500
+</td>
+</tr>
+</tbody>
+</table>
+<p><img role="img" aria-label src="data:image/png;base64,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" alt width="100%" style="display: block; margin: auto;" /></p>
+<p><strong>Napisz krótki akapit:</strong> podaj obie średnie i N,
+wyjaśnij zmianę oraz oceń propozycję usunięcia 35 minut. Zakończ zdaniem
+o tym, czego sam wykres nie rozstrzyga.</p>
+<!-- odpowiedz:S04 -->
+<p>[UZUPELNIJ_S04] <!-- /odpowiedz:S04 --></p>
+</div>
+<div id="challenge-5-notatka-o-danych-gotowych-do-analizy" class="section level2">
+<h2>CHALLENGE 5: Notatka o danych gotowych do analizy</h2>
+<p>Badacz przekazuje przygotowany zbiór osobie opisującej wyniki.
+Potrzebna jest krótka notatka, która pozwoli zrozumieć reguły i
+mianowniki. Sam plik o nazwie „czyste” nie jest dokumentacją.</p>
+<p>Poniższy blok zestawia etapy z podsumowaniem. Wybierz właściwe liczby
+do opisu tego, co zrobiono. Nie pisz, że dane są reprezentatywne lub
+bezbłędne tylko dlatego, że skrypt wykonał się poprawnie.</p>
+<pre class="r"><code>notatka &lt;- podsumowanie_przygotowania(archiwum_czyste, archiwum_etapy)
+print(notatka)</code></pre>
+<p><strong>Etapy przygotowania</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Etap
+</th>
+<th style="text-align:right;">
+Rekordy
+</th>
+<th style="text-align:right;">
+Czas
+</th>
+<th style="text-align:right;">
+Ocena
+</th>
+<th style="text-align:right;">
+Powodzenie
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+surowe
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bez_duplikatu
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+po_regulach
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Dane do krótkiej notatki</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+miara
+</th>
+<th style="text-align:right;">
+wartosc
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Osoby po przygotowaniu
+</td>
+<td style="text-align:right;">
+6.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ważne czasy
+</td>
+<td style="text-align:right;">
+4.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Średnia czasu [min]
+</td>
+<td style="text-align:right;">
+13.625
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mediana czasu [min]
+</td>
+<td style="text-align:right;">
+9.750
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ważne oceny
+</td>
+<td style="text-align:right;">
+5.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ważne wyniki zadania
+</td>
+<td style="text-align:right;">
+5.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powodzenia
+</td>
+<td style="text-align:right;">
+3.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powodzenia [% ważnych wyników]
+</td>
+<td style="text-align:right;">
+60.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pary czasu i oceny
+</td>
+<td style="text-align:right;">
+3.000
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Napisz krótki akapit:</strong> przedstaw N surowe i końcowe,
+duplikat, dwie reguły braków, N ważnego czasu i sukcesu oraz jedno
+ograniczenie. Wyjaśnij, dlaczego trzeba zachować surowy plik i ponownie
+wykonywalny helper.</p>
+<!-- odpowiedz:S05 -->
+<p>[UZUPELNIJ_S05] <!-- /odpowiedz:S05 --></p>
+</div>
+</div>
+<div id="zapis-i-oddanie" class="section level1">
+<h1>Zapis i oddanie</h1>
+<p>Porównaj pięć własnych odpowiedzi z wydrukami. Odróżnij liczbę
+zmienionych komórek od liczby osób, a brak od prawdziwego zera. Zapisz
+ten Rmd; nie przepisuj notatki do osobnego pliku Markdown.</p>
+<p>W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy PDF z
+zapisanej pracy, sprawdza kompletność i wysyła dokument wraz z Rmd i
+<code>analiza.R</code> do Twojego prywatnego repozytorium z dostępem
+prowadzącego.</p>
+<pre class="r"><code>oddaj_zadanie(&quot;Z02&quot;)</code></pre>
+<p>Odczytaj potwierdzenie odbioru i SHA wysłanej wersji. Jeżeli pojawi
+się błąd, popraw wskazany problem, zapisz plik i wywołaj ponownie tę
+samą funkcję. Nie musisz oddzielnie uruchamiać renderowania, kontroli i
+statusu.</p>
+<p>Po potwierdzonym oddaniu wykonaj w konsoli
+<code>wyloguj_github()</code>. Na komputerze współdzielonym wyloguj
+również przeglądarkę i zamknij RStudio bez zachowywania
+<code>.RData</code>. Przy braku sieci zachowaj źródła przed czyszczeniem
+komputera i poproś prowadzącego o pomoc.</p>
+<div id="kryteria-oceny" class="section level2">
+<h2>Kryteria oceny</h2>
+<table>
+<colgroup>
+<col width="30%" />
+<col width="30%" />
+<col width="40%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th>Kryterium</th>
+<th>Co ma być widoczne?</th>
 <th align="right">Punkty</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Z02.1: Poprawny import: separator, polskie znaki, liczba
-wierszy/kolumn i kontrola struktury.</td>
+<td>Z02.1</td>
+<td>Poprawny odczyt importu, separatora, znaków, rozmiaru i
+struktury</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td>Z02.2: Poprawnie odczytano działanie gotowych reguł dla typów, kodów
-braków i duplikatów.</td>
+<td>Z02.2</td>
+<td>Wyjaśnienie gotowych reguł dla typów, kodów i duplikatów</td>
 <td align="right">4</td>
 </tr>
 <tr class="odd">
-<td>Z02.3: Dziennik pokazuje reguły, N przed/po, różnicę między brakiem
-a zerem.</td>
+<td>Z02.3</td>
+<td>Właściwe N przed/po oraz odróżnienie braku od zera</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td>Z02.4: Gotowy skrypt odtwarza czyszczenie od surowego pliku, a
-zapisany CSV zgadza się z dziennikiem.</td>
+<td>Z02.4</td>
+<td>Zgodność zapisanej tabeli z dziennikiem i odtworzenie od surowych
+danych</td>
 <td align="right">2</td>
 </tr>
 </tbody>
 </table>
-<p>Automatyczna kontrola sprawdza pliki, parametry, odtwarzalność i
-zgodność eksportu. Prowadzący ocenia dobór języka, odczyt liczb,
-interpretację efektu oraz ograniczenie. Poprawny skrypt bez własnego
-wyjaśnienia nie realizuje zadania.</p>
-<p>Po wysyłce sprawdź <code>status_oddania()</code> i zdalne SHA. Na
-współdzielonym komputerze wywołaj <code>wyloguj_github()</code>, wyloguj
-przeglądarkę i zamknij RStudio bez <code>.RData</code>. Następne
-ćwiczenie rozpoczyna się od pobrania potwierdzonej wersji.</p>
-<div id="źródło-kontekstu" class="section level2">
-<h2>Źródło kontekstu</h2>
-<p>Dobra analiza zaczyna się od przejrzystego opisu transformacji.
-Rozdzielenie danych surowych i analitycznych pozwala odtworzyć każdy
-krok i ocenić jego konsekwencje.</p>
-<p>Materiały odwołują się do: Wilsona (1999), Kuhlthau (1991),
-Savolainen (1995), Hargittai (2002), DigComp 2.2, ACRL Framework oraz
-Internet Skills Scale. Są to ramy pojęciowe; dane i pozycje kursowe
-pozostają syntetyczne i dydaktyczne.</p>
+<p>Rubryka ocenia rozumienie reguł i dowodów. Skrypt może prawidłowo
+wykonać zadanie, podczas gdy opis pozostaje błędny, np. „usunięto pięć
+osób” przy zmianie pięciu komórek. Sprawdź oba poziomy osobno.</p>
+</div>
+</div>
+<div id="rozwinięcia-do-powtórki-poza-rdzeniem-spotkania" class="section level1">
+<h1>Rozwinięcia do powtórki — poza rdzeniem spotkania</h1>
+<p>Poniższe materiały pokazują te same decyzje w większym zbiorze,
+arkuszu i logu zdarzeń. Nie dodają kolejnych obowiązkowych zadań ani
+osobnego oddania. Służą powrotowi do konkretnej wątpliwości o źródle
+danych, jednostce lub mianowniku.</p>
+<div id="dziennik-pełnego-zbioru-s02" class="section level2">
+<h2>Dziennik pełnego zbioru S02</h2>
+<p>Wracamy do S02. Reguły są analogiczne, ale liczebności pochodzą z
+większej tabeli. Najpierw odczytaj dziennik i nazwij jednostkę każdej
+pozycji: wiersze, kody odpowiedzi lub pomiary czasu.</p>
+<pre class="r"><code>dziennik &lt;- pokaz_tabele(przygotowane$dziennik, &quot;Reguły w pełnym zbiorze S02&quot;)
+print(dziennik)</code></pre>
+<p><strong>Reguły w pełnym zbiorze S02</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+regula
+</th>
+<th style="text-align:right;">
+liczba
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+N przed czyszczeniem
+</td>
+<td style="text-align:right;">
+150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Usunięte identyczne duplikaty
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kod 99 zamieniony na NA
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Czas poza 0–120 minut zamieniony na NA
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N po czyszczeniu
+</td>
+<td style="text-align:right;">
+148
+</td>
+</tr>
+</tbody>
+</table>
+<p>Dziennik nie jest listą rzeczy, które „były złe u respondentów”.
+Opisuje działania na rekordach. Identyczny duplikat może powstać w
+eksporcie, kod 99 może prawidłowo reprezentować odmowę odpowiedzi, a
+niedopuszczalny czas może wynikać z błędu urządzenia. Język raportu
+powinien rozróżniać te sytuacje.</p>
+<p>Sprawdź, czy liczba wierszy po przygotowaniu odpowiada różnicy między
+surowym N a duplikatami. Następnie osobno przeczytaj ważne wartości
+wybranych zmiennych. Nie sumuj braków między kolumnami jako liczby osób,
+bo jedna osoba może mieć kilka braków.</p>
+<pre class="r"><code>liczebnosci_s02 &lt;- bilans_s02()
+print(liczebnosci_s02)</code></pre>
+<p><strong>Rekordy S02</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+N_surowe
+</th>
+<th style="text-align:right;">
+N_analityczne
+</th>
+<th style="text-align:right;">
+braki_czasu
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+150
+</td>
+<td style="text-align:right;">
+148
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Niepuste wartości przed regułami i ważne po
+regułach</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+zmienna
+</th>
+<th style="text-align:right;">
+N_przed
+</th>
+<th style="text-align:right;">
+N_po
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+czas_wyszukiwania
+</td>
+<td style="text-align:right;">
+146
+</td>
+<td style="text-align:right;">
+142
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+pozycja_2
+</td>
+<td style="text-align:right;">
+150
+</td>
+<td style="text-align:right;">
+144
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+powodzenie
+</td>
+<td style="text-align:right;">
+150
+</td>
+<td style="text-align:right;">
+148
+</td>
+</tr>
+</tbody>
+</table>
+<p>Zwróć uwagę na określenie <code>N_przed</code> w drugiej tabeli:
+oznacza liczbę niepustych wartości przed przygotowaniem. Może obejmować
+liczbowy kod 99 lub niedopuszczalny czas. Nie należy bez kontroli nazwać
+go liczbą poprawnych pomiarów. Znaczenie technicznego licznika wymaga
+komentarza.</p>
+<p>Histogram po przygotowaniu pokazuje rozkład zapisanych czasów
+spełniających reguły. Odczytaj zakres, skupienie i ewentualny długi
+ogon. Sam kształt rozkładu nie pozwala stwierdzić, czy wszystkie braki
+powstały losowo.</p>
+<pre class="r"><code>rozklad &lt;- pokaz_wykres(wykres_glowny)
+print(rozklad)</code></pre>
+<p><img role="img" aria-label src="data:image/png;base64,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" alt width="100%" style="display: block; margin: auto;" /></p>
+<p>Dłuższy czas może być ważną informacją o trudności zadania. Jeśli w
+przyszłym badaniu protokół przerwałby wszystkie próby po dziesięciu
+minutach, na podstawie samych zarejestrowanych zakończeń nie opiszemy
+pełnej zmienności czasu potrzebnego do sukcesu. Ograniczenie powinno być
+zapisane obok wyniku, nie ukryte w skrypcie.</p>
+</div>
+<div id="csv-i-arkusz-mają-przekazywać-tę-samą-informację" class="section level2">
+<h2>CSV i arkusz mają przekazywać tę samą informację</h2>
+<p>Arkusz jest wygodny do oglądania danych, lecz może przechowywać
+formatowanie, formuły, scalone komórki i kilka tabel obok siebie.
+Analiza potrzebuje jednoznacznej prostokątnej tabeli. W jednym wierszu
+nagłówka powinny znajdować się nazwy kolumn, a niżej wartości tej samej
+jednostki obserwacji.</p>
+<p>Wspólny pakiet zawiera surowy CSV oraz mały arkusz do nauki importu.
+Arkusz jest przykładem wycinka, więc nie zakładamy, że ma tyle samo
+wierszy co pełny CSV. Sprawdzamy znaczenie i zapis odpowiadających sobie
+kolumn.</p>
+<p>Odczyt poniżej korzysta z plików dostępnych lokalnie w zainstalowanym
+pakiecie. Nie pobiera danych z internetu i nie instaluje dodatków.
+Pierwszy wynik dotyczy pełnego CSV, drugi arkusza ćwiczeniowego.</p>
+<pre class="r"><code>pliki &lt;- porownanie_formatow()
+print(pliki)</code></pre>
+<p><strong>Lokalne pliki dwóch formatów</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+zrodlo
+</th>
+<th style="text-align:right;">
+wiersze
+</th>
+<th style="text-align:right;">
+kolumny
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CSV
+</td>
+<td style="text-align:right;">
+150
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arkusz ćwiczeniowy
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+</tbody>
+</table>
+<p>Jeżeli odczyt XLSX zgłosi brak pakietu <code>readxl</code>, jest to
+brak przygotowanego narzędzia, a nie błąd statystyczny. W sali
+środowisko przygotowuje informatyk. Pozostałe przykłady oraz Z02
+opierają się na CSV i nie wymagają ręcznego przepisywania arkusza.</p>
+<p>Teraz oglądamy wybrane kolumny arkusza. Odczytaj identyfikator,
+etykietę grupy i jednostkę czasu. Format liczby widoczny w arkuszu nie
+powinien zmieniać jej wartości w analizie.</p>
+<pre class="r"><code>arkusz &lt;- podglad_arkusza()
+print(arkusz)</code></pre>
+<p><strong>Wybrane kolumny arkusza</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+ID
+</th>
+<th style="text-align:left;">
+Grupa
+</th>
+<th style="text-align:right;">
+Czas [min]
+</th>
+<th style="text-align:right;">
+Powodzenie
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+o001
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+12.1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+o002
+</td>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+10.4
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+o003
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+5.8
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+o004
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+16.1
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+o005
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+28.0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+o006
+</td>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+6.3
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p>W arkuszu nie zapisuj jednostki w każdej komórce jako „8 min”, jeśli
+kolumna ma być numeryczna. Jednostkę umieść w słowniku lub nagłówku
+opisowym, a wartość pozostaw liczbą. Nie korzystaj z koloru komórki jako
+jedynego zapisu niepowodzenia lub wykluczenia; po eksporcie do CSV kolor
+zniknie.</p>
+<p><strong>Most do pracy z arkuszem.</strong> Otwórz ćwiczeniowy plik
+tylko do odczytu, wskaż jeden rekord i porównaj go z podglądem w R.
+Sprawdź, czy puste pole pozostało puste oraz czy „doświadczeni”
+zachowuje polskie znaki. Nie poprawiaj danych ręcznie w arkuszu — celem
+jest kontrola zgodności odczytu.</p>
+</div>
+<div id="od-logu-zdarzeń-do-wyniku-osoby" class="section level2">
+<h2>Od logu zdarzeń do wyniku osoby</h2>
+<p>Plik z katalogu może zawierać po jednym wierszu dla każdego
+kliknięcia. Ankieta zwykle zawiera po jednym wierszu dla osoby. Bez
+ustalenia poziomu danych połączenie tych tabel może wielokrotnie
+powielić odpowiedzi ankietowe.</p>
+<p>Poniższy log jest osobnym przykładem dwóch sesji. U01 ma trzy
+zdarzenia, u02 dwa. Odczytaj, dlaczego pięć wierszy nie oznacza pięciu
+uczestników.</p>
+<pre class="r"><code>zdarzenia &lt;- pokaz_tabele(log_demo, &quot;Pięć zdarzeń, dwie osoby&quot;)
+print(zdarzenia)</code></pre>
+<p><strong>Pięć zdarzeń, dwie osoby</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:right;">
+minuta
+</th>
+<th style="text-align:left;">
+zdarzenie
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+u01
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:left;">
+start
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u01
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:left;">
+filtr
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u01
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:left;">
+koniec
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u02
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:left;">
+start
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u02
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:left;">
+koniec
+</td>
+</tr>
+</tbody>
+</table>
+<p>W tej demonstracji czas sesji jest różnicą ostatniego i pierwszego
+znacznika. Reguła ma sens, ponieważ jawnie zapisano start i koniec. W
+rzeczywistych logach ostatnie kliknięcie nie musi być zakończeniem
+pracy, a długa przerwa może oznaczać nieaktywność. Najpierw trzeba
+zdefiniować sesję.</p>
+<p>Gotowy skrypt agreguje log do jednej wartości na osobę. Odczytaj
+wynik oraz jego jednostkę. Agregacja zmniejsza liczbę wierszy, ale nie
+jest usuwaniem respondentów ani naprawą duplikatów.</p>
+<pre class="r"><code>sesje &lt;- pokaz_tabele(agregat_demo, &quot;Czas od początku do końca sesji&quot;)
+print(sesje)</code></pre>
+<p><strong>Czas od początku do końca sesji</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:right;">
+czas_min
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+u01
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+u02
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+</tr>
+</tbody>
+</table>
+<p>Wzór ma postać
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>i</mi></msub><mo>=</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mrow><mi mathvariant="normal">k</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">c</mi></mrow></mrow></msub><mo>−</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">t</mi></mrow></mrow></msub></mrow><annotation encoding="application/x-tex">T_i=t_{i,\mathrm{koniec}}-t_{i,\mathrm{start}}</annotation></semantics></math>.
+Indeks
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+oznacza osobę lub sesję zgodnie z definicją, a nie pojedyncze
+kliknięcie. Gdy zapisano kilka sesji tej samej osoby, samo grupowanie
+według ID osoby może połączyć odrębne wizyty w jeden bardzo długi
+czas.</p>
+<p>Przy łączeniu ankiety z logiem trzeba sprawdzić klucz. Jedno ID
+ankiety powinno odpowiadać jednemu uzgodnionemu wynikowi zadania. Po
+połączeniu kontrolujemy N i liczbę dopasowanych rekordów. Wzrost tabeli
+ze 150 do 620 wierszy nie jest nową próbą, jeśli wynika z dopisania
+kliknięć.</p>
+</div>
+<div id="szeroko-długo-i-w-innej-jednostce" class="section level2">
+<h2>Szeroko, długo i w innej jednostce</h2>
+<p>Sześć pozycji ankiety może występować w sześciu kolumnach jednej
+osoby: to układ szeroki. W układzie długim każda osoba ma sześć wierszy
+z nazwą pozycji i odpowiedzią. Oba układy przechowują tę samą
+informację, lecz wymagają innego liczenia wierszy.</p>
+<p>Jeżeli 150 osób ma po sześć pozycji, po przekształceniu do pełnego
+układu długiego może powstać 900 wierszy. Nie przybyło 750 osób.
+Statystyka dotycząca odpowiedzi na pojedynczą pozycję powinna zachować
+właściwy mianownik osób z tą odpowiedzią.</p>
+<p>Podobnie transpozycja, czyli zamiana wierszy z kolumnami, nie jest
+uniwersalnym sposobem „poprawienia tabeli”. Może pomóc w prezentacji
+małego rekordu, jak w C01, ale nie naprawia projektu ani nie nadaje
+sensu mieszaniu tekstów z liczbami.</p>
+<p>Transformacja jednostki to jeszcze inne działanie. Czas 8 minut jest
+równy 480 sekundom. Dziennik powinien wskazywać wzór przeliczenia i nową
+jednostkę. Skalowanie do wartości od 0 do 1 albo standaryzacja przez
+odchylenie standardowe zmieniają sposób wyrażenia wartości i wymagają
+osobnego uzasadnienia. Nie są obowiązkową częścią czyszczenia.</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operacja</th>
+<th>Co się zmienia?</th>
+<th>Co należy zachować?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Usunięcie identycznego duplikatu</td>
+<td>Liczba rekordów</td>
+<td>Jedna kopia informacji o osobie</td>
+</tr>
+<tr class="even">
+<td>Rekodacja 99 na NA</td>
+<td>Znaczenie wskazanej komórki</td>
+<td>Jawna informacja o braku</td>
+</tr>
+<tr class="odd">
+<td>Minuty na sekundy</td>
+<td>Jednostka i wartość liczbowa</td>
+<td>Ten sam czas zdarzenia</td>
+</tr>
+<tr class="even">
+<td>Szeroko na długo</td>
+<td>Układ tabeli i liczba wierszy</td>
+<td>Identyfikator osoby oraz pozycji</td>
+</tr>
+<tr class="odd">
+<td>Agregacja logu</td>
+<td>Poziom obserwacji</td>
+<td>Reguła wyznaczenia wyniku sesji</td>
+</tr>
+<tr class="even">
+<td>Standaryzacja</td>
+<td>Skala wyrażenia wartości</td>
+<td>Parametry odniesienia i interpretacja</td>
+</tr>
+</tbody>
+</table>
+<div id="odczyt-sortowania-rang-i-skalowania-na-czterech-czasach" class="section level3">
+<h3>Odczyt sortowania, rang i skalowania na czterech czasach</h3>
+<p>Gotowy przykład dotyczy czterech innych osób z czasami 2, 4, 4 i 8
+minut. Funkcja porządkuje kolumny porównania; nie zmienia danych zadania
+Z02. Odczytaj w jednym wierszu, co oznacza ta sama obserwacja w każdej
+reprezentacji.</p>
+<pre class="r"><code>przeliczenia &lt;- przyklad_transformacji()
+print(przeliczenia)</code></pre>
+<p><strong>Cztery osoby: ta sama informacja, różne
+przekształcenia</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+ID
+</th>
+<th style="text-align:right;">
+minuty
+</th>
+<th style="text-align:right;">
+sekundy
+</th>
+<th style="text-align:right;">
+ranga
+</th>
+<th style="text-align:right;">
+min_max
+</th>
+<th style="text-align:right;">
+z
+</th>
+<th style="text-align:right;">
+log2
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+a
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+120
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+-0.993
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+b
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+240
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+0.333
+</td>
+<td style="text-align:right;">
+-0.199
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+c
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+240
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+0.333
+</td>
+<td style="text-align:right;">
+-0.199
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+480
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+<td style="text-align:right;">
+1.391
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+</tbody>
+</table>
+<p>Sortowanie porządkuje całe rekordy według czasu, zachowując
+identyfikator i pozostałe dane osoby. Posortowanie samej kolumny w
+arkuszu mogłoby przypisać czas innej osobie. Ranking nadaje pozycję w
+tym porządku: dwa czasy po 4 minuty zajmują miejsca drugie i trzecie,
+więc oba mają średnią rangę 2,5. Ranga nie mówi, o ile minut ktoś był
+szybszy.</p>
+<p>Skalowanie min–max, nazywane też normalizacją do zakresu 0–1, oblicza
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mrow><mi mathvariant="normal">min</mi><mo>⁡</mo></mrow><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mrow><mi mathvariant="normal">max</mi><mo>⁡</mo></mrow><mi>x</mi><mo>−</mo><mrow><mi mathvariant="normal">min</mi><mo>⁡</mo></mrow><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x-\min x)/(\max x-\min x)</annotation></semantics></math>.
+Tutaj dla 4 minut otrzymujemy
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>4</mn><mo>−</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mn>8</mn><mo>−</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn><mi>/</mi><mn>3</mn></mrow><annotation encoding="application/x-tex">(4-2)/(8-2)=1/3</annotation></semantics></math>.
+Wynik 1 oznacza najdłuższy czas w tym zestawie, nie pełną kompetencję.
+Dodanie czasu 20 minut zmieni wartości min–max pozostałych osób. Osobne
+skalowanie w każdej grupie uniemożliwia prosty odczyt pierwotnej różnicy
+czasu między grupami; trzeba zachować wspólne parametry odniesienia.</p>
+<p>Standaryzacja
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">z=(x-\bar{x})/s</annotation></semantics></math>
+wyraża odległość od średniej w jednostkach SD. Dla tych czterech czasów
+średnia to 4,5, a SD około 2,52 minuty; 8 minut daje
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>≈</mo><mn>1</mn><mo>,</mo><mn>39</mn></mrow><annotation encoding="application/x-tex">z\approx1{,}39</annotation></semantics></math>.
+Ani min–max, ani standaryzacja nie wymuszają rozkładu normalnego. Gdy
+wszystkie wartości są identyczne, mianownik obu reguł wynosi zero i taka
+skala nie jest określona.</p>
+<p>Logarytm o podstawie 2 odpowiada na pytanie: do jakiej potęgi trzeba
+podnieść 2, aby otrzymać daną liczbę? Dla czasu wyrażonego w minutach
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mn>8</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">\log_2(8)=3</annotation></semantics></math>,
+a
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mn>4</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\log_2(4)=2</annotation></semantics></math>.
+Różnica jednego na tej skali oznacza podwojenie czasu; równe odstępy
+logarytmów odpowiadają stosunkom, nie równym przyrostom minut. Logarytm
+nie jest zdefiniowany dla zera i liczb ujemnych, więc nie używamy go do
+ukrycia błędu pomiaru. Wybór transformacji musi wynikać z pytania i być
+zapisany w regułach analizy.</p>
+</div>
+</div>
+<div id="co-brak-danych-może-mówić-o-badaniu" class="section level2">
+<h2>Co brak danych może mówić o badaniu</h2>
+<p>Brak techniczny, odmowa odpowiedzi i niewykonane zadanie mają różne
+źródła. W pliku mogą wszystkie wystąpić jako <code>NA</code>, ale w
+protokole powinny być rozpoznawane osobno, jeśli zebrano taką
+informację. Bez niej nie wolno dopowiadać przyczyny na podstawie samej
+pustej komórki.</p>
+<p>Jeżeli braki czasu występują częściej przy problemach z interfejsem,
+analiza samych zmierzonych czasów może zbyt korzystnie opisywać usługę.
+Jeśli osoby niezadowolone rzadziej kończą ankietę, średnia deklarowanej
+użyteczności może dotyczyć bardziej zadowolonej części użytkowników.
+Żaden test normalności nie odpowie na te pytania.</p>
+<p>Na podstawowym poziomie raportujemy liczbę braków dla każdej
+analizowanej zmiennej i, jeśli ma to sens, ich rozkład między grupami.
+Taka kontrola może ujawnić problem, lecz nie dowodzi, że pozostałe braki
+są nieszkodliwe. Zależność braków od nieobserwowanych wyników nie daje
+się wykluczyć samą tabelą już dostępnych wartości.</p>
+<p>W tym kursie nie wprowadzamy rozbudowanych metod imputacji. Rozumiemy
+jednak, dlaczego proste podstawienie średniej za brak nie tworzy
+prawdziwej odpowiedzi. Może sztucznie zmniejszyć zróżnicowanie i
+zniekształcić związki. Brak pozostaje brakiem, dopóki nie przyjęto
+jawnej, uzasadnionej metody analizy.</p>
+</div>
+<div id="dodatkowe-przykłady-z-rozwiązaniem" class="section level2">
+<h2>Dodatkowe przykłady z rozwiązaniem</h2>
+<div id="próba-a-pozorne-zwiększenie-próby" class="section level3">
+<h3>Próba A: pozorne zwiększenie próby</h3>
+<p>Ankietę wypełniło 120 osób. Po połączeniu z logiem zapisano 800
+wierszy. Autor raportu pisze „N=800 użytkowników”. Co trzeba sprawdzić
+przed poprawieniem liczby?</p>
+<p>Najpierw sprawdzamy poziom rekordu po połączeniu: osoba, sesja czy
+zdarzenie. Jeżeli jeden uczestnik ma wiele kliknięć, 800 jest liczbą
+zdarzeń. Liczba użytkowników wynika z identyfikatorów osób i reguły
+włączenia, a nie z długości połączonej tabeli. Nie wybieramy
+mechanicznie 120, jeżeli część ankiet nie ma dopasowanego logu: do
+analizy wspólnej potrzebujemy dodatkowej kontroli dopasowania.</p>
+</div>
+<div id="próba-b-braki-dodane-do-odpowiedzi-negatywnych" class="section level3">
+<h3>Próba B: braki dodane do odpowiedzi negatywnych</h3>
+<p>Wynik zadania zarejestrowano dla 80 z 100 osób. Wśród znanych wyników
+było 60 powodzeń. Czy sukces odniosło 60% czy 75% uczestników?</p>
+<p>Wiemy, że 60% wszystkich stu osób ma zapisane powodzenie, a wśród
+osiemdziesięciu znanych wyników odsetek wynosi 75%. Nie znamy pełnego
+odsetka powodzeń w stu próbach. Jeśli wszystkie braki byłyby
+niepowodzeniami, wyniósłby 60%; jeśli powodzeniami, 80%. Raport powinien
+nazwać mianownik i ujawnić brak wiedzy, zamiast zamieniać dwadzieścia
+pustych pól w zera.</p>
+</div>
+<div id="próba-c-odrzucenie-najdłuższych-wyszukiwań" class="section level3">
+<h3>Próba C: odrzucenie najdłuższych wyszukiwań</h3>
+<p>Autor usuwa wszystkie czasy powyżej mediany i stwierdza, że system
+działa szybko. Reguła z definicji usuwa około połowy dłuższych
+obserwacji. Tak uzyskana średnia opisuje wyselekcjonowaną część próby, a
+nie typowe działanie usługi dla wszystkich badanych.</p>
+<p>Inna sytuacja zachodzi, gdy protokół wykazuje, że określone znaczniki
+czasu zapisały się w sekundach zamiast minutach. Wtedy korekta jednostki
+ma zewnętrzne uzasadnienie. Rozróżnienie opiera się na dowodzie o
+pomiarze, nie na tym, czy wynik po zmianie wygląda korzystniej.</p>
+</div>
+<div id="próba-d-niezgodne-słowniki" class="section level3">
+<h3>Próba D: niezgodne słowniki</h3>
+<p>Jeden plik koduje powodzenie jako 1, drugi jako 2. Po połączeniu
+pojawiają się wartości 0, 1 i 2. Nie wolno po prostu uznać 2 za
+„silniejsze powodzenie” ani dodać kolejnej kategorii bez
+sprawdzenia.</p>
+<p>Potrzebne jest jawne odwzorowanie kodów do wspólnej definicji wyniku.
+Weryfikujemy także, czy oba badania stosowały to samo kryterium sukcesu.
+Identyczne etykiety po rekodacji nie naprawią różnicy między
+odnalezieniem rekordu a poprawną oceną wiarygodności publikacji.</p>
+</div>
+</div>
+<div id="czy-braki-występują-tak-samo-w-obu-grupach" class="section level2">
+<h2>Czy braki występują tak samo w obu grupach</h2>
+<p>Dotychczas liczyliśmy braki w całej tabeli. Dla porównania nowych i
+doświadczonych użytkowników ważne jest również, czy pomiar czasu
+pomijano podobnie w obu grupach. Nawet niewielka ogólna liczba braków
+może koncentrować się w grupie kluczowej dla pytania.</p>
+<p>Gotowy skrypt pokazuje liczebność grupy, ważne czasy oraz liczbę i
+odsetek braków. Mianownikiem ostatniej kolumny jest liczba osób w danej
+grupie. Nie używaj całej próby jako mianownika, jeśli porównujesz
+częstość braków między grupami.</p>
+<pre class="r"><code>braki &lt;- braki_w_grupach()
+print(braki)</code></pre>
+<p><strong>Mianownik odsetka braków to liczba osób w danej
+grupie</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Grupa
+</th>
+<th style="text-align:right;">
+Osoby
+</th>
+<th style="text-align:right;">
+Ważne czasy
+</th>
+<th style="text-align:right;">
+Braki
+</th>
+<th style="text-align:right;">
+Braki [%]
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+70
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2.7
+</td>
+</tr>
+</tbody>
+</table>
+<p>Podobne odsetki braków nie dowodzą, że brakujące czasy miały podobne
+wartości. Możliwe, że w jednej grupie nie zarejestrowano najkrótszych
+prób, a w drugiej najdłuższych. Tabela opisuje wzorzec dostępności, lecz
+nie pokazuje wartości, których nie zmierzono.</p>
+<p>Rozważ odrębny przykład: zaproszono po 50 osób z dwóch grup, ale czas
+zapisano dla 30 nowych i 45 doświadczonych. Średnie obliczone z tych
+danych dotyczą dwóch różnych podzbiorów o różnym stopniu kompletności.
+Zanim zinterpretujemy różnicę jako obraz doświadczenia, trzeba ustalić,
+dlaczego część prób nie ma pomiaru. Większa liczba permutacji
+późniejszego testu nie uzupełni brakujących obserwacji.</p>
+</div>
+<div id="dwa-rodzaje-zdania-o-jakości-danych" class="section level2">
+<h2>Dwa rodzaje zdania o jakości danych</h2>
+<p>Zdanie „dane są poprawne, bo funkcja nie zwróciła błędu” jest zbyt
+szerokie. Brak błędu oznacza, że wejście spełniło sprawdzane warunki
+techniczne. Może nie wykryć złego opisu jednostki, systematycznej
+rezygnacji uczestników ani odmiennego rozumienia pytania.</p>
+<p>Lepsza wersja rozdziela sprawdzony fakt i pozostałą niewiedzę: „Po
+zastosowaniu zadanych reguł nie ma identycznych duplikatów, a ważne
+odpowiedzi pozycji mieszczą się w zakresie 1–5. Nie dysponujemy
+informacją, czy przyczyny braków czasu wiązały się z trudnością
+zadania”. Pierwsze zdanie odsyła do danych, drugie do ograniczenia
+projektu.</p>
+<p>Takie rozróżnienie jest przydatne także w analizach
+instytucjonalnych. Kompletne logi nie gwarantują pełnej wiedzy o
+potrzebach użytkowników, a poprawnie zakodowana ankieta nie gwarantuje
+trafnego pomiaru kompetencji. Kontrola danych i kontrola pomiaru są
+powiązane, lecz nie zastępują się wzajemnie.</p>
+<p>W następnym zestawie opiszemy rozkład czasu oraz skuteczność zadania.
+Średnia, mediana i histogram będą miały sens tylko dla jasno określonych
+danych. Dlatego wynik C02 nie jest „technicznym wstępem do prawdziwej
+statystyki”: ustala, o czyim zachowaniu i jakim pomiarze będziemy
+mówić.</p>
+<p>Przed C03 odpowiedz bez komputera: dlaczego N czasu może być mniejsze
+od liczby osób; dlaczego ujemny czas i długi czas wymagają innych
+reakcji; dlaczego sześć pozycji w układzie długim nie zwiększa liczby
+respondentów; dlaczego brakująca ocena nie usuwa automatycznie
+obserwowanego powodzenia. Każdą odpowiedź połącz z jednym konkretnym
+rekordem lub regułą.</p>
 </div>
 </div>
 

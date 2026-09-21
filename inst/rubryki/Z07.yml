@@ -1,32 +1,30 @@
 id: Z07
-version: 1.0.0
+version: 1.2.0
 rocznik: 2026-27
 max_points: 10.0
 criteria:
 - id: Z07.1
-  title: Wybór wyniku klasycznego oraz Monte Carlo uzasadniono strukturą tabeli i
-    liczebnościami oczekiwanymi.
-  evidence: Wybór wyniku klasycznego oraz Monte Carlo uzasadniono strukturą tabeli
-    i liczebnościami oczekiwanymi.
+  title: "Uzasadnienie tabeli i warunków wnioskowania."
+  evidence: "S01 definiuje jednostkę, sukces, niezależne grupy i różnicę prawdopodobieństw. S03 zapisuje H0, odczytuje najmniejsze E i uzasadnia przybliżenie chi-kwadrat oraz Monte Carlo przy stałych marginesach. Nie traktuje braków jako niepowodzeń."
+  answer_fields: [S01, S03]
   max_points: 2.0
   review_mode: human
   learning_outcomes: U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Nazwano test bez kontroli tabeli.
+    observable_description: "Nazwano test bez określenia jednostki i struktury tabeli."
   - points: 1.0
-    observable_description: Sprawdzono N, lecz pominięto oczekiwane liczebności albo
-      niezależność.
+    observable_description: "Pytanie i N są poprawne, ale pominięto niezależność, oczekiwane liczebności lub warunek symulacji."
   - points: 1.5
-    observable_description: Oba tory są właściwe; jedno uzasadnienie jest niepełne.
+    observable_description: "Uzasadnienie obu procedur jest poprawne; jedno objaśnienie jednostki, H0 lub warunku jest niepełne."
   - points: 2.0
-    observable_description: Wybór wyniku klasycznego oraz Monte Carlo uzasadniono
-      strukturą tabeli i liczebnościami oczekiwanymi.
+    observable_description: "S01 definiuje jednostkę, sukces, niezależne grupy i różnicę prawdopodobieństw. S03 zapisuje H0, odczytuje najmniejsze E i uzasadnia przybliżenie chi-kwadrat oraz Monte Carlo przy stałych marginesach. Nie traktuje braków jako niepowodzeń."
 - id: Z07.2
-  title: Tabela liczebności i odsetków ma poprawne mianowniki, sumy i podpisy.
-  evidence: Tabela liczebności i odsetków ma poprawne mianowniki, sumy i podpisy.
+  title: "Liczebności i dwa różne mianowniki odsetka."
+  evidence: "S01 podaje N obu grup i braki. S02 poprawnie interpretuje 48/80 oraz 48/78, porównuje liczby i odsetki sukcesów oraz odnosi je do słupków 100%. Równej wysokości całych słupków nie odczytuje jako równych liczebności."
+  answer_fields: [S01, S02]
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -34,20 +32,19 @@ criteria:
   - U2
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Fragment tabeli bez określenia mianownika.
+    observable_description: "Przepisano fragment tabeli bez określenia mianownika."
   - points: 1.5
-    observable_description: Liczebności poprawne, lecz odsetki mają mylony mianownik.
+    observable_description: "Liczebności są poprawne, lecz pomylono mianownik w grupie z mianownikiem kategorii wyniku."
   - points: 2.25
-    observable_description: Liczebności i odsetki właściwe; brakuje jednej etykiety.
+    observable_description: "Liczebności, odsetki i mianowniki są poprawne; pominięto jedno objaśnienie wykresu lub braków."
   - points: 3.0
-    observable_description: Tabela liczebności i odsetków ma poprawne mianowniki,
-      sumy i podpisy.
+    observable_description: "S01 podaje N obu grup i braki. S02 poprawnie interpretuje 48/80 oraz 48/78, porównuje liczby i odsetki sukcesów oraz odnosi je do słupków 100%. Równej wysokości całych słupków nie odczytuje jako równych liczebności."
 - id: Z07.3
-  title: Poprawnie odczytano chi-kwadrat, df, p, p Monte Carlo, V Cramera i jego przedział.
-  evidence: Poprawnie odczytano chi-kwadrat, df, p, p Monte Carlo, V Cramera i jego
-    przedział.
+  title: "Statystyka, dwa p oraz kierunkowy efekt z CI."
+  evidence: "S03 wiąże wzór E i wkład komórki z chi-kwadrat, df i p; odczytuje k, B oraz (k+1)/(B+1). S04 podaje różnicę proporcji w punktach procentowych i oba 95% CI, a V opisuje bez kierunku. Nie testuje zera percentylami V i nie traktuje p jako prawdopodobieństwa H0."
+  answer_fields: [S03, S04]
   max_points: 3.0
   review_mode: mixed
   learning_outcomes:
@@ -55,32 +52,30 @@ criteria:
   - U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.75
-    observable_description: Podano wynik bez poprawnej tabeli wejściowej.
+    observable_description: "Podano p lub efekt bez poprawnego odczytu tabeli wejściowej."
   - points: 1.5
-    observable_description: Oba p są obecne; V lub jego przedział odczytano błędnie.
+    observable_description: "Oba p są obecne, ale statystykę, efekt, jego kierunek lub niepewność odczytano błędnie."
   - points: 2.25
-    observable_description: Komplet statystyk obu torów jest poprawny; brakuje jednego
-      symbolu albo B.
+    observable_description: "Statystyki, oba tory i CI są poprawne; pominięto jeden symbol, element rachunku E lub liczbę replik."
   - points: 3.0
-    observable_description: Poprawnie odczytano chi-kwadrat, df, p, p Monte Carlo,
-      V Cramera i jego przedział.
+    observable_description: "S03 wiąże wzór E i wkład komórki z chi-kwadrat, df i p; odczytuje k, B oraz (k+1)/(B+1). S04 podaje różnicę proporcji w punktach procentowych i oba 95% CI, a V opisuje bez kierunku. Nie testuje zera percentylami V i nie traktuje p jako prawdopodobieństwa H0."
 - id: Z07.4
-  title: Wykres/wniosek określa kierunek wzorca i nie przypisuje przyczynowości.
-  evidence: Wykres/wniosek określa kierunek wzorca i nie przypisuje przyczynowości.
+  title: "Wniosek dla archiwum bez pozornej równoważności."
+  evidence: "S05 zastępuje błędne zdanie akapitem z N, odsetkami, kierunkiem, CI i oboma p. Ocenia, czy wykluczono różnicę 10 punktów procentowych na niekorzyść pierwszej wizyty. Dodaje ograniczenie i następną czynność badawczą, bez twierdzenia o równości grup, przyczynowości lub całych kompetencjach."
+  answer_fields: [S02, S05]
   max_points: 2.0
   review_mode: human
   learning_outcomes: U3
   levels:
   - points: 0.0
-    observable_description: Brak dowodu lub wynik nie realizuje kryterium.
+    observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: Wniosek nie określa wzorca odsetków.
+    observable_description: "Wniosek nie określa wzorca odsetków ani zakresu niepewności."
   - points: 1.0
-    observable_description: Wzorzec odsetków poprawny, lecz opis przypisuje przyczynowość.
+    observable_description: "Wzorzec jest poprawny, ale p powyżej 0,05 uznano za dowód równości lub przypisano grupom przyczynowy wpływ."
   - points: 1.5
-    observable_description: Wzorzec i ostrożność poprawne; wykres ma drobną lukę opisu.
+    observable_description: "Ostrożny wniosek i odniesienie do 10 punktów są poprawne; ograniczenie lub następna czynność wymagają doprecyzowania."
   - points: 2.0
-    observable_description: Wykres/wniosek określa kierunek wzorca i nie przypisuje
-      przyczynowości.
+    observable_description: "S05 zastępuje błędne zdanie akapitem z N, odsetkami, kierunkiem, CI i oboma p. Ocenia, czy wykluczono różnicę 10 punktów procentowych na niekorzyść pierwszej wizyty. Dodaje ograniczenie i następną czynność badawczą, bez twierdzenia o równości grup, przyczynowości lub całych kompetencjach."
