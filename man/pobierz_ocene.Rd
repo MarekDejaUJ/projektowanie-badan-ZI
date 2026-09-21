@@ -9,7 +9,7 @@ pobierz_ocene(id, katalog = NULL, sha = NULL)
 
 \item{katalog}{Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.}
 
-\item{sha}{SHA ocenionej pracy; domyślnie lokalne HEAD.}
+\item{sha}{SHA konkretnej pracy; domyślnie ostatnie potwierdzone oddanie zadania.}
 }
 \value{
 Lista ze stanem i oceną, jeśli opublikowano.
@@ -17,6 +17,8 @@ Lista ze stanem i oceną, jeśli opublikowano.
 \description{
 Odczytuje tylko komentarze uwierzytelnionego właściciela repozytorium,
 powiązane z żądanym SHA i wersją rubryki. Brak feedbacku nie oznacza zera.
+Po oddaniu kolejnych zadań nadal odszukuje ocenę wskazanego zadania.
+Nowe oddanie bez oceny nie powoduje zwrócenia oceny wcześniejszej wersji.
 }
 \examples{
 \dontrun{ pobierz_ocene("Z01", "moje-badania") }

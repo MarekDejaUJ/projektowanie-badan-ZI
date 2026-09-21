@@ -9,13 +9,15 @@ status_oddania(id, katalog = NULL, sha = NULL)
 
 \item{katalog}{Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.}
 
-\item{sha}{Opcjonalne SHA poprzedniego oddania; domyślnie lokalne HEAD.}
+\item{sha}{Opcjonalne SHA konkretnej wersji; domyślnie ostatnie oddanie zadania.}
 }
 \value{
 Stan odbioru; wynik kontroli Actions jest osobnym polem.
 }
 \description{
-Status odbioru i kontroli
+Domyślnie odszukuje ostatnie potwierdzone oddanie wskazanego zadania na
+zdalnej gałęzi main, również po oddaniu innych zadań. Nie ocenia lokalnych,
+niewysłanych zmian. Bez pokwitowania zwraca stan brak_oddania.
 }
 \examples{
 \dontrun{ status_oddania("Z01", "moje-badania") }

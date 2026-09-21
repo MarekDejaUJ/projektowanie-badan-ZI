@@ -54,6 +54,17 @@ oddaj_prace <- function(id, katalog) {
   sha <- gert::git_info(repo = katalog)$commit
   sprawdz_bajty_commitu(katalog, kontrola$pliki, hashe_oddania, sha)
   sprawdz_historie_oddania(katalog, id, kontrola$pliki, sha, baza)
+  if (identical(sha, baza)) {
+    poprzednie <- ostatnie_oddanie(cfg$repo, id)
+    if (!is.null(poprzednie) &&
+        identyczne_oddanie(katalog, kontrola$pliki, hashe_oddania, poprzednie$sha)) {
+      sprawdz_bajty_commitu(katalog, kontrola$pliki, hashe_oddania, sha)
+      wynik <- pokwitowanie(cfg$repo, poprzednie$sha, id, poprzednie$odbior)
+      message("Pliki nie zmieni\u0142y si\u0119. Zachowano odbi\u00f3r ", id, ". SHA: ", wynik$sha,
+        ". Czas GitHub: ", wynik$czas_serwera, ".")
+      return(wynik)
+    }
+  }
   operacja_git(gert::git_push("origin", refspec = paste0(sha, ":refs/heads/main"),
                              password = token_sesji(), force = FALSE, verbose = FALSE, repo = katalog))
   remote <- github_api(paste0("repos/", cfg$repo, "/git/ref/heads/main"))$dane$object$sha
@@ -109,9 +120,13 @@ pokwitowanie <- function(repo, sha, id, odbior) {
 }
 
 #' Status odbioru i kontroli
+#'
+#' Domyślnie odszukuje ostatnie potwierdzone oddanie wskazanego zadania na
+#' zdalnej gałęzi main, również po oddaniu innych zadań. Nie ocenia lokalnych,
+#' niewysłanych zmian. Bez pokwitowania zwraca stan brak_oddania.
 #' @param id Z01--Z10 albo PROJEKT.
 #' @param katalog Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.
-#' @param sha Opcjonalne SHA poprzedniego oddania; domyślnie lokalne HEAD.
+#' @param sha Opcjonalne SHA konkretnej wersji; domyślnie ostatnie oddanie zadania.
 #' @return Stan odbioru; wynik kontroli Actions jest osobnym polem.
 #' @export
 #' @examples
@@ -121,12 +136,18 @@ status_oddania <- function(id, katalog = NULL, sha = NULL) {
   id <- toupper(id)
   sprawdz_id(id, "zadanie", "^(Z(0[1-9]|10)|PROJEKT)$")
   cfg <- sprawdz_repo(katalog)
-  if (is.null(sha)) sha <- gert::git_info(repo = katalog)$commit
-  sprawdz_id(sha, "sha", "^[0-9a-f]{40}$")
-  commit <- github_api(paste0("repos/", cfg$repo, "/commits/", sha), brak_ok = TRUE)$dane
-  if (is.null(commit)) return(list(stan = "tylko_lokalnie", zadanie = id, sha = sha))
-  odbior <- znajdz_odbior(cfg$repo, sha, id)
-  if (is.null(odbior)) return(list(stan = "wyslane_bez_pokwitowania", zadanie = id, sha = sha))
+  if (is.null(sha)) {
+    poprzednie <- ostatnie_oddanie(cfg$repo, id)
+    if (is.null(poprzednie)) return(list(stan = "brak_oddania", zadanie = id, sha = NULL))
+    sha <- poprzednie$sha
+    odbior <- poprzednie$odbior
+  } else {
+    sprawdz_id(sha, "sha", "^[0-9a-f]{40}$")
+    commit <- github_api(paste0("repos/", cfg$repo, "/commits/", sha), brak_ok = TRUE)$dane
+    if (is.null(commit)) return(list(stan = "tylko_lokalnie", zadanie = id, sha = sha))
+    odbior <- znajdz_odbior(cfg$repo, sha, id)
+    if (is.null(odbior)) return(list(stan = "wyslane_bez_pokwitowania", zadanie = id, sha = sha))
+  }
   wynik <- pokwitowanie(cfg$repo, sha, id, odbior)
   runy <- github_api(paste0("repos/", cfg$repo, "/actions/runs?head_sha=", sha, "&per_page=100"))$dane$workflow_runs
   wynik$kontrole <- lapply(runy, function(r) list(nazwa = r$name, status = r$status,

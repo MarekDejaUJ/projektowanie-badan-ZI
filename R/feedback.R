@@ -41,9 +41,11 @@ wystaw_ocene <- function(repo, sha, id, formularz, komentarz = "") {
 #'
 #' Odczytuje tylko komentarze uwierzytelnionego właściciela repozytorium,
 #' powiązane z żądanym SHA i wersją rubryki. Brak feedbacku nie oznacza zera.
+#' Po oddaniu kolejnych zadań nadal odszukuje ocenę wskazanego zadania.
+#' Nowe oddanie bez oceny nie powoduje zwrócenia oceny wcześniejszej wersji.
 #' @param id Z01--Z10 albo PROJEKT.
 #' @param katalog Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.
-#' @param sha SHA ocenionej pracy; domyślnie lokalne HEAD.
+#' @param sha SHA konkretnej pracy; domyślnie ostatnie potwierdzone oddanie zadania.
 #' @return Lista ze stanem i oceną, jeśli opublikowano.
 #' @export
 #' @examples
@@ -53,7 +55,11 @@ pobierz_ocene <- function(id, katalog = NULL, sha = NULL) {
   id <- toupper(id)
   r <- rubryka(id)
   cfg <- sprawdz_repo(katalog)
-  if (is.null(sha)) sha <- gert::git_info(repo = katalog)$commit
+  if (is.null(sha)) {
+    poprzednie <- ostatnie_oddanie(cfg$repo, id)
+    if (is.null(poprzednie)) return(list(stan = "nieopublikowana", sha = NULL, ocena = NULL))
+    sha <- poprzednie$sha
+  }
   sprawdz_id(sha, "sha", "^[0-9a-f]{40}$")
   owner <- strsplit(cfg$repo, "/", fixed = TRUE)[[1]][1L]
   komentarze <- list()

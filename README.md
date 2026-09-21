@@ -110,6 +110,9 @@ informacjami: brak oceny nie oznacza zera punktów. Jeśli wysyłka się nie uda
 zachowaj lokalny katalog; sam utworzony PDF nie potwierdza odbioru przez GitHub.
 Opcjonalnie `sprawdz_zadanie("Z01")` tworzy i sprawdza PDF bez wysyłania,
 `status_oddania("Z01")` sprawdza odbiór, a `pobierz_ocene("Z01")` pobiera feedback.
+Obie funkcje odnajdują ostatnie potwierdzone oddanie tego zadania, także po
+wysłaniu kolejnych zadań. Nie trzeba pamiętać SHA. Ponowna wysyłka identycznych
+plików zachowuje wcześniejsze pokwitowanie; nowa wersja czeka na osobną ocenę.
 Przed opuszczeniem sali wykonaj `wyloguj_github()` i wyloguj także przeglądarkę.
 
 ## Projekt od C09 do raportu
