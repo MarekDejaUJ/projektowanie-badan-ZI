@@ -83,7 +83,7 @@ czytaj_odbior_kontrolny <- function(katalog) {
 argumenty_kontenera <- function(wejscie, obraz) {
   wejscie <- normalizePath(wejscie, winslash = "/", mustWork = TRUE)
   if (grepl("[,\r\n]", wejscie)) stop("Katalog kontroli nie mo\u017ce zawiera\u0107 przecinka ani nowej linii.", call. = FALSE)
-  c("create", "--network=none", "--read-only", "--cap-drop=ALL",
+  c("create", "--pull=never", "--network=none", "--read-only", "--cap-drop=ALL",
     "--security-opt=no-new-privileges", "--user=65534:65534",
     "--pids-limit=128", "--memory=2g", "--cpus=2", "--log-driver=none",
     "--tmpfs=/tmp:rw,nosuid,nodev,size=512m,mode=1777",

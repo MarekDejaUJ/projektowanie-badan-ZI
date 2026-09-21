@@ -4,7 +4,7 @@ test_that("argumenty kontenera nie przekazują sekretów ani zapisu do hosta", {
   on.exit(unlink(k, recursive = TRUE), add = TRUE)
   image <- paste0("sha256:", strrep("a", 64))
   a <- badaniaZI:::argumenty_kontenera(k, image)
-  expect_true(all(c("--network=none", "--read-only", "--cap-drop=ALL",
+  expect_true(all(c("--pull=never", "--network=none", "--read-only", "--cap-drop=ALL",
     "--security-opt=no-new-privileges", "--user=65534:65534", "--memory=2g",
     "--pids-limit=128", "--log-driver=none") %in% a))
   expect_equal(sum(a == "--mount"), 1L)
