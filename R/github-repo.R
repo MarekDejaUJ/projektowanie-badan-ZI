@@ -91,6 +91,10 @@ rozpocznij_zajecia <- function(cwiczenie, id_studenta, repo_url = NULL,
   katalog <- zapamietaj_prace(katalog, cwiczenie)
   message("Praca ", cwiczenie, ", ID: ", id_studenta, ". Plik: ", plik)
   if (otworz) otworz_plik_pracy(plik)
+  message("W RStudio uruchom pierwszy blok R (chunk) tr\u00f3jk\u0105tem przy tym bloku, potem kolejne bloki od g\u00f3ry.\n",
+    "W CHALLENGE zast\u0105p znaczniki [UZUPELNIJ_S01]\u2013[UZUPELNIJ_S05] w\u0142asnymi akapitami poza blokami R.\n",
+    "Zapisz Rmd (Ctrl+S; na macOS Cmd+S), a w konsoli wpisz: oddaj_zadanie(\"",
+    sub("^C", "Z", cwiczenie), "\"). Funkcja przygotuje PDF i wy\u015ble prac\u0119. Poczekaj na potwierdzenie odbioru.")
   invisible(list(projekt = p, plik = plik, cwiczenie = cwiczenie,
                  id = id_studenta, katalog = katalog, aktualizacja = aktualizacja))
 }

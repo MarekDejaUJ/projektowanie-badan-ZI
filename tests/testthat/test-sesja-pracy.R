@@ -115,6 +115,33 @@ test_that("pierwsze pobranie zapamiętuje nowy katalog bez zmiany sesji", {
   expect_identical(x$plik, plik_pracy("Z01"))
 })
 
+test_that("każdy start przypomina wykonanie chunków, miejsce odpowiedzi i numer oddania", {
+  wyloguj_github(FALSE)
+  on.exit(wyloguj_github(FALSE), add = TRUE)
+  k <- tempfile("przypomnienie pracy ")
+  on.exit(unlink(k, recursive = TRUE, force = TRUE), add = TRUE)
+  utworz_projekt("s017", katalog = k, repo = "kurs/praca-s017")
+  auth <- badaniaZI:::sesja_github
+  auth$token <- "test-token-only"
+  local_mocked_bindings(
+    sprawdz_repo = function(katalog, ...) badaniaZI:::czytaj_yaml(file.path(katalog, "kurs.yml")),
+    przygotuj_zadanie = function(id, katalog) file.path(katalog, "zadania", tolower(id), "zadanie.Rmd"),
+    .package = "badaniaZI")
+  local_mocked_bindings(git_status = function(...) data.frame(file = "kurs.yml"), .package = "gert")
+  for (nr in sprintf("%02d", 1:10)) {
+    msg <- character()
+    withCallingHandlers(rozpocznij_zajecia(paste0("C", nr), "s017", katalog = k, otworz = FALSE),
+      message = function(m) { msg <<- c(msg, conditionMessage(m)); invokeRestart("muffleMessage") })
+    txt <- paste(msg, collapse = "\n")
+    expect_match(txt, "pierwszy blok R (chunk)", fixed = TRUE)
+    expect_match(txt, "poza blokami R", fixed = TRUE)
+    expect_match(txt, "[UZUPELNIJ_S01]", fixed = TRUE)
+    expect_match(txt, "[UZUPELNIJ_S05]", fixed = TRUE)
+    expect_match(txt, paste0('oddaj_zadanie("Z', nr, '")'), fixed = TRUE)
+    expect_match(txt, "Poczekaj na potwierdzenie odbioru", fixed = TRUE)
+  }
+})
+
 test_that("otwarcie edytora używa navigateToFile i obsługuje brak API", {
   skip_if_not_installed("rstudioapi")
   otwarty <- NULL
