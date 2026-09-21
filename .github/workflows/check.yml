@@ -38,7 +38,7 @@ jobs:
         shell: Rscript {0}
         run: |
           tarball <- pkgbuild::build('.', dest_path = tempdir(), manual = FALSE, vignettes = FALSE)
-          processx::run(file.path(R.home('bin'), 'Rscript'), c('--vanilla', 'tools/kontrola/build.R', tarball), echo = TRUE, timeout = 1800)
+          invisible(processx::run(file.path(R.home('bin'), 'Rscript'), c('--vanilla', 'tools/kontrola/build.R', tarball), echo = TRUE, timeout = 1800))
           install.packages(tarball, repos = NULL, type = 'source')
       - name: Kontrola syntetycznych prac i ograniczeń kontenera
         shell: Rscript {0}

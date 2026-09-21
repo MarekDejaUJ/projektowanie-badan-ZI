@@ -8,7 +8,7 @@ stopifnot(file.copy(args[1L], file.path(context, "badaniaZI.tar.gz")),
 result <- processx::run("docker", c("build", "--iidfile", file.path(context, "image.id"), context),
   timeout = 1800, error_on_status = FALSE, echo = TRUE, windows_hide_window = TRUE)
 if (result$status != 0L) stop("Budowa obrazu nieudana. Kontekst: ", context)
-image <- trimws(readLines(file.path(context, "image.id")))
+image <- trimws(readLines(file.path(context, "image.id"), warn = FALSE))
 stopifnot(grepl("^sha256:[0-9a-f]{64}$", image))
 cat("Zaufany obraz kontroli:", image, "\n")
 if (nzchar(Sys.getenv("GITHUB_ENV")))
