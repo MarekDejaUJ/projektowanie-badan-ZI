@@ -12,7 +12,7 @@ pięć CHALLENGE wymaga własnych pisemnych interpretacji. Student pracuje
 indywidualnie przed komputerem, z możliwością konsultacji z prowadzącym.
 Osobne handouty HTML/PDF są przeznaczone dla pięciu wykładów.
 
-Zmiany przygotowywanej wersji 2.0 opisuje [NEWS.md](NEWS.md).
+Zmiany w wydaniu 2.0.0 opisuje [NEWS.md](NEWS.md).
 
 Materiały online: <https://MarekDejaUJ.github.io/projektowanie-badan-ZI/>
 

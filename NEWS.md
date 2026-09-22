@@ -1,7 +1,8 @@
-# badaniaZI 2.0.0 — wersja przygotowywana
+# badaniaZI 2.0.0 — wydanie kursu ZI 2026/27
 
-Wersja 2.0.0 nie jest jeszcze opublikowanym wydaniem kursu. Wersję do pracy
-na zajęciach wskazuje prowadzący; nie aktualizuj pakietu podczas zadania.
+Wersja 2.0.0 jest przypiętym wydaniem części ilościowej kursu na rok 2026/27.
+Wersję do pracy na zajęciach wskazuje prowadzący; nie aktualizuj pakietu
+podczas wykonywania zadania.
 
 ## Materiały i sposób pracy
 
