@@ -14,12 +14,12 @@ wykres_przeplyw_proby(etapy, n, os = etykiety_zi$liczba_osob, tytul = NULL)
 \item{tytul}{Tytul wykresu.}
 }
 \value{
-Obiekt ggplot.
+Obiekt ggplot; wykres rysuje print().
 }
 \description{
 Poziome slupki podaja liczbe jednostek na kolejnych etapach badania oraz
 odsetek wzgledem pierwszego etapu.
 }
 \examples{
-wykres_przeplyw_proby(c("Zaproszeni", "Rozpoczeli", "Ukonczyli"), c(300, 180, 150))
+p <- wykres_przeplyw_proby(c("Zaproszeni", "Rozpoczeli", "Ukonczyli"), c(300, 180, 150))
 }

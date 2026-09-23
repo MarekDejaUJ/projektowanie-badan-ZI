@@ -14,7 +14,7 @@ diagram_etapow(etapy, opisy = NULL, grupy = NULL, tytul = NULL)
 \item{tytul}{Tytul wykresu.}
 }
 \value{
-Obiekt ggplot.
+Obiekt ggplot; wykres rysuje print().
 }
 \description{
 Rysuje etapy od gory do dolu, polaczone strzalkami. Kazdy etap moze miec
@@ -22,6 +22,6 @@ krotkie pytanie oraz grupe (np. plan badania i analiza danych), zaznaczona
 odcieniem tla i nazwa w nawiasie.
 }
 \examples{
-diagram_etapow(c("Problem", "Pomiar", "Wniosek"),
-  c("Jaka decyzja?", "Co obserwujemy?", "Co wolno stwierdzic?"))
+p <- diagram_etapow(c("Problem", "Pomiar", "Wniosek"),
+       c("Jaka decyzja?", "Co obserwujemy?", "Co wolno stwierdzic?"))
 }

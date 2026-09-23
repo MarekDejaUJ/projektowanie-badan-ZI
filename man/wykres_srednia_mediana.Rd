@@ -14,12 +14,12 @@ wykres_srednia_mediana(x, grupa = NULL, os = "Wartość", tytul = NULL)
 \item{tytul}{Tytul wykresu.}
 }
 \value{
-Obiekt ggplot.
+Obiekt ggplot; wykres rysuje print().
 }
 \description{
 Kazda osoba jest kolem na osi wartosci; romb oznacza srednia, a pionowa
 kreska mediane grupy. Rozne ksztalty pozwalaja odczytac wykres bez koloru.
 }
 \examples{
-wykres_srednia_mediana(c(2, 3, 3, 20), os = "Czas [min]")
+p <- wykres_srednia_mediana(c(2, 3, 3, 20), os = "Czas [min]")
 }

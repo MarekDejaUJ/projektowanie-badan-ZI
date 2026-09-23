@@ -16,7 +16,7 @@ wykres_braki(dane, zmienne, grupa, etykiety = zmienne, tytul = NULL)
 \item{tytul}{Tytul wykresu.}
 }
 \value{
-Obiekt ggplot.
+Obiekt ggplot; wykres rysuje print().
 }
 \description{
 Panel dla kazdej grupy; slupek podaje odsetek brakow zmiennej, a napis
@@ -24,5 +24,5 @@ liczbe brakow i liczbe osob w grupie.
 }
 \examples{
 d <- data.frame(g = c("a", "a", "b", "b"), x = c(1, NA, 2, 3), y = c(NA, NA, 1, 1))
-wykres_braki(d, c("x", "y"), "g")
+p <- wykres_braki(d, c("x", "y"), "g")
 }

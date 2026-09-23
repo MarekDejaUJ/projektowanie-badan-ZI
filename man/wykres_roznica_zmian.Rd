@@ -16,12 +16,12 @@ wykres_roznica_zmian(przed, po, grupy, kontrfakt, os = "Wartość", tytul = NULL
 \item{tytul}{Tytul wykresu.}
 }
 \value{
-Obiekt ggplot.
+Obiekt ggplot; wykres rysuje print().
 }
 \description{
 Linie lacza pomiar przed i po w dwoch grupach. Linia przerywana pokazuje
 przebieg pierwszej grupy przy zalozeniu zmiany rownej zmianie grupy drugiej.
 }
 \examples{
-wykres_roznica_zmian(c(10, 8), c(7, 7), c("Filia A", "Filia B"), "A przy trendzie B")
+p <- wykres_roznica_zmian(c(10, 8), c(7, 7), c("Filia A", "Filia B"), "A przy trendzie B")
 }

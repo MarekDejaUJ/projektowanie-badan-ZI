@@ -10,11 +10,11 @@ diagram_piramida_dowodow(poziomy, tytul = NULL)
 \item{tytul}{Tytul wykresu.}
 }
 \value{
-Obiekt ggplot.
+Obiekt ggplot; wykres rysuje print().
 }
 \description{
 Poziomy rysowane od podstawy do wierzcholka; kazdy wyzszy poziom jest wezszy.
 }
 \examples{
-diagram_piramida_dowodow(c("Opinia", "Opis przypadku", "Badanie z randomizacja"))
+p <- diagram_piramida_dowodow(c("Opinia", "Opis przypadku", "Badanie z randomizacja"))
 }

@@ -29,13 +29,13 @@ wykres_przedzialy(
 \item{tytul}{Tytul wykresu.}
 }
 \value{
-Obiekt ggplot.
+Obiekt ggplot; wykres rysuje print().
 }
 \description{
 Poziomy odcinek przedstawia przedzial, romb estymate, a liczby przy koncach
 odcinka podaja granice. Linia przerywana oznacza wartosc odniesienia.
 }
 \examples{
-wykres_przedzialy(c("Precyzyjny", "Szeroki"), c(2, 2), c(1.7, -3), c(2.3, 7),
-  odniesienie = 0, os = "Roznica [min]")
+p <- wykres_przedzialy(c("Precyzyjny", "Szeroki"), c(2, 2), c(1.7, -3), c(2.3, 7),
+       odniesienie = 0, os = "Roznica [min]")
 }

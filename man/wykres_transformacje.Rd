@@ -14,12 +14,12 @@ wykres_transformacje(x, id, jednostka = "minuty", tytul = NULL)
 \item{tytul}{Tytul wykresu.}
 }
 \value{
-Obiekt ggplot.
+Obiekt ggplot; wykres rysuje print().
 }
 \description{
 Kazdy panel jest osia jednej reprezentacji (minuty, rangi, min-max,
 standaryzacja z, log2); etykiety punktow wskazuja te same osoby.
 }
 \examples{
-wykres_transformacje(c(2, 4, 4, 8), c("a", "b", "c", "d"))
+p <- wykres_transformacje(c(2, 4, 4, 8), c("a", "b", "c", "d"))
 }

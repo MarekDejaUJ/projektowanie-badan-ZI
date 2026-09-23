@@ -16,12 +16,12 @@ wykres_rowne_srednie(srednia, sd, etykiety, os = "Wartość", tytul = NULL)
 \item{tytul}{Tytul wykresu.}
 }
 \value{
-Obiekt ggplot.
+Obiekt ggplot; wykres rysuje print().
 }
 \description{
 Krzywe gestosci rozkladu normalnego o wspolnej sredniej i roznych
 odchyleniach standardowych; linia pionowa oznacza srednia.
 }
 \examples{
-wykres_rowne_srednie(8, c(1, 4), c("SD = 1", "SD = 4"), os = "Czas [min]")
+p <- wykres_rowne_srednie(8, c(1, 4), c("SD = 1", "SD = 4"), os = "Czas [min]")
 }

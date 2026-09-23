@@ -12,12 +12,12 @@ wykres_punkty_os(x, os = "Wartość", tytul = NULL)
 \item{tytul}{Tytul wykresu.}
 }
 \value{
-Obiekt ggplot.
+Obiekt ggplot; wykres rysuje print().
 }
 \description{
 Kazdy punkt to jedna obserwacja rozsunieta w pionie; pionowe linie oznaczaja
 pierwszy kwartyl, mediane i trzeci kwartyl (kwantyl typu 7).
 }
 \examples{
-wykres_punkty_os(c(2, 4, 5, 7, 8, 13, 30), os = "Czas [min]")
+p <- wykres_punkty_os(c(2, 4, 5, 7, 8, 13, 30), os = "Czas [min]")
 }

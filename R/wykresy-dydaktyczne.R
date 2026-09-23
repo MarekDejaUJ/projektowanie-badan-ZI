@@ -36,11 +36,11 @@ zawin_tekst <- function(x, szerokosc) {
 #' @param opisy Krotkie pytania lub opisy etapow; domyslnie puste.
 #' @param grupy Nazwy grup etapow; domyslnie jedna grupa bez nazwy.
 #' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot.
+#' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
-#' diagram_etapow(c("Problem", "Pomiar", "Wniosek"),
-#'   c("Jaka decyzja?", "Co obserwujemy?", "Co wolno stwierdzic?"))
+#' p <- diagram_etapow(c("Problem", "Pomiar", "Wniosek"),
+#'        c("Jaka decyzja?", "Co obserwujemy?", "Co wolno stwierdzic?"))
 diagram_etapow <- function(etapy, opisy = NULL, grupy = NULL, tytul = NULL) {
   stopifnot(is.character(etapy), length(etapy) >= 2L)
   n <- length(etapy)
@@ -80,10 +80,10 @@ diagram_etapow <- function(etapy, opisy = NULL, grupy = NULL, tytul = NULL) {
 #' @param n Liczby jednostek na etapach.
 #' @param os Podpis osi liczebnosci.
 #' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot.
+#' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
-#' wykres_przeplyw_proby(c("Zaproszeni", "Rozpoczeli", "Ukonczyli"), c(300, 180, 150))
+#' p <- wykres_przeplyw_proby(c("Zaproszeni", "Rozpoczeli", "Ukonczyli"), c(300, 180, 150))
 wykres_przeplyw_proby <- function(etapy, n, os = etykiety_zi$liczba_osob, tytul = NULL) {
   stopifnot(length(etapy) == length(n), length(n) >= 2L, all(n >= 0))
   d <- data.frame(etap = factor(etapy, levels = rev(etapy)), n = n)
@@ -106,10 +106,10 @@ wykres_przeplyw_proby <- function(etapy, n, os = etykiety_zi$liczba_osob, tytul 
 #' @param grupa Opcjonalne etykiety grup lub serii.
 #' @param os Podpis osi wartosci.
 #' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot.
+#' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
-#' wykres_srednia_mediana(c(2, 3, 3, 20), os = "Czas [min]")
+#' p <- wykres_srednia_mediana(c(2, 3, 3, 20), os = "Czas [min]")
 wykres_srednia_mediana <- function(x, grupa = NULL, os = "Warto\u015b\u0107", tytul = NULL) {
   if (is.null(grupa)) grupa <- rep(" ", length(x))
   stopifnot(is.numeric(x), length(grupa) == length(x))
@@ -148,11 +148,11 @@ wykres_srednia_mediana <- function(x, grupa = NULL, os = "Warto\u015b\u0107", ty
 #' @param os Podpis osi.
 #' @param cyfry Liczba miejsc po przecinku w etykietach granic.
 #' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot.
+#' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
-#' wykres_przedzialy(c("Precyzyjny", "Szeroki"), c(2, 2), c(1.7, -3), c(2.3, 7),
-#'   odniesienie = 0, os = "Roznica [min]")
+#' p <- wykres_przedzialy(c("Precyzyjny", "Szeroki"), c(2, 2), c(1.7, -3), c(2.3, 7),
+#'        odniesienie = 0, os = "Roznica [min]")
 wykres_przedzialy <- function(etykieta, estymata, dolna, gorna, odniesienie = NULL,
                               os = "Warto\u015b\u0107", cyfry = 1L, tytul = NULL) {
   n <- length(etykieta)
@@ -186,10 +186,10 @@ wykres_przedzialy <- function(etykieta, estymata, dolna, gorna, odniesienie = NU
 #' @param kontrfakt Nazwa linii przebiegu przy trendzie drugiej grupy.
 #' @param os Podpis osi wartosci.
 #' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot.
+#' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
-#' wykres_roznica_zmian(c(10, 8), c(7, 7), c("Filia A", "Filia B"), "A przy trendzie B")
+#' p <- wykres_roznica_zmian(c(10, 8), c(7, 7), c("Filia A", "Filia B"), "A przy trendzie B")
 wykres_roznica_zmian <- function(przed, po, grupy, kontrfakt, os = "Warto\u015b\u0107",
                                  tytul = NULL) {
   stopifnot(length(przed) == 2L, length(po) == 2L, length(grupy) == 2L)
@@ -220,10 +220,10 @@ wykres_roznica_zmian <- function(przed, po, grupy, kontrfakt, os = "Warto\u015b\
 #' @param etykiety Nazwy krzywych.
 #' @param os Podpis osi wartosci.
 #' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot.
+#' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
-#' wykres_rowne_srednie(8, c(1, 4), c("SD = 1", "SD = 4"), os = "Czas [min]")
+#' p <- wykres_rowne_srednie(8, c(1, 4), c("SD = 1", "SD = 4"), os = "Czas [min]")
 wykres_rowne_srednie <- function(srednia, sd, etykiety, os = "Warto\u015b\u0107", tytul = NULL) {
   stopifnot(length(srednia) == 1L, length(sd) == length(etykiety), all(sd > 0))
   x <- seq(srednia - 4 * max(sd), srednia + 4 * max(sd), length.out = 400)
@@ -248,10 +248,10 @@ wykres_rowne_srednie <- function(srednia, sd, etykiety, os = "Warto\u015b\u0107"
 #' Poziomy rysowane od podstawy do wierzcholka; kazdy wyzszy poziom jest wezszy.
 #' @param poziomy Nazwy poziomow od podstawy do wierzcholka.
 #' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot.
+#' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
-#' diagram_piramida_dowodow(c("Opinia", "Opis przypadku", "Badanie z randomizacja"))
+#' p <- diagram_piramida_dowodow(c("Opinia", "Opis przypadku", "Badanie z randomizacja"))
 diagram_piramida_dowodow <- function(poziomy, tytul = NULL) {
   n <- length(poziomy)
   stopifnot(is.character(poziomy), n >= 2L)
@@ -276,10 +276,10 @@ diagram_piramida_dowodow <- function(poziomy, tytul = NULL) {
 #' @param x Wartosci liczbowe; braki sa pomijane.
 #' @param os Podpis osi wartosci.
 #' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot.
+#' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
-#' wykres_punkty_os(c(2, 4, 5, 7, 8, 13, 30), os = "Czas [min]")
+#' p <- wykres_punkty_os(c(2, 4, 5, 7, 8, 13, 30), os = "Czas [min]")
 wykres_punkty_os <- function(x, os = "Warto\u015b\u0107", tytul = NULL) {
   x <- x[is.finite(x)]
   stopifnot(length(x) >= 4L)
@@ -307,10 +307,10 @@ wykres_punkty_os <- function(x, os = "Warto\u015b\u0107", tytul = NULL) {
 #' @param grupa Opcjonalne etykiety grup.
 #' @param os Podpis osi wartosci.
 #' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot.
+#' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
-#' wykres_pudelkowy(c(4.5, 6.5, 8, 35), os = "Czas [min]")
+#' p <- wykres_pudelkowy(c(4.5, 6.5, 8, 35), os = "Czas [min]")
 wykres_pudelkowy <- function(x, grupa = NULL, os = "Warto\u015b\u0107", tytul = NULL) {
   if (is.null(grupa)) grupa <- rep(" ", length(x))
   stopifnot(is.numeric(x), length(grupa) == length(x))
@@ -348,10 +348,10 @@ wykres_pudelkowy <- function(x, grupa = NULL, os = "Warto\u015b\u0107", tytul = 
 #' @param os Podpis osi wartosci.
 #' @param jednostka Jednostka szerokosci przedzialu w podtytule.
 #' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot.
+#' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
-#' wykres_histogram(c(2, 4, 5, 7, 8, 13, 30), szerokosc = 5, os = "Czas [min]")
+#' p <- wykres_histogram(c(2, 4, 5, 7, 8, 13, 30), szerokosc = 5, os = "Czas [min]")
 wykres_histogram <- function(x, szerokosc, poczatek = 0, skala = c("liczebnosc", "gestosc"),
                              os = "Warto\u015b\u0107", jednostka = "min", tytul = NULL) {
   skala <- match.arg(skala)
@@ -379,10 +379,10 @@ wykres_histogram <- function(x, szerokosc, poczatek = 0, skala = c("liczebnosc",
 #' @param id Etykiety obserwacji.
 #' @param jednostka Nazwa jednostki surowych wartosci.
 #' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot.
+#' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
-#' wykres_transformacje(c(2, 4, 4, 8), c("a", "b", "c", "d"))
+#' p <- wykres_transformacje(c(2, 4, 4, 8), c("a", "b", "c", "d"))
 wykres_transformacje <- function(x, id, jednostka = "minuty", tytul = NULL) {
   stopifnot(is.numeric(x), all(is.finite(x)), all(x > 0), length(id) == length(x), stats::sd(x) > 0)
   skale <- c(paste0("Warto\u015b\u0107 [", jednostka, "]"), "Ranga", "Min\u2013max (0\u20131)",
@@ -414,11 +414,11 @@ wykres_transformacje <- function(x, id, jednostka = "minuty", tytul = NULL) {
 #' @param grupa Nazwa kolumny grupujacej.
 #' @param etykiety Czytelne nazwy zmiennych; domyslnie nazwy kolumn.
 #' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot.
+#' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
 #' d <- data.frame(g = c("a", "a", "b", "b"), x = c(1, NA, 2, 3), y = c(NA, NA, 1, 1))
-#' wykres_braki(d, c("x", "y"), "g")
+#' p <- wykres_braki(d, c("x", "y"), "g")
 wykres_braki <- function(dane, zmienne, grupa, etykiety = zmienne, tytul = NULL) {
   stopifnot(is.data.frame(dane), all(c(zmienne, grupa) %in% names(dane)), length(etykiety) == length(zmienne))
   d <- do.call(rbind, lapply(split(dane, dane[[grupa]]), function(z)
@@ -443,10 +443,11 @@ wykres_braki <- function(dane, zmienne, grupa, etykiety = zmienne, tytul = NULL)
 #' @param log Ramka z kolumnami id, minuta i zdarzenie.
 #' @param os Podpis osi czasu.
 #' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot.
+#' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
-#' wykres_log(data.frame(id = c("u01", "u01"), minuta = c(0, 6.5), zdarzenie = c("start", "koniec")))
+#' log <- data.frame(id = c("u01", "u01"), minuta = c(0, 6.5), zdarzenie = c("start", "koniec"))
+#' p <- wykres_log(log)
 wykres_log <- function(log, os = "Minuta sesji", tytul = NULL) {
   stopifnot(is.data.frame(log), all(c("id", "minuta", "zdarzenie") %in% names(log)))
   d <- log

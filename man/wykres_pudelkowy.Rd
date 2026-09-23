@@ -14,7 +14,7 @@ wykres_pudelkowy(x, grupa = NULL, os = "Wartość", tytul = NULL)
 \item{tytul}{Tytul wykresu.}
 }
 \value{
-Obiekt ggplot.
+Obiekt ggplot; wykres rysuje print().
 }
 \description{
 Pudelko obejmuje kwartyle, kreska w srodku oznacza mediane, a punkty
@@ -22,5 +22,5 @@ pokazuja wszystkie obserwacje. Linia kropkowana oznacza granice
 Q3 + 1,5 IQR, powyzej ktorej punkty leza poza wasem.
 }
 \examples{
-wykres_pudelkowy(c(4.5, 6.5, 8, 35), os = "Czas [min]")
+p <- wykres_pudelkowy(c(4.5, 6.5, 8, 35), os = "Czas [min]")
 }
