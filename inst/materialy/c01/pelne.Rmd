@@ -1,5 +1,5 @@
 ---
-title: 'C01 — Od rekordu do wyniku: pierwsza rozmowa z danymi'
+title: 'C01 — Od rekordu do wyniku: RStudio i własna przestrzeń pracy'
 subtitle: 'Zarządzanie informacją — ćwiczenie i zadanie Z01 — 2026/27'
 author: 'ID: [UZUPELNIJ_ID]'
 date: '2026/27'
@@ -14,9 +14,9 @@ output:
 ---
 
 <!-- start-sesji -->
-# Początek pracy na tych zajęciach
+# Początek pracy na ćwiczeniu C01
 
-Otwórz RStudio. Pakiet kursu jest już zainstalowany w sali; nie instalujesz go ponownie. W konsoli poniżej edytora wpisz swoje ID i adres prywatnego repozytorium otrzymany w kursie, a następnie wykonaj polecenia. Ten blok jest instrukcją do konsoli, nie chunkiem uruchamianym przy tworzeniu PDF.
+Otwórz RStudio. Pakiet kursu `badaniaZI` jest zainstalowany na komputerach w sali. Cztery polecenia z następnego bloku wpisujesz w konsoli RStudio, czyli w dolnym panelu ze znakiem `>`; w miejsce `TWOJE_ID` wpisz swoje ID, a w miejsce adresu — adres prywatnego repozytorium otrzymany na początku kursu. Dokument PDF zawiera cztery polecenia jako tekst instrukcji.
 
 ```r
 library(badaniaZI)
@@ -28,13 +28,12 @@ rozpocznij_zajecia(
 )
 ```
 
-Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie tam, nie w konsoli R. Sprawdź potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w tej sesji; pliki pracy mają je zachować także po zamknięciu RStudio.
+Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie na stronie GitHub. Sprawdź w komunikacie potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w sesji; pliki pracy zachowują je także po zamknięciu RStudio.
 
-Polecenie otwiera własny `zadanie.Rmd` i zapamiętuje katalog pracy. Nie przełączaj teraz projektu przez `.Rproj`, bo nowa sesja R utraci logowanie. Pracuj w otwartym Rmd, nie w źródłach pakietu. Uruchom pierwszy chunk przygotowania, potem wykonuj LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; nie usuwaj pracy ani nie wpisuj cudzego ID.
+Funkcja `rozpocznij_zajecia()` otwiera własny plik `zadanie.Rmd` i zapamiętuje katalog pracy. Pracuj w otwartym pliku `zadanie.Rmd` do końca zajęć; plik `.Rproj` pozostaje zamknięty, bo jego otwarcie uruchamia nową sesję R, która wymaga ponownego logowania. Najpierw uruchom blok `przygotowanie`, a potem kolejne części LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; plik pracy i własne ID pozostają bez zmian.
 <!-- /start-sesji -->
 
-
-Pierwszy blok ładuje gotowy skrypt `analiza.R`, który przygotowuje dane i funkcje tego zestawu. Uruchom go przed pozostałymi blokami; nie musisz zmieniać jego zawartości. Wyniki kolejnych przykładów pochodzą z tej samej zapisanej analizy.
+Plik ćwiczenia łączy tekst z blokami kodu R, nazywanymi chunkami. Chunk zaczyna się linią z trzema znakami ` ``` ` i nazwą w nawiasie klamrowym; uruchamiasz go zieloną strzałką w prawym górnym rogu bloku albo skrótem Ctrl+Shift+Enter. Pierwszy chunk, `przygotowanie`, wczytuje gotowy skrypt `analiza.R`. Skrypt tworzy małą tabelę `mini` (sześć osób), tabelę `portal` (osiem osób), dane S02 po przygotowaniu (148 osób) oraz funkcje wyświetlające tabele i wykresy; działa bez zmian.
 
 ```{r przygotowanie, include=FALSE}
 source(badaniaZI::plik_pracy("Z01", "analiza.R"),
@@ -42,94 +41,95 @@ source(badaniaZI::plik_pracy("Z01", "analiza.R"),
 ustaw_material()
 ```
 
+Każdy kolejny chunk zapisuje wynik funkcji w obiekcie o opisowej nazwie, a polecenie `print()` wyświetla obiekt w dokumencie. Funkcja `pokaz_tabele(tabela, tytuł)` drukuje tabelę z tytułem w PDF i HTML, a `pokaz_wykres(wykres)` drukuje wykres.
+
 # Po co otwieramy tabelę
 
-Biblioteka chce wiedzieć, dlaczego część osób ma trudności ze znalezieniem dokumentu w katalogu. Sam licznik wizyt nie odpowiada na to pytanie. Potrzebujemy informacji, co próbowała zrobić konkretna osoba, ile trwało zadanie i czy znalazła właściwy dokument. Chcemy też poznać jej ocenę katalogu. Te informacje mogą się uzupełniać, ale mogą też prowadzić do różnych ocen sytuacji.
+Biblioteka chce wiedzieć, dlaczego część osób ma trudności ze znalezieniem dokumentu w katalogu. Odpowiedź wymaga informacji o konkretnej osobie: co próbowała zrobić, ile trwało zadanie, czy znalazła właściwy dokument i jak ocenia katalog. Cztery informacje uzupełniają się i czasem prowadzą do różnych ocen sytuacji.
 
-Wyobraź sobie dwie osoby. Pierwsza po dwóch minutach wybiera niewłaściwy rekord i jest przekonana, że odniosła sukces. Druga potrzebuje dziewięciu minut, ale odnajduje właściwe wydanie i sprawdza lokalizację. Zdanie „pierwsza osoba lepiej wyszukuje, bo jest szybsza” pomija poprawność. Zdanie „druga lepiej ocenia swoje umiejętności, więc musi być skuteczniejsza” myli deklarację z obserwacją. Już na pierwszych zajęciach uczymy się zatrzymywać przed takim przeskokiem.
+Wyobraź sobie dwie osoby. Pierwsza po dwóch minutach wybiera niewłaściwy rekord i jest przekonana, że odniosła sukces. Druga potrzebuje dziewięciu minut, odnajduje właściwe wydanie i sprawdza lokalizację. Zdanie „pierwsza osoba lepiej wyszukuje, bo jest szybsza” pomija poprawność. Zdanie „druga lepiej ocenia swoje umiejętności, więc musi być skuteczniejsza” myli deklarację z obserwacją. Od pierwszych zajęć zatrzymujemy się przed przeskokiem od liczby do oceny osoby.
 
-Dzisiejszym rezultatem jest krótka, własna odpowiedź oparta na odczytanym wyniku. R wykona przygotowane obliczenia. Ty rozpoznasz obserwację, zmienną, jednostkę i mianownik. Nie piszesz programu do analizy danych. Uczysz się sprawdzać, czy zdanie, które chcesz napisać, rzeczywiście wynika z tabeli.
+Rezultatem zajęć jest krótka, własna odpowiedź oparta na odczytanym wyniku. R wykonuje przygotowane obliczenia, a Twoim zadaniem jest odczyt: rozpoznanie obserwacji, zmiennej, jednostki i mianownika oraz sprawdzenie, czy zdanie wynika z tabeli.
 
-W LEARN pracujemy na małej tabeli sześciu osób korzystających z katalogu. CHALLENGE dotyczy ośmiu innych osób szukających informacji w portalu studenckim. Oba zbiory są syntetyczne i odrębne: zachowaj sposób rozumowania, lecz nie przepisuj liczb między scenariuszami. Pełniejszy przykład S02 z pakietu znajdziesz w rozwinięciu po części obowiązkowej.
+W części LEARN pracujemy na małej tabeli sześciu osób korzystających z katalogu. Część CHALLENGE dotyczy ośmiu innych osób szukających informacji w portalu studenckim. Oba zbiory są syntetyczne i odrębne: sposób rozumowania przenosisz z LEARN do CHALLENGE, a liczby odczytujesz z tabel portalu. Rozwinięcie po części obowiązkowej zawiera podgląd zbioru S02 — syntetycznej ankiety po zadaniu wyszukiwawczym połączonej z obserwacją czasu i powodzenia, która towarzyszy całemu kursowi.
 
-## Jak pracować z tym zestawem
+## Jak pracować z ćwiczeniem C01
 
-Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN, 50 minut na pięć CHALLENGE i 5 minut na zapis oraz oddanie. Pracujesz przez całe spotkanie w tym jednym Rmd. W LEARN uruchamiasz gotowe przykłady i porównujesz wynik z podaną interpretacją. W CHALLENGE piszesz samodzielnie pięć krótkich akapitów w oznaczonych miejscach, poza blokami kodu. Gdy nie wiesz, jak odczytać wynik, pytasz prowadzącego.
+Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN, 50 minut na pięć zadań CHALLENGE i 5 minut na zapis oraz oddanie. LEARN to część z gotowymi przykładami i wzorcową interpretacją: uruchamiasz przykład i porównujesz wynik z opisem. CHALLENGE to część z pięcioma odpowiedziami, które piszesz samodzielnie w oznaczonych miejscach, poza blokami kodu. Gdy odczyt wyniku sprawia trudność, pytasz prowadzącego.
 
-Nie ma osobnego zeszytu do przepisywania odpowiedzi. Rozwinięcia po CHALLENGE służą powtórce i nie dodają obowiązkowych zadań. PDF ma pokazywać wyniki oraz Twój tekst; powstaje z zapisanego Rmd podczas oddania.
+Wszystkie odpowiedzi zapisujesz w pliku `zadanie.Rmd`. Rozwinięcia po CHALLENGE służą powtórce i pozostają poza oceną. PDF przedstawia wyniki oraz Twój tekst i powstaje z zapisanego pliku podczas oddania.
 
-Przy każdym bloku najpierw przeczytaj dwa zdania wyjaśnienia. Zatrzymaj się przed uruchomieniem i przewidź, jakiego rodzaju wyniku oczekujesz: jednej liczby, kolumny, tabeli czy wykresu. Po wykonaniu porównaj oczekiwanie z wynikiem. Taka kontrola jest początkiem rozumowania statystycznego, nawet kiedy działanie arytmetyczne jest proste.
+Przy każdym bloku najpierw przeczytaj dwa–trzy zdania wyjaśnienia. Przed uruchomieniem przewidź rodzaj wyniku: jedną liczbę, kolumnę, tabelę czy wykres. Po wykonaniu porównaj przewidywanie z wynikiem. Porównanie przewidywania z wynikiem jest początkiem rozumowania statystycznego, także przy prostym działaniu arytmetycznym.
 
 # Warsztat: projekt, skrypt i wynik
 
-## Trzy miejsca, których nie należy mylić
+## R, RStudio i pakiet kursu
 
-R jest programem wykonującym polecenia. RStudio jest środowiskiem, które pozwala wygodnie edytować pliki, uruchamiać kod i oglądać wyniki. Pakiet `badaniaZI` dostarcza danych, materiałów i gotowych funkcji kursowych. Można wyobrazić sobie tę relację jako pracownię, narzędzia i przygotowaną procedurę pomiaru.
+R jest programem wykonującym polecenia. RStudio jest środowiskiem do edycji plików, uruchamiania kodu i oglądania wyników. Pakiet `badaniaZI` dostarcza danych, materiałów i gotowych funkcji kursowych. Relacja trzech elementów przypomina pracownię, narzędzia i przygotowaną procedurę pomiaru.
 
-Konsola wykonuje polecenie od razu. Edytor przechowuje tekst skryptu, który da się zapisać i uruchomić ponownie. Panel Environment pokazuje obiekty istniejące w bieżącej sesji. Obiekt widoczny w tym panelu nie musi być zapisany w pliku. Po zamknięciu sesji może zniknąć; dlatego analiza powinna wynikać z zapisanych plików.
+Konsola wykonuje polecenie od razu. Edytor przechowuje tekst skryptu, który da się zapisać i uruchomić ponownie. Panel Environment wymienia obiekty istniejące w bieżącej sesji. Obiekty w panelu Environment istnieją do końca sesji; trwały zapis analizy zawierają pliki `.R` i `.Rmd`.
 
-| Element | Co w nim widzisz? | Do czego wracasz po zajęciach? |
+| Element | Co zawiera? | Do czego wracasz po zajęciach? |
 |---|---|---|
-| Projekt `.Rproj` | Zapis ustawień przestrzeni pracy | Nie przełączasz go po zalogowaniu |
+| Projekt `.Rproj` | Zapis ustawień przestrzeni pracy | Pozostaje zamknięty do końca zajęć |
 | Skrypt `.R` | Polecenia i funkcje | Uruchamiasz analizę od początku |
 | Dokument `.Rmd` | Polecenia, bloki R i własny tekst | Uruchamiasz chunk i piszesz odpowiedź pod wynikiem |
-| Plik `.md` | Pomocniczą dokumentację, np. instrukcję | Sprawdzasz zasady, nie przepisujesz tu odpowiedzi z Rmd |
+| Plik `.md` | Pomocniczą dokumentację, np. instrukcję | Sprawdzasz zasady; odpowiedzi zapisujesz w Rmd |
 | Tabela `.csv` | Zapisane dane lub wynik | Sprawdzasz źródło liczby |
 | PDF/HTML | Czytelną wersję opracowania | Porównujesz tekst, tabelę i wykres |
 
-Funkcja `rozpocznij_zajecia()` otwiera roboczy `zadanie.Rmd` w bieżącej sesji i zapamiętuje jego przestrzeń. Nie otwieraj potem pliku `.Rproj`: przełączenie projektu uruchamia nową sesję R, w której trzeba ponownie się zalogować. Przestrzeń ćwiczeń nie oznacza rozpoczęcia projektu badawczego na zaliczenie; ten poznasz na C09. Ścieżki rozpoznaje pakiet, bez `setwd()` i bez wpisywania adresów z komputera prowadzącego. Sprawdź nazwę oraz ID pracy w komunikacie startowym.
+Funkcja `rozpocznij_zajecia()` otwiera roboczy `zadanie.Rmd` w bieżącej sesji i zapamiętuje jego przestrzeń. Plik `.Rproj` pozostaje zamknięty, bo przełączenie projektu uruchamia nową sesję R z ponownym logowaniem. Przestrzeń ćwiczeń służy zadaniom Z01–Z10; projekt indywidualny rozpoczyna się na ćwiczeniu C09 (Warsztat projektu). Pakiet rozpoznaje ścieżki plików automatycznie. Sprawdź nazwę oraz ID pracy w komunikacie startowym.
 
-Dokument PDF przedstawia stan obliczeń wykonanych podczas jego budowania. Jeśli zmienisz parametr w skrypcie, stary PDF nie zaktualizuje się sam. Z kolei plik źródłowy `.Rmd` łączy treść z analizą, a osobny `.R` przechowuje przygotowane obliczenia. Taki układ pozwala skupić się na znaczeniu wyniku i nadal zachować możliwość jego odtworzenia.
+Dokument PDF przedstawia stan obliczeń z chwili jego budowania; po zmianie parametru w skrypcie aktualny wynik daje nowy render. Plik źródłowy `.Rmd` łączy treść z analizą, a osobny `.R` przechowuje przygotowane obliczenia. Podział na dwa pliki pozwala skupić się na znaczeniu wyniku i zachować możliwość jego odtworzenia.
 
 # LEARN 1: co opisuje pojedynczy wiersz
 
-Otwieramy małą tabelę, aby ustalić znaczenie kolumn przed obliczaniem jakiejkolwiek miary. Każdy wiersz przedstawia jedną osobę i jedno zadanie. Zwróć uwagę na `NA`: to informacja o braku pomiaru, nie o czasie równym zeru.
+Tabela `mini` ma sześć wierszy (osoby u01–u06) i cztery kolumny: `id`, `grupa`, `czas_min` i `powodzenie`. Każdy wiersz przedstawia jedną osobę i jedno zadanie. Zapis `NA` oznacza brak pomiaru: wartość pozostaje nieznana.
 
 ```{r mala-tabela}
 obserwacje <- pokaz_tabele(mini, "Sześć osób wykonujących zadanie")
 print(obserwacje)
 ```
 
-Przeczytaj trzeci wiersz pełnym zdaniem: osoba u03 jest w grupie doświadczonych, zarejestrowany czas wynosi 12 minut, a zadanie nie zakończyło się powodzeniem. Kod 0 nie oznacza tutaj brakującej odpowiedzi ani zerowego czasu. Jego znaczenie wynika z definicji kolumny.
+Przeczytaj trzeci wiersz pełnym zdaniem: osoba u03 należy do grupy doświadczonych, zarejestrowany czas wynosi 12 minut, a zadanie zakończyło się niepowodzeniem. Kod 0 w kolumnie `powodzenie` oznacza niepowodzenie zadania, zgodnie z definicją kolumny.
 
-Wiersz u04 mówi mniej. Wiemy, do której grupy przypisano osobę, lecz nie znamy czasu ani wyniku zadania. Nie dopowiadamy, że osoba nie umiała wyszukiwać. Mogła wystąpić awaria rejestracji lub przerwanie pomiaru; bez dodatkowej informacji nie potrafimy wybrać wyjaśnienia.
+Wiersz u04 zawiera grupę osoby, a czas i wynik zadania są nieznane. Przyczyną braku mogła być awaria rejestracji albo przerwanie pomiaru; wybór wyjaśnienia wymaga protokołu obserwacji.
 
-Pomocnicza funkcja obraca wybrany rekord do postaci „pole — wartość”. Dzięki temu łatwiej oddzielić nazwę zmiennej od jej realizacji dla konkretnej osoby. Zmień wyłącznie numer z 3 na 4, jeśli chcesz porównać oba przypadki.
+Funkcja `odczyt_rekordu()` obraca wybrany rekord do postaci „pole — wartość”. Obrócony rekord oddziela nazwę zmiennej od jej wartości dla konkretnej osoby. Aby porównać oba przypadki, zmień wyłącznie numer z 3 na 4.
 
 ```{r odczyt-rekordu}
 osoba <- odczyt_rekordu(mini, numer = 3)
 print(osoba)
 ```
 
-**Pytanie kontrolne:** czy kilka kolumn opisujących jedną osobę oznacza kilku badanych? Nie. Kolumny są różnymi informacjami o obserwacji. Podobnie sześć kliknięć tej samej osoby nie tworzy automatycznie sześciu niezależnych respondentów.
+**Pytanie kontrolne:** ilu badanych opisuje jeden wiersz z czterema kolumnami? Jednego: kolumny opisują różne informacje o tej samej osobie. Podobnie sześć kliknięć jednej osoby to sześć zdarzeń jednej jednostki analizy.
 
-W prawdziwym badaniu jeden wiersz może oznaczać osobę, zadanie, sesję albo zdarzenie. Dlatego zdanie „mam 150 obserwacji” nie jest kompletne, dopóki nie wiadomo, czego to obserwacje. W kursowym zbiorze po usunięciu identycznych duplikatów pracujemy na poziomie osoby.
+W rzeczywistym badaniu jeden wiersz oznacza osobę, zadanie, sesję albo zdarzenie. Zdanie „mam 150 obserwacji” wymaga więc dopowiedzenia jednostki. Zbiór S02 ma 150 rekordów, w tym dwa identyczne duplikaty; po ich usunięciu 148 wierszy opisuje 148 osób.
 
 ## Słownik małej tabeli
 
-Nazwy kolumn nie zastępują definicji pomiaru. W tej tabeli czas zapisuje obserwator w minutach, a powodzenie oznacza zgodność znalezionego dokumentu z poleceniem. Ani grupa doświadczenia, ani identyfikator nie są oceną kompetencji.
+Definicję pomiaru podaje słownik. W tabeli `mini` czas zapisuje obserwator w minutach, a powodzenie oznacza zgodność znalezionego dokumentu z poleceniem. Grupa doświadczenia i identyfikator opisują przynależność i tożsamość rekordu.
 
 ```{r slownik-mini}
 slownik <- slownik_obserwacji()
 print(slownik)
 ```
 
-Przykładowy odczyt: „Wynik osoby u03 to 12 minut i niepowodzenie w jednym zadaniu. Przynależność do grupy doświadczonych nie zmienia kodu wyniku i nie pozwala wyjaśnić, dlaczego zadanie się nie udało”. Tak opisujemy obserwację, bez diagnozowania cech osoby.
-
+Przykładowy odczyt: „Wynik osoby u03 to 12 minut i niepowodzenie w jednym zadaniu. Przynależność do grupy doświadczonych opisuje osobę, a przyczynę niepowodzenia wyjaśnia protokół zadania”. Tak opisujemy obserwację i zachowujemy granicę między opisem a diagnozą cech osoby.
 
 # LEARN 2: obiekt i wartość
 
-Obiekt jest nazwanym wynikiem przechowywanym w sesji R. W skrypcie przygotowano obiekt `czasy`, który zawiera kolumnę czasu z małej tabeli. Wpisanie jego nazwy nie zbiera nowych danych; pokazuje wartości, które już zostały przygotowane.
+Obiekt jest nazwanym wynikiem przechowywanym w sesji R. Skrypt `analiza.R` utworzył obiekt `czasy` z kolumną czasu tabeli `mini`. Wpisanie nazwy obiektu wyświetla wartości przygotowane w skrypcie.
 
-Uruchom poniższy blok i odczytaj kolejność liczb. Nawias `[1]` widoczny na początku wydruku informuje o pozycji pierwszego wyświetlanego elementu. Nie jest wartością zmiennej, identyfikatorem osoby ani dodatkową obserwacją.
+Uruchom następny blok i odczytaj kolejność liczb. Znacznik `[1]` na początku wydruku podaje pozycję pierwszego wyświetlanego elementu.
 
 ```{r wektor, results='markup'}
 print(czasy)
 ```
 
-Wektor przechowuje serię wartości jednego rodzaju. Tutaj ma sześć miejsc, z których jedno jest brakujące. Dlatego długość wektora i liczba zmierzonych czasów nie muszą być takie same.
+Wektor przechowuje serię wartości jednego rodzaju. Wektor `czasy` ma sześć miejsc, w tym jedno brakujące: długość wektora wynosi 6, a liczba zmierzonych czasów 5.
 
-Teraz wybieramy trzeci element wektora oraz odpowiadającą mu komórkę tabeli. Oba polecenia powinny zwrócić 12. Kwadratowy nawias oznacza wybór, a przecinek w nawiasie tabeli rozdziela wskazanie wiersza od wskazania kolumny.
+Następny blok wybiera trzeci element wektora oraz odpowiadającą mu komórkę tabeli. Oba polecenia zwracają 12. Kwadratowy nawias oznacza wybór, a przecinek w nawiasie tabeli rozdziela wskazanie wiersza od wskazania kolumny.
 
 ```{r indeksowanie, results='markup'}
 czas_z_wektora <- czasy[3]
@@ -138,24 +138,24 @@ czas_z_tabeli <- mini[3, "czas_min"]
 print(czas_z_tabeli)
 ```
 
-Pierwsze polecenie mówi „trzeci czas”, drugie „czas w trzecim wierszu tabeli”. Jeśli tabela zostanie posortowana, trzeci wiersz może dotyczyć innej osoby. Identyfikator i numer wiersza pełnią więc różne role. Przy odsyłaniu do konkretnego rekordu warto użyć ID, a nie tylko aktualnej pozycji na ekranie.
+Pierwsze polecenie oznacza „trzeci czas”, drugie „czas w trzecim wierszu tabeli”. Po posortowaniu tabeli trzeci wiersz może dotyczyć innej osoby, więc identyfikator i numer wiersza pełnią różne role. Przy odsyłaniu do konkretnego rekordu używamy identyfikatora.
 
-Znak dolara wybiera kolumnę po nazwie. Cudzysłów służy zapisaniu tekstu, a wielkość liter w nazwie ma znaczenie. Literówka nie zmienia danych, lecz może uniemożliwić wykonanie polecenia; komunikat błędu trzeba wtedy czytać jako informację o nazwie lub strukturze.
+Znak dolara wybiera kolumnę po nazwie. Cudzysłów służy zapisaniu tekstu, a wielkość liter w nazwie ma znaczenie. Literówka w nazwie przerywa wykonanie polecenia, a komunikat błędu wskazuje nazwę lub strukturę do sprawdzenia.
 
-Poniższe dwa odczyty pokazują serię czasów i serię etykiet grup. Zastanów się, dla której serii sensowne jest obliczenie średniej. Sama obecność obiektu w R nie oznacza, że każda funkcja statystyczna będzie dla niego właściwa.
+Dwa kolejne polecenia wyświetlają serię czasów i serię etykiet grup. Średnia ma sens dla serii czasów; seria etykiet grup wymaga liczebności kategorii.
 
 ```{r kolumny, results='markup'}
 print(mini$czas_min)
 print(mini$grupa)
 ```
 
-Nie uczymy się tych znaków dla pamięciowego odtworzenia składni. Mają pozwolić rozpoznać, z której części tabeli pochodzi prezentowana liczba. Gotowy skrypt ukrywa szczegóły analizy, ale nie powinien ukrywać jej wejścia.
+Znaki `[ ]`, `$` i `" "` pozwalają rozpoznać, z której części tabeli pochodzi liczba. Gotowy skrypt ukrywa szczegóły obliczeń i jawnie nazywa ich wejście.
 
-## Typ w programie i skala pomiaru
+## Klasa w R i skala pomiaru
 
-W R liczby, teksty i wartości logiczne są przechowywane inaczej. Funkcja `class()` pokazuje klasę obiektu. Nie rozstrzyga jednak, czy zmienna liczbowa jest czasem, numerem kategorii czy identyfikatorem.
+R przechowuje liczby, teksty i wartości logiczne w różnych klasach. Funkcja `class()` zwraca klasę obiektu: `numeric` dla liczb, `character` dla tekstu, `logical` dla wartości prawda i fałsz. Klasę techniczną uzupełnia słownik: słownik mówi, czy liczba jest czasem, kodem kategorii czy identyfikatorem.
 
-Porównaj klasę kolumny czasu i klasy etykiet grup. Następnie sprawdź kolumnę powodzenia. Fakt, że program przechowuje 0 i 1 jako liczby, nie zmienia definicji tej zmiennej jako dwóch kategorii wyniku.
+Porównaj klasę kolumny czasu i klasę etykiet grup. Następnie sprawdź kolumnę powodzenia. Kolumna `powodzenie` ma klasę `numeric` i skalę nominalną z dwiema kategoriami wyniku.
 
 ```{r klasy, results='markup'}
 print(class(mini$czas_min))
@@ -163,42 +163,46 @@ print(class(mini$grupa))
 print(class(mini$powodzenie))
 ```
 
-Średnia kodu 0/1 ma szczególny sens: jest proporcją jedynek. Nie wynika z tego, że wolno uśredniać dowolne kody. Gdyby kategorie kanału pomocy zakodowano 1, 2, 3 i 4, średnia 2,7 nie opisywałaby „przeciętnego kanału” w użyteczny sposób.
+Średnia ma sens dla kodu 0/1, bo suma kodów równa się liczbie jedynek, a średnia — proporcji jedynek. Kanał kontaktu zapisany jedną kolumną z kodami 1–4 (1 = strona WWW, 2 = e-mail, 3 = media społecznościowe, 4 = kontakt bezpośredni) opisuje się liczebnością każdego kodu, bo średnia kodów zmienia się razem z umowną numeracją kategorii. S02 zapisuje kanały w czterech kolumnach 0/1, więc średnia każdej kolumny kanału jest odsetkiem osób wybierających dany kanał.
 
-W arkuszu kalkulacyjnym liczba zapisana jako tekst może wyglądać prawie tak samo jak liczba numeryczna. R może wtedy odmówić uśrednienia. W C02 sprawdzimy import liczb z przecinkiem dziesiętnym. Dzisiaj wystarczy zasada: zanim zinterpretujesz wynik, sprawdź, czy program odczytał kolumnę zgodnie ze słownikiem.
+W arkuszu kalkulacyjnym liczba zapisana jako tekst wygląda prawie tak samo jak liczba numeryczna, a R odmawia wtedy uśrednienia. Ćwiczenie C02 (Surowy eksport) sprawdza import liczb z przecinkiem dziesiętnym. Na C01 wystarczy zasada: przed interpretacją wyniku sprawdź, czy program odczytał kolumnę zgodnie ze słownikiem.
 
-| Widziany zapis | Możliwy sens | Czego trzeba się dowiedzieć |
+| Widziany zapis | Możliwy sens | Informacja do sprawdzenia |
 |---|---|---|
 | 12 | Dwanaście minut | Jednostka i sposób pomiaru czasu |
 | „12” | Tekst zawierający cyfry | Czy import poprawnie rozpoznał liczbę |
 | 1 | Powodzenie | Kodowanie 0/1 i definicja sukcesu |
 | 3 | Środkowa kategoria odpowiedzi | Dokładne brzmienie skali |
-| NA | Brak wartości | Czy pomiaru nie wykonano, czy nie zapisano |
-| u03 | Identyfikator | Jaka jednostka ma ten identyfikator |
+| NA | Brak wartości | Czy pomiar wykonano, czy zapisano |
+| u03 | Identyfikator | Jaką jednostkę oznacza identyfikator |
 
 # LEARN 3: brak danych zmienia mianownik
 
-Mianownik odpowiada na pytanie „spośród ilu?”. Dla średniego czasu powinien oznaczać liczbę ważnych pomiarów czasu, a dla odsetka powodzeń liczbę znanych wyników zadania. Całkowita liczba wierszy może być przydatna do opisu pliku, lecz nie jest automatycznym mianownikiem wszystkich miar.
+Mianownik odpowiada na pytanie „spośród ilu?”. Dla średniego czasu mianownikiem jest liczba ważnych pomiarów czasu, a dla odsetka powodzeń liczba znanych wyników zadania. Całkowita liczba wierszy opisuje plik; mianownik każdej miary to liczba ważnych wartości jej zmiennej.
 
-Funkcja pomocnicza liczy osobno rekordy, ważne wartości i braki. Zastosuj ją do czasu oraz powodzenia. W tym małym przykładzie liczebności są równe, ale w rzeczywistym zbiorze mogą się różnić.
+Funkcja `mianowniki_obserwacji()` liczy osobno rekordy, ważne wartości i braki dla czasu oraz powodzenia. W tabeli `mini` obie zmienne mają po 6 rekordów, 5 ważnych wartości i 1 brak; w rzeczywistym zbiorze liczebności zmiennych bywają różne.
 
 ```{r mianowniki}
 liczebnosci <- mianowniki_obserwacji(mini)
 print(liczebnosci)
 ```
 
-Na sześć rekordów mamy pięć ważnych czasów. Ich suma wynosi 40 minut. Średnia wśród zmierzonych czasów to $40/5=8$ minut. Dzielenie przez sześć potraktowałoby brak tak, jakby wnosił zero do sumy i jedną osobę do mianownika.
+Sześć rekordów zawiera pięć ważnych czasów o sumie 40 minut. Średnia wśród zmierzonych czasów wynosi $40/5=8$ minut. Dzielenie przez sześć potraktowałoby brak tak, jakby wnosił zero do sumy i jedną osobę do mianownika:
 
-Porównanie poniżej pokazuje skutek takiej decyzji. Obie wersje używają tej samej sumy, ale druga tworzy niezaobserwowany zerowy czas. Różnica między wynikami nie jest odkryciem o użytkownikach, tylko skutkiem błędnego traktowania braku.
+$$
+\bar{x}_{\text{z zerem}}=\frac{\sum x_i + 0}{n+m}=\bar{x}\cdot\frac{n}{n+m}=8\cdot\frac{5}{6}\approx 6{,}67 \text{ minuty},
+$$
+
+gdzie $n=5$ to liczba ważnych pomiarów, a $m=1$ liczba braków zastąpionych zerem. Tabela „Brak a wymyślony pomiar zerowy” zestawia obie średnie: 8 minut i 6,67 minuty przy tej samej sumie 40 minut.
 
 ```{r brak-a-zero}
 porownanie <- pokaz_tabele(kontrola_braku, "Brak a wymyślony pomiar zerowy")
 print(porownanie)
 ```
 
-Pomijanie braku w obliczeniu także nie usuwa całego problemu. Średnia 8 minut dotyczy osób z ważnym pomiarem. Jeśli brak powstał dlatego, że najtrudniejsze zadania przerywano, zmierzone osoby mogą nie reprezentować wszystkich prób. Poprawny rachunek jest konieczny, ale nadal trzeba znać proces powstawania braków.
+Różnica 8 minut wobec 6,67 minuty wynika wyłącznie z reguły traktowania braku. Średnia 8 minut dotyczy osób z ważnym pomiarem. Jeśli pomiary przerywano w najtrudniejszych zadaniach, zmierzone osoby reprezentują łatwiejsze próby, więc poprawny rachunek wymaga także wiedzy o procesie powstawania braków.
 
-**Pytanie kontrolne:** czy można napisać „średni czas sześciu osób wyniósł 8 minut”? Dokładniej: „wśród pięciu osób z zarejestrowanym czasem średnia wyniosła 8 minut; dla jednej osoby czasu brakowało”. Drugie zdanie pokazuje zarówno wynik, jak i zakres dostępnej informacji.
+**Pytanie kontrolne:** jak dokładnie opisać średnią czasu w tabeli `mini`? Zdanie „wśród pięciu osób z zarejestrowanym czasem średnia wyniosła 8 minut; dla jednej osoby czasu brakowało” podaje wynik i zakres dostępnej informacji.
 
 ## Czytamy pierwszy wzór
 
@@ -206,19 +210,19 @@ $$
 \bar{x}=\frac{\sum_{i=1}^{n}x_i}{n}.
 $$
 
-Czytamy: „średnia to suma ważnych wartości podzielona przez ich liczbę”. Indeks $i$ numeruje składniki sumy. W tym zapisie $n$ obejmuje pięć zmierzonych czasów, a nie sześć miejsc w pierwotnym wektorze. Można również zapisać sumę wyłącznie po indeksach z ważnymi wartościami; sens mianownika musi pozostać ten sam.
+Czytamy: „średnia to suma ważnych wartości podzielona przez ich liczbę”. Indeks $i$ numeruje składniki sumy. We wzorze $n$ obejmuje pięć zmierzonych czasów. Sumę można też zapisać wyłącznie po indeksach z ważnymi wartościami; sens mianownika pozostaje ten sam.
 
-| Symbol | Jak nazwać? | Co oznacza tutaj? | Jednostka |
+| Symbol | Jak nazwać? | Znaczenie w tabeli `mini` | Jednostka |
 |---|---|---|---|
 | $x_i$ | i-ty pomiar | Czas jednej osoby | min |
 | $\sum x_i$ | suma pomiarów | Łącznie 40 minut | min |
 | $n$ | liczba ważnych pomiarów | Pięć zarejestrowanych czasów | osoby |
 | $\bar{x}$ | średnia w próbie | Osiem minut na ważny pomiar | min |
-| $N$ | liczebność określonego zbioru | Wymaga podania, jakiego zbioru | osoby lub rekordy |
+| $N$ | liczebność określonego zbioru | Liczba wymagająca nazwania zbioru | osoby lub rekordy |
 
-Litery $N$ i $n$ bywają używane w publikacjach niejednolicie. Nie rozpoznajemy mianownika wyłącznie po wielkości litery. Szukamy definicji w opisie metody lub podpisie tabeli. Na dalszych zajęciach będziemy podobnie czytać $N$ kompletnych par i liczebności dwóch grup.
+Litery $N$ i $n$ bywają w publikacjach używane niejednolicie, więc mianownik rozpoznajemy z definicji w opisie metody lub w podpisie tabeli. Na kolejnych zajęciach podobnie czytamy $N$ kompletnych par i liczebności dwóch grup.
 
-Funkcja `mean()` wykonuje rachunek średniej. Argument `na.rm = TRUE` oznacza pominięcie brakujących wartości w tym konkretnym obliczeniu. Nie wpisuje nowych danych do tabeli i nie usuwa całego rekordu z projektu.
+Funkcja `mean()` oblicza średnią. Argument `na.rm = TRUE` pomija brakujące wartości w bieżącym obliczeniu; tabela pozostaje bez zmian.
 
 ```{r srednia, results='markup'}
 suma_minut <- sum(czasy, na.rm = TRUE)
@@ -227,95 +231,109 @@ srednia_minut <- mean(czasy, na.rm = TRUE)
 print(srednia_minut)
 ```
 
-Jeśli zmienimy jednostkę z minut na sekundy, suma i średnia wzrosną sześćdziesięciokrotnie. Wzór nadal opisuje tę samą cechę osób. Kontrola jednostek pozwala wykryć pozornie zaskakujące wyniki, np. średnią 480 błędnie podpisaną jako minuty.
+Po zmianie jednostki z minut na sekundy suma i średnia rosną sześćdziesięciokrotnie, a wzór nadal opisuje tę samą cechę osób. Kontrola jednostek wykrywa pozornie zaskakujące wyniki, np. średnią 480 błędnie podpisaną jako minuty.
 
 # LEARN 4: liczba, proporcja i procent
 
-W małej tabeli trzy z pięciu znanych wyników oznaczają powodzenie. Liczba powodzeń wynosi 3, proporcja $3/5=0{,}6$, a odsetek 60%. Każdy zapis jest poprawny, lecz odpowiada innemu sposobowi prezentacji tej samej informacji.
+W tabeli `mini` trzy z pięciu znanych wyników oznaczają powodzenie. Liczba powodzeń wynosi 3, proporcja $3/5=0{,}6$, a odsetek 60%. Każdy zapis jest poprawny i przedstawia tę samą informację w innej formie.
 
 $$
 \hat{\pi}=\frac{k}{n}, \qquad
 \text{odsetek}=100\%\cdot\frac{k}{n}.
 $$
 
-Daszek nad $\pi$ oznacza oszacowanie proporcji na podstawie próby. Litera $k$ jest tutaj liczbą powodzeń, a $n$ liczbą ważnych wyników zadania. Symbol $\pi$ w statystyce nie zawsze oznacza stałą geometryczną: znaczenie odczytujemy z definicji.
+Daszek nad $\pi$ oznacza oszacowanie proporcji na podstawie próby. Litera $k$ oznacza liczbę powodzeń, a $n$ liczbę ważnych wyników zadania. Symbol $\pi$ w statystyce oznacza proporcję w populacji; znaczenie symbolu podaje definicja.
 
-Poniższa tabela pokazuje kilka miar obok siebie. Dla każdej podaj jednostkę i mianownik, zanim ułożysz zdanie. Wynik 0,6 nie oznacza 0,6 osoby, a wynik 60 nie oznacza sześćdziesięciu powodzeń.
+Tabela „Czas i powodzenie zadania” zestawia sześć miar: średni czas 8 minut, medianę 8 minut, 5 znanych wyników, 3 powodzenia, proporcję 0,6 i odsetek 60%. Przy każdej mierze podaj jednostkę i mianownik: wynik 0,6 jest proporcją, a 60 — odsetkiem, i oba dotyczą trzech powodzeń na pięć znanych wyników.
 
 ```{r podsumowanie-mini}
 podsumowanie <- pokaz_tabele(opis_mini, "Czas i powodzenie zadania")
 print(podsumowanie)
 ```
 
-Gdyby nieznany szósty wynik okazał się niepowodzeniem, odsetek wszystkich sześciu wyniósłby 50%. Gdyby był powodzeniem, wyniósłby około 66,7%. Dane nie pozwalają wybrać jednej z tych wersji. Ten prosty zakres pokazuje, jak brak informacji może zmieniać odpowiedź nawet bez zaawansowanego testu.
+Nieznany wynik osoby u04 wyznacza zakres odsetka dla sześciu osób:
 
-Wynik 60% na podstawie pięciu pomiarów nie oznacza, że dokładnie 60% wszystkich użytkowników biblioteki zawsze wykona zadanie poprawnie. Na razie opisujemy małą próbę dydaktyczną. Uogólnienie wymaga projektu badania i analizy niepewności, które pojawią się w dalszej części kursu.
+$$
+\frac{k}{n+1}\le \hat{\pi}_6 \le \frac{k+1}{n+1}:
+\qquad \frac{3}{6}=50\% \;\le\; \hat{\pi}_6 \;\le\; \frac{4}{6}\approx 66{,}7\% .
+$$
+
+Dolna granica odpowiada niepowodzeniu u04, górna — powodzeniu. Oba warianty są zgodne z danymi. Wykres „Zakres odsetka przy nieznanym wyniku” przedstawia zakres i odsetek wśród pięciu znanych wyników.
+
+```{r zakres-odsetka, fig.height=1.9, fig.cap="Zakres odsetka powodzeń sześciu osób przy nieznanym wyniku u04. Oś pozioma: odsetek powodzeń w procentach. Odcinek biegnie od 50,0% (u04 z niepowodzeniem) do 66,7% (u04 z powodzeniem); romb przy 60% oznacza odsetek wśród pięciu znanych wyników."}
+zakres <- pokaz_wykres(wykres_zakresu)
+print(zakres)
+```
+
+Wynik 60% opisuje pięć pomiarów małej próby dydaktycznej. Uogólnienie na użytkowników biblioteki wymaga projektu doboru próby i analizy niepewności, które wprowadzają wykład W03 (Losowość, estymacja) i ćwiczenie C05 (Niepewność estymaty).
 
 ## Średnia i mediana odpowiadają na różne pytania
 
-W tabeli widzisz także medianę. Uporządkowane ważne czasy wynoszą 5, 6, 8, 9 i 12 minut. Mediana jest środkową wartością: 8 minut. Średnia również wynosi tu 8 minut, ale jest wynikiem dzielenia sumy przez pięć, nie wyboru środkowego pomiaru.
+Tabela podaje także medianę, czyli środkową wartość uporządkowanego zbioru. Uporządkowane ważne czasy wynoszą 5, 6, 8, 9 i 12 minut, więc dla $n=5$
 
-Gdyby najdłuższy czas zmienił się z 12 na 22 minuty, średnia wzrosłaby do 10 minut, a mediana pozostałaby równa 8. Dlatego w krótkim opisie zawsze nazywamy miarę. „Przeciętny czas” bez doprecyzowania może oznaczać dwa różne podsumowania.
+$$
+\tilde{x}=x_{((n+1)/2)}=x_{(3)}=8 \text{ minut},
+$$
 
-**Przykładowa interpretacja tabeli:** „W sześciu rekordach odnotowano pięć czasów; ich średnia i mediana wyniosły po 8 minut. Sukces wystąpił w trzech spośród pięciu znanych wyników, czyli w 60%. Dla jednej osoby nie znamy ani czasu, ani poprawności. Jest to opis tej małej próby syntetycznej, nie wszystkich użytkowników biblioteki”.
+gdzie $x_{(k)}$ oznacza $k$-tą wartość po uporządkowaniu. Średnia również wynosi 8 minut i powstaje przez dzielenie sumy 40 przez 5.
 
+Gdyby najdłuższy czas zmienił się z 12 na 22 minuty, średnia wzrosłaby do 10 minut, a mediana pozostałaby równa 8. Dlatego krótki opis zawsze nazywa miarę: „przeciętny czas” oznacza w różnych tekstach średnią albo medianę.
 
-# LEARN 5: wykres trzeba odczytać, a nie tylko obejrzeć
+**Przykładowa interpretacja tabeli:** „W sześciu rekordach odnotowano pięć czasów; ich średnia i mediana wyniosły po 8 minut. Sukces wystąpił w trzech spośród pięciu znanych wyników, czyli w 60%. Dla jednej osoby czas i poprawność pozostają nieznane. Opis dotyczy małej próby syntetycznej”.
 
-Wykres punktowy pokazuje pięć zmierzonych czasów. Oś pozioma zawiera identyfikatory, więc nie jest osią czasu ani skalą rosnącej kompetencji. Przerywana linia przedstawia średnią; nie jest wynikiem każdej osoby.
+# LEARN 5: wykres opisujemy słowami
 
-Odczytaj najkrótszy i najdłuższy zarejestrowany czas. Następnie wskaż, której osoby brakuje na wykresie i dlaczego. Brak punktu u04 nie oznacza punktu leżącego na wysokości zero.
+Wykres „Pięć zmierzonych czasów” ma na osi poziomej identyfikatory osób w kolejności alfabetycznej, a na osi pionowej czas w minutach. Każda osoba z zapisanym czasem to jeden punkt; przerywana linia przedstawia średnią 8 minut. Osoba u04 ma nieznany czas, więc wykres zawiera pięć punktów.
 
-```{r wykres-mini}
+```{r wykres-mini, fig.cap="Pięć zmierzonych czasów tabeli mini. Oś pozioma: identyfikatory u01, u02, u03, u05, u06; oś pionowa: czas w minutach. Punkty leżą przy 6, 8, 12, 9 i 5 minutach; przerywana linia średniej przebiega przy 8 minutach."}
 czasy_osob <- pokaz_wykres(wykres_mini)
 print(czasy_osob)
 ```
 
-W opisie możesz napisać: „Pięć zarejestrowanych czasów mieściło się między 5 a 12 minutami, a średnia wyniosła 8 minut”. Nie dopisuj, że u03 miała najniższą kompetencję, bo położenie punktu samo nie uzasadnia takiej diagnozy. Potrzebne byłyby inne zadania, kryteria poprawności i szerszy pomiar.
+Najkrótszy czas, 5 minut, ma osoba u06, a najdłuższy, 12 minut, osoba u03. W opisie możesz napisać: „Pięć zarejestrowanych czasów mieściło się między 5 a 12 minutami, a średnia wyniosła 8 minut”. Położenie punktu opisuje czas jednego zadania; ocena kompetencji wymaga innych zadań, kryteriów poprawności i szerszego pomiaru.
 
-Średnia może nie być wartością żadnej konkretnej osoby. W tym przykładzie jest nią przypadkowo 8 minut, ale przy czasach 5 i 6 minut średnia wynosiłaby 5,5 minuty. Statystyka opisuje zbiór; nie tworzy „przeciętnego respondenta” ze wszystkimi przeciętnymi cechami.
+Średnia jest wartością obliczoną: przy czasach 5 i 6 minut wynosi 5,5 minuty, czyli wartość leżącą między dwoma zmierzonymi czasami. W tabeli `mini` średnia 8 minut przypadkowo pokrywa się z czasem osoby u02. Statystyka opisuje zbiór.
 
-Na wykresie nie widzimy przyczyn długiego czasu. Być może osoba sprawdzała kilka wydań, korzystała z wolnego łącza albo inaczej zrozumiała polecenie. Dobre zdanie opisowe nazywa widoczny wzorzec. Wyjaśnienie mechanizmu wymaga kolejnych danych.
+Przyczyny długiego czasu leżą poza wykresem: sprawdzanie kilku wydań, wolne łącze albo inne rozumienie polecenia. Dobre zdanie opisowe nazywa wzorzec obecny w danych, a wyjaśnienie mechanizmu wymaga kolejnych danych.
 
 ## Jak z wyniku powstaje zdanie
 
-Dobre zdanie powinno pozwalać drugiej osobie odnaleźć liczbę i sprawdzić jej znaczenie. Zapis „wyszło 8” tego nie umożliwia. Zapis „średnia czasu w pięciu ważnych pomiarach małej tabeli wyniosła 8 minut” podaje miarę, dane, liczebność i jednostkę.
+Dobre zdanie pozwala drugiej osobie odnaleźć liczbę i sprawdzić jej znaczenie. Zapis „średnia czasu w pięciu ważnych pomiarach tabeli `mini` wyniosła 8 minut” podaje miarę, dane, liczebność i jednostkę.
 
-| Wersja robocza | Co jest niejasne? | Wersja z uzasadnieniem |
+| Wersja robocza | Element wymagający doprecyzowania | Wersja z uzasadnieniem |
 |---|---|---|
 | „Badani mieli wynik 60” | Liczba osób czy procent? | „Trzy z pięciu znanych wyników były powodzeniami: 60%” |
-| „u04 wyszukiwała 0 minut” | Brak zamieniono w pomiar | „Dla u04 nie zarejestrowano czasu” |
-| „Doświadczeni są wolniejsi” | Uogólnienie z małej demonstracji | „W tej tabeli trzeba osobno porównać grupy i ich liczebności” |
-| „W tabeli jest sześć osób, więc N=6” | Mianownik zależy od zmiennej | „Sześć rekordów, pięć ważnych czasów” |
-| „Wykres udowadnia brak kompetencji” | Zmieniono konstrukt | „Wykres pokazuje zróżnicowanie czasu konkretnego zadania” |
+| „u04 wyszukiwała 0 minut” | Brak zamieniono w pomiar | „Dla u04 czas pozostaje nieznany” |
+| „Doświadczeni są wolniejsi” | Uogólnienie z małej demonstracji | „Porównanie grup wymaga osobnych średnich i liczebności” |
+| „W tabeli jest sześć osób, więc N = 6” | Mianownik zależy od zmiennej | „Sześć rekordów, pięć ważnych czasów” |
+| „Wykres udowadnia brak kompetencji” | Zmieniono konstrukt | „Wykres przedstawia zróżnicowanie czasu konkretnego zadania” |
 
-Poprawa interpretacji często wymaga zwężenia zdania, a nie dodawania kolejnych liczb. Jeżeli badaliśmy czas jednego zadania, piszemy o czasie tego zadania. Jeżeli mierzyliśmy ocenę użyteczności, nie zastępujemy jej kompetencją tylko dlatego, że ta nazwa brzmi szerzej.
+Poprawa interpretacji polega często na zwężeniu zdania do mierzonej wielkości: czas jednego zadania, ocena użyteczności. Szersza nazwa, np. „kompetencja”, wymaga szerszego pomiaru.
 
-W tym ćwiczeniu nie wyznaczamy wartości p ani przedziału ufności. Nie są potrzebne do rozpoznania wiersza i poprawnego opisania małej tabeli. Przygotowujemy język, który później pozwoli odróżnić estymatę, statystykę testową i niepewność.
+Ćwiczenie C01 opisuje małą tabelę; wartość p i przedział ufności wprowadzają wykład W03 i ćwiczenie C05. Język wypracowany na C01 — miara, jednostka, mianownik — pozwala później odróżnić estymatę, statystykę testową i niepewność.
 
 ## Łączymy wykres z obserwacją
 
-Najkrótszy czas ma osoba u06: 5 minut, lecz niepowodzenie. Osoba u01 pracowała 6 minut i odniosła sukces. Poprawny opis brzmi: „Krótszy czas nie oznaczał tu automatycznie poprawnego wykonania: u06 zakończyła próbę szybciej od u01, ale tylko u01 znalazła właściwy dokument”. Nie piszemy, że krótszy czas spowodował błąd.
+Najkrótszy czas ma osoba u06: 5 minut i niepowodzenie. Osoba u01 pracowała 6 minut i odniosła sukces. Poprawny opis brzmi: „Krótszy czas i sukces opisują dwie różne cechy wykonania: u06 zakończyła próbę szybciej od u01, a właściwy dokument znalazła u01”.
 
-Analogicznie odczytujemy deklarację. Gdy ktoś wybiera 5 na skali pewności, a obserwowane zadanie kończy się niepowodzeniem, obie wartości mogą być poprawnie zapisane. Deklaracja dotyczy oceny własnej, obserwacja — wyniku konkretnej próby. Takiego rekordu nie usuwamy jako „sprzecznego”. W CHALLENGE zastosujesz to rozróżnienie do portalu studenckiego.
-
+Deklarację odczytujemy analogicznie. Gdy ktoś wybiera 5 na skali pewności, a obserwowane zadanie kończy się niepowodzeniem, obie wartości są poprawnie zapisane: deklaracja dotyczy oceny własnej, obserwacja — wyniku konkretnej próby. Rekord z wysoką deklaracją i niepowodzeniem zostaje w danych jako informacja o relacji deklaracji i wykonania. Część CHALLENGE stosuje rozróżnienie deklaracji i obserwacji do portalu studenckiego.
 
 # CHALLENGE — samodzielny opis portalu
 
-Zastąp znaczniki odpowiedzi w pięciu zadaniach własnym tekstem. Pisz pod wynikiem, poza blokiem R; nie wpisuj interpretacji jako komentarza w kodzie. Nie musisz odtwarzać dodatkowego dziennika ani projektu badawczego.
+W pięciu zadaniach zastąp znaczniki odpowiedzi własnym tekstem. Pisz pod wynikiem, poza blokiem R, a interpretację umieszczaj w tekście; komentarz w kodzie pozostaje częścią kodu.
 
 ## CHALLENGE 1: Portal studenta: opis rekordu
 
 W nowym scenariuszu osiem hipotetycznych osób szuka terminu składania wniosku w portalu studenckim. Po zadaniu deklarują pewność, że potrafią korzystać z portalu, na skali 1–5. Obserwator osobno zapisuje czas i to, czy odnaleziono poprawny termin.
 
-Blok pokazuje cały mały zbiór oraz rekord p06. To nowe dane: nie przepisuj liczb z części LEARN. Rozróżnij rok studiów, deklarację i obserwację.
+Blok wyświetla tabelę `portal` z pięcioma kolumnami: `id`, `rok` (rok studiów), `czas_min`, `sukces` (0/1) i `pewnosc` (1–5), a pod nią rekord osoby p06 w postaci „pole — wartość”. Rozróżnij rok studiów, deklarację i obserwację.
 
 ```{r s01-portal}
 obserwacje_portalu <- odczyt_portalu(numer = 6)
 print(obserwacje_portalu)
 ```
 
-**Napisz krótki akapit:** opisz p06 z podaniem wszystkich trzech wyników: czasu, sukcesu i pewności. Wyjaśnij, czego ich zestawienie nie pozwala stwierdzić o ogólnych kompetencjach tej osoby.
+**Napisz krótki akapit:** opisz p06 z podaniem wszystkich trzech wyników: czasu, sukcesu i pewności. Wskaż, jakie dodatkowe dane byłyby potrzebne do oceny ogólnych kompetencji osoby p06.
 
 <!-- odpowiedz:S01 -->
 [UZUPELNIJ_S01]
@@ -323,9 +341,9 @@ print(obserwacje_portalu)
 
 ## CHALLENGE 2: Skąd pochodzi wynik?
 
-Przygotowany kod wybiera czas osoby z trzeciego wiersza na dwa sposoby. Następnie liczy rekordy i ważne czasy. W raporcie każda liczba powinna mieć jednoznaczny przedmiot.
+Przygotowany kod wybiera czas osoby z trzeciego wiersza na dwa sposoby, a następnie liczy rekordy i ważne czasy. W raporcie każda liczba ma jednoznaczny przedmiot.
 
-Tabela pokazuje polecenie i jego rezultat. Odczytaj nazwę obiektu, kolumnę oraz wiersz. Nie trzeba pisać nowej funkcji ani kopiować kodu do odpowiedzi.
+Tabela „Polecenia wskazujące źródło wyniku” ma dwie kolumny: wyrażenie R i jego wynik. Odczytaj nazwę obiektu, kolumnę oraz wiersz w każdym wyrażeniu. Odpowiedź zawiera tekst; kod pozostaje w bloku.
 
 ```{r s02-adres}
 adresy <- tabela_adresow()
@@ -340,9 +358,9 @@ print(adresy)
 
 ## CHALLENGE 3: Czy brak można zastąpić zerem?
 
-Osoba przygotowująca raport proponuje wpisać zero tam, gdzie nie ma czasu. Twierdzi, że dzięki temu „nie stracimy żadnego uczestnika”. Twoim zadaniem jest ocena tej decyzji na podstawie jej skutku i znaczenia pomiaru.
+Osoba przygotowująca raport proponuje wpisać zero w każdym rekordzie z brakującym czasem. Uzasadnia propozycję tym, że „wszyscy uczestnicy zostaną w analizie”. Twoim zadaniem jest ocena propozycji na podstawie jej skutku i znaczenia pomiaru.
 
-Gotowa tabela pokazuje obie wersje średniej. Odczytaj sumę czasów i mianowniki. Sprawdź, czy powiększenie mianownika dostarczyło nowego pomiaru.
+Tabela „Dwie reguły potraktowania braku” zawiera dla obu reguł N, sumę czasu i średnią. Odczytaj sumy i mianowniki. Sprawdź, czy powiększenie mianownika dostarczyło nowego pomiaru.
 
 ```{r s03-mianownik}
 warianty <- pokaz_tabele(blad_portalu, "Dwie reguły potraktowania braku")
@@ -357,9 +375,9 @@ print(warianty)
 
 ## CHALLENGE 4: Krótka informacja dla opiekuna portalu
 
-Opiekun potrzebuje dwóch informacji: ile trwało poszukiwanie i jak często znaleziono poprawny termin. Nie potrzebuje listy poleceń R. Oczekuje opisu próby, w którym braki nie znikają z narracji.
+Opiekun potrzebuje dwóch informacji: ile trwało poszukiwanie i jak często znaleziono poprawny termin. Oczekuje opisu próby z liczbami, w którym tekst podaje także liczbę braków.
 
-Tabela zawiera gotowe podsumowanie. Wybierz liczby odnoszące się do pytania i sprawdź ich jednostki. To opis obserwacji, bez testu i bez uogólnienia na wszystkich studentów.
+Tabela „Opis portalu studenckiego” zawiera osiem wskaźników: liczbę wierszy, liczbę ważnych czasów i braków, średnią i medianę czasu, liczbę ważnych wyników, liczbę sukcesów i odsetek sukcesów. Wybierz liczby odnoszące się do pytania i sprawdź ich jednostki. Opis dotyczy obserwacji w próbie.
 
 ```{r s04-opis}
 podsumowanie <- pokaz_tabele(opis_portalu, "Opis portalu studenckiego")
@@ -372,13 +390,13 @@ print(podsumowanie)
 [UZUPELNIJ_S04]
 <!-- /odpowiedz:S04 -->
 
-## CHALLENGE 5: Deklaracja nie jest obserwacją
+## CHALLENGE 5: Deklaracja i obserwacja
 
-Na wykresie pewność zestawiono z czasem, a kształt punktu oznacza sukces. Wysoka pewność nie musi oznaczać poprawnego wyniku. Długi czas nie wskazuje jednoznacznie przyczyny trudności.
+Wykres „Portal: deklaracja i wynik zadania” ma na osi poziomej obserwowany czas w minutach, a na osi pionowej deklarowaną pewność 1–5. Każda z siedmiu osób z zapisanym czasem to punkt z identyfikatorem; koło pełne oznacza sukces, a koło puste niepowodzenie. Wysoka pewność i poprawny wynik to dwie informacje o osobie, a długi czas ma kilka możliwych przyczyn.
 
-Uruchom blok i porównaj co najmniej dwie osoby w tabeli z CHALLENGE 1. Wykres pomaga zobaczyć wzorzec, ale nie mierzy całej kompetencji. Nie obliczamy na C01 korelacji ani jej istotności.
+Uruchom blok i porównaj co najmniej dwie osoby z tabeli w CHALLENGE 1. Wykres zestawia dwie informacje o każdej osobie; korelację deklaracji z czasem liczy ćwiczenie C08.
 
-```{r s05-deklaracja}
+```{r s05-deklaracja, fig.cap="Portal: deklaracja i wynik zadania. Oś pozioma: obserwowany czas w minutach; oś pionowa: deklarowana pewność 1–5. Każdy punkt ma identyfikator osoby; koło pełne oznacza sukces, koło puste niepowodzenie. Osoba p04 ma nieznany czas."}
 deklaracja_i_czas <- pokaz_wykres(wykres_portalu)
 print(deklaracja_i_czas)
 ```
@@ -391,7 +409,7 @@ print(deklaracja_i_czas)
 
 # Zapis i oddanie
 
-Sprawdź pięć własnych akapitów w CHALLENGE: nazwę miary, liczbę, jednostkę i mianownik. Zapisz ten Rmd w edytorze. Nie przepisujesz tekstu do drugiego pliku i nie uruchamiasz osobnego renderowania.
+Sprawdź pięć własnych akapitów w CHALLENGE: nazwę miary, liczbę, jednostkę i mianownik. Zapisz plik `zadanie.Rmd` w edytorze (Ctrl+S). Funkcja oddania tworzy PDF z zapisanego pliku.
 
 W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy aktualny PDF, sprawdza kompletność i wysyła go razem z Rmd oraz `analiza.R` do Twojego prywatnego repozytorium z dostępem prowadzącego.
 
@@ -399,72 +417,68 @@ W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy aktualny PDF, sprawdza
 oddaj_zadanie("Z01")
 ```
 
-Odczytaj potwierdzenie odbioru i SHA identyfikujące wysłaną wersję. Błąd nie oznacza oddania. Po poprawce zapisz plik i ponownie wywołaj tę samą funkcję; wcześniejsze potwierdzenie nie obejmuje nowych zmian. Zdalny odbiór nie jest jeszcze oceną pracy.
+Oddanie potwierdza komunikat z identyfikatorem SHA wysłanej wersji. Po komunikacie błędu popraw wskazany problem, zapisz plik i ponownie wywołaj `oddaj_zadanie("Z01")`; nowe potwierdzenie obejmuje nowe zmiany. Ocenę prowadzący zapisuje osobno w repozytorium.
 
-Po potwierdzonym oddaniu wykonaj w konsoli `wyloguj_github()`. Na komputerze współdzielonym wyloguj również przeglądarkę i zamknij RStudio bez zachowywania `.RData`. Przy braku sieci zachowaj źródła przed czyszczeniem komputera i poproś prowadzącego o ustalenie sposobu dostarczenia pracy.
+Po potwierdzonym oddaniu wykonaj w konsoli `wyloguj_github()`. Na komputerze współdzielonym wyloguj również przeglądarkę i zamknij RStudio, wybierając „Don't Save” przy pytaniu o przestrzeń roboczą `.RData`. Przy braku sieci zachowaj źródła przed czyszczeniem komputera i poproś prowadzącego o ustalenie sposobu dostarczenia pracy.
 
 ## Co jest oceniane
 
-| Kryterium | Dowód w Twojej pracy | Punkty |
-|---|---|---:|
-| Z01.1 | Gotowy skrypt wykonany od początku, wynik z właściwego projektu | 3 |
-| Z01.2 | Poprawnie wskazana wartość, jej miejsce, znaczenie, jednostka i N | 3 |
-| Z01.3 | Własne wyjaśnienie roli konsoli, skryptu i źródła wyniku | 2 |
-| Z01.4 | Własne repozytorium i ID oraz potwierdzony status wysyłki i SHA | 2 |
+| Kryterium | Dowód w Twojej pracy | Odpowiedzi | Punkty |
+|----------------------------|------------------------------------------------------|--------------|------:|
+| Z01.1 Odtwarzalna praca w jednym Rmd | Zapisany Rmd i PDF z wynikami gotowych chunków oraz pięcioma odpowiedziami poza kodem | S01–S05 | 3 |
+| Z01.2 Odczyt rekordu, miar czasu i mianownika odsetka | Rekord p06, dwa adresy wartości, N osób i ważnych czasów, średnia, mediana, liczba i odsetek sukcesów z jednostkami i mianownikami | S01–S04 | 3 |
+| Z01.3 Źródło wyniku i granice wniosku o zachowaniu | Kod, wynik i interpretacja rozdzielone; informacja o p04; porównanie dwóch rekordów i dodatkowy pomiar | S02, S03, S05 | 2 |
+| Z01.4 Własne ID, pliki i potwierdzona oddana wersja | Metadane z własnym ID oraz pokwitowanie z SHA i statusem odbioru | S01–S05 | 2 |
 
-Nie otrzymujesz dodatkowych punktów za napisanie własnej funkcji lub zastosowanie testu, którego jeszcze nie omawialiśmy. Oceniane są odczyt i wyjaśnienie. Osobna rubryka Z01 rozwija poziomy wykonania tych kryteriów.
+Punkty przyznaje się za odczyt i wyjaśnienie wyniku. Poziomy wykonania każdego kryterium opisuje rubryka Z01: na stronie kursu w dokumencie `rubryki/Z01.html`, a w konsoli R po poleceniu `rubryka("Z01")`.
 
 # Rozwinięcia do powtórki — poza rdzeniem spotkania
 
-Poniższe przykłady rozwijają ten sam sposób odczytu. Nie wymagają dodatkowych odpowiedzi ani oddania kolejnego pliku. Wróć do wybranego fragmentu, jeżeli chcesz sprawdzić znaczenie podglądu danych, jednostek lub komunikatu R.
+Rozwinięcia stosują ten sam sposób odczytu do większych danych, jednostek i komunikatów R. Rozwinięcia służą powtórce i pozostają poza oceną.
 
 ## Podgląd pełnego badania S02
 
-Wspólny zbiór S02 ma więcej rekordów i kolumn, ale obowiązują te same pytania. Najpierw sprawdzamy rozmiar danych przed przygotowaniem i po zastosowaniu reguł. Zmiana liczby wierszy nie oznacza automatycznie, że usunięto „złych respondentów”.
-
-Poniższa tabela pochodzi z przygotowanego skryptu. Odczytaj nazwę każdego pola razem z wartością. Reguły usuwania identycznych duplikatów i oznaczania nieprawidłowych wartości omówimy dokładnie w C02.
+Zbiór S02 ma więcej rekordów i kolumn niż tabela `mini`, a pytania pozostają te same. Najpierw sprawdzamy rozmiar danych przed przygotowaniem i po zastosowaniu reguł. Tabela „Rozmiar pełnego zbioru” podaje trzy liczby: 150 rekordów surowych, 148 rekordów po usunięciu dwóch identycznych duplikatów i 17 kolumn.
 
 ```{r pelny-rozmiar}
 rozmiar <- pokaz_tabele(wynik_glowny, "Rozmiar pełnego zbioru")
 print(rozmiar)
 ```
 
-Liczba kolumn może wzrosnąć po utworzeniu zmiennych pochodnych, np. indeksu albo liczby ważnych pozycji. Nie oznacza to zebrania nowych odpowiedzi. Nowa kolumna może być jedynie podsumowaniem informacji już obecnej w sześciu innych kolumnach.
+Surowy plik ma 15 kolumn; skrypt przygotowania dodaje dwie kolumny pochodne: `liczba_pozycji` (liczba ważnych odpowiedzi na sześć pozycji ankiety) i `indeks` (średnia tych odpowiedzi po odwróceniu pozycji 3). Kolumny pochodne streszczają informację obecną w sześciu kolumnach pozycji. Zmniejszenie liczby rekordów ze 150 do 148 dotyczy kopii tych samych odpowiedzi; reguły przygotowania omawia ćwiczenie C02.
 
-Teraz oglądamy sześć pierwszych rekordów pełnego badania. Jest to podgląd struktury, a nie cała próba i nie losowa podpróba do uogólnień. Przeczytaj jeden rekord z czasem i wynikiem zadania; nie dopisuj oceny osoby, której nie ma w danych.
+Tabela „Sześć pierwszych rekordów S02” zawiera identyfikator, grupę, czas i powodzenie sześciu pierwszych osób ze 148. Przeczytaj jeden rekord z czasem i wynikiem zadania, np. o001: osoba z grupy nowych szukała 12,1 minuty i zakończyła zadanie niepowodzeniem.
 
 ```{r pelny-podglad}
 rekordy <- podglad_badania()
 print(rekordy)
 ```
 
-Podgląd ma sześć wierszy, lecz pełna tabela może mieć ich znacznie więcej. Częsty błąd polega na uznaniu liczby widocznych rekordów za N analizy. Polecenie `head()` ogranicza wydruk, nie usuwa pozostałych danych z obiektu.
+Podgląd ma sześć wierszy, a pełna tabela 148. Polecenie `head()` ogranicza wydruk do sześciu pierwszych wierszy; obiekt zachowuje wszystkie rekordy, więc N analizy odczytujemy z tabeli rozmiaru.
 
-Kolejny wykres pokazuje pierwsze dwadzieścia rekordów. Oś pozioma oznacza pozycję w podglądzie, nie numer kolejnego dnia badania. Szukamy różnic w czasie i potencjalnych braków, ale nie interpretujemy tej kolejności jako trendu czasowego.
+Wykres „Czasy wszystkich osób S02” umieszcza każdy ważny czas na jednej osi; pionowe rozsunięcie punktów ułatwia odczyt powtarzających się wartości. Pionowe linie oznaczają pierwszy kwartyl, medianę i trzeci kwartyl, czyli granice ćwiartek uporządkowanych czasów.
 
-```{r pelny-wykres}
+```{r pelny-wykres, fig.height=2.8, fig.cap="Czasy wszystkich osób S02 z ważnym pomiarem (N = 142). Oś pozioma: czas wyszukiwania w minutach. Połowa punktów leży między pierwszym kwartylem 5,8 minuty a trzecim kwartylem 13,0 minuty, mediana wynosi 8,25 minuty; prawy ogon sięga 33,8 minuty, a najkrótszy czas to 1,6 minuty."}
 czasy_podgladu <- pokaz_wykres(wykres_glowny)
 print(czasy_podgladu)
 ```
 
-Przed zapisaniem zdania o całej próbie wróć do tabeli podsumowującej pełny zbiór. Wykres fragmentu może pomóc zrozumieć format danych, ale nie daje prawa do stwierdzenia, jaka część całej próby działała szybko. Trzeba odróżniać demonstrację sposobu odczytu od analizy pełnego pytania.
+Wykres obejmuje 142 z 148 osób: sześć osób ma brak czasu. Połowa osób szukała od 5,8 do 13,0 minuty, a kilka osób ponad 25 minut. Ćwiczenie C03 (Portret próby) opisuje rozkład czasu S02 miarami i histogramem.
 
 ## Słownik jest częścią pełnych danych
 
-Nazwa `powodzenie` brzmi intuicyjnie, ale musimy wiedzieć, czy ocenia je obserwator, czy deklaruje uczestnik. Nazwa `czas_wyszukiwania` nie mówi sama, czy chodzi o minuty czy sekundy. Słownik nadaje tym kolumnom znaczenie potrzebne do interpretacji.
-
-Poniższa tabela zestawia wybrane pola pełnego przykładu S02. Odczytaj osobno skalę statystyczną i opis pomiaru. W kolejnych zajęciach rozbudujemy tę kontrolę o zakresy dopuszczalne oraz kody braków.
+Słownik nadaje kolumnom znaczenie: nazwa `powodzenie` wymaga informacji, kto ocenia wynik, a nazwa `czas_wyszukiwania` — informacji o jednostce. Tabela „Wybrane kolumny zbioru S02” podaje dla ośmiu kolumn opis, skalę pomiaru i kodowanie; jednostką czasu są minuty, a powodzenie ocenia obserwator.
 
 ```{r slownik}
 slownik <- slownik_pelnego_badania()
 print(slownik)
 ```
 
-Identyfikator służy odnajdywaniu i łączeniu rekordów. Grupa porównania jest kategorią. Czas ma jednostkę i naturalne zero. Pojedyncza odpowiedź 1–5 jest uporządkowana, ale równość odległości między sąsiednimi kategoriami wymagałaby dodatkowego uzasadnienia.
+Identyfikator służy odnajdywaniu i łączeniu rekordów. Grupa porównania jest kategorią. Czas ma jednostkę i naturalne zero. Pojedyncza odpowiedź 1–5 jest uporządkowana, a równość odległości między sąsiednimi kategoriami wymagałaby dodatkowego uzasadnienia.
 
-Pełny scenariusz S02 zawiera sześć pozycji dotyczących użyteczności katalogu i radzenia sobie z nim. Będziemy z nich tworzyć dydaktyczny indeks deklarowanej użyteczności. Nie jest to zwalidowany test całej kompetencji informacyjnej. W C04 sprawdzisz, które fragmenty pozycji dotyczą użytkownika, a które systemu.
+Pełny scenariusz S02 zawiera sześć pozycji dotyczących użyteczności katalogu i radzenia sobie z nim. Skrypt C01 tworzy z nich kolumnę `indeks`, czyli dydaktyczny indeks deklarowanej użyteczności katalogu; ćwiczenie C04 (Od pozycji do konstruktu) omawia regułę indeksu i sprawdza, które pozycje dotyczą użytkownika, a które systemu.
 
-Wartość pozycji ankiety wytwarza uczestnik wybierający odpowiedź, natomiast czas i poprawność zadania pochodzą z obserwacji wykonania. Zapis liczbowy obu informacji nie usuwa tej różnicy. Bez definicji pomiaru dwie podobne kolumny mogłyby zostać błędnie uznane za dwa testy kompetencji.
+Wartość pozycji ankiety pochodzi od uczestnika wybierającego odpowiedź, a czas i poprawność zadania — z obserwacji wykonania. Obie informacje mają zapis liczbowy i dwa źródła; słownik rozróżnia uczestnika i obserwatora jako źródła pomiaru.
 
 ## Trzy dodatkowe przykłady odczytu
 
@@ -472,36 +486,36 @@ Wartość pozycji ankiety wytwarza uczestnik wybierający odpowiedź, natomiast 
 
 W ankiecie odpowiedziało dziesięć osób. Sześć wybrało „tak”, dwie „nie”, a dwie pominęły pytanie. Jaki odsetek ważnych odpowiedzi stanowi „tak”? Zatrzymaj się przed czytaniem rozwiązania i nazwij mianownik.
 
-Wśród ośmiu ważnych odpowiedzi jest sześć odpowiedzi „tak”, czyli 75%. Zdanie „60% wszystkich dziesięciu respondentów zaznaczyło tak” także jest rachunkowo poprawne, ale ma inny mianownik i powinno ujawnić dwa braki. Nie wolno używać tych wersji zamiennie bez zmiany opisu.
+Wśród ośmiu ważnych odpowiedzi sześć to „tak”, czyli $6/8=75\%$. Zdanie „60% wszystkich dziesięciu respondentów zaznaczyło tak” ($6/10$) ma inny mianownik i wymaga informacji o dwóch brakach. Każda wersja podaje swój mianownik.
 
 ### Przypadek B: jednostka przesądza o znaczeniu
 
-Tabela zawiera wartość 120 w kolumnie czasu. Jedna osoba zapisuje „dwie minuty”, druga „dwie godziny”. Bez słownika nie umiemy rozstrzygnąć, która ma rację. Jeśli jednostką są sekundy, poprawna jest pierwsza interpretacja; jeśli minuty, druga.
+Tabela zawiera wartość 120 w kolumnie czasu. Jedna osoba odczytuje „dwie minuty”, druga „dwie godziny”. Słownik rozstrzyga spór: przy sekundach 120 to dwie minuty, przy minutach — dwie godziny.
 
-Dlatego przed przeliczeniem jednostki sprawdzamy źródło, a po przeliczeniu zmieniamy podpis. Nie należy poprawiać „dziwnej” wartości przez odgadywanie, jaka liczba wyglądałaby bardziej realistycznie. To będzie jeden z tematów czyszczenia danych.
+Przed przeliczeniem jednostki sprawdzamy źródło, a po przeliczeniu zmieniamy podpis. Poprawka nietypowej wartości opiera się na źródle danych; reguły poprawek omawia ćwiczenie C02.
 
 ### Przypadek C: deklaracja i wykonanie
 
-Osoba wybiera odpowiedź 5 na stwierdzenie „łatwo znajduję potrzebny dokument”, a obserwowane zadanie kończy się niepowodzeniem. Czy wiersz trzeba usunąć jako sprzeczny? Nie. Deklaracja i wykonanie odnoszą się do różnych informacji i mogą się rozchodzić.
+Osoba wybiera odpowiedź 5 na stwierdzenie „łatwo znajduję potrzebny dokument”, a obserwowane zadanie kończy się niepowodzeniem. Wiersz zostaje w danych: deklaracja i wykonanie odnoszą się do różnych informacji i mogą się rozchodzić.
 
-Taki rekord może być szczególnie interesujący dla pytania o samoocenę. Nie pozwala jednak sam rozstrzygnąć, czy osoba przeszacowuje umiejętności: zadanie mogło być nietypowe, polecenie niejednoznaczne, a pojedynczy wynik przypadkowy. W C08 wrócimy do związku obu rodzajów pomiaru na poziomie całej próby.
+Taki rekord jest szczególnie interesujący dla pytania o samoocenę. Ocena przeszacowania umiejętności wymaga wielu zadań: pojedynczy wynik mógł zależeć od nietypowego zadania, niejasnego polecenia albo przypadku. Ćwiczenie C08 (Samoocena a wykonanie) bada związek obu rodzajów pomiaru na poziomie całej próby.
 
-## Powrót po zajęciach: czytanie komunikatów bez zgadywania
+## Powrót po zajęciach: czytanie komunikatów
 
-Komunikat o błędzie zwykle wskazuje, czego program nie mógł wykonać. Nie jest oceną Twojego rozumienia statystyki. Najpierw sprawdź ostatnie uruchomione polecenie, nazwę obiektu i projekt. Nie zmieniaj wielu rzeczy naraz, bo wtedy trudno stwierdzić, co pomogło.
+Komunikat błędu opisuje przerwane polecenie i dotyczy kodu. Najpierw sprawdź ostatnie uruchomione polecenie, nazwę obiektu i katalog pracy. Zmieniaj jedną rzecz naraz i uruchamiaj ponownie, aby wiedzieć, która zmiana pomogła.
 
-| Objaw | Co może oznaczać? | Pierwszy krok |
+| Objaw | Możliwe znaczenie | Pierwszy krok |
 |---|---|---|
-| `object ... not found` | Obiekt jeszcze nie powstał albo nazwa ma literówkę | Uruchom blok przygotowania i porównaj nazwę |
-| `cannot open file` | Nie znaleziono pliku pod daną ścieżką | Sprawdź projekt i istnienie pliku |
-| Średnia wynosi `NA` | W obliczeniu pozostał brak | Sprawdź braki i regułę ich obsługi |
-| Wynik różni się od PDF | Inne dane, parametry lub stary dokument | Porównaj wariant i uruchom analizę od początku |
-| W konsoli pojawia się `+` | Polecenie nie zostało domknięte | Przerwij Esc i sprawdź nawias/cudzysłów |
-| Wysyłka nie ma potwierdzenia | Praca może być tylko lokalna | Sprawdź status i zachowaj pliki |
+| `object ... not found` | Obiekt powstaje po uruchomieniu chunka `przygotowanie` albo nazwa ma literówkę | Uruchom chunk `przygotowanie` i porównaj nazwę |
+| `cannot open file` | Program szuka pliku pod błędną ścieżką | Sprawdź katalog pracy i istnienie pliku |
+| Średnia wynosi `NA` | Obliczenie objęło brak | Sprawdź braki i regułę ich obsługi |
+| Wynik różni się od PDF | Inne dane, parametry lub starszy dokument | Porównaj wariant i uruchom analizę od początku |
+| W konsoli pojawia się `+` | Polecenie czeka na domknięcie | Przerwij klawiszem Esc i sprawdź nawias lub cudzysłów |
+| Wysyłka kończy się bez potwierdzenia | Praca jest zapisana lokalnie | Sprawdź status i zachowaj pliki |
 
-Średnia `NA` nie oznacza, że prawdziwa średnia jest nieznana w sensie teorii estymacji. Oznacza, że konkretne polecenie nie zwróciło liczbowego wyniku przy danym sposobie traktowania braków. Z kolei liczbowy wynik nie gwarantuje poprawności interpretacji. Program może poprawnie policzyć średnią niewłaściwie zakodowanej kolumny.
+Wynik `NA` oznacza, że obliczenie objęło brak, i dotyczy polecenia, a liczbowy wynik wymaga dalej sprawdzenia kodowania kolumny: program poprawnie policzy średnią także dla źle zakodowanej kolumny.
 
-Zestawienie poniżej pomaga wrócić do składni potrzebnej do odczytu. Potraktuj je jak słownik poleceń, a nie listę funkcji do wyuczenia na pamięć. Wyjaśnij słowami dwa wybrane wiersze, odwołując się do małej tabeli.
+Tabela „Polecenie i jego sens” zestawia składnię potrzebną do odczytu z krótkim opisem każdego polecenia. Potraktuj tabelę jak słownik poleceń. Wyjaśnij słowami dwa wybrane wiersze, odwołując się do tabeli `mini`.
 
 ```{r slownik-polecen}
 polecenia <- slownik_odczytu()
@@ -510,9 +524,9 @@ print(polecenia)
 
 ## Instalacja na własnym komputerze
 
-Na własnym komputerze instalacja jest osobnym krokiem wykonywanym przed pracą, a nie częścią analizy statystycznej. W sali nie powtarzasz jej na każdych zajęciach. Po instalacji nadal trzeba otworzyć własny projekt i używać jego danych.
+Instalacja na własnym komputerze to jednorazowy krok przed pracą; w sali pakiet instaluje informatyk. Po instalacji otwierasz własny katalog pracy funkcją `rozpocznij_zajecia()`.
 
-Poniższe polecenia pobierają pakiet kursu z repozytorium GitHub. Wymagają połączenia z siecią, ale późniejszy odczyt lokalnych PDF i HTML nie wymaga stałego dostępu do internetu. W przypadku zaleconej wersji rocznika stosuj instrukcję instalacyjną kursu.
+Dwa polecenia z następnego bloku pobierają pakiet kursu z repozytorium GitHub. Pobranie wymaga sieci, a późniejszy odczyt lokalnych PDF i HTML działa bez internetu. Wersję pakietu dla rocznika podaje instrukcja instalacyjna kursu.
 
 ```r
 install.packages("remotes")
@@ -522,56 +536,71 @@ remotes::install_github(
 )
 ```
 
-PDF Twojej pracy powstaje z uzupełnionego Rmd. Środowisko sali musi zawierać przygotowane przez informatyka zależności renderowania; nie instalujesz samodzielnie LaTeX w trakcie ćwiczeń. Na własnym komputerze sprawdź render przed zajęciami według instrukcji środowiska. Brak gotowego środowiska wymaga rozwiązania technicznego, a nie zamiany pisemnego zadania w odpowiedź „w myślach”.
+PDF Twojej pracy powstaje z uzupełnionego Rmd. Środowisko sali zawiera przygotowane przez informatyka narzędzia renderowania, w tym LaTeX. Na własnym komputerze sprawdź render przed zajęciami według instrukcji środowiska; problem techniczny zgłoś prowadzącemu, a zadanie pisemne pozostaje pisemne.
 
-## Samokontrola przed następnym spotkaniem
+## Samokontrola: od liczby w raporcie do osoby w tabeli
 
-## Od liczby w raporcie do osoby w tabeli
+Po kilku dniach inna osoba czyta Twoją odpowiedź i pyta: „Skąd wiadomo, że osiem minut dotyczy zadania wyszukiwania w tabeli `mini`?”. Odpowiedź wskazuje łańcuch od pytania, przez kolumnę i regułę obliczenia, do zapisanej tabeli wyniku.
 
-Po kilku dniach inna osoba czyta Twoją odpowiedź i pyta: „Skąd wiadomo, że te osiem minut dotyczy właśnie tego zadania?”. Nie wystarczy wskazać, że liczba pojawiła się w konsoli. Potrzebny jest łańcuch od pytania, przez kolumnę i regułę obliczenia, do zapisanej tabeli wyniku.
+W tabeli `mini` łańcuch przechodzi się w obie strony. Pytanie dotyczy średniego zarejestrowanego czasu. Kolumna `czas_min` zawiera sześć miejsc, w tym jeden brak. Wektor ważnych wartości obejmuje 6, 8, 12, 9 i 5 minut. Suma wynosi 40, mianownik 5, wynik 8 minut. Nazwa miary w raporcie wskazuje operację: sumę 40 minut podzieloną przez 5 ważnych pomiarów.
 
-W małej demonstracji potrafisz przejść ten łańcuch w obie strony. Pytanie dotyczy średniego zarejestrowanego czasu. Kolumna `czas_min` zawiera sześć miejsc, w tym jeden brak. Wektor ważnych wartości obejmuje 6, 8, 12, 9 i 5 minut. Suma wynosi 40, mianownik 5, wynik 8 minut. W raporcie nazwa miary powinna wskazywać właśnie tę operację.
+W większym zbiorze ręczne sprawdzanie każdej sumy zastępuje ta sama struktura dowodu: słownik objaśnia kolumnę, skrypt zapisuje regułę, a tabela podaje wynik i liczebność. Zdanie jest sprawdzalne, gdy łańcuch zawiera słownik, skrypt i tabelę wyniku.
 
-W większym zbiorze nie sprawdzamy ręcznie każdej sumy, ale zachowujemy tę samą strukturę dowodu. Słownik objaśnia kolumnę, skrypt zapisuje regułę, a tabela podaje wynik i liczebność. Gdy któryś element jest nieznany, zdanie może wyglądać poprawnie i nadal nie być sprawdzalne.
-
-| Element zdania | Gdzie go sprawdzisz? | Przykład pytania kontrolnego |
+| Element zdania | Miejsce sprawdzenia | Pytanie kontrolne |
 |---|---|---|
 | „czas wykonania” | Słownik i protokół | Czy to czas do zakończenia, czy do ostatniego kliknięcia? |
-| „średni” | Reguła podsumowania | Czy wynik pochodzi ze średniej, a nie mediany? |
-| „w pięciu pomiarach” | Licznik ważnych wartości | Czy brak został pominięty wyłącznie w tej analizie? |
-| „osiem minut” | Tabela wyniku i jednostka | Czy nie przepisano sekund pod etykietą minut? |
-| „w tej próbie” | Definicja zbioru | Czy zdanie nie rozszerza wyniku na wszystkich użytkowników? |
+| „średni” | Reguła podsumowania | Czy wynik pochodzi ze średniej, czy z mediany? |
+| „w pięciu pomiarach” | Licznik ważnych wartości | Czy brak pominięto wyłącznie w obliczeniu średniej? |
+| „osiem minut” | Tabela wyniku i jednostka | Czy podpis minut odpowiada zapisanym wartościom? |
+| „w tej próbie” | Definicja zbioru | Czy zdanie obejmuje wyłącznie zbadane osoby? |
 
-Każda liczba w raporcie powinna mieć wskazane źródło, jednostkę i zakres analizy. Zdanie niepoparte tabelą lub słownikiem wymaga doprecyzowania albo usunięcia. Ta zasada pozwala odróżnić odczyt danych od dopowiedzianego wyjaśnienia.
+Każda liczba w raporcie ma wskazane źródło, jednostkę i zakres analizy. Zdanie oparte na tabeli lub słowniku odróżnia odczyt danych od dopowiedzianego wyjaśnienia.
 
-## Dwie tabele z takim samym procentem
+### Dwie tabele z takim samym procentem
 
-Wyobraź sobie dwa odrębne badania próbne. W pierwszym sukces odniosły cztery z pięciu osób, w drugim czterdzieści z pięćdziesięciu. W obu proporcja wynosi 0,8, czyli 80%. To ten sam odsetek, ale nie ten sam zasób informacji.
+Wyobraź sobie dwa odrębne badania próbne. W pierwszym sukces odniosły cztery z pięciu osób, w drugim czterdzieści z pięćdziesięciu. W obu proporcja wynosi 0,8, czyli 80%. Odsetek jest ten sam, a ilość informacji różna: 5 i 50 osób.
 
-Na C01 nie obliczamy jeszcze przedziału ufności. Możemy jednak zauważyć prostą własność: zmiana wyniku jednej osoby w pierwszej próbie przesuwa odsetek o 20 punktów procentowych, a w drugiej o 2 punkty procentowe. Pokazuje to, dlaczego N jest częścią wyniku, mimo że nie zmienia definicji proporcji.
+Zmiana wyniku jednej osoby przesuwa odsetek o $100\%/n$:
 
-Nie należy z tego wyciągać wniosku, że większa próba zawsze opisuje właściwą populację. Pięćdziesiąt osób zrekrutowanych wyłącznie na szkoleniu bibliotecznym może różnić się od pozostałych użytkowników. Liczba osób i sposób ich doboru odpowiadają na dwa odrębne pytania. W03 połączy tę intuicję z formalnym językiem niepewności.
+$$
+\Delta_{\text{jednej osoby}}=\frac{100\%}{n}: \qquad \frac{100\%}{5}=20 \text{ punktów procentowych}, \qquad \frac{100\%}{50}=2 \text{ punkty procentowe}.
+$$
 
-## Punkty procentowe a procentowa zmiana
+Wykres „Wrażliwość odsetka na jedną osobę” przedstawia oba badania. N jest więc częścią wyniku, choć definicja proporcji pozostaje ta sama.
 
-Jeżeli odsetek powodzeń wzrasta z 50% do 60%, różnica wynosi 10 punktów procentowych. Względem początkowych 50% jest to wzrost o $10/50=20\%$. Oba rachunki mogą opisywać to samo porównanie, ale nie są tym samym sformułowaniem.
+```{r czulosc-odsetka, fig.height=2.2, fig.cap="Wrażliwość odsetka na wynik jednej osoby. Oś pozioma: odsetek powodzeń w procentach. W próbie 5 osób romb przy 80% i odcinek od 60% do 100%: zmiana wyniku jednej osoby przesuwa odsetek o 20 punktów procentowych; w próbie 50 osób odcinek od 78% do 82%, czyli o 2 punkty procentowe."}
+czulosc <- pokaz_wykres(wykres_czulosci)
+print(czulosc)
+```
 
-W raporcie o usłudze zdanie „skuteczność zwiększyła się o 10%” jest bez dodatkowego określenia niejasne. Czy chodzi o dziesięć punktów procentowych, czy o zmianę względną? Przy początkowym odsetku 50% wzrost względny o 10% prowadzi do 55%, a nie do 60%.
+Liczba osób i sposób ich doboru odpowiadają na dwa różne pytania. Pięćdziesiąt osób zrekrutowanych na szkoleniu bibliotecznym opisuje uczestników szkoleń. Wykład W03 łączy wrażliwość na liczebność z formalnym językiem niepewności.
 
-W kursie najpierw podajemy oba odsetki i ich mianowniki, a dopiero potem wybraną miarę porównania. Nie potrzebujesz nowego testu, aby poprawnie odczytać ten język. Potrzebujesz wiedzieć, która liczba jest podstawą dzielenia.
+### Punkty procentowe a procentowa zmiana
 
-## Krótka próba redakcyjna
+Wzrost odsetka powodzeń z 50% do 60% to różnica 10 punktów procentowych i wzrost względny o 20%:
+
+$$
+\Delta_{pp}=p_2-p_1=60\%-50\%=10 \text{ pp},
+\qquad
+\Delta_{\text{wzgl}}=\frac{p_2-p_1}{p_1}=\frac{10}{50}=20\% .
+$$
+
+Symbol $p_1$ oznacza odsetek wyjściowy, a $p_2$ odsetek po zmianie. W raporcie o usłudze zdanie „skuteczność zwiększyła się o 10%” wymaga doprecyzowania: przy wyjściowych 50% wzrost względny o 10% prowadzi do 55%, a wzrost o 10 punktów procentowych — do 60%.
+
+Raport najpierw podaje oba odsetki i ich mianowniki, a potem wybraną miarę porównania. Poprawny odczyt języka procentów wymaga wiedzy, która liczba jest podstawą dzielenia.
+
+### Krótka próba redakcyjna
 
 Popraw zdanie: „Komputer pokazał 0,8, więc osiemdziesięciu studentów umie wyszukiwać”. Pierwszy problem to zamiana proporcji w liczbę osób. Drugi to rozszerzenie wyniku pojedynczego zadania na całą umiejętność. Trzeci to pominięcie liczebności i statusu danych.
 
-Możliwa poprawa dla pierwszego z powyższych przykładów brzmi: „W odrębnej próbie dydaktycznej cztery z pięciu osób wykonały zadanie poprawnie, co stanowi 80% znanych wyników”. Zdanie nie rozstrzyga poziomu ich ogólnych kompetencji. Jeśli w badaniu były braki, trzeba dodatkowo wskazać ich liczbę.
+Poprawa dla przykładu czterech z pięciu osób brzmi: „W odrębnej próbie dydaktycznej cztery z pięciu osób wykonały zadanie poprawnie, co stanowi 80% znanych wyników”. Zdanie dotyczy jednego zadania. Przy brakach raport podaje dodatkowo ich liczbę.
 
-Porównaj tę poprawę z własną odpowiedzią Z01. Sprawdź, czy nie ma w niej podobnego przejścia od wartości technicznej do zbyt szerokiej diagnozy. Na pierwszych zajęciach właśnie takie rozpoznanie jest ważniejsze niż uruchomienie większej liczby funkcji.
+Porównaj poprawioną wersję z własną odpowiedzią Z01. Sprawdź, czy odpowiedź przechodzi od wartości technicznej wprost do szerokiej diagnozy. Na pierwszych zajęciach rozpoznanie przeskoku od wartości technicznej do diagnozy waży więcej niż uruchomienie większej liczby funkcji.
 
-Wyjaśnij pięć zdań: „jeden wiersz to jedna osoba”, „liczba wierszy nie zawsze jest mianownikiem”, „NA nie jest zerem”, „nazwa kolumny nie jest definicją konstruktu” oraz „wynik na ekranie powinien mieć zapisane źródło”. Do każdego podaj przykład z dzisiejszego materiału.
+Wyjaśnij pięć zasad: „jeden wiersz to jedna osoba”, „mianownik to liczba ważnych wartości zmiennej”, „NA oznacza brak pomiaru”, „konstrukt definiują słownik i protokół” oraz „każdy wynik ma zapisane źródło”. Do każdej zasady podaj przykład z ćwiczenia C01.
 
-Jeżeli rozróżniasz te sytuacje, jesteś przygotowany do C02. Tam surowy eksport będzie zawierał duplikaty, kody braków i wartości wymagające sprawdzenia. Zamiast pytać tylko „jak naprawić plik?”, będziemy pytać „jak dana decyzja zmienia informację o badanych osobach?”.
+Pięć zasad przygotowuje do ćwiczenia C02 (Surowy eksport). Surowy eksport zawiera duplikaty, kody braków i wartości wymagające sprawdzenia, a pytanie przewodnie C02 brzmi: jak decyzja porządkowania zmienia informację o badanych osobach?
 
 ## Kontekst badawczy
 
-Łączenie ankiety z obserwacją działania nawiązuje do podejścia opisanego przez [Hargittai (2002)](https://webuse.org/p/a09/). Nasza mała tabela i S02 pozostają niezależnymi przykładami syntetycznymi. Pozytywna ocena usługi, deklarowana umiejętność i poprawne wykonanie zadania mają odrębne znaczenia; ich relacja będzie pytaniem kolejnych zajęć.
+Łączenie ankiety z obserwacją działania nawiązuje do podejścia opisanego przez [Hargittai (2002)](https://webuse.org/p/a09/). Tabela `mini` i zbiór S02 pozostają niezależnymi przykładami syntetycznymi. Pozytywna ocena usługi, deklarowana umiejętność i poprawne wykonanie zadania mają odrębne znaczenia; ich relację badają kolejne ćwiczenia.

@@ -9,213 +9,367 @@ papersize: a4
 geometry: margin=2cm
 ---
 
-# Biblioteka ma problem, ale jeszcze nie ma pytania badawczego
+```{r przygotowanie, include=FALSE}
+source("analiza.R", local = knitr::knit_global(), encoding = "UTF-8")
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+                      fig.width = 6, fig.height = 3.2)
+```
 
-Do biblioteki napływają wiadomości, że w nowym katalogu trudno znaleźć dokument. Jednocześnie liczba wizyt w katalogu rośnie. Zespół proponuje trzy rozwiązania: zmienić nazwy filtrów, nagrać instrukcję albo przeprowadzić szkolenie. Każda propozycja zakłada inną przyczynę trudności. Nieczytelne filtry są własnością interfejsu, znajomość procedury jest własnością użytkownika, a szkolenie ma zmienić sposób działania. Sam wzrost liczby wizyt nie wskazuje, która diagnoza jest trafna.
+Wykład W01 otwiera część ilościową przedmiotu. Skrypt `analiza.R` zapisany w folderze wykładu tworzy tabele i wykresy wykładu W01: mapę kursu, słownik zbioru przykładowego i siedem wykresów z małymi przykładami liczbowymi. Kod skryptu pozostaje ukryty, a każdy wykres ma w tekście słowny opis osi, wartości i wniosku.
 
-Przez cały kurs będziemy wracać do tego problemu. Wspólny przykład S02 łączy ankietę po zadaniu z obserwowanym czasem i powodzeniem wyszukiwania. Dane są syntetyczne: pozwalają przećwiczyć analizę, ale nie dostarczają wiedzy o rzeczywistej bibliotece ani studentach UJ. W projekcie indywidualnym oddzielisz plan rzeczywistego badania od analizy swojego zbioru dydaktycznego.
+# Od sygnału problemu do pytania badawczego
 
-Najpierw trzeba przełożyć „trudno znaleźć” na sytuację możliwą do zaobserwowania. Czy użytkownik nie znajduje rekordu? Znajduje rekord, ale nie rozumie, gdzie jest dokument? Czy umie znaleźć publikację, lecz nie potrafi ocenić jej przydatności? Te trudności wymagają innych zadań, innej definicji sukcesu i innych działań biblioteki. Statystyka zaczyna się od takiego rozróżnienia, zanim pojawi się wzór.
+Do biblioteki napływają wiadomości, że w nowym katalogu trudno znaleźć dokument. Jednocześnie liczba wizyt w katalogu rośnie. Zespół proponuje trzy rozwiązania: zmienić nazwy filtrów, nagrać instrukcję albo przeprowadzić szkolenie. Każda propozycja zakłada inną przyczynę trudności: nazwy filtrów są własnością interfejsu, znajomość procedury jest własnością użytkownika, a szkolenie ma zmienić sposób działania. Wzrost liczby wizyt jest zgodny z każdą z trzech diagnoz, więc wybór rozwiązania wymaga pomiaru, który rozdziela własności interfejsu, wiedzę użytkownika i sposób działania.
 
-Wykład wprowadza język potrzebny w C01 i C02. Podczas 90 minut przeznaczamy około 15 minut na problem, 20 na pomiar, 20 na projekty, 20 na estymandy i 15 na omówienie przykładów. Pełny tekst służy również przygotowaniu i powtórce. Nie musisz zapamiętywać wszystkich nazw; po zajęciach masz umieć wskazać, jaką informację trzeba uzyskać, żeby zdanie badawcze było sprawdzalne.
+Przez cały kurs wracamy do problemu wyszukiwania w nowym katalogu. Zbiór przykładowy S02 — litera S z numerem oznacza scenariusz danych kursu — łączy ankietę wypełnianą po zadaniu wyszukiwawczym z obserwowanym czasem i powodzeniem zadania; zawiera 150 rekordów. Dane są syntetyczne: generator kursu tworzy odpowiedzi o znanej budowie, więc zbiór S02 służy do ćwiczenia analizy, a wiedza o rzeczywistej bibliotece wymaga danych z rzeczywistego badania. W projekcie indywidualnym oddzielisz plan rzeczywistego badania od analizy własnego zbioru dydaktycznego.
 
-# Co do tej historii wnosi LIS
+Pierwszym krokiem jest przełożenie zdania „trudno znaleźć” na zdarzenia możliwe do zaobserwowania. Czy użytkownik odnajduje rekord? Czy na podstawie rekordu wskazuje lokalizację dokumentu? Czy ocenia przydatność publikacji według podanych kryteriów? Trzy zdarzenia wymagają trzech różnych zadań, trzech definicji sukcesu i trzech różnych działań biblioteki. Statystyka zaczyna się od rozróżnienia rodzajów trudności, zanim pojawi się pierwszy wzór.
 
-Badanie zachowań informacyjnych obejmuje więcej niż kliknięcia w wyszukiwarce. Wilson porządkuje relacje między zachowaniem informacyjnym, poszukiwaniem informacji i wyszukiwaniem w systemie. Dla naszego przykładu oznacza to konieczność rozróżnienia pytania o korzystanie z katalogu od pytania o całą drogę zdobywania informacji. Osoba może zrezygnować z katalogu i skutecznie poprosić bibliotekarza o pomoc. Brak kolejnego kliknięcia nie mówi sam, czy potrzeba pozostała niezaspokojona. [Wilson, 1999](https://www.informationr.net/tdw/publ/papers/1999JDoc.html).
+## Mapa kursu
 
-Kuhlthau łączy proces poszukiwania z działaniami, myślami i odczuciami użytkownika. W naszym projekcie ta perspektywa uzasadnia pytanie, kiedy mierzymy pewność: przed zadaniem, w trakcie czy po poznaniu wyniku. Ta sama odpowiedź po sukcesie i przed rozpoczęciem pracy odnosi się do różnych momentów doświadczenia. Wzrost niepewności podczas rozpoznawania tematu nie musi być oznaką pogorszenia kompetencji. [Kuhlthau, 1991](https://wp.comminfo.rutgers.edu/ckuhlthau2/wp-content/uploads/sites/185/2016/01/InsidetheSearchProcess.pdf).
+Kurs składa się z pięciu wykładów o kodach W01–W05 i dziesięciu ćwiczeń o kodach C01–C10. Zadanie oddawane po ćwiczeniu ma kod Z z tym samym numerem, np. zadanie Z01 należy do ćwiczenia C01. Tabela „Mapa kursu” podaje kod, rodzaj, tytuł i treść każdej jednostki; odwołania do innych jednostek w tym wykładzie podają kod i tytuł z tej tabeli.
 
-Hargittai opisuje łączenie danych ankietowych z obserwacją korzystania z sieci. To bezpośrednie uzasadnienie rozdzielenia „uważam, że potrafię” od „wykonałem określone zadanie”. W kursie sprawdzamy związek deklaracji i wykonania, nie zakładamy ich równoważności. [Hargittai, 2002](https://webuse.org/p/a09/).
+```{r mapa-kursu}
+badaniaZI::tabela_markdown(mapa_do_druku, c(7, 12, 36, 45),
+                           "Mapa kursu: kod, rodzaj, tytuł i treść jednostek")
+```
 
-Perspektywa transformacji cyfrowej rozszerza pytanie o instytucję. Vial opisuje zmianę organizacyjną związaną z wykorzystaniem technologii, a nie tylko pojawienie się nowego narzędzia. W naszym przykładzie instalacja katalogu jest zdarzeniem technicznym; zmiana sposobu uzyskiwania pomocy, podziału pracy i dostępności zasobów wymaga osobnych wskaźników. [Vial, 2019](https://doi.org/10.1016/j.jsis.2019.01.003).
+Wykład prowadzi do jednej umiejętności: wskazania informacji, dzięki której zdanie badawcze staje się sprawdzalne. Wykres „Sześć etapów rozumowania” układa kolejne etapy od góry do dołu: problem instytucji, konstrukt, wskaźnik, projekt i próba, estymanda oraz wniosek. Przy każdym etapie stoi pytanie, na które odpowiada badacz, zanim przejdzie do następnego etapu.
 
-Z tych prac nie przepisujemy wyników do danych kursowych. Budujemy własne przykłady pytań: kto napotyka barierę, w którym momencie, jak ją rozpoznajemy i co mogłoby pomóc. Literatura uzasadnia wybór konstruktu i projektu. Nie zastępuje dowodu, że nasze sześć pozycji mierzy go trafnie.
+```{r etapy, fig.height=4.6, fig.cap="Sześć etapów rozumowania od problemu instytucji do wniosku, ułożonych od góry do dołu i połączonych strzałkami. Każdy etap zawiera pytanie do zapisania: od decyzji wymagającej informacji po zakres wniosku dozwolony przez projekt."}
+print(wykres_etapow)
+```
+
+# Wkład nauki o informacji (LIS) w problem katalogu
+
+Nauka o informacji i bibliotekoznawstwo (ang. *library and information science*, LIS) dostarcza pojęć porządkujących problem katalogu. Wilson opisuje zachowanie informacyjne jako szeroki obszar: obejmuje potrzebę informacyjną, poszukiwanie informacji w wielu źródłach i wyszukiwanie w konkretnym systemie. Dla katalogu wynika z modelu Wilsona rozróżnienie dwóch pytań: o korzystanie z katalogu i o całą drogę zdobywania informacji. Koniec sesji w katalogu jest zgodny z dwoma przebiegami — z niezaspokojoną potrzebą i z odpowiedzią uzyskaną od bibliotekarza — więc dziennik zdarzeń katalogu wymaga pytania o wynik całej drogi. [Wilson, 1999](https://www.informationr.net/tdw/publ/papers/1999JDoc.html).
+
+Kuhlthau łączy proces poszukiwania z działaniami, myślami i odczuciami użytkownika. Model procesu poszukiwania Kuhlthau uzasadnia pytanie o moment pomiaru pewności: przed zadaniem, w trakcie albo po poznaniu wyniku. Ta sama odpowiedź na pytanie o pewność opisuje po sukcesie i przed rozpoczęciem pracy dwa różne momenty doświadczenia. W modelu Kuhlthau wzrost niepewności towarzyszy etapowi rozpoznawania tematu, więc pomiar pewności wymaga zapisu etapu procesu. [Kuhlthau, 1991](https://wp.comminfo.rutgers.edu/ckuhlthau2/wp-content/uploads/sites/185/2016/01/InsidetheSearchProcess.pdf).
+
+Hargittai łączy dane ankietowe z obserwacją korzystania z sieci. Praca Hargittai uzasadnia rozdzielenie deklaracji „uważam, że potrafię” od obserwacji „wykonałem określone zadanie”. W kursie związek deklaracji i wykonania jest pytaniem empirycznym: ćwiczenie C08 (Samoocena a wykonanie) liczy korelację indeksu ankietowego z czasem zadania. [Hargittai, 2002](https://webuse.org/p/a09/).
+
+Vial opisuje transformację cyfrową jako zmianę organizacyjną: technologia przekształca procesy, podział pracy i sposób tworzenia wartości instytucji. W przykładzie biblioteki instalacja katalogu jest zdarzeniem technicznym, a zmiana sposobu uzyskiwania pomocy, podziału pracy i dostępności zasobów ma własne wskaźniki. [Vial, 2019](https://doi.org/10.1016/j.jsis.2019.01.003).
+
+Prace Wilsona, Kuhlthau, Hargittai i Viala dostarczają pojęć i uzasadnień pytań badawczych; dane S02 pochodzą z generatora kursu. Na podstawie literatury budujemy własne pytania: kto napotyka barierę, w którym momencie, jak barierę rozpoznajemy i co mogłoby pomóc. Trafność sześciu pozycji ankiety S02 wymaga własnego dowodu: analizy treści pozycji, spójności odpowiedzi i związku z wykonaniem zadania.
 
 # Od pojęcia do obserwacji
 
 ## Konstrukt, wskaźnik i reguła kodowania
 
-Konstrukt jest pojęciem, o którym chcemy wnioskować: kompetencja informacyjna, pewność wyszukiwania albo postrzegana użyteczność. Wskaźnik to obserwowalna informacja powiązana z tym pojęciem. Czas odnalezienia rekordu może być wskaźnikiem sprawności w konkretnym zadaniu. Nie jest samą kompetencją. Osoba może działać wolniej, ponieważ dokładniej sprawdza autorstwo i aktualność źródła.
+Konstrukt jest pojęciem, o którym chcemy wnioskować: kompetencja informacyjna, pewność wyszukiwania albo postrzegana użyteczność. Wskaźnik to obserwowalna informacja powiązana z konstruktem. Czas odnalezienia rekordu jest wskaźnikiem sprawności w konkretnym zadaniu i łączy kompetencję z innymi przyczynami tempa pracy, na przykład z dokładnym sprawdzaniem autorstwa i aktualności źródła.
 
-Operacjonalizacja określa, jak przechodzimy od pojęcia do danych. Dla czasu zapisujemy moment rozpoczęcia, moment zakończenia, jednostkę, warunki przerwania i sposób traktowania niepowodzenia. Dla oceny źródła określamy kryteria poprawności. Dla samooceny zapisujemy dokładne brzmienie pytania, okres odniesienia i kategorie odpowiedzi. Zmiana któregokolwiek z tych elementów może zmienić znaczenie wyniku.
+Operacjonalizacja określa przejście od pojęcia do danych. Dla czasu zapisujemy moment rozpoczęcia, moment zakończenia, jednostkę, warunek przerwania i sposób zapisu niepowodzenia. Dla oceny źródła określamy kryteria poprawności. Dla samooceny zapisujemy dokładne brzmienie pytania, okres odniesienia i kategorie odpowiedzi. Zmiana momentu rozpoczęcia, momentu zakończenia, jednostki, warunku przerwania, brzmienia pytania lub kategorii odpowiedzi zmienia znaczenie wyniku.
 
-| Pojęcie | Możliwy wskaźnik | Czego nie rozstrzyga sam wskaźnik |
+| Pojęcie | Możliwy wskaźnik | Pytanie wymagające dodatkowego pomiaru |
 |---|---|---|
-| Sprawność wyszukiwania | Czas wykonania określonego zadania | Czy znaleziono wiarygodne źródło |
-| Skuteczność | Poprawne odnalezienie wskazanego dokumentu: 0/1 | Czy użytkownik powtórzy sukces w innym zadaniu |
-| Samoocena umiejętności | Odpowiedź „potrafię dobrać słowa kluczowe” | Czy zadeklarowana umiejętność występuje w działaniu |
-| Postrzegana użyteczność | Ocena zrozumiałości filtrów i komunikatów | Czy trudność leży wyłącznie po stronie systemu |
-| Weryfikowanie informacji | Sprawdzenie autora, daty i źródła w protokole | Czy użytkownik robi tak poza sytuacją obserwacji |
-| Dostęp do informacji | Skuteczne otwarcie pełnego tekstu | Czy tekst odpowiada potrzebie i został zrozumiany |
+| Sprawność wyszukiwania | Czas wykonania określonego zadania | Czy znaleziono wiarygodne źródło? |
+| Skuteczność | Poprawne odnalezienie wskazanego dokumentu: 0/1 | Czy użytkownik powtórzy sukces w innym zadaniu? |
+| Samoocena umiejętności | Odpowiedź „potrafię dobrać słowa kluczowe” | Czy zadeklarowana umiejętność występuje w działaniu? |
+| Postrzegana użyteczność | Ocena zrozumiałości filtrów i komunikatów | Jaki udział w trudności mają system i użytkownik? |
+| Weryfikowanie informacji | Sprawdzenie autora, daty i źródła w protokole | Czy użytkownik robi tak poza sytuacją obserwacji? |
+| Dostęp do informacji | Skuteczne otwarcie pełnego tekstu | Czy tekst odpowiada potrzebie i został zrozumiany? |
 
-W S02 pozycje dotyczą między innymi rozumienia filtrów, odczytania rekordu i pomocy komunikatów. Wynik złożony nazywamy **indeksem deklarowanej użyteczności katalogu**. Niektóre pozycje odnoszą się także do własnego działania. Dlatego jest to dydaktyczny indeks mieszający ocenę systemu z oceną radzenia sobie z nim, a nie zwalidowana skala ogólnej kompetencji cyfrowej. Techniczna nazwa kolumny `indeks` nie nadaje jej trafności.
+## Słownik zbioru S02
 
-## Jedna osoba, jedno zadanie, jeden wiersz?
+Słownik danych nadaje kolumnom znaczenie. Tabela „Słownik zbioru S02” wymienia 15 kolumn surowego pliku: identyfikator odpowiedzi, grupę porównania, częstość korzystania z zasobu, obserwowany czas zadania w minutach, sześć pozycji ankiety, obserwowane powodzenie zadania oraz cztery kolumny kanałów kontaktu. Kolumna „Skala” podaje skalę pomiaru, a kolumna „Kodowanie” — znaczenie liczb.
 
-W tabeli podstawowej jednostką analizy jest osoba wykonująca jedno zadanie. W logu technicznym jednostką rekordu może być pojedyncze zdarzenie: otwarcie strony, zapytanie lub kliknięcie filtra. Sto zdarzeń zapisanych dla jednej osoby nie oznacza stu niezależnych badanych.
+```{r slownik-s02}
+badaniaZI::tabela_markdown(slownik_do_druku, c(24, 34, 13, 29),
+                           "Słownik zbioru S02: kolumna, opis, skala pomiaru i kodowanie")
+```
 
-Rozważ trzy osoby, z których każda wykonuje cztery zadania. Powstaje dwanaście rekordów wykonania, ale tylko trzy osoby. Powtarzane pomiary tej samej osoby są zależne: dzielą jej doświadczenie, urządzenie i sposób pracy. Gdy potraktujemy dwanaście rekordów jako dwanaście niezależnych osób, możemy zaniżyć niepewność. Na podstawowym kursie wybieramy jeden wynik na osobę albo analizę, która respektuje pary. Nie naprawiamy zależności przez zmianę nazwy kolumny.
+Czas i powodzenie pochodzą z obserwacji wykonania zadania, a sześć pozycji i częstość korzystania — z deklaracji uczestnika. Tabela „Sześć pozycji ankiety S02” podaje brzmienie pozycji. Pozycje dotyczą rozumienia filtrów, odczytania rekordu, lokalizacji dokumentu i pomocy komunikatów, a część pozycji opisuje własne działanie uczestnika. Pozycja 3 ma kierunek odwrotny: zgoda ze zdaniem „Odczytanie rekordu wymaga ode mnie zgadywania” oznacza niższą użyteczność katalogu.
 
-Identyfikator służy połączeniu ankiety z obserwacją. Nie jest zmienną ilościową. Średnia numerów identyfikacyjnych nie ma sensu badawczego. Powtórzony identyfikator wymaga wyjaśnienia: może oznaczać duplikat eksportu, drugie zadanie tej samej osoby albo błąd połączenia.
+```{r pozycje-s02}
+badaniaZI::tabela_markdown(pozycje_do_druku, c(10, 62, 28),
+                           "Sześć pozycji ankiety S02: brzmienie i kierunek (1 = zdecydowanie nie, 5 = zdecydowanie tak)")
+```
 
-# Co wolno robić z wartościami
+Wynik złożony z sześciu pozycji nazywamy **indeksem deklarowanej użyteczności katalogu**. Indeks jest dydaktycznym wynikiem złożonym: łączy ocenę katalogu z oceną własnego radzenia sobie z katalogiem. Trafność indeksu wymaga dowodu z treści pozycji i ze związku z wykonaniem zadania. Kolumnę `indeks` tworzy skrypt przygotowania danych według reguły:
 
-Skala pomiaru mówi o znaczeniu relacji między wartościami. Klasa danych w R mówi o ich technicznym zapisie. Kolumna zapisana liczbami nie staje się przez to zmienną ilościową. Kody 1 i 2 mogą oznaczać dwa typy urządzeń, a nie „dwa razy więcej urządzenia”.
+$$
+I_i=\frac{1}{m_i}\sum_{k\in O_i}x^{*}_{ik},
+\qquad
+x^{*}_{ik}=
+\begin{cases}
+6-x_{i3}, & k=3,\\
+x_{ik}, & k\neq 3,
+\end{cases}
+\qquad \text{gdy } m_i\geq 5.
+$$
 
-| Skala | Przykład ZI | Sensowne pytanie |
-|---|---|---|
-| Nominalna | Wybrany kanał pomocy | Ile osób wybrało każdy kanał? |
-| Porządkowa | „Nigdy” do „bardzo często” | Która odpowiedź jest wyżej w porządku? |
-| Przedziałowa | Temperatura urządzenia w stopniach Celsjusza | O ile stopni różnią się pomiary? |
-| Ilorazowa | Czas w minutach | O ile minut i ile razy dłużej trwało zadanie? |
+Czytamy: „indeks osoby $i$ to średnia jej ważnych odpowiedzi po odwróceniu pozycji 3, liczona dla osoby z co najmniej pięcioma ważnymi odpowiedziami”. Symbol $x_{ik}$ oznacza odpowiedź osoby $i$ na pozycję $k$ w skali 1–5, gwiazdka oznacza odpowiedź po ujednoliceniu kierunku, $O_i$ to zbiór pozycji z ważną odpowiedzią osoby, a $m_i$ liczba tych pozycji. Osoba z odpowiedziami 4, 4, 2, 5, 3, 4 ma po odwróceniu pozycji 3 wartości 4, 4, 4, 5, 3, 4, więc jej indeks wynosi $24/6=4{,}0$ punktu. Ćwiczenie C04 (Od pozycji do konstruktu) omawia regułę pięciu z sześciu pozycji i jej skutki.
 
-W pojedynczej pozycji Likerta uporządkowanie odpowiedzi jest jasne, ale równość odstępów nie wynika z kodów 1–5. Przejście od „raczej nie” do odpowiedzi środkowej nie musi oznaczać tej samej zmiany odczucia co przejście od „raczej tak” do „zdecydowanie tak”. W C04 omówimy, kiedy użyteczny jest wynik złożony i jakie założenia wnosi jego uśrednianie.
+## Jednostka analizy: osoba, zadanie i wiersz tabeli
 
-Zmienna 0/1 ma szczególną własność: jej średnia jest proporcją jedynek. Jeżeli w dziesięciu obserwacjach sześć wyników oznacza powodzenie, średnia kodu wynosi 0,6, czyli 60%. Jest to konsekwencja jawnego kodowania, a nie zgoda na uśrednianie dowolnych numerów kategorii.
+W tabeli podstawowej jednostką analizy jest osoba wykonująca jedno zadanie. W dzienniku zdarzeń systemu (logu) jednostką rekordu jest pojedyncze zdarzenie: otwarcie strony, zapytanie lub kliknięcie filtra. Sto zdarzeń zapisanych dla jednej osoby to sto rekordów jednej jednostki analizy; w porównaniu osób ta osoba wnosi jedną obserwację.
 
-Brak danych nie jest trzecią odpowiedzią w skali 0/1. Gdy nie zarejestrowano wyniku, nie wiemy, czy było to powodzenie, czy niepowodzenie. Przypisanie zera zmieniłoby pytanie i wprowadziło założenie o wszystkich brakujących osobach. W C02 będziemy rozpoznawać takie ukryte decyzje.
+Rozważ trzy osoby, z których każda wykonuje cztery zadania. Powstaje dwanaście rekordów wykonania i trzy osoby. Powtarzane pomiary tej samej osoby są zależne: dzielą jej doświadczenie, urządzenie i sposób pracy. Błąd standardowy średniej, czyli miara precyzji średniej omawiana szczegółowo na wykładzie W03 (Losowość, estymacja i dwa tory wnioskowania), zależy od liczby niezależnych jednostek $n$:
+
+$$
+SE(\bar{x})=\frac{s}{\sqrt{n}},
+\qquad
+\frac{SE_{n=12}}{SE_{n=3}}=\frac{\sqrt{3}}{\sqrt{12}}=0{,}5 .
+$$
+
+Symbol $s$ oznacza odchylenie standardowe pomiarów, a $n$ liczbę niezależnych jednostek. Potraktowanie dwunastu rekordów trzech osób jako dwunastu osób zmniejsza błąd standardowy o połowę, choć informacja pochodzi nadal od trzech osób. Analiza w kursie używa więc jednego wyniku na osobę albo analizy różnic w parach. Dla pomiaru tej samej osoby przed zmianą i po zmianie różnica w parze ma postać
+
+$$
+d_i=x_{i,\mathrm{po}}-x_{i,\mathrm{przed}},
+\qquad
+\bar{d}=\frac{1}{n}\sum_{i=1}^{n}d_i ,
+$$
+
+gdzie $x_{i,\mathrm{przed}}$ i $x_{i,\mathrm{po}}$ to dwa pomiary osoby $i$, a $\bar{d}$ średnia zmiana. Osoba z czasem 12 minut przed zmianą i 9 minut po zmianie ma $d_i=-3$ minuty.
+
+Identyfikator służy połączeniu ankiety z obserwacją. Identyfikator jest etykietą nominalną: dopuszcza wyłącznie sprawdzenie, czy dwie wartości są równe. Powtórzony identyfikator wymaga wyjaśnienia: oznacza duplikat eksportu, drugie zadanie tej samej osoby albo błąd połączenia.
+
+# Skala pomiaru i dozwolone działania
+
+Skala pomiaru opisuje znaczenie relacji między wartościami. Klasa danych w R opisuje techniczny zapis: `numeric` przechowuje liczby, `character` tekst, `factor` kategorie z listą poziomów, a `logical` wartości prawda i fałsz. Skala pomiaru wyznacza dozwolone działania: kody 1 i 2 dla dwóch typów urządzeń pozwalają sprawdzić równość i policzyć częstości, a minuty pozwalają odejmować i dzielić.
+
+| Skala | Przykład ZI | Sensowne pytanie | Dozwolone działania |
+|---|---|---|---|
+| Nominalna | Wybrany kanał pomocy | Ile osób wybrało każdy kanał? | $=$, $\neq$, liczebności |
+| Porządkowa | „Nigdy” do „bardzo często” | Która odpowiedź jest wyżej w porządku? | $=$, $<$, $>$, mediana |
+| Przedziałowa | Temperatura urządzenia w stopniach Celsjusza | O ile stopni różnią się pomiary? | $+$, $-$, średnia |
+| Ilorazowa | Czas w minutach | O ile minut i ile razy dłużej trwało zadanie? | $+$, $-$, $\times$, $\div$ |
+
+Kody 1–5 pojedynczej pozycji ankiety ustalają porządek odpowiedzi; odległości między kategoriami pozostają nieznane, bo przejście od „raczej nie” do środka skali i przejście od „raczej tak” do „zdecydowanie tak” mogą odpowiadać różnym zmianom odczucia. Ćwiczenie C04 (Od pozycji do konstruktu) omawia założenia uśredniania pozycji w wyniku złożonym.
+
+Zmienna 0/1 ma szczególną własność: jej średnia jest proporcją jedynek. Suma kodów 0/1 równa się liczbie sukcesów $k$, więc
+
+$$
+\hat{\pi}=\frac{1}{n}\sum_{i=1}^{n}y_i=\frac{k}{n},
+$$
+
+gdzie $y_i$ oznacza wynik osoby $i$ (1 — sukces, 0 — niepowodzenie), $n$ liczbę osób ze znanym wynikiem, a $\hat{\pi}$ oszacowanie proporcji sukcesów. Sześć sukcesów w dziesięciu obserwacjach daje $\hat{\pi}=6/10=0{,}6$, czyli 60%. Równość średniej i proporcji wynika z kodowania 0/1 i dotyczy wyłącznie kodowania 0/1.
+
+Wartość NA w zmiennej 0/1 oznacza nieznany wynik: osoba mogła odnieść sukces albo porażkę. Przypisanie zera zamienia pytanie o odsetek sukcesów wśród osób z zarejestrowanym wynikiem na pytanie z założeniem, że każda nieznana próba była porażką. Przy sześciu sukcesach wśród ośmiu znanych wyników i dwóch brakach odsetek wynosi $6/8=0{,}75$; po zamianie braków na zera wynosi $6/10=0{,}60$. Ćwiczenie C02 (Surowy eksport) omawia reguły kodowania braków, duplikatów i wartości spoza zakresu.
 
 # Populacja, próba i zakres odpowiedzi
 
-Populacja jest zbiorem jednostek, o którym chcemy mówić. „Użytkownicy biblioteki” to zbyt ogólna definicja, jeśli dane pochodzą od osób obecnych w czytelni w poniedziałek rano. Czy obejmujemy użytkowników zdalnych, nowych, nieaktywnych, korzystających z telefonu i osoby, które po pierwszej trudności zrezygnowały? Włączenie lub wyłączenie tych grup wpływa na odpowiedź.
+Populacja jest zbiorem jednostek, o którym chcemy mówić. Określenie „użytkownicy biblioteki” jest za szerokie dla danych od osób obecnych w czytelni w poniedziałek rano. Definicja populacji rozstrzyga, czy obejmuje ona użytkowników zdalnych, nowych, nieaktywnych, korzystających z telefonu i osoby, które po pierwszej trudności zrezygnowały. Włączenie lub wyłączenie użytkowników zdalnych, nowych, nieaktywnych, mobilnych i osób, które zrezygnowały, zmienia odpowiedź.
 
-Rama doboru to praktyczna lista lub procedura, dzięki której docieramy do jednostek. Lista aktywnych kont nie obejmuje osób, które nie mogły założyć konta. Ogłoszenie w katalogu nie dociera do tych, którzy go unikają. Jest to błąd pokrycia, którego nie usuwa zebranie większej liczby odpowiedzi tym samym kanałem.
+Rama doboru to praktyczna lista lub procedura, dzięki której docieramy do jednostek. Lista aktywnych kont obejmuje wyłącznie osoby z kontem, a ogłoszenie w katalogu dociera wyłącznie do osób odwiedzających katalog. Różnica między populacją a ramą doboru to błąd pokrycia. Większa liczba odpowiedzi z tego samego kanału zwiększa precyzję oszacowania dla ramy i pozostawia błąd pokrycia bez zmian.
 
-Próba to osoby rzeczywiście objęte pomiarem. Jeżeli zaproszono 300 osób, 180 rozpoczęło zadanie, 150 ukończyło ankietę, a 142 ma ważny indeks, każda liczba opisuje inny etap. Nie wolno wybrać największej z nich jako N wszystkich analiz. Raport powinien pozwolić prześledzić przejście od zaproszenia do konkretnego wyniku.
+Próba to osoby rzeczywiście objęte pomiarem. W przykładzie zaproszono 300 osób, 180 rozpoczęło zadanie, 150 ukończyło ankietę, a 142 ma ważny indeks. Każda liczba opisuje inny etap, więc każda analiza podaje N swojego etapu. Odsetek przejścia z nazwanym mianownikiem ma postać
 
-Dobór losowy daje znane podstawy do wnioskowania o populacji objętej ramą doboru. Nie gwarantuje jednak braku błędu pomiaru lub odmów udziału. Dobór wygodny może dobrze służyć wstępnemu rozpoznaniu problemu, lecz zakres uogólnienia trzeba ograniczyć. Sformułowanie „w badanej próbie” jest informacją o dowodzie, a nie rytualnym zastrzeżeniem na końcu tekstu.
+$$
+p=\frac{\text{liczba osób na etapie}}{\text{liczba osób w mianowniku}} ,
+$$
+
+a dla kolejnych etapów wynosi $180/300=0{,}60$, $150/180=0{,}83$ i $142/150=0{,}95$; od zaproszenia do ważnego indeksu przechodzi $142/300=0{,}47$ zaproszonych. Wykres „Przepływ próby” przedstawia cztery etapy.
+
+```{r lejek-proby, fig.height=2.6, fig.cap="Przepływ próby od zaproszenia do ważnego indeksu. Oś pozioma: liczba osób; oś pionowa: cztery etapy. Liczba osób spada z 300 do 142 (47,3% zaproszonych); największy ubytek, 120 osób, następuje między zaproszeniem a rozpoczęciem zadania."}
+print(wykres_lejka)
+```
+
+Dobór losowy nadaje każdej jednostce ramy znane prawdopodobieństwo wyboru i przez to daje podstawę wnioskowania o populacji objętej ramą; błąd pomiaru i odmowy udziału wymagają osobnej kontroli. Dobór wygodny służy wstępnemu rozpoznaniu problemu, a zakres uogólnienia wniosku z doboru wygodnego ogranicza się do opisanej grupy. Sformułowanie „w badanej próbie” informuje o zakresie dowodu.
 
 # Trzy projekty, trzy różne odpowiedzi
 
 ## Opis istniejącego korzystania
 
-Rekrutujemy nowych użytkowników i obserwujemy jedno zadanie. Szacujemy średni lub medianowy czas oraz odsetek powodzeń. Możemy wskazać etap, na którym pojawia się trudność. Nie wiemy jeszcze, czy instrukcja pomoże, ponieważ nikt nie został przydzielony do porównywanego warunku.
+Rekrutujemy nowych użytkowników i obserwujemy jedno zadanie. Szacujemy średni lub medianowy czas oraz odsetek powodzeń i wskazujemy etap, na którym pojawia się trudność. Pytanie o skutek instrukcji wymaga porównania z warunkiem przydzielonym części osób; projekt opisowy dostarcza stanu wyjściowego porównania z instrukcją.
 
-To dobry projekt, gdy instytucja nie zna skali problemu. Błędem byłoby odrzucenie go jako „za mało statystycznego” tylko dlatego, że nie zawiera testu. Dobrze zdefiniowany odsetek niepowodzeń może być bardziej użyteczny niż test hipotezy niedopasowanej do decyzji.
+Projekt opisowy jest właściwy, gdy instytucja zna problem, a skala problemu pozostaje nieznana. Odsetek niepowodzeń z przedziałem niepewności jest pełnoprawnym wynikiem statystycznym. Dobrze zdefiniowany odsetek niepowodzeń daje instytucji więcej niż test hipotezy dobrany bez związku z decyzją.
 
 ## Porównanie grup obserwacyjnych
 
-Porównujemy osoby nowe i doświadczone. Ich różnica czasu jest opisowym związkiem grupy z wynikiem. Doświadczeni mogą lepiej znać dziedzinę, częściej używać katalogu albo wykonywać podobne zadania w pracy. Nie przydzieliliśmy doświadczenia losowo, więc różnica nie izoluje jego przyczynowego działania.
+Porównujemy osoby nowe i doświadczone. Różnica czasu opisuje związek grupy z wynikiem. Doświadczenie powstało poza kontrolą badacza, więc różnica czasu łączy działanie doświadczenia z działaniem cech współwystępujących: znajomości dziedziny, częstości korzystania i podobieństwa zadań zawodowych.
 
-Nie oznacza to, że wynik jest bezwartościowy. Może uzasadnić sprawdzenie, czy wsparcie powinno być dostosowane do nowych użytkowników. Poprawna rekomendacja brzmi wtedy: „warto przetestować pomoc dla tej grupy”, a nie „udowodniono, że szkolenie skróci czas o oszacowaną różnicę”.
+Wynik porównania obserwacyjnego uzasadnia sprawdzenie pomocy dla nowych użytkowników. Poprawna rekomendacja brzmi: „warto przetestować pomoc dla nowych użytkowników”. Oszacowanie skrócenia czasu przez szkolenie wymaga eksperymentu.
 
 ## Eksperyment z instrukcją
 
-Wśród zgłoszonych osób losowo przydzielamy krótką instrukcję albo standardowy start. Obie grupy wykonują to samo zadanie w podobnych warunkach. Losowy przydział ogranicza systematyczne różnice między grupami przed interwencją. Zyskujemy silniejszą podstawę do interpretacji różnicy jako skutku udostępnienia instrukcji.
+Wśród zgłoszonych osób losowo przydzielamy krótką instrukcję albo standardowy start. Obie grupy wykonują to samo zadanie w podobnych warunkach. Losowy przydział ogranicza systematyczne różnice między grupami przed interwencją i daje silniejszą podstawę do interpretacji różnicy jako skutku udostępnienia instrukcji.
 
-Nadal trzeba wiedzieć, co było interwencją. Przydzielenie dostępu do filmu nie gwarantuje jego obejrzenia. Porównanie według przydziału odpowiada na pytanie o udostępnienie instrukcji. Porównanie osób, które faktycznie ją obejrzały, ponownie może mieszać działanie instrukcji z motywacją. W kursie nie rozwijamy zaawansowanych metod dla takich sytuacji, ale rozpoznajemy, że są to różne pytania.
+Interwencją jest udostępnienie instrukcji, a obejrzenie filmu jest decyzją uczestnika. Porównanie według przydziału (ang. *intention-to-treat*) odpowiada na pytanie o skutek udostępnienia instrukcji. Porównanie osób, które obejrzały film, łączy działanie instrukcji z motywacją uczestników. Kurs rozpoznaje dwa pytania; metody dla porównań według faktycznego obejrzenia należą do metod zaawansowanych.
 
 | Własność | Losowy dobór osób | Losowy przydział warunku |
 |---|---|---|
 | Co losujemy? | Kto wejdzie do próby | Kto otrzyma daną wersję pomocy |
 | Główna rola | Podstawa uogólnienia | Podstawa porównania przyczynowego |
-| Czego sam nie zapewnia? | Skutku przyczynowego instrukcji | Reprezentatywności dla wszystkich użytkowników |
+| Co wnosi drugie losowanie? | Losowy przydział: podstawę wniosku przyczynowego | Losowy dobór: podstawę uogólnienia na populację |
 | Możliwe połączenie | Losowa próba i losowy przydział w tej próbie | Ten sam projekt może zawierać oba losowania |
 
-Badanie przed–po tych samych osób wnosi jeszcze inny dowód. Skrócenie czasu może wynikać z instrukcji, ale również z przećwiczenia zadania. Bez grupy porównawczej i kontroli kolejności tych wyjaśnień nie da się łatwo oddzielić. Zależność pomiarów jest cechą projektu; nie zmienia jej zapis w dwóch plikach.
+Badanie tych samych osób przed zmianą i po zmianie wnosi inny dowód. Skrócenie czasu wynika z instrukcji albo z przećwiczenia zadania. Rozdzielenie działania instrukcji od efektu wprawy wymaga grupy porównawczej i kontroli kolejności zadań. Pomiary przed i po tworzą pary, więc analiza porównuje różnice w parach $d_i$.
 
-## Gdy instytucja wdraża zmianę bez losowego przydziału
+## Wdrożenie zmiany bez losowego przydziału
 
-Biblioteka wprowadza nowe filtry najpierw w jednej filii, a miesiąc później w drugiej. Badacz nie losuje filii, lecz mierzy czas przed zmianą i po niej w obu miejscach. Jest to przykład planu quasi-eksperymentalnego: szukamy skutku interwencji bez randomizacji, wykorzystując uzasadnione porównanie. Samo nazwanie planu eksperymentem nie usuwa różnic między filiami.
+Biblioteka wprowadza nowe filtry najpierw w filii A, a miesiąc później w filii B. Kolejność wdrożenia wynika z decyzji biblioteki, a badacz mierzy średni czas przed zmianą i po zmianie w obu filiach. Plan quasi-eksperymentalny szuka skutku interwencji bez randomizacji, czyli bez losowego przydziału filii, i wykorzystuje uzasadnione porównanie.
 
-W hipotetycznej filii A średni czas spadł z 10 do 7 minut, a w B, bez nowych filtrów, z 8 do 7. Zmiana w A to −3 minuty, w B −1 minuta; różnica zmian wynosi $(7-10)-(7-8)=-2$ minuty. Taki rachunek odejmuje wspólną zmianę, ale jego interpretacja przyczynowa wymaga m.in. wiarygodnego założenia, że bez wdrożenia trendy byłyby równoległe. Trzeba też wykluczyć równoczesne szkolenie tylko w A, zmianę zadań i zmianę składu badanych. Dwa pomiary nie wystarczają do sprawdzenia historii trendów. To demonstracja logiki projektu, nie kolejny obowiązkowy test w C06.
+W hipotetycznej filii A średni czas spadł z 10 do 7 minut, a w filii B, bez nowych filtrów, z 8 do 7 minut. Różnica zmian odejmuje zmianę wspólną dla obu filii:
 
-Eksperyment naturalny wykorzystuje zmianę pochodzącą spoza decyzji badacza. Przykładem do rozważenia jest administracyjny harmonogram uruchamiania zdalnego dostępu, niezwiązany z dotychczasowymi umiejętnościami użytkowników. Trzeba zbadać mechanizm przydziału i wskazać wiarygodną grupę porównawczą; słowo „naturalny” nie oznacza automatycznie losowego ani wolnego od zakłóceń. Nie każda awaria, reforma lub zmiana w czasie tworzy przekonujący eksperyment. Rozróżnienie projektów opiera się na sposobie powstawania ekspozycji i możliwości porównania, nie na nazwie testu. [de Vocht i współautorzy, omówienie projektów naturalnych i quasi-eksperymentalnych](https://arxiv.org/abs/2008.02509).
+$$
+\widehat{DiD}=(\bar{y}_{A,\mathrm{po}}-\bar{y}_{A,\mathrm{przed}})-(\bar{y}_{B,\mathrm{po}}-\bar{y}_{B,\mathrm{przed}})=(7-10)-(7-8)=-2 \text{ minuty}.
+$$
+
+Symbol $\bar{y}_{A,\mathrm{przed}}$ oznacza średni czas w filii A przed wdrożeniem, a pozostałe symbole — odpowiednie średnie po wdrożeniu i w filii B. Wykres „Różnica zmian w dwóch filiach” przedstawia oba przebiegi i przebieg filii A przy zmianie takiej jak w filii B.
+
+```{r roznica-zmian, fig.height=3.4, fig.cap="Różnica zmian w dwóch filiach. Oś pozioma: pomiar przed i po wdrożeniu; oś pionowa: średni czas w minutach. Filia A (koła) spada z 10 do 7 minut, filia B (trójkąty) z 8 do 7 minut; linia przerywana przedstawia przebieg filii A przy spadku o 1 minutę, jak w filii B, i kończy się przy 9 minutach, 2 minuty powyżej obserwowanego wyniku filii A."}
+print(wykres_filii)
+```
+
+Interpretacja przyczynowa wyniku −2 minuty wymaga założenia trendów równoległych: bez wdrożenia czas w obu filiach zmieniałby się tak samo. Wymaga też wykluczenia równoczesnego szkolenia w filii A, zmiany zadań i zmiany składu badanych. Dwa pomiary w filii dają jeden odcinek trendu, a sprawdzenie historii trendów wymaga pomiarów z kilku wcześniejszych okresów. Rachunek różnicy zmian ilustruje logikę planu quasi-eksperymentalnego i należy do rozszerzeń kursu.
+
+Eksperyment naturalny wykorzystuje zmianę pochodzącą spoza decyzji badacza. Ekspozycja to warunek, któremu podlega jednostka, np. dostęp do zdalnego katalogu. Przykładem do rozważenia jest administracyjny harmonogram uruchamiania zdalnego dostępu, niezwiązany z dotychczasowymi umiejętnościami użytkowników. Wartość eksperymentu naturalnego zależy od mechanizmu przydziału ekspozycji: przydział niezwiązany z cechami użytkowników i wiarygodna grupa porównawcza uzasadniają porównanie. Rozróżnienie projektów opiera się na sposobie powstawania ekspozycji i na możliwości porównania. [de Vocht i współautorzy, omówienie projektów naturalnych i quasi-eksperymentalnych](https://arxiv.org/abs/2008.02509).
 
 ## Piramida dowodów: wskazówka zależna od pytania
 
-W uproszczonej piramidzie dowodów o skutkach interwencji nad opinią i pojedynczym opisem umieszcza się badania porównawcze, następnie dobrze przeprowadzone badania z randomizacją i ich syntezy. Taki porządek pomaga szukać badań ograniczających alternatywne wyjaśnienia. Nie jest automatyczną oceną jakości każdej publikacji: wadliwe pomiary, selektywne raportowanie lub niedopasowana populacja osłabiają także badanie randomizowane.
+Uproszczona piramida dowodów o skutkach interwencji układa projekty według zdolności wykluczania wyjaśnień alternatywnych. Od podstawy piramida obejmuje opinię eksperta, opis pojedynczego przypadku, badanie porównawcze bez randomizacji, badanie z randomizacją oraz przegląd systematyczny z metaanalizą. Wykres „Piramida dowodów” przedstawia pięć poziomów w kolejności od podstawy.
 
-Przegląd systematyczny stosuje jawną procedurę wyszukiwania i oceny badań. Metaanaliza łączy ich oszacowania liczbowo, gdy takie połączenie jest uzasadnione. Nie każdy przegląd zawiera metaanalizę, a uśrednienie wielu obciążonych wyników nie usuwa wspólnego błędu. Wytyczne OCEBM podkreślają zależność hierarchii od pytania i odróżniają poziom projektu od końcowej oceny dowodu. Jest to rama rozwinięta w medycynie, nie gotowa klasyfikacja wszystkich badań LIS. [OCEBM: wprowadzenie do poziomów dowodów](https://www.cebm.ox.ac.uk/resources/levels-of-evidence/levels-of-evidence-introductory-document).
+```{r piramida, fig.height=3.2, fig.cap="Uproszczona piramida dowodów o skutkach interwencji. Pięć poziomów od podstawy do wierzchołka: opinia eksperta, opis pojedynczego przypadku, badanie porównawcze bez randomizacji, badanie z randomizacją, przegląd systematyczny z metaanalizą; każdy wyższy poziom jest węższy."}
+print(wykres_piramidy)
+```
 
-W naszej bibliotece pytanie „jaka część obecnych użytkowników napotyka barierę?” wymaga aktualnego, dobrze dobranego pomiaru lokalnego. Eksperyment z instrukcją odpowiada natomiast na pytanie o skutek udostępnienia pomocy. Nie podnosimy jakości pierwszej odpowiedzi przez dodanie przypadkowego testu. Dobry dowód to wynik właściwego projektu dla konkretnego pytania, z rozpoznanymi ograniczeniami.
+Piramida pomaga szukać badań ograniczających wyjaśnienia alternatywne. Ocena konkretnej publikacji uwzględnia dodatkowo jakość pomiaru, pełność raportowania i dopasowanie populacji: wadliwe pomiary, selektywne raportowanie lub inna populacja osłabiają także badanie randomizowane.
+
+Przegląd systematyczny stosuje jawną procedurę wyszukiwania i oceny badań. Metaanaliza należy do przeglądów, w których badania mierzą porównywalny wynik, i łączy ich oszacowania średnią ważoną:
+
+$$
+\hat{\theta}=\frac{\sum_{j} w_j\hat{\theta}_j}{\sum_{j} w_j},
+\qquad
+w_j=\frac{1}{SE_j^{2}},
+$$
+
+gdzie $\hat{\theta}_j$ to oszacowanie z badania $j$, a $w_j$ jego waga, większa dla badań precyzyjnych. Gdy każde badanie zawyża wynik o to samo obciążenie $b$, średnia ważona też zawyża wynik o $b$: łączenie badań zwiększa precyzję i zachowuje wspólne obciążenie. Wytyczne Oxford Centre for Evidence-Based Medicine (OCEBM) wiążą hierarchię z pytaniem i odróżniają poziom projektu od końcowej oceny dowodu. Rama OCEBM powstała w medycynie; zastosowanie w LIS wymaga dopasowania poziomów do pytań o usługi informacyjne. [OCEBM: wprowadzenie do poziomów dowodów](https://www.cebm.ox.ac.uk/resources/levels-of-evidence/levels-of-evidence-introductory-document).
+
+Pytanie biblioteki „jaka część obecnych użytkowników napotyka barierę?” wymaga aktualnego, dobrze dobranego pomiaru lokalnego. Eksperyment z instrukcją odpowiada na pytanie o skutek udostępnienia pomocy. Dobry dowód to wynik właściwego projektu dla konkretnego pytania, z rozpoznanymi ograniczeniami.
 
 # Jaka wielkość ma odpowiedzieć na pytanie
 
 ## Estymanda, parametr, estymator i estymata
 
-**Estymanda** jest dokładnie określoną wielkością, którą chcemy oszacować. Przykład: różnica średniego czasu między nowymi a doświadczonymi użytkownikami w określonej populacji, dla wspólnego zadania i procedury. Definicja obejmuje grupy, wynik, podsumowanie i warunki pomiaru. „Wpływ katalogu” nie jest jeszcze taką definicją.
+Tabela „Symbole wykładu W01” zbiera oznaczenia wzorów wykładu W01. Wymowa pomaga czytać wzór na głos, a jednostka przypomina, w czym wyrażony jest wynik.
 
-**Parametr** jest liczbową cechą przyjętego modelu lub populacji, np. średnią $\mu$. Estymanda może być takim parametrem albo funkcją kilku parametrów, np. różnicą $\Delta=\mu_N-\mu_D$. Terminy nie oznaczają czterech kolejnych kolumn danych: opisują różne role w rozumowaniu.
+| Symbol | Wymowa | Znaczenie | Jednostka |
+|---|---|---|---|
+| $\mu$ | mi | średnia w populacji | minuty |
+| $\mu_N$, $\mu_D$ | mi en, mi de | średnia populacyjna nowych (N) i doświadczonych (D) użytkowników | minuty |
+| $\Delta$ | delta | różnica średnich populacyjnych $\mu_N-\mu_D$ | minuty |
+| $\widehat{\Delta}$ | delta z daszkiem | oszacowanie różnicy z próby | minuty |
+| $\bar{x}_N$, $\bar{x}_D$ | iks z kreską | średnie w próbie | minuty |
+| $n_N$, $n_D$ | en | liczby osób z ważnym czasem w grupach | osoby |
+| $x_{Ni}$, $x_{Di}$ | iks en i, iks de i | czas $i$-tej osoby w grupie nowych lub doświadczonych | minuty |
+| $\pi$, $\hat{\pi}$ | pi, pi z daszkiem | proporcja sukcesów w populacji i jej oszacowanie | ułamek |
+| $\rho_S$, $r_S$ | ro es, er es | korelacja rang w populacji i w próbie | liczba od −1 do 1 |
+| $SE$ | es e | błąd standardowy, miara precyzji estymatora | jednostka estymatora |
+| $H_0$, $H_1$ | ha zero, ha jeden | hipoteza zerowa i alternatywna o parametrze | — |
 
-**Estymator** jest regułą obliczania wyniku z próby. Średnia arytmetyczna jest estymatorem średniej populacyjnej przy odpowiednich założeniach. **Estymata** jest otrzymaną liczbą, np. 8,4 minuty. Inna próba może dać inną estymatę, mimo że pytanie i reguła obliczania pozostają te same.
+**Estymanda** jest dokładnie określoną wielkością, którą chcemy oszacować. Przykład: różnica średniego czasu między nowymi a doświadczonymi użytkownikami w określonej populacji, dla wspólnego zadania i procedury. Definicja estymandy obejmuje grupy, wynik, sposób podsumowania i warunki pomiaru. Wyrażenie „wpływ katalogu” staje się estymandą po dopisaniu grup, wyniku, podsumowania i warunków pomiaru.
+
+**Parametr** jest liczbową cechą przyjętego modelu lub populacji, np. średnią $\mu$. Estymanda może być pojedynczym parametrem albo funkcją kilku parametrów, np. różnicą $\Delta=\mu_N-\mu_D$. Cztery terminy nazywają role w rozumowaniu: estymanda to cel, parametr to liczba w populacji lub modelu, estymator to reguła obliczenia, estymata to wynik reguły.
+
+**Estymator** jest regułą obliczania wyniku z próby. Średnia arytmetyczna jest estymatorem średniej populacyjnej przy odpowiednich założeniach. **Estymata** jest otrzymaną liczbą, np. 8,4 minuty. Inna próba daje zwykle inną estymatę, choć pytanie i reguła obliczania pozostają te same.
 
 | Pytanie | Estymanda | Estymator | Przykładowa estymata |
 |---|---|---|---|
 | Jak długo trwa zadanie? | Średni czas $\mu$ | Średnia $\bar{x}$ | 8,4 min |
 | Jaka część osób odnosi sukces? | Proporcja $\pi$ | Udział jedynek $\hat{\pi}$ | 0,72 |
 | O ile różnią się grupy? | $\Delta=\mu_N-\mu_D$ | $\bar{x}_N-\bar{x}_D$ | 1,8 min |
-| Czy deklaracja i czas współzmieniają się monotonicznie? | Korelacja rang w populacji | Korelacja rang w próbie | $-0,32$ |
+| Czy deklaracja i czas współzmieniają się monotonicznie? | Korelacja rang $\rho_S$ | Korelacja rang w próbie $r_S$ | $-0{,}32$ |
 
-Liczby w ostatniej kolumnie są odrębnymi przykładami dydaktycznymi, a nie wynikami wspólnego zbioru S02. Ich zadaniem jest pokazać jednostki. Przy korelacji nie dopisujemy minut, przy różnicy czasu nie gubimy jednostki, a proporcji nie mylimy z liczbą osób.
+Liczby w ostatniej kolumnie są przykładami spoza zbioru S02 i ustalają jednostki wyników: minuty dla średniej i różnicy, ułamek dla proporcji, liczba bez jednostki dla korelacji rang. Korelacja rang przyjmuje wartości od −1 do 1; znak ujemny oznacza, że wyższej deklaracji towarzyszy krótszy czas. Proporcję 0,72 odczytujemy jako 72% osób, a liczbę osób podaje licznik ułamka.
 
 ## Wzór, który da się powiedzieć po polsku
 
 $$
 \widehat{\Delta}=\bar{x}_N-\bar{x}_D
 =\frac{1}{n_N}\sum_{i=1}^{n_N}x_{Ni}
--\frac{1}{n_D}\sum_{j=1}^{n_D}x_{Dj}.
+-\frac{1}{n_D}\sum_{i=1}^{n_D}x_{Di}.
 $$
 
-Czytamy: „szacowana różnica to średni czas nowych użytkowników minus średni czas doświadczonych”. Kreska nad $x$ oznacza średnią w próbie. Daszek nad deltą sygnalizuje oszacowanie. Sigma $\sum$ poleca dodać wskazane wartości. Indeksy $i$ i $j$ numerują osoby we właściwych grupach; nie są dodatkowymi zmiennymi mierzonymi ankietą.
+Czytamy: „szacowana różnica to średni czas nowych użytkowników minus średni czas doświadczonych”. Kreska nad $x$ oznacza średnią w próbie. Daszek nad deltą sygnalizuje oszacowanie. Sigma $\sum$ poleca dodać wskazane wartości. Indeks $i$ numeruje osoby w grupie: od 1 do $n_N$ wśród nowych i od 1 do $n_D$ wśród doświadczonych.
 
-Jeśli średnie wynoszą 9 i 7 minut, różnica wynosi 2 minuty. Dodatni znak mówi, że nowi potrzebowali średnio więcej czasu. Zamiana kolejności daje $-2$ minuty i nie zmienia obserwowanego zjawiska. Dlatego zdanie „różnica była dodatnia” bez nazwania kolejności grup jest niepełne.
+Średnie 9 i 7 minut dają różnicę 2 minut. Dodatni znak oznacza, że nowi potrzebowali średnio więcej czasu. Zamiana kolejności grup daje $-2$ minuty i opisuje to samo zjawisko, więc zdanie o znaku różnicy nazywa kolejność grup: „nowi minus doświadczeni”.
 
-Gdy przeliczymy minuty na sekundy, obie średnie i różnica wzrosną sześćdziesięciokrotnie. Sens porównania pozostaje ten sam. To pierwsza kontrola wzoru: wynik dotyczący czasu powinien zachować jednostkę czasu. W C06 zobaczymy, że statystyka testowa dzieląca różnicę przez jej błąd standardowy nie ma już tej jednostki.
+Pierwsza kontrola wzoru dotyczy jednostki: wynik o czasie zachowuje jednostkę czasu. Po przeliczeniu minut na sekundy obie średnie i różnica rosną sześćdziesięciokrotnie, a sens porównania pozostaje ten sam. Statystyka testowa dzieli różnicę przez jej błąd standardowy:
 
-# Dlaczego wybór estymandy zmienia historię
+$$
+t=\frac{\widehat{\Delta}}{SE(\widehat{\Delta})} .
+$$
 
-Wyobraź sobie czasy czterech osób: 2, 3, 3 i 20 minut. Średnia wynosi 7 minut, a mediana 3 minuty. Zdanie „typowe zadanie trwa 7 minut” może być mylące, jeżeli czytelnik rozumie typowość jako środek uporządkowanej grupy. Średnia odpowiada jednak na użyteczne pytanie o przeciętny nakład czasu. Nie musimy wskazywać jednej miary jako zawsze poprawnej; musimy dopasować ją do problemu.
+Minuty w liczniku i w mianowniku skracają się, więc statystyka $t$ jest liczbą bez jednostki. Różnica 2 minuty przy błędzie standardowym 0,8 minuty daje $t=2/0{,}8=2{,}5$. Ćwiczenie C06 (Dwie grupy) liczy statystykę $t$ dla danych S02.
 
-Jeszcze większa zmiana następuje po ograniczeniu analizy do osób, które odniosły sukces. Średni czas wszystkich prób i średni czas udanych prób to różne estymandy. Jeżeli nowy interfejs pomaga również osobom z trudnościami, liczba sukcesów może wzrosnąć, a średni czas wśród skutecznych użytkowników także się wydłużyć. Nie jest to automatycznie dowód pogorszenia systemu.
+# Wybór estymandy zmienia odpowiedź
 
-Dlatego w kursie czytamy czas razem z powodzeniem. W rzeczywistym badaniu trzeba ponadto ustalić limit czasu i sposób zapisu przerwanej próby. Wartość „10 minut” przy przerwaniu po limicie nie oznacza, że osoba zakończyłaby zadanie dokładnie po 10 minutach. Nie stosujemy tutaj metod analizy czasu do zdarzenia; uczymy się zauważać granicę prostego podsumowania.
+Wyobraź sobie czasy czterech osób: 2, 3, 3 i 20 minut. Średnia to suma podzielona przez liczbę pomiarów, $(2+3+3+20)/4=7$ minut. Mediana to środkowa wartość uporządkowanego zbioru; dla uporządkowanych wartości $x_{(1)}\leq\dots\leq x_{(n)}$
 
-Podobnie odsetek znalezionych dokumentów wśród osób obecnych w bibliotece nie jest odsetkiem wśród wszystkich potencjalnych użytkowników. Doprecyzowanie mianownika jest częścią pytania badawczego, a nie dodatkiem technicznym.
+$$
+\tilde{x}=
+\begin{cases}
+x_{((n+1)/2)}, & n \text{ nieparzyste},\\[2pt]
+\tfrac{1}{2}\left(x_{(n/2)}+x_{(n/2+1)}\right), & n \text{ parzyste}.
+\end{cases}
+$$
+
+Symbol $x_{(k)}$ oznacza $k$-tą wartość po uporządkowaniu rosnąco. Dla czterech czasów $n=4$ jest parzyste, więc mediana wynosi $(3+3)/2=3$ minuty. Wykres „Średnia i mediana czterech czasów” zestawia obie miary.
+
+```{r srednia-mediana, fig.height=2.4, fig.cap="Średnia i mediana czterech czasów. Oś pozioma: czas w minutach. Trzy koła leżą przy 2 i 3 minutach, czwarte przy 20 minutach; kreska mediany leży w skupisku przy 3 minutach, a romb średniej przy 7 minutach, między skupiskiem a wartością 20 minut."}
+print(wykres_miar)
+```
+
+Zdanie „typowe zadanie trwa 7 minut” wprowadza w błąd czytelnika, który rozumie typowość jako środek uporządkowanej grupy. Średnia odpowiada jednak na użyteczne pytanie o przeciętny nakład czasu. Wybór miary wynika z pytania: średnia opisuje przeciętny nakład czasu, mediana czas osoby środkowej w uporządkowanej grupie.
+
+Ograniczenie analizy do osób, które odniosły sukces, zmienia estymandę. Średni czas wszystkich prób i średni czas udanych prób to różne estymandy. Nowy interfejs, który pomaga osobom z trudnościami, zwiększa liczbę sukcesów i może wydłużyć średni czas wśród skutecznych użytkowników. Przykład: pięć osób odnosi sukces po 6 minutach; po zmianie do grupy skutecznych dołączają trzy osoby, które potrzebują 12 minut, więc średnia udanych prób rośnie do $(5\cdot 6+3\cdot 12)/8=8{,}25$ minuty. Wzrost średniego czasu wynika wtedy ze zmiany składu grupy skutecznych.
+
+Dlatego w kursie czytamy czas razem z powodzeniem. Rzeczywiste badanie ustala ponadto limit czasu i sposób zapisu przerwanej próby. W przykładzie spoza zbioru S02 zadanie przerywa się po 10 minutach, a wartość „10 minut” zapisana przy przerwaniu jest dolną granicą czasu: osoba potrzebowałaby co najmniej 10 minut. Taki zapis nazywa się cenzurowaniem prawostronnym; pełna analiza czasu z cenzurowaniem należy do metod analizy czasu do zdarzenia, spoza zakresu kursu. W zbiorze S02 słownik podaje zakres czasu 0–120 minut.
+
+Odsetek wśród osób obecnych w bibliotece ma w mianowniku osoby obecne, a odsetek wśród wszystkich potencjalnych użytkowników wymaga mianownika obejmującego osoby nieobecne. Mianownik należy do definicji pytania badawczego.
 
 # Hipoteza, efekt i niepewność
 
-Hipoteza badawcza wynika z problemu i uzasadnienia. Możemy przewidywać, że nowi użytkownicy potrzebują więcej czasu, ponieważ nie znają struktury rekordu. Samo przewidywanie nie stanowi dowodu przyczyny. Hipoteza statystyczna jest węższa: dotyczy np. $\Delta=0$. Brak różnicy średnich nie oznacza identyczności rozkładów ani identycznego zachowania każdej osoby.
+Hipoteza badawcza wynika z problemu i uzasadnienia. Możemy przewidywać, że nowi użytkownicy potrzebują więcej czasu, bo słabiej znają strukturę rekordu; przewidywanie wymaga dopiero sprawdzenia. Hipoteza statystyczna przekłada przewidywanie na zdanie o parametrze: $H_0\colon \Delta = 0$ wobec $H_1\colon \Delta \neq 0$. Równość średnich dotyczy jednego parametru: rozkłady czasu w dwóch grupach mogą przy równych średnich różnić się rozrzutem i kształtem. Wykres „Dwa rozkłady o tej samej średniej” przedstawia dwa rozkłady czasu o średniej 8 minut i różnym rozrzucie.
 
-Efekt w tym kursie oznacza wielkość różnicy lub związku. Słowo „efekt” w nazwie miary nie nadaje mu przyczynowości. Różnica średnich w grupach obserwacyjnych jest miarą efektu statystycznego, ale nie musi mierzyć skutku interwencji.
+```{r rowne-srednie, fig.height=3, fig.cap="Dwa rozkłady czasu o tej samej średniej 8 minut. Oś pozioma: czas w minutach; oś pionowa: gęstość. Obie krzywe mają szczyt przy 8 minutach; krzywa ciągła (SD = 1 minuta) obejmuje głównie wartości od 6 do 10 minut, krzywa przerywana (SD = 4 minuty) — od 0 do 16 minut."}
+print(wykres_rozrzutu)
+```
 
-Estymata bez niepewności nie pokazuje, jak precyzyjnie poznaliśmy tę wielkość. Różnica 2 minut z przedziałem od 1,7 do 2,3 minuty ma inne znaczenie niż ta sama różnica z przedziałem od $-3$ do 7 minut. Drugi wynik jest zgodny z dużo szerszym zakresem wartości w ramach przyjętych założeń. Nie wybieramy mocniejszego czasownika tylko dlatego, że estymata wygląda przekonująco.
+Efekt w kursie oznacza wielkość różnicy lub związku, czyli efekt statystyczny. Skutek interwencji (efekt przyczynowy) wymaga projektu z losowym przydziałem albo uzasadnionego planu quasi-eksperymentalnego. Różnica średnich w grupach obserwacyjnych jest miarą efektu statystycznego.
 
-W03 wyjaśni przedziały ufności i wartość p. Na tym etapie wystarczy kolejność: najpierw ustalamy, co chcemy oszacować i w jakiej jednostce, potem jak niepewny jest wynik, a następnie co wolno z niego wywnioskować. Test nie zwalnia z nazwania populacji ani ze sprawdzenia pomiaru.
+Precyzję estymaty opisuje przedział ufności, czyli zakres wartości parametru zgodnych z danymi przy przyjętych założeniach. Różnica 2 minut z przedziałem od 1,7 do 2,3 minuty ma inne znaczenie niż ta sama różnica z przedziałem od $-3$ do 7 minut. Drugi wynik jest zgodny z dużo szerszym zakresem wartości, w tym z różnicą ujemną. Wykres „Ta sama estymata, dwa przedziały” zestawia oba wyniki.
 
-# LEARN: z ogólnego postulatu do planu
+```{r przedzialy, fig.height=2.6, fig.cap="Ta sama estymata różnicy, dwa przedziały. Oś pozioma: różnica średnich czasów, nowi minus doświadczeni, w minutach; linia przerywana oznacza zero. Oba romby leżą przy 2 minutach; przedział wąski obejmuje wartości od 1,7 do 2,3 i leży w całości po dodatniej stronie zera, przedział szeroki obejmuje wartości od −3 do 7 i przecina zero."}
+print(wykres_niepewnosci)
+```
 
-Zespół biblioteki pisze: „Chcemy zbadać, czy kompetencje cyfrowe wpływają na skuteczność transformacji biblioteki”. Zdanie zawiera dwa szerokie pojęcia i deklarację wpływu. W obecnym zbiorze nie ma miary całej transformacji ani zwalidowanego pomiaru kompetencji cyfrowych. Nie wystarczy nazwać indeksu „kompetencją”, aby problem zniknął.
+Siła czasownika we wniosku odpowiada szerokości przedziału: przedział wąski uzasadnia zdanie „nowi potrzebowali średnio około 2 minut więcej”, a przedział szeroki — zdanie „dane są zgodne zarówno z krótszym, jak i z wyraźnie dłuższym czasem nowych”. Wykład W03 (Losowość, estymacja i dwa tory wnioskowania) wyjaśnia konstrukcję przedziału ufności i wartość p. Kolejność pracy pozostaje stała: najpierw ustalamy, co chcemy oszacować i w jakiej jednostce, potem jak niepewny jest wynik, a następnie co wolno z wyniku wywnioskować. Test statystyczny korzysta z populacji i pomiaru ustalonych w pierwszym kroku.
 
-Pierwsza dopuszczalna wersja pytania brzmi: „Jak różni się odsetek poprawnego odnalezienia wskazanego dokumentu między nowymi i doświadczonymi użytkownikami w obserwowanej próbie?”. Wynikiem jest powodzenie 0/1, grupą doświadczenie, a estymandą różnica proporcji. Ograniczenie dotyczy obserwacyjnego porównania i zakresu pojedynczego zadania.
+# Przykład prowadzony: od ogólnego postulatu do planu
 
-Druga wersja brzmi: „Czy wyższej deklarowanej użyteczności katalogu towarzyszy krótszy czas wykonania zadania?”. Tutaj potrzebujemy pary wartości dla tej samej osoby. Estymandą może być współczynnik związku. Musimy pamiętać, że ocena zebrana po zadaniu może być kształtowana przez jego przebieg.
+Zespół biblioteki pisze: „Chcemy zbadać, czy kompetencje cyfrowe wpływają na skuteczność transformacji biblioteki”. Zdanie zawiera dwa szerokie pojęcia i deklarację wpływu. Zbiór S02 zawiera czas, powodzenie, częstość korzystania, sześć pozycji oceny katalogu i cztery kanały kontaktu; każda z tych zmiennych mierzy wąski fragment zdania zespołu.
 
-Trzecia wersja wymaga nowych danych: „Czy udostępnienie instrukcji filtrów zwiększa prawdopodobieństwo znalezienia dokumentu?”. Projektujemy losowy przydział instrukcji, wspólną definicję sukcesu i porównanie według przydziału. Nie wykonujemy tego eksperymentu przez podmianę nazw grup w istniejącej tabeli.
+Pierwsza dopuszczalna wersja pytania brzmi: „Jak różni się odsetek poprawnego odnalezienia wskazanego dokumentu między nowymi i doświadczonymi użytkownikami w obserwowanej próbie?”. Wynikiem jest powodzenie 0/1, grupą doświadczenie, a estymandą różnica proporcji. Zakres wniosku obejmuje obserwacyjne porównanie i pojedyncze zadanie.
+
+Druga wersja brzmi: „Czy wyższej deklarowanej użyteczności katalogu towarzyszy krótszy czas wykonania zadania?”. Pytanie o związek wymaga pary wartości dla każdej osoby: indeksu i czasu. Estymandą jest współczynnik związku, np. korelacja rang. Ocena zebrana po zadaniu odzwierciedla częściowo przebieg zadania, co należy do interpretacji wyniku.
+
+Trzecia wersja wymaga nowych danych: „Czy udostępnienie instrukcji filtrów zwiększa prawdopodobieństwo znalezienia dokumentu?”. Projektujemy losowy przydział instrukcji, wspólną definicję sukcesu i porównanie według przydziału. Eksperyment wymaga nowego zbierania danych z losowym przydziałem; zbiór S02 odpowiada na dwa pierwsze pytania.
 
 ## Ćwiczenie interpretacyjne z omówieniem
 
-Rozważ zdanie: „Wśród osób, które wypełniły ankietę, 80% oceniło katalog dobrze, więc 80% studentów ma wysokie kompetencje informacyjne”. Wskaż dwa odrębne przeskoki rozumowania. Pierwszy dotyczy populacji: respondenci nie muszą reprezentować wszystkich studentów. Drugi dotyczy pomiaru: pozytywna ocena katalogu nie jest wynikiem testu kompetencji.
+Rozważ zdanie: „Wśród osób, które wypełniły ankietę, 80% oceniło katalog dobrze, więc 80% studentów ma wysokie kompetencje informacyjne”. Wskaż dwa odrębne przeskoki rozumowania. Pierwszy dotyczy populacji: respondenci to osoby, które wypełniły ankietę, a zdanie mówi o wszystkich studentach. Drugi dotyczy pomiaru: pozytywna ocena katalogu jest opinią o systemie, a zdanie mówi o kompetencji.
 
-Poprawione zdanie mogłoby brzmieć: „Wśród respondentów z ważną odpowiedzią 80% wybrało kategorię pozytywnej oceny katalogu”. Do pełnego raportu trzeba dodać pytanie, kategorie włączone do „pozytywnej” odpowiedzi oraz licznik i mianownik. Ostrożność nie polega na dopisaniu „być może”; polega na dopasowaniu treści zdania do danych.
+Poprawione zdanie brzmi: „Wśród respondentów z ważną odpowiedzią 80% wybrało kategorię pozytywnej oceny katalogu”. Pełny raport dodaje brzmienie pytania, kategorie włączone do „pozytywnej” odpowiedzi oraz licznik i mianownik. Ostrożność polega na dopasowaniu treści zdania do danych.
 
-Rozważ teraz: „Po szkoleniu średni czas spadł o 2 minuty”. Jeżeli pomiar dotyczył tych samych osób wykonujących to samo zadanie, alternatywnym wyjaśnieniem jest wprawa. Jeżeli przed i po badano inne osoby, dochodzi zmiana składu próby. Jedno zdanie liczbowe może więc wymagać różnych zastrzeżeń zależnie od projektu.
+Rozważ teraz: „Po szkoleniu średni czas spadł o 2 minuty”. Przy pomiarze tych samych osób wykonujących to samo zadanie wyjaśnieniem alternatywnym jest wprawa. Przy pomiarze innych osób przed szkoleniem i po szkoleniu dochodzi zmiana składu próby. Jedno zdanie liczbowe wymaga więc różnych zastrzeżeń zależnie od projektu.
 
-# Generatywna SI: pomoc w rozumieniu nie zastępuje pomiaru
+# Generatywna SI: pomoc w rozumieniu pojęć i odpowiedzialność badacza za pomiar
 
-W tej części kursu można korzystać z SI do wyjaśniania pojęć i pomocy przy błędzie kodu. Interpretację oraz wnioski piszesz samodzielnie. Nie musisz korzystać z zewnętrznego narzędzia ani zakładać konta. Jeśli wykorzystujesz wygenerowany fragment, oznacz go przy miejscu użycia; w raporcie opisz rzeczywisty zakres pomocy. Nie przesyłaj haseł, tokenów, danych osobowych ani cudzych prac. Odpowiedź modelu nie jest źródłem naukowym: sprawdzaj wskazane publikacje. Są to zasady kursu stosujące [zarządzenie UJ nr 115/2025, §§3–4 i 6–7](https://bip.uj.edu.pl/documents/1384597/159749054/zarz_115_2025.pdf).
+W części ilościowej przedmiotu można korzystać z SI do wyjaśniania pojęć i pomocy przy błędzie kodu. Interpretację oraz wnioski piszesz samodzielnie. Korzystanie z SI jest dobrowolne i niezależne od zakładania konta w zewnętrznym narzędziu. Wygenerowany fragment oznaczasz przy miejscu użycia, a w raporcie opisujesz rzeczywisty zakres pomocy. Hasła, tokeny, dane osobowe i prace innych osób pozostają poza narzędziem SI. Odpowiedź modelu jest wskazówką, a źródłem naukowym są sprawdzone publikacje. Zasady kursu stosują [zarządzenie UJ nr 115/2025, §§3–4 i 6–7](https://bip.uj.edu.pl/documents/1384597/159749054/zarz_115_2025.pdf).
 
-Rozważ dydaktyczną propozycję operacjonalizacji: „Kompetencję mierzymy pytaniem, czy podoba się nowa strona biblioteki”. Zdanie może brzmieć płynnie, ale zmienia konstrukt. Odpowiedź dotyczy oceny strony, nie wykonania zadania. Poprawka nie polega na dopisaniu nazwy uznanej skali: trzeba uzasadnić wskaźnik, np. ocenę wiarygodności dwóch źródeł według jawnych kryteriów, i sprawdzić, jakie aspekty kompetencji pozostają niezmierzone.
+Rozważ dydaktyczną propozycję operacjonalizacji: „Kompetencję mierzymy pytaniem, czy podoba się nowa strona biblioteki”. Zdanie brzmi płynnie i zmienia konstrukt: odpowiedź mierzy ocenę strony. Poprawka polega na uzasadnieniu wskaźnika, np. oceny wiarygodności dwóch źródeł według jawnych kryteriów, i na wskazaniu aspektów kompetencji, które wymagają osobnego pomiaru.
 
-Podobnie propozycja „zmierz czas od kliknięcia do sukcesu” pomija osoby bez sukcesu. Najpierw określamy limit, warunek przerwania oraz zapis niepowodzenia. Narzędzie może pomóc zauważyć brak definicji, lecz odpowiedzialność za operacjonalizację pozostaje po stronie badacza. W05 pokaże krytyczną ocenę argumentacji liczbowej, a C09 zastosuje ją do planu poznanego wtedy projektu.
+Podobnie propozycja „zmierz czas od kliknięcia do sukcesu” obejmuje wyłącznie osoby, które odniosły sukces. Pomiar czasu zaczyna się od ustalenia limitu, warunku przerwania oraz zapisu niepowodzenia. Narzędzie pomaga zauważyć brak definicji, a odpowiedzialność za operacjonalizację pozostaje po stronie badacza. Krytyczną ocenę argumentacji liczbowej rozwija wykład W05 (Korelacja, regresja i raport ilościowy), a ćwiczenie C09 (Warsztat projektu) stosuje ją do planu projektu indywidualnego.
 
-# Co przygotować przed C01
+# Przygotowanie do ćwiczeń C01 i C02
 
-W C01 otworzysz gotowy projekt, poznasz rekord i odczytasz prosty wynik. W C02 prześledzisz, jak surowy eksport zmienia się w tabelę analityczną. Do obu spotkań potrzebujesz czterech rozróżnień: osoba i rekord, konstrukt i wskaźnik, brak i niepowodzenie, populacja i próba.
+Na ćwiczeniu C01 (Od rekordu do wyniku) otworzysz w RStudio własny plik ćwiczenia, poznasz rekord i odczytasz prosty wynik. Na ćwiczeniu C02 (Surowy eksport) prześledzisz, jak surowy eksport zmienia się w tabelę analityczną. Oba spotkania korzystają z czterech rozróżnień: osoba i rekord, konstrukt i wskaźnik, brak i niepowodzenie, populacja i próba.
 
-Do własnej powtórki możesz zapisać jedno pytanie o usługę informacyjną. Dodaj wynik, jednostkę analizy, populację i sposób pomiaru. Następnie dokończ zdanie: „Odpowiedzią liczbową byłaby…”. Jeżeli nie potrafisz nazwać tej wielkości, wróć do pytania przed wyborem testu. Nie jest to jeszcze wybór tematu ani dodatkowy plik do oddania; projekt indywidualny wprowadzamy dopiero w C09.
+Do własnej powtórki zapisz jedno pytanie o usługę informacyjną. Dodaj wynik, jednostkę analizy, populację i sposób pomiaru. Następnie dokończ zdanie: „Odpowiedzią liczbową byłaby…”. Gdy nazwanie wielkości odpowiadającej na pytanie sprawia trudność, doprecyzuj wynik, grupę i sposób podsumowania. Notatka służy powtórce; temat projektu indywidualnego wybierasz na ćwiczeniu C09.
 
-Na końcu dopisz informację, której obecne dane nie dostarczą. Może to być skutek instrukcji, zachowanie poza laboratorium, potrzeba osób niekorzystających z usługi lub jakość długotrwałego uczenia się. Dobrze określone ograniczenie wskazuje następne badanie.
+Na końcu notatki dopisz informację wymagającą nowych danych: skutek instrukcji, zachowanie poza laboratorium, potrzebę osób korzystających z innych źródeł lub trwałość uczenia się. Dobrze określone ograniczenie wskazuje następne badanie.
 
 # Literatura do dalszej pracy
 
@@ -224,4 +378,4 @@ Na końcu dopisz informację, której obecne dane nie dostarczą. Może to być 
 - Hargittai, E. (2002). *Beyond logs and surveys: In-depth measures of people's web use skills*. JASIST, 53(14), 1239–1244. [Strona autorki](https://webuse.org/p/a09/), [DOI](https://doi.org/10.1002/asi.10166).
 - Vial, G. (2019). *Understanding digital transformation: A review and a research agenda*. JSIS, 28(2), 118–144. [DOI](https://doi.org/10.1016/j.jsis.2019.01.003).
 
-Przykłady liczbowe, zadania i proponowane projekty w tym wykładzie są dydaktyczne. Nie są replikacją ani streszczeniem wyników empirycznych wymienionych publikacji.
+Przykłady liczbowe, zadania i proponowane projekty wykładu są dydaktyczne; wyniki cytowanych prac zawierają ich oryginalne publikacje.

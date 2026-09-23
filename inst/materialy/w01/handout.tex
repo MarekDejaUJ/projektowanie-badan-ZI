@@ -112,6 +112,10 @@
 \newtcolorbox{uwagabox}[1][]{colback=orange!10, colframe=orange!70!black, title={#1}}
 \newtcolorbox{wzorbox}[1][]{colback=gray!5, colframe=gray!50!black, title={#1}}
 \newtcolorbox{przykladbox}[1][]{colback=purple!5, colframe=purple!50!black, title={#1}}
+
+% Rysunki z podpisem pozostają przy akapicie, który je opisuje.
+\usepackage{float}
+\floatplacement{figure}{H}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -144,33 +148,27 @@
 wracamy}\label{problem-do-ktuxf3rego-wracamy}
 
 Biblioteka otrzymuje sygnały, że trudno znaleźć dokument w katalogu.
-Rozważa zmianę filtrów, film instruktażowy lub szkolenie. Zanim wybierze
-rozwiązanie, musi rozpoznać barierę: interfejs, przygotowanie
-użytkownika, zadanie albo dostępność informacji. Wspólne dane S02 są
-syntetycznym przykładem ankiety i obserwacji zadania; nie opisują
-rzeczywistej biblioteki.
+Rozważa zmianę filtrów, film instruktażowy lub szkolenie. Wybór
+rozwiązania wymaga rozpoznania bariery: interfejsu, przygotowania
+użytkownika, zadania albo dostępności informacji. Zbiór S02 (S ---
+scenariusz danych kursu) jest syntetycznym przykładem ankiety po zadaniu
+połączonej z obserwacją czasu i powodzenia; zawiera 150 rekordów i służy
+do ćwiczenia analizy.
 
-{\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
-Etap rozumowania & Pytanie do zapisania \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-Problem instytucji & Jaka decyzja wymaga informacji? \\
-Konstrukt & Co oznacza „sprawność'' albo „użyteczność''? \\
-Wskaźnik & Co dokładnie obserwujemy lub o co pytamy? \\
-Projekt i próba & Kogo badamy, kiedy i w jakich warunkach? \\
-Estymanda & Jaką wielkość chcemy oszacować? \\
-Wniosek & Co pozwala stwierdzić taki projekt? \\
-\end{longtable}
-}
+Kody jednostek: W01--W05 to wykłady, C01--C10 ćwiczenia, a Z01--Z10
+zadania oddawane po ćwiczeniach o tych samych numerach. Wykres „Sześć
+etapów rozumowania'' podaje kolejność pracy od problemu do wniosku wraz
+z pytaniem na każdym etapie.
 
-W S02 indeks sześciu pozycji dotyczy deklarowanej użyteczności katalogu
-i radzenia sobie z nim. Nie jest zwalidowaną skalą ogólnej kompetencji.
-Czas oraz powodzenie to wskaźniki wykonania konkretnego zadania.
-Zgodność deklaracji i wykonania jest pytaniem do zbadania.
+\begin{figure}
+\includegraphics[width=1\linewidth]{handout_files/figure-latex/etapy-1} \caption{Sześć etapów rozumowania od problemu instytucji do wniosku, ułożonych od góry do dołu: problem, konstrukt, wskaźnik, projekt i próba, estymanda, wniosek; przy każdym etapie stoi pytanie do zapisania.}\label{fig:etapy}
+\end{figure}
+
+W S02 indeks sześciu pozycji opisuje deklarowaną użyteczność katalogu i
+radzenie sobie z katalogiem; pozycja 3 („Odczytanie rekordu wymaga ode
+mnie zgadywania.'') jest odwrócona wzorem \(6-x\). Czas oraz powodzenie
+to wskaźniki wykonania konkretnego zadania. Zgodność deklaracji i
+wykonania jest pytaniem do zbadania.
 
 \section{Język wzoru}\label{jux119zyk-wzoru}
 
@@ -204,8 +202,18 @@ danych \\
 }
 
 Zamiana grup zmienia znak. Przeliczenie minut na sekundy zmienia
-jednostkę i liczbową wartość różnicy, lecz nie relację między grupami.
-Do pełnego wyniku potrzebna będzie także miara niepewności.
+jednostkę i liczbową wartość różnicy, a relacja między grupami pozostaje
+ta sama. Pełny wynik zawiera także miarę niepewności. Wykres „Ta sama
+estymata, dwa przedziały'' przedstawia różnicę 2 minut z przedziałem
+wąskim od 1,7 do 2,3 minuty i szerokim od −3 do 7 minut; tylko przedział
+wąski leży w całości po dodatniej stronie zera.
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{handout_files/figure-latex/przedzialy-1} \caption{Ta sama estymata różnicy 2 minut z dwoma przedziałami. Przedział wąski obejmuje wartości od 1,7 do 2,3 minuty, przedział szeroki od −3 do 7 minut i przecina linię zera.}\label{fig:przedzialy}
+\end{figure}
+
+Notatka: jakie zdanie o nowych użytkownikach uzasadnia każdy z dwóch
+przedziałów?
 
 \section{Projekty tej samej usługi}\label{projekty-tej-samej-usux142ugi}
 
@@ -220,7 +228,7 @@ Projekt
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Przykład pytania
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Granica wniosku
+Zakres wniosku
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
@@ -229,41 +237,47 @@ Granica wniosku
 Opis & Jaki odsetek nowych osób znajduje dokument? & Opis próby lub
 określonej populacji przy uzasadnionym doborze \\
 Porównanie obserwacyjne & O ile różnią się nowi i doświadczeni? &
-Związek; możliwe zakłócenie przez inne cechy \\
+Związek; inne cechy grup współtworzą różnicę \\
 Losowy przydział instrukcji & Czy udostępnienie instrukcji zmienia
 powodzenie? & Silniejsza podstawa wniosku przyczynowego o przydzielonej
 interwencji \\
-Przed--po & Jak zmienił się czas tych samych osób? & Trzeba uwzględnić
-zależność, wprawę i zmiany warunków \\
+Przed--po & Jak zmienił się czas tych samych osób? & Analiza różnic w
+parach; wprawa i zmiana warunków jako wyjaśnienia alternatywne \\
 \end{longtable}
 }
 
-Losowy dobór osób dotyczy podstaw uogólnienia. Losowy przydział warunku
-dotyczy porównania przyczynowego. Można mieć jedno bez drugiego.
+Losowy dobór osób daje podstawę uogólnienia. Losowy przydział warunku
+daje podstawę porównania przyczynowego. Projekt może zawierać jedno z
+dwóch losowań albo oba.
 
-Quasi-eksperyment porównuje zmianę bez randomizacji: w przykładzie dwóch
-filii różnica zmian wynosi \((7-10)-(7-8)=-2\) minuty. Nie jest skutkiem
-interwencji bez uzasadnienia równoległych trendów i kontroli innych
-zmian. Eksperyment naturalny wykorzystuje przydział wynikający z
-warunków zewnętrznych; trzeba poznać jego mechanizm.
+Quasi-eksperyment porównuje zmianę bez losowego przydziału: w
+przykładzie dwóch filii różnica zmian wynosi \((7-10)-(7-8)=-2\) minuty.
+Odczyt przyczynowy wymaga uzasadnienia równoległych trendów i kontroli
+innych zmian w filiach. Eksperyment naturalny wykorzystuje przydział
+wynikający z warunków zewnętrznych; wartość porównania zależy od
+mechanizmu przydziału.
 
-Piramida dowodów podpowiada, gdzie szukać badań skutków interwencji,
-lecz nie zastępuje oceny jakości. Przegląd systematyczny ma jawną
-procedurę, a metaanaliza liczbowo łączy oszacowania. Pytanie o lokalną
-częstość bariery może najlepiej adresować dobre aktualne badanie
-obserwacyjne.
+Piramida dowodów o skutkach interwencji układa od podstawy: opinię
+eksperta, opis przypadku, badanie porównawcze bez randomizacji, badanie
+z randomizacją i przegląd systematyczny z metaanalizą. Piramida
+wskazuje, gdzie szukać badań skutków interwencji, a ocena konkretnej
+publikacji obejmuje dodatkowo pomiar i raportowanie. Przegląd
+systematyczny ma jawną procedurę, a metaanaliza liczbowo łączy
+oszacowania. Na pytanie o lokalną częstość bariery najlepiej odpowiada
+aktualne badanie obserwacyjne.
 
 \section{Kontrole, które poprzedzają
 test}\label{kontrole-ktuxf3re-poprzedzajux105-test}
 
-Jedna osoba wykonująca cztery zadania daje cztery rekordy, lecz pomiary
-nie są niezależne. Brak wyniku nie oznacza niepowodzenia. Średnia
-udanych prób opisuje inną wielkość niż średnia wszystkich prób. Sama
-nazwa kolumny nie jest definicją konstruktu.
+Jedna osoba wykonująca cztery zadania daje cztery rekordy zależnych
+pomiarów jednej jednostki analizy. Wartość NA oznacza wynik nieznany, a
+niepowodzenie --- wynik zaobserwowany. Średnia udanych prób opisuje inną
+wielkość niż średnia wszystkich prób. Konstrukt definiują treść pytań i
+protokół, a nazwa kolumny jest etykietą.
 
 Przy czasach 2, 3, 3 i 20 minut średnia wynosi 7, a mediana 3 minuty.
-Wybór miary zależy od pytania: przeciętny nakład czasu i środek
-uporządkowanej grupy nie są tym samym.
+Wybór miary zależy od pytania: średnia opisuje przeciętny nakład czasu,
+mediana środek uporządkowanej grupy.
 
 \textbf{Do omówienia:} „80\% respondentów dobrze ocenia katalog, więc
 80\% studentów ma wysokie kompetencje''. Wskaż błąd dotyczący populacji
@@ -271,28 +285,30 @@ oraz odrębny błąd pomiaru. Zapisz własną poprawioną wersję, podając
 licznik i mianownik.
 
 \textbf{Do własnej powtórki:} zapisz jedno pytanie o usługę
-informacyjną, jego estymandę i jednostkę. Dopisz informację, której
-zaplanowane dane nie pozwolą uzyskać. Nie oddajesz osobnego pliku;
-projekt indywidualny poznasz w C09.
+informacyjną, jego estymandę i jednostkę. Dopisz informację wymagającą
+nowych danych. Notatka służy powtórce; projekt indywidualny rozpoczyna
+się na ćwiczeniu C09.
 
 \textbf{Generatywna SI:} pomoc w zrozumieniu pojęcia lub błędu kodu jest
-dopuszczalna; interpretacja pozostaje własna. Oznacz rzeczywiście
-wykorzystane treści i chroń dane. Nie ma obowiązku korzystania z
-narzędzia. Przykład i
-\href{https://bip.uj.edu.pl/documents/1384597/159749054/zarz_115_2025.pdf}{zasady
-UJ} omówiono w wykładzie.
+dopuszczalna, a interpretację piszesz samodzielnie. Wykorzystane
+fragmenty oznaczasz, a hasła, tokeny i dane osobowe pozostają poza
+narzędziem. Korzystanie z narzędzia jest dobrowolne. Zasady opierają się
+na
+\href{https://bip.uj.edu.pl/documents/1384597/159749054/zarz_115_2025.pdf}{zarządzeniu
+UJ nr 115/2025}.
 
 \section{Lektury i notatki}\label{lektury-i-notatki}
 
 Wilson (1999) pomaga odróżnić zachowanie informacyjne od wyszukiwania w
 systemie; Kuhlthau (1991) zwraca uwagę na moment pomiaru w procesie;
 Hargittai (2002) uzasadnia łączenie ankiety z obserwacją; Vial (2019)
-dostarcza perspektywy zmiany organizacyjnej. Pełne odnośniki i omówienie
-znajdują się w wykładzie.
+dostarcza perspektywy zmiany organizacyjnej. Pełne odnośniki zawiera
+wykład.
 
 Notatka: jakie dwie różne przyczyny mogą dać taki sam długi czas
 wyszukiwania?
 
-Notatka: jakiego dodatkowego pomiaru potrzebujesz, aby je rozróżnić?
+Notatka: jakiego dodatkowego pomiaru potrzebujesz, aby rozróżnić obie
+przyczyny?
 
 \end{document}

@@ -1,5 +1,5 @@
 ---
-title: 'C02 — Surowy eksport: decyzje, które zmieniają wynik'
+title: 'C02 — Surowy eksport: braki, duplikaty i jawne czyszczenie'
 subtitle: 'Zarządzanie informacją — ćwiczenie i zadanie Z02 — 2026/27'
 author: 'ID: [UZUPELNIJ_ID]'
 date: '2026/27'
@@ -14,9 +14,9 @@ output:
 ---
 
 <!-- start-sesji -->
-# Początek pracy na tych zajęciach
+# Początek pracy na ćwiczeniu C02
 
-Otwórz RStudio. Pakiet kursu jest już zainstalowany w sali; nie instalujesz go ponownie. W konsoli poniżej edytora wpisz swoje ID i adres prywatnego repozytorium otrzymany w kursie, a następnie wykonaj polecenia. Ten blok jest instrukcją do konsoli, nie chunkiem uruchamianym przy tworzeniu PDF.
+Otwórz RStudio. Pakiet kursu `badaniaZI` jest zainstalowany na komputerach w sali. Cztery polecenia z następnego bloku wpisujesz w konsoli RStudio, czyli w dolnym panelu ze znakiem `>`; w miejsce `TWOJE_ID` wpisz swoje ID, a w miejsce adresu — adres prywatnego repozytorium otrzymany na początku kursu. Dokument PDF zawiera cztery polecenia jako tekst instrukcji.
 
 ```r
 library(badaniaZI)
@@ -28,13 +28,12 @@ rozpocznij_zajecia(
 )
 ```
 
-Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie tam, nie w konsoli R. Sprawdź potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w tej sesji; pliki pracy mają je zachować także po zamknięciu RStudio.
+Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie na stronie GitHub. Sprawdź w komunikacie potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w sesji; pliki pracy zachowują je także po zamknięciu RStudio.
 
-Polecenie otwiera własny `zadanie.Rmd` i zapamiętuje katalog pracy. Nie przełączaj teraz projektu przez `.Rproj`, bo nowa sesja R utraci logowanie. Pracuj w otwartym Rmd, nie w źródłach pakietu. Uruchom pierwszy chunk przygotowania, potem wykonuj LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; nie usuwaj pracy ani nie wpisuj cudzego ID.
+Funkcja `rozpocznij_zajecia()` otwiera własny plik `zadanie.Rmd` i zapamiętuje katalog pracy. Pracuj w otwartym pliku `zadanie.Rmd` do końca zajęć; plik `.Rproj` pozostaje zamknięty, bo jego otwarcie uruchamia nową sesję R, która wymaga ponownego logowania. Najpierw uruchom blok `przygotowanie`, a potem kolejne części LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; plik pracy i własne ID pozostają bez zmian.
 <!-- /start-sesji -->
 
-
-Pierwszy blok ładuje gotowe funkcje z `analiza.R` oraz przygotowuje wspólny zbiór S02. Osobny mały eksport pozwoli prześledzić każdą zmianę komórki. Nie edytuj pliku surowego; wszystkie porównania wykonujemy na przygotowanych kopiach w pamięci.
+Plik ćwiczenia łączy tekst z blokami kodu R (chunkami), które uruchamiasz zieloną strzałką w prawym górnym rogu bloku albo skrótem Ctrl+Shift+Enter. Pierwszy chunk, `przygotowanie`, wczytuje gotowy skrypt `analiza.R`. Skrypt tworzy trzy zbiory: mały eksport demonstracyjny badania katalogu (nagłówek i siedem wierszy opisujących osoby u01–u06), eksport badania cyfrowego archiwum (nagłówek i siedem wierszy opisujących osoby a01–a06) oraz zbiór S02 po przygotowaniu (148 osób). Skrypt zawiera też funkcje wyświetlające tabele i wykresy i działa bez zmian.
 
 ```{r przygotowanie, include=FALSE}
 source(badaniaZI::plik_pracy("Z02", "analiza.R"),
@@ -42,86 +41,88 @@ source(badaniaZI::plik_pracy("Z02", "analiza.R"),
 ustaw_material()
 ```
 
+Zbiór S02 przygotowuje funkcja pakietu `przygotuj_ankiete()`. Funkcja stosuje trzy reguły: usuwa identyczne duplikaty rekordów, zamienia kod 99 w pozycjach ankiety na `NA` i oznacza jako `NA` czasy spoza zakresu 0–120 minut. Plik surowy pozostaje bez zmian, a wszystkie porównania działają na kopiach w pamięci R. Każdy chunk zapisuje wynik funkcji w obiekcie, a `print()` wyświetla obiekt w dokumencie, tak jak na ćwiczeniu C01.
+
 # Dlaczego dwie osoby otrzymały różne średnie
 
-Po pierwszym spotkaniu zespół biblioteki przekazał tę samą ankietę dwóm analitykom. Jedna osoba potraktowała 99 jako odpowiedź na skali oceny. Druga rozpoznała w 99 kod braku. Ktoś usunął wszystkie wiersze z jakimkolwiek pustym polem, ktoś inny zachował je do analiz, w których miały potrzebne informacje. Z tego samego pliku powstały różne liczebności i różne podsumowania.
+Zespół biblioteki przekazał tę samą ankietę dwóm analitykom. Pierwsza osoba potraktowała 99 jako odpowiedź na skali oceny, druga rozpoznała w 99 kod braku. Pierwsza usunęła każdy wiersz z pustym polem, druga zachowała wiersze do analiz, w których miały potrzebne informacje. Z jednego pliku powstały różne liczebności i różne podsumowania.
 
-Nie wszystkie różnice są błędami rachunkowymi. Część wynika z innych pytań: analiza czasu potrzebuje czasu, a analiza indeksu wymaga odpowiedniej liczby pozycji. Problem pojawia się wtedy, gdy decyzja jest ukryta albo nie ma uzasadnienia. Dzisiejsze ćwiczenie uczy czytać czyszczenie jako serię decyzji o znaczeniu danych.
+Część różnic wynika z różnych pytań: analiza czasu wymaga ważnego czasu, a analiza indeksu — pięciu ważnych pozycji ankiety. Różnica staje się problemem, gdy decyzja pozostaje ukryta albo pozbawiona uzasadnienia. Ćwiczenie C02 uczy czytać czyszczenie danych jako serię decyzji o znaczeniu danych.
 
-W C01 odróżniliśmy rekord, zmienną i brak. Teraz sprawdzimy, jak te pojęcia działają w surowym eksporcie. Nie uczymy się „poprawiania danych aż wynik będzie ładny”. Reguły mają wynikać ze słownika, projektu i procesu pomiaru. Wynik testu statystycznego nie jest powodem do usunięcia osoby.
+Ćwiczenie C01 wprowadziło rekord, zmienną, brak i mianownik. Ćwiczenie C02 stosuje te pojęcia do surowego eksportu. Reguły czyszczenia wynikają ze słownika, projektu i procesu pomiaru, a ustala się je przed obliczeniem wyników. Wynik obliczeń pozostaje poza uzasadnieniem reguły.
 
-Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN, 50 minut na pięć CHALLENGE i 5 minut na zapis oraz oddanie. W tym jednym Rmd uruchamiasz gotowe analizy, w LEARN odczytujesz wzorcowe interpretacje, a w CHALLENGE piszesz własne krótkie akapity pod wynikami. Pracujesz samodzielnie; w razie trudności pytasz prowadzącego.
+Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN, 50 minut na pięć zadań CHALLENGE i 5 minut na zapis oraz oddanie. LEARN to część z gotowymi przykładami i wzorcową interpretacją; CHALLENGE to pięć odpowiedzi, które piszesz samodzielnie pod wynikami. Gdy odczyt wyniku sprawia trudność, pytasz prowadzącego.
 
-Nie zakładamy wcześniejszego czyszczenia danych projektu zaliczeniowego: poznasz go na C09. Dzisiaj masz gotowy eksport, słownik i procedurę. Twoim zadaniem jest rozumieć oraz opisać jej skutki. Rozwinięcia po CHALLENGE służą powtórce i nie wymagają dodatkowych odpowiedzi.
+Dane projektu indywidualnego poznasz na ćwiczeniu C09 (Warsztat projektu). Na C02 pracujesz na gotowym eksporcie, słowniku i procedurze przygotowania, a Twoim zadaniem jest opis skutków procedury. Rozwinięcia po CHALLENGE służą powtórce i pozostają poza oceną.
 
-# Zanim cokolwiek zmienimy
+# Surowy plik i dokumenty, które go objaśniają
 
-W LEARN pracujemy na małym eksporcie badania katalogu: siedem rekordów opisuje sześć osób. CHALLENGE dotyczy osobnego badania cyfrowego archiwum. Pełny przykład S02 pojawia się dopiero w rozwinięciu. Wszystkie dane są syntetyczne: nie opisujemy ich tak, jakby zostały zebrane od rzeczywistych użytkowników. Znaczenie przygotowanych sytuacji odczytujemy ze słownika.
+W LEARN pracujemy na małym eksporcie badania katalogu: siedem rekordów opisuje sześć osób. CHALLENGE dotyczy odrębnego badania cyfrowego archiwum. Pełny zbiór S02 wraca w rozwinięciu po CHALLENGE. Wszystkie dane są syntetyczne i opisujemy je jako dane dydaktyczne; znaczenie przygotowanych sytuacji odczytujemy ze słownika.
 
-Surowy plik jest punktem odniesienia. Zostawiamy go bez zmian, a reguły zapisujemy w skrypcie. Dzięki temu można odtworzyć wynik, porównać dwie uzasadnione decyzje i sprawdzić, czy w raporcie podano prawidłowe N. Ręczne usunięcie kilku komórek w arkuszu bez dziennika pozbawia nas tej możliwości.
+Surowy plik jest punktem odniesienia. Pozostaje bez zmian, a reguły zapisuje skrypt. Zachowany plik i skrypt pozwalają odtworzyć wynik, porównać dwie uzasadnione decyzje i sprawdzić N podane w raporcie. Ręczna zmiana komórek w arkuszu bez dziennika usuwa możliwość kontroli wyniku.
 
-| Dokument lub obiekt | Co pozwala ustalić? | Czego sam nie mówi? |
+| Dokument lub obiekt | Co pozwala ustalić? | Co wymaga drugiego źródła? |
 |---|---|---|
-| Surowy CSV | Jakie wartości przekazano do analizy | Dlaczego wartości są takie, a nie inne |
-| Słownik | Jednostki, kody, zakresy i znaczenie pól | Czy każda wartość jest prawdziwa |
-| Protokół obserwacji | Początek, koniec i warunki zadania | Jak wszystkie rekordy zostały wyeksportowane |
-| Skrypt przygotowania | Jakie przekształcenia zastosowano | Czy badawczy sens reguły jest właściwy |
-| Dziennik zmian | Ile rekordów lub komórek objęła reguła | Czy brak danych jest losowy |
-| Tabela analityczna | Z czego obliczono wynik | Jak wyglądały dane przed przekształceniem |
+| Surowy CSV | Wartości przekazane do analizy | Przyczyny wartości: protokół obserwacji |
+| Słownik | Jednostki, kody, zakresy i znaczenie pól | Prawdziwość wartości: kontrola zapisu |
+| Protokół obserwacji | Początek, koniec i warunki zadania | Sposób eksportu: skrypt eksportu |
+| Skrypt przygotowania | Zastosowane przekształcenia | Sens badawczy reguły: projekt badania |
+| Dziennik zmian | Liczbę rekordów lub komórek objętych regułą | Mechanizm powstawania braków: projekt i protokół |
+| Tabela analityczna | Dane, z których obliczono wynik | Stan przed przekształceniem: surowy plik |
 
-Zwróć uwagę na różnicę między kontrolą składniową a merytoryczną. Program może sprawdzić, czy czas jest liczbą nieujemną. Nie dowie się jednak z samej wartości 8, czy zapisano minuty aktywnego szukania, czas całej sesji czy czas do rezygnacji. Te definicje muszą pochodzić z projektu.
+Kontrola składniowa sprawdza zapis, a kontrola merytoryczna — znaczenie. Program sprawdza, czy czas jest liczbą nieujemną. Znaczenie wartości 8 — minuty aktywnego szukania, czas całej sesji albo czas do rezygnacji — podaje projekt badania.
 
 # LEARN 1: plik CSV jest tekstem z umową
 
-CSV przechowuje tabelę jako tekst. Umowa dotyczy separatora kolumn, znaku dziesiętnego, zapisu braków oraz kodowania znaków. Rozszerzenie `.csv` nie gwarantuje, że wszystkie programy odczytają te elementy tak samo.
+CSV przechowuje tabelę jako tekst. Umowa pliku obejmuje separator kolumn, znak dziesiętny, zapis braków i kodowanie znaków. Każdy program odczytuje plik `.csv` według własnych ustawień, więc polecenie importu podaje separator, znak dziesiętny i kodowanie jawnie.
 
-Poniższy eksport używa średnika między kolumnami i przecinka w liczbach dziesiętnych. Puste pole oznacza brak. Odczytaj najpierw nagłówek, a następnie pojedynczy rekord; trzy kolejne średniki nie są trzema zerami.
+Eksport `eksport_demo` ma nagłówek i siedem wierszy. Kolumny rozdziela średnik, liczby dziesiętne zapisano z przecinkiem, a puste pole oznacza brak. Odczytaj najpierw nagłówek, a następnie pojedynczy rekord; dwa sąsiednie średniki oznaczają puste pole.
 
 ```{r eksport-tekst}
 eksport <- tekst_eksportu(eksport_demo)
 print(eksport)
 ```
 
-Wiersz u02 występuje dwa razy. W obu kopiach wszystkie pola są identyczne. Pozycja `ocena` zawiera 99, którego słownik demonstracji nie uznaje za ocenę: jest kodem braku. Wiersz u05 ma ujemny czas, a u06 długi, lecz mieszczący się w dopuszczalnym zakresie czas 35 minut.
+Wiersz u02 występuje dwa razy z identycznymi polami. Pole `ocena` u02 zawiera 99, czyli kod braku według słownika demonstracji. Wiersz u04 ma puste pola czasu i powodzenia. Wiersz u05 ma czas −2 minuty, a u06 — długi czas 35 minut, mieszczący się w zakresie 0–120 minut przyjętym dla danych kursu.
 
-Te cztery sytuacje wymagają różnych reakcji. Identyczny duplikat usuwa dodatkowy rekord. Kod braku zmienia znaczenie komórki. Ujemny czas wymaga sprawdzenia lub oznaczenia nieprawidłowego pomiaru. Długi, dopuszczalny czas pozostaje obserwacją, dopóki nie mamy dowodu błędu.
+Duplikat, kod 99, ujemny czas i długi czas wymagają czterech różnych reakcji. Identyczny duplikat usuwa się jako nadmiarowy rekord. Kod braku zmienia znaczenie komórki. Ujemny czas wymaga sprawdzenia w źródle albo oznaczenia jako brak. Długi czas w zakresie pozostaje obserwacją do chwili, gdy protokół dostarczy dowodu błędu.
 
-Funkcja importu ma już podaną właściwą umowę. Uruchom ją i sprawdź pięć kolumn oraz siedem rekordów. Wartości czasu powinny być liczbami, mimo że w źródłowym tekście użyto przecinka.
+Funkcja `import_demo()` ma podaną właściwą umowę: średnik jako separator i przecinek jako znak dziesiętny. Tabela „Poprawny import” ma pięć kolumn i siedem rekordów, a czasy są liczbami, choć tekst źródłowy zawiera przecinki.
 
 ```{r import-poprawny}
 dane_importu <- pokaz_tabele(surowe_demo, "Poprawny import")
 print(dane_importu)
 ```
 
-Siedem rekordów nie oznacza jeszcze siedmiu różnych osób. Liczba wierszy jest własnością aktualnej tabeli. Ustalenie liczby jednostek analizy wymaga kontroli identyfikatorów i duplikatów.
+Siedem rekordów to liczba wierszy tabeli. Liczbę osób ustala kontrola identyfikatorów i duplikatów: w demonstracji siedem rekordów opisuje sześć osób.
 
 ## Separator kolumn a znak dziesiętny
 
-Jeżeli wybierzemy właściwy separator kolumn, ale niewłaściwy znak dziesiętny, tabela może wyglądać przekonująco, a czas pozostanie tekstem. Jest to trudniejszy do zauważenia błąd niż całkowite sklejenie wszystkich pól w jedną kolumnę. Nie wystarcza więc stwierdzenie, że „plik się otworzył”.
+Właściwy separator kolumn z niewłaściwym znakiem dziesiętnym daje tabelę o poprawnym wyglądzie, w której czas pozostaje tekstem. Błąd znaku dziesiętnego trudniej rozpoznać niż sklejenie wszystkich pól w jedną kolumnę. Kontrola importu obejmuje więc klasę każdej kolumny.
 
-Poniżej celowo odczytujemy przecinki dziesiętne przy oczekiwaniu kropki. Nie zmieniamy oryginalnego obiektu. Porównaj klasę czasu z poprzednim importem, a nie tylko wygląd wartości na ekranie.
+Blok `import-bledny-typ` odczytuje eksport z kropką jako oczekiwanym znakiem dziesiętnym. Błędny import powstaje jako osobny obiekt. Tabela „Typ zapisu i liczba braków” podaje klasę `character` kolumny `czas_min`: program odczytał czasy jako tekst.
 
 ```{r import-bledny-typ}
 bledny_import <- kontrola_typow(import_demo(dziesietny = "."))
 print(bledny_import)
 ```
 
-Błędny separator kolumn może dać jedną długą kolumnę albo różną liczbę pól w wierszach. Błędne kodowanie może uszkodzić nazwy kategorii, np. „doświadczeni”. Błędny znak dziesiętny może zmienić liczby w tekst. Każdy problem rozpoznajemy inną kontrolą.
+Błędny separator kolumn daje jedną długą kolumnę albo różną liczbę pól w wierszach. Błędne kodowanie znaków uszkadza nazwy kategorii, np. „doświadczeni”. Błędny znak dziesiętny zmienia liczby w tekst. Każdy z trzech problemów rozpoznaje osobna kontrola.
 
-W naszym poprawnym imporcie czas i ocena są numeryczne, a ID i grupa tekstowe. Poniższa tabela pokazuje również braki. Pamiętaj, że kod 99 nie jest jeszcze rozpoznawany przez program jako brak, więc nie zwiększa tej liczby.
+W poprawnym imporcie tabela „Typ zapisu i liczba braków” podaje: `id` i `grupa` mają klasę `character` i 0 braków; `czas_min` ma klasę `numeric` i 1 brak (u04); `ocena` ma klasę `integer` i 0 braków; `powodzenie` ma klasę `integer` i 1 brak (u04). Program traktuje kod 99 jako liczbę, więc kolumna `ocena` ma 0 braków.
 
 ```{r klasy-poprawne}
 poprawny_import <- kontrola_typow(surowe_demo)
 print(poprawny_import)
 ```
 
-## Typ statystyczny nie wynika z klasy R
+## Klasa R i skala pomiaru
 
-Program widzi ocenę jako liczbę całkowitą. Badacz widzi pozycję porządkową z odpowiedziami 1–5. Kod 99 nadal jest liczbą całkowitą, lecz nie jest dopuszczalną realizacją tej skali. Poprawny typ techniczny nie wystarcza do uznania wartości za poprawny pomiar.
+Klasa R opisuje zapis techniczny, a skala pomiaru — znaczenie wartości. Program zapisuje ocenę jako liczbę całkowitą, a słownik określa ją jako pozycję porządkową z odpowiedziami 1–5. Kod 99 ma klasę `integer` i leży poza skalą 1–5. Uznanie wartości za pomiar wymaga zgodności z klasą i ze słownikiem.
 
-Identyfikator „0012” powinien zachować zera wiodące, jeśli są częścią klucza. Zamiana go na liczbę 12 może uniemożliwić połączenie z inną tabelą. Numer karty bibliotecznej nie staje się zmienną ilościową tylko dlatego, że składa się z cyfr.
+Identyfikator „0012” zachowuje zera wiodące, gdy są częścią klucza; zamiana na liczbę 12 uniemożliwia połączenie z inną tabelą. Numer karty bibliotecznej jest etykietą nominalną zapisaną cyframi.
 
-W przypadku `factor` program przechowuje kategorie z poziomami. Wewnętrzny numer poziomu nie musi być wartością skali. Dlatego mechaniczna konwersja kategorii na liczby może stworzyć inną zmienną niż zamierzona. Gotowy skrypt kursu upraszcza tę pracę, ale Twoim zadaniem jest rozpoznać, jaki sens ma wynik.
+Klasa `factor` przechowuje kategorie jako poziomy o kolejnych numerach. Numer poziomu wynika z kolejności etykiet, a wartość skali podaje słownik; mechaniczna konwersja kategorii na liczby tworzy więc inną zmienną. Gotowy skrypt kursu wykonuje konwersje, a Twoim zadaniem jest odczyt sensu wyniku.
 
 | Kolumna | Pytanie o zapis | Pytanie o pomiar |
 |---|---|---|
@@ -129,202 +130,228 @@ W przypadku `factor` program przechowuje kategorie z poziomami. Wewnętrzny nume
 | Grupa | Czy zapis etykiet jest spójny? | Na jakiej podstawie przypisano doświadczenie? |
 | Czas | Czy R rozpoznaje liczby? | Od jakiego do jakiego zdarzenia mierzono czas? |
 | Ocena | Czy 99 oznaczono jako brak? | Co znaczy każda kategoria odpowiedzi? |
-| Powodzenie | Czy występują tylko 0/1/NA? | Kto oceniał poprawność i według jakiego kryterium? |
+| Powodzenie | Czy kolumna zawiera wyłącznie 0, 1 i NA? | Kto oceniał poprawność i według jakiego kryterium? |
 
-Etykiety „nowi” i „nowi ” mogą pojawić się jako dwie różne kategorie. Końcowa spacja jest częścią tekstu, choć trudno ją zauważyć. Usunięcie nadmiarowych spacji jest uzasadnione, gdy dokumentujemy, że etykiety miały oznaczać tę samą kategorię. Nie wolno w ten sposób łączyć rzeczywiście odmiennych odpowiedzi.
+Etykiety „nowi” i „nowi ” (ze spacją na końcu) R traktuje jako dwie kategorie, bo końcowa spacja jest częścią tekstu. Usunięcie nadmiarowych spacji jest uzasadnione, gdy dokumentacja potwierdza, że obie etykiety oznaczają tę samą kategorię. Łączenie etykiet obejmuje wyłącznie zapisy tej samej kategorii.
 
-# LEARN 2: duplikat nie jest tym samym co konflikt
+# LEARN 2: duplikat i konflikt identyfikatora
 
-Identyczny duplikat powtarza cały rekord. W demonstracji u02 ma drugi raz dokładnie te same dane. Jeżeli wiemy, że eksport dotyczy jednego pomiaru na osobę, dodatkowa kopia nie wnosi nowej obserwacji. Zostawienie jej nadałoby tej osobie większą wagę w średniej i odsetku.
+Identyczny duplikat powtarza cały rekord. W demonstracji u02 ma dwa wiersze z tymi samymi danymi. Eksport zawiera jeden pomiar na osobę, więc dodatkowa kopia powtarza tę samą obserwację i podwaja jej wagę w średniej i odsetku.
 
-Poniżej oglądamy tabelę po usunięciu identycznego powtórzenia. Zwróć uwagę, że kod 99 i ujemny czas nadal są obecne. Jedna reguła rozwiązuje jeden rodzaj problemu; nie udajemy, że usunięcie duplikatu automatycznie oczyściło cały zbiór.
+Tabela „Po usunięciu identycznej kopii” ma sześć wierszy i sześć różnych identyfikatorów. Kod 99 u02 i ujemny czas u05 pozostają w tabeli do zastosowania kolejnych reguł: jedna reguła rozwiązuje jeden rodzaj problemu.
 
 ```{r bez-duplikatu}
 unikalne <- pokaz_tabele(unikalne_demo, "Po usunięciu identycznej kopii")
 print(unikalne)
 ```
 
-Teraz mamy sześć wierszy i sześć różnych identyfikatorów. Nie zmieniła się wartość żadnego pomiaru; usunęliśmy nadmiarową kopię. W dzienniku zapisujemy liczbę usuniętych rekordów, a nie liczbę komórek objętych kopiowaniem.
+Wartości pomiarów pozostały takie same. Dziennik zapisuje liczbę usuniętych rekordów: 1.
 
-Konflikt wygląda inaczej: ten sam identyfikator ma różne wartości. Poniższa mała tabela jest osobnym przypadkiem diagnostycznym. Nie wybieraj automatycznie pierwszego lub ostatniego wiersza.
+Konflikt identyfikatora oznacza ten sam identyfikator z różnymi wartościami. Tabela „Ten sam identyfikator, różne wyniki” jest osobnym przypadkiem diagnostycznym: dwa wiersze u02 z czasem 8 i 18 minut oraz powodzeniem 0 i 1.
 
 ```{r konflikt}
 konflikt <- pokaz_tabele(konflikt_demo, "Ten sam identyfikator, różne wyniki")
 print(konflikt)
 ```
 
-Wersje mogą pochodzić z poprawionego pomiaru, dwóch zadań tej samej osoby albo błędu przypisania ID. Żeby podjąć decyzję, potrzeba protokołu, numeru zadania lub informacji o wersji. Wspólna funkcja kursowa zatrzymuje analizę przy konfliktujących odpowiedziach tego samego ID. To uczciwsze niż ciche usunięcie informacji.
+Dwie wersje mogą pochodzić z poprawionego pomiaru, dwóch zadań tej samej osoby albo błędu przypisania ID. Wybór wersji wymaga źródła: protokołu, numeru zadania lub informacji o wersji. Funkcja `przygotuj_ankiete()` zatrzymuje analizę przy konflikcie i wskazuje identyfikator do wyjaśnienia.
 
-Jeżeli osoba wykonała dwa zadania, oba rekordy mogą być poprawne. Wtedy zmienia się jednostka tabeli: wiersz to osoba–zadanie, a nie sama osoba. Trzeba zaplanować agregację albo analizę zależnych pomiarów. Proste usunięcie powtórzonego ID zgubiłoby część badania.
+Gdy osoba wykonała dwa zadania, oba rekordy są poprawne. Wiersz oznacza wtedy parę osoba–zadanie, a analiza wymaga agregacji do jednej wartości na osobę albo modelu pomiarów zależnych. Usunięcie powtórzonego ID usunęłoby wtedy część badania.
 
-# LEARN 3: kod braku 99 nie jest wysoką oceną
+# LEARN 3: kod braku 99
 
-Słownik demonstracji określa odpowiedzi od 1 do 5 oraz kod 99 oznaczający brak. Zamiana 99 na `NA` nie jest imputacją, czyli uzupełnieniem brakującego wyniku. Jest poprawnym rozpoznaniem, że wyniku nie znamy.
+Słownik demonstracji określa odpowiedzi od 1 do 5 oraz kod 99 oznaczający brak. Zamiana 99 na `NA` rozpoznaje brak odpowiedzi. Imputacja, czyli uzupełnienie brakującego wyniku wartością oszacowaną, jest osobną metodą.
 
-W tabeli poniżej porównujemy średnią surowych liczb ze średnią ważnych odpowiedzi. Nie jest to dowód, że średnia pojedynczej pozycji jest zawsze najlepszym opisem; używamy rachunku, aby zobaczyć skutek błędnego kodu. Wynik poza zakresem 1–5 powinien od razu wywołać kontrolę.
+Tabela „Wpływ kodu 99 na rachunek średniej” porównuje średnią surowych liczb ze średnią ważnych odpowiedzi. Pięć ważnych ocen po usunięciu duplikatu to 4, 5, 3, 2 i 4, o sumie 18. Oznaczmy przez $W$ zbiór osób z ważną odpowiedzią, przez $n$ liczbę ważnych odpowiedzi, a przez $m$ liczbę kodów 99:
+
+$$
+\bar{x}_{99}=\frac{\sum_{i\in W}x_i+99\,m}{n+m}=\frac{18+99}{5+1}=19{,}5,
+\qquad
+\bar{x}=\frac{\sum_{i\in W}x_i}{n}=\frac{18}{5}=3{,}6 .
+$$
+
+Średnia $\bar{x}_{99}$ wlicza kod jako odpowiedź i leży poza skalą 1–5, a średnia $\bar{x}$ opisuje pięć ważnych odpowiedzi. Wynik spoza zakresu skali sygnalizuje błąd w przygotowaniu danych.
 
 ```{r skutek-99}
 kody <- pokaz_tabele(skutek_kodu, "Wpływ kodu 99 na rachunek średniej")
 print(kody)
 ```
 
-Kod 99 wpływałby nie tylko na średnią, ale także na odchylenie standardowe, histogram, korelację i wynik indeksu. Błąd na etapie przygotowania może więc przenieść się przez wszystkie późniejsze analizy. Większa liczba testów nie naprawi nieprawidłowej definicji wejścia.
+Kod 99 wpływa także na rozrzut wyników, histogram, korelację i indeks. Błąd na etapie przygotowania przenosi się do wszystkich dalszych analiz, dlatego kontrola wejścia poprzedza każdą analizę.
 
-Nie każda liczba 99 w dowolnej kolumnie jest brakiem. Wiek 99 lat albo 99 minut może być rzeczywistym pomiarem, jeśli mieści się w definicji zmiennej. Regułę stosujemy do wskazanych pól i wskazanego znaczenia. Globalne zastąpienie każdej wartości 99 w całym pliku byłoby inną, nieuzasadnioną operacją.
+Kod 99 oznacza brak w pozycjach ankiety; w kolumnie czasu 99 minut jest pomiarem mieszczącym się w zakresie 0–120 minut. Regułę stosuje się do wskazanych pól i wskazanego znaczenia. Zamiana każdej wartości 99 w całym pliku byłaby inną, nieuzasadnioną operacją.
 
-| Zapis odpowiedzi | Znaczenie możliwe w projekcie | Postępowanie |
+| Zapis odpowiedzi | Znaczenie w projekcie | Postępowanie |
 |---|---|---|
-| 0 w powodzeniu | Zadanie nie zakończyło się sukcesem | Zachowaj jako wynik |
-| 0 w czasie | Pomiar na dolnej granicy; wymaga kontekstu | Nie myl automatycznie z brakiem |
+| 0 w powodzeniu | Zadanie zakończone niepowodzeniem | Zachowaj jako wynik |
+| 0 w czasie | Pomiar na dolnej granicy zakresu | Odczytaj w kontekście zadania |
 | 99 w pozycji oceny | Kod braku według słownika | Zamień na NA w tej pozycji |
 | Puste pole | Brak zapisu | Zachowaj brak i wyjaśnij jego pochodzenie |
-| „Nie dotyczy” | Pytanie nie ma zastosowania | Zachowaj odrębne znaczenie w protokole |
-| „Nie wiem” | Odpowiedź o stanie wiedzy lub brak oceny | Postępuj według definicji pytania |
+| „Nie dotyczy” | Pytanie bez zastosowania dla osoby | Zachowaj odrębne znaczenie w protokole |
+| „Nie wiem” | Odpowiedź o stanie wiedzy | Postępuj według definicji pytania |
 
-„Nie wiem” może być ważną kategorią w pytaniu o znajomość procedury, lecz nie stanowi punktu na skali od zdecydowanej niezgody do zgody. Decyzję o analizie trzeba podjąć na podstawie celu pytania. Nie dopisujemy takiej odpowiedzi jako środka skali wyłącznie po to, aby uniknąć `NA`.
+Odpowiedź „Nie wiem” opisuje stan wiedzy i tworzy osobną kategorię, ważną np. w pytaniu o znajomość procedury. Analiza skali od zdecydowanej niezgody do zgody obejmuje odpowiedzi 1–5, a sposób analizy kategorii „Nie wiem” wynika z celu pytania.
 
 ## Wartość niemożliwa i wartość nietypowa
 
-Czas $-2$ minuty nie może oznaczać dodatnio mierzonego czasu wykonania zadania. Może powstać przez zamianę znaczników początku i końca albo literówkę. Jeśli mamy zapis źródłowy pozwalający naprawić błąd, dokumentujemy poprawkę. Jeśli go nie mamy, nie zgadujemy „zapewne chodziło o 2”.
+Czas −2 minuty leży poza zakresem pomiaru czasu wykonania zadania. Powstaje np. przez zamianę znaczników początku i końca albo literówkę. Poprawka wymaga zapisu źródłowego i wpisu w dzienniku; bez zapisu źródłowego wartość oznaczamy jako brak.
 
-W danych dydaktycznych obowiązuje jawna reguła: czasy poza 0–120 minut oznaczamy jako brak. To kontrakt przygotowanego zbioru, a nie uniwersalne prawo badań wyszukiwania. W rzeczywistym projekcie zakres wynikałby z protokołu, limitu czasu i sposobu rejestracji.
+W danych dydaktycznych obowiązuje jawna reguła: czasy poza 0–120 minut oznaczamy jako brak. Zakres 0–120 minut jest regułą zbioru kursowego; w rzeczywistym projekcie zakres wynika z protokołu, limitu czasu i sposobu rejestracji.
 
-Poniżej widać komórki przed i po dwóch regułach: kodzie braku oraz dopuszczalnym czasie. Wskaż, które osoby zachowują inne ważne odpowiedzi mimo utraty jednej wartości. Nie usunęliśmy całych rekordów tylko dlatego, że jedna kolumna wymagała oznaczenia braku.
+Tabela „Zmiany komórek przy zachowaniu osób” zestawia komórki przed regułami i po nich. Zmieniły się dwie komórki: ocena u02 z 99 na `NA` i czas u05 z −2 na `NA`. Reguły zmieniają komórki, a rekordy zostają: u02 zachowuje czas 8 minut i wynik 0, a u05 — ocenę 2 i wynik 0.
 
 ```{r przed-po-komorki}
-zmiany <- pokaz_tabele(roznice_komorek, "Zmiany komórek, nie usuwanie osób")
+zmiany <- pokaz_tabele(roznice_komorek, "Zmiany komórek przy zachowaniu osób")
 print(zmiany)
 ```
 
-Czas 35 minut pozostaje w tabeli. Jest dużo dłuższy od pozostałych, ale mieści się w przyjętym zakresie. Nietypowość jest powodem do sprawdzenia kontekstu, a nie wystarczającym uzasadnieniem usunięcia. Dla instytucji właśnie takie długie próby mogą oznaczać istotną barierę usługi.
+Czas 35 minut pozostaje w tabeli. Jest znacznie dłuższy od pozostałych i mieści się w przyjętym zakresie. Nietypowość jest powodem do sprawdzenia kontekstu. Długie próby bywają dla instytucji najważniejszą informacją o barierze usługi.
 
-Wykres pokazuje tylko ważne czasy po przygotowaniu. Odczytaj położenie u06 i zastanów się, jak jej usunięcie zmieniłoby obraz korzystania z katalogu. Nie rozstrzygaj, że punkt jest błędem, tylko dlatego, że utrudnia opisanie całej próby jednym zdaniem.
+Wykres „Długi czas pozostaje obserwacją” ma na osi poziomej osoby, a na osi pionowej czas w minutach. Zawiera cztery ważne czasy po przygotowaniu: u01 6,5; u02 8,0; u03 4,5; u06 35,0 minuty. Osoba u04 ma puste pole, a czas u05 oznaczono jako brak. Decyzja o błędzie wymaga dowodu z protokołu.
 
-```{r nietypowa-obserwacja}
+```{r nietypowa-obserwacja, fig.cap="Długi czas pozostaje obserwacją. Oś pozioma: osoby u01, u02, u03 i u06; oś pionowa: czas w minutach od 0 do 40. Punkty z podpisami: 6,5; 8,0; 4,5 i 35,0 minuty; punkt u06 leży wyraźnie wyżej od trzech pozostałych."}
 czasy_osob <- pokaz_wykres(wykres_decyzji)
 print(czasy_osob)
 ```
 
-Automatyczne odcinanie wartości poza pudełkiem wykresu myli konwencję graficzną z rozpoznaniem błędu. W C03 zobaczymy, że punkty poza wąsami mogą być prawidłowymi obserwacjami ze skośnego rozkładu czasu. Usunięcie takich przypadków zmienia badane zjawisko: zaczynamy opisywać tylko osoby, którym poszło podobnie do większości.
+## Wykres pudełkowy i granica wąsa
+
+Wykres pudełkowy streszcza rozkład pięcioma liczbami. Kwartyle dzielą uporządkowane wartości na cztery części: pierwszy kwartyl $Q_1$ oddziela najniższą ćwiartkę, mediana — połowę, trzeci kwartyl $Q_3$ — najwyższą ćwiartkę. Pudełko obejmuje wartości od $Q_1$ do $Q_3$, a kreska w pudełku oznacza medianę. Rozstęp międzykwartylowy $IQR=Q_3-Q_1$ jest długością pudełka. Wąsy sięgają do najbardziej skrajnych obserwacji leżących w odległości co najwyżej $1{,}5\,IQR$ od pudełka.
+
+Dla czterech ważnych czasów 4,5; 6,5; 8 i 35 minut R oblicza kwartyle przez interpolację między sąsiednimi wartościami uporządkowanymi: $Q_1=6{,}0$, mediana $7{,}25$, $Q_3=14{,}75$ minuty. Górna granica wąsa wynosi
+
+$$
+Q_3+1{,}5\,IQR=14{,}75+1{,}5\cdot(14{,}75-6{,}0)=14{,}75+13{,}125\approx 27{,}9 \text{ minuty}.
+$$
+
+Przedział od 14,75 do 27,9 minuty jest pusty, więc górny wąs ma zerową długość i kończy się na prawej krawędzi pudełka. Czas 35 minut leży poza granicą wąsa i pozostaje prawidłową obserwacją: granica wąsa jest konwencją graficzną, a rozpoznanie błędu wymaga protokołu.
+
+```{r pudelko, fig.height=2.3, fig.cap="Cztery ważne czasy na wykresie pudełkowym. Oś pozioma: czas w minutach. Pudełko obejmuje czasy od 6,0 do 14,75 minuty, kreska mediany leży przy 7,25 minuty; kropkowana linia oznacza granicę Q3 + 1,5 IQR = 27,9 minuty, a punkt 35 minut leży na prawo od granicy."}
+pudelko <- pokaz_wykres(wykres_pudelka)
+print(pudelko)
+```
+
+Automatyczne usuwanie punktów spoza wąsów zmienia badane zjawisko: opis obejmuje wtedy wyłącznie osoby, którym poszło podobnie do większości. Czas wyszukiwania ma zwykle rozkład z długim prawym ogonem, więc punkty poza wąsem są w nim oczekiwane; ćwiczenie C03 (Portret próby) opisuje taki rozkład miarami.
 
 ## Skutek usunięcia prawidłowego długiego czasu
 
-Analiza wrażliwości sprawdza, jak wynik zmienia się pod wpływem jasno nazwanej alternatywy. Nie służy wybieraniu wersji, która daje najbardziej oczekiwany wniosek. Jeśli alternatywa zmienia populację analizowaną albo definicję wyniku, trzeba to powiedzieć przed porównaniem liczb.
+Analiza wrażliwości porównuje wyniki przy nazwanej alternatywie ustalonej przed porównaniem liczb. Gdy alternatywa zmienia analizowaną populację albo definicję wyniku, opis podaje tę zmianę przed liczbami.
 
-W małym przykładzie długi czas 35 minut jest dopuszczalną obserwacją. Poniższe porównanie pokazuje konsekwencję jej usunięcia, ale nie uzasadnia takiej decyzji. Przeczytaj średnią i medianę w obu wierszach, pamiętając o zmianie N.
+Tabela „Konsekwencja wykluczenia prawidłowego pomiaru” opisuje konsekwencję usunięcia czasu 35 minut: średnia spada z 13,5 do 6,33 minuty, mediana z 7,25 do 6,5 minuty, a N z 4 do 3.
 
 ```{r wrazliwosc}
 warianty <- porownanie_wrazliwosci(wrazliwosc_czasu)
 print(warianty)
 ```
 
-Zmiana średniej jest wyraźna, ponieważ długi czas wnosi dużą część łącznego nakładu. Mediana reaguje inaczej, bo opiera się na kolejności. Na C03 rozwiniemy tę różnicę. Tutaj ważniejsze jest pytanie, którą historię opowiada wybrany zbiór: wszystkich osób z ważnym czasem czy osób po wykluczeniu najdłuższej próby.
+Średnia zmienia się silnie, bo czas 35 minut stanowi 35 z 54 minut łącznego nakładu. Mediana zależy od kolejności wartości i zmienia się o 0,75 minuty. Ćwiczenie C03 rozwija różnicę między średnią a medianą. Na C02 najważniejsze jest pytanie o opisywany zbiór: wszystkie osoby z ważnym czasem albo osoby po wykluczeniu najdłuższej próby.
 
-Jeżeli 35 minut wynikało z udokumentowanej przerwy technicznej, można zdefiniować analizę aktywnego czasu po odjęciu przerwy. Trzeba jednak znać jej długość. Nie zastępujemy czasu dowolną mniejszą liczbą i nie usuwamy osoby na podstawie przypuszczenia, że „zapewne rozmawiała przez telefon”.
+Czas 35 minut może obejmować udokumentowaną przerwę techniczną. Analiza aktywnego czasu wymaga wtedy zmierzonej długości przerwy; przypuszczenie o przerwie pozostaje przypuszczeniem.
 
-W rzeczywistym projekcie warto zaplanować rejestrację przerw, pomocy bibliotekarza i przerwania zadania. Takie informacje mogą pozwolić oddzielić trudność wyszukiwania od technicznego zakłócenia. Brak tych pól w aktualnym zbiorze jest ograniczeniem pomiaru, a nie zaproszeniem do ich odtworzenia z wyobraźni.
+W rzeczywistym projekcie warto zaplanować rejestrację przerw, pomocy bibliotekarza i przerwania zadania. Takie pola oddzielają trudność wyszukiwania od technicznego zakłócenia. Brak pól o przerwach jest ograniczeniem pomiaru, zapisywanym w raporcie.
 
-**Przykładowy opis porównania:** „Cztery ważne czasy dają średnią 13,5 minuty. Po wyłączeniu prawidłowego pomiaru 35 minut zostałyby trzy osoby ze średnią około 6,33 minuty. Niższa średnia nie świadczy o poprawie katalogu: wynika z pominięcia jednej długiej próby. Bez dowodu błędu zachowuję ten pomiar w opisie”.
-
+**Przykładowy opis porównania:** „Cztery ważne czasy dają średnią 13,5 minuty. Po wyłączeniu prawidłowego pomiaru 35 minut zostałyby trzy osoby ze średnią 6,33 minuty. Niższa średnia wynika z pominięcia jednej długiej próby. Bez dowodu błędu zachowuję ten pomiar w opisie”.
 
 # LEARN 4: rachunek liczebności
 
-Dziennik powinien pozwalać odtworzyć, co stało się z wierszami i z poszczególnymi zmiennymi. Liczba osób oraz liczba ważnych wartości są różnymi wielkościami. Zmiana 99 na brak może zmniejszyć N oceny, ale nie zmienia liczby rekordów.
+Dziennik pozwala odtworzyć zmiany wierszy i zmiany poszczególnych zmiennych. Liczba osób i liczba ważnych wartości to dwie różne wielkości: zamiana 99 na brak zmniejsza N oceny o 1, a liczba rekordów pozostaje równa 6.
 
 $$
 N_{\mathrm{po}}=N_{\mathrm{surowe}}-N_{\mathrm{duplikatów}},
 \qquad
-n_X=N_{\mathrm{po}}-m_X.
+n_X=N_{\mathrm{po}}-m_X .
 $$
 
-W pierwszym wzorze liczymy wiersze. W drugim $m_X$ oznacza liczbę braków zmiennej $X$ po zastosowaniu reguł, a $n_X$ liczbę jej ważnych wartości. Nie odejmujemy liczby zmienionych komórek od liczby osób bez ustalenia, co reprezentuje każda z liczb.
+Pierwszy wzór liczy wiersze: $7-1=6$. Drugi liczy ważne wartości zmiennej $X$: $m_X$ to liczba braków $X$ po zastosowaniu reguł, a $n_X$ liczba ważnych wartości. Dla czasu $n_{\mathrm{czas}}=6-2=4$ (braki u04 i u05), dla oceny $n_{\mathrm{ocena}}=6-1=5$ (brak u02), dla powodzenia $n_{\mathrm{wynik}}=6-1=5$ (brak u04). Liczba osób i liczba zmienionych komórek to dwie osobne wielkości dziennika.
 
 | Symbol | Odczyt | Znaczenie w demonstracji |
 |---|---|---|
 | $N_{\mathrm{surowe}}$ | liczba surowych rekordów | Siedem wierszy eksportu |
 | $N_{\mathrm{duplikatów}}$ | liczba nadmiarowych kopii | Jeden identyczny wiersz |
 | $N_{\mathrm{po}}$ | liczba rekordów po deduplikacji | Sześć osób |
-| $m_X$ | liczba braków zmiennej X | Zależy od wybranej kolumny |
-| $n_X$ | liczba ważnych wartości X | Mianownik jej opisu |
-| $n_{XY}$ | liczba kompletnych par X i Y | Podstawa analizy związku |
+| $m_X$ | liczba braków zmiennej $X$ | Dla czasu 2, dla oceny 1 |
+| $n_X$ | liczba ważnych wartości $X$ | Mianownik opisu zmiennej |
+| $n_{XY}$ | liczba kompletnych par $X$ i $Y$ | Podstawa analizy związku |
 
-Tabela etapów sprawdza oba rodzaje liczebności. Odczytaj zmianę między etapem „surowe” a „unikalne”, następnie między „unikalne” a „oczyszczone”. Pierwsza dotyczy powtórzonej osoby, druga znaczenia wybranych komórek.
+Tabela „Rekordy oraz niebrakujące wartości na kolejnych etapach” podaje dla trzech etapów liczby rekordów, czasów, ocen i wyników. Etap „surowe”: 7 rekordów, 6 czasów, 7 ocen, 6 wyników. Etap „unikalne”: 6, 5, 6, 5. Etap „oczyszczone”: 6, 4, 5, 5. Pierwsza zmiana dotyczy powtórzonej osoby, druga — znaczenia wybranych komórek.
 
 ```{r etapy}
 liczebnosci <- pokaz_etapy(etapy_demo)
 print(liczebnosci)
 ```
 
-Przed rekodacją kolumna oceny może mieć pozornie kompletne dane: 99 jest przecież niepustą liczbą. Dopiero odczyt słownika ujawnia, że jeden wynik był nieznany. Dlatego liczba `NA` po imporcie nie zawsze odpowiada rzeczywistej liczbie braków pomiaru.
+Przed rekodacją kolumna oceny ma siedem niepustych wartości, bo 99 jest niepustą liczbą. Słownik ujawnia jeden nieznany wynik. Liczba `NA` po imporcie obejmuje puste pola; braki zapisane kodem 99 ujawnia słownik.
 
-W naszym przykładzie nowy brak czasu u05 nie oznacza, że nie znamy wyniku jej zadania. Nadal mamy powodzenie 0 oraz ocenę 2. Globalne usunięcie u05 pozbawiłoby analizę kategorii ważnej informacji.
+Osoba u05 ma brak czasu, powodzenie 0 i ocenę 2. Usunięcie całego rekordu u05 odebrałoby analizie powodzenia i oceny dwie ważne wartości.
 
 ## Pary zmiennych mają własne N
 
-Do opisania czasu potrzebujemy ważnego czasu. Do sprawdzenia związku czasu i oceny potrzebujemy obu wartości dla tej samej osoby. Nie można połączyć czasu jednej osoby z oceną innej tylko dlatego, że oba wektory po pominięciu braków mają podobną długość.
+Opis czasu wymaga ważnego czasu. Analiza związku czasu i oceny wymaga obu wartości tej samej osoby w jednym wierszu. Liczbę kompletnych par zapisuje wzór
 
-Poniższa tabela oznacza kompletne pary. Odczytaj, które identyfikatory wchodzą do przyszłej analizy związku. Nie wykonujemy jeszcze korelacji; sprawdzamy, z jakich danych mogłaby zostać obliczona.
+$$
+n_{XY}=\sum_{i=1}^{N_{\mathrm{po}}}\mathbf{1}\left(x_i\ \text{ważne}\ \wedge\ y_i\ \text{ważne}\right),
+$$
+
+w którym $\mathbf{1}(\cdot)$ jest funkcją wskaźnikową: przyjmuje 1, gdy warunek w nawiasie jest spełniony, i 0 w pozostałych przypadkach. Symbol $\wedge$ czytamy „i”. Suma jedynek liczy osoby z ważnym czasem $x_i$ i ważną oceną $y_i$.
+
+Tabela „Czas i ocena tej samej osoby” oznacza kompletne pary kolumną `kompletna_para`. Wartość `TRUE` mają u01, u03 i u06, więc $n_{XY}=3$. Tabela ustala dane, z których ćwiczenie C08 (Samoocena a wykonanie) liczy korelację.
 
 ```{r kompletne-pary}
 pary <- pokaz_tabele(pary_demo, "Czas i ocena tej samej osoby")
 print(pary)
 ```
 
-Jeżeli usuniemy braki oddzielnie z każdej kolumny, pozycje w wektorach mogą się przesunąć. Wtedy pozornie poprawne działanie funkcji obliczy związek między nieodpowiadającymi sobie osobami. Warunek kompletności dotyczy wiersza pary, a nie oddzielnych list liczb.
+Usunięcie braków osobno z każdej kolumny przesuwa pozycje w wektorach. Funkcja obliczyłaby wtedy związek między wartościami różnych osób, choć działałaby bez komunikatu błędu. Warunek kompletności dotyczy wiersza pary.
 
-Wzór logiczny można zapisać jako $I_i=1$, gdy osoba $i$ ma ważne $X$ i ważne $Y$, oraz $I_i=0$ w przeciwnym razie. Wtedy $n_{XY}=\sum_i I_i$. Symbol $I_i$ jest wskaźnikiem spełnienia warunku, a nie nową skalą kompetencji. Suma jedynek liczy osoby spełniające oba warunki.
-
-**Przykładowy odczyt:** „Po przygotowaniu pozostaje sześć osób, cztery ważne czasy i pięć ważnych ocen. Do wspólnej analizy czasu oraz oceny mamy trzy kompletne pary: u01, u03 i u06. U02 ma czas, ale nie ma ważnej oceny; u05 ma ocenę, ale nie ma ważnego czasu. Osoby te mogą nadal wnosić informację do opisów pojedynczych zmiennych”.
-
+**Przykładowy odczyt:** „Po przygotowaniu pozostaje sześć osób, cztery ważne czasy i pięć ważnych ocen. Do wspólnej analizy czasu i oceny wchodzą trzy kompletne pary: u01, u03 i u06. Osoba u02 ma czas 8 minut i brak oceny, osoba u05 ma ocenę 2 i brak czasu; obie osoby wnoszą informację do opisów pojedynczych zmiennych”.
 
 # LEARN 5: dziennik decyzji, który można przeczytać
 
-Słaby zapis brzmi: „oczyszczono bazę, usuwając błędy”. Nie pozwala ustalić, kto i dlaczego pozostał w analizie. Dobry zapis rozdziela regułę, podstawę, zakres zmiany i konsekwencję dla wyniku.
+Zapis „oczyszczono bazę, usuwając błędy” pomija regułę, podstawę i zakres zmiany. Dobry zapis podaje regułę, podstawę, zakres zmiany i konsekwencję dla wyniku.
 
 | Reguła | Podstawa | Co liczymy? | Co zapisujemy we wniosku? |
 |---|---|---|---|
-| Identyczny rekord występuje ponownie | Jeden pomiar na osobę, kopia eksportu | Nadmiarowe wiersze | Ile kopii usunięto |
-| Pozycja ma kod 99 | Słownik pozycji 1–5 | Komórki z kodem | Że zmalało N ważnych odpowiedzi |
-| Czas jest poza 0–120 | Kontrakt danych kursowych | Pomiar czasu | Że pozostałe pola osoby zachowano |
-| To samo ID ma różne wyniki | Konflikt klucza | Identyfikatory do wyjaśnienia | Że analiza wymaga rozstrzygnięcia |
-| Czas jest długi, ale dopuszczalny | Brak dowodu błędu | Obserwacje do sprawdzenia | Że nie usunięto ich z powodu nietypowości |
+| Identyczny rekord występuje ponownie | Jeden pomiar na osobę, kopia eksportu | Nadmiarowe wiersze | Liczbę usuniętych kopii |
+| Pozycja ma kod 99 | Słownik pozycji 1–5 | Komórki z kodem | Zmniejszenie N ważnych odpowiedzi |
+| Czas leży poza 0–120 minut | Reguła danych kursowych | Komórki czasu | Zachowanie pozostałych pól osoby |
+| To samo ID ma różne wyniki | Konflikt klucza | Identyfikatory do wyjaśnienia | Wstrzymanie analizy do rozstrzygnięcia |
+| Czas jest długi i mieści się w zakresie | Protokół bez informacji o błędzie | Obserwacje do sprawdzenia | Zachowanie ich jako obserwacji |
 
-Opis dla małej demonstracji może brzmieć: „Siedem rekordów obejmowało jedną identyczną kopię, więc po deduplikacji pozostało sześć osób. Kod 99 w ocenie oznaczono jako brak. Ujemny czas uznano za niedopuszczalny pomiar i również oznaczono jako brak, zachowując pozostałe odpowiedzi tej osoby”.
+Opis małej demonstracji brzmi: „Siedem rekordów obejmowało jedną identyczną kopię, więc po deduplikacji pozostało sześć osób. Kod 99 w ocenie oznaczono jako brak. Ujemny czas uznano za niedopuszczalny pomiar i oznaczono jako brak, zachowując pozostałe odpowiedzi osoby u05”.
 
-Uzupełnienie wzorcowego opisu brzmi: „Dostępne są cztery ważne czasy, pięć ocen i pięć wyników powodzenia. Do analizy związku czasu i oceny pozostają trzy kompletne pary. Reguły nie wyjaśniają przyczyny pierwotnego braku u04 ani źródła ujemnego czasu u05”. To interpretacja małej demonstracji, nie gotowa odpowiedź do cyfrowego archiwum.
+Uzupełnienie opisu brzmi: „Dostępne są cztery ważne czasy, pięć ocen i pięć wyników powodzenia. Do analizy związku czasu i oceny wchodzą trzy kompletne pary. Przyczyna braku u04 i źródło ujemnego czasu u05 pozostają nieznane”. Opis dotyczy demonstracji; archiwum w CHALLENGE ma własne liczby.
 
-Nie sumuj liczby kodów 99 i liczby niedopuszczalnych czasów jako liczby „usuniętych osób”. Komórki mogą dotyczyć tych samych rekordów, a reguły nie muszą usuwać żadnego wiersza. Właśnie dlatego w tabeli dziennika nazwa działania jest równie ważna jak liczba.
+Kody 99 i niedopuszczalne czasy liczy się jako komórki; mogą dotyczyć tych samych rekordów, a reguły braków zachowują wszystkie wiersze. Dlatego tabela dziennika podaje nazwę działania razem z liczbą.
 
-Gotowy wynik poniżej zbiera bilans rekordów i ważnych wartości. Sprawdź, jak każde zdanie przykładowej notatki odsyła do konkretnej komórki. W CHALLENGE sporządzisz analogiczną notatkę dla nowego eksportu, zachowując jego reguły i liczebności.
+Chunk `notatka-demo` wyświetla dwie tabele: „Etapy przygotowania” (liczby jak w tabeli etapów) i „Dane do krótkiej notatki” z dziewięcioma miarami: 6 osób, 4 ważne czasy, średnia 13,5 i mediana 7,25 minuty, 5 ważnych ocen, 5 ważnych wyników, 3 powodzenia, czyli 60% ważnych wyników, oraz 3 pary czasu i oceny. Każde zdanie przykładowej notatki odsyła do jednej komórki. W CHALLENGE 5 sporządzisz analogiczną notatkę dla eksportu archiwum.
 
 ```{r notatka-demo}
 notatka <- podsumowanie_przygotowania(czyste_demo, etapy_demo)
 print(notatka)
 ```
 
-
 # CHALLENGE — samodzielny audyt cyfrowego archiwum
 
-Pięć pól odpowiedzi uzupełniasz własnymi krótkimi akapitami. Pisz pod wynikami poza blokami R, zastępując znaczniki odpowiedzi. Nie zmieniaj surowych danych, aby dopasować je do własnego opisu.
+W pięciu zadaniach zastąp znaczniki odpowiedzi własnymi krótkimi akapitami. Pisz pod wynikami, poza blokami R. Surowe dane pozostają bez zmian.
 
 ## Scenariusz cyfrowego archiwum
 
-Instytucja sprawdza, czy opis kolekcji ułatwia znalezienie wskazanego obiektu. W eksporcie zapisano grupę doświadczenia, czas, ocenę zrozumiałości 1–5 i sukces 0/1. Kod 99 oznacza brak oceny; puste pole oznacza brak danej wartości. Czas 0–120 jest dopuszczalny, ale zero wymaga odczytania w kontekście zadania.
+Instytucja sprawdza, czy opis kolekcji ułatwia znalezienie wskazanego obiektu. Eksport zawiera identyfikator, grupę doświadczenia, czas w minutach, ocenę zrozumiałości opisu 1–5 i sukces 0/1. Kod 99 oznacza brak oceny, a puste pole — brak danej wartości. Czas od 0 do 120 minut jest dopuszczalny.
 
-W przykładzie 0 minut oznacza rzeczywiście zarejestrowane natychmiastowe zakończenie bez sukcesu, nie brak pomiaru. Długi czas 35 minut jest potwierdzonym pomiarem. Surowego eksportu nie zmieniamy, a wszystkie reguły dokumentujemy.
+Protokół archiwum podaje dwie dodatkowe informacje. Zero minut oznacza zarejestrowane natychmiastowe zakończenie zadania bez sukcesu. Czas 35 minut jest potwierdzonym pomiarem. Surowy eksport pozostaje bez zmian, a wszystkie reguły są udokumentowane.
 
 ## CHALLENGE 1: Audyt importu
 
-Najpierw trzeba sprawdzić, czy eksport został poprawnie rozdzielony na kolumny. Odczyt 7,5 minuty jako tekstu albo rozdzielenie go na dwa pola zmieniłoby dalszą analizę. Nie zaczynamy od średniej.
+Analiza zaczyna się od kontroli importu: odczyt 7,5 minuty jako tekstu albo rozdzielenie liczby na dwa pola zmienia każdy dalszy wynik.
 
-Blok pokazuje surowe dane i ich strukturę. Przeczytaj nazwy, liczbę kolumn i typ czasu. W odpowiedzi podaj dowody z wydruku, a nie samo „import jest poprawny”.
+Blok wyświetla trzy elementy: tabelę „Import archiwum”, tabelę „Typy kolumn” z klasą R i liczbą braków każdej kolumny oraz surowy tekst eksportu. Odczytaj nazwy kolumn, liczbę kolumn i klasę czasu. Odpowiedź podaje dowody z wydruku.
 
 ```{r s01-import}
 import_archiwum <- kontrola_importu_archiwum()
 print(import_archiwum)
 ```
 
-**Napisz krótki akapit:** podaj liczbę rekordów i kolumn, regułę separatora i dziesiętną oraz typ czasu. Wyjaśnij, dlaczego liczba rekordów nie musi jeszcze oznaczać liczby różnych osób.
+**Napisz krótki akapit:** podaj liczbę rekordów i kolumn, separator pól, znak dziesiętny oraz typ czasu. Wyjaśnij, jak ustalić liczbę różnych osób na podstawie liczby rekordów.
 
 <!-- odpowiedz:S01 -->
 [UZUPELNIJ_S01]
@@ -332,16 +359,16 @@ print(import_archiwum)
 
 ## CHALLENGE 2: Powtórzenie i konflikt
 
-W surowym eksporcie a03 występuje dwa razy identycznie. Dodatkowa tabela pokazuje inną możliwą sytuację: to samo ID, ale odmienne wyniki. Musisz odróżnić te problemy, zanim zdecydujesz o utracie informacji.
+W surowym eksporcie a03 występuje dwa razy z identycznymi polami. Dodatkowa tabela przedstawia inną sytuację: ten sam identyfikator z różnymi wynikami. Rozróżnienie obu sytuacji poprzedza decyzję o usunięciu informacji.
 
-Uruchom blok i porównaj surowy etap z etapem bez duplikatu. Następnie przeczytaj konflikt. Ta druga tabela jest osobną ilustracją i nie została automatycznie dołączona do analizowanego zbioru.
+Blok wyświetla tabelę „Etapy przygotowania” z liczbą rekordów i ważnych wartości na trzech etapach oraz tabelę „Odrębny przykład konfliktu”. Tabela konfliktu jest osobną ilustracją, poza analizowanym zbiorem.
 
 ```{r s02-duplikat}
 powtorzenia <- kontrola_powtorzen_archiwum()
 print(powtorzenia)
 ```
 
-**Napisz krótki akapit:** uzasadnij usunięcie identycznego powtórzenia, podaj N przed i po oraz wyjaśnij, dlaczego konflikt wymaga innej decyzji. Wskaż, jakie źródło informacji pomogłoby go rozstrzygnąć.
+**Napisz krótki akapit:** uzasadnij usunięcie identycznego powtórzenia, podaj N przed i po oraz wyjaśnij, jakiej innej decyzji wymaga konflikt. Wskaż źródło informacji, które pozwala rozstrzygnąć konflikt.
 
 <!-- odpowiedz:S02 -->
 [UZUPELNIJ_S02]
@@ -349,33 +376,33 @@ print(powtorzenia)
 
 ## CHALLENGE 3: Zero, 99, 121 i NA
 
-W archiwum występują cztery różne sytuacje: obserwowane zero, kod braku oceny, czas poza zakresem i puste pole. Każda ma własne znaczenie. Usunięcie wszystkich czterech osób z całej analizy byłoby nieuzasadnionym uproszczeniem.
+W archiwum występują cztery sytuacje: obserwowane zero, kod braku oceny, czas poza zakresem i puste pole. Każda ma własne znaczenie i własną regułę.
 
-Poniższa tabela pokazuje wynik zastosowania reguł. Zestaw ją z tabelą surową z CHALLENGE 1. Wskaż dokładnie, które pola zostały zmienione, a które zachowano.
+Blok wyświetla tabelę „Po zastosowaniu reguł” i tabelę „Kompletność par czasu i oceny”. Zestaw pierwszą z tabelą „Import archiwum” z CHALLENGE 1 i wskaż pola zmienione oraz zachowane.
 
 ```{r s03-czyste}
 reguly <- kontrola_regul_archiwum()
 print(reguly)
 ```
 
-**Napisz krótki akapit:** opisz obsługę wartości 0, 99, 121 i pustej komórki. Podaj N ważnych czasów oraz kompletnych par czasu i oceny. Nie utożsamiaj braku pomiaru z porażką zadania.
+**Napisz krótki akapit:** opisz obsługę wartości 0, 99, 121 i pustej komórki. Podaj N ważnych czasów oraz kompletnych par czasu i oceny. Oddziel brak pomiaru od porażki zadania.
 
 <!-- odpowiedz:S03 -->
 [UZUPELNIJ_S03]
 <!-- /odpowiedz:S03 -->
 
-## CHALLENGE 4: Czy usunięcie długiej próby poprawia badanie?
+## CHALLENGE 4: Wynik z długą próbą i bez niej
 
-Osoba redagująca raport chce usunąć 35 minut, ponieważ „reszta użytkowników szukała krócej”. Instytucję interesuje jednak także koszt trudnych, długich poszukiwań. Prawidłowa decyzja nie wynika z samego wpływu obserwacji na średnią.
+Osoba redagująca raport proponuje usunąć 35 minut, ponieważ „reszta użytkowników szukała krócej”. Instytucję interesuje także koszt trudnych, długich poszukiwań. Decyzję o obserwacji uzasadnia dowód o pomiarze.
 
-Chunk porównuje dwa zakresy danych i pokazuje czasy osób. Przy odczycie zachowaj również obserwowane zero. Średnia ma opisywać jawnie określony zbiór, nie wybrany estetycznie fragment.
+Blok wyświetla tabelę „Z prawidłowym długim czasem i bez niego” z N i średnią dla dwóch wariantów oraz wykres „Zero, długi czas i brak: trzy różne zapisy”. Przy odczycie uwzględnij obserwowane zero. Średnia opisuje jawnie określony zbiór.
 
-```{r s04-dlugi-czas}
+```{r s04-dlugi-czas, fig.cap="Zero, długi czas i brak: trzy różne zapisy. Oś pozioma: osoby a01, a02, a03 i a06; oś pionowa: czas w minutach. Punkty leżą przy 0; 7,5; 12 i 35 minutach. Osoby a04 (puste pole) i a05 (121 minut poza zakresem) mają brak czasu i nie mają punktu."}
 dlugi_czas <- wrazliwosc_archiwum()
 print(dlugi_czas)
 ```
 
-**Napisz krótki akapit:** podaj obie średnie i N, wyjaśnij zmianę oraz oceń propozycję usunięcia 35 minut. Zakończ zdaniem o tym, czego sam wykres nie rozstrzyga.
+**Napisz krótki akapit:** podaj obie średnie i N, wyjaśnij zmianę oraz oceń propozycję usunięcia 35 minut. Zakończ zdaniem o informacji spoza wykresu, której wymaga ocena poprawności czasu 35 minut.
 
 <!-- odpowiedz:S04 -->
 [UZUPELNIJ_S04]
@@ -383,16 +410,16 @@ print(dlugi_czas)
 
 ## CHALLENGE 5: Notatka o danych gotowych do analizy
 
-Badacz przekazuje przygotowany zbiór osobie opisującej wyniki. Potrzebna jest krótka notatka, która pozwoli zrozumieć reguły i mianowniki. Sam plik o nazwie „czyste” nie jest dokumentacją.
+Badacz przekazuje przygotowany zbiór osobie opisującej wyniki. Osoba opisująca potrzebuje krótkiej notatki z regułami i mianownikami; dokumentację tworzy notatka, a nazwa pliku „czyste” pozostaje etykietą.
 
-Poniższy blok zestawia etapy z podsumowaniem. Wybierz właściwe liczby do opisu tego, co zrobiono. Nie pisz, że dane są reprezentatywne lub bezbłędne tylko dlatego, że skrypt wykonał się poprawnie.
+Blok wyświetla tabelę „Etapy przygotowania” i tabelę „Dane do krótkiej notatki” z dziewięcioma miarami. Wybierz liczby opisujące wykonane działania. Notatka opisuje reguły i liczebności; reprezentatywność wymaga opisu doboru próby.
 
 ```{r s05-dziennik}
 notatka <- podsumowanie_przygotowania(archiwum_czyste, archiwum_etapy)
 print(notatka)
 ```
 
-**Napisz krótki akapit:** przedstaw N surowe i końcowe, duplikat, dwie reguły braków, N ważnego czasu i sukcesu oraz jedno ograniczenie. Wyjaśnij, dlaczego trzeba zachować surowy plik i ponownie wykonywalny helper.
+**Napisz krótki akapit:** przedstaw N surowe i końcowe, duplikat, dwie reguły braków, N ważnego czasu i sukcesu oraz jedno ograniczenie. Wyjaśnij, po co zachowuje się surowy plik i skrypt, który można wykonać ponownie.
 
 <!-- odpowiedz:S05 -->
 [UZUPELNIJ_S05]
@@ -400,121 +427,143 @@ print(notatka)
 
 # Zapis i oddanie
 
-Porównaj pięć własnych odpowiedzi z wydrukami. Odróżnij liczbę zmienionych komórek od liczby osób, a brak od prawdziwego zera. Zapisz ten Rmd; nie przepisuj notatki do osobnego pliku Markdown.
+Porównaj pięć własnych odpowiedzi z wydrukami. Sprawdź, czy odpowiedzi odróżniają liczbę zmienionych komórek od liczby osób i brak od zarejestrowanego zera. Zapisz plik `zadanie.Rmd` w edytorze (Ctrl+S); funkcja oddania tworzy PDF z zapisanego pliku.
 
-W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy PDF z zapisanej pracy, sprawdza kompletność i wysyła dokument wraz z Rmd i `analiza.R` do Twojego prywatnego repozytorium z dostępem prowadzącego.
+W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy aktualny PDF, sprawdza kompletność i wysyła go razem z Rmd oraz `analiza.R` do Twojego prywatnego repozytorium z dostępem prowadzącego.
 
 ```r
 oddaj_zadanie("Z02")
 ```
 
-Odczytaj potwierdzenie odbioru i SHA wysłanej wersji. Jeżeli pojawi się błąd, popraw wskazany problem, zapisz plik i wywołaj ponownie tę samą funkcję. Nie musisz oddzielnie uruchamiać renderowania, kontroli i statusu.
+Oddanie potwierdza komunikat z identyfikatorem SHA wysłanej wersji. Po komunikacie błędu popraw wskazany problem, zapisz plik i ponownie wywołaj `oddaj_zadanie("Z02")`; nowe potwierdzenie obejmuje nowe zmiany. Ocenę prowadzący zapisuje osobno w repozytorium.
 
-Po potwierdzonym oddaniu wykonaj w konsoli `wyloguj_github()`. Na komputerze współdzielonym wyloguj również przeglądarkę i zamknij RStudio bez zachowywania `.RData`. Przy braku sieci zachowaj źródła przed czyszczeniem komputera i poproś prowadzącego o pomoc.
+Po potwierdzonym oddaniu wykonaj w konsoli `wyloguj_github()`. Na komputerze współdzielonym wyloguj również przeglądarkę i zamknij RStudio, wybierając „Don't Save” przy pytaniu o przestrzeń roboczą `.RData`. Przy braku sieci zachowaj źródła przed czyszczeniem komputera i poproś prowadzącego o ustalenie sposobu dostarczenia pracy.
 
-## Kryteria oceny
+## Co jest oceniane
 
-| Kryterium | Co ma być widoczne? | Punkty |
-|---|---|---:|
-| Z02.1 | Poprawny odczyt importu, separatora, znaków, rozmiaru i struktury | 2 |
-| Z02.2 | Wyjaśnienie gotowych reguł dla typów, kodów i duplikatów | 4 |
-| Z02.3 | Właściwe N przed/po oraz odróżnienie braku od zera | 2 |
-| Z02.4 | Zgodność zapisanej tabeli z dziennikiem i odtworzenie od surowych danych | 2 |
+| Kryterium | Dowód w Twojej pracy | Odpowiedzi | Punkty |
+|----------------------------|------------------------------------------------------|--------------|------:|
+| Z02.1 Odczyt importu i struktury surowego eksportu | Liczba wierszy i kolumn, separator pól, znak dziesiętny, typ czasu; rekord eksportu odróżniony od osoby | S01 | 2 |
+| Z02.2 Uzasadnienie reguł duplikatów, kodów i długiego czasu | Identyczne powtórzenie a03 i konflikt ID; obsługa 0, 99, 121 i pustego pola; wynik z czasem 35 minut i bez niego | S02, S03, S04 | 4 |
+| Z02.3 Bilans osób i dostępnych pomiarów | N surowe, N po usunięciu powtórzeń, ważne N czasu i wyniku, kompletne pary; wiersz odróżniony od komórki i brak od niepowodzenia | S02, S03, S05 | 2 |
+| Z02.4 Zgodność opisu z dziennikiem i odtworzenie analizy | Informacja spoza wykresu o czasie 35 minut; reguły, wynik i ograniczenie; powód zachowania surowego źródła | S04, S05 | 2 |
 
-Rubryka ocenia rozumienie reguł i dowodów. Skrypt może prawidłowo wykonać zadanie, podczas gdy opis pozostaje błędny, np. „usunięto pięć osób” przy zmianie pięciu komórek. Sprawdź oba poziomy osobno.
+Rubryka ocenia rozumienie reguł i dowodów. Skrypt wykonuje zadanie poprawnie także wtedy, gdy opis jest błędny, np. „usunięto pięć osób” przy zmianie pięciu komórek, dlatego oceniany jest opis. Poziomy wykonania opisuje rubryka Z02: na stronie kursu w dokumencie `rubryki/Z02.html`, a w konsoli R po poleceniu `rubryka("Z02")`.
 
 # Rozwinięcia do powtórki — poza rdzeniem spotkania
 
-Poniższe materiały pokazują te same decyzje w większym zbiorze, arkuszu i logu zdarzeń. Nie dodają kolejnych obowiązkowych zadań ani osobnego oddania. Służą powrotowi do konkretnej wątpliwości o źródle danych, jednostce lub mianowniku.
+Rozwinięcia stosują decyzje z LEARN do pełnego zbioru S02, arkusza i logu zdarzeń. Rozwinięcia służą powtórce i pozostają poza oceną.
 
 ## Dziennik pełnego zbioru S02
 
-Wracamy do S02. Reguły są analogiczne, ale liczebności pochodzą z większej tabeli. Najpierw odczytaj dziennik i nazwij jednostkę każdej pozycji: wiersze, kody odpowiedzi lub pomiary czasu.
+Reguły S02 są te same co w demonstracji, a liczebności pochodzą z większej tabeli. Tabela „Reguły w pełnym zbiorze S02” podaje pięć wierszy: 150 rekordów przed czyszczeniem, 2 usunięte identyczne duplikaty, 4 kody 99 zamienione na `NA`, 2 czasy spoza 0–120 minut zamienione na `NA` i 148 rekordów po czyszczeniu. Nazwij jednostkę każdej liczby: rekordy albo komórki.
 
 ```{r dziennik}
-dziennik <- pokaz_tabele(przygotowane$dziennik, "Reguły w pełnym zbiorze S02")
+dziennik <- dziennik_s02()
 print(dziennik)
 ```
 
-Dziennik nie jest listą rzeczy, które „były złe u respondentów”. Opisuje działania na rekordach. Identyczny duplikat może powstać w eksporcie, kod 99 może prawidłowo reprezentować odmowę odpowiedzi, a niedopuszczalny czas może wynikać z błędu urządzenia. Język raportu powinien rozróżniać te sytuacje.
+Dziennik opisuje działania na rekordach i komórkach. Identyczny duplikat powstaje zwykle w eksporcie, kod 99 zapisuje odmowę albo pominięcie odpowiedzi, a niedopuszczalny czas — np. błąd urządzenia. Język raportu nazywa każdą z trzech sytuacji osobno.
 
-Sprawdź, czy liczba wierszy po przygotowaniu odpowiada różnicy między surowym N a duplikatami. Następnie osobno przeczytaj ważne wartości wybranych zmiennych. Nie sumuj braków między kolumnami jako liczby osób, bo jedna osoba może mieć kilka braków.
+Wykres „Od surowego eksportu do ważnych czasów S02” przedstawia cztery liczby: 150 rekordów surowego eksportu, 148 rekordów po usunięciu duplikatów, 144 rekordy z zapisanym czasem i 142 czasy w zakresie 0–120 minut. Liczba rekordów zmienia się wyłącznie na pierwszym kroku; dwa kolejne kroki dotyczą komórek czasu.
+
+```{r przeplyw-s02, fig.height=2.6, fig.cap="Od surowego eksportu do ważnych czasów S02. Cztery poziome słupki od góry: 150 rekordów surowego eksportu, 148 rekordów po usunięciu duplikatów (98,7% z 150), 144 rekordy z zapisanym czasem (96,0%) i 142 czasy w zakresie 0–120 minut (94,7%)."}
+przeplyw <- pokaz_wykres(wykres_przeplywu)
+print(przeplyw)
+```
+
+Liczba wierszy po przygotowaniu równa się różnicy surowego N i liczby duplikatów: $150-2=148$. Braki liczy się dla każdej zmiennej osobno, bo jedna osoba może mieć kilka braków. Tabela „Niepuste wartości przed regułami i ważne po regułach” podaje: czas 146 i 142, pozycja 2 — 150 i 144, powodzenie 150 i 148.
 
 ```{r liczebnosci-s02}
 liczebnosci_s02 <- bilans_s02()
 print(liczebnosci_s02)
 ```
 
-Zwróć uwagę na określenie `N_przed` w drugiej tabeli: oznacza liczbę niepustych wartości przed przygotowaniem. Może obejmować liczbowy kod 99 lub niedopuszczalny czas. Nie należy bez kontroli nazwać go liczbą poprawnych pomiarów. Znaczenie technicznego licznika wymaga komentarza.
+Kolumna „Niepuste przed regułami” obejmuje kody 99, niedopuszczalne czasy i wartości z duplikatów. Dla pozycji 2 różnica $150-144=6$ składa się z 2 wartości w duplikatach i 4 kodów 99. Dla czasu różnica $146-142=4$ składa się z 2 wartości w duplikatach i 2 czasów spoza zakresu.
 
-Histogram po przygotowaniu pokazuje rozkład zapisanych czasów spełniających reguły. Odczytaj zakres, skupienie i ewentualny długi ogon. Sam kształt rozkładu nie pozwala stwierdzić, czy wszystkie braki powstały losowo.
+## Histogram czasu po przygotowaniu
 
-```{r rozklad-s02}
+Histogram dzieli oś wartości na przedziały równej szerokości i nad każdym przedziałem rysuje słupek o wysokości równej liczbie osób z wartością w przedziale. Wykres „Czas S02 po zastosowaniu reguł” ma przedziały po 2,5 minuty, zamknięte z prawej strony: przedział $(5;\,7{,}5]$ obejmuje czasy większe od 5 i mniejsze lub równe 7,5 minuty. Suma wysokości wszystkich słupków równa się liczbie ważnych czasów, $N=142$.
+
+```{r rozklad-s02, fig.cap="Czas S02 po zastosowaniu reguł: histogram 142 ważnych czasów z przedziałami po 2,5 minuty. Oś pozioma: czas wyszukiwania w minutach; oś pionowa: liczba osób. Najwyższy słupek, 38 osób, stoi nad przedziałem od 5 do 7,5 minuty; słupki obniżają się w prawo, a pojedyncze osoby mają czasy do 33,8 minuty."}
 rozklad <- pokaz_wykres(wykres_glowny)
 print(rozklad)
 ```
 
-Dłuższy czas może być ważną informacją o trudności zadania. Jeśli w przyszłym badaniu protokół przerwałby wszystkie próby po dziesięciu minutach, na podstawie samych zarejestrowanych zakończeń nie opiszemy pełnej zmienności czasu potrzebnego do sukcesu. Ograniczenie powinno być zapisane obok wyniku, nie ukryte w skrypcie.
+Histogram przedstawia rozkład z długim prawym ogonem: 20 osób ma czas do 5 minut, 66 osób od 5 do 10 minut, 35 osób od 10 do 15 minut, 10 osób od 15 do 20 minut, a 11 osób powyżej 20 minut. Mediana wynosi 8,25 minuty. Mechanizm powstawania sześciu braków czasu wymaga informacji spoza rozkładu, np. protokołu zadania.
 
-## CSV i arkusz mają przekazywać tę samą informację
+Długi czas jest informacją o trudności zadania. Protokół przerywający wszystkie próby po dziesięciu minutach ograniczyłby opis do prób zakończonych przed limitem; ograniczenie wynikające z limitu zapisuje się obok wyniku.
 
-Arkusz jest wygodny do oglądania danych, lecz może przechowywać formatowanie, formuły, scalone komórki i kilka tabel obok siebie. Analiza potrzebuje jednoznacznej prostokątnej tabeli. W jednym wierszu nagłówka powinny znajdować się nazwy kolumn, a niżej wartości tej samej jednostki obserwacji.
+## CSV i arkusz przekazują tę samą informację
 
-Wspólny pakiet zawiera surowy CSV oraz mały arkusz do nauki importu. Arkusz jest przykładem wycinka, więc nie zakładamy, że ma tyle samo wierszy co pełny CSV. Sprawdzamy znaczenie i zapis odpowiadających sobie kolumn.
+Arkusz ułatwia oglądanie danych i przechowuje formatowanie, formuły, scalone komórki i kilka tabel obok siebie. Analiza wymaga jednoznacznej prostokątnej tabeli: jeden wiersz nagłówka z nazwami kolumn, a pod nim wartości tej samej jednostki obserwacji.
 
-Odczyt poniżej korzysta z plików dostępnych lokalnie w zainstalowanym pakiecie. Nie pobiera danych z internetu i nie instaluje dodatków. Pierwszy wynik dotyczy pełnego CSV, drugi arkusza ćwiczeniowego.
+Pakiet kursu zawiera surowy CSV zbioru S02 oraz mały arkusz do nauki importu. Arkusz jest wycinkiem danych, a porównanie dotyczy znaczenia i zapisu odpowiadających sobie kolumn.
+
+Odczyt korzysta z plików zapisanych w zainstalowanym pakiecie. Tabela „Lokalne pliki dwóch formatów” podaje wymiary: CSV ma 150 wierszy i 15 kolumn, arkusz ćwiczeniowy — 12 wierszy i te same 15 kolumn.
 
 ```{r csv-i-arkusz}
 pliki <- porownanie_formatow()
 print(pliki)
 ```
 
-Jeżeli odczyt XLSX zgłosi brak pakietu `readxl`, jest to brak przygotowanego narzędzia, a nie błąd statystyczny. W sali środowisko przygotowuje informatyk. Pozostałe przykłady oraz Z02 opierają się na CSV i nie wymagają ręcznego przepisywania arkusza.
+Komunikat o pakiecie `readxl` dotyczy środowiska i zgłasza brakujące narzędzie; w sali środowisko przygotowuje informatyk. Zadanie Z02 i pozostałe przykłady korzystają z CSV.
 
-Teraz oglądamy wybrane kolumny arkusza. Odczytaj identyfikator, etykietę grupy i jednostkę czasu. Format liczby widoczny w arkuszu nie powinien zmieniać jej wartości w analizie.
+Tabela „Wybrane kolumny arkusza” zawiera identyfikator, grupę, czas i powodzenie sześciu pierwszych wierszy arkusza. Odczytaj identyfikator, etykietę grupy i jednostkę czasu. Format liczby w arkuszu dotyczy wyświetlania; wartość w analizie pozostaje ta sama.
 
 ```{r arkusz-podglad}
 arkusz <- podglad_arkusza()
 print(arkusz)
 ```
 
-W arkuszu nie zapisuj jednostki w każdej komórce jako „8 min”, jeśli kolumna ma być numeryczna. Jednostkę umieść w słowniku lub nagłówku opisowym, a wartość pozostaw liczbą. Nie korzystaj z koloru komórki jako jedynego zapisu niepowodzenia lub wykluczenia; po eksporcie do CSV kolor zniknie.
+Jednostkę zapisuje się w słowniku lub nagłówku opisowym, a wartość jako liczbę: zapis „8 min” w komórce zmienia kolumnę liczbową w tekstową. Niepowodzenie i wykluczenie zapisuje się w osobnej kolumnie, bo eksport do CSV usuwa kolory komórek.
 
-**Most do pracy z arkuszem.** Otwórz ćwiczeniowy plik tylko do odczytu, wskaż jeden rekord i porównaj go z podglądem w R. Sprawdź, czy puste pole pozostało puste oraz czy „doświadczeni” zachowuje polskie znaki. Nie poprawiaj danych ręcznie w arkuszu — celem jest kontrola zgodności odczytu.
+**Most do pracy z arkuszem.** Otwórz plik ćwiczeniowy tylko do odczytu, wskaż jeden rekord i porównaj go z tabelą „Wybrane kolumny arkusza”. Sprawdź, czy puste pole pozostało puste oraz czy „doświadczeni” zachowuje polskie znaki. Arkusz służy kontroli zgodności odczytu, a wszystkie zmiany danych wykonuje skrypt.
 
 ## Od logu zdarzeń do wyniku osoby
 
-Plik z katalogu może zawierać po jednym wierszu dla każdego kliknięcia. Ankieta zwykle zawiera po jednym wierszu dla osoby. Bez ustalenia poziomu danych połączenie tych tabel może wielokrotnie powielić odpowiedzi ankietowe.
+Log katalogu ma zwykle po jednym wierszu dla każdego kliknięcia, a ankieta — po jednym wierszu dla osoby. Połączenie obu tabel wymaga ustalenia poziomu danych, bo w przeciwnym razie odpowiedzi ankietowe powielają się tyle razy, ile osoba ma zdarzeń.
 
-Poniższy log jest osobnym przykładem dwóch sesji. U01 ma trzy zdarzenia, u02 dwa. Odczytaj, dlaczego pięć wierszy nie oznacza pięciu uczestników.
+Tabela „Pięć zdarzeń, dwie osoby” jest osobnym przykładem dwóch sesji. Pięć wierszy logu opisuje dwie osoby: u01 ma trzy zdarzenia (start w minucie 0, filtr w minucie 1, koniec w minucie 6,5), a u02 dwa zdarzenia (start w minucie 0, koniec w minucie 8).
 
 ```{r log-zdarzen}
 zdarzenia <- pokaz_tabele(log_demo, "Pięć zdarzeń, dwie osoby")
 print(zdarzenia)
 ```
 
-W tej demonstracji czas sesji jest różnicą ostatniego i pierwszego znacznika. Reguła ma sens, ponieważ jawnie zapisano start i koniec. W rzeczywistych logach ostatnie kliknięcie nie musi być zakończeniem pracy, a długa przerwa może oznaczać nieaktywność. Najpierw trzeba zdefiniować sesję.
+Wykres „Dwie sesje w logu zdarzeń” umieszcza każdą osobę w osobnym wierszu. Odcinek biegnie od pierwszego do ostatniego zdarzenia, punkty z podpisami oznaczają zdarzenia, a liczba przy końcu odcinka podaje długość sesji.
 
-Gotowy skrypt agreguje log do jednej wartości na osobę. Odczytaj wynik oraz jego jednostkę. Agregacja zmniejsza liczbę wierszy, ale nie jest usuwaniem respondentów ani naprawą duplikatów.
+```{r log-wykres, fig.height=2.4, fig.cap="Dwie sesje w logu zdarzeń. Oś pozioma: minuta sesji. Wiersz u01: zdarzenia start (0), filtr (1) i koniec (6,5), odcinek o długości 6,5 minuty. Wiersz u02: zdarzenia start (0) i koniec (8), odcinek o długości 8 minut."}
+sesje_wykres <- pokaz_wykres(wykres_logu)
+print(sesje_wykres)
+```
+
+Czas sesji $y_i$ osoby $i$ jest różnicą znaczników czasu ostatniego i pierwszego zdarzenia:
+
+$$
+y_i=c_{i,\mathrm{koniec}}-c_{i,\mathrm{start}}: \qquad y_{\mathrm{u01}}=6{,}5-0=6{,}5, \qquad y_{\mathrm{u02}}=8-0=8 \text{ minut},
+$$
+
+gdzie $c$ oznacza znacznik czasu zdarzenia w minutach od początku sesji. Indeks $i$ oznacza osobę lub sesję zgodnie z definicją. Reguła ma sens, bo log zapisuje start i koniec jawnie; w rzeczywistych logach ostatnie kliknięcie bywa wcześniejsze od zakończenia pracy, a długa przerwa oznacza nieaktywność. Definicja sesji poprzedza obliczenie. Gdy osoba ma kilka sesji, grupowanie wyłącznie według ID osoby łączy odrębne wizyty w jeden bardzo długi czas.
+
+Tabela „Czas od początku do końca sesji” podaje jedną wartość na osobę: u01 6,5 i u02 8 minut. Agregacja zmienia poziom danych z kliknięcia na osobę.
 
 ```{r agregacja-logu}
 sesje <- pokaz_tabele(agregat_demo, "Czas od początku do końca sesji")
 print(sesje)
 ```
 
-Wzór ma postać $T_i=t_{i,\mathrm{koniec}}-t_{i,\mathrm{start}}$. Indeks $i$ oznacza osobę lub sesję zgodnie z definicją, a nie pojedyncze kliknięcie. Gdy zapisano kilka sesji tej samej osoby, samo grupowanie według ID osoby może połączyć odrębne wizyty w jeden bardzo długi czas.
-
-Przy łączeniu ankiety z logiem trzeba sprawdzić klucz. Jedno ID ankiety powinno odpowiadać jednemu uzgodnionemu wynikowi zadania. Po połączeniu kontrolujemy N i liczbę dopasowanych rekordów. Wzrost tabeli ze 150 do 620 wierszy nie jest nową próbą, jeśli wynika z dopisania kliknięć.
+Połączenie ankiety z logiem wymaga kontroli klucza: jedno ID ankiety odpowiada jednemu uzgodnionemu wynikowi zadania. Po połączeniu kontroluje się N i liczbę dopasowanych rekordów. Wzrost tabeli ze 150 do 620 wierszy po dopisaniu kliknięć zmienia jednostkę wiersza, a liczba osób pozostaje 150.
 
 ## Szeroko, długo i w innej jednostce
 
-Sześć pozycji ankiety może występować w sześciu kolumnach jednej osoby: to układ szeroki. W układzie długim każda osoba ma sześć wierszy z nazwą pozycji i odpowiedzią. Oba układy przechowują tę samą informację, lecz wymagają innego liczenia wierszy.
+Sześć pozycji ankiety zapisanych w sześciu kolumnach jednej osoby tworzy układ szeroki. W układzie długim każda osoba ma sześć wierszy z nazwą pozycji i odpowiedzią. Oba układy przechowują tę samą informację i wymagają innego liczenia wierszy.
 
-Jeżeli 150 osób ma po sześć pozycji, po przekształceniu do pełnego układu długiego może powstać 900 wierszy. Nie przybyło 750 osób. Statystyka dotycząca odpowiedzi na pojedynczą pozycję powinna zachować właściwy mianownik osób z tą odpowiedzią.
+Przekształcenie 150 osób z sześcioma pozycjami do układu długiego daje 900 wierszy, a liczba osób pozostaje 150. Statystyka pojedynczej pozycji zachowuje mianownik osób z odpowiedzią na tę pozycję.
 
-Podobnie transpozycja, czyli zamiana wierszy z kolumnami, nie jest uniwersalnym sposobem „poprawienia tabeli”. Może pomóc w prezentacji małego rekordu, jak w C01, ale nie naprawia projektu ani nie nadaje sensu mieszaniu tekstów z liczbami.
+Transpozycja, czyli zamiana wierszy z kolumnami, zmienia układ prezentacji, np. pojedynczego rekordu na ćwiczeniu C01. Struktura danych i projekt pozostają przy transpozycji takie same.
 
-Transformacja jednostki to jeszcze inne działanie. Czas 8 minut jest równy 480 sekundom. Dziennik powinien wskazywać wzór przeliczenia i nową jednostkę. Skalowanie do wartości od 0 do 1 albo standaryzacja przez odchylenie standardowe zmieniają sposób wyrażenia wartości i wymagają osobnego uzasadnienia. Nie są obowiązkową częścią czyszczenia.
+Przeliczenie jednostki zmienia zapis wartości: 8 minut to 480 sekund. Dziennik podaje wzór przeliczenia i nową jednostkę. Skalowanie do przedziału 0–1 i standaryzacja zmieniają sposób wyrażenia wartości; wymagają uzasadnienia w pytaniu badawczym.
 
 | Operacja | Co się zmienia? | Co należy zachować? |
 |---|---|---|
@@ -525,82 +574,122 @@ Transformacja jednostki to jeszcze inne działanie. Czas 8 minut jest równy 480
 | Agregacja logu | Poziom obserwacji | Reguła wyznaczenia wyniku sesji |
 | Standaryzacja | Skala wyrażenia wartości | Parametry odniesienia i interpretacja |
 
-### Odczyt sortowania, rang i skalowania na czterech czasach
+### Sortowanie, rangi i skalowanie na czterech czasach
 
-Gotowy przykład dotyczy czterech innych osób z czasami 2, 4, 4 i 8 minut. Funkcja porządkuje kolumny porównania; nie zmienia danych zadania Z02. Odczytaj w jednym wierszu, co oznacza ta sama obserwacja w każdej reprezentacji.
+Przykład dotyczy czterech osób a, b, c i d spoza danych zadania Z02, z czasami 2, 4, 4 i 8 minut. Pięć reprezentacji opisują wzory:
+
+$$
+x^{(\mathrm{s})}_i=60\,x_i, \qquad
+x^{*}_i=\frac{x_i-\min x}{\max x-\min x}, \qquad
+z_i=\frac{x_i-\bar{x}}{s}, \qquad
+s=\sqrt{\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1}}, \qquad
+\log_2 x_i .
+$$
+
+| Symbol | Nazwa | Rachunek dla czterech czasów |
+|---|---|---|
+| $x_i$ | czas osoby $i$ w minutach | 2, 4, 4, 8 |
+| $x^{(\mathrm{s})}_i$ | ten sam czas w sekundach | 120, 240, 240, 480 |
+| $\min x$, $\max x$ | najmniejszy i największy czas | 2 i 8 minut |
+| $x^{*}_i$ | wartość po skalowaniu min–max | $(4-2)/(8-2)=1/3\approx 0{,}333$ dla 4 minut |
+| $\bar{x}$ | średnia | $18/4=4{,}5$ minuty |
+| $s$ | odchylenie standardowe (SD): typowa odległość od średniej | $\sqrt{19/3}\approx 2{,}52$ minuty |
+| $z_i$ | wynik standaryzowany | $(8-4{,}5)/2{,}52\approx 1{,}39$ dla 8 minut |
+| $\log_2 x_i$ | logarytm o podstawie 2 | 1, 2, 2, 3 |
+
+Tabela „Cztery osoby: ta sama informacja, różne przekształcenia” zestawia w jednym wierszu tę samą obserwację we wszystkich reprezentacjach.
 
 ```{r transformacje}
 przeliczenia <- przyklad_transformacji()
 print(przeliczenia)
 ```
 
-Sortowanie porządkuje całe rekordy według czasu, zachowując identyfikator i pozostałe dane osoby. Posortowanie samej kolumny w arkuszu mogłoby przypisać czas innej osobie. Ranking nadaje pozycję w tym porządku: dwa czasy po 4 minuty zajmują miejsca drugie i trzecie, więc oba mają średnią rangę 2,5. Ranga nie mówi, o ile minut ktoś był szybszy.
+Wykres „Cztery czasy w pięciu skalach” ma pięć poziomych osi, po jednej na reprezentację: wartość w minutach, rangę, min–max, standaryzację z i log2. Punkty mają podpisy osób.
 
-Skalowanie min–max, nazywane też normalizacją do zakresu 0–1, oblicza $(x-\min x)/(\max x-\min x)$. Tutaj dla 4 minut otrzymujemy $(4-2)/(8-2)=1/3$. Wynik 1 oznacza najdłuższy czas w tym zestawie, nie pełną kompetencję. Dodanie czasu 20 minut zmieni wartości min–max pozostałych osób. Osobne skalowanie w każdej grupie uniemożliwia prosty odczyt pierwotnej różnicy czasu między grupami; trzeba zachować wspólne parametry odniesienia.
+```{r transformacje-wykres, fig.height=5, fig.cap="Cztery czasy w pięciu skalach. Pięć poziomych osi od góry: minuty (2, 4, 4, 8), rangi (1; 2,5; 2,5; 4), min–max (0; 0,333; 0,333; 1), standaryzacja z (−0,99; −0,20; −0,20; 1,39) i log2 (1, 2, 2, 3). Osoby b i c mają ten sam punkt na każdej osi, a kolejność a, b i c, d jest wszędzie ta sama."}
+skale <- pokaz_wykres(wykres_transformacji)
+print(skale)
+```
 
-Standaryzacja $z=(x-\bar{x})/s$ wyraża odległość od średniej w jednostkach SD. Dla tych czterech czasów średnia to 4,5, a SD około 2,52 minuty; 8 minut daje $z\approx1{,}39$. Ani min–max, ani standaryzacja nie wymuszają rozkładu normalnego. Gdy wszystkie wartości są identyczne, mianownik obu reguł wynosi zero i taka skala nie jest określona.
+Kolejność czterech osób jest na każdej osi ta sama, a odległości się zmieniają. Sortowanie porządkuje całe rekordy według czasu i zachowuje identyfikator oraz pozostałe dane osoby; posortowanie samej kolumny w arkuszu przypisuje czasy innym osobom. Ranga nadaje pozycję w porządku: czasy 4 i 4 minuty zajmują miejsca drugie i trzecie, więc obie mają średnią rangę 2,5. Ranga zachowuje kolejność; odległość w minutach pozostaje w kolumnie czasu.
 
-Logarytm o podstawie 2 odpowiada na pytanie: do jakiej potęgi trzeba podnieść 2, aby otrzymać daną liczbę? Dla czasu wyrażonego w minutach $\log_2(8)=3$, a $\log_2(4)=2$. Różnica jednego na tej skali oznacza podwojenie czasu; równe odstępy logarytmów odpowiadają stosunkom, nie równym przyrostom minut. Logarytm nie jest zdefiniowany dla zera i liczb ujemnych, więc nie używamy go do ukrycia błędu pomiaru. Wybór transformacji musi wynikać z pytania i być zapisany w regułach analizy.
+Skalowanie min–max, nazywane też normalizacją do zakresu 0–1, przypisuje 0 najkrótszemu i 1 najdłuższemu czasowi w zestawie. Dopisanie czasu 20 minut zmienia wartości min–max wszystkich pozostałych osób, więc porównanie grup wymaga wspólnych parametrów $\min x$ i $\max x$.
 
-## Co brak danych może mówić o badaniu
+Standaryzacja wyraża odległość od średniej w jednostkach SD: $z=1{,}39$ oznacza czas o 1,39 SD dłuższy od średniej. Min–max i standaryzacja zachowują kształt rozkładu. Przy identycznych wartościach mianownik obu reguł wynosi zero, więc obie reguły wymagają co najmniej dwóch różnych wartości.
 
-Brak techniczny, odmowa odpowiedzi i niewykonane zadanie mają różne źródła. W pliku mogą wszystkie wystąpić jako `NA`, ale w protokole powinny być rozpoznawane osobno, jeśli zebrano taką informację. Bez niej nie wolno dopowiadać przyczyny na podstawie samej pustej komórki.
+Logarytm o podstawie 2 odpowiada na pytanie: do jakiej potęgi trzeba podnieść 2, aby otrzymać daną liczbę? $\log_2 8=3$, a $\log_2 4=2$. Różnica jednego na skali log2 oznacza podwojenie czasu: odstęp 2→4 minuty równa się odstępowi 4→8 minut. Równe odstępy logarytmów odpowiadają równym stosunkom czasów. Logarytm istnieje dla liczb dodatnich, a wybór transformacji wynika z pytania i trafia do reguł analizy.
 
-Jeżeli braki czasu występują częściej przy problemach z interfejsem, analiza samych zmierzonych czasów może zbyt korzystnie opisywać usługę. Jeśli osoby niezadowolone rzadziej kończą ankietę, średnia deklarowanej użyteczności może dotyczyć bardziej zadowolonej części użytkowników. Żaden test normalności nie odpowie na te pytania.
+## Brak danych a przebieg badania
 
-Na podstawowym poziomie raportujemy liczbę braków dla każdej analizowanej zmiennej i, jeśli ma to sens, ich rozkład między grupami. Taka kontrola może ujawnić problem, lecz nie dowodzi, że pozostałe braki są nieszkodliwe. Zależność braków od nieobserwowanych wyników nie daje się wykluczyć samą tabelą już dostępnych wartości.
+Brak techniczny, odmowa odpowiedzi i niewykonane zadanie mają różne źródła. W pliku wszystkie trzy mogą wystąpić jako `NA`, a protokół rozróżnia je osobnymi kodami, gdy zebrano taką informację. Przyczynę braku podaje protokół.
 
-W tym kursie nie wprowadzamy rozbudowanych metod imputacji. Rozumiemy jednak, dlaczego proste podstawienie średniej za brak nie tworzy prawdziwej odpowiedzi. Może sztucznie zmniejszyć zróżnicowanie i zniekształcić związki. Brak pozostaje brakiem, dopóki nie przyjęto jawnej, uzasadnionej metody analizy.
+Gdy braki czasu występują częściej przy problemach z interfejsem, analiza samych zmierzonych czasów przedstawia usługę korzystniej od rzeczywistości. Gdy osoby niezadowolone rzadziej kończą ankietę, średnia deklarowanej użyteczności dotyczy bardziej zadowolonej części użytkowników. Mechanizm braków ocenia się na podstawie procesu zbierania danych.
+
+Raport podaje liczbę braków każdej analizowanej zmiennej i ich rozkład między grupami. Tabela braków w grupach wskazuje wzorzec dostępności danych; zależność braków od nieobserwowanych wartości pozostaje założeniem.
+
+Podstawienie średniej za brak zmniejsza zróżnicowanie i zniekształca związki między zmiennymi. Brak pozostaje brakiem do czasu przyjęcia jawnej, uzasadnionej metody analizy.
 
 ## Dodatkowe przykłady z rozwiązaniem
 
 ### Próba A: pozorne zwiększenie próby
 
-Ankietę wypełniło 120 osób. Po połączeniu z logiem zapisano 800 wierszy. Autor raportu pisze „N=800 użytkowników”. Co trzeba sprawdzić przed poprawieniem liczby?
+Ankietę wypełniło 120 osób. Po połączeniu z logiem tabela ma 800 wierszy. Autor raportu pisze „N = 800 użytkowników”. Co sprawdzić przed poprawieniem liczby?
 
-Najpierw sprawdzamy poziom rekordu po połączeniu: osoba, sesja czy zdarzenie. Jeżeli jeden uczestnik ma wiele kliknięć, 800 jest liczbą zdarzeń. Liczba użytkowników wynika z identyfikatorów osób i reguły włączenia, a nie z długości połączonej tabeli. Nie wybieramy mechanicznie 120, jeżeli część ankiet nie ma dopasowanego logu: do analizy wspólnej potrzebujemy dodatkowej kontroli dopasowania.
+Najpierw sprawdzamy poziom rekordu po połączeniu: osoba, sesja albo zdarzenie. Gdy jeden uczestnik ma wiele kliknięć, 800 jest liczbą zdarzeń. Liczbę użytkowników wyznaczają identyfikatory osób i reguła włączenia. Analiza wspólna obejmuje ankiety z dopasowanym logiem, więc jej N wymaga kontroli dopasowania i bywa mniejsze od 120.
 
-### Próba B: braki dodane do odpowiedzi negatywnych
+### Próba B: braki a granice odsetka
 
-Wynik zadania zarejestrowano dla 80 z 100 osób. Wśród znanych wyników było 60 powodzeń. Czy sukces odniosło 60% czy 75% uczestników?
+Wynik zadania zarejestrowano dla 80 ze 100 osób. Wśród znanych wyników było 60 powodzeń. Czy sukces odniosło 60% czy 75% uczestników?
 
-Wiemy, że 60% wszystkich stu osób ma zapisane powodzenie, a wśród osiemdziesięciu znanych wyników odsetek wynosi 75%. Nie znamy pełnego odsetka powodzeń w stu próbach. Jeśli wszystkie braki byłyby niepowodzeniami, wyniósłby 60%; jeśli powodzeniami, 80%. Raport powinien nazwać mianownik i ujawnić brak wiedzy, zamiast zamieniać dwadzieścia pustych pól w zera.
+Wśród 80 znanych wyników odsetek powodzeń wynosi $60/80=75\%$, a 60% to odsetek zapisanych powodzeń wśród wszystkich stu osób. Pełny odsetek $\pi_{\mathrm{pełne}}$ w stu próbach leży między dwoma skrajnymi wariantami braków:
+
+$$
+\frac{k}{N}\le\pi_{\mathrm{pełne}}\le\frac{k+m}{N}: \qquad \frac{60}{100}=60\% \;\le\; \pi_{\mathrm{pełne}} \;\le\; \frac{80}{100}=80\%,
+$$
+
+gdzie $k=60$ to liczba powodzeń, $m=20$ liczba braków, a $N=100$ liczba osób. Dolna granica odpowiada niepowodzeniu wszystkich osób z brakiem, górna — ich powodzeniu. Raport nazywa mianownik i liczbę braków.
 
 ### Próba C: odrzucenie najdłuższych wyszukiwań
 
-Autor usuwa wszystkie czasy powyżej mediany i stwierdza, że system działa szybko. Reguła z definicji usuwa około połowy dłuższych obserwacji. Tak uzyskana średnia opisuje wyselekcjonowaną część próby, a nie typowe działanie usługi dla wszystkich badanych.
+Autor usuwa wszystkie czasy powyżej mediany i stwierdza, że system działa szybko. Reguła z definicji usuwa dłuższą połowę obserwacji. Średnia po usunięciu połowy obserwacji opisuje szybszą połowę próby.
 
-Inna sytuacja zachodzi, gdy protokół wykazuje, że określone znaczniki czasu zapisały się w sekundach zamiast minutach. Wtedy korekta jednostki ma zewnętrzne uzasadnienie. Rozróżnienie opiera się na dowodzie o pomiarze, nie na tym, czy wynik po zmianie wygląda korzystniej.
+Protokół wykazujący, że określone znaczniki czasu zapisano w sekundach, uzasadnia korektę jednostki. Korekta opiera się na dowodzie o pomiarze.
 
 ### Próba D: niezgodne słowniki
 
-Jeden plik koduje powodzenie jako 1, drugi jako 2. Po połączeniu pojawiają się wartości 0, 1 i 2. Nie wolno po prostu uznać 2 za „silniejsze powodzenie” ani dodać kolejnej kategorii bez sprawdzenia.
+Jeden plik koduje powodzenie jako 1, drugi jako 2. Po połączeniu kolumna zawiera wartości 0, 1 i 2. Kod 2 wymaga odwzorowania na wspólną definicję wyniku.
 
-Potrzebne jest jawne odwzorowanie kodów do wspólnej definicji wyniku. Weryfikujemy także, czy oba badania stosowały to samo kryterium sukcesu. Identyczne etykiety po rekodacji nie naprawią różnicy między odnalezieniem rekordu a poprawną oceną wiarygodności publikacji.
+Odwzorowanie kodów zapisuje się jawnie w skrypcie. Wspólna etykieta wymaga też wspólnego kryterium sukcesu: odnalezienie rekordu i poprawna ocena wiarygodności publikacji to dwa różne kryteria.
 
-## Czy braki występują tak samo w obu grupach
+## Braki w dwóch grupach
 
-Dotychczas liczyliśmy braki w całej tabeli. Dla porównania nowych i doświadczonych użytkowników ważne jest również, czy pomiar czasu pomijano podobnie w obu grupach. Nawet niewielka ogólna liczba braków może koncentrować się w grupie kluczowej dla pytania.
+Porównanie nowych i doświadczonych użytkowników wymaga sprawdzenia, czy pomiar czasu pomijano podobnie w obu grupach. Niewielka ogólna liczba braków może skupiać się w grupie kluczowej dla pytania. Odsetek braków zmiennej w grupie $g$ zapisuje wzór
 
-Gotowy skrypt pokazuje liczebność grupy, ważne czasy oraz liczbę i odsetek braków. Mianownikiem ostatniej kolumny jest liczba osób w danej grupie. Nie używaj całej próby jako mianownika, jeśli porównujesz częstość braków między grupami.
+$$
+b_g=\frac{m_g}{N_g}\cdot 100\%: \qquad b_{\mathrm{doświadczeni}}=\frac{4}{74}\cdot 100\%\approx 5{,}4\%, \qquad b_{\mathrm{nowi}}=\frac{2}{74}\cdot 100\%\approx 2{,}7\%,
+$$
 
-```{r braki-w-grupach}
+gdzie $m_g$ to liczba braków czasu w grupie $g$, a $N_g$ liczba osób w grupie. Mianownikiem odsetka braków w grupie jest liczba osób w grupie: 74 doświadczonych i 74 nowych.
+
+Chunk `braki-w-grupach` wyświetla tabelę „Mianownik odsetka braków to liczba osób w danej grupie” i wykres „Braki trzech zmiennych w dwóch grupach S02”. Tabela podaje dla doświadczonych 74 osoby, 70 ważnych czasów i 4 braki (5,4%), a dla nowych 74 osoby, 72 ważne czasy i 2 braki (2,7%).
+
+```{r braki-w-grupach, fig.height=3.4, fig.cap="Braki trzech zmiennych w dwóch grupach S02. Dwa panele, doświadczeni i nowi; w każdym poziome słupki odsetka braków dla czasu wyszukiwania, pozycji 2 i powodzenia. Doświadczeni: czas 4/74 (5,4%), pozycja 2 2/74 (2,7%), powodzenie 0/74 (0,0%). Nowi: czas 2/74 (2,7%), pozycja 2 2/74 (2,7%), powodzenie 0/74 (0,0%)."}
 braki <- braki_w_grupach()
 print(braki)
 ```
 
-Podobne odsetki braków nie dowodzą, że brakujące czasy miały podobne wartości. Możliwe, że w jednej grupie nie zarejestrowano najkrótszych prób, a w drugiej najdłuższych. Tabela opisuje wzorzec dostępności, lecz nie pokazuje wartości, których nie zmierzono.
+Tabela i wykres opisują dostępność pomiarów; wartości brakujących czasów pozostają nieznane. Podobne odsetki braków są zgodne z sytuacją, w której w jednej grupie zabrakło najkrótszych prób, a w drugiej najdłuższych.
 
-Rozważ odrębny przykład: zaproszono po 50 osób z dwóch grup, ale czas zapisano dla 30 nowych i 45 doświadczonych. Średnie obliczone z tych danych dotyczą dwóch różnych podzbiorów o różnym stopniu kompletności. Zanim zinterpretujemy różnicę jako obraz doświadczenia, trzeba ustalić, dlaczego część prób nie ma pomiaru. Większa liczba permutacji późniejszego testu nie uzupełni brakujących obserwacji.
+Odrębny przykład: zaproszono po 50 osób z dwóch grup, a czas zapisano dla 30 nowych i 45 doświadczonych. Średnie obliczone z zapisanych czasów dotyczą dwóch podzbiorów o różnej kompletności: 60% i 90%. Interpretacja różnicy średnich jako różnicy doświadczenia wymaga ustalenia przyczyny brakujących pomiarów.
 
 ## Dwa rodzaje zdania o jakości danych
 
-Zdanie „dane są poprawne, bo funkcja nie zwróciła błędu” jest zbyt szerokie. Brak błędu oznacza, że wejście spełniło sprawdzane warunki techniczne. Może nie wykryć złego opisu jednostki, systematycznej rezygnacji uczestników ani odmiennego rozumienia pytania.
+Zdanie „dane są poprawne, bo funkcja wykonała się bez błędu” obejmuje więcej, niż potwierdza kontrola. Wykonanie funkcji bez błędu potwierdza warunki techniczne; opis jednostki, rezygnacje uczestników i rozumienie pytań wymagają kontroli merytorycznej.
 
-Lepsza wersja rozdziela sprawdzony fakt i pozostałą niewiedzę: „Po zastosowaniu zadanych reguł nie ma identycznych duplikatów, a ważne odpowiedzi pozycji mieszczą się w zakresie 1–5. Nie dysponujemy informacją, czy przyczyny braków czasu wiązały się z trudnością zadania”. Pierwsze zdanie odsyła do danych, drugie do ograniczenia projektu.
+Lepsza wersja rozdziela sprawdzony fakt i pozostałą niewiedzę: „Po zastosowaniu reguł zbiór zawiera wyłącznie unikalne rekordy, a ważne odpowiedzi pozycji mieszczą się w zakresie 1–5. Związek przyczyn braków czasu z trudnością zadania pozostaje nieznany”. Pierwsze zdanie odsyła do danych, drugie do ograniczenia projektu.
 
-Takie rozróżnienie jest przydatne także w analizach instytucjonalnych. Kompletne logi nie gwarantują pełnej wiedzy o potrzebach użytkowników, a poprawnie zakodowana ankieta nie gwarantuje trafnego pomiaru kompetencji. Kontrola danych i kontrola pomiaru są powiązane, lecz nie zastępują się wzajemnie.
+Rozróżnienie przydaje się w analizach instytucjonalnych. Kompletne logi opisują zachowanie w systemie, a potrzeby użytkowników wymagają osobnego pomiaru; poprawnie zakodowana ankieta wymaga jeszcze trafnych pytań. Kontrola danych i kontrola pomiaru uzupełniają się.
 
-W następnym zestawie opiszemy rozkład czasu oraz skuteczność zadania. Średnia, mediana i histogram będą miały sens tylko dla jasno określonych danych. Dlatego wynik C02 nie jest „technicznym wstępem do prawdziwej statystyki”: ustala, o czyim zachowaniu i jakim pomiarze będziemy mówić.
+Ćwiczenie C03 (Portret próby: czas wyszukiwania, skuteczność i zróżnicowanie) opisuje rozkład czasu i skuteczność zadania średnią, medianą i histogramem obliczonymi dla jawnie określonych danych. Wynik C02 ustala, o czyim zachowaniu i jakim pomiarze mówią dalsze analizy.
 
-Przed C03 odpowiedz bez komputera: dlaczego N czasu może być mniejsze od liczby osób; dlaczego ujemny czas i długi czas wymagają innych reakcji; dlaczego sześć pozycji w układzie długim nie zwiększa liczby respondentów; dlaczego brakująca ocena nie usuwa automatycznie obserwowanego powodzenia. Każdą odpowiedź połącz z jednym konkretnym rekordem lub regułą.
+Przed C03 odpowiedz bez komputera: od czego zależy N czasu w porównaniu z liczbą osób; jak postępujemy z ujemnym czasem, a jak z długim czasem w zakresie; ile osób opisuje układ długi sześciu pozycji dla 150 osób; które informacje osoby zostają przy brakującej ocenie. Każdą odpowiedź połącz z jednym konkretnym rekordem lub regułą.

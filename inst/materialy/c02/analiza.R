@@ -1,3 +1,9 @@
+# C02: gotowe dane, tabele i wykresy ćwiczenia. Student uruchamia bloki
+# w zadanie.Rmd; obliczenia i wygląd wyników pozostają w tym skrypcie.
+
+# Zbiór S02 po trzech regułach funkcji przygotuj_ankiete(): usunięcie
+# identycznych duplikatów, kod 99 w pozycjach jako brak i czas spoza
+# 0–120 minut jako brak.
 dane_surowe <- badaniaZI::dane_przykladowe()
 przygotowane <- badaniaZI::przygotuj_ankiete(dane_surowe)
 dane <- przygotowane$dane
@@ -5,21 +11,28 @@ pozycje <- dane[paste0('pozycja_', 1:6)]
 pozycje$pozycja_3 <- badaniaZI::odwroc_pozycje(pozycje$pozycja_3)
 dane$liczba_pozycji <- rowSums(!is.na(pozycje))
 dane$indeks <- badaniaZI::indeks_ankiety(pozycje, minimum = 5L)
-B <- 1999L
-set.seed(202627)
-formatuj_wynik <- function(x) {
-  wynik <- x
-  kolumny_p <- names(wynik)[grepl('^p($|_)', names(wynik))]
-  for (nazwa in kolumny_p) if (is.numeric(wynik[[nazwa]]))
-    wynik[[nazwa]] <- format.pval(wynik[[nazwa]], digits = 3, eps = 0.001)
-  wynik
-}
-tabela_glowna <- przygotowane$dziennik
-wynik_glowny <- data.frame(N_surowe = nrow(dane_surowe), N_analityczne = nrow(dane), braki_czasu = sum(is.na(dane$czas_wyszukiwania)))
-wynik_klasyczny <- przygotowane$dziennik
-wynik_permutacyjny <- data.frame(status = 'permutacja nast\u0119puje po czyszczeniu')
-efekt <- data.frame(zmienione_elementy = sum(przygotowane$dziennik$liczba[2:4]))
-wykres_glowny <- ggplot2::ggplot(dane, ggplot2::aes(x = czas_wyszukiwania)) + ggplot2::geom_histogram(bins = 18, fill = '#56B4E9', colour = 'white') + ggplot2::labs(x = 'Czas [min]', y = 'Liczba os\u00F3b', title = 'Czas po zastosowaniu regu\u0142') + badaniaZI::theme_zi()
+kolory <- badaniaZI::paleta_zi()
+wynik_glowny <- data.frame(N_surowe = nrow(dane_surowe), N_analityczne = nrow(dane),
+                           braki_czasu = sum(is.na(dane$czas_wyszukiwania)))
+
+# Histogram ważnych czasów S02 o jawnej szerokości przedziału 2,5 minuty.
+wykres_glowny <- badaniaZI::wykres_histogram(dane$czas_wyszukiwania, szerokosc = 2.5,
+  os = 'Czas wyszukiwania [min]', tytul = 'Czas S02 po zastosowaniu reguł')
+
+# Przepływ rekordów S02 od surowego eksportu do ważnych czasów.
+unikalne_s02 <- unique(dane_surowe)
+przeplyw_s02 <- data.frame(
+  etap = c('Rekordy surowego eksportu', 'Rekordy po usunięciu duplikatów',
+           'Rekordy z zapisanym czasem', 'Czasy w zakresie 0–120 min'),
+  n = c(nrow(dane_surowe), nrow(dane), sum(!is.na(unikalne_s02$czas_wyszukiwania)),
+        sum(!is.na(dane$czas_wyszukiwania))))
+wykres_przeplywu <- badaniaZI::wykres_przeplyw_proby(przeplyw_s02$etap, przeplyw_s02$n,
+  os = 'Liczba rekordów', tytul = 'Od surowego eksportu do ważnych czasów S02')
+
+# Odsetek braków trzech zmiennych w dwóch grupach S02.
+wykres_brakow <- badaniaZI::wykres_braki(dane, c('czas_wyszukiwania', 'pozycja_2', 'powodzenie'),
+  'grupa', etykiety = c('Czas wyszukiwania', 'Pozycja 2', 'Powodzenie'),
+  tytul = 'Braki trzech zmiennych w dwóch grupach S02')
 
 # Tekst demonstracyjny pozostaje oddzielony od surowego pliku kursowego.
 eksport_demo <- paste(
@@ -63,7 +76,6 @@ roznice_komorek <- data.frame(
   czas_po = czyste_demo$czas_min, ocena_przed = unikalne_demo$ocena,
   ocena_po = czyste_demo$ocena
 )
-ocena_bez_kodu <- unikalne_demo$ocena[unikalne_demo$ocena != 99]
 skutek_kodu <- data.frame(
   wariant = c('Kod 99 błędnie traktowany jak odpowiedź', 'Wyłącznie ważne odpowiedzi 1–5'),
   N = c(nrow(unikalne_demo), sum(!is.na(czyste_demo$ocena))),
@@ -85,25 +97,33 @@ odczytaj_arkusz <- function() {
     stop('Odczyt XLSX wymaga pakietu readxl przygotowanego w środowisku kursu.')
   as.data.frame(readxl::read_excel(plik_xlsx))
 }
+
+# Ważne czasy demonstracji: punkty osób i wykres pudełkowy z granicą wąsa.
 czas_demo_do_wykresu <- czyste_demo[is.finite(czyste_demo$czas_min), ]
 wykres_decyzji <- ggplot2::ggplot(czas_demo_do_wykresu,
                                   ggplot2::aes(x = id, y = czas_min)) +
-  ggplot2::geom_point(size = 3, colour = '#0072B2') +
+  ggplot2::geom_point(size = 3, colour = kolory[['primary']]) +
+  ggplot2::geom_text(ggplot2::aes(label = chartr('.', ',', as.character(czas_min))),
+                     vjust = -1, size = 3.2) +
+  ggplot2::scale_y_continuous(limits = c(0, 40)) +
   ggplot2::labs(x = 'Osoba', y = 'Czas [min]',
                  title = 'Długi czas pozostaje obserwacją',
-                 caption = 'Przykład syntetyczny. 35 minut mieści się w zadanej regule 0–120.') +
+                 caption = 'Przykład syntetyczny. Cztery ważne czasy; u04 ma puste pole, a czas u05 (−2 min) oznaczono jako brak.') +
   badaniaZI::theme_zi()
+czas_pelny_demo <- czas_demo_do_wykresu$czas_min
+wykres_pudelka <- badaniaZI::wykres_pudelkowy(czas_pelny_demo, os = 'Czas [min]',
+  tytul = 'Cztery ważne czasy na wykresie pudełkowym')
 
 log_demo <- data.frame(id = c('u01', 'u01', 'u01', 'u02', 'u02'),
                        minuta = c(0, 1, 6.5, 0, 8),
                        zdarzenie = c('start', 'filtr', 'koniec', 'start', 'koniec'))
 agregat_demo <- aggregate(minuta ~ id, log_demo, function(x) max(x) - min(x))
 names(agregat_demo)[2] <- 'czas_min'
+wykres_logu <- badaniaZI::wykres_log(log_demo, tytul = 'Dwie sesje w logu zdarzeń')
 pary_demo <- data.frame(id = czyste_demo$id,
                         czas = czyste_demo$czas_min, ocena = czyste_demo$ocena,
                         kompletna_para = complete.cases(czyste_demo[c('czas_min', 'ocena')]))
 
-czas_pelny_demo <- czyste_demo$czas_min[is.finite(czyste_demo$czas_min)]
 czas_bez_dl_demo <- czas_pelny_demo[czas_pelny_demo != 35]
 wrazliwosc_czasu <- data.frame(
   wariant = c('Wszystkie ważne pomiary', 'Po usunięciu poprawnego czasu 35 min'),
@@ -118,6 +138,11 @@ braki_grupy <- do.call(rbind, lapply(split(dane, dane$grupa), function(z) {
              procent_brakow = 100 * mean(is.na(z$czas_wyszukiwania)))
 }))
 rownames(braki_grupy) <- NULL
+
+# Cztery czasy spoza danych zadania w pięciu reprezentacjach.
+czas_transformacji <- c(2, 4, 4, 8)
+wykres_transformacji <- badaniaZI::wykres_transformacje(czas_transformacji, c('a', 'b', 'c', 'd'),
+  tytul = 'Cztery czasy w pięciu skalach')
 
 # Nowa mała historia: syntetyczny eksport badania cyfrowego archiwum.
 eksport_archiwum <- paste(
@@ -143,13 +168,6 @@ archiwum_etapy <- porownaj_etapy(surowe=archiwum_surowe,
   bez_duplikatu=archiwum_unikalne,po_regulach=archiwum_czyste)
 archiwum_konflikt <- data.frame(id=c('a03','a03'),czas_min=c(12,18),
   powodzenie=c(1,0))
-archiwum_opis <- data.frame(N_osob=nrow(archiwum_czyste),
-  N_czas=sum(!is.na(archiwum_czyste$czas_min)),
-  srednia_min=mean(archiwum_czyste$czas_min,na.rm=TRUE),
-  mediana_min=median(archiwum_czyste$czas_min,na.rm=TRUE),
-  N_ocena=sum(!is.na(archiwum_czyste$ocena)),
-  N_sukces=sum(!is.na(archiwum_czyste$powodzenie)),
-  sukces_procent=100*mean(archiwum_czyste$powodzenie,na.rm=TRUE))
 archiwum_wrazliwosc <- data.frame(
   wariant=c('Wszystkie ważne czasy','Bez prawidłowych 35 minut'),
   N=c(sum(!is.na(archiwum_czyste$czas_min)),
@@ -159,9 +177,11 @@ archiwum_wrazliwosc <- data.frame(
 archiwum_pary <- data.frame(id=archiwum_czyste$id,czas=archiwum_czyste$czas_min,
   ocena=archiwum_czyste$ocena,
   para=complete.cases(archiwum_czyste[c('czas_min','ocena')]))
-archiwum_wykres <- ggplot2::ggplot(archiwum_czyste,ggplot2::aes(id,czas_min))+
-  ggplot2::geom_point(colour='#0072B2',size=3,na.rm=TRUE)+
-  ggplot2::labs(x='Osoba',y='Czas [min]',title='Zero, długi czas i brak nie są tym samym')+
+archiwum_wykres <- ggplot2::ggplot(archiwum_czyste[!is.na(archiwum_czyste$czas_min), ],
+    ggplot2::aes(id,czas_min))+
+  ggplot2::geom_point(colour=kolory[['primary']],size=3)+
+  ggplot2::labs(x='Osoba',y='Czas [min]',title='Zero, długi czas i brak: trzy różne zapisy',
+    caption='Cztery ważne czasy po regułach; a04 ma puste pole, a05 ma czas 121 min spoza zakresu, więc obie osoby mają brak czasu.')+
   badaniaZI::theme_zi()
 
 # Warstwa prezentacji: w Rmd wystarczy przypisanie oraz print(wynik).
@@ -170,9 +190,9 @@ ustaw_material <- function() {
     results='asis',fig.width=6,fig.height=3.3,fig.align='center')
   invisible(NULL)
 }
-wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L) {
-  stopifnot(is.list(tabele),is.list(wykresy),is.numeric(digits),length(digits)==1L)
-  structure(list(tabele=tabele,wykresy=wykresy,tekst=tekst,digits=digits),
+wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L,markdown=list()) {
+  stopifnot(is.list(tabele),is.list(wykresy),is.list(markdown),is.numeric(digits),length(digits)==1L)
+  structure(list(tabele=tabele,wykresy=wykresy,tekst=tekst,digits=digits,markdown=markdown),
     class='zi_wydruk')
 }
 print.zi_wydruk <- function(x,...) {
@@ -186,7 +206,7 @@ print.zi_wydruk <- function(x,...) {
       cat('\n\n**',nazwa,'**\n\n',sep='')
       if(format=='latex') cat('\\begin{center}\n')
       tresc <- as.character(knitr::kable(tab,format=format,caption=NULL,
-        digits=x$digits,row.names=FALSE))
+        digits=x$digits,row.names=FALSE,format.args=list(decimal.mark=',')))
       if(format=='html') tresc <- gsub('$','&#36;',tresc,fixed=TRUE)
       cat(tresc,'\n',sep='')
       if(format=='latex') cat('\\end{center}\n')
@@ -196,6 +216,8 @@ print.zi_wydruk <- function(x,...) {
       print(tab,row.names=FALSE)
     }
   }
+  # Długie tabele tekstowe (Markdown) zawijają się w PDF i HTML.
+  for(md in x$markdown) cat(as.character(md), '\n\n', sep = '')
   if(!is.null(x$tekst)) {
     if(dokument) cat('\n\n```text\n',paste(x$tekst,collapse='\n'),'\n```\n\n',sep='')
     else cat(paste(x$tekst,collapse='\n'),'\n')
@@ -207,7 +229,6 @@ pokaz_tabele <- function(tabela,tytul='Wynik analizy',digits=3L) {
   wydruk_zi(tabele=setNames(list(tabela),tytul),digits=digits)
 }
 pokaz_wykres <- function(wykres) wydruk_zi(wykresy=list(wykres))
-
 
 tekst_eksportu <- function(eksport) wydruk_zi(tekst=strsplit(eksport,'\n',fixed=TRUE)[[1]])
 kontrola_typow <- function(tabela) pokaz_tabele(tabela_klas(tabela),'Typ zapisu i liczba braków')
@@ -236,9 +257,19 @@ podsumowanie_przygotowania <- function(tabela,etapy) {
   names(tab) <- c('Etap','Rekordy','Czas','Ocena','Powodzenie')
   wydruk_zi(tabele=list('Etapy przygotowania'=tab,'Dane do krótkiej notatki'=bilans))
 }
+dziennik_s02 <- function() {
+  tab <- przygotowane$dziennik
+  tab$regula <- gsub('--', '–', tab$regula, fixed = TRUE)
+  names(tab) <- c('Reguła lub stan', 'Liczba')
+  pokaz_tabele(tab, 'Reguły w pełnym zbiorze S02', 0L)
+}
 bilans_s02 <- function() {
-  wydruk_zi(tabele=list('Rekordy S02'=wynik_glowny,
-    'Niepuste wartości przed regułami i ważne po regułach'=braki_w_zbiorze))
+  rekordy <- wynik_glowny
+  names(rekordy) <- c('Rekordy surowe', 'Rekordy po przygotowaniu', 'Braki czasu')
+  wartosci <- braki_w_zbiorze
+  names(wartosci) <- c('Zmienna', 'Niepuste przed regułami', 'Ważne po regułach')
+  wydruk_zi(tabele=list('Rekordy S02'=rekordy,
+    'Niepuste wartości przed regułami i ważne po regułach'=wartosci), digits = 0L)
 }
 porownanie_formatow <- function() {
   arkusz <- odczytaj_arkusz()
@@ -256,17 +287,18 @@ podglad_arkusza <- function() {
 braki_w_grupach <- function() {
   tab <- braki_grupy
   names(tab) <- c('Grupa','Osoby','Ważne czasy','Braki','Braki [%]')
-  pokaz_tabele(tab,'Mianownik odsetka braków to liczba osób w danej grupie',1L)
+  wydruk_zi(tabele=list('Mianownik odsetka braków to liczba osób w danej grupie'=tab),
+    wykresy=list(wykres_brakow),digits=1L)
 }
 przyklad_transformacji <- function() {
-  czas <- c(2,4,4,8)
+  czas <- czas_transformacji
   tab <- data.frame(ID=c('a','b','c','d'),minuty=czas,sekundy=60*czas,
     ranga=rank(czas),min_max=(czas-min(czas))/diff(range(czas)),
     z=(czas-mean(czas))/sd(czas),log2=log2(czas))
   pokaz_tabele(tab,'Cztery osoby: ta sama informacja, różne przekształcenia',3L)
 }
 kontrola_importu_archiwum <- function() {
-  # Surowy tekst pozwala sprawdzić separator i znak dziesiętny, nie zgadywać ich z tabeli.
+  # Surowy tekst pozwala odczytać separator i znak dziesiętny wprost z eksportu.
   wydruk_zi(tabele=list('Import archiwum'=archiwum_surowe,
     'Typy kolumn'=tabela_klas(archiwum_surowe)),
     tekst=strsplit(eksport_archiwum,'\n',fixed=TRUE)[[1]])

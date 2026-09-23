@@ -2,12 +2,10 @@ test_that("handouty należą wyłącznie do wykładów", {
   katalog <- materialy()
   expect_true(all(c("cwiczenie", "wyklad") %in% katalog$typ))
   expect_error(otworz_material("C01", handout = TRUE, otworz = FALSE), "tylko dla wykładu")
-  expect_error(otworz_material("W01", format = "R", otworz = FALSE), "nie udostępnia")
-  expect_error(otworz_material("W01", format = "R", zrodlo = "pages", otworz = FALSE), "nie udostępnia")
   expect_error(otworz_material("W01", format = "tex", otworz = FALSE), "handoutu wykładu")
   expect_true(file.exists(otworz_material("C01", format = "R", otworz = FALSE)))
   expect_true(file.exists(otworz_material("W01", format = "tex", handout = TRUE, otworz = FALSE)))
-  for (id in sprintf("W%02d", 2:5)) {
+  for (id in sprintf("W%02d", 1:5)) {
     expect_true(file.exists(otworz_material(id, format = "R", otworz = FALSE)))
     expect_match(otworz_material(id, format = "R", zrodlo = "pages", otworz = FALSE), "/analiza.R", fixed = TRUE)
   }

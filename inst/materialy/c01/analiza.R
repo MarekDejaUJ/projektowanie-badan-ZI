@@ -1,3 +1,8 @@
+# C01: gotowe dane, tabele i wykresy ćwiczenia. Student uruchamia bloki
+# w zadanie.Rmd; obliczenia i wygląd wyników pozostają w tym skrypcie.
+
+# Zbiór S02 po regułach przygotowania: usunięcie identycznych duplikatów,
+# kod 99 jako brak i czas spoza 0–120 minut jako brak (ćwiczenie C02).
 dane_surowe <- badaniaZI::dane_przykladowe()
 przygotowane <- badaniaZI::przygotuj_ankiete(dane_surowe)
 dane <- przygotowane$dane
@@ -5,21 +10,13 @@ pozycje <- dane[paste0('pozycja_', 1:6)]
 pozycje$pozycja_3 <- badaniaZI::odwroc_pozycje(pozycje$pozycja_3)
 dane$liczba_pozycji <- rowSums(!is.na(pozycje))
 dane$indeks <- badaniaZI::indeks_ankiety(pozycje, minimum = 5L)
-B <- 1999L
-set.seed(202627)
-formatuj_wynik <- function(x) {
-  wynik <- x
-  kolumny_p <- names(wynik)[grepl('^p($|_)', names(wynik))]
-  for (nazwa in kolumny_p) if (is.numeric(wynik[[nazwa]]))
-    wynik[[nazwa]] <- format.pval(wynik[[nazwa]], digits = 3, eps = 0.001)
-  wynik
-}
 tabela_glowna <- head(dane[c('id_odpowiedzi', 'grupa', 'czas_wyszukiwania', 'powodzenie')], 6)
 wynik_glowny <- data.frame(N_surowe = nrow(dane_surowe), N_po = nrow(dane), kolumny = ncol(dane))
-wynik_klasyczny <- tabela_glowna[2, , drop = FALSE]
-wynik_permutacyjny <- data.frame(status = 'nie dotyczy pytania C01')
-efekt <- data.frame(status = 'brak inferencji na C01')
-wykres_glowny <- ggplot2::ggplot(head(dane, 20), ggplot2::aes(x = seq_len(20), y = czas_wyszukiwania)) + ggplot2::geom_point(size = 2, colour = '#0072B2') + ggplot2::labs(x = 'Kolejne rekordy', y = 'Czas [min]', title = 'Pierwsze rekordy zadania') + badaniaZI::theme_zi()
+kolory <- badaniaZI::paleta_zi()
+
+# Wszystkie ważne czasy S02 na jednej osi, z kwartylami.
+wykres_glowny <- badaniaZI::wykres_punkty_os(dane$czas_wyszukiwania,
+  os = 'Czas wyszukiwania [min]', tytul = 'Czasy wszystkich osób S02')
 
 # Mały, odrębny przykład umożliwia sprawdzenie każdego licznika i mianownika.
 mini <- data.frame(
@@ -29,16 +26,6 @@ mini <- data.frame(
   powodzenie = c(1, 1, 0, NA, 1, 0)
 )
 czasy <- mini$czas_min
-slownik_start <- data.frame(
-  kolumna = c('id_odpowiedzi', 'grupa', 'czas_wyszukiwania', 'powodzenie',
-              'pozycja_1', 'czestosc_korzystania'),
-  znaczenie = c('Identyfikator rekordu osoby', 'Nowi lub doświadczeni użytkownicy',
-                'Obserwowany czas w minutach', 'Wynik zadania: 0 = nie, 1 = tak',
-                'Deklaracja: szybko znajduję pole wyszukiwania',
-                'Deklarowana częstość korzystania: 1–5'),
-  skala = c('identyfikator', 'nominalna', 'ilorazowa', 'nominalna',
-            'porządkowa', 'porządkowa')
-)
 
 # Funkcja pokazuje, które wiersze faktycznie wchodzą do danego podsumowania.
 odczytaj_mianownik <- function(tabela, zmienna) {
@@ -76,13 +63,27 @@ odczyt_polecen <- data.frame(
 )
 wykres_mini <- ggplot2::ggplot(mini[!is.na(mini$czas_min), ],
                                ggplot2::aes(x = id, y = czas_min)) +
-  ggplot2::geom_point(size = 3, colour = '#0072B2') +
+  ggplot2::geom_point(size = 3, colour = kolory[['primary']]) +
   ggplot2::geom_hline(yintercept = mean(czasy, na.rm = TRUE),
-                     linetype = 2, colour = '#D55E00') +
+                     linetype = 2, colour = kolory[['accent']]) +
+  ggplot2::annotate('text', x = 0.6, y = mean(czasy, na.rm = TRUE), label = 'średnia 8 min',
+                    vjust = -0.6, hjust = 0, size = 3.3) +
   ggplot2::labs(x = 'Identyfikator osoby', y = 'Czas [min]',
                  title = 'Pięć zmierzonych czasów',
-                 caption = 'Odrębny przykład syntetyczny; linia: średnia. Brak u04 nie jest zerem.') +
+                 caption = 'Odrębny przykład syntetyczny; osoba u04 ma nieznany czas.') +
   badaniaZI::theme_zi()
+
+# Zakres odsetka sukcesów sześciu osób zależny od nieznanego wyniku u04.
+wykres_zakresu <- badaniaZI::wykres_przedzialy(
+  'Sześć osób: zakres przy nieznanym wyniku u04', 60, 50, 400 / 6,
+  os = 'Odsetek powodzeń [%]', cyfry = 1L,
+  tytul = 'Zakres odsetka przy nieznanym wyniku')
+
+# Wpływ zmiany wyniku jednej osoby na odsetek w próbie 5 i 50 osób.
+wykres_czulosci <- badaniaZI::wykres_przedzialy(
+  c('Próba 5 osób: 4 sukcesy', 'Próba 50 osób: 40 sukcesów'), c(80, 80), c(60, 78), c(100, 82),
+  os = 'Odsetek powodzeń [%]; odcinek: zmiana wyniku jednej osoby', cyfry = 0L,
+  tytul = 'Wrażliwość odsetka na jedną osobę')
 
 # Oddzielna, syntetyczna historia do pięciu samodzielnych odpowiedzi.
 portal <- data.frame(
@@ -99,7 +100,6 @@ opis_portalu <- data.frame(
     mean(portal$czas_min,na.rm=TRUE),median(portal$czas_min,na.rm=TRUE),
     sum(!is.na(portal$sukces)),sum(portal$sukces,na.rm=TRUE),
     100*mean(portal$sukces,na.rm=TRUE)))
-rekord_portalu <- czytaj_rekord(portal,6)
 wybor_portalu <- data.frame(wyrazenie=c('portal$czas_min[3]','portal[3, "czas_min"]',
   'nrow(portal)','sum(!is.na(portal$czas_min))'),
   wynik=c(portal$czas_min[3],portal[3,'czas_min'],nrow(portal),
@@ -107,11 +107,18 @@ wybor_portalu <- data.frame(wyrazenie=c('portal$czas_min[3]','portal[3, "czas_mi
 blad_portalu <- data.frame(wariant=c('Brak pozostaje brakiem','Brak zastąpiony zerem'),
   N=c(7,8),suma_czasu=c(sum(portal$czas_min,na.rm=TRUE),sum(portal$czas_min,na.rm=TRUE)),
   srednia=c(mean(portal$czas_min,na.rm=TRUE),sum(portal$czas_min,na.rm=TRUE)/8))
-wykres_portalu <- ggplot2::ggplot(portal,ggplot2::aes(czas_min,pewnosc,shape=factor(sukces)))+
-  ggplot2::geom_point(size=2.8,colour='#0072B2',na.rm=TRUE)+
-  ggplot2::scale_shape_manual(values=c('0'=1,'1'=16),na.translate=FALSE)+
-  ggplot2::labs(x='Obserwowany czas [min]',y='Deklarowana pewność [1–5]',
-    shape='Sukces',title='Portal: deklaracja i wynik zadania')+badaniaZI::theme_zi()
+portal_wykres <- portal[!is.na(portal$czas_min), ]
+portal_wykres$wynik <- factor(ifelse(portal_wykres$sukces == 1, 'sukces', 'niepowodzenie'),
+                              levels = c('sukces', 'niepowodzenie'))
+wykres_portalu <- ggplot2::ggplot(portal_wykres, ggplot2::aes(czas_min, pewnosc, shape = wynik)) +
+  ggplot2::geom_point(size = 3, colour = kolory[['primary']]) +
+  ggplot2::geom_text(ggplot2::aes(label = id), vjust = -1, size = 3) +
+  ggplot2::scale_shape_manual(values = c(sukces = 16, niepowodzenie = 1)) +
+  ggplot2::scale_y_continuous(limits = c(1, 5.5), breaks = 1:5) +
+  ggplot2::labs(x = 'Obserwowany czas [min]', y = 'Deklarowana pewność [1–5]',
+    shape = 'Wynik zadania', title = 'Portal: deklaracja i wynik zadania',
+    caption = 'Siedem osób z zapisanym czasem; osoba p04 ma nieznany czas i wynik.') +
+  badaniaZI::theme_zi()
 
 # Warstwa prezentacji: w Rmd wystarczy przypisanie oraz print(wynik).
 ustaw_material <- function() {
@@ -119,9 +126,9 @@ ustaw_material <- function() {
     results='asis',fig.width=6,fig.height=3.3,fig.align='center')
   invisible(NULL)
 }
-wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L) {
-  stopifnot(is.list(tabele),is.list(wykresy),is.numeric(digits),length(digits)==1L)
-  structure(list(tabele=tabele,wykresy=wykresy,tekst=tekst,digits=digits),
+wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L,markdown=list()) {
+  stopifnot(is.list(tabele),is.list(wykresy),is.list(markdown),is.numeric(digits),length(digits)==1L)
+  structure(list(tabele=tabele,wykresy=wykresy,tekst=tekst,digits=digits,markdown=markdown),
     class='zi_wydruk')
 }
 print.zi_wydruk <- function(x,...) {
@@ -135,7 +142,7 @@ print.zi_wydruk <- function(x,...) {
       cat('\n\n**',nazwa,'**\n\n',sep='')
       if(format=='latex') cat('\\begin{center}\n')
       tresc <- as.character(knitr::kable(tab,format=format,caption=NULL,
-        digits=x$digits,row.names=FALSE))
+        digits=x$digits,row.names=FALSE,format.args=list(decimal.mark=',')))
       if(format=='html') tresc <- gsub('$','&#36;',tresc,fixed=TRUE)
       cat(tresc,'\n',sep='')
       if(format=='latex') cat('\\end{center}\n')
@@ -145,6 +152,8 @@ print.zi_wydruk <- function(x,...) {
       print(tab,row.names=FALSE)
     }
   }
+  # Długie tabele tekstowe (Markdown) zawijają się w PDF i HTML.
+  for(md in x$markdown) cat(as.character(md), '\n\n', sep = '')
   if(!is.null(x$tekst)) {
     if(dokument) cat('\n\n```text\n',paste(x$tekst,collapse='\n'),'\n```\n\n',sep='')
     else cat(paste(x$tekst,collapse='\n'),'\n')
@@ -156,7 +165,6 @@ pokaz_tabele <- function(tabela,tytul='Wynik analizy',digits=3L) {
   wydruk_zi(tabele=setNames(list(tabela),tytul),digits=digits)
 }
 pokaz_wykres <- function(wykres) wydruk_zi(wykresy=list(wykres))
-
 
 slownik_obserwacji <- function() {
   tab <- data.frame(
@@ -174,10 +182,16 @@ mianowniki_obserwacji <- function(tabela) {
     'Powodzenie'=odczytaj_mianownik(tabela,'powodzenie')))
 }
 slownik_pelnego_badania <- function() {
-  # Długie nazwy i opisy w osobnych tabelach mieszczą się w szerokości A4.
-  definicje <- slownik_start[,c('kolumna','znaczenie')]
-  skale <- slownik_start[,c('kolumna','skala')]
-  wydruk_zi(tabele=list('Znaczenie zmiennych'=definicje,'Skale pomiaru'=skale))
+  # Słownik z pakietu: brzmienie pozycji, skala i kodowanie każdej kolumny S02.
+  s <- badaniaZI::slownik_zmiennych(c('id_odpowiedzi', 'grupa', 'czestosc_korzystania',
+    'czas_wyszukiwania', 'pozycja_1', 'pozycja_3', 'powodzenie', 'kanal_1'))
+  s$kodowanie[grepl('^pozycja_', s$zmienna)] <- '1–5: od 1 = zdecydowanie nie do 5 = zdecydowanie tak'
+  s$kodowanie <- gsub('--', '–', s$kodowanie, fixed = TRUE)
+  s$kodowanie[s$odwrocona] <- paste0(s$kodowanie[s$odwrocona], '; pozycja odwrócona')
+  tab <- data.frame(Kolumna = gsub('_', '\\_', s$zmienna, fixed = TRUE), Opis = s$opis,
+                    Skala = s$skala, Kodowanie = s$kodowanie)
+  wydruk_zi(markdown = list(badaniaZI::tabela_markdown(tab, c(24, 34, 13, 29),
+    'Wybrane kolumny zbioru S02: opis, skala pomiaru i kodowanie')))
 }
 podglad_badania <- function() {
   tab <- tabela_glowna

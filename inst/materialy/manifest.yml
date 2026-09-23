@@ -3,45 +3,60 @@ jednostki:
 - id: C01
   typ: cwiczenie
   tytul: 'Od rekordu do wyniku: RStudio i własna przestrzeń pracy'
+  opis: 'Odczyt wiersza, kolumny, braku i mianownika w małej tabeli; pierwsza średnia, mediana i odsetek.'
 - id: C02
   typ: cwiczenie
   tytul: 'Surowy eksport: braki, duplikaty i jawne czyszczenie'
+  opis: 'Import pliku CSV, duplikaty, kod braku 99, czas spoza zakresu i dziennik reguł przygotowania danych.'
 - id: C03
   typ: cwiczenie
   tytul: 'Portret próby: czas wyszukiwania, skuteczność i zróżnicowanie'
+  opis: 'Średnia, mediana, SD, kwartyle, histogram i dystrybuanta czasu oraz odsetek powodzeń w grupach.'
 - id: C04
   typ: cwiczenie
   tytul: 'Od pozycji do konstruktu: samoocena i wykonanie zadania'
+  opis: 'Treść sześciu pozycji ankiety, odwrócenie pozycji 3, reguła indeksu i odsetki pytania wielokrotnego wyboru.'
 - id: C05
   typ: cwiczenie
   tytul: 'Niepewność estymaty: przedział, bootstrap i test jednej próby'
+  opis: 'Błąd standardowy, przedział ufności, test t jednej średniej, bootstrap i test zmiany znaków.'
 - id: C06
   typ: cwiczenie
   tytul: 'Dwie grupy: różnica czasu lub samooceny i tasowanie etykiet'
+  opis: 'Test Welcha, przedział różnicy średnich, g Hedgesa, bootstrap w grupach i test permutacyjny.'
 - id: C07
   typ: cwiczenie
   tytul: 'Kategorie i zachowanie: tabela, chi-kwadrat i Monte Carlo'
+  opis: 'Tabela 2 × 2, liczebności oczekiwane, test chi-kwadrat, Monte Carlo, różnica proporcji i V Craméra.'
 - id: C08
   typ: cwiczenie
   tytul: 'Samoocena a wykonanie: korelacja, permutacja i prosta regresja'
+  opis: 'Korelacja Pearsona i Spearmana, test permutacyjny, bootstrap par, prosta regresja i predykcja.'
 - id: C09
   typ: cwiczenie
   tytul: 'Warsztat projektu: od scenariusza do dwóch małych analiz'
+  opis: 'Wybór scenariusza projektu, dwa pytania, estymandy, plan pomiaru i pierwszy opis własnego wariantu danych.'
 - id: C10
   typ: cwiczenie
   tytul: 'Od wyniku do raportu: interpretacja, ograniczenia i odtwarzalność'
+  opis: 'Dwie analizy własnego wariantu, wspólna interpretacja, rekomendacja i odtworzenie raportu.'
 - id: W01
   typ: wyklad
   tytul: Od potrzeby informacyjnej do projektu badania
+  opis: 'Konstrukt, wskaźnik, skala pomiaru, populacja i próba, rodzaje projektów, estymanda i hipoteza.'
 - id: W02
   typ: wyklad
   tytul: Język danych, pomiar i opis
+  opis: 'Rozkład, miary położenia i rozproszenia, wykresy rozkładu, indeks z pozycji ankiety, trafność i rzetelność.'
 - id: W03
   typ: wyklad
   tytul: Losowość, estymacja i dwa tory wnioskowania
+  opis: 'Rozkłady prawdopodobieństwa, błąd standardowy, przedział ufności, test t, wartość p, bootstrap i permutacje.'
 - id: W04
   typ: wyklad
   tytul: Porównania grup i zależności kategorii
+  opis: 'Porównanie dwóch średnich, pary pomiarów, rangi, wiele grup, tabela krzyżowa i test chi-kwadrat.'
 - id: W05
   typ: wyklad
   tytul: Korelacja, regresja i raport ilościowy
+  opis: 'Korelacja, prosta regresja, reszty, przedział predykcji, kalibracja samooceny i akapit wyniku.'
