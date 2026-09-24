@@ -59,6 +59,8 @@ Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN,
 
 Wszystkie odpowiedzi zapisujesz w pliku `zadanie.Rmd`. Rozwinięcia po CHALLENGE służą powtórce i pozostają poza oceną. PDF przedstawia wyniki oraz Twój tekst i powstaje z zapisanego pliku podczas oddania.
 
+Bloki LEARN kończą się **wzorcem zapisu** — przykładowym zdaniem, które opisuje wynik według standardu APA. Zadania CHALLENGE stosują te same wzorce do danych portalu: każde zadanie ma blok R z kompletem potrzebnych liczb, wskazówki odczytu z wzorem zdania, listę elementów akapitu i wyróżnione pole na Twój akapit.
+
 Przy każdym bloku najpierw przeczytaj dwa–trzy zdania wyjaśnienia. Przed uruchomieniem przewidź rodzaj wyniku: jedną liczbę, kolumnę, tabelę czy wykres. Po wykonaniu porównaj przewidywanie z wynikiem. Porównanie przewidywania z wynikiem jest początkiem rozumowania statystycznego, także przy prostym działaniu arytmetycznym.
 
 # Warsztat: projekt, skrypt i wynik
@@ -115,7 +117,11 @@ slownik <- slownik_obserwacji()
 print(slownik)
 ```
 
-Przykładowy odczyt: „Wynik osoby u03 to 12 minut i niepowodzenie w jednym zadaniu. Przynależność do grupy doświadczonych opisuje osobę, a przyczynę niepowodzenia wyjaśnia protokół zadania”. Tak opisujemy obserwację i zachowujemy granicę między opisem a diagnozą cech osoby.
+Przynależność do grupy doświadczonych opisuje osobę u03, a przyczynę niepowodzenia wyjaśnia protokół zadania. Opis obserwacji zachowuje granicę między wynikiem zadania a diagnozą cech osoby.
+
+**Wzorzec zapisu rekordu.** Zdanie o jednej osobie podaje identyfikator, cechę osoby, wartość z jednostką i znaczenie kodu:
+
+> Osoba u03 (grupa doświadczonych) wykonywała zadanie przez 12 min i zakończyła je niepowodzeniem (kod 0).
 
 # LEARN 2: obiekt i wartość
 
@@ -202,7 +208,9 @@ print(porownanie)
 
 Różnica 8 minut wobec 6,67 minuty wynika wyłącznie z reguły traktowania braku. Średnia 8 minut dotyczy osób z ważnym pomiarem. Jeśli pomiary przerywano w najtrudniejszych zadaniach, zmierzone osoby reprezentują łatwiejsze próby, więc poprawny rachunek wymaga także wiedzy o procesie powstawania braków.
 
-**Pytanie kontrolne:** jak dokładnie opisać średnią czasu w tabeli `mini`? Zdanie „wśród pięciu osób z zarejestrowanym czasem średnia wyniosła 8 minut; dla jednej osoby czasu brakowało” podaje wynik i zakres dostępnej informacji.
+**Wzorzec zapisu średniej przy braku (APA).** Symbol średniej *M* i liczba ważnych pomiarów *n* stoją w zdaniu razem z informacją o braku:
+
+> Średni czas wyszukiwania wyniósł *M* = 8,00 min (*n* = 5); czas jednej z sześciu osób pozostaje nieznany.
 
 ## Czytamy pierwszy wzór
 
@@ -279,7 +287,24 @@ gdzie $x_{(k)}$ oznacza $k$-tą wartość po uporządkowaniu. Średnia również
 
 Gdyby najdłuższy czas zmienił się z 12 na 22 minuty, średnia wzrosłaby do 10 minut, a mediana pozostałaby równa 8. Dlatego krótki opis zawsze nazywa miarę: „przeciętny czas” oznacza w różnych tekstach średnią albo medianę.
 
-**Przykładowa interpretacja tabeli:** „W sześciu rekordach odnotowano pięć czasów; ich średnia i mediana wyniosły po 8 minut. Sukces wystąpił w trzech spośród pięciu znanych wyników, czyli w 60%. Dla jednej osoby czas i poprawność pozostają nieznane. Opis dotyczy małej próby syntetycznej”.
+## Zapis wyniku według APA
+
+Standard APA (*Publication Manual of the American Psychological Association*, 7. wydanie, 2020) porządkuje zapis wyników w naukach społecznych. Kurs stosuje cztery zasady APA w polskiej wersji: symbol statystyczny kursywą, po nim znak równości i wartość; średnia i mediana z dwoma miejscami po przecinku i jednostką; odsetek razem z licznikiem i mianownikiem; przecinek jako separator dziesiętny.
+
+| Wynik | Zapis APA | Przykład z tabeli `mini` |
+|------------------------------|------------------------------|------------------------------|
+| Liczebność zbioru | *N* = liczba | *N* = 6 osób |
+| Liczba ważnych pomiarów | *n* = liczba | *n* = 5 czasów |
+| Średnia | *M* = wartość jednostka | *M* = 8,00 min |
+| Mediana | *Mdn* = wartość jednostka | *Mdn* = 8,00 min |
+| Zakres | minimum–maksimum jednostka | 5–12 min |
+| Odsetek | *k* z *n* (odsetek) | 3 z 5 (60%) |
+
+Table: Zapis wyników opisowych według APA
+
+**Wzorzec opisu tabeli (APA).** Akapit zaczyna od liczebności, podaje miary czasu, potem wynik zadania, a kończy granicą opisu:
+
+> W tabeli `mini` zarejestrowano czas pięciu z sześciu osób (*N* = 6, *n* = 5). Średni czas wyszukiwania wyniósł *M* = 8,00 min (*Mdn* = 8,00 min, zakres 5–12 min). Zadanie zakończyło się sukcesem u 3 z 5 osób ze znanym wynikiem (60%); czas i wynik osoby u04 pozostają nieznane. Opis dotyczy małej próby syntetycznej.
 
 # LEARN 5: wykres opisujemy słowami
 
@@ -290,7 +315,11 @@ czasy_osob <- pokaz_wykres(wykres_mini)
 print(czasy_osob)
 ```
 
-Najkrótszy czas, 5 minut, ma osoba u06, a najdłuższy, 12 minut, osoba u03. W opisie możesz napisać: „Pięć zarejestrowanych czasów mieściło się między 5 a 12 minutami, a średnia wyniosła 8 minut”. Położenie punktu opisuje czas jednego zadania; ocena kompetencji wymaga innych zadań, kryteriów poprawności i szerszego pomiaru.
+Najkrótszy czas, 5 minut, ma osoba u06, a najdłuższy, 12 minut, osoba u03. Położenie punktu opisuje czas jednego zadania; ocena kompetencji wymaga innych zadań, kryteriów poprawności i szerszego pomiaru.
+
+**Wzorzec opisu wykresu (APA).** Opis podaje zakres, średnią z *n* i osoby na krańcach:
+
+> Pięć zarejestrowanych czasów mieściło się w zakresie 5–12 min (*M* = 8,00 min, *n* = 5); najkrócej szukała osoba u06 (5 min), a najdłużej osoba u03 (12 min).
 
 Średnia jest wartością obliczoną: przy czasach 5 i 6 minut wynosi 5,5 minuty, czyli wartość leżącą między dwoma zmierzonymi czasami. W tabeli `mini` średnia 8 minut przypadkowo pokrywa się z czasem osoby u02. Statystyka opisuje zbiór.
 
@@ -314,98 +343,181 @@ Poprawa interpretacji polega często na zwężeniu zdania do mierzonej wielkośc
 
 ## Łączymy wykres z obserwacją
 
-Najkrótszy czas ma osoba u06: 5 minut i niepowodzenie. Osoba u01 pracowała 6 minut i odniosła sukces. Poprawny opis brzmi: „Krótszy czas i sukces opisują dwie różne cechy wykonania: u06 zakończyła próbę szybciej od u01, a właściwy dokument znalazła u01”.
+Najkrótszy czas ma osoba u06: 5 minut i niepowodzenie. Osoba u01 pracowała 6 minut i odniosła sukces. Krótszy czas i sukces opisują dwie różne cechy wykonania: u06 zakończyła próbę szybciej od u01, a właściwy dokument znalazła u01.
 
 Deklarację odczytujemy analogicznie. Gdy ktoś wybiera 5 na skali pewności, a obserwowane zadanie kończy się niepowodzeniem, obie wartości są poprawnie zapisane: deklaracja dotyczy oceny własnej, obserwacja — wyniku konkretnej próby. Rekord z wysoką deklaracją i niepowodzeniem zostaje w danych jako informacja o relacji deklaracji i wykonania. Część CHALLENGE stosuje rozróżnienie deklaracji i obserwacji do portalu studenckiego.
 
+**Wzorzec porównania dwóch rekordów.** Zdanie zestawia dwie osoby tymi samymi informacjami i nazywa, co je różni:
+
+> Osoba u06 zakończyła zadanie po 5 min niepowodzeniem, a osoba u01 po 6 min sukcesem; krótszy czas u06 szedł w parze z niepoprawnym wynikiem.
+
+**Wzorzec zestawienia deklaracji i obserwacji.**
+
+> Osoba zadeklarowała pewność 5 w skali 1–5, a obserwowane zadanie zakończyła niepowodzeniem po 9 min; deklaracja i wynik zadania opisują dwie różne informacje o tej osobie.
+
 # CHALLENGE — samodzielny opis portalu
 
-W pięciu zadaniach zastąp znaczniki odpowiedzi własnym tekstem. Pisz pod wynikiem, poza blokiem R, a interpretację umieszczaj w tekście; komentarz w kodzie pozostaje częścią kodu.
+W nowym scenariuszu osiem hipotetycznych osób szuka terminu składania wniosku w portalu studenckim. Obserwator zapisuje czas szukania i to, czy osoba znalazła poprawny termin; po zadaniu każda osoba deklaruje na skali 1–5 pewność, że potrafi korzystać z portalu. Liczby odczytujesz z tabel portalu, a sposób zapisu — z wzorców LEARN.
 
-## CHALLENGE 1: Portal studenta: opis rekordu
+Każde z pięciu zadań ma ten sam układ:
 
-W nowym scenariuszu osiem hipotetycznych osób szuka terminu składania wniosku w portalu studenckim. Po zadaniu deklarują pewność, że potrafią korzystać z portalu, na skali 1–5. Obserwator osobno zapisuje czas i to, czy odnaleziono poprawny termin.
+1. **Zadanie** — jedno zdanie z przedmiotem opisu.
+2. **Blok R** — uruchom go; wynik zawiera wszystkie liczby potrzebne do odpowiedzi.
+3. **Wskazówki** — gdzie w wyniku szukać informacji, jak ją nazwać i wzór zdania do uzupełnienia.
+4. **W akapicie wymagane** — elementy, które sprawdza prowadzący.
+5. **Twój akapit** — pole odpowiedzi w ramce: znacznik w nawiasie kwadratowym zastępujesz własnym tekstem, a linie komentarza nad nim i pod nim pozostawiasz bez zmian.
 
-Blok wyświetla tabelę `portal` z pięcioma kolumnami: `id`, `rok` (rok studiów), `czas_min`, `sukces` (0/1) i `pewnosc` (1–5), a pod nią rekord osoby p06 w postaci „pole — wartość”. Rozróżnij rok studiów, deklarację i obserwację.
+Akapit liczy 3–5 zdań zwykłego tekstu, bez kodu R. Liczby przepisujesz z wyniku bloku, z jednostką i mianownikiem.
+
+## CHALLENGE 1: Rekord osoby p06
+
+**Zadanie:** opisz osobę p06 trzema wynikami — czasem, sukcesem i pewnością — i wskaż dane potrzebne do oceny jej ogólnych kompetencji.
 
 ```{r s01-portal}
 obserwacje_portalu <- odczyt_portalu(numer = 6)
 print(obserwacje_portalu)
 ```
 
-**Napisz krótki akapit:** opisz p06 z podaniem wszystkich trzech wyników: czasu, sukcesu i pewności. Wskaż, jakie dodatkowe dane byłyby potrzebne do oceny ogólnych kompetencji osoby p06.
+Blok wyświetla trzy tabele: „Portal studencki — osiem osób”, „Źródło informacji w kolumnach” i „Rekord wybranej osoby” z wartościami p06 w postaci „pole — wartość”.
+
+*Wskazówki:*
+
+- Rekord czytaj wiersz po wierszu: każde pole to jedna informacja o tej samej osobie.
+- Tabela „Źródło informacji w kolumnach” mówi, które pole jest cechą osoby (rok), obserwacją (czas, sukces), a które deklaracją osoby (pewność).
+- Kod `sukces` ma znaczenie z definicji kolumny: 1 — poprawny termin, 0 — niepoprawny termin.
+- Jedno zadanie w jednym serwisie to jedna próba. Ocena ogólnych kompetencji wymaga zadań innego rodzaju i o różnej trudności oraz kryterium poprawności każdego zadania.
+- Wzór zdania: „Osoba [id] ([rok] rok studiów) szukała terminu przez [czas] min i zakończyła zadanie [wynik słownie] (kod [0 lub 1]); swoją pewność oceniła na [wartość] w skali 1–5”.
+
+*W akapicie wymagane:* (i) czas p06 z jednostką; (ii) wynik zadania słownie i kodem; (iii) deklarowana pewność ze skalą; (iv) rozróżnienie deklaracji i obserwacji; (v) co najmniej jeden rodzaj dodatkowych danych do oceny kompetencji.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S01.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S01 -->
 [UZUPELNIJ_S01]
 <!-- /odpowiedz:S01 -->
+:::
 
-## CHALLENGE 2: Skąd pochodzi wynik?
+## CHALLENGE 2: Skąd pochodzi liczba
 
-Przygotowany kod wybiera czas osoby z trzeciego wiersza na dwa sposoby, a następnie liczy rekordy i ważne czasy. W raporcie każda liczba ma jednoznaczny przedmiot.
-
-Tabela „Polecenia wskazujące źródło wyniku” ma dwie kolumny: wyrażenie R i jego wynik. Odczytaj nazwę obiektu, kolumnę oraz wiersz w każdym wyrażeniu. Odpowiedź zawiera tekst; kod pozostaje w bloku.
+**Zadanie:** wyjaśnij dwa sposoby wskazania czasu trzeciej osoby, różnicę między liczbą wierszy a liczbą ważnych czasów oraz miejsca kodu, wyniku i interpretacji w pliku.
 
 ```{r s02-adres}
 adresy <- tabela_adresow()
 print(adresy)
 ```
 
-**Napisz krótki akapit:** wyjaśnij dwa adresy czasu tej samej osoby i rozbieżność dwóch liczebności. Dodaj, gdzie zapisujesz trwały kod, gdzie pojawia się jego wynik, a gdzie wpisujesz interpretację.
+Blok wyświetla tabelę „Polecenia wskazujące źródło wyniku” (wyrażenie R i jego wynik) oraz tabelę „Znaki w wyrażeniach R” ze znaczeniem każdego znaku.
+
+*Wskazówki:*
+
+- Wyrażenie `portal$czas_min[3]` czytaj od lewej: tabela `portal`, kolumna `czas_min`, trzecia pozycja.
+- W wyrażeniu `portal[3, "czas_min"]` liczba przed przecinkiem wskazuje wiersz, a nazwa po przecinku — kolumnę.
+- `nrow(portal)` liczy wszystkie wiersze, także z brakiem; `sum(!is.na(portal$czas_min))` liczy ważne czasy. Ostatni wiersz tabeli wskazuje osobę, która różnicuje obie liczby.
+- Na stronie zadania są trzy miejsca: szary blok z poleceniem, wynik pod blokiem i pole „Twój akapit”. Polecenia zapisują trwale pliki `zadanie.Rmd` i `analiza.R`.
+- Wzór zdania: „Wyrażenia [pierwsze] i [drugie] wskazują czas osoby z trzeciego wiersza i zwracają [wartość] min; pierwsze wybiera [...], drugie [...]”.
+
+*W akapicie wymagane:* (i) oba wyrażenia i wspólny wynik z jednostką; (ii) znaczenie nawiasu kwadratowego, przecinka i znaku `$`; (iii) liczba wierszy i liczba ważnych czasów z osobą, która je różnicuje; (iv) miejsce kodu, wyniku i interpretacji.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S02.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S02 -->
 [UZUPELNIJ_S02]
 <!-- /odpowiedz:S02 -->
+:::
 
-## CHALLENGE 3: Czy brak można zastąpić zerem?
+## CHALLENGE 3: Brak czy zero
 
-Osoba przygotowująca raport proponuje wpisać zero w każdym rekordzie z brakującym czasem. Uzasadnia propozycję tym, że „wszyscy uczestnicy zostaną w analizie”. Twoim zadaniem jest ocena propozycji na podstawie jej skutku i znaczenia pomiaru.
+Osoba przygotowująca raport proponuje wpisać zero w każdym rekordzie z brakującym czasem i uzasadnia propozycję argumentem: „wszyscy uczestnicy zostaną w analizie”.
 
-Tabela „Dwie reguły potraktowania braku” zawiera dla obu reguł N, sumę czasu i średnią. Odczytaj sumy i mianowniki. Sprawdź, czy powiększenie mianownika dostarczyło nowego pomiaru.
+**Zadanie:** oceń propozycję na podstawie jej skutku dla średniej i znaczenia pomiaru.
 
 ```{r s03-mianownik}
-warianty <- pokaz_tabele(blad_portalu, "Dwie reguły potraktowania braku")
+warianty <- brak_portalu()
 print(warianty)
 ```
 
-**Napisz krótki akapit:** podaj obie średnie i ich N. Wybierz właściwy opis obecnych danych, uzasadnij go oraz wskaż jedną informację, której należałoby szukać w protokole osoby p04.
+Blok wyświetla tabelę „Dwie reguły potraktowania braku” (N, suma czasu i średnia dla obu reguł) oraz tabelę „Rekord osoby p04”.
+
+*Wskazówki:*
+
+- Suma czasu jest w obu wierszach taka sama; zmienia się mianownik N. Średnia to suma podzielona przez liczbę ważnych pomiarów: $\bar{x}=\sum x_i/n$.
+- Zero minut oznaczałoby natychmiastowe znalezienie terminu. Rekord p04 podaje, co wiadomo o osobie p04, a czego brakuje.
+- Protokół obserwacji zapisuje przebieg próby, np. przerwanie pomiaru, problem techniczny albo rezygnację. Zastanów się, który zapis wyjaśniłby brak czasu p04.
+- Wzór zdania (APA): „Średni czas wyszukiwania wyniósł *M* = [wartość] min (*n* = [liczba]); czas osoby p04 pozostaje nieznany”.
+
+*W akapicie wymagane:* (i) obie średnie z N; (ii) wybór reguły opisującej obecne dane z uzasadnieniem; (iii) jedna informacja, której należy szukać w protokole osoby p04.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S03.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S03 -->
 [UZUPELNIJ_S03]
 <!-- /odpowiedz:S03 -->
+:::
 
-## CHALLENGE 4: Krótka informacja dla opiekuna portalu
+## CHALLENGE 4: Informacja dla opiekuna portalu
 
-Opiekun potrzebuje dwóch informacji: ile trwało poszukiwanie i jak często znaleziono poprawny termin. Oczekuje opisu próby z liczbami, w którym tekst podaje także liczbę braków.
+Opiekun portalu potrzebuje dwóch informacji: ile trwało szukanie terminu i jak często znaleziono poprawny termin.
 
-Tabela „Opis portalu studenckiego” zawiera osiem wskaźników: liczbę wierszy, liczbę ważnych czasów i braków, średnią i medianę czasu, liczbę ważnych wyników, liczbę sukcesów i odsetek sukcesów. Wybierz liczby odnoszące się do pytania i sprawdź ich jednostki. Opis dotyczy obserwacji w próbie.
+**Zadanie:** napisz opis próby w stylu APA z liczbą braków i jednym ograniczeniem.
 
 ```{r s04-opis}
-podsumowanie <- pokaz_tabele(opis_portalu, "Opis portalu studenckiego")
+podsumowanie <- opis_portalu_do_raportu()
 print(podsumowanie)
 ```
 
-**Napisz krótki akapit:** podaj N, średnią i medianę czasu, liczbę sukcesów oraz odsetek ze wskazanym mianownikiem. Zakończ jednym ograniczeniem wynikającym z małej syntetycznej próby.
+Blok wyświetla tabelę „Opis portalu studenckiego” z ośmioma wskaźnikami: liczbą wierszy, liczbą ważnych czasów i braków, średnią i medianą czasu, liczbą znanych wyników, liczbą sukcesów i odsetkiem sukcesów.
+
+*Wskazówki:*
+
+- Każda miara ma własny mianownik: czas — ważne czasy, sukces — znane wyniki zadania.
+- Średnia dzieli sumę czasu przez liczbę ważnych pomiarów; mediana to środkowa wartość uporządkowanych czasów.
+- Odsetek podajesz razem z licznikiem i mianownikiem: „[k] z [n] ([odsetek]%)”.
+- Ograniczenie: w próbie siedmiu znanych wyników zmiana wyniku jednej osoby przesuwa odsetek o $100\%/7 \approx 14$ punktów procentowych.
+- Wzorzec (APA): „W portalu zarejestrowano czas [n] z [N] osób (*N* = [..], *n* = [..]). Średni czas wyszukiwania wyniósł *M* = [..] min (*Mdn* = [..] min). Poprawny termin znalazło [k] z [n] osób ze znanym wynikiem ([..]%)”.
+
+*W akapicie wymagane:* (i) N rekordów i *n* ważnych czasów; (ii) *M* i *Mdn* z jednostką; (iii) liczba sukcesów i odsetek z mianownikiem; (iv) jedno ograniczenie wynikające z małej syntetycznej próby.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S04.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S04 -->
 [UZUPELNIJ_S04]
 <!-- /odpowiedz:S04 -->
+:::
 
 ## CHALLENGE 5: Deklaracja i obserwacja
 
-Wykres „Portal: deklaracja i wynik zadania” ma na osi poziomej obserwowany czas w minutach, a na osi pionowej deklarowaną pewność 1–5. Każda z siedmiu osób z zapisanym czasem to punkt z identyfikatorem; koło pełne oznacza sukces, a koło puste niepowodzenie. Wysoka pewność i poprawny wynik to dwie informacje o osobie, a długi czas ma kilka możliwych przyczyn.
+W szkicu raportu pojawia się zdanie: „osoby pewne swoich umiejętności zawsze szybciej znajdują właściwą informację”.
 
-Uruchom blok i porównaj co najmniej dwie osoby z tabeli w CHALLENGE 1. Wykres zestawia dwie informacje o każdej osobie; korelację deklaracji z czasem liczy ćwiczenie C08.
+**Zadanie:** porównaj dwie osoby pod względem deklaracji i obserwacji, popraw zdanie ze szkicu i zaproponuj dodatkowy pomiar.
 
 ```{r s05-deklaracja, fig.cap="Portal: deklaracja i wynik zadania. Oś pozioma: obserwowany czas w minutach; oś pionowa: deklarowana pewność 1–5. Każdy punkt ma identyfikator osoby; koło pełne oznacza sukces, koło puste niepowodzenie. Osoba p04 ma nieznany czas."}
-deklaracja_i_czas <- pokaz_wykres(wykres_portalu)
+deklaracja_i_czas <- deklaracja_i_wynik()
 print(deklaracja_i_czas)
 ```
 
-**Napisz krótki akapit:** wykorzystaj dwa konkretne rekordy do porównania deklaracji i obserwacji. Popraw zdanie „osoby pewne swoich umiejętności zawsze szybciej znajdują właściwą informację” i zaproponuj jeden dodatkowy pomiar do przyszłego badania.
+Blok wyświetla tabelę „Osoby według deklarowanej pewności” (pewność, czas i wynik zadania każdej osoby, od najwyższej pewności) oraz wykres „Portal: deklaracja i wynik zadania” z tymi samymi osobami.
+
+*Wskazówki:*
+
+- W tabeli osoby o tej samej pewności stoją obok siebie; porównaj ich czas i wynik zadania.
+- Na wykresie oś pozioma to czas, oś pionowa — pewność; koło pełne oznacza sukces, koło puste niepowodzenie.
+- Zdanie ze szkicu zawiera słowo „zawsze”, więc jeden rekord wystarcza do jego sprawdzenia. Poprawione zdanie opisuje osoby z próby portalu.
+- Dodatkowy pomiar pozwala ocenić trafność deklaracji, np. kilka zadań o różnej trudności albo pomiar pewności przed zadaniem.
+- Wzór zdania: „Osoba [id] zadeklarowała pewność [wartość] i szukała [czas] min, kończąc zadanie [wynikiem], a osoba [id] przy pewności [wartość] szukała [czas] min, kończąc zadanie [wynikiem]”.
+
+*W akapicie wymagane:* (i) dwa rekordy z pewnością, czasem i wynikiem; (ii) poprawione zdanie ze szkicu; (iii) jeden dodatkowy pomiar do przyszłego badania.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S05.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S05 -->
 [UZUPELNIJ_S05]
 <!-- /odpowiedz:S05 -->
+:::
 
 # Zapis i oddanie
 

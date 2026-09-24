@@ -101,9 +101,22 @@ opis_portalu <- data.frame(
     sum(!is.na(portal$sukces)),sum(portal$sukces,na.rm=TRUE),
     100*mean(portal$sukces,na.rm=TRUE)))
 wybor_portalu <- data.frame(wyrazenie=c('portal$czas_min[3]','portal[3, "czas_min"]',
-  'nrow(portal)','sum(!is.na(portal$czas_min))'),
+  'nrow(portal)','sum(!is.na(portal$czas_min))','portal$id[is.na(portal$czas_min)]'),
   wynik=c(portal$czas_min[3],portal[3,'czas_min'],nrow(portal),
-    sum(!is.na(portal$czas_min))))
+    sum(!is.na(portal$czas_min)),portal$id[is.na(portal$czas_min)]))
+# Znaki potrzebne do odczytu wyrażeń w CHALLENGE 2.
+znaki_wyrazen <- data.frame(
+  Znak = c('[3]', '[3, "czas_min"]', '$', 'nrow()', 'is.na()', '!'),
+  Znaczenie = c('Trzecia pozycja wektora', 'Wiersz 3 (przed przecinkiem), kolumna czas_min (po przecinku)',
+                'Kolumna tabeli wybrana po nazwie', 'Liczba wierszy tabeli, także z brakami',
+                'TRUE dla brakującej wartości', 'Zaprzeczenie: !is.na() daje TRUE dla wartości ważnej'))
+# Źródło informacji w każdej kolumnie portalu: rejestr, cecha osoby, obserwacja albo deklaracja.
+zrodla_portalu <- data.frame(
+  Kolumna = c('id', 'rok', 'czas_min', 'sukces', 'pewnosc'),
+  Znaczenie = c('Identyfikator osoby', 'Rok studiów', 'Czas szukania terminu [min]',
+                '1 = poprawny termin, 0 = niepoprawny termin', 'Pewność korzystania z portalu, 1–5'),
+  `Źródło` = c('rejestr', 'cecha osoby', 'obserwacja', 'obserwacja', 'deklaracja osoby'),
+  check.names = FALSE)
 blad_portalu <- data.frame(wariant=c('Brak pozostaje brakiem','Brak zastąpiony zerem'),
   N=c(7,8),suma_czasu=c(sum(portal$czas_min,na.rm=TRUE),sum(portal$czas_min,na.rm=TRUE)),
   srednia=c(mean(portal$czas_min,na.rm=TRUE),sum(portal$czas_min,na.rm=TRUE)/8))
@@ -201,6 +214,31 @@ podglad_badania <- function() {
 slownik_odczytu <- function() pokaz_tabele(odczyt_polecen,'Polecenie i jego sens')
 odczyt_portalu <- function(numer=6L) {
   wydruk_zi(tabele=list('Portal studencki — osiem osób'=portal,
+    'Źródło informacji w kolumnach'=zrodla_portalu,
     'Rekord wybranej osoby'=czytaj_rekord(portal,numer)))
 }
-tabela_adresow <- function() pokaz_tabele(wybor_portalu,'Polecenia wskazujące źródło wyniku')
+tabela_adresow <- function() {
+  tab <- wybor_portalu
+  names(tab) <- c('Wyrażenie R', 'Wynik')
+  wydruk_zi(tabele=list('Polecenia wskazujące źródło wyniku'=tab, 'Znaki w wyrażeniach R'=znaki_wyrazen))
+}
+brak_portalu <- function() {
+  tab <- blad_portalu
+  names(tab) <- c('Reguła', 'N', 'Suma czasu [min]', 'Średnia [min]')
+  wydruk_zi(tabele=list('Dwie reguły potraktowania braku'=tab,
+    'Rekord osoby p04'=czytaj_rekord(portal,4L)), digits=2L)
+}
+opis_portalu_do_raportu <- function() {
+  # Liczebności bez miejsc po przecinku, minuty z dwoma, odsetek z jednym.
+  cyfry <- c(0, 0, 0, 2, 2, 0, 0, 1)
+  wartosc <- vapply(seq_along(cyfry), function(i)
+    formatC(opis_portalu$wartosc[i], format = 'f', digits = cyfry[i], decimal.mark = ','), character(1))
+  tab <- data.frame(`Wskaźnik` = opis_portalu$wskaznik, `Wartość` = wartosc, check.names = FALSE)
+  pokaz_tabele(tab, 'Opis portalu studenckiego')
+}
+deklaracja_i_wynik <- function() {
+  tab <- portal[order(-portal$pewnosc, portal$czas_min), c('id', 'pewnosc', 'czas_min', 'sukces')]
+  tab$sukces <- ifelse(is.na(tab$sukces), 'nieznany', ifelse(tab$sukces == 1, 'sukces', 'niepowodzenie'))
+  names(tab) <- c('Osoba', 'Pewność [1–5]', 'Czas [min]', 'Wynik zadania')
+  wydruk_zi(tabele=list('Osoby według deklarowanej pewności'=tab), wykresy=list(wykres_portalu))
+}
