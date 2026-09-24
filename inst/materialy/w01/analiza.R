@@ -33,33 +33,37 @@ wykres_etapow <- badaniaZI::diagram_etapow(
     "Co dokładnie obserwujemy lub o co pytamy?",
     "Kogo badamy, kiedy i w jakich warunkach?",
     "Jaką wielkość szacujemy i w jakiej jednostce?",
-    "Co pozwala stwierdzić wybrany projekt?"))
+    "Co pozwala stwierdzić wybrany projekt?"), tytul = "Sześć etapów rozumowania")
 
 # Przejście od zaproszenia do analizy: każda liczba opisuje inny etap.
 etapy_proby <- data.frame(
   etap = c("Zaproszeni", "Rozpoczęli zadanie", "Ukończyli ankietę", "Mają ważny indeks"),
   n = c(300, 180, 150, 142))
-wykres_lejka <- badaniaZI::wykres_przeplyw_proby(etapy_proby$etap, etapy_proby$n)
+wykres_lejka <- badaniaZI::wykres_przeplyw_proby(etapy_proby$etap, etapy_proby$n, tytul = "Przepływ próby")
 
 # Średnia i mediana czasów 2, 3, 3 i 20 minut.
 czasy_przyklad <- c(2, 3, 3, 20)
-wykres_miar <- badaniaZI::wykres_srednia_mediana(czasy_przyklad, os = "Czas [min]")
+wykres_miar <- badaniaZI::wykres_srednia_mediana(czasy_przyklad, os = "Czas [min]",
+  tytul = "Średnia i mediana czterech czasów")
 
 # Ta sama estymata różnicy 2 minut z przedziałem wąskim i szerokim.
 wykres_niepewnosci <- badaniaZI::wykres_przedzialy(
   c("Przedział wąski", "Przedział szeroki"), c(2, 2), c(1.7, -3), c(2.3, 7),
-  odniesienie = 0, os = "Różnica średnich czasów: nowi minus doświadczeni [min]")
+  odniesienie = 0, os = "Różnica średnich czasów: nowi minus doświadczeni [min]",
+  tytul = "Ta sama estymata, dwa przedziały")
 
 # Dwie filie: zmiana czasu przed i po wdrożeniu nowych filtrów w filii A.
 wykres_filii <- badaniaZI::wykres_roznica_zmian(
   przed = c(10, 8), po = c(7, 7), grupy = c("Filia A (nowe filtry)", "Filia B (bez zmiany)"),
-  kontrfakt = "Filia A przy zmianie takiej jak w filii B", os = "Średni czas [min]")
+  kontrfakt = "Filia A przy zmianie takiej jak w filii B", os = "Średni czas [min]",
+  tytul = "Różnica zmian w dwóch filiach")
 
 # Dwa rozkłady o średniej 8 minut i różnym rozrzucie.
 wykres_rozrzutu <- badaniaZI::wykres_rowne_srednie(
-  8, c(1, 4), c("SD = 1 minuta", "SD = 4 minuty"), os = "Czas [min]")
+  8, c(1, 4), c("SD = 1 minuta", "SD = 4 minuty"), os = "Czas [min]",
+  tytul = "Dwa rozkłady o tej samej średniej")
 
 # Uproszczona piramida dowodów dla pytań o skutek interwencji.
 wykres_piramidy <- badaniaZI::diagram_piramida_dowodow(c(
   "Opinia eksperta", "Opis pojedynczego przypadku", "Badanie porównawcze bez randomizacji",
-  "Badanie z randomizacją", "Przegląd systematyczny z metaanalizą"))
+  "Badanie z randomizacją", "Przegląd systematyczny z metaanalizą"), tytul = "Piramida dowodów")

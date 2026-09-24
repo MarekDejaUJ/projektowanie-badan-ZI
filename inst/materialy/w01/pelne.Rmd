@@ -258,6 +258,8 @@ Tabela „Symbole wykładu W01” zbiera oznaczenia wzorów wykładu W01. Wymowa
 | $SE$ | es e | błąd standardowy, miara precyzji estymatora | jednostka estymatora |
 | $H_0$, $H_1$ | ha zero, ha jeden | hipoteza zerowa i alternatywna o parametrze | — |
 
+Table: Symbole wykładu W01
+
 **Estymanda** jest dokładnie określoną wielkością, którą chcemy oszacować. Przykład: różnica średniego czasu między nowymi a doświadczonymi użytkownikami w określonej populacji, dla wspólnego zadania i procedury. Definicja estymandy obejmuje grupy, wynik, sposób podsumowania i warunki pomiaru. Wyrażenie „wpływ katalogu” staje się estymandą po dopisaniu grup, wyniku, podsumowania i warunków pomiaru.
 
 **Parametr** jest liczbową cechą przyjętego modelu lub populacji, np. średnią $\mu$. Estymanda może być pojedynczym parametrem albo funkcją kilku parametrów, np. różnicą $\Delta=\mu_N-\mu_D$. Cztery terminy nazywają role w rozumowaniu: estymanda to cel, parametr to liczba w populacji lub modelu, estymator to reguła obliczenia, estymata to wynik reguły.

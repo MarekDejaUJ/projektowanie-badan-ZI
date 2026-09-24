@@ -116,6 +116,24 @@
 % Rysunki z podpisem pozostają przy akapicie, który je opisuje.
 \usepackage{float}
 \floatplacement{figure}{H}
+
+% Greckie litery i symbole w tekście, tabelach i podpisach składane jak w matematyce.
+\usepackage{newunicodechar}
+\newunicodechar{μ}{\ensuremath{\mu}}
+\newunicodechar{π}{\ensuremath{\pi}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{β}{\ensuremath{\beta}}
+\newunicodechar{φ}{\ensuremath{\varphi}}
+\newunicodechar{θ}{\ensuremath{\theta}}
+\newunicodechar{ρ}{\ensuremath{\rho}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{χ}{\ensuremath{\chi}}
+\newunicodechar{Δ}{\ensuremath{\Delta}}
+\newunicodechar{√}{\ensuremath{\surd}}
+\newunicodechar{≤}{\ensuremath{\le}}
+\newunicodechar{≥}{\ensuremath{\ge}}
+\newunicodechar{≈}{\ensuremath{\approx}}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}

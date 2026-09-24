@@ -1,6 +1,6 @@
 ---
-title: 'Handout W05 — Korelacja, regresja i język raportu'
-subtitle: 'Mapa pojęć i sprawdziany rozumienia'
+title: 'Handout W05 — Korelacja, regresja i raport ilościowy'
+subtitle: 'Zarządzanie informacją — mapa pojęć i sprawdziany rozumienia — 2026/27'
 author: 'Marek Deja'
 date: '2026/27'
 lang: pl-PL
@@ -9,99 +9,105 @@ papersize: a4
 geometry: margin=2cm
 ---
 
-# Co chcemy wiedzieć?
+```{r przygotowanie, include=FALSE}
+source("analiza.R", local = knitr::knit_global(), encoding = "UTF-8")
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+                      fig.width = 6, fig.height = 3)
+```
 
-W S02 x oznacza deklarowaną użyteczność katalogu, a y obserwowany czas. Indeks nie jest testem całej kompetencji. Ujemny związek oznacza współwystępowanie wyższej oceny z krótszym czasem; krótki czas porzuconego zadania nie jest sukcesem.
+# Pytanie, estymanda i wynik
 
-Jednostką jest osoba z kompletną parą. Pytanie o korelację, średnią przewidywaną i zgodność pomiarów wymaga różnych odpowiedzi. Przed obliczeniem ustal konstrukt, skalę, populację i regułę braków.
+W S02 x oznacza deklarowaną użyteczność katalogu, a y — obserwowany czas. Indeks opisuje deklarowaną użyteczność katalogu. Ujemny związek oznacza współwystępowanie wyższej oceny z krótszym czasem; czas porzuconego zadania raport czyta obok powodzenia.
 
-| Pytanie | Estymanda | Wynik próbny |
-|---|---|---|
+Jednostką jest osoba z kompletną parą. Pytania o korelację, średnią przewidywaną i zgodność pomiarów mają trzy różne odpowiedzi. Przed obliczeniem ustala się konstrukt, skalę, populację i regułę braków.
+
+| Pytanie | Estymanda | Wynik z próby |
+|------------------------------------|----------------------------|----------------------------|
 | Jak silna jest liniowa współzmienność? | $\rho_P$ | r Pearsona |
 | Jak zgodna jest kolejność? | $\rho_S$ | $r_S$ Spearmana |
 | O ile różni się średni y na jednostkę x? | $\beta_1$ | nachylenie $b_1$ |
-| Czy samoocena trafnie podaje poziom? | np. średni błąd w porównywalnej skali | różnice, nie samo r |
+| Czy samoocena trafnie podaje poziom? | Średni błąd w porównywalnej skali | Średni błąd samooceny i granice zgodności |
 
-# Przeczytaj wzór zdaniem
+Table: Pytania o związek dwóch zmiennych
+
+# Wzory czytane zdaniem
 
 $$
 r=\frac{\sum(x_i-\bar x)(y_i-\bar y)}
-{\sqrt{\sum(x_i-\bar x)^2\sum(y_i-\bar y)^2}}.
-$$
-
-Licznik łączy odchylenia obu zmiennych od ich średnich; mianownik standaryzuje wynik. r jest bez jednostki, ma zakres [−1; 1], opisuje liniowość. Zero nie wyklucza zależności w kształcie U. Spearman jest korelacją rang, przy remisach średnich rang. Wybór metody nie sprowadza się do wyniku testu normalności.
-
-$$
+{\sqrt{\sum(x_i-\bar x)^2\sum(y_i-\bar y)^2}},\qquad
 t=r\sqrt{\frac{n-2}{1-r^2}},\quad df=n-2.
 $$
 
-To klasyczny test zerowej korelacji Pearsona; model niezależnych par dwuwymiarowo normalnych uzasadnia rozkład t. Dla wyniku Spearmana odczytujemy właściwy wynik programu, nie dopisujemy fikcyjnych df do statystyki S.
+Licznik łączy odchylenia obu zmiennych od ich średnich, a mianownik standaryzuje wynik: r jest liczbą bez jednostki z zakresu [−1; 1] i opisuje związek liniowy. Zależność w kształcie U daje r = 0. Spearman jest korelacją rang, przy remisach — średnich rang. Klasyczny test zerowej korelacji Pearsona zakłada niezależne pary z rozkładu normalnego dwóch zmiennych; wynik Spearmana raportuje się statystyką S i p podanymi przez program.
 
 # Dwa losowania, dwa pytania
 
-W permutacji przestawiamy y względem x. Zachowujemy rozkłady, zmieniamy parowanie pod hipotezą niezależności i wymienialności. W Monte Carlo dwustronne p ma postać $(k+1)/(B+1)$, gdzie k liczy $|r^*|\geq|r|$. W pełnej enumeracji dzielimy liczbę skrajnych układów przez wszystkie układy bez poprawki +1.
+Permutacja przestawia y względem x: rozkłady zostają, parowanie zmienia się przy hipotezie niezależności i wymienialności. W Monte Carlo dwustronne p ma postać $(1+\#\{|r^*_b|\geq|r|\})/(B+1)$; w pełnym wyliczeniu liczbę skrajnych układów dzieli się przez liczbę wszystkich układów.
 
-W bootstrapie losujemy całe pary ze zwracaniem. Zachowujemy relację wewnątrz osoby, aby przybliżyć niepewność współczynnika. Oddzielne losowanie kolumn zniszczyłoby tę relację. Raportujemy metodę CI i liczbę prawidłowych replik.
+```{r permutacja, fig.cap="Wszystkie 720 ustawień czasów sześciu par. Histogram r po zmianie parowania, od −0,974 do 0,974; linie przerywane przy ±0,974; cztery układy leżą na liniach, więc p = 4/720 = 0,0056."}
+print(wykres_perm)
+```
 
-Swobodne tasowanie nie uwzględnia automatycznie powtarzanych pomiarów ani klastrów. Zerowa korelacja i niezależność nie są równoważne dla wszystkich rozkładów. Zgodne p nie usuwają problemu pomiaru lub doboru próby.
+Bootstrap losuje całe pary z powtórzeniami i zachowuje relację wewnątrz osoby, aby przybliżyć niepewność współczynnika. Raport podaje metodę przedziału i liczbę replik z obliczonym współczynnikiem. Powtarzane pomiary i klastry wymagają przestawień w obrębie bloków; test permutacyjny sprawdza niezależność par, a test t — zerową korelację liniową.
 
 # Czytamy model
 
 $$
 E(Y\mid X=x)=\beta_0+\beta_1x,\qquad
-\widehat y=b_0+b_1x,\qquad e_i=y_i-\widehat y_i.
-$$
-
-$b_1$ ma jednostkę y na jednostkę x, tutaj minuty/punkt. $b_0$ dotyczy x=0, które może leżeć poza skalą. Reszta jest różnicą wyniku zaobserwowanego i przewidywanego, nie błędem wpisania danych.
-
-$$
+\widehat y=b_0+b_1x,\qquad e_i=y_i-\widehat y_i,\qquad
 R^2=1-\frac{\sum e_i^2}{\sum(y_i-\bar y)^2}.
 $$
 
-Dla OLS z wyrazem wolnym jest to część sumy kwadratów zmienności y odtworzona przez model w próbie. W regresji prostej na tych samych parach $R^2=r_P^2$, nie $r_S^2$. Nie oznacza procentu poprawnie sklasyfikowanych osób ani siły dowodu przyczynowego.
+$b_1$ ma jednostkę y na jednostkę x, tutaj minuty na punkt; $b_0$ dotyczy x = 0, poza skalą 1–5. Reszta to różnica wyniku zaobserwowanego i przewidywanego. $R^2$ to część sumy kwadratów odchyleń y od średniej przypadająca na prostą; w regresji prostej $R^2=r^2$.
 
 # Mały przykład wykładowy
 
-Sześć par: x=(1,2,2,3,4,5), y=(15,12,14,10,9,6). To celowo regularne dane dydaktyczne, inne niż pełny zbiór C08.
+Sześć par: x = (1, 2, 2, 3, 4, 5), y = (15, 12, 14, 10, 9, 6) — celowo regularne dane dydaktyczne; zbiór S02 w ćwiczeniu C08 ma `r s02$n` par i r = `r liczba(s02$r, 3L)`. Pearson: r = −0,974; t(4) = −8,668; p = 0,0010; wszystkie 720 ustawień dają 4 układy co najmniej tak skrajne, p = 0,0056. Model: $\widehat y=17{,}28-2{,}215x$, 95% CI nachylenia [−2,93; −1,51]; nachylenie porównuje osoby o różnych ocenach.
 
-Pearson: r≈−0,974; t(4)≈−8,668; p≈0,000975. Wszystkie 720 permutacji indeksów dają 4 wyniki co najmniej tak skrajne: p_perm≈0,00556. Różne procedury korzystają z różnych rozkładów odniesienia.
+```{r pasma, fig.height=3.4, fig.cap="Sześć par z prostą regresji. Oś pozioma: deklarowana użyteczność 1–5; oś pionowa: czas w minutach. Punkty a–f leżą wzdłuż prostej od 15 do 6 minut. Przy x = 3 prognoza 10,63 minuty; ciemne pasmo (średnia warunkowa) obejmuje 9,67–11,59, jasne (nowa osoba) 8,11–13,16 minuty."}
+print(wykres)
+```
 
-Model: $\widehat y=17{,}277-2{,}215x$. Nachylenie około −2,22 min/punkt, 95% CI [−2,93; −1,51]. To różnica przewidywanej średniej między poziomami x, nie efekt podniesienia czyjejś odpowiedzi ankietowej.
+Szerszy przedział predykcji zawiera zmienność indywidualną. Prognoza obejmuje zakres obserwowanych x, od 1 do 5.
 
-Dla x=3: prognoza 10,63 min, CI średniej [9,67; 11,59], przedział nowej osoby [8,11; 13,16]. Szerszy przedział zawiera dodatkową zmienność indywidualną. Nie ekstrapolujemy na x=8 na skali 1–5.
+# Co sprawdzamy na wykresie
 
-# Co sprawdzamy na wykresie?
+Krzywiznę, rozrzut zależny od poziomu, skupienia, nietypowe punkty i zakres. Dźwignia dotyczy nietypowego x, reszta — odchylenia y od prostej, a odległość Cooka — wpływu punktu na dopasowanie; w sześciu parach największą dźwignię ma osoba f (0,600). Decyzja o punkcie nietypowym opiera się na sprawdzeniu rekordu. Klasyczne przedziały regresji zakładają poprawną średnią, niezależność i stałą wariancję błędów, a wnioskowanie t w małej próbie — normalność błędów.
 
-Krzywiznę, rozrzut zależny od poziomu, skupienia, nietypowe punkty i zakres. Dźwignia dotyczy nietypowego x, reszta odchylenia y od prostej, wpływ zmiany dopasowania. Punktu nie usuwa się tylko dlatego, że zmienia p.
+# Kalibracja: zgodność poziomów
 
-Klasyczne przedziały regresji wymagają założeń o średniej, niezależności i wariancji błędów; dokładne małopróbkowe wnioskowanie t również ich normalności. Test normalności nie sprawdza reprezentatywności ani trafności narzędzia.
+Pięć osób przewiduje własny wynik testu i rozwiązuje test. Każda samoocena przewyższa wynik o 20 punktów procentowych, a korelacja wynosi 1: korelacja opisuje zgodność kolejności, a kalibracja — zgodność poziomów.
+
+```{r kalibracja, fig.height=3.2, fig.cap="Kalibracja samooceny pięciu osób. Lewy panel: samoocena wobec wyniku; punkty leżą 20 punktów procentowych nad linią zgodności y = x. Prawy panel: różnica samoocena minus wynik wobec średniej obu pomiarów; wszystkie różnice wynoszą 20."}
+print(wykres_kalibracji)
+```
 
 # Trzy zdania do poprawienia
 
-„r=−0,30 to spadek kompetencji o 30%”. Korelacja nie jest procentem zmiany, a użyteczność katalogu nie jest całym konstruktem kompetencji.
+„r = −0,30 to spadek kompetencji o 30%” → „Deklarowana użyteczność katalogu i czas korelują na poziomie −0,30; korelacja opisuje siłę związku na skali od −1 do 1”.
 
-„r=1 dowodzi trafnej samooceny”. Można idealnie zachować kolejność i zawyżać każdy wynik o 20 punktów procentowych. Korelacja nie mierzy zgodności poziomów.
+„r = 1 dowodzi trafnej samooceny” → „Samooceny zachowują kolejność wyników i zawyżają każdy wynik o 20 punktów procentowych”.
 
-„CI obejmuje zero, więc nie ma żadnego związku”. Przedział pokazuje niepewność konkretnego parametru; dodatkowo liniowa miara może pomijać nieliniowy wzorzec.
+„Przedział obejmuje zero, więc związek nie istnieje” → „Przedział obejmuje zero i wartości umiarkowanie ujemne, więc dane są zgodne z brakiem związku liniowego i ze związkiem umiarkowanym; wzorzec nieliniowy wymaga wykresu”.
 
 # Akapit wyniku
 
-Podaj N kompletnych par, miarę, CI i jego metodę, odpowiedni test i p, p_perm i B. Dla regresji dodaj nachylenie z jednostką i CI, R² oraz ograniczenie diagnostyczne. Następnie odpowiedz na pytanie merytoryczne bez zamiany związku w przyczynę.
+Akapit podaje N kompletnych par, miarę, przedział z metodą, test i p, p permutacyjne i B. Dla regresji dodaje nachylenie z jednostką i przedziałem, $R^2$ oraz ograniczenie diagnostyczne. Następnie odpowiada na pytanie merytoryczne czasownikiem zgodnym z projektem.
 
-Kontekst: Hargittai (2002), Internet Skills Scale, DigComp 2.2 i ACRL. Odsyłacze: [bibliografia kursu](../wspolne/literatura.md). C08 rozwija odczyt wyników, C09 planuje argument, C10 sprawdza raport i jego odtwarzalność.
+Generatywna SI podlega tym samym regułom odczytu: sprawdzamy nazwę konstruktu, liczby, N, metodę przedziału i czasownik. Zdanie „p = 0,08 oznacza 8% szans braku efektu” poprawiamy na „przy prawdziwej $H_0$ wynik co najmniej tak skrajny zdarzałby się w 8% prób”. Interpretację student pisze samodzielnie.
 
-Generatywna SI nie zmienia reguł odczytu: sprawdź nazwę konstruktu, liczby, N, metodę CI i zgodność czasownika z projektem. Zdanie „p=0,08 oznacza 8% szans braku efektu” jest błędne niezależnie od jego autora. Nie dopisuj brakujących wyników; interpretację piszesz samodzielnie.
+# Mapa rozwinięć
 
-# Mapa rozwinięć — bez dodatkowego zadania
+| Obraz lub model | Odczyt | Warunek odczytu |
+|------------------------|----------------------------------|----------------------------------|
+| $a+b\,e^{-cx}$ | Zmienne tempo spadku średniego czasu | Asymptota jest parametrem modelu |
+| Wiolina | Gęstość i kształt rozkładu | N z etykiety grupy |
+| Pareto | Uporządkowane częstości i kumulacja | Priorytet łączy częstość z powagą problemu |
+| Koło | Rozłączny podział jednej całości | Kategorie rozłączne i wyczerpujące |
+| Mapa cieplna | Odsetek na wspólnej skali koloru | Mianownik w każdej komórce |
+| Wydajność | Opóźnienie i przepustowość przy obciążeniu | Czas serwera i czas osoby mierzone osobno |
+| Reszty cząstkowe | $e_i+b_1x_i$ względem x | Składnik modelu przy uwzględnionych zmiennych |
 
-| Obraz lub model | Co odczytujemy? | Główna pułapka |
-|---|---|---|
-| $a+b\exp(-cx)$ | Zmienne tempo spadku średniej czasu | Asymptota nie jest zmierzonym minimum |
-| Wiolina | Gęstość i kształt rozkładu | Szerokość nie musi oznaczać N |
-| Pareto | Uporządkowane częstości i kumulację | Najczęstsza bariera nie musi być najpoważniejsza |
-| Koło | Rozłączny podział jednej całości | Wielokrotny wybór osób nie sumuje się do 100% |
-| Mapa cieplna | Wartość według wspólnej skali koloru | Ten sam procent może mieć inne N |
-| Wydajność | Opóźnienie i przepustowość przy obciążeniu | Czas serwera nie jest czasem pracy osoby |
-| Reszty cząstkowe | $e_i+b_1x_i$ względem x | Składnik modelu nie jest całkowitym czasem ani dowodem przyczynowym |
+Table: Galeria rozszerzeń i warunki odczytu
 
-Pełny wykład zawiera gotowe wykresy, liczby i komentarze do każdego przypadku. Galeria służy rozpoznawaniu sposobów prezentacji, nie oznacza obowiązku stosowania wszystkich metod w projekcie.
+Kontekst: Hargittai (2002), Internet Skills Scale, DigComp 2.2 i ACRL; pełne odnośniki zawiera wykład. Ćwiczenie C08 rozwija odczyt wyników, C09 planuje argument, a C10 sprawdza raport i jego odtwarzalność.

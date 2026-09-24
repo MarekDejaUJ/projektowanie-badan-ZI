@@ -1,5 +1,5 @@
 ---
-title: 'W05 — Od współzmienności do argumentu: korelacja, regresja i raport'
+title: 'W05 — Korelacja, regresja i raport ilościowy'
 subtitle: 'Zarządzanie informacją — część ilościowa — 2026/27'
 author: 'Marek Deja'
 date: '2026/27'
@@ -9,56 +9,80 @@ papersize: a4
 geometry: margin=2cm
 ---
 
-Przygotowany plik `analiza.R` oblicza przykłady i rysuje wykresy. Dane sześciu osób są celowo małe i hipotetyczne, aby można było prześledzić każdą parę. Nie są wynikami żadnego z cytowanych badań.
-
 ```{r przygotowanie, include=FALSE}
-knitr::opts_chunk$set(echo=FALSE,message=FALSE,warning=FALSE,results='asis',
-  fig.width=6,fig.height=3.3,fig.align='center')
-source('analiza.R',local=knitr::knit_global(),encoding='UTF-8')
+source("analiza.R", local = knitr::knit_global(), encoding = "UTF-8")
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+                      fig.width = 6, fig.height = 3.3, fig.align = "center")
 ```
+
+Wykład W05 łączy dwa wyniki tej samej osoby: korelacją, regresją prostą i kalibracją, a potem przekłada wynik na akapit raportu. Skrypt `analiza.R` zapisany w folderze wykładu liczy przykłady i rysuje wykresy; kod skryptu pozostaje ukryty. Dane sześciu osób są hipotetyczne i przygotowane dla wykładu, aby każdą parę dało się prześledzić ręcznie. Każdy wykres ma w tekście słowny opis osi, wartości i wniosku.
 
 # Dwie osoby, dwa rodzaje dowodów
 
-Bibliotekarka słyszy: „katalog jest dla mnie łatwy”. Następnie obserwuje, jak ta sama osoba szuka dokumentu przez kilkanaście minut. Czy deklaracja była nietrafna? Niekoniecznie: zadanie mogło być trudne, osoba mogła dokładnie weryfikować źródło, a katalog mógł dobrze wspierać złożone wyszukiwanie. Zestawienie odpowiedzi z zachowaniem zaczyna pytanie badawcze, nie rozstrzyga go.
+Bibliotekarka słyszy: „katalog jest dla mnie łatwy”. Następnie obserwuje, jak ta sama osoba szuka dokumentu przez kilkanaście minut. Długi czas ma trzy wyjaśnienia zgodne z trafną deklaracją: trudne zadanie, dokładna weryfikacja źródła i dobre wsparcie złożonego wyszukiwania. Zestawienie odpowiedzi z zachowaniem otwiera pytanie badawcze.
 
-Wspólny scenariusz kursu zawiera indeks deklarowanej użyteczności katalogu, czas oraz powodzenie zadania. Nie nazywamy indeksu ogólną kompetencją informacyjną. W oddzielnych przykładach rozważymy samoocenę umiejętności i jej kalibrację, ale nie zmienimy wstecznie znaczenia sześciu pozycji S02.
+Zbiór S02 zawiera indeks deklarowanej użyteczności katalogu, czas i powodzenie zadania. Indeks S02 zachowuje w całym wykładzie znaczenie deklarowanej użyteczności katalogu; samoocenę umiejętności i jej kalibrację omawia osobny przykład w części „Kalibracja samooceny: zgodność poziomów”.
 
-Korelacja pyta o współzmienność. Regresja prosta opisuje przewidywaną średnią jednego wyniku przy danym poziomie drugiej zmiennej. Zgodność dwóch pomiarów pyta jeszcze o coś innego. Żaden z tych rachunków sam nie dowodzi mechanizmu przyczynowego.
+Korelacja opisuje współzmienność. Regresja prosta opisuje przewidywaną średnią jednego wyniku przy danym poziomie drugiej zmiennej. Zgodność dwóch pomiarów dotyczy równości ich poziomów. Wniosek o mechanizmie przyczynowym wymaga projektu przyczynowego dla każdego z trzech rachunków.
 
-Rdzeń 90 minut: 15 minut na pomiar i pary, 20 na wykres i współczynniki, 20 na wnioskowanie klasyczne oraz permutację, 20 na regresję i niepewność, 15 na krytyczny akapit raportu. Rozwinięcia o kalibracji i diagnostyce służą także samodzielnej pracy przed C08–C10.
+# Trzy źródła danych w badaniach LIS: log, ankieta i obserwacja
 
-# Dlaczego badania LIS potrzebują więcej niż ankiety
+Hargittai (2002) zestawia informacje o zachowaniu internetowym z różnymi sposobami pomiaru umiejętności. Każde z trzech źródeł mierzy wycinek kompetencji: log — zdarzenia zapisane przez system, ankieta — deklaracje, obserwacja — działanie w określonym zadaniu.
 
-Hargittai (2002) pokazuje znaczenie zestawiania informacji o zachowaniu internetowym z różnymi sposobami pomiaru umiejętności. Logi opisują zdarzenia zapisane przez system, ankieta deklaracje, a obserwacja działanie w określonym zadaniu. Żaden z tych śladów nie jest przezroczystym odczytem całej kompetencji.
+Internet Skills Scale van Deursena, Helsper i Eynona porządkuje obszary samoopisu umiejętności, a DigComp 2.2 i ACRL dostarczają języka obszarów kompetencji i praktyk informacyjnych. Odwołanie do ISS, DigComp 2.2 i ACRL wspiera uzasadnienie operacjonalizacji; walidacja autorskiego zestawu pytań wymaga osobnego badania.
 
-Internet Skills Scale van Deursena, Helsper i Eynona porządkuje obszary samoopisu umiejętności. DigComp 2.2 oraz ACRL dostarczają języka obszarów kompetencji i praktyk informacyjnych. Odwołanie do tych ram pomaga uzasadnić operacjonalizację, ale nie nadaje walidacji autorskiemu zestawowi pytań.
+Transformacja cyfrowa biblioteki zmienia jednocześnie interfejs, dostęp do zasobów, wymagania wobec użytkowników i organizację wsparcia. Spadek czasu wyszukiwania po zmianie interfejsu i organizacji wsparcia prowadzi do trzech pytań: kto pozostał użytkownikiem, jakie zadania wykonywano i czy definicja czasu pozostała taka sama. Wiedza o transformacji instytucji dostarcza kontekstu do odczytu wyniku statystycznego.
 
-Transformacja cyfrowa biblioteki może zmienić jednocześnie interfejs, dostęp do zasobów, wymagania wobec użytkowników i organizację wsparcia. Jeśli po takiej zmianie czas wyszukiwania spada, trzeba zapytać, kto pozostał użytkownikiem, jakie zadania wykonywano i czy zachowano tę samą definicję czasu. To kontekst dla danych, nie konkurencja wobec statystyki.
-
-Pytanie na dziś brzmi: czy lepsza deklarowana ocena katalogu współwystępuje z krótszym obserwowanym czasem? Ujemny znak byłby zgodny z takim opisem. Krótszy czas nie musi jednak oznaczać lepszego wykonania, jeśli obejmuje również szybkie porzucenie zadania. W raporcie czas trzeba czytać obok powodzenia.
+Pytanie wykładu brzmi: czy wyższa deklarowana ocena katalogu współwystępuje z krótszym obserwowanym czasem? Ujemny znak współczynnika byłby zgodny ze współwystępowaniem wyższej oceny z krótszym czasem. Krótszy czas oznacza lepsze wykonanie przy zakończonym sukcesie; szybkie porzucenie zadania też skraca czas, więc raport czyta czas obok powodzenia.
 
 # Pary, populacja i estymanda
 
-Obserwacją jest osoba z parą $(x_i,y_i)$. $x$ oznacza indeks użyteczności, $y$ czas w minutach. Nie wystarczy, że obie kolumny mają po sto liczb: wartości w jednym wierszu muszą należeć do tej samej osoby.
+Obserwacją jest osoba z parą $(x_i,y_i)$: $x$ oznacza indeks użyteczności, a $y$ — czas w minutach. Para łączy dwa wyniki tej samej osoby w jednym wierszu.
 
-Dla korelacji Pearsona estymandą jest populacyjna korelacja liniowa $\rho_P$, a estymatą próbna wartość $r$. Dla Spearmana interesuje nas korelacja rangowa $\rho_S$, estymowana przez $r_S$. Symbol $\rho$ bywa używany w programach także jako etykieta próbnego współczynnika Spearmana; zawsze ustalamy, czy zdanie dotyczy parametru czy wyniku próby.
+Dla korelacji Pearsona estymandą jest populacyjna korelacja liniowa $\rho_P$, a estymatą — współczynnik z próby $r$. Dla Spearmana estymandą jest korelacja rangowa $\rho_S$, estymowana przez $r_S$. Programy podpisują czasem współczynnik Spearmana z próby literą $\rho$; wykład używa $r_S$ dla próby i $\rho_S$ dla populacji.
 
-Dla regresji estymandą może być nachylenie $\beta_1$ w modelu średniej warunkowej czasu. Jednostka to minuty na punkt indeksu. To inne pytanie niż „jak silny jest związek po standaryzacji?”. Jedno możemy opisać współczynnikiem bez jednostki, drugie w naturalnych jednostkach pomiaru.
+Dla regresji estymandą jest nachylenie $\beta_1$ prostej średniego czasu (model w części „Regresja: zmiana przewidywanej średniej”). Jednostką nachylenia są minuty na punkt indeksu, a korelacja jest liczbą bez jednostki: pierwsza wielkość opisuje zmianę w naturalnych jednostkach pomiaru, druga — siłę związku po standaryzacji.
 
-Braki prowadzą do liczby kompletnych par, która może być mniejsza od liczby ważnych indeksów i od liczby ważnych czasów. Nie można po usunięciu braków z każdej kolumny osobno skleić pozostałych liczb według kolejności. Zmienilibyśmy wówczas osoby tworzące pary.
+Braki prowadzą do liczby kompletnych par, mniejszej lub równej liczbie ważnych indeksów i liczbie ważnych czasów. Usuwanie braków obejmuje cały wiersz, więc pary zachowują osoby.
+
+## Oznaczenia wykładu W05
+
+| Symbol | Znaczenie |
+|------------------------|------------------------------------------------------------------------|
+| $x_i$, $y_i$, $\bar{x}$, $\bar{y}$, $s_x$, $s_y$ | Wyniki osoby $i$; średnie i SD obu zmiennych |
+| $s_{xy}$, $r$, $\rho_P$ | Kowariancja z próby; korelacja Pearsona z próby i w populacji |
+| $r_S$, $\rho_S$, $D_i$, $S$ | Korelacja Spearmana z próby i w populacji; różnica rang osoby; suma $D_i^2$ |
+| $z_r$ | Transformacja Fishera współczynnika $r$ |
+| $\beta_0$, $\beta_1$, $b_0$, $b_1$ | Wyraz wolny i nachylenie w populacji; ich estymaty |
+| $E(Y\mid X=x)$, $\varepsilon_i$ | Średnia Y wśród osób z X = x; odchylenie osoby od średniej warunkowej |
+| $\widehat{y}_i$, $e_i$, $s_e$ | Wartość przewidywana; reszta $y_i-\widehat{y}_i$; SD reszt |
+| $R^2$, $SSE$, $SST$ | Współczynnik determinacji; suma kwadratów reszt; suma kwadratów od średniej |
+| $h_i$, $D^{C}_i$ | Dźwignia osoby; odległość Cooka |
+| $B$, $\#$ | Liczba powtórzeń; liczba przypadków spełniających warunek |
+
+Table: Oznaczenia wykładu W05
 
 # Wykres poprzedza współczynnik
 
-Na wykresie rozrzutu pozycja punktu mówi o dwóch wynikach tej samej osoby. Patrzymy na kierunek, kształt, skupienia, zakres i nietypowe punkty. Linia nie jest zbiorem wyników wszystkich osób, a pasmo wokół niej nie obejmuje z definicji 95% punktów.
+Punkt na wykresie rozrzutu przedstawia dwa wyniki tej samej osoby. Odczyt obejmuje kierunek, kształt, skupienia, zakres i nietypowe punkty. Linia przedstawia średni czas przewidywany przy danej ocenie, a pasmo wokół linii — 95% przedział ufności średniej warunkowej.
 
-W małej demonstracji sześć osób podało ocenę 1–5 i wykonało zadanie w różnym czasie. Dane są dobrane do pokazania wyraźnej tendencji. Nie należy oczekiwać równie regularnego wzorca w głównym zbiorze C08.
+Kwartet Anscombe'a uzasadnia zasadę „wykres przed współczynnikiem”: cztery zbiory po 11 par mają prawie te same średnie, wariancje, korelację 0,82 i prostą regresji.
 
-```{r mini}
-knitr::kable(mini[c('osoba','x','y')])
-wykres
+```{r anscombe, fig.height=4.2, fig.cap="Kwartet Anscombe'a: ta sama korelacja, cztery układy. Cztery panele, w każdym 11 punktów i ta sama prosta regresji; r = 0,82 we wszystkich zbiorach. Zbiór 1: chmura punktów wokół prostej. Zbiór 2: punkty na łuku. Zbiór 3: punkty na prostej z jednym punktem wysoko nad nią. Zbiór 4: dziesięć punktów w pionowej kolumnie przy x = 8 i jeden punkt przy x = 19."}
+print(wykres_anscombe)
 ```
 
-Przy ocenie 2 występują dwa różne czasy. To najprostszy sygnał, że x nie wyznacza y jednoznacznie. Nawet gdy ogólny związek jest silny, osoby o podobnej ocenie mogą zachowywać się inaczej.
+W małej demonstracji sześć osób (a–f) podało ocenę 1–5 i wykonało zadanie. Tabela „Sześć par” podaje oceny x = 1, 2, 2, 3, 4, 5 i czasy y = 15, 12, 14, 10, 9, 6 minut. Dane są dobrane do przedstawienia wyraźnej tendencji; zbiór S02 analizowany w ćwiczeniu C08 (Samoocena a wykonanie: korelacja, permutacja i prosta regresja) ma związek znacznie słabszy: `r s02$n` par, r = `r liczba(s02$r, 3L)`, $r_S$ = `r liczba(s02$r_s, 3L)`.
+
+```{r mini}
+badaniaZI::tabela_markdown(pary_do_druku, c(20, 40, 40), "Sześć par: ocena i czas")
+```
+
+```{r wykres-mini, fig.height=3.6, fig.cap="Sześć par do nauki odczytu. Oś pozioma: deklarowana użyteczność katalogu 1–5; oś pionowa: czas w minutach. Sześć punktów a–f układa się wzdłuż malejącej prostej od 15 minut przy x = 1 do 6 minut przy x = 5; przy x = 2 leżą dwa punkty, 12 i 14 minut. Ciemne pasmo wokół prostej to 95% przedział średniej warunkowej, jasne — 95% przedział predykcji; linia przerywana przy x = 3 wskazuje średnią 10,63 minuty."}
+print(wykres)
+```
+
+Dwa czasy przy ocenie 2, 12 i 14 minut, oznaczają, że ocena wyznacza czas z rozrzutem: osoby o tej samej ocenie działają różnie także przy silnym związku ogólnym.
 
 # Czytamy kowariancję i r
 
@@ -68,88 +92,95 @@ s_{xy}=\frac{\sum_{i=1}^n(x_i-\bar x)(y_i-\bar y)}{n-1},
 r=\frac{s_{xy}}{s_xs_y}.
 $$
 
-Najpierw ustalamy, czy wynik każdej zmiennej leży powyżej czy poniżej swojej średniej. Iloczyn dwóch odchyleń jest dodatni, gdy znaki są takie same, a ujemny, gdy są przeciwne. Uśrednienie tych iloczynów opisuje kierunek współzmienności.
-
-Kowariancja ma jednostkę będącą iloczynem jednostek x i y. Podzielenie jej przez iloczyn SD usuwa jednostki i daje r z zakresu od −1 do 1. Zmiana minut na sekundy nie zmienia r. Zmieni natomiast kowariancję i nachylenie wyrażone w jednostkach czasu.
-
-Poniższa tabela odsłania licznik. Dla osoby z niskim x i wysokim y odchylenia mają przeciwne znaki. W tym przykładzie takie iloczyny przeważają.
+Najpierw ustala się, czy wynik każdej zmiennej leży powyżej, czy poniżej swojej średniej. Iloczyn dwóch odchyleń jest dodatni przy tych samych znakach i ujemny przy przeciwnych; uśrednienie iloczynów opisuje kierunek współzmienności. Tabela „Odchylenia od średnich i ich iloczyny” podaje odchylenia od średnich ($\bar{x}=2{,}83$, $\bar{y}=11$) i ich iloczyny. Wszystkie sześć iloczynów jest ujemnych, od −0,17 (osoba d) do −10,83 (osoba f); suma wynosi −24, więc $s_{xy}=-24/5=-4{,}8$.
 
 ```{r odchylenia}
-knitr::kable(mini[c('osoba','dx','dy','iloczyn')],digits=3)
+badaniaZI::tabela_markdown(odchylenia_do_druku, c(16, 28, 28, 28), "Odchylenia od średnich i ich iloczyny")
 ```
 
-$r=-1$ opisuje idealną malejącą prostą, nie „najgorszy wynik”. Znak zależy od kierunku skal. Gdy czas zamienimy na wskaźnik, w którym większa liczba oznacza sprawniejsze działanie, znak może się odwrócić bez zmiany opisywanego zachowania.
+Kowariancja ma jednostkę będącą iloczynem jednostek x i y. Podzielenie jej przez iloczyn SD usuwa jednostki: $r=-4{,}8/(1{,}472\cdot3{,}347)=-0{,}974$, wartość z zakresu od −1 do 1. Przeliczenie minut na sekundy pozostawia r bez zmian i zmienia kowariancję oraz nachylenie wyrażone w jednostkach czasu.
 
-$r=0$ oznacza brak liniowej współzmienności, nie brak każdej zależności. Współczynnik wymaga zmienności obu zmiennych; dla identycznych ocen wszystkich osób nie otrzymamy informatywnego r. Wąski zakres ocen ogranicza także możliwość obserwowania związku, który mógłby wystąpić w bardziej zróżnicowanej populacji.
+$r=-1$ opisuje punkty leżące dokładnie na malejącej prostej. Znak zależy od kierunku skal: zamiana czasu na wskaźnik sprawności, w którym większa liczba oznacza szybsze działanie, odwraca znak przy tym samym zachowaniu.
+
+$r=0$ oznacza zerową liniową współzmienność; zależność w kształcie U daje $r=0$ i $r_S=0$ (wykres „Zależność monotoniczna i zależność w kształcie U”). Współczynnik wymaga zmienności obu zmiennych, a wąski zakres ocen ogranicza możliwość obserwowania związku obecnego w bardziej zróżnicowanej populacji. Wykres „Cztery wartości r” kalibruje odczyt współczynnika.
+
+```{r galeria-r, fig.height=3.2, fig.cap="Cztery wartości r: cztery panele po 100 syntetycznych par o r = 0; −0,3; −0,6 i −0,9 z prostą regresji. Przy r = 0 chmura jest okrągła, a prosta pozioma; przy r = −0,3 szeroka chmura ma lekki spadek; przy r = −0,6 chmura jest wyraźnie wydłużona; przy r = −0,9 punkty tworzą wąskie pasmo wzdłuż malejącej prostej."}
+print(wykres_galerii_r)
+```
 
 # Rangi i monotoniczność
 
-Spearman to korelacja Pearsona obliczona na rangach. Ranga określa pozycję w uporządkowanym zbiorze. W małej demonstracji obie osoby z x=2 otrzymują średnią rangę 2,5, ponieważ zajmują miejsca drugie i trzecie.
+Spearman to korelacja Pearsona obliczona na rangach. Ranga określa pozycję w uporządkowanym zbiorze; osoby b i c z x = 2 zajmują miejsca drugie i trzecie, więc otrzymują średnią rangę 2,5. Rangi zachowują kolejność wartości: czasy 6 i 9 minut dostają rangi 1 i 2 niezależnie od odstępu, a przedmiotem opisu staje się zgodność kolejności.
 
-Rangi zachowują informację o kolejności, ale nie o odległościach. Różnica czasu między 6 a 9 minutami nie jest traktowana tak samo jak odstęp liczbowy w korelacji Pearsona; liczy się porządek. To zmienia przedmiot opisu, a nie jedynie technikę liczenia p.
+Bez remisów współczynnik Spearmana ma postać skróconą:
 
-Tabela pozwala sprawdzić remisy. Nie stosujemy bezrefleksyjnie skróconego wzoru $1-6\sum d_i^2/[n(n^2-1)]$, którego prosta postać zakłada brak remisów. Gotowy skrypt korzysta z korelacji średnich rang.
+$$
+r_S=1-\frac{6\sum_{i=1}^{n}D_i^2}{n(n^2-1)},
+$$
+
+gdzie $D_i$ to różnica rang osoby $i$. Przy remisach R liczy korelację Pearsona na średnich rangach. Tabela „Rangi sześciu par” podaje rangi i ich różnice: osoby b i c mają rangę x 2,5, a rangi y maleją od 6 (osoba a, 15 minut) do 1 (osoba f, 6 minut); $r_S=-0{,}986$, a statystyka $S=\sum D_i^2=69{,}5$.
 
 ```{r rangi}
-knitr::kable(mini[c('osoba','ranga_x','ranga_y')])
+badaniaZI::tabela_markdown(rangi_do_druku, c(12, 10, 16, 10, 16, 36), "Rangi sześciu par")
 ```
 
-Wybór metody wynika z pytania, skali i kształtu związku. Nie sprowadza się do zasady „Shapiro p<0,05, więc Spearman”. Sama możliwość obliczenia r nie wymaga normalnych rozkładów; dodatkowe założenia są potrzebne do określonych klasycznych testów i przedziałów.
+Wybór metody wynika z pytania, skali i kształtu związku. Obliczenie r wymaga par liczb; klasyczny test i przedział dodają założenie normalności. Krzywa monotoniczna daje $r=-0{,}82$ i $r_S=-1$; kształt U daje $r=0$ i $r_S=0$ przy regularnej zależności.
 
-Wykresy pokazują monotoniczną krzywą i relację w kształcie U. Spearman dobrze streszcza pierwszą kolejność, ale w drugim przypadku niskie współczynniki nie wykluczają regularnej zależności. Zamiana wartości na rangi nie prostuje każdej krzywej.
-
-```{r ksztalty}
-wykres_ksztaltow
+```{r ksztalty, fig.height=3, fig.cap="Zależność monotoniczna i zależność w kształcie U. Lewy panel: czas maleje od 30 do 3,3 minuty wzdłuż krzywej 30/x; r = −0,82, rS = −1. Prawy panel: czas spada od 18 do 2 minut przy x = 5 i rośnie do 18 minut przy x = 9; r = 0 i rS = 0."}
+print(wykres_ksztaltow)
 ```
 
 # Klasyczny test i przedział korelacji
 
-Dla testu $H_0:\rho_P=0$ używamy statystyki:
+Dla testu $H_0:\rho_P=0$ używa się statystyki:
 
 $$
 t=r\sqrt{\frac{n-2}{1-r^2}},\qquad df=n-2.
 $$
 
-Licznik odzwierciedla wielkość współczynnika i liczbę par, mianownik uwzględnia jego ograniczony zakres. Im większe $|r|$ przy tym samym N, tym dalej statystyka leży od zera. W klasycznym modelu niezależnych par z dwuwymiarowego rozkładu normalnego statystyka pod hipotezą zerową ma rozkład t.
+Licznik odzwierciedla wielkość współczynnika i liczbę par, a mianownik — jego ograniczony zakres; większe $|r|$ przy tym samym N przesuwa statystykę dalej od zera. W klasycznym modelu niezależnych par z rozkładu normalnego dwóch zmiennych (każda zmienna ma rozkład normalny, a związek jest liniowy) statystyka ma przy hipotezie zerowej rozkład t. Niezależność dotyczy par różnych osób; związek x i y w parze jest przedmiotem badania. Wielokrotne sesje jednej osoby wymagają modelu z osobą jako jednostką.
 
-Niezależne mają być pary między osobami, nie x i y w obserwowanym świecie — ich zależność właśnie badamy. Wielokrotne sesje jednej osoby wymagają innego uwzględnienia struktury. Poprawne df nie naprawią błędnej jednostki analizy.
+Przedział dla $\rho_P$ powstaje z transformacji Fishera, której rozkład jest bliski normalnemu:
 
-Poniżej r, test i przybliżony CI z transformacji Fishera dotyczą tego samego parametru liniowego. Ostatnia kolumna to odrębny współczynnik rangowy. Nie odczytujemy CI Pearsona jako przedziału Spearmana.
+$$
+z_r=\tfrac12\ln\frac{1+r}{1-r},\qquad SE(z_r)=\frac{1}{\sqrt{n-3}},\qquad z_r\pm1{,}96\,SE(z_r)\ \xrightarrow{\ \tanh\ }\ [\rho_{\mathrm{dol}};\ \rho_{\mathrm{góra}}].
+$$
+
+Dla $r=-0{,}974$ i $n=6$: $z_r=-2{,}173$, $SE=0{,}577$, granice $-3{,}304$ i $-1{,}041$, a po przekształceniu funkcją $\tanh$ — przedział [−0,997; −0,778]. Tabela „Korelacja sześciu par” podaje $r=-0{,}974$, $t(4)=-8{,}668$, $p=0{,}0010$, przedział z transformacji Fishera i $r_S=-0{,}986$; przedział z transformacji Fishera dotyczy $\rho_P$.
 
 ```{r test}
-knitr::kable(formatuj_wynik(korelacja),digits=4)
+badaniaZI::tabela_markdown(korelacja, c(60, 40), "Korelacja sześciu par")
 ```
 
-W demonstracji $r\approx-0{,}974$, $t(4)\approx-8{,}668$, p≈0,000975. Przedział Pearsona jest silnie ujemny, ale sześć celowo dobranych punktów nie jest podstawą do ogólnej tezy o użytkownikach bibliotek. Precyzja obliczenia i wartość dowodu badawczego nie są tym samym.
+Przedział Pearsona [−0,997; −0,778] opisuje precyzję w sześciu celowo dobranych parach; zakres uogólnienia wyznacza dobór próby. Wynik Spearmana raportuje się jako $r_S$, statystykę S, przybliżone p i przedział bootstrapowy.
 
-Dla Spearmana z remisami C08 podaje przybliżone p, statystykę S zwracaną przez R i bootstrapowy przedział współczynnika. Nie dopisujemy S stopni swobody skopiowanych z innej analizy. Raport ma wskazać metodę niepewności, nie tylko dwie liczby w nawiasie.
+# Permutacja: zmiana parowania przy stałych rozkładach
 
-# Permutacja: zmieniamy parowanie, nie rozkłady
+Przy hipotezie niezależności i wymienialności oceny pozostają na miejscu, a czasy przestawia się między osobami. Zbiór ocen i zbiór czasów pozostają takie same, a pierwotne powiązanie znika. Dla każdego ustawienia oblicza się współczynnik wybrany przed analizą; test dwustronny liczy układy z $|r^*|\ge|r|$, czyli oba ogony.
 
-Pod hipotezą niezależności i wymienialności możemy pozostawić x na miejscu, a przestawiać y między osobami. Zbiór ocen i zbiór czasów pozostają takie same. Znika ich pierwotne powiązanie.
+Sześć czasów ma $6!=6\cdot5\cdot4\cdot3\cdot2\cdot1=720$ ustawień, a 720 układów tworzy pełny rozkład warunkowy. Remisy x sprawiają, że różne ustawienia dają ten sam współczynnik; każde ustawienie wchodzi do wyliczenia:
 
-Dla każdej permutacji obliczamy ten sam współczynnik, który wybrano przed analizą. W teście dwustronnym liczymy wyniki o wartości bezwzględnej co najmniej tak dużej jak obserwowana. Nie porównujemy ujemnego obserwowanego r tylko z prawym ogonem rozkładu.
+$$
+p=\frac{\#\{|r^*|\ge|r|\}}{6!}=\frac{`r k`}{720}=`r liczba(k / 720, 4L)` .
+$$
 
-W małym przykładzie można sprawdzić wszystkie $6!=720$ układów indeksów. Ponieważ x zawiera remisy, różne układy mogą dawać taki sam współczynnik; każdy układ indeksów nadal uczestniczy w enumeracji. To pełny rozkład warunkowy, a nie próba B losowań.
-
-```{r permutacja}
-knitr::kable(dokladny,digits=6)
-wykres_perm
+```{r permutacja, fig.height=3.2, fig.cap="Wszystkie 720 ustawień czasów względem ocen. Oś pozioma: r po zmianie parowania od −0,974 do 0,974; oś pionowa: liczba układów. Histogram jest symetryczny wokół zera; linie przerywane przy −0,974 i 0,974 oznaczają obserwowany współczynnik i jego odbicie. Cztery układy leżą na liniach: dwa przy −0,974 (w tym obserwowany) i dwa przy 0,974; wyróżnione skrajne słupki zawierają po dwa układy."}
+print(wykres_perm)
 ```
 
-Cztery układy są co najmniej tak skrajne, więc dokładne p permutacyjne wynosi $4/720\approx0{,}00556$. Nie stosujemy tu poprawki +1, używanej w losowym przybliżeniu Monte Carlo. Klasyczne i permutacyjne p różnią się, ponieważ korzystają z innych rozkładów odniesienia.
+Pełne wyliczenie daje p jako udział skrajnych układów: $4/720=0{,}0056$; poprawka +1 należy do przybliżenia Monte Carlo. Przy większej liczbie osób losuje się $B$ układów i stosuje $p_{\mathrm{MC}}=(1+\#\{|r^*_b|\ge|r|\})/(B+1)$, jak w wykładzie W03. Klasyczne p (0,0010) i permutacyjne p (0,0056) korzystają z różnych rozkładów odniesienia.
 
-Przy większej liczbie osób losujemy B układów i stosujemy $(k+1)/(B+1)$. Ustalone ziarno umożliwia odtworzenie wyniku, ale nie zmienia hipotezy. Permutacja nie jest metodą bez założeń: swobodne tasowanie ignorowałoby klastry, powtarzane pomiary i inne ograniczenia wymienialności.
+Permutacja zakłada wymienialność par przy $H_0$; klastry i powtarzane pomiary wymagają przestawień w obrębie bloków. Test permutacyjny sprawdza niezależność par, a test t — zerową korelację liniową; przy rozkładzie normalnym dwóch zmiennych hipotezy są równoważne.
 
-W ogólnych rozkładach zerowa korelacja nie oznacza niezależności. Dlatego hipotezy „$\rho_P=0$” i „brak zależności par” nie są uniwersalnie identyczne. Zgodność dwóch p wzmacnia przejrzystość odczytu w danym przykładzie, ale nie usuwa różnic między założeniami procedur.
+# Bootstrap: pary pozostają parami
 
-# Bootstrap: pary muszą pozostać parami
+Bootstrap osób losuje z powtórzeniami całe wiersze $(x_i,y_i)$. Jedna osoba może wystąpić kilka razy, a jej ocena pozostaje połączona z jej czasem. Bootstrap losuje całe pary i zachowuje relację wewnątrz osoby; permutacja celowo zmienia parowanie pod modelem zerowym.
 
-Przedział korelacji możemy przybliżyć bootstrapem osób. Losujemy ze zwracaniem całe wiersze $(x_i,y_i)$. Jedna osoba może wystąpić kilka razy, ale jej wynik deklarowany nadal pozostaje z jej czasem.
+```{r bootstrap, fig.height=3.2, fig.cap="Bootstrap par: rozkład r w 1998 próbach bootstrapowych sześciu par. Oś pozioma: r w próbie bootstrapowej; oś pionowa: liczba prób. Rozkład jest ucięty przy −1 i ma długi prawy ogon w stronę słabszych korelacji, do około −0,6; granice 2,5% i 97,5% wynoszą −1,00 i −0,88."}
+print(wykres_bootstrapu)
+```
 
-Oddzielne losowanie x i y zniszczyłoby badaną zależność. Taka procedura nie odtwarza niepewności obserwowanego współczynnika. To dobry sprawdzian rozumienia: w bootstrapie zachowujemy relację wewnątrz osoby, w permutacji celowo zmieniamy parowanie pod modelem zerowym.
-
-Percentylowy bootstrap jest przybliżeniem. Bardzo mała próba, niewielka liczba odrębnych rang i replikacje bez zmienności wymagają ostrożności. C08 jawnie podaje liczbę prawidłowo obliczonych replik, zamiast ukrywać brakujące współczynniki.
+Percentylowy bootstrap jest przybliżeniem. Przy sześciu parach rozkład bootstrapowy jest ucięty na granicy parametru, −1, a jedna z 1999 replik ma wszystkie x równe i nieokreślony współczynnik. Ćwiczenie C08 podaje liczbę replik z obliczonym współczynnikiem.
 
 # Regresja: zmiana przewidywanej średniej
 
@@ -157,196 +188,246 @@ Model zapisujemy jako:
 
 $$
 Y_i=\beta_0+\beta_1x_i+\varepsilon_i,
-\qquad E(Y\mid X=x)=\beta_0+\beta_1x.
+\qquad E(Y\mid X=x)=\beta_0+\beta_1x .
 $$
 
-Pierwsza postać zawiera indywidualne odchylenie od średniej warunkowej. Druga opisuje średnią, nie każdą osobę. Po oszacowaniu otrzymujemy $\widehat y=b_0+b_1x$.
+Pierwsza postać zawiera odchylenie osoby od średniej warunkowej, a druga postać opisuje średnią warunkową. Metoda najmniejszych kwadratów (ang. *ordinary least squares*, OLS) dobiera prostą $\widehat y=b_0+b_1x$ minimalizującą sumę kwadratów reszt $e_i=y_i-\widehat y_i$:
 
-Metoda najmniejszych kwadratów dobiera prostą minimalizującą sumę kwadratów reszt $e_i=y_i-\widehat y_i$. Duże odchylenia wpływają na tę sumę silniej, dlatego nietypowy punkt może zmienić nachylenie. Nie usuwamy go tylko dlatego, że zmienia p.
+$$
+b_1=\frac{s_{xy}}{s_x^2}=r\,\frac{s_y}{s_x}=\frac{-4{,}8}{2{,}167}=-2{,}215,\qquad b_0=\bar y-b_1\bar x=11+2{,}215\cdot2{,}833=17{,}28 .
+$$
 
-Dla prostej z wyrazem wolnym zachodzi $b_1=r(s_y/s_x)$. Korelacja opisuje siłę standaryzowaną, nachylenie przywraca jednostki. Zamiana ról x i y nie zmienia r, ale daje inny model regresji; jego nachylenie zwykle nie jest odwrotnością poprzedniego.
+Duże odchylenia wpływają na sumę kwadratów silniej, więc punkt nietypowy zmienia nachylenie; decyzja o punkcie nietypowym opiera się na sprawdzeniu rekordu. Korelacja opisuje siłę standaryzowaną, a nachylenie przywraca jednostki. Zamiana ról x i y pozostawia r bez zmian i daje inny model: nachylenie regresji x na y wynosi $r\,s_x/s_y=-0{,}429$, a iloczyn obu nachyleń równa się $r^2=0{,}949$.
 
-Tabela podaje oba współczynniki, SE, t i CI. Hipoteza dla nachylenia dotyczy $\beta_1=0$. Klasyczne SE i przedziały w tym prostym modelu zakładają między innymi poprawną liniową średnią, niezależność i stałą wariancję błędu; dokładne małopróbkowe wnioskowanie t dodaje normalność błędów.
+Błąd standardowy nachylenia i statystyka t mają postać:
+
+$$
+SE(b_1)=\frac{s_e}{\sqrt{\sum(x_i-\bar{x})^2}}=\frac{0{,}841}{\sqrt{10{,}83}}=0{,}256,\qquad t=\frac{b_1}{SE(b_1)}=-8{,}668 ,
+$$
+
+tyle samo co t korelacji: w regresji prostej oba testy są tożsame. Tabela „Regresja czasu na ocenę” podaje wyraz wolny 17,28 (SE 0,80), nachylenie −2,215 minuty na punkt (SE 0,256), $t(4)=-8{,}668$, $p=0{,}0010$ i 95% CI nachylenia [−2,93; −1,51]. Klasyczne SE i przedziały zakładają poprawną liniową średnią, niezależność i stałą wariancję błędu; wnioskowanie t w małej próbie dodaje normalność błędów.
 
 ```{r regresja}
-knitr::kable(formatuj_wynik(regresja),digits=4)
+badaniaZI::tabela_markdown(regresja, c(28, 12, 10, 12, 6, 12, 20), "Regresja czasu na ocenę")
 ```
 
-Oszacowane równanie to $\widehat y\approx17{,}277-2{,}215x$. Osoby różniące się o jeden punkt indeksu mają w tym modelu średni przewidywany czas różniący się o około −2,22 minuty. Nie wynika z tego, że podniesienie czyjejś odpowiedzi w ankiecie skróci jej wyszukiwanie.
+Osoby różniące się o jeden punkt indeksu mają w modelu średni przewidywany czas różniący się o −2,22 minuty. Nachylenie porównuje osoby o różnych ocenach; skutek zmiany oceny tej samej osoby wymaga eksperymentu.
 
-Wyraz wolny odpowiada x=0, poza zakresem skali 1–5. Jest potrzebny do określenia prostej, ale nie opisuje rzeczywistej osoby z prawidłowym indeksem. Można wycentrować x wokół 3: wtedy wyraz wolny dotyczy średniego czasu przy x=3, a nachylenie pozostaje takie samo.
+Wyraz wolny wyznacza położenie prostej przy x = 0, poza skalą 1–5. Wycentrowanie x wokół 3 daje wyraz wolny równy prognozie przy x = 3:
+
+$$
+x^{c}=x-3,\qquad \widehat{y}=10{,}63-2{,}215\,x^{c},
+$$
+
+a nachylenie pozostaje takie samo.
 
 # R-kwadrat i reszty
 
 $$
-R^2=1-\frac{\sum(y_i-\widehat y_i)^2}{\sum(y_i-\bar y)^2}.
+R^2=1-\frac{\sum(y_i-\widehat y_i)^2}{\sum(y_i-\bar y)^2}=1-\frac{SSE}{SST}=1-\frac{2{,}83}{56}=0{,}949=(-0{,}974)^2 .
 $$
 
-Porównujemy błąd modelu z błędem przewidywania wszystkim tej samej średniej. Dla dopasowania OLS z wyrazem wolnym w tej próbie $R^2$ pokazuje część sumy kwadratów odchyleń y od średniej odtworzoną przez model. W regresji prostej na tych samych kompletnych parach $R^2=r_P^2$.
-
-Nie jest to procent poprawnie przewidzianych osób, procent kompetencji ani stopień prawdziwości teorii. Wysokie $R^2$ nie dowodzi przyczynowości. Niskie nie oznacza automatycznie, że efekt średni jest praktycznie nieistotny.
-
-Tabela podaje również SD reszt w minutach. Ten wynik pozostaje w jednostce czasu i opisuje typową skalę odchyleń wokół prostej według modelu. Zestaw go z nachyleniem, zamiast opisywać dopasowanie samym przymiotnikiem.
+Wzór porównuje błąd modelu z błędem przewidywania wszystkim tą samą średnią. $R^2=0{,}949$ oznacza, że 94,9% sumy kwadratów odchyleń czasu od średniej przypada na prostą regresji; w regresji prostej $R^2=r^2$. Znaczenie praktyczne ocenia się po nachyleniu w minutach na punkt. SD reszt 0,84 minuty opisuje typową odległość punktu od prostej. Tabela „Dopasowanie prostej” podaje $R^2$, SD reszt, SSE i SST.
 
 ```{r dopasowanie}
-knitr::kable(dopasowanie,digits=4)
+badaniaZI::tabela_markdown(dopasowanie, c(60, 40), "Dopasowanie prostej")
 ```
 
-Diagnostyka wraca do danych. Krzywizna reszt sugeruje niedopasowaną średnią, kształt lejka zmienność zależną od poziomu przewidywania, a odległy punkt może silnie wpływać na prostą. Wykres Q–Q dotyczy kształtu rozkładu reszt; nie sprawdza reprezentatywności ani poprawności skali.
+Diagnostyka wraca do danych. Wykres reszt wobec wartości przewidywanych ujawnia krzywiznę (niedopasowana średnia) i lejek (rozrzut zależny od poziomu przewidywania).
 
-Dźwignia opisuje nietypową pozycję x, duża reszta nietypowy y względem prostej, a wpływ zmianę dopasowania po uwzględnieniu punktu. To powiązane, ale różne pojęcia. Automatyczny próg nie zastępuje sprawdzenia rekordu i udokumentowania decyzji.
+```{r reszty, fig.height=3.2, fig.cap="Reszty wobec wartości przewidywanych w trzech panelach; linia przerywana to zero. Sześć par: reszty od −0,85 do 1,15 minuty, rozrzucone wokół zera. Krzywizna (dane demonstracyjne): reszty tworzą łuk — dodatnie na obu końcach, ujemne w środku. Lejek (dane demonstracyjne): rozrzut reszt rośnie z wartością przewidywaną."}
+print(wykres_reszt)
+```
+
+Wykres kwantylowy dotyczy kształtu rozkładu reszt i zestawia uporządkowane reszty z kwantylami rozkładu normalnego, jak w wykładzie W04 (Porównania grup i zależności kategorii).
+
+```{r qq-reszt, fig.height=3, fig.cap="Wykres kwantylowy reszt sześciu par. Oś pozioma: kwantyle rozkładu normalnego standardowego; oś pionowa: reszty w minutach. Sześć punktów leży blisko linii przerywanej przez kwartyle; najwyższa reszta, 1,15 minuty (osoba c), leży nieco nad linią."}
+print(wykres_qq_reszt)
+```
+
+Dźwignia, reszta i wpływ to trzy powiązane pojęcia. Dźwignia opisuje nietypowe położenie x, reszta — nietypowe y względem prostej, a odległość Cooka łączy obie wielkości w miarę wpływu na dopasowanie:
+
+$$
+h_i=\frac{1}{n}+\frac{(x_i-\bar{x})^2}{\sum_j(x_j-\bar{x})^2},\qquad D^{C}_i=\frac{e_i^2}{2\,s_e^2}\cdot\frac{h_i}{(1-h_i)^2}.
+$$
+
+Tabela „Diagnostyka sześciu par” podaje dla każdej osoby wartość przewidywaną, resztę, dźwignię i odległość Cooka. Największą dźwignię ma osoba f (x = 5): $h=0{,}600$; osoba a (x = 1) ma 0,477. Odległość Cooka leży od 0,005 (osoba a) do 0,367 (osoba c). Próg dźwigni lub odległości Cooka wskazuje rekord do sprawdzenia.
+
+```{r diagnostyka}
+badaniaZI::tabela_markdown(diagnostyka, c(10, 7, 7, 18, 16, 18, 24), "Diagnostyka sześciu par")
+```
+
+Punkt o dużej dźwigni i dużej reszcie zmienia prostą. Wykres „Jeden punkt o dużej dźwigni” dodaje do sześciu par punkt x = 9, y = 14 minut, spoza skali 1–5.
+
+```{r wplyw, fig.height=3.4, fig.cap="Jeden punkt o dużej dźwigni. Oś pozioma: deklarowana użyteczność; oś pionowa: czas w minutach. Sześć kół to pierwotne pary, romb to punkt dodany przy x = 9 i y = 14 minut. Linia ciągła (bez dodanego punktu) ma nachylenie −2,22 minuty na punkt; linia przerywana (z punktem) ma nachylenie −0,19 i jest prawie pozioma."}
+print(wykres_wplywu)
+```
 
 # Przedział średniej a przedział predykcji
 
-Dla x=3 możemy zapytać o średni czas populacji osób o takim indeksie albo o czas nowej pojedynczej osoby. Drugie pytanie zawiera dodatkową zmienność indywidualną. Jego przedział jest więc szerszy przy tych samych założeniach modelu.
+Dla x = 3 zadaje się dwa pytania: o średni czas osób z indeksem 3 albo o czas nowej osoby. Oba przedziały mają postać:
 
-Poniższe wyniki mają tę samą prognozę punktową. Wiersz `confidence` dotyczy średniej warunkowej, a `prediction` nowej obserwacji. Wybór wiersza wynika z pytania odbiorcy.
+$$
+\widehat{y}_0\pm t_{0{,}975;\,n-2}\,s_e\sqrt{\frac{1}{n}+\frac{(x_0-\bar{x})^2}{\sum(x_i-\bar{x})^2}},\qquad
+\widehat{y}_0\pm t_{0{,}975;\,n-2}\,s_e\sqrt{1+\frac{1}{n}+\frac{(x_0-\bar{x})^2}{\sum(x_i-\bar{x})^2}} .
+$$
+
+Składnik 1 pod drugim pierwiastkiem to zmienność indywidualna, więc przedział predykcji jest szerszy przy tych samych założeniach. Tabela „Prognoza przy x = 3” podaje prognozę 10,63 minuty, przedział średniej warunkowej [9,67; 11,59] (±0,96) i przedział dla nowej osoby [8,11; 13,16] (±2,53).
 
 ```{r predykcja}
-knitr::kable(pred,digits=3)
+badaniaZI::tabela_markdown(pred, c(40, 25, 35), "Prognoza przy x = 3")
 ```
 
-Dla sześciu demonstracyjnych par prognoza przy x=3 wynosi około 10,63 minuty. CI średniej to około [9,67; 11,59], a przedział dla nowej osoby [8,11; 13,16]. Żaden z nich nie gwarantuje czasu konkretnego użytkownika.
+Przedział predykcji obejmuje czas nowej osoby z prawdopodobieństwem 95% przy założeniach modelu; oba pasma na wykresie „Sześć par do nauki odczytu” są najwęższe przy średniej x = 2,83. Prognoza obejmuje zakres obserwowanych x, od 1 do 5. W ćwiczeniu C08 ujemne granice predykcji czasu sygnalizują ograniczenie modelu normalnego.
 
-Nie prognozujemy dla x=8 na skali 1–5. Ekstrapolacja nie staje się poprawna dlatego, że funkcja potrafi obliczyć liczbę. W C08 sprawdzimy też, co oznaczają ujemne granice predykcji czasu: są ostrzeżeniem o ograniczeniu modelu normalnego, nie możliwymi ujemnymi minutami.
+# Kalibracja samooceny: zgodność poziomów
 
-# Korelacja nie jest zgodnością samooceny z wynikiem
-
-W osobnym, hipotetycznym badaniu uczestnicy przewidują własny wynik testu w procentach. Następnie porównujemy deklarację z obserwowanym odsetkiem poprawnych odpowiedzi. Tym razem oba wyniki odnoszą się do tego samego zadania i mają porównywalną jednostkę.
-
-Tabela jest celowo regularna. Odczytaj różnicę w każdym wierszu, zanim obliczysz związek. Wszystkie osoby zachowują idealną kolejność, ale mylą się systematycznie.
+W osobnym, hipotetycznym badaniu pięć osób przewiduje własny wynik testu w procentach, a następnie rozwiązuje test. Oba wyniki odnoszą się do tego samego zadania i mają wspólną jednostkę. Tabela „Kalibracja samooceny” podaje wyniki 20, 30, 40, 50 i 60% oraz samooceny 40, 50, 60, 70 i 80%; każda samoocena przewyższa wynik o 20 punktów procentowych.
 
 ```{r kalibracja}
-knitr::kable(kalibracja)
+badaniaZI::tabela_markdown(kalibracja_do_druku, c(14, 26, 26, 34), "Kalibracja samooceny")
 ```
 
-Korelacja wynosi 1, choć każdy zawyżył wynik o 20 punktów procentowych. Korelacja mówi, kto ma więcej względem innych, nie czy deklaracja jest trafna co do poziomu. Kalibracja wymaga badania zgodności deklarowanego poziomu z wynikiem, a nie samego r.
+Średni błąd samooceny i granice zgodności Blanda–Altmana mają postać:
 
-Nie wolno odejmować minut od punktów indeksu 1–5 i nazywać różnicy błędem samooceny. Najpierw trzeba zdefiniować porównywalne wyniki. To właśnie operacjonalizacja określa, jaki rachunek ma sens.
+$$
+\bar{b}=\frac{1}{n}\sum_{i=1}^{n}(\text{samoocena}_i-\text{wynik}_i)=20 \text{ pp},\qquad \bar{b}\pm1{,}96\,s_b ,
+$$
+
+gdzie $s_b$ to SD różnic; tu $s_b=0$, więc granice pokrywają się ze średnim błędem.
+
+```{r wykres-kalibracji, fig.height=3.4, fig.cap="Kalibracja samooceny pięciu osób. Lewy panel: samoocena wobec wyniku w procentach; pięć punktów leży na prostej równoległej do linii zgodności y = x (przerywanej), 20 punktów procentowych nad nią. Prawy panel: różnica samoocena minus wynik wobec średniej obu pomiarów; wszystkie pięć różnic wynosi 20, na linii średniego błędu."}
+print(wykres_kalibracji)
+```
+
+Korelacja wynosi 1, a każda osoba zawyża wynik o 20 punktów procentowych. Korelacja opisuje zgodność kolejności osób, a kalibracja — zgodność poziomów. Błąd samooceny liczy się dla wyników w tej samej jednostce, np. przewidywanego i uzyskanego procentu poprawnych odpowiedzi; operacjonalizacja określa sensowny rachunek.
 
 # Od tabeli do argumentu
 
-Dobry akapit wyników zawiera pytanie, N par, wybraną miarę, CI z nazwą metody, wynik testu, p permutacyjne i B, jeśli stosowano Monte Carlo. W części regresyjnej podaje nachylenie z jednostką i przedziałem, $R^2$ oraz istotne ograniczenie diagnostyczne. Nie trzeba wstawiać wszystkich liczb programu, ale nie można pominąć tych, które zmieniają wniosek.
+Akapit wyników zawiera pytanie, N par, wybraną miarę, przedział z nazwą metody, wynik testu, p permutacyjne i B przy Monte Carlo. Część regresyjna podaje nachylenie z jednostką i przedziałem, $R^2$ oraz ograniczenie diagnostyczne. Akapit zawiera liczby, od których zależy wniosek.
 
-Następny akapit odpowiada merytorycznie: co wynik oznacza dla obserwowanego zachowania, czego nie rozstrzyga i jakie dodatkowe dane byłyby potrzebne. „Wyższa ocena współwystępowała z krótszym czasem” jest innym twierdzeniem niż „lepsza ocena skracała czas”. Czasownik powinien pasować do projektu.
+Następny akapit odpowiada merytorycznie: co wynik oznacza dla obserwowanego zachowania, jakie pytania pozostają otwarte i jakie dodatkowe dane są potrzebne. Zdanie „wyższa ocena współwystępowała z krótszym czasem” opisuje związek, a zdanie „lepsza ocena skracała czas” — skutek; czasownik odpowiada projektowi.
 
-Jeśli sprawdzamy wiele korelacji i wybieramy tylko najmniejsze p, nie otrzymujemy uczciwego testu jednej hipotezy. Analizę poszukiwawczą nazywamy eksploracyjną; zaplanowane pytania, reguły braków i metody zapisujemy przed oglądaniem wyników. Późniejsza walidacja wymaga nowych danych, a nie ponownego uruchomienia tego samego skryptu.
+Wybór najmniejszego p spośród wielu korelacji zmienia poziom $\alpha$ (wykład W03). Analizę poszukiwawczą nazywa się eksploracyjną, a zaplanowane pytania, reguły braków i metody zapisuje się przed oglądaniem wyników. Walidacja wyniku eksploracyjnego wymaga nowych danych.
 
-# Generatywna SI: sprawdzamy argument, nie płynność tekstu
+# Generatywna SI: kontrola argumentu
 
-Rozważmy celowo wadliwą propozycję interpretacji: „Ponieważ r=−0,30 i p=0,08, prawdopodobieństwo braku efektu wynosi 8%. Kompetencje skracają czas o 30%, a większa próba na pewno potwierdzi tę zależność”. Liczby służą tu do ćwiczenia krytycznej lektury, nie pochodzą z sześciu par wykładowych ani z rzeczywistej odpowiedzi narzędzia.
+Rozważmy celowo wadliwą propozycję interpretacji: „Ponieważ r = −0,30 i p = 0,08, prawdopodobieństwo braku efektu wynosi 8%. Kompetencje skracają czas o 30%, a większa próba na pewno potwierdzi tę zależność”. Liczby służą ćwiczeniu krytycznej lektury i pochodzą spoza sześciu par wykładowych.
 
-Sprawdzamy kolejno cztery ogniwa argumentu. Nazwa konstruktu musi zgadzać się z pytaniami ankiety; r nie jest procentem zmiany; p nie jest prawdopodobieństwem hipotezy; obserwacyjny związek nie identyfikuje skutku przyczynowego. Większa próba może poprawić precyzję pod odpowiednimi założeniami, ale nie daje pewności przyszłej istotności i nie naprawia złego pomiaru. Do pełnego odczytu brakuje także N, CI i informacji o metodzie.
+Kontrola obejmuje cztery ogniwa argumentu. Nazwa konstruktu odpowiada pytaniom ankiety; r opisuje siłę liniowego związku na skali od −1 do 1; p jest prawdopodobieństwem warunkowym przy $H_0$; obserwacyjny związek opisuje współwystępowanie. Większa próba poprawia precyzję przy spełnionych założeniach, a jakość pomiaru pozostaje osobną sprawą. Pełny odczyt wymaga N, przedziału i informacji o metodzie.
 
-Poprawiona część opisowa brzmi: „Współczynnik liniowego związku deklarowanej użyteczności z czasem wynosił −0,30. Podana wartość p=0,08 nie daje podstaw do odrzucenia zerowej korelacji przy wcześniej przyjętym alfa=0,05; nie dowodzi jednak jej nieobecności. Bez N, przedziału i projektu nie ocenimy precyzji ani zakresu uogólnienia”. Nie dopisujemy brakującego CI z wyobraźni ani nie zamieniamy go na przedział innej miary.
+Poprawiona część opisowa brzmi: „Współczynnik liniowego związku deklarowanej użyteczności z czasem wynosił −0,30, p = 0,08; przy α = 0,05 hipoteza zerowej korelacji pozostaje. Ocena precyzji i zakresu uogólnienia wymaga N, przedziału i opisu projektu”.
 
-Taką samą kontrolę stosujemy do podpowiedzi generatywnej SI, zdania w publikacji i własnego pierwszego szkicu. Można poprosić o wyjaśnienie symbolu lub pomoc z komunikatem kodu, lecz wynik trzeba porównać z rzeczywistą tabelą, a źródło otworzyć i sprawdzić. Własny akapit interpretacji pozostaje pracą studenta zgodnie z zasadami W01. Przykład nie wymaga korzystania z żadnej usługi zewnętrznej.
+Tę samą kontrolę stosuje się do podpowiedzi generatywnej SI, zdania w publikacji i własnego szkicu. SI wspiera rozumienie symboli i komunikatów kodu; wynik porównuje się z tabelą, a źródło otwiera i sprawdza. Interpretację student pisze samodzielnie, zgodnie z zasadą kursu podaną w wykładzie W01; korzystanie z usług zewnętrznych jest dobrowolne.
 
 # Dyskusja i przejście do projektu
 
-Przeczytaj zdanie: „r=−0,30 oznacza, że katalog poprawia kompetencje o 30%, a model przewiduje poprawnie 9% osób”. Wskaż trzy różne błędy: przyczynowość, utożsamienie korelacji z procentem zmiany oraz błędny odczyt $R^2=0{,}09$. Następnie zaproponuj zdanie zawierające właściwy konstrukt i ograniczenie.
+Zdanie do poprawy: „r = −0,30 oznacza, że katalog poprawia kompetencje o 30%, a model przewiduje poprawnie 9% osób”. Zawiera trzy błędy: przyczynowość, utożsamienie korelacji z procentem zmiany i odczyt $R^2=0{,}09$ jako odsetka trafnych prognoz. Poprawiona wersja brzmi: „Deklarowana użyteczność katalogu i czas zadania korelują na poziomie −0,30; prosta regresji przypisuje 9% sumy kwadratów odchyleń czasu różnicom w ocenie”.
 
-C08 przeprowadzi pełną analizę na syntetycznym zbiorze kursowym, którego związek jest znacznie słabszy niż w miniaturze wykładowej. C09 połączy pytania z estymandami i planem pomiaru. C10 sprawdzi, czy każde zdanie raportu ma dowód w wynikach oraz czy rekomendacja nie wychodzi poza projekt.
-
-Źródła kontekstu: [Hargittai (2002)](https://webuse.org/p/a09/), [van Deursen, Helsper i Eynon](https://eprints.lse.ac.uk/64485/), [DigComp 2.2](https://publications.jrc.ec.europa.eu/repository/handle/JRC128415), [ACRL Framework](https://www.ala.org/acrl/standards/ilframework). Szczegóły implementacji testów i przedziałów: [cor.test](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html) oraz [predict.lm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/predict.lm.html). Pełne opisy bibliograficzne zawiera [bibliografia kursu](../wspolne/literatura.md).
+Ćwiczenie C08 przeprowadza pełną analizę na zbiorze S02, którego związek jest znacznie słabszy niż w sześciu parach wykładu. Ćwiczenie C09 (Warsztat projektu: od scenariusza do dwóch małych analiz) łączy pytania z estymandami i planem pomiaru. Ćwiczenie C10 (Od wyniku do raportu: interpretacja, ograniczenia i odtwarzalność) sprawdza, czy każde zdanie raportu ma dowód w wynikach, a rekomendacja mieści się w projekcie.
 
 # Rozwinięcia: model nieliniowy i galeria odczytu
 
-Poniższe przykłady uzupełniają zakres metod i wizualizacji. Nie są dodatkowymi zadaniami ocenianymi, nie wymagają nowych odpowiedzi w C08–C10 i nie wprowadzają obowiązku samodzielnego dopasowania modeli. Każdy ma odrębne, jawnie hipotetyczne dane. Celem jest rozpoznanie, na jakie pytanie odpowiada obraz lub parametr, a nie kolekcjonowanie typów wykresów.
+Przykłady rozszerzają zakres metod i wizualizacji i należą do materiału nieocenianego. Każdy ma odrębne, hipotetyczne dane. Celem jest rozpoznanie pytania, na które odpowiada wykres lub parametr.
 
 ## Nieliniowa zależność a model nieliniowy
 
-Krzywa zależność nie musi oznaczać modelu nieliniowego w parametrach. Na przykład $\beta_0+\beta_1x+\beta_2x^2$ jest krzywą względem x, ale liniową kombinacją współczynników. Inny przypadek to model średniego czasu $E(T\mid x)=a+b\exp(-cx)$, gdzie nieznany c występuje w wykładniku. Gotowy skrypt dopasowuje właśnie tę drugą postać metodą nieliniowych najmniejszych kwadratów.
+Krzywa zależność ma dwie postaci modelu: liniową w parametrach, np. $\beta_0+\beta_1x+\beta_2x^2$, i nieliniową w parametrach, np. $E(Y\mid x)=a+b\,e^{-cx}$, gdzie nieznany parametr $c$ występuje w wykładniku. Skrypt dopasowuje drugą postać metodą nieliniowych najmniejszych kwadratów.
 
-Zakładamy do demonstracji, że czas maleje wraz z liczbą wcześniejszych prób, lecz spadek stopniowo słabnie. Przy dodatnich b i c parametr a opisuje dolną asymptotę średniej, a+b czas przy x=0, a c tempo spadku na jedną wcześniejszą próbę. Nie ma tu jednego nachylenia wyrażającego taką samą różnicę przy każdym poziomie x; pochodna krzywej to $-bc\exp(-cx)$.
+Demonstracja zakłada, że czas maleje wraz z liczbą wcześniejszych prób, a spadek słabnie. Przy dodatnich $b$ i $c$ parametr $a$ opisuje dolną asymptotę średniej, $a+b$ — czas przy x = 0, a $c$ — tempo spadku. Spadek średniego czasu zmienia się z x: pochodna, czyli tempo zmiany średniego czasu przy małej zmianie x, wynosi $-bc\,e^{-cx}$. Dopasowane parametry to $a=2{,}98$ minuty, $b=12{,}08$ minuty i $c=0{,}401$ na próbę. Tabela „Przewidywane czasy krzywej” podaje czasy 15,06 (0 prób), 11,07 (1), 8,40 (2), 5,41 (4) i 3,47 minuty (8); spadek od 0 do 1 próby wynosi 3,99 minuty, a od 1 do 2 — 2,67 minuty.
 
-Tabela pokazuje oszacowane parametry i przewidywane czasy dla kilku wartości x. Wykres zawiera dziewięć osób, z których każda ma jeden pomiar; nie są to kolejne pomiary tej samej osoby. Porównaj spadek od zera do jednej próby ze spadkiem od jednej do dwóch.
-
-```{r model-nieliniowy}
-krzywa <- model_nieliniowy()
-print(krzywa)
+```{r nieliniowy-tabela}
+badaniaZI::tabela_markdown(nieliniowy_do_druku, c(50, 50), "Przewidywane czasy krzywej")
 ```
 
-Dopasowana krzywa przechodzi blisko celowo regularnych punktów, lecz nie dowodzi mechanizmu uczenia się. Doświadczenie mogło współwystępować z innymi cechami. Asymptota jest parametrem modelu, nie zmierzonym minimalnym czasem każdej osoby; w szczególności nie uzasadnia prognoz daleko poza zakresem 0–8. Sprawdzalibyśmy reszty, stabilność dopasowania i niepewność parametrów przed użyciem praktycznym. Ta demonstracja nie dodaje testu istotności ani analizy wymaganej w projekcie. [Dokumentacja nls](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nls.html).
-
-## Wiolina: rozkład, nie drugi rodzaj błędu standardowego
-
-Wykres wiolinowy łączy obraz gęstości z położeniem wartości. Szerokie miejsce wskazuje skupienie obserwacji, a wąskie mniej typowe wartości według wygładzenia. Pudełko wewnątrz pokazuje medianę i kwartyle, nie przedział ufności średniej.
-
-Porównujemy po dwanaście hipotetycznych czasów nowych i doświadczonych użytkowników. W obu grupach zastosowano tę samą regułę wygładzenia oraz skalowanie do jednakowego pola przed przycięciem ogonów. Odczytaj kształt i ogon, a liczebność odczytaj z etykiety, nie z szerokości.
-
-```{r galeria-wiolina}
-widok <- galeria_wiolinowa()
-print(widok)
+```{r nieliniowy, fig.height=3.2, fig.cap="Model nieliniowy: odczyt krzywej. Oś pozioma: wcześniejsze próby od 0 do 8; oś pionowa: czas w minutach. Dziewięć punktów, po jednej osobie na liczbę prób, leży blisko krzywej malejącej od 15 minut przy zerze i spłaszczającej się ku 3 minutom przy ośmiu próbach."}
+print(nieliniowy$wykres)
 ```
 
-Punkty przypominają, jak niewiele danych stoi za gładkim obrysem. Dwie identyczne wartości mogą się nakładać, więc same widoczne punkty też nie są licznikiem N. Inna szerokość wygładzania zmieniłaby kształt; przy małej próbie nie ogłaszamy dwóch populacji na podstawie dwóch wypukłości. Ogony przycięto do zakresu danych. Wiolina nie jest testem różnicy ani dowodem normalności. [Dokumentacja geom_violin](https://ggplot2.tidyverse.org/reference/geom_violin.html).
+Krzywa opisuje dane dziewięciu osób, każda z jednym pomiarem; mechanizm uczenia się wymaga pomiarów powtarzanych u tych samych osób. Asymptota $a=2{,}98$ minuty jest parametrem modelu, a prognozy obejmują zakres 0–8 prób. Użycie praktyczne wymaga sprawdzenia reszt, stabilności dopasowania i niepewności parametrów. [Dokumentacja nls](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nls.html).
+
+## Wykres wiolinowy: kształt rozkładu
+
+Wykres wiolinowy łączy obraz gęstości z położeniem wartości: szerokie miejsce wskazuje skupienie obserwacji, a wąskie — wartości rzadsze według wygładzenia. Pudełko wewnątrz przedstawia medianę i kwartyle. Dwie grupy po dwanaście hipotetycznych czasów mają tę samą regułę wygładzenia.
+
+```{r wiolina, fig.height=3.4, fig.cap="Wykres wiolinowy, kwartyle i obserwacje dwóch grup po 12 osób. Oś pozioma: grupa; oś pionowa: czas w minutach. Nowi: mediana 6,5 minuty, kwartyle 4,75 i 10,5, maksimum 18; wiolina ma długi górny ogon. Doświadczeni: mediana 5 minut, kwartyle 3,75 i 6,25, maksimum 12; wiolina jest skupiona między 2 a 8 minutami."}
+print(wykres_wioliny)
+```
+
+Liczebność podaje etykieta grupy (N = 12), bo nakładające się punkty zakrywają identyczne wartości. Szerokość wygładzania zmienia kształt, więc dwie wypukłości w małej próbie wymagają potwierdzenia w większych danych. [Dokumentacja geom_violin](https://ggplot2.tidyverse.org/reference/geom_violin.html).
 
 ## Pareto: od częstości barier do udziału skumulowanego
 
-Biblioteka koduje główną barierę każdego z trzydziestu zgłoszeń. Każde zgłoszenie otrzymuje jedną kategorię, ale ta sama osoba mogła zgłosić więcej niż jeden problem. Dlatego N oznacza zgłoszenia, nie użytkowników.
+Biblioteka koduje główną barierę każdego z trzydziestu zgłoszeń. Każde zgłoszenie otrzymuje jedną kategorię, a jedna osoba mogła zgłosić kilka problemów, więc N oznacza zgłoszenia. Wykres Pareto porządkuje kategorie od najczęstszej i dodaje udział skumulowany.
 
-Wykres Pareto porządkuje kategorie od najczęstszej i pokazuje narastający udział. Aby nie mylić liczby z procentem, pokazujemy je w osobnych panelach. Sprawdź, jaki udział wszystkich zgłoszeń przypada na dwie pierwsze kategorie.
-
-```{r galeria-pareto, fig.height=2.6}
-widok <- galeria_pareto()
-print(widok)
+```{r pareto, fig.height=3.4, fig.cap="Pareto: bariery od najczęstszej, 30 zgłoszeń. Oś pozioma: główna bariera zgłoszenia; oś pionowa: odsetek zgłoszeń. Słupki: logowanie 12 (40%), link 9 (30%), filtr 5 (17%), format 3 (10%), inne 1 (3%). Trójkąty połączone linią przerywaną: udział skumulowany 40, 70, 87, 97 i 100%."}
+print(wykres_pareto)
 ```
 
-Logowanie i niedziałający link dają łącznie 21/30, czyli 70% zgłoszeń. Nie jest to uniwersalna „zasada 80/20” ani prognoza, że ich naprawa usunie 70% wszystkich trudności. Nie wiemy, kto nie zgłosił bariery, jak poważne były problemy i czy proponowana zmiana rzeczywiście je usunie. Częstość jest jednym z kryteriów priorytetu, nie jedynym.
+Dwie kategorie obejmują 70% zgłoszeń. Priorytet naprawy łączy częstość z powagą problemu, liczbą osób, które problem napotkały, i kosztem zmiany.
 
-## Wykres kołowy: tylko rzeczywisty podział całości
+## Wykres kołowy: podział całości
 
-W osobnej demonstracji zapisano jedno urządzenie użyte w bieżącej sesji przez każdą z 48 osób. Kategorie są rozłączne i wyczerpują znane odpowiedzi. Dlatego ich udziały można przedstawić jako części jednego koła.
+W osobnej demonstracji zapisano jedno urządzenie użyte w bieżącej sesji przez każdą z 48 osób; kategorie są rozłączne i wyczerpują odpowiedzi, więc udziały tworzą części jednego koła. Tabela „Urządzenie bieżącej sesji” podaje: komputer 24 z 48 osób (50%), telefon 16 (33,3%), tablet 8 (16,7%).
 
-Tabela pokazuje licznik, mianownik i udział. Koło ułatwia odczyt części całości, ale dokładne porównanie podobnych udziałów zwykle jest prostsze na słupkach ze wspólną osią. Odczytaj, dlaczego 24 osoby oznaczają tutaj dokładnie połowę.
-
-```{r galeria-kolo, out.width='65%'}
-widok <- galeria_kolowa()
-print(widok)
+```{r kolo-tabela}
+badaniaZI::tabela_markdown(urzadzenia_do_druku, c(40, 20, 40), "Urządzenie bieżącej sesji")
 ```
 
-Nie używamy takiego koła do czterech kanałów pomocy z C04: respondent może wskazać kilka, więc odsetki osób nie stanowią rozłącznego podziału 100%. Dałoby się przedstawić podział wszystkich wskazań, ale wtedy zmieniłby się mianownik i znaczenie pytania. Wykres nie może dokonywać tej zmiany bez wyjaśnienia.
+```{r kolo, fig.height=3, out.width='65%', fig.cap="Jedno urządzenie bieżącej sesji, 48 osób. Koło podzielone na trzy wycinki z napisami: komputer 50,0%, telefon 33,3%, tablet 16,7%; wycinek komputera zajmuje połowę koła."}
+print(wykres_kola)
+```
+
+Kanały pomocy z ćwiczenia C04 dopuszczają kilka odpowiedzi, więc ich odsetki przedstawia wykres słupkowy z osią 0–100%. Dokładne porównanie podobnych udziałów jest prostsze na słupkach ze wspólną osią.
 
 ## Mapa cieplna: kolor wymaga mianownika
 
-Sześć komórek przedstawia powodzenia w trzech zadaniach i dwóch grupach. Każda osoba wykonuje tylko jedno zadanie; liczebności grup zadaniowych są różne. Kolor odpowiada odsetkowi, a napis ujawnia powodzenia i liczbę ważnych prób.
+Sześć komórek przedstawia powodzenia w trzech zadaniach i dwóch grupach; każda osoba wykonuje jedno zadanie, a liczebności komórek są różne. Kolor odpowiada odsetkowi na wspólnej skali 0–100%, a napis podaje powodzenia i liczbę prób. Precyzję odsetka opisuje błąd standardowy:
 
-Odczytaj dwie komórki o podobnym kolorze i sprawdź ich mianowniki. Skala koloru jest wspólna od 0 do 100%, więc ten sam odcień ma to samo znaczenie w całej tabeli. Nie normalizujemy koloru osobno w każdym wierszu.
+$$
+SE(\hat{p})=\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}:\qquad \frac{9}{15}\to0{,}126,\qquad \frac{9}{12}\to0{,}125,\qquad \frac{18}{20}\to0{,}067 .
+$$
 
-```{r galeria-mapa}
-widok <- galeria_mapy()
-print(widok)
+```{r mapa, fig.height=3.4, fig.cap="Mapa cieplna: udział i mianownik w każdej komórce. Kolumny: katalog, repozytorium, weryfikacja; wiersze: nowi i doświadczeni. Nowi: 9/15 (60%), 12/20 (60%), 8/10 (80%). Doświadczeni: 9/12 (75%), 18/20 (90%), 9/15 (60%). Najciemniejsza komórka to repozytorium u doświadczonych."}
+print(wykres_mapy)
 ```
 
-Dziewięć powodzeń może dawać 60% przy N=15 lub 75% przy N=12. Równy kolor nie oznacza równej precyzji oszacowania, a intensywniejszy kolor nie dowodzi istotnej różnicy. Mapa jest wizualnym odpowiednikiem uporządkowanej tabeli. Pominięcie mianownika mogłoby ukryć, że mocny kolor opiera się na małej liczbie prób.
+Tabela „Mianowniki i SE sześciu komórek” podaje odsetek i jego SE w każdej komórce. Dziewięć powodzeń daje 60% przy N = 15 i 75% przy N = 12; komórki o podobnym kolorze mają różne mianowniki i podobną precyzję (SE 0,13), a komórka 18/20 ma SE 0,07.
+
+```{r mapa-tabela}
+badaniaZI::tabela_markdown(mapa_do_druku, c(18, 18, 8, 16, 18, 22), "Mianowniki i SE sześciu komórek")
+```
 
 ## Wydajność usługi: czas odpowiedzi i przepustowość
 
-Czas wyszukiwania osoby obejmuje czytanie i podejmowanie decyzji. Czas odpowiedzi serwera dotyczy żądania technicznego, a przepustowość liczby zakończonych żądań na sekundę. To różne wyniki; poprawa jednego nie musi oznaczać poprawy kompetencji ani skuteczności odnajdywania informacji.
+Czas odpowiedzi serwera, przepustowość i czas wyszukiwania osoby to trzy wyniki; każdy wymaga osobnego pomiaru. Czas wyszukiwania osoby obejmuje czytanie i podejmowanie decyzji, czas odpowiedzi serwera — żądanie techniczne, a przepustowość — liczbę zakończonych żądań na sekundę. Hipotetyczny test ma pięć ustawień równoczesnego obciążenia przy tej samej konfiguracji.
 
-Hipotetyczny test techniczny ma pięć ustawień równoczesnego obciążenia przy tej samej konfiguracji i strukturze żądań. Odczytaj, co dzieje się po zwiększeniu obciążenia z 60 do 100, osobno dla obu miar. Linia łączy ustawienia dla czytelności i nie dodaje pomiarów między punktami.
-
-```{r galeria-wydajnosc, fig.height=4.4}
-widok <- galeria_wydajnosci()
-print(widok)
+```{r wydajnosc, fig.height=4.4, fig.cap="Wydajność techniczna usługi przy 20, 40, 60, 80 i 100 równoczesnych żądaniach. Górny panel: mediana czasu odpowiedzi rośnie z 0,35 do 0,42, 0,8, 1,6 i 3,2 sekundy. Dolny panel: przepustowość rośnie z 15 do 28 i 40 żądań na sekundę, a potem zatrzymuje się przy 44 i 43."}
+print(wykres_wydajnosci)
 ```
 
-W tym przykładzie mediana odpowiedzi rośnie z 0,8 do 3,2 sekundy, podczas gdy przepustowość rośnie z 40 do 43 żądań/s. Dalsze obciążenie nie daje proporcjonalnego wzrostu obsługi. Do oceny usługi potrzebowalibyśmy powtórzeń, skrajnych kwantyli opóźnienia, liczby błędów i wyników zadań użytkowników. Same mediany z pięciu ustawień nie tworzą pięciu niezależnych prób kompetencji.
+Przy wzroście obciążenia z 60 do 100 żądań mediana odpowiedzi rośnie z 0,8 do 3,2 sekundy, a przepustowość z 40 do 43 żądań na sekundę: dalsze obciążenie wydłuża oczekiwanie bez proporcjonalnego wzrostu obsługi. Ocena usługi wymaga powtórzeń, skrajnych kwantyli opóźnienia, liczby błędów i wyników zadań użytkowników.
 
-## Reszty cząstkowe: tylko odczyt rozszerzenia
+## Reszty cząstkowe: odczyt rozszerzenia
 
-Regresja z dwoma predyktorami ma tutaj postać $T_i=\beta_0+\beta_1x_i+\beta_2z_i+\varepsilon_i$: x liczy wcześniejsze próby, a z to umowny poziom trudności zadania. Traktowanie kolejnych poziomów trudności jako równych odstępów jest jawnym uproszczeniem demonstracji. Nie dodajemy tego modelu do wymaganych analiz C08 ani projektu.
+Regresja z dwoma predyktorami ma postać $Y_i=\beta_0+\beta_1x_i+\beta_2w_i+\varepsilon_i$: $x$ liczy wcześniejsze próby, a $w$ to umowny poziom trudności zadania 1–3, traktowany w demonstracji jako skala o równych odstępach. Model dwóch predyktorów należy do rozszerzenia. Dopasowany model to: czas = 18,26 − 0,523·praktyka + 1,949·trudność.
 
-Zwykła reszta $e_i$ porównuje obserwowany czas z całym przewidywaniem. Na wykresie reszt cząstkowych dla x pokazujemy $e_i+b_1x_i$ względem x, czyli przywracamy składnik wybranego predyktora po uwzględnieniu pozostałych w modelu. Nie jest to wykres samych reszt ani wykres czasu „oczyszczonego ze wszystkich przyczyn”.
+Zwykła reszta $e_i$ porównuje obserwowany czas z całym przewidywaniem. Wykres reszt cząstkowych dla x ma na osi pionowej $e_i+b_1x_i$: resztę z dodanym składnikiem praktyki, w minutach, z linią odniesienia $b_1x$.
 
-Gotowa funkcja przedstawia dwanaście hipotetycznych osób, współczynniki oraz kilka wierszy do odczytu. W tym wariancie składnika nie centrujemy, więc linią odniesienia jest $b_1x$. Odczytaj jednostkę pionowej osi: jest w minutach, ale nie jest całkowitym czasem osoby.
-
-```{r galeria-reszty-czastkowe}
-widok <- galeria_reszt_czastkowych()
-print(widok)
+```{r reszty-czastkowe, fig.height=3.2, fig.cap="Reszty cząstkowe dla praktyki, 12 hipotetycznych osób. Oś pozioma: wcześniejsze próby od 1 do 12; oś pionowa: reszta z dodanym składnikiem praktyki w minutach. Punkty leżą blisko prostej o nachyleniu −0,523 minuty na próbę, od około −0,5 przy jednej próbie do około −6,3 przy dwunastu."}
+print(czastkowe$wykres)
 ```
 
-Krzywizna wokół linii mogłaby sugerować niedopasowanie postaci składnika x. Interpretacja pozostaje zależna od pozostałych elementów modelu i zakresu danych; błędne modelowanie z może zniekształcać także ten obraz. Wykres nie usuwa zakłócenia i nie dowodzi wpływu praktyki. Gotowe narzędzia mogą centrować składniki, zmieniając pionowe położenie obrazu, dlatego zawsze czytamy definicję osi. [Dokumentacja termplot i reszt cząstkowych](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/termplot.html).
+Wykres opisuje składnik modelu przy uwzględnionej trudności; interpretacja zależy od pozostałych elementów modelu i zakresu danych. Programy centrują czasem składniki, co przesuwa obraz w pionie, więc odczyt zaczyna się od definicji osi. [Dokumentacja termplot](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/termplot.html).
 
-Wspólny wniosek z galerii jest prosty: najpierw ustal jednostkę obserwacji, licznik i mianownik, następnie wielkość zakodowaną przez pozycję, pole lub kolor. Dopiero potem odczytaj wzorzec i jego ograniczenie. Nie trzeba używać wszystkich tych wykresów w raporcie; wybieramy te, które pomagają odpowiedzieć na konkretne pytanie.
+Wspólny wniosek z galerii: najpierw ustala się jednostkę obserwacji, licznik i mianownik, potem wielkość zakodowaną przez pozycję, pole lub kolor, a na końcu wzorzec i jego ograniczenie. Raport używa wykresów, które odpowiadają na pytanie badawcze.
+
+# Literatura do dalszej pracy
+
+- Hargittai, E. (2002). *Beyond logs and surveys: In-depth measures of people's web use skills*. JASIST, 53(14), 1239–1244. [Strona autorki](https://webuse.org/p/a09/).
+- van Deursen, A.J.A.M., Helsper, E.J., Eynon, R. (2016). *Development and validation of the Internet Skills Scale (ISS)*. Information, Communication & Society, 19(6), 804–823. [Repozytorium LSE](https://eprints.lse.ac.uk/64485/).
+- Vuorikari, R., Kluzer, S., Punie, Y. (2022). *DigComp 2.2*. [JRC128415](https://publications.jrc.ec.europa.eu/repository/handle/JRC128415); Association of College and Research Libraries (2016). *Framework for Information Literacy for Higher Education*. [Dokument ACRL](https://www.ala.org/acrl/standards/ilframework).
+- Anscombe, F.J. (1973). *Graphs in statistical analysis*. The American Statistician, 27(1), 17–21. [DOI](https://doi.org/10.1080/00031305.1973.10478966).
+- Dokumentacja R: [cor.test](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html), [predict.lm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/predict.lm.html).
+
+Przykłady liczbowe wykładu są dydaktyczne; wyniki cytowanych prac zawierają ich publikacje.

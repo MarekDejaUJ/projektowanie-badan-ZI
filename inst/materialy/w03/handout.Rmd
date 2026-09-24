@@ -1,6 +1,6 @@
 ---
-title: 'W03 — Estymacja i testowanie: mapa odczytu wyniku'
-subtitle: 'Zarządzanie informacją — handout — 2026/27'
+title: 'Handout W03 — Losowość, estymacja i dwa tory wnioskowania'
+subtitle: 'Zarządzanie informacją — mapa odczytu wyniku — 2026/27'
 author: 'Marek Deja'
 date: '2026/27'
 lang: pl-PL
@@ -9,51 +9,65 @@ papersize: a4
 geometry: margin=2cm
 ---
 
+```{r przygotowanie, include=FALSE}
+source("analiza.R", local = knitr::knit_global(), encoding = "UTF-8")
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+                      fig.width = 6, fig.height = 2.9)
+```
+
 # Najpierw wielkość, potem liczba
 
-Estymanda określa, co chcemy oszacować: na przykład średni czas wskazanego zadania w określonej populacji. Parametr $\mu$ jest odpowiadającą jej wielkością populacyjną. Estymator $\bar{x}$ to reguła obliczenia, a estymata, na przykład 11,2 minuty, jest wynikiem dla jednej próby.
+Estymanda określa wielkość do oszacowania, np. średni czas wskazanego zadania w określonej populacji. Parametr $\mu$ jest odpowiadającą jej wielkością populacyjną. Estymator $\bar{x}$ to reguła obliczenia, a estymata, np. 11,2 minuty, jest wynikiem dla jednej próby.
 
-Średnia wszystkich czasów i średnia czasów udanych prób odpowiadają na różne pytania. Wspólny indeks S02 opisuje deklarowaną użyteczność katalogu według reguły dydaktycznej; nie jest zwalidowanym pomiarem całej kompetencji cyfrowej. Test nie zmienia tego znaczenia.
+Średnia wszystkich czasów i średnia czasów udanych prób odpowiadają na dwa pytania. Indeks S02 opisuje deklarowaną użyteczność katalogu według reguły dydaktycznej i zachowuje to znaczenie przy każdym teście.
 
 # Punkt, pole i granica
 
-W modelu trzech niezależnych prób z prawdopodobieństwem powodzenia 0,5: dokładnie dwa powodzenia mają szansę 3/8, najwyżej dwa 7/8. Dystrybuanta $F(k)$ sumuje prawdopodobieństwa do k. W modelu ciągłym prawdopodobieństwo przedziału to pole $F(b)-F(a)$, nie wysokość gęstości w jednym punkcie. Kwantyl odwraca pytanie: wskazuje granicę dla ustalonego udziału. W R prefiksy d/p/q/r oznaczają odpowiednio gęstość lub masę punktową, dystrybuantę, kwantyl i losowanie.
+W modelu trzech niezależnych prób z prawdopodobieństwem sukcesu 0,5 dokładnie dwa sukcesy mają prawdopodobieństwo 3/8, a najwyżej dwa — 7/8. Dystrybuanta $F(k)$ sumuje prawdopodobieństwa do $k$ włącznie. W modelu ciągłym prawdopodobieństwo przedziału to pole $F(b)-F(a)$ pod krzywą gęstości; w modelu wykładniczym o średniej 10 minut $P(5<X\le10)=0{,}239$. Kwantyl wskazuje granicę dla ustalonego udziału: mediana modelu wykładniczego wynosi 6,93 minuty. W R prefiksy d, p, q i r oznaczają gęstość lub prawdopodobieństwo punktu, dystrybuantę, kwantyl i losowanie.
+
+Rozkład normalny $N(\mu,\sigma^2)$ jest symetryczny wokół $\mu$; standaryzacja $Z=(X-\mu)/\sigma$ daje rozkład $N(0,1)$, w którym $P(-1{,}96\le Z\le1{,}96)=0{,}95$. Rozkład t ma grubsze ogony, a różnica maleje ze stopniami swobody.
+
+```{r t-z, fig.height=3.2, fig.cap="Rozkład normalny standardowy i rozkłady t. Oś pozioma: wartość statystyki; oś pionowa: gęstość. Krzywe są symetryczne wokół zera; kwantyl 0,975 wynosi 3,18 dla t z 3 stopniami swobody, 2,13 dla 15, 1,98 dla 99 i 1,96 dla rozkładu normalnego."}
+print(wykres_t_z)
+```
 
 # Mapa symboli
 
-| Symbol | Co opisuje? | Jednostka |
-|---|---|---|
+| Symbol | Co opisuje | Jednostka |
+|------------|------------------------------------------|------------------------------------|
 | $n$ | Ważne niezależne jednostki analizy | Osoby lub jednostki projektu |
 | $\bar{x}$ | Średnia w próbie | Minuty albo punkty |
-| $s$ | Rozrzut obserwacji | Ta sama co zmienna |
-| $SE$ | Oszacowany rozrzut estymatora średniej | Ta sama co średnia |
-| $\mu_0$ | Wartość w hipotezie zerowej | Ta sama co średnia |
+| $s$ | Rozrzut obserwacji | Jednostka zmiennej |
+| $SE$ | Oszacowany rozrzut estymatora średniej | Jednostka średniej |
+| $\mu_0$ | Wartość w hipotezie zerowej | Jednostka średniej |
 | $\widehat\Delta$ | Średnia minus odniesienie | Minuty albo punkty |
-| $t$ | Różnica wyrażona w SE | Bez jednostki |
-| $d$ | Różnica wyrażona w SD osób | Bez jednostki |
-| $df$ | Stopnie swobody rozkładu odniesienia | Nie są wielkością efektu |
-| $B$ | Powtórzenia komputerowe | Nie są osobami badanymi |
+| $t$ | Różnica wyrażona w SE | Liczba bez jednostki |
+| $d$ | Różnica wyrażona w SD osób | Liczba bez jednostki |
+| $df$ | Stopnie swobody rozkładu odniesienia | Parametr rozkładu t |
+| $B$ | Powtórzenia obliczenia komputerowego | Liczba powtórzeń |
+
+Table: Symbole wykładu W03
 
 $$
 SE=\frac{s}{\sqrt n},\qquad
 t=\frac{\bar{x}-\mu_0}{SE},\qquad
-d=\frac{\bar{x}-\mu_0}{s}.
+d=\frac{\bar{x}-\mu_0}{s},\qquad t=d\sqrt{n}.
 $$
 
-Wzór SE dotyczy standardowego modelu niezależnych obserwacji. Wiele kliknięć tej samej osoby nie daje tylu niezależnych osób, ile wierszy logu. Zwiększenie N nie naprawia błędu pomiaru ani samoselekcji.
+Wzór SE dotyczy niezależnych obserwacji. Wiele kliknięć jednej osoby wnosi informację o jednej osobie. Większe N zwęża przedział; błąd pomiaru i samoselekcja pozostają.
 
 # Przedział ma nazwany parametr
 
-$$CI_{95\%}(\mu):\quad\bar{x}\pm t_{0{,}975;n-1}SE.$$
+$$CI_{95\%}(\mu):\quad\bar{x}\pm t_{0{,}975;\,n-1}\,SE.$$
 
-Przedział różnicy $\Delta=\mu-\mu_0$ otrzymujemy przez odjęcie $\mu_0$ od obu granic przedziału średniej. Dla średniej punktem sprawdzanym jest $\mu_0$, dla różnicy zero.
+Przedział różnicy $\Delta=\mu-\mu_0$ powstaje przez odjęcie $\mu_0$ od obu granic przedziału średniej. Dla średniej punktem sprawdzanym jest $\mu_0$, dla różnicy zero.
 
-Poziom 95% opisuje działanie procedury w powtarzanych próbach przy jej założeniach. Nie znaczy, że 95% osób mieści się w tym przedziale, ani że przedział przewiduje czas nowej osoby. Wyższy poziom ufności daje szerszy przedział przy tych samych danych.
+Poziom 95% opisuje działanie procedury w powtarzanych próbach: w symulacji 2000 prób po 40 osób przedziały obejmują średnią populacji w 94,35% prób. Czasy osób opisuje zakres środkowych 95% obserwacji, a czas nowej osoby — przedział predykcji; w jednej próbie 40 osób przedział ufności średniej wynosi [8,06; 10,80], środkowe 95% czasów [4,38; 19,86], a przedział predykcji [0,67; 18,19] minuty.
 
 # Dwa przykłady do przeczytania
 
 | Wielkość | Indeks: przykład hipotetyczny | Czas: przykład hipotetyczny |
-|---|---:|---:|
+|--------------------|------------------------------:|------------------------------:|
 | N | 100 | 16 |
 | Średnia; SD | 3,24; 0,80 pkt | 11,2; 6 min |
 | Odniesienie | 3 pkt | 10 min |
@@ -61,34 +75,42 @@ Poziom 95% opisuje działanie procedury w powtarzanych próbach przy jej założ
 | Różnica | 0,24 pkt | 1,2 min |
 | 95% CI różnicy | [0,081; 0,399] pkt | [−2,00; 4,40] min |
 | t; df | 3,00; 99 | 0,80; 15 |
-| Dwustronne p | Około 0,0034 | Około 0,436 |
+| Dwustronne p | 0,0034 | 0,436 |
 | d | 0,30 | 0,20 |
 
-Pierwszy wynik jest niezgodny z zerową różnicą w stopniu opisanym przez test, ale nie rozstrzyga znaczenia praktycznego ani trafności indeksu. Drugi jest nieprecyzyjny: obejmuje różnice w obu kierunkach. Nie dowodzi równości ani spełnienia standardu.
+Table: Dwa przykłady testu t jednej próby
 
-W obu przykładach do wnioskowania potrzebne są warunki modelu i uzasadnienie doboru próby. Statystyki opisowe same nie pozwalają sprawdzić kształtu rozkładu. Syntetyczne przykłady nie opisują rzeczywistej biblioteki.
+Pierwszy wynik jest niezgodny z zerową różnicą w stopniu opisanym przez test; znaczenie praktyczne i trafność indeksu wymagają osobnego kryterium. Drugi wynik jest nieprecyzyjny: przedział obejmuje zero i różnice do 4,4 minuty, więc raport podaje oszacowanie z przedziałem. W obu przykładach wnioskowanie wymaga warunków modelu i uzasadnienia doboru próby.
 
-# P i alfa nie są tym samym
+```{r ogony, fig.height=2.9, fig.cap="Dwustronne p: oba ogony dla |t| ≥ 3. Krzywa gęstości rozkładu t z 99 stopniami swobody, symetryczna wokół zera; wyróżnione obszary na lewo od −3 i na prawo od 3 mają łączne pole 0,0034."}
+print(wykres_t)
+```
 
-P to warunkowa ocena skrajności statystyki przy H0 i założeniach modelu. Dwustronne p uwzględnia wyniki co najmniej tak skrajne w obu kierunkach. Nie jest prawdopodobieństwem H0, miarą efektu ani szansą powtórzenia rezultatu.
+# Wartość p i poziom α
 
-Alfa jest wcześniej określoną regułą kontroli błędu I rodzaju. Moc dotyczy szansy odrzucenia H0 przy określonej alternatywie, zmienności, N i procedurze. Brak odrzucenia nie dowodzi braku efektu. Wybór najniższego p spośród wielu analiz zmienia działanie procedury.
+Wartość p jest prawdopodobieństwem warunkowym wyniku co najmniej tak skrajnego jak obserwowany, obliczonym przy prawdziwej $H_0$ i założeniach modelu; dwustronne p obejmuje oba kierunki. Wielkość efektu opisuje $\widehat\Delta$ albo $d$.
+
+Poziom $\alpha$ jest wcześniej określoną regułą kontroli błędu I rodzaju, $\beta$ — prawdopodobieństwem pozostawienia $H_0$ przy określonej alternatywie, a moc $1-\beta$ zależy od efektu, zmienności, N i $\alpha$. Pozostawienie $H_0$ przy szerokim przedziale oznacza wynik nieprecyzyjny. Wybór najniższego p spośród wielu analiz zmienia działanie procedury: przy 20 niezależnych testach prawdopodobieństwo co najmniej jednego odrzucenia wynosi 0,64.
+
+```{r bledy, fig.height=3.2, fig.cap="Błędy decyzji przy d = 0,30 i n = 100. Krzywa ciągła: rozkład t przy H0 ze środkiem w zerze; krzywa przerywana: rozkład przy H1 ze środkiem w 3. Pole α = 0,05 leży w ogonach krzywej H0 poza wartościami krytycznymi ±1,98; pole β = 0,16 to część krzywej H1 między nimi; moc wynosi 0,84."}
+print(wykres_bledy)
+```
 
 # Dwa zastosowania losowania
 
-Bootstrap losuje obserwacje z powtórzeniami, aby przybliżyć zmienność estymatora. Prosty przedział percentylowy wykorzystuje kwantyle estymat bootstrapowych. Nie symuluje automatycznie H0 i nie usuwa obciążenia doboru próby.
+Bootstrap losuje obserwacje z powtórzeniami, aby przybliżyć zmienność estymatora; prosty przedział percentylowy wykorzystuje kwantyle 2,5% i 97,5% estymat bootstrapowych. Obciążenie doboru próby pozostaje poza bootstrapem.
 
-Zmiana znaków odchyleń od $\mu_0$ buduje rozkład zerowy przy odpowiednich warunkach, w tym symetrii i niezależności odchyleń. Sama równość średniej do odniesienia nie zapewnia symetrii. Dla innych projektów schemat przestawień musi zachować właściwą strukturę.
+Zmiana znaków odchyleń od $\mu_0$ buduje rozkład zerowy przy niezależności i symetrii odchyleń; skośne czasy o średniej równej odniesieniu łamią symetrię. W innych projektach schemat przestawień zachowuje strukturę danych: pary, grupy i obserwacje jednej osoby.
 
 $$p_{\mathrm{MC}}=
 \frac{1+\#\{|T_b^*|\geq|T_{\mathrm{obs}}|\}}{B+1}.$$
 
-Dla B=1999 i 39 skrajnych replik p wynosi 0,02. Przy braku skrajnych replik wynosi 0,0005, nie zero. Zwiększenie B zmniejsza błąd obliczenia Monte Carlo, nie niepewność wynikającą z małej próby osób.
+Dla $B=1999$ i 39 skrajnych powtórzeń $p_{\mathrm{MC}}=40/2000=0{,}02$; najmniejsza osiągalna wartość to $1/2000=0{,}0005$. Zwiększenie $B$ zmniejsza błąd obliczenia Monte Carlo; niepewność wynikająca z małej próby osób zależy od $n$.
 
 # Pytania przed zapisaniem wyniku
 
-Co jest estymandą i dla jakiej populacji? Które rekordy tworzą N? Jaka jest wielkość efektu w jednostce problemu? Czy przedział dotyczy średniej czy różnicy? Jakie założenia pozwalają odczytać p? Co rzeczywiście przestawiano? Czy wynik odpowiada decyzji, którą chce podjąć biblioteka?
+Jaka jest estymanda i dla jakiej populacji? Które rekordy tworzą N? Jaka jest wielkość efektu w jednostce problemu? Czy przedział dotyczy średniej czy różnicy? Jakie założenia pozwalają odczytać p? Co przestawiano w teście losowym? Jaką decyzję biblioteki wspiera wynik?
 
-Odpowiedź kompletna łączy dane, liczbę i ograniczenie: „oszacowano tyle, z taką niepewnością, przy takim projekcie”. Samo „istotne” lub „nieistotne” nie realizuje tego zadania.
+Kompletna odpowiedź łączy dane, liczbę i ograniczenie: „oszacowano tyle, z taką niepewnością, przy takim projekcie”.
 
 Podstawa interpretacji p: [Wasserstein i Lazar, 2016](https://doi.org/10.1080/00031305.2016.1154108). Warunki przestawień: [Winkler i in., 2014](https://pmc.ncbi.nlm.nih.gov/articles/PMC4010955/). Obliczanie losowanych p: [Phipson i Smyth, 2010](https://doi.org/10.2202/1544-6115.1585).

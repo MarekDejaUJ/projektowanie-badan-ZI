@@ -112,6 +112,28 @@
 \newtcolorbox{uwagabox}[1][]{colback=orange!10, colframe=orange!70!black, title={#1}}
 \newtcolorbox{wzorbox}[1][]{colback=gray!5, colframe=gray!50!black, title={#1}}
 \newtcolorbox{przykladbox}[1][]{colback=purple!5, colframe=purple!50!black, title={#1}}
+
+% Rysunki z podpisem pozostają przy akapicie, który je opisuje.
+\usepackage{float}
+\floatplacement{figure}{H}
+
+% Greckie litery i symbole w tekście, tabelach i podpisach składane jak w matematyce.
+\usepackage{newunicodechar}
+\newunicodechar{μ}{\ensuremath{\mu}}
+\newunicodechar{π}{\ensuremath{\pi}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{β}{\ensuremath{\beta}}
+\newunicodechar{φ}{\ensuremath{\varphi}}
+\newunicodechar{θ}{\ensuremath{\theta}}
+\newunicodechar{ρ}{\ensuremath{\rho}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{χ}{\ensuremath{\chi}}
+\newunicodechar{Δ}{\ensuremath{\Delta}}
+\newunicodechar{√}{\ensuremath{\surd}}
+\newunicodechar{≤}{\ensuremath{\le}}
+\newunicodechar{≥}{\ensuremath{\ge}}
+\newunicodechar{≈}{\ensuremath{\approx}}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -120,13 +142,13 @@
 \@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
 \makeatother
 \hypersetup{
-  pdftitle={Handout W02 --- Rozkład{,} miara i pomiar},
+  pdftitle={Handout W02 --- Język danych{,} pomiar i opis},
   pdfauthor={Marek Deja},
   pdflang={pl-PL},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Handout W02 --- Rozkład, miara i pomiar}
+\title{Handout W02 --- Język danych, pomiar i opis}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
@@ -140,106 +162,201 @@
 \begin{document}
 \maketitle
 
-Skrypt przygotowuje ten sam przykład liczbowy co pełny wykład.
-Zestawiamy miary opisujące różne aspekty czasu. Nie wykonujemy tutaj
-testu hipotezy.
+Handout zestawia miary opisowe czasu wyszukiwania na tych samych
+przykładach co pełny tekst wykładu W02; wnioskowanie o populacji rozwija
+wykład W03 (Losowość, estymacja i dwa tory wnioskowania).
 
 \section{Jedna długa próba, kilka różnych
 miar}\label{jedna-dux142uga-pruxf3ba-kilka-ruxf3ux17cnych-miar}
 
-Seria A: 2, 4, 6, 8, 10 minut. Seria B: 2, 4, 6, 8, 30 minut. Zmienia
-się jedna obserwacja. Zastanów się przed odczytem, które miary reagują
-na jej wielkość, a które przede wszystkim na uporządkowanie.
+Seria A: 2, 4, 6, 8, 10 minut. Seria B: 2, 4, 6, 8, 30 minut. Serie
+różnią się wyłącznie ostatnią obserwacją. Przed odczytem tabeli
+przewidź, które miary reagują na wielkość ostatniej wartości, a które na
+uporządkowanie.
 
-Poniższa tabela pochodzi z tych dwóch serii. Średnia i SD mają jednostkę
-minut, wariancja minut kwadratowych. IQR także wyrażamy w minutach.
+Tabela „Miary serii A i B'' zestawia N, średnią, medianę, wariancję, SD,
+kwartyle, IQR, percentyl 90. i skośność \(g_1\). Seria A: średnia 6,
+mediana 6, SD 3,16, IQR 4 minuty. Seria B: średnia 10, mediana 6, SD
+11,40, IQR 4 minuty. Średnia i SD mają jednostkę minut, wariancja ---
+minut kwadratowych.
 
-{\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}lrrrrrrrr@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.1083}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.1083}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.1167}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0833}}@{}}
+\caption{Miary serii A i B (czasy w minutach, wariancja w minutach
+kwadratowych)}\tabularnewline
 \toprule\noalign{}
-seria & N & srednia & mediana & wariancja & SD & Q1 & Q3 & IQR \\
+\begin{minipage}[b]{\linewidth}\raggedright
+Seria
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Średnia
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Mediana
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Wariancja
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+SD
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Q1
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Q3
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+IQR
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+P90
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+g1
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Seria
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Średnia
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Mediana
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Wariancja
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+SD
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Q1
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Q3
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+IQR
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+P90
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+g1
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-A & 5 & 6 & 6 & 10 & 3.16 & 4 & 8 & 4 \\
-B & 5 & 10 & 6 & 130 & 11.40 & 4 & 8 & 4 \\
+A & 5 & 6,00 & 6,00 & 10,00 & 3,16 & 4,00 & 8,00 & 4,00 & 9,20 & 0,00 \\
+B & 5 & 10,00 & 6,00 & 130,00 & 11,40 & 4,00 & 8,00 & 4,00 & 21,20 &
+1,36 \\
 \end{longtable}
-}
 
-Wykres odróżnia wartości osób od średniej. Odczytaj, ile osób w serii B
-rzeczywiście miało wynik zbliżony do 10 minut. Nie traktuj średniej jako
-wyniku większości.
+\begin{figure}
+\includegraphics[width=1\linewidth]{handout_files/figure-latex/wykres-1} \caption{Jedna długa próba przesuwa średnią. Oś pozioma: czas w minutach; dwa wiersze: seria A i seria B. Koła oznaczają osoby, romb średnią, pionowa kreska medianę. W serii A romb i kreska leżą przy 6 minutach; w serii B kreska mediany leży przy 6 minutach, a romb średniej przy 10 minutach, na prawo od czterech kół między 2 a 8 minutami.}\label{fig:wykres}
+\end{figure}
 
-\includegraphics[width=1\linewidth]{handout_files/figure-latex/wykres-1}
+Notatka: ile osób w serii B ma czas bliski średniej 10 minut, a ile ---
+czas nie dłuższy od mediany?
 
 \section{Wzory czytane zdaniem}\label{wzory-czytane-zdaniem}
 
 \[
 \bar{x}=\frac{\sum x_i}{n},\qquad
 s=\sqrt{\frac{\sum(x_i-\bar{x})^2}{n-1}},\qquad
-IQR=Q_3-Q_1.
+IQR=Q_3-Q_1,\qquad SE=\frac{s}{\sqrt{n}}.
 \]
 
 Średnia jest sumą ważnych wartości podzieloną przez ich liczbę. SD
 opiera się na odległościach od średniej; duże odchylenia mają duży wkład
-przez podnoszenie do kwadratu. IQR jest szerokością środkowej części
-rozkładu.
+przez podnoszenie do kwadratu. IQR jest szerokością środkowej połowy
+uporządkowanych wartości. SE opisuje precyzję średniej i maleje z
+pierwiastkiem z \(n\): przy \(s=3{,}16\) minuty SE wynosi 1,41 minuty
+dla \(n=5\) i 0,26 minuty dla \(n=150\).
 
 \[
-\bar{x}_{\mathrm{ogółem}}
-=\frac{n_1\bar{x}_1+n_2\bar{x}_2}{n_1+n_2},
+\bar{x}_{\mathrm{ogółem}}=\frac{n_1\bar{x}_1+n_2\bar{x}_2}{n_1+n_2},
 \qquad
-\widehat F(t)=\frac{\#(x_i\leq t)}{n}.
+\widehat F(c)=\frac{1}{n}\sum_{i=1}^{n}\mathbf{1}(x_i\leq c).
 \]
 
-Pierwszy wzór przypomina o liczebnościach przy łączeniu średnich grup.
-Drugi podaje udział ważnych pomiarów nieprzekraczających progu. Dla
-serii B \(\widehat F(8)=4/5=80\%\).
+Pierwszy wzór łączy średnie grup z wagami równymi liczebnościom: 10 osób
+ze średnią 4 minuty i 30 osób ze średnią 8 minut dają 7 minut. Drugi
+wzór podaje udział ważnych pomiarów nieprzekraczających progu \(c\);
+symbol \(\mathbf{1}(\cdot)\) przyjmuje 1, gdy warunek jest spełniony.
+Dla serii B \(\widehat F(8)=4/5=0{,}8\).
 
-{\def\LTcaptype{none} % do not increment counter
+\begin{figure}
+\includegraphics[width=1\linewidth]{handout_files/figure-latex/dystrybuanta-1} \caption{Dystrybuanta empiryczna serii B. Oś pozioma: czas w minutach; oś pionowa: udział obserwacji mniejszych lub równych wartości. Schodki rosną o 0,2 przy 2, 4, 6, 8 i 30 minutach; romb przy 8 minutach oznacza F(8) = 0,80.}\label{fig:dystrybuanta}
+\end{figure}
+
+Histogram czasu S02 ma przedziały po 2,5 minuty, zamknięte z prawej
+strony. Najwyższy słupek, 38 osób, stoi nad przedziałem od 5 do 7,5
+minuty; prawy ogon sięga 33,8 minuty, a średnia 10,13 minuty przewyższa
+medianę 8,25 minuty.
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{handout_files/figure-latex/histogram-1} \caption{Czas S02 po przygotowaniu: histogram 142 ważnych czasów z przedziałami po 2,5 minuty. Oś pozioma: czas wyszukiwania w minutach; oś pionowa: liczba osób. Najwyższy słupek, 38 osób, stoi nad przedziałem od 5 do 7,5 minuty; słupki obniżają się w prawo aż do 33,8 minuty.}\label{fig:histogram}
+\end{figure}
+
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.1600}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4200}}@{}}
+\caption{Miary i druga wielkość potrzebna w opisie}\tabularnewline
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Miara
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Pytanie
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Nie oznacza
+Druga wielkość potrzebna w opisie
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Miara
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Pytanie
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Druga wielkość potrzebna w opisie
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Średnia & Jaka suma przypada na obserwację? & Wyniku każdej lub
-większości osób \\
-Mediana & Gdzie leży środek uporządkowanych wartości? & Zawsze
-istniejącej wartości jednej osoby \\
-SD & Jak bardzo różnią się pomiary względem średniej? & Błędu
-standardowego średniej \\
-IQR & Jak szeroka jest środkowa część rozkładu? & Przedziału ufności \\
-Proporcja & Jaka część właściwego mianownika spełnia warunek? & Liczby
-osób bez znajomości N \\
+Średnia & Jaka suma przypada na obserwację? & Mediana i SD: środek i
+rozrzut osób \\
+Mediana & Gdzie leży środek uporządkowanych wartości? & Kwartyle:
+szerokość środkowej połowy \\
+SD & Jak bardzo różnią się pomiary względem średniej? & SE
+\(=s/\sqrt{n}\): precyzja średniej \\
+IQR & Jak szeroka jest środkowa połowa rozkładu? & Przedział ufności:
+niepewność estymaty (W03) \\
+Proporcja & Jaka część mianownika spełnia warunek? & Mianownik N \\
 \end{longtable}
-}
 
 \section{Odczyt indeksu}\label{odczyt-indeksu}
 
-Niech \(O_i\) oznacza ważne pozycje osoby \(i\), a \(m_i\) ich liczbę.
+Niech \(O_i\) oznacza zbiór ważnych pozycji osoby \(i\), \(m_i\) --- ich
+liczbę, a \(x^*_{ik}\) --- odpowiedź na pozycję \(k\) po ukierunkowaniu.
 Indeks obliczamy według:
 
-\[I_i=\frac{1}{m_i}\sum_{j\in O_i}x^*_{ij}\quad\text{dla }m_i\geq5.\]
+\[I_i=\frac{1}{m_i}\sum_{k\in O_i}x^*_{ik}\quad\text{dla }m_i\geq5 .\]
 
-Przy mniej niż pięciu odpowiedziach pozostawiamy brak. Pozycję odwrotną
-1--5 ukierunkowujemy wzorem \(x^*=6-x\). Nie podstawiamy zera za brak
-ani nie dzielimy każdej sumy przez sześć.
+Przy mniej niż pięciu ważnych odpowiedziach indeks jest brakiem. Pozycję
+3 („Odczytanie rekordu wymaga ode mnie zgadywania.'') ukierunkowujemy
+wzorem \(x^*=6-x\). Suma obejmuje wyłącznie ważne odpowiedzi, a
+dzielnikiem jest \(m_i\): odpowiedzi 4, 5, NA, 4, 3, 5 dają
+\(I_i=21/5=4{,}2\).
 
-W S02 jest to dydaktyczny indeks deklarowanej użyteczności katalogu i
-radzenia sobie z nim. Nie jest zwalidowanym testem kompetencji. Wysoka
-spójność odpowiedzi nie dowodzi sama trafności takiej interpretacji.
+W S02 wynik to dydaktyczny indeks deklarowanej użyteczności katalogu i
+radzenia sobie z katalogiem. Każdy wniosek o związku indeksu z czasem
+lub powodzeniem używa pełnej nazwy indeksu; alfa Cronbacha opisuje
+spójność odpowiedzi, a trafność interpretacji wymaga dowodów z treści
+pozycji, rozumienia pytań i związków z innymi pomiarami.
 
 \section{Pytania do notatek}\label{pytania-do-notatek}
 
@@ -247,24 +364,25 @@ spójność odpowiedzi nie dowodzi sama trafności takiej interpretacji.
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Dlaczego średnia i mediana mogą prowadzić do innych opisów
-  doświadczenia użytkownika?
+  Jakie dwa opisy doświadczenia użytkownika dają średnia i mediana serii
+  B?
 \item
-  Dlaczego punkt poza wąsem wykresu nie jest automatycznie błędem?
+  Jakie informacje o rekordzie rozstrzygają, czy punkt poza wąsem
+  wykresu pudełkowego jest błędem?
 \item
-  Dlaczego przy wzroście N precyzja średniej może rosnąć, mimo że SD
-  osób pozostaje podobne?
+  Jak zmieniają się SE i SD czasu, gdy liczba osób rośnie z 5 do 142?
 \item
-  Jak odróżnisz ocenę filtrów od samooceny wyszukiwania i od
-  obserwowanego powodzenia?
+  Jak odróżnisz ocenę filtrów (pozycja 2) od samooceny działania
+  (pozycja 4) i od obserwowanego powodzenia?
 \item
-  Co musi być wiadomo o pytaniu wielokrotnym, żeby suma procentów ponad
-  100\% była zrozumiała?
+  Jaka konstrukcja pytania wielokrotnego wyboru wyjaśnia sumę odsetków
+  respondentów powyżej 100\%?
 \end{enumerate}
 
-W C03 opisujemy czas i skuteczność. W C04 sprawdzamy pozycje, regułę
-indeksu oraz mianowniki kanałów. Ramy DigComp 2.2 i ACRL oraz publikacja
-o ISS służą konstrukcji pytań, nie zastępują walidacji własnego
-narzędzia. Pełne odnośniki zawiera wykład.
+Na ćwiczeniu C03 (Portret próby) opisujemy czas i skuteczność, a na
+ćwiczeniu C04 (Od pozycji do konstruktu) --- pozycje, regułę indeksu i
+mianowniki kanałów. Ramy DigComp 2.2 i ACRL oraz publikacja o ISS
+wspierają konstrukcję pytań; walidacja własnego narzędzia jest osobnym
+badaniem. Pełne odnośniki zawiera wykład.
 
 \end{document}

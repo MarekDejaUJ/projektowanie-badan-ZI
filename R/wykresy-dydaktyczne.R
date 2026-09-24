@@ -337,40 +337,6 @@ wykres_pudelkowy <- function(x, grupa = NULL, os = "Warto\u015b\u0107", tytul = 
     theme_zi()
 }
 
-#' Histogram o jawnej szerokosci przedzialu
-#'
-#' Przedzialy zaczynaja sie od wartosci `poczatek`; podtytul podaje N i
-#' szerokosc przedzialu. Skala "gestosc" przedstawia pole slupkow rowne 1.
-#' @param x Wartosci liczbowe; braki sa pomijane.
-#' @param szerokosc Szerokosc przedzialu w jednostkach x.
-#' @param poczatek Poczatek pierwszego przedzialu.
-#' @param skala "liczebnosc" albo "gestosc".
-#' @param os Podpis osi wartosci.
-#' @param jednostka Jednostka szerokosci przedzialu w podtytule.
-#' @param tytul Tytul wykresu.
-#' @return Obiekt ggplot; wykres rysuje print().
-#' @export
-#' @examples
-#' p <- wykres_histogram(c(2, 4, 5, 7, 8, 13, 30), szerokosc = 5, os = "Czas [min]")
-wykres_histogram <- function(x, szerokosc, poczatek = 0, skala = c("liczebnosc", "gestosc"),
-                             os = "Warto\u015b\u0107", jednostka = "min", tytul = NULL) {
-  skala <- match.arg(skala)
-  x <- x[is.finite(x)]
-  stopifnot(length(x) >= 2L, is.numeric(szerokosc), szerokosc > 0)
-  estetyka <- if (skala == "gestosc") ggplot2::aes(x = .data$x, y = ggplot2::after_stat(.data$density)) else
-    ggplot2::aes(x = .data$x)
-  ggplot2::ggplot(data.frame(x = x), estetyka) +
-    ggplot2::geom_histogram(binwidth = szerokosc, boundary = poczatek, closed = "right",
-                            fill = kolory_zi[["secondary"]], colour = "white") +
-    ggplot2::scale_x_continuous(labels = os_pl) +
-    ggplot2::scale_y_continuous(labels = os_pl) +
-    ggplot2::labs(x = os, y = if (skala == "gestosc") etykiety_zi$gestosc else etykiety_zi$liczba_osob,
-                  title = tytul,
-                  subtitle = paste0("N = ", length(x), "; szeroko\u015b\u0107 przedzia\u0142u ",
-                                    liczba_pl(szerokosc, if (szerokosc %% 1 == 0) 0L else 1L), " ", jednostka)) +
-    theme_zi()
-}
-
 #' Te same obserwacje w kilku skalach
 #'
 #' Kazdy panel jest osia jednej reprezentacji (minuty, rangi, min-max,

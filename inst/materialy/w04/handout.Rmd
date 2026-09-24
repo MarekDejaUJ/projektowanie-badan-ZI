@@ -1,6 +1,6 @@
 ---
-title: 'W04 — Porównania: mapa projektu, efektu i testu'
-subtitle: 'Zarządzanie informacją — handout — 2026/27'
+title: 'Handout W04 — Porównania grup i zależności kategorii'
+subtitle: 'Zarządzanie informacją — mapa projektu, efektu i testu — 2026/27'
 author: 'Marek Deja'
 date: '2026/27'
 lang: pl-PL
@@ -9,45 +9,53 @@ papersize: a4
 geometry: margin=2cm
 ---
 
+```{r przygotowanie, include=FALSE}
+source("analiza.R", local = knitr::knit_global(), encoding = "UTF-8")
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+                      fig.width = 6, fig.height = 2.9)
+```
+
 # Najpierw ustal strukturę
 
 | Projekt | Wielkość główna | Kluczowa kontrola |
-|---|---|---|
-| Dwie niezależne grupy, wynik ilościowy | Różnica średnich | Inne osoby, N i SD w obu grupach |
-| Dwa pomiary tych samych osób | Średnia różnica wewnątrz par | ID i kompletne pary |
-| Dwie zmienne kategorialne | Proporcje i związek w tabeli | Liczebności, mianowniki, oczekiwania |
-| Więcej grup | Zaplanowany kontrast lub porównanie ogólne | Wielokrotność i właściwy model |
-| Wynik interpretowany rangowo | Położenie/rangi według metody | Nie utożsamiać z testem średnich |
+|------------------------------|------------------------------|------------------------------|
+| Dwie niezależne grupy, wynik ilościowy | Różnica średnich | Różne osoby, N i SD w obu grupach |
+| Dwa pomiary tych samych osób | Średnia różnica wewnątrz par | Identyfikator i kompletne pary |
+| Dwie zmienne kategorialne | Proporcje i związek w tabeli | Liczebności, mianowniki, liczebności oczekiwane |
+| Więcej grup | Zaplanowany kontrast lub test ogólny | Kontrola wielokrotności i właściwy model |
+| Wynik interpretowany rangowo | Estymanda θ | Pytanie o porządek wyników |
 
-Równe liczebności nie tworzą par. Wielokrotne zadania tej samej osoby nie są niezależnymi osobami. Grupy obserwacyjne nie stają się randomizowane przez użycie permutacji.
+Table: Projekty porównania
+
+Parę tworzy ta sama osoba. Zadania jednej osoby tworzą obserwacje zależne. Grupy obserwacyjne zachowują swój charakter przy każdej metodzie testu, także przy teście permutacyjnym.
 
 # Jeden kierunek we wszystkich wynikach
 
 $$\Delta=\mu_N-\mu_D,\qquad
 \widehat\Delta=\bar{x}_N-\bar{x}_D.$$
 
-Nowi minus doświadczeni: dodatni wynik czasu oznacza dłuższy czas nowych, dodatni indeks — wyższą deklarację zgodnie z kierunkiem skali. Po odwróceniu kolejności zmieniamy znak różnicy, t, g i granice CI: [L; U] przechodzi w [−U; −L]. Dwustronne p pozostaje takie samo.
+Kierunek nowi minus doświadczeni: dodatni wynik czasu oznacza dłuższy czas nowych, dodatni indeks — wyższą deklarację w kierunku skali. Odwrócenie kolejności zmienia znak różnicy, t, g i granic przedziału: [L; U] przechodzi w [−U; −L]; dwustronne p pozostaje takie samo.
 
 # Welch: obie średnie mają niepewność
 
 $$
 SE=\sqrt{\frac{s_N^2}{n_N}+\frac{s_D^2}{n_D}},
 \quad t_W=\frac{\widehat\Delta}{SE},
-\quad CI_{95\%}=\widehat\Delta\pm t_{0{,}975;\nu}SE.
+\quad CI_{95\%}=\widehat\Delta\pm t_{0{,}975;\,\nu}\,SE.
 $$
 
-Welch nie wymaga równych wariancji, ale nadal wymaga właściwego projektu i uzasadnienia przybliżenia. Niecałkowite df jest normalnym wynikiem przybliżenia, nie błędem liczebności. Test normalności nie ocenia niezależności i nie jest uniwersalnym przełącznikiem metod.
+Test Welcha dopuszcza różne wariancje grup i wymaga właściwego projektu oraz uzasadnienia przybliżenia. Stopnie swobody $\nu$ są zwykle liczbą niecałkowitą, wynikiem przybliżenia Welcha–Satterthwaite'a. Rozkład oceniają wykres kwantylowy i histogram, a niezależność — projekt.
 
-Przykład hipotetyczny: po 5 osób, średnie czasu 12 i 8 minut, SD w obu grupach około 3,162. Różnica wynosi 4 minuty, SE=2, t(8)=2, p około 0,081, CI [−0,61; 8,61] minuty. To nieprecyzyjna dodatnia estymata, nie dowód równości.
+Przykład hipotetyczny: po 5 osób, średnie czasu 12 i 8 minut, SD w obu grupach 3,16. Różnica wynosi 4 minuty, SE = 2, t(8) = 2, p = 0,081, 95% CI [−0,61; 8,61] minuty: dodatnia estymata z dużą niepewnością. Test permutacyjny ze wszystkimi 252 podziałami etykiet daje p = 32/252 = 0,127.
 
 $$
 s_p=\sqrt{\frac{(n_N-1)s_N^2+(n_D-1)s_D^2}{n_N+n_D-2}},
 \quad
 g\approx\left(1-\frac{3}{4(n_N+n_D)-9}\right)
-\frac{\widehat\Delta}{s_p}.
+\frac{\widehat\Delta}{s_p}=1{,}14 .
 $$
 
-G dzieli różnicę przez rozrzut osób, nie przez SE. Naturalna różnica w minutach lub punktach pozostaje podstawą sensu praktycznego. Duże g i p powyżej 0,05 mogą wystąpić jednocześnie przy małej próbie.
+Mianownikiem $g$ jest rozrzut osób, a mianownikiem $t_W$ — SE różnicy. Naturalna różnica w minutach lub punktach pozostaje podstawą sensu praktycznego; duże $g$ i p powyżej 0,05 współwystępują przy małej próbie.
 
 # Pary: jedna różnica na osobę
 
@@ -57,46 +65,58 @@ d_i=x_{i,\mathrm{po}}-x_{i,\mathrm{przed}},
 \quad df=n_{\mathrm{par}}-1.
 $$
 
-Ujemna zmiana czasu oznacza skrócenie. Założenie normalności dla dokładnego modelu dotyczy różnic, nie osobno kolumn przed i po. Bez kontroli zmiana może odzwierciedlać także uczenie się, a nie tylko interwencję.
+Ujemna zmiana czasu oznacza skrócenie. Warunek normalności dotyczy rozkładu różnic. W przykładzie sześciu osób zmiana wynosi −2,17 minuty, 95% CI [−3,39; −0,94], t(5) = −4,54, p = 0,0062; zmiana łączy działanie instruktażu, zapamiętanie zadania i oswojenie z procedurą.
 
-# Resampling musi pasować do projektu
+```{r pary, fig.height=3, fig.cap="Każda linia łączy dwa pomiary jednej osoby. Oś pozioma: pomiar przed i po; oś pionowa: czas w minutach. Sześć odcinków a–f; wszystkie opadają, o 1 do 4 minut."}
+print(wykres_par)
+```
 
-Permutacja dwóch grup przestawia etykiety przy zachowaniu liczebności, jeśli pod H0 dopuszcza to wymienialność lub mechanizm randomizacji. Sama równość średnich nie wystarcza przy dowolnie różnych rozkładach. Surowe tasowanie różnicy nie dziedziczy automatycznie odporności Welcha na nierówne wariancje.
+# Test permutacyjny i bootstrap zachowują projekt
 
-Bootstrap dwóch grup losuje z powtórzeniami osobno w każdej grupie, aby szacować niepewność różnicy. Dla par zachowujemy całą parę. Zmiana znaków różnic ma własne uzasadnienie symetrii lub randomizacji; nie jest dowolnym mieszaniem wszystkich wartości.
+Test permutacyjny dwóch grup przestawia etykiety przy zachowaniu liczebności, gdy przy $H_0$ uzasadniona jest wymienialność: każdy podział etykiet jest równie prawdopodobny. Przy różnych rozkładach grup statystyka $t_W$ jako miara skrajności zachowuje poziom α w przybliżeniu.
+
+Bootstrap dwóch grup losuje z powtórzeniami osobno w każdej grupie i szacuje niepewność różnicy. Dla par losuje się całe pary. Test zmian znaków różnic par zakłada symetrię lub randomizację: sześć par daje 64 układy znaków, a najmniejsze osiągalne p wynosi 2/64 = 0,031.
 
 # Kategorie: od komórki do statystyki
 
-$$E_{ij}=\frac{n_{i\cdot}n_{\cdot j}}N,\qquad
+$$E_{ij}=\frac{n_{i\cdot}\,n_{\cdot j}}N,\qquad
 \chi^2=\sum_{i,j}\frac{(O_{ij}-E_{ij})^2}{E_{ij}},
 \qquad df=(r-1)(c-1).$$
 
-O to liczebność obserwowana, E oczekiwana przy niezależności. E może być ułamkiem. Do testu podajemy liczebności, nie procenty. Małe oczekiwania mogą pogarszać przybliżenie chi-kwadrat; Fisher lub odpowiednie Monte Carlo wymagają jawnego opisu procedury.
+$O$ to liczebność obserwowana, $E$ — oczekiwana przy niezależności; $E$ może być ułamkiem. Test przyjmuje liczebności. Przybliżenie $\chi^2$ wymaga oczekiwanych liczebności co najmniej 5; przy mniejszych stosuje się test Fishera albo Monte Carlo z jawnym opisem procedury.
 
-Monte Carlo w omawianym teście tabel zachowuje marginesy. Fisher 2 na 2 ma interpretację warunkową przy tych marginesach. Słowo „dokładny” nie oznacza braku wymagań dotyczących projektu lub niezależności.
+```{r obserwowane-oczekiwane, fig.height=3.2, fig.cap="Liczebności obserwowane i oczekiwane w tabeli 18/30 i 32/40. Nowi: O 18 wobec E 21,43 sukcesu i O 12 wobec E 8,57 niepowodzenia. Doświadczeni: O 32 wobec E 28,57 i O 8 wobec E 11,43."}
+print(wykres_oe)
+```
 
-# Wielkość związku nie jest p
+Rozkład $\chi^2_{df}$ to rozkład sumy kwadratów $df$ niezależnych zmiennych $Z$; wartość krytyczna dla df = 1 wynosi $3{,}84=1{,}96^2$. W przykładzie $\chi^2(1)=3{,}36$ i p = 0,067; Monte Carlo z zachowanymi marginesami daje p = 0,108, a test Fishera — p = 0,108.
 
-$$V=\sqrt{\frac{\chi^2}{N\min(r-1,c-1)}}.$$
+```{r chi2, fig.height=3, fig.cap="Rozkłady χ² o 1, 2 i 4 stopniach swobody. Wszystkie krzywe mają prawy ogon; wartości krytyczne 0,95 wynoszą 3,84; 5,99 i 9,49."}
+print(wykres_chi2)
+```
 
-V jest nieujemne i nie ma kierunku. Nie jest procentem skuteczności. Prosty percentylowy bootstrap V może nie obejmować zera także przy niezależności populacyjnej, dlatego nie używamy jego dolnej granicy jako automatycznego testu związku.
+# Wielkość związku i wartość p
 
-W przykładzie 18/30 wobec 32/40:
+$$V=\sqrt{\frac{\chi^2}{N\min(r-1,c-1)}}=0{,}219 .$$
+
+V opisuje siłę związku od 0 do 1; kierunek podaje różnica proporcji. Percentylowy przedział bootstrapowy V ma dodatnią dolną granicę także przy niezależności w populacji, więc związek testuje się testem $\chi^2$, Fishera lub Monte Carlo.
 
 | Miara: nowi względem doświadczonych | Wynik | Odczyt |
-|---|---:|---|
-| Różnica proporcji | −0,20 | O 20 punktów procentowych mniej |
-| Iloraz proporcji | 0,75 | Udział stanowi 75% udziału drugiej grupy |
-| Iloraz szans | 0,375 | Inny iloraz: sukcesy do niepowodzeń |
+|------------------------------|--------:|------------------------------------|
+| Różnica proporcji | −0,20 | 20 punktów procentowych mniej |
+| Iloraz proporcji RR | 0,75 | Odsetek nowych to 75% odsetka doświadczonych |
+| Iloraz szans OR | 0,375 | Szansa 1,5 wobec 4: sukcesy do niepowodzeń |
 
-Przedział każdej miary trzeba nazwać. Wartością zerową różnicy jest 0, a brakiem związku dla ilorazów jest 1. Nie przenosimy granic między skalami bez odpowiedniego przekształcenia.
+Table: Trzy miary efektu tabeli 18/30 i 32/40
 
-# Rangi i wiele grup: granice skrótu
+Każdy przedział ma nazwę miary. Wartością braku różnicy jest 0 dla różnicy proporcji i 1 dla ilorazów.
 
-Test Manna–Whitneya nie jest automatycznym testem median. Interpretacja przesunięcia położenia wymaga dodatkowych warunków. Porównanie rang może odpowiadać innemu pytaniu niż przeciętny koszt czasu.
+# Rangi i wiele grup
 
-ANOVA pyta, czy wszystkie średnie są równe; wynik ogólny nie wskazuje pary. Zaplanowane kontrasty i analizy po obejrzeniu wyników wymagają odpowiednich reguł wielokrotności. Istotny wynik ogólny nie uprawnia do dowolnego wybierania kolejnych p.
+Test Manna–Whitneya sprawdza hipotezę θ = 0,5, gdzie θ to prawdopodobieństwo, że losowa osoba z jednej grupy ma wyższy wynik od losowej osoby z drugiej (z połową remisów); w przykładzie czasu θ = 0,82. Odczyt jako przesunięcia mediany wymaga rozkładów o tym samym kształcie.
 
-W raporcie: projekt, grupy, N, wielkość i kierunek efektu, jednostka, CI, statystyka, df, p i ograniczenie. Wniosek o przyczynie wymaga uzasadnienia projektu, nie tylko małego p.
+ANOVA sprawdza równość wszystkich średnich; wskazanie pary wymaga kontrastów lub porównań par z kontrolą wielokrotności. W przykładzie trzech grup F(2, 6) = 3,5, p = 0,098, $\eta^2=0{,}538$.
+
+Raport podaje projekt, grupy, N, wielkość i kierunek efektu, jednostkę, przedział, statystykę, df, p i ograniczenie. Wniosek o przyczynie wymaga uzasadnienia projektu.
 
 Definicje efektów: [Lakens (2013)](https://doi.org/10.3389/fpsyg.2013.00863). Warunki przestawień: [Winkler i in. (2014)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4010955/).
