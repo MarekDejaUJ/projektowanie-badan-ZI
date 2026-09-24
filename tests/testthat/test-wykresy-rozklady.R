@@ -58,3 +58,36 @@ test_that("obliczenia wykresów rozkładów dają oczekiwane liczby", {
   expect_error(wykres_rozklad_dyskretny(0:1, c(0.2, 0.2)))
   expect_error(wykres_licznosci_odsetki("A", 5, 4))
 })
+
+test_that("wykresy pozycji, korelacji i wspólnych wyborów podają liczby z danych", {
+  pozycje <- data.frame(p1 = c(1, 2, 4, 5, 4), p2 = c(3, 3, 4, NA, 2))
+  likert <- wykres_likert(pozycje, c("Pozycja 1", "Pozycja 2"))
+  zbuduj(likert)
+  expect_match(likert$labels$subtitle, "4–5")
+  d <- ggplot2::ggplot_build(likert)$data[[1]]
+  expect_equal(sum(d$xmax - d$xmin), 200)
+  korelacje <- wykres_macierz_korelacji(data.frame(a = 1:5, b = c(2, 1, 4, 3, 5), c = c(1, 3, 2, 5, NA)))
+  zbuduj(korelacje)
+  expect_match(korelacje$labels$subtitle, "N = 4 os")
+  wybory <- wykres_wspolne_wybory(30, 25, 50, c("e-mail", "WWW"))
+  zbuduj(wybory)
+  n <- ggplot2::ggplot_build(wybory)$data[[1]]
+  expect_equal(sort(unique(round(n$xmax - n$xmin))), c(0, 5, 20, 25))
+  napisy <- ggplot2::ggplot_build(wybory)$data[[2]]
+  expect_equal(sort(napisy$x[napisy$label == "25"]), c(12.5, 17.5))
+  expect_error(wykres_wspolne_wybory(60, 25, 50))
+})
+
+test_that("mozaika, ogon Monte Carlo i przejścia podają liczby z tabel", {
+  tab <- matrix(c(10, 30, 32, 48), 2, byrow = TRUE, dimnames = list(c("A", "B"), c("0", "1")))
+  mozaika <- wykres_mozaika(tab, c("niepowodzenie", "sukces"))
+  zbuduj(mozaika)
+  d <- ggplot2::ggplot_build(mozaika)$data[[1]]
+  expect_equal(sort(unique(round(d$xmax - d$xmin, 4))), round(c(40, 80) / 120, 4))
+  ogon <- wykres_chi2_mc(c(0.1, 0.5, 2, 3, 4), 2)
+  zbuduj(ogon)
+  expect_match(ogon$labels$subtitle, "Monte Carlo 0,667")
+  przejscia <- wykres_przejscia(matrix(c(20, 10, 2, 18), 2, byrow = TRUE))
+  zbuduj(przejscia)
+  expect_match(przejscia$labels$subtitle, "poprawa 10, pogorszenie 2, bez zmiany 38")
+})

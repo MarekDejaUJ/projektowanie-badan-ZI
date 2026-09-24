@@ -90,7 +90,10 @@ wykres_pary <- function(przed, po, id, os = "Warto\u015b\u0107", tytul = NULL) {
   momenty <- c(etykiety_zi$przed, etykiety_zi$po)
   d <- data.frame(id = rep(id, 2), moment = factor(rep(momenty, each = length(id)), levels = momenty),
                   y = c(przed, po))
-  e <- data.frame(id = id, moment = factor(momenty[2], levels = momenty), y = po,
+  # Etykiety osob o tym samym wyniku "po" sa rozsuniete w pionie.
+  przesuniecie <- stats::ave(po, po, FUN = function(v) seq_along(v) - (length(v) + 1) / 2)
+  krok <- 0.06 * max(diff(range(c(przed, po))), 1)
+  e <- data.frame(id = id, moment = factor(momenty[2], levels = momenty), y = po + przesuniecie * krok,
                   etykieta = paste0(id, ": ", ifelse(po - przed > 0, "+", ""), sub("^-", "\u2212", po - przed)))
   ggplot2::ggplot(d, ggplot2::aes(x = .data$moment, y = .data$y, group = .data$id)) +
     ggplot2::geom_line(colour = kolory_zi[["primary"]]) +

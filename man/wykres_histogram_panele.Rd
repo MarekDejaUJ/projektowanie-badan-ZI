@@ -11,7 +11,8 @@ wykres_histogram_panele(
   tytul = NULL,
   odniesienie = NULL,
   etykieta_odniesienia = "parametr",
-  os_y = NULL
+  os_y = NULL,
+  skala = c("liczebnosc", "gestosc")
 )
 }
 \arguments{
@@ -34,6 +35,9 @@ oznaczona we wszystkich panelach linia kropkowana z opisem.}
 \item{etykieta_odniesienia}{Opis linii odniesienia.}
 
 \item{os_y}{Podpis osi liczebnosci; domyslnie liczba osob.}
+
+\item{skala}{"liczebnosc" albo "gestosc" (pole slupkow kazdego panelu
+rowne 1, co pozwala porownac ksztalt grup o roznych N).}
 }
 \value{
 Obiekt ggplot; wykres rysuje print().

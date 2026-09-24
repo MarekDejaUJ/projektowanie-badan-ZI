@@ -1,12 +1,19 @@
+# C07: gotowe dane, tabele i wykresy ćwiczenia. Student uruchamia bloki
+# w zadanie.Rmd; obliczenia i wygląd wyników pozostają w tym skrypcie.
+
+# Zbiór S02 po regułach ćwiczenia C02: grupa i powodzenie zadania.
 dane_surowe <- badaniaZI::dane_przykladowe()
 przygotowane <- badaniaZI::przygotuj_ankiete(dane_surowe)
 dane <- przygotowane$dane
 
+# Statystyka chi-kwadrat Pearsona bez korekty ciągłości.
 statystyka_chi <- function(tab) {
   if(any(rowSums(tab)==0) || any(colSums(tab)==0)) return(NA_real_)
   E <- outer(rowSums(tab),colSums(tab))/sum(tab)
   sum((tab-E)^2/E)
 }
+# Tabela 2 x 2 (wiersze: grupy, kolumny: 0 i 1): oczekiwania, chi-kwadrat, Fisher,
+# Monte Carlo przy ustalonych marginesach, różnica proporcji z dwoma CI i V.
 analiza_tabeli <- function(tab, B=1999L, ziarno=202627L) {
   tab <- as.matrix(tab)
   stopifnot(all(dim(tab)==c(2,2)),all(is.finite(tab)),all(tab>=0),
@@ -26,7 +33,7 @@ analiza_tabeli <- function(tab, B=1999L, ziarno=202627L) {
   y <- lapply(1:2,function(i) rep(0:1,times=tab[i,]))
   prop <- tab[,2]/rowSums(tab)
   delta <- prop[2]-prop[1]
-  # Ten prosty CI różnicy jest przybliżeniem dużopróbkowym, nie metodą dla rzadkich komórek.
+  # Przedział Walda jest przybliżeniem dużopróbkowym; rzadkie komórki wymagają metod dokładnych.
   test_prop <- suppressWarnings(prop.test(tab[2:1,2],rowSums(tab)[2:1],correct=FALSE))
   boot <- replicate(B,{
     b1 <- sample(y[[1]],replace=TRUE)
@@ -54,7 +61,7 @@ analiza_tabeli <- function(tab, B=1999L, ziarno=202627L) {
       iloraz_proporcji=unname(prop[2]/prop[1]),
       OR_surowe=unname((tab[2,2]/tab[2,1])/(tab[1,2]/tab[1,1])),
       V=sqrt(chi/N)),
-    przedzialy=data.frame(metoda=c('Przybliżenie bez korekty','Bootstrap w grupach'),
+    przedzialy=data.frame(metoda=c('Wald bez korekty','Bootstrap w grupach'),
       estymata=unname(delta),dol=c(test_prop$conf.int[1],ci_delta[1]),
       gora=c(test_prop$conf.int[2],ci_delta[2])),
     bootstrap_roznicy=boot['roznica',],bootstrap_V=vboot,
@@ -65,67 +72,69 @@ tab <- table(factor(dane$grupa,levels=c('doświadczeni','nowi')),
              factor(dane$powodzenie,levels=0:1))
 dimnames(tab) <- list(grupa=c('doświadczeni','nowi'),powodzenie=c('0','1'))
 wynik <- analiza_tabeli(tab)
-formatuj_wynik <- function(x) {
-  for(j in names(x)[grepl('^p($|_)',names(x))])
-    if(is.numeric(x[[j]])) x[[j]] <- format.pval(x[[j]],digits=3,eps=.0001)
-  x
-}
-pionowo <- function(x) {
-  y <- formatuj_wynik(x)
-  data.frame(wielkosc=names(y),wartosc=vapply(y,function(z) {
-    if(is.numeric(z)) format(round(z,4),trim=TRUE) else as.character(z)
-  },character(1)),row.names=NULL)
-}
-procent_wiersz <- 100*prop.table(tab,1)
-procent_kolumna <- 100*prop.table(tab,2)
-plot_data <- as.data.frame(prop.table(tab,1))
-names(plot_data) <- c('grupa','powodzenie','udzial')
-wykres_proporcji <- ggplot2::ggplot(plot_data,
-    ggplot2::aes(x=grupa,y=udzial,fill=powodzenie)) +
-  ggplot2::geom_col(width=.6) +
-  ggplot2::scale_y_continuous(labels=function(x) paste0(round(100*x),'%')) +
-  ggplot2::scale_fill_manual(values=c('0'='#D55E00','1'='#009E73'),
-                              labels=c('0: niepowodzenie','1: sukces')) +
-  ggplot2::labs(x='Grupa',y='Odsetek w grupie',fill=NULL,
-                 title='Powodzenie i niepowodzenie mają wspólny mianownik') +
-  badaniaZI::theme_zi() + ggplot2::theme(legend.position='bottom')
+kolory <- badaniaZI::paleta_zi()
+nazwy_wyniku <- c('0: niepowodzenie', '1: sukces')
+
+# Wartość p po polsku: cztery miejsca albo „< 0,0001”.
+formatuj_p <- function(p) ifelse(p < 0.0001, '< 0,0001', formatC(p, format = 'f', digits = 4, decimal.mark = ','))
+
+# Test z dla dwóch proporcji: z^2 równa się chi-kwadrat tabeli 2 x 2.
+p_wspolne <- sum(tab[, 2]) / sum(tab)
+se_zerowe <- sqrt(p_wspolne * (1 - p_wspolne) * sum(1 / rowSums(tab)))
+z_proporcji <- wynik$efekty$roznica_proporcji / se_zerowe
+
+# Wykresy S02: mozaika, reszty, rozkłady chi-kwadrat, Monte Carlo, z i przedziały.
+wykres_mozaiki <- badaniaZI::wykres_mozaika(unclass(tab), nazwy_wyniku, tytul = 'Sukces i niepowodzenie w grupach S02')
 komorki <- as.data.frame(tab)
 komorki$E <- as.vector(wynik$E)
 komorki$reszta <- as.vector(wynik$reszty)
-wykres_reszt <- ggplot2::ggplot(komorki,
-    ggplot2::aes(x=powodzenie,y=grupa,fill=reszta)) +
-  ggplot2::geom_tile(colour='white') +
-  ggplot2::geom_text(ggplot2::aes(label=paste0('O=',Freq,'\nE=',round(E,1))),size=4) +
-  ggplot2::scale_fill_gradient2(low='#D55E00',mid='white',high='#56B4E9',midpoint=0) +
-  ggplot2::labs(x='Powodzenie: 0 nie, 1 tak',y=NULL,fill='Reszta\nPearsona',
-                 title='Kierunek odchylenia komórki od niezależności') +
+komorki$powodzenie <- factor(nazwy_wyniku[as.integer(as.character(komorki$powodzenie)) + 1], levels = nazwy_wyniku)
+wykres_reszt <- ggplot2::ggplot(komorki, ggplot2::aes(x = powodzenie, y = grupa, fill = reszta)) +
+  ggplot2::geom_tile(colour = 'white') +
+  ggplot2::geom_text(ggplot2::aes(label = paste0('O = ', Freq, ', E = ', format(E, decimal.mark = ','),
+    '\nr = ', sub('^-', '−', formatC(reszta, format = 'f', digits = 3, decimal.mark = ',')))), size = 3.6) +
+  ggplot2::scale_fill_gradient2(low = kolory[['accent']], mid = 'white', high = kolory[['secondary']], midpoint = 0,
+                                limits = c(-1, 1), labels = function(v) sub('^-', '−', format(v, decimal.mark = ','))) +
+  ggplot2::labs(x = NULL, y = NULL, fill = 'Reszta r', title = 'Reszty Pearsona w tabeli S02') +
   badaniaZI::theme_zi()
-wykres_zerowy <- ggplot2::ggplot(data.frame(chi2=wynik$zerowy),
-    ggplot2::aes(x=chi2)) +
-  ggplot2::geom_histogram(bins=30,fill='#009E73',colour='white') +
-  ggplot2::geom_vline(xintercept=wynik$klasyczny$chi2,colour='#D55E00',linewidth=.8) +
-  ggplot2::labs(x='Chi-kwadrat w losowej tabeli',y='Liczba losowań',
-                 title='Rozkład zerowy przy ustalonych marginesach') +
+wykres_chi2_df <- badaniaZI::wykres_chi2(1:3, tytul = 'Rozkłady χ² dla df = 1, 2 i 3')
+zerowy_wartosci <- as.data.frame(table(round(wynik$zerowy, 2)), stringsAsFactors = FALSE)
+names(zerowy_wartosci) <- c('chi2', 'liczba')
+zerowy_wartosci$chi2 <- as.numeric(zerowy_wartosci$chi2)
+zerowy_wartosci$skrajna <- zerowy_wartosci$chi2 >= round(wynik$klasyczny$chi2, 2)
+wykres_zerowy <- ggplot2::ggplot(zerowy_wartosci, ggplot2::aes(x = chi2, y = liczba, fill = skrajna)) +
+  ggplot2::geom_col(width = 0.25, show.legend = FALSE) +
+  ggplot2::geom_text(ggplot2::aes(label = liczba), vjust = -0.4, size = 3) +
+  ggplot2::geom_vline(xintercept = wynik$klasyczny$chi2, linetype = 'dashed', colour = kolory[['dark']]) +
+  ggplot2::scale_fill_manual(values = c(`FALSE` = kolory[['secondary']], `TRUE` = kolory[['warning']])) +
+  ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0, 0.1))) +
+  ggplot2::labs(x = 'Chi-kwadrat w losowej tabeli', y = 'Liczba tabel',
+                title = 'Rozkład zerowy przy ustalonych marginesach',
+                subtitle = paste0('B = 1999; χ² ≥ 1,466: ', wynik$losowanie$skrajne, ' tabel')) +
   badaniaZI::theme_zi()
-wykres_ci <- ggplot2::ggplot(wynik$przedzialy,
-    ggplot2::aes(x=100*estymata,y=metoda)) +
-  ggplot2::geom_segment(ggplot2::aes(x=100*dol,xend=100*gora,yend=metoda),linewidth=.8) +
-  ggplot2::geom_point(size=3,colour='#0072B2') +
-  ggplot2::geom_vline(xintercept=0,linetype=2) +
-  ggplot2::labs(x='Różnica nowi minus doświadczeni [punkty procentowe]',y=NULL,
-                 title='Niepewność różnicy skuteczności') +
-  badaniaZI::theme_zi()
-# Osobne przykłady, poza S02.
+wykres_ogona <- badaniaZI::wykres_chi2_mc(wynik$zerowy, wynik$klasyczny$chi2, 1,
+  tytul = 'Ogon Monte Carlo i ogon χ²(1)')
+wykres_z <- badaniaZI::wykres_ogony(z_proporcji, 'normalny', os = 'Statystyka z',
+  tytul = 'Rozkład N(0, 1) i z = −1,211')
+wykres_chi2_obs <- badaniaZI::wykres_ogony(wynik$klasyczny$chi2, 'chi2', 1, os = 'Statystyka χ²',
+  tytul = 'Rozkład χ²(1) i χ² = z² = 1,466')
+wykres_ci <- badaniaZI::wykres_przedzialy(wynik$przedzialy$metoda, 100 * wynik$przedzialy$estymata,
+  100 * wynik$przedzialy$dol, 100 * wynik$przedzialy$gora, odniesienie = 0,
+  os = 'Nowi minus doświadczeni [punkty procentowe]', cyfry = 1L, tytul = 'Niepewność różnicy skuteczności')
+
+# Osobne przykłady: tabela rzadka, tabela bliska niezależności, skalowanie N, pomiar przed–po.
 rzadka <- matrix(c(3,7,9,1),2,byrow=TRUE,dimnames=dimnames(tab))
 wynik_rzadki <- analiza_tabeli(rzadka)
+wykres_hipergeometryczny <- badaniaZI::wykres_rozklad_dyskretny(0:8, stats::dhyper(0:8, 8, 12, 10),
+  os = 'Sukcesy doświadczonych przy ustalonych marginesach', zaznacz = c(0, 1, 7, 8), dystrybuanta = FALSE,
+  tytul = 'Rozkład hipergeometryczny tabeli rzadkiej')
 blisko_zero <- matrix(c(50,47,53,50),2,byrow=TRUE,dimnames=dimnames(tab))
 wynik_blisko_zero <- analiza_tabeli(blisko_zero)
-wykres_V <- ggplot2::ggplot(data.frame(V=wynik_blisko_zero$bootstrap_V),
-    ggplot2::aes(x=V)) +
-  ggplot2::geom_histogram(bins=30,fill='#56B4E9',colour='white') +
-  ggplot2::geom_vline(xintercept=wynik_blisko_zero$efekty$V,colour='#D55E00') +
-  ggplot2::labs(x='V w bootstrapie tabeli bliskiej niezależności',y='Liczba replik',
-                 title='Nieujemna miara: percentyle nie są testem zera') +
+wykres_V <- ggplot2::ggplot(data.frame(V = wynik_blisko_zero$bootstrap_V), ggplot2::aes(x = V)) +
+  ggplot2::geom_histogram(binwidth = 0.01, boundary = 0, fill = kolory[['secondary']], colour = 'white') +
+  ggplot2::geom_vline(xintercept = wynik_blisko_zero$efekty$V, linetype = 'dashed', colour = kolory[['accent']]) +
+  ggplot2::labs(x = 'V w próbie bootstrapowej', y = 'Liczba prób',
+                title = 'V jest nieujemne: bootstrap tabeli bliskiej niezależności') +
   badaniaZI::theme_zi()
 skalowanie_N <- do.call(rbind,lapply(c(1,10),function(k) {
   tb <- k*tab
@@ -140,6 +149,7 @@ dokladny_zmian <- binom.test(10,12,p=.5)
 wynik_zmian <- data.frame(N_osob=50,poprawa=10,pogorszenie=2,
   zmiana_proporcji=.16,chi2_McNemara=unname(mcn$statistic),df=1,
   p_z_korekta=mcn$p.value,p_dokladne=dokladny_zmian$p.value)
+wykres_przejsc <- badaniaZI::wykres_przejscia(unclass(przed_po), tytul = 'Te same 50 osób przed szkoleniem i po nim')
 
 # CHALLENGE: odrębne syntetyczne badanie dostępu do archiwum cyfrowego.
 archiwum_bilans <- data.frame(grupa=c('powracający','pierwsza wizyta'),
@@ -154,9 +164,9 @@ ustaw_material <- function() {
     results='asis',fig.width=6,fig.height=3.3,fig.align='center')
   invisible(NULL)
 }
-wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L) {
-  stopifnot(is.list(tabele),is.list(wykresy),is.numeric(digits),length(digits)==1L)
-  structure(list(tabele=tabele,wykresy=wykresy,tekst=tekst,digits=digits),
+wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L,markdown=list()) {
+  stopifnot(is.list(tabele),is.list(wykresy),is.list(markdown),is.numeric(digits),length(digits)==1L)
+  structure(list(tabele=tabele,wykresy=wykresy,tekst=tekst,digits=digits,markdown=markdown),
     class='zi_wydruk')
 }
 print.zi_wydruk <- function(x,...) {
@@ -170,7 +180,7 @@ print.zi_wydruk <- function(x,...) {
       cat('\n\n**',nazwa,'**\n\n',sep='')
       if(format=='latex') cat('\\begin{center}\n')
       tresc <- as.character(knitr::kable(tab,format=format,caption=NULL,
-        digits=x$digits,row.names=FALSE))
+        digits=x$digits,row.names=FALSE,format.args=list(decimal.mark=',')))
       if(format=='html') tresc <- gsub('$','&#36;',tresc,fixed=TRUE)
       cat(tresc,'\n',sep='')
       if(format=='latex') cat('\\end{center}\n')
@@ -180,6 +190,8 @@ print.zi_wydruk <- function(x,...) {
       print(tab,row.names=FALSE)
     }
   }
+  # Długie tabele tekstowe (Markdown) zawijają się w PDF i HTML.
+  for(md in x$markdown) cat(as.character(md), '\n\n', sep = '')
   if(!is.null(x$tekst)) {
     if(dokument) cat('\n\n```text\n',paste(x$tekst,collapse='\n'),'\n```\n\n',sep='')
     else cat(paste(x$tekst,collapse='\n'),'\n')
@@ -192,110 +204,144 @@ pokaz_tabele <- function(tabela,tytul='Wynik analizy',digits=3L) {
 }
 pokaz_wykres <- function(wykres) wydruk_zi(wykresy=list(wykres))
 
-
-# Macierz staje się tabelą z jawnymi etykietami wierszy, nie samymi liczbami.
-tabela_z_etykietami <- function(tab,nazwa='Grupa') {
-  out <- data.frame(rownames(tab),as.data.frame.matrix(tab),check.names=FALSE,
-    row.names=NULL)
+# Macierz staje się tabelą z jawnymi etykietami wierszy i kolumn.
+tabela_z_etykietami <- function(tab, nazwa = 'Grupa') {
+  out <- data.frame(rownames(tab), as.data.frame.matrix(tab), check.names = FALSE, row.names = NULL)
   names(out)[1] <- nazwa
+  names(out)[names(out) == '0'] <- '0: niepowodzenie'
+  names(out)[names(out) == '1'] <- '1: sukces'
+  names(out)[names(out) == 'Sum'] <- 'Suma'
+  out[[1]][out[[1]] == 'Sum'] <- 'Suma'
   out
 }
-liczebnosci_tabeli <- function(analiza,marginesy=FALSE) {
-  tab <- analiza$tab
-  if(marginesy) tab <- addmargins(tab)
-  pokaz_tabele(tabela_z_etykietami(tab),'Liczebności: 0 = niepowodzenie, 1 = sukces',0L)
+tabela_miar <- function(nazwy, wartosci) data.frame(Miara = nazwy, `Wartość` = wartosci, check.names = FALSE)
+tabela_chi <- function(analiza) {
+  k <- analiza$klasyczny
+  tabela_miar(c('N', 'Chi-kwadrat', 'df', 'p', 'Najmniejsze E', 'Komórki z E < 5'),
+    c(k$N, formatC(k$chi2, format = 'f', digits = 3, decimal.mark = ','), k$df, formatuj_p(k$p_chi2),
+      formatC(k$min_E, format = 'f', digits = 2, decimal.mark = ','), k$komorki_E_mniejsze_5))
 }
-odsetki_tabeli <- function(analiza,mianownik=c('grupa','wynik')) {
+tabela_mc <- function(analiza) {
+  l <- analiza$losowanie
+  data.frame(`Chi-kwadrat obserwowane` = l$chi2, `Tabele z χ²* ≥ χ² (k)` = l$skrajne, B = l$B,
+             p_MC = formatuj_p(l$p_MC), check.names = FALSE)
+}
+tabela_przedzialow <- function(analiza) {
+  tab <- analiza$przedzialy
+  tab[c('estymata', 'dol', 'gora')] <- 100 * tab[c('estymata', 'dol', 'gora')]
+  names(tab) <- c('Metoda', 'Estymata [pp]', 'Dolna granica [pp]', 'Górna granica [pp]')
+  tab
+}
+tabela_efektow <- function(analiza, rozszerzone = FALSE) {
+  e <- analiza$efekty
+  nazwy <- c('Różnica proporcji', 'Różnica [punkty procentowe]', 'V Craméra')
+  wartosci <- c(e$roznica_proporcji, e$roznica_pp, e$V)
+  if (rozszerzone) {
+    nazwy <- c(nazwy, 'Iloraz proporcji RR', 'Iloraz szans OR')
+    wartosci <- c(wartosci, e$iloraz_proporcji, e$OR_surowe)
+  }
+  tabela_miar(nazwy, wartosci)
+}
+liczebnosci_tabeli <- function(analiza, marginesy = FALSE) {
+  tb <- analiza$tab
+  if (marginesy) tb <- addmargins(tb)
+  pokaz_tabele(tabela_z_etykietami(tb), 'Liczebności: 0 = niepowodzenie, 1 = sukces', 0L)
+}
+odsetki_tabeli <- function(analiza, mianownik = c('grupa', 'wynik')) {
   mianownik <- match.arg(mianownik)
-  margin <- if(mianownik=='grupa') 1 else 2
-  tab <- 100*prop.table(analiza$tab,margin)
-  tytul <- if(mianownik=='grupa') 'Odsetki w grupach [%]' else 'Skład kategorii wyniku [%]'
-  pokaz_tabele(tabela_z_etykietami(tab),tytul,2L)
+  margin <- if (mianownik == 'grupa') 1 else 2
+  tb <- 100 * prop.table(analiza$tab, margin)
+  tytul <- if (mianownik == 'grupa') 'Odsetki w grupach [%]' else 'Skład kategorii wyniku [%]'
+  pokaz_tabele(tabela_z_etykietami(tb), tytul, 2L)
 }
 oczekiwania_tabeli <- function(analiza) {
-  pokaz_tabele(tabela_z_etykietami(analiza$E),'E przy niezależności',2L)
+  pokaz_tabele(tabela_z_etykietami(analiza$E), 'E przy niezależności', 2L)
 }
 wklady_tabeli <- function(analiza) {
-  pokaz_tabele(tabela_z_etykietami(analiza$wklady),'Wkłady komórek do chi-kwadrat',4L)
+  pokaz_tabele(tabela_z_etykietami(analiza$wklady), 'Wkłady komórek do chi-kwadrat', 3L)
 }
-test_tabeli <- function(analiza) {
-  pokaz_tabele(pionowo(analiza$klasyczny),'Chi-kwadrat bez korekty ciągłości')
-}
+test_tabeli <- function(analiza) pokaz_tabele(tabela_chi(analiza), 'Chi-kwadrat bez korekty ciągłości')
 losowa_tabela <- function(analiza) {
   tb <- analiza$przykladowa_tabela
   dimnames(tb) <- dimnames(analiza$tab)
-  pokaz_tabele(tabela_z_etykietami(addmargins(tb)),'Jedna tabela z modelu zerowego',0L)
+  pokaz_tabele(tabela_z_etykietami(addmargins(tb)), 'Jedna tabela z modelu zerowego', 0L)
 }
-monte_carlo_tabeli <- function(analiza) {
-  pokaz_tabele(formatuj_wynik(analiza$losowanie),'Warunkowy test Monte Carlo',4L)
+monte_carlo_tabeli <- function(analiza) pokaz_tabele(tabela_mc(analiza), 'Warunkowy test Monte Carlo', 3L)
+efekty_tabeli <- function(analiza, rozszerzone = FALSE) {
+  pokaz_tabele(tabela_efektow(analiza, rozszerzone), 'Efekt: sukces wiersza 2 minus sukces wiersza 1', 4L)
 }
-efekty_tabeli <- function(analiza,rozszerzone=FALSE) {
-  tab <- analiza$efekty
-  if(!rozszerzone) tab <- tab[c('roznica_proporcji','roznica_pp','V')]
-  pokaz_tabele(pionowo(tab),'Efekt: sukces wiersza 2 minus sukces wiersza 1')
+przedzialy_tabeli <- function(analiza) {
+  pokaz_tabele(tabela_przedzialow(analiza), '95% CI różnicy [punkty procentowe]', 2L)
 }
-przedzialy_tabeli <- function(analiza,jednostka=c('proporcja','pp')) {
-  jednostka <- match.arg(jednostka)
-  tab <- analiza$przedzialy
-  if(jednostka=='pp') tab[c('estymata','dol','gora')] <-
-    100*tab[c('estymata','dol','gora')]
-  pokaz_tabele(tab,paste0('95% CI różnicy [',jednostka,']'),4L)
-}
-proporcje_na_wykresie <- function(analiza) {
-  tab <- as.data.frame(as.table(prop.table(analiza$tab,1)))
-  names(tab) <- c('grupa','wynik','udzial')
-  ns <- rowSums(analiza$tab)
-  plot <- ggplot2::ggplot(tab,ggplot2::aes(x=grupa,y=udzial,fill=wynik))+
-    ggplot2::geom_col(width=.6)+
-    ggplot2::scale_y_continuous(labels=function(x) paste0(round(100*x),'%'))+
-    ggplot2::scale_x_discrete(labels=function(x) paste0(x,'\nN = ',ns[x]))+
-    ggplot2::scale_fill_manual(values=c('0'='#D55E00','1'='#009E73'),
-      labels=c('0: niepowodzenie','1: sukces'))+
-    ggplot2::labs(x=NULL,y='Odsetek w grupie',fill=NULL,
-      title='Skuteczność w tym samym zadaniu')+badaniaZI::theme_zi()+
-    ggplot2::theme(legend.position='bottom')
-  pokaz_wykres(plot)
+mozaika_do_odczytu <- function(analiza, tytul) {
+  pokaz_wykres(badaniaZI::wykres_mozaika(unclass(analiza$tab), nazwy_wyniku, tytul = tytul))
 }
 dwa_testy_tabeli <- function(analiza) {
-  wydruk_zi(tabele=list('Chi-kwadrat bez korekty'=pionowo(analiza$klasyczny),
-    'Warunkowe Monte Carlo'=formatuj_wynik(analiza$losowanie)),digits=4L)
+  wydruk_zi(tabele = list('Chi-kwadrat bez korekty' = tabela_chi(analiza),
+    'Warunkowe Monte Carlo' = tabela_mc(analiza)), digits = 3L)
 }
 rzadka_tabela_do_odczytu <- function() {
-  wydruk_zi(tabele=list('Obserwacje'=tabela_z_etykietami(rzadka),
-    'Oczekiwania'=tabela_z_etykietami(wynik_rzadki$E)),digits=2L)
+  wydruk_zi(tabele = list('Obserwacje' = tabela_z_etykietami(rzadka),
+    'Oczekiwania' = tabela_z_etykietami(wynik_rzadki$E)), digits = 2L)
 }
 rzadkie_testy_do_odczytu <- function() {
-  wydruk_zi(tabele=list('Przybliżenie chi-kwadrat'=pionowo(wynik_rzadki$klasyczny),
-    'Dokładny test Fishera'=pionowo(wynik_rzadki$fisher),
-    'Warunkowe Monte Carlo'=pionowo(wynik_rzadki$losowanie)))
+  f <- wynik_rzadki$fisher
+  fisher <- tabela_miar(c('OR warunkowe', 'Dolna granica 95% CI', 'Górna granica 95% CI', 'p Fishera'),
+    c(formatC(c(f$OR_warunkowe, f$CI_OR_dol, f$CI_OR_gora), format = 'f', digits = 3, decimal.mark = ','),
+      formatuj_p(f$p_Fisher)))
+  wydruk_zi(tabele = list('Przybliżenie chi-kwadrat' = tabela_chi(wynik_rzadki),
+    'Dokładny test Fishera' = fisher, 'Warunkowe Monte Carlo' = tabela_mc(wynik_rzadki)), digits = 3L)
 }
 v_przy_zerze <- function() {
-  wydruk_zi(tabele=list('Tabela bliska niezależności'=tabela_z_etykietami(blisko_zero),
-    'Test niezależności'=pionowo(wynik_blisko_zero$klasyczny),
-    'Opis rozkładu bootstrapowego V'=pionowo(wynik_blisko_zero$opis_boot_V)))
+  o <- wynik_blisko_zero$opis_boot_V
+  opis <- tabela_miar(c('V obserwowane', 'Percentyl 2,5%', 'Percentyl 97,5%', 'B'),
+    c(formatC(c(o$V, o$percentyl_025, o$percentyl_975), format = 'f', digits = 4, decimal.mark = ','), o$B_wazne))
+  wydruk_zi(tabele = list('Tabela bliska niezależności' = tabela_z_etykietami(blisko_zero),
+    'Test niezależności' = tabela_chi(wynik_blisko_zero), 'Opis rozkładu bootstrapowego V' = opis))
+}
+bootstrap_V_s02 <- function() {
+  o <- wynik$opis_boot_V
+  pokaz_tabele(tabela_miar(c('V obserwowane', 'Percentyl 2,5%', 'Percentyl 97,5%', 'B'),
+    c(formatC(c(o$V, o$percentyl_025, o$percentyl_975), format = 'f', digits = 3, decimal.mark = ','), o$B_wazne)),
+    'Bootstrap V w S02: opis zmienności')
+}
+skalowanie_do_odczytu <- function() {
+  tb <- skalowanie_N
+  tb$p <- formatuj_p(tb$p)
+  names(tb) <- c('Mnożnik', 'N', 'Chi-kwadrat', 'p', 'V')
+  pokaz_tabele(tb, 'Te same proporcje, różne N', 3L)
 }
 pomiar_sparowany_do_odczytu <- function() {
-  wydruk_zi(tabele=list('Przed (wiersze) i po (kolumny)'=tabela_z_etykietami(przed_po,'Przed'),
-    'Zmiany wśród tych samych osób'=pionowo(wynik_zmian)))
+  w <- wynik_zmian
+  zmiany <- tabela_miar(c('N osób', 'Poprawa (0 → 1)', 'Pogorszenie (1 → 0)', 'Zmiana proporcji',
+                          'Chi-kwadrat McNemara', 'df', 'p z korektą', 'p dokładne'),
+    c(w$N_osob, w$poprawa, w$pogorszenie, formatC(c(w$zmiana_proporcji, w$chi2_McNemara), format = 'f', digits = 3,
+      decimal.mark = ','), w$df, formatuj_p(w$p_z_korekta), formatuj_p(w$p_dokladne)))
+  wydruk_zi(tabele = list('Przed (wiersze) i po (kolumny)' = tabela_z_etykietami(przed_po, 'Przed'),
+    'Zmiany wśród tych samych osób' = zmiany))
 }
 bilans_archiwum <- function() {
-  wydruk_zi(tabele=list('Od rejestracji do ważnego wyniku'=archiwum_bilans,
-    'Tabela wyników zadania'=tabela_z_etykietami(archiwum_tab)),digits=0L)
+  bilans <- archiwum_bilans
+  names(bilans) <- c('Grupa', 'Zarejestrowani', 'Brak wyniku', 'W tabeli')
+  wydruk_zi(tabele = list('Od rejestracji do ważnego wyniku' = bilans,
+    'Tabela wyników zadania' = tabela_z_etykietami(archiwum_tab)), digits = 0L)
 }
 mianowniki_archiwum <- function() {
-  wydruk_zi(tabele=list('N grup i sukcesy'=archiwum_wynik$opis,
-    'Odsetki w grupach [%]'=tabela_z_etykietami(100*prop.table(archiwum_tab,1)),
-    'Skład kategorii wyniku [%]'=tabela_z_etykietami(100*prop.table(archiwum_tab,2))),
-    wykresy=proporcje_na_wykresie(archiwum_wynik)$wykresy,digits=2L)
+  opis <- archiwum_wynik$opis
+  names(opis) <- c('Grupa', 'N', 'Sukcesy', 'Sukcesy [%]')
+  wydruk_zi(tabele = list('N grup i sukcesy' = opis,
+    'Odsetki w grupach [%]' = tabela_z_etykietami(100 * prop.table(archiwum_tab, 1)),
+    'Skład kategorii wyniku [%]' = tabela_z_etykietami(100 * prop.table(archiwum_tab, 2))),
+    wykresy = list(badaniaZI::wykres_mozaika(archiwum_tab, nazwy_wyniku,
+      tytul = 'Sukces w archiwum: szerokość słupka proporcjonalna do N')), digits = 2L)
 }
 testy_archiwum <- function() {
   out <- dwa_testy_tabeli(archiwum_wynik)
-  out$tabele <- c(list('E przy niezależności'=tabela_z_etykietami(archiwum_wynik$E),
-    'Wkłady do chi-kwadrat'=tabela_z_etykietami(archiwum_wynik$wklady)),out$tabele)
+  out$tabele <- c(list('E przy niezależności' = tabela_z_etykietami(archiwum_wynik$E),
+    'Wkłady do chi-kwadrat' = tabela_z_etykietami(archiwum_wynik$wklady)), out$tabele)
   out
 }
 efekt_archiwum <- function() {
-  out <- efekty_tabeli(archiwum_wynik)
-  out$tabele <- c(out$tabele,przedzialy_tabeli(archiwum_wynik,'pp')$tabele)
-  out
+  wydruk_zi(tabele = list('Efekt: sukces wiersza 2 minus sukces wiersza 1' = tabela_efektow(archiwum_wynik),
+    '95% CI różnicy [punkty procentowe]' = tabela_przedzialow(archiwum_wynik)), digits = 3L)
 }

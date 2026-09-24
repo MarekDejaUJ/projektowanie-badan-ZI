@@ -307,11 +307,12 @@ wykres_punkty_os <- function(x, os = "Warto\u015b\u0107", tytul = NULL) {
 #' @param grupa Opcjonalne etykiety grup.
 #' @param os Podpis osi wartosci.
 #' @param tytul Tytul wykresu.
+#' @param granica Czy rysowac granice Q3 + 1,5 IQR (FALSE dla skal ograniczonych).
 #' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
 #' p <- wykres_pudelkowy(c(4.5, 6.5, 8, 35), os = "Czas [min]")
-wykres_pudelkowy <- function(x, grupa = NULL, os = "Warto\u015b\u0107", tytul = NULL) {
+wykres_pudelkowy <- function(x, grupa = NULL, os = "Warto\u015b\u0107", tytul = NULL, granica = TRUE) {
   if (is.null(grupa)) grupa <- rep(" ", length(x))
   stopifnot(is.numeric(x), length(grupa) == length(x))
   d <- data.frame(x = x, grupa = factor(grupa, levels = unique(grupa)))
@@ -322,17 +323,18 @@ wykres_pudelkowy <- function(x, grupa = NULL, os = "Warto\u015b\u0107", tytul = 
   }))
   granice$grupa <- factor(rownames(granice), levels = levels(d$grupa))
   granice$etykieta <- paste0("Q3 + 1,5 IQR = ", liczba_pl(granice$granica, 1L))
-  ggplot2::ggplot(d, ggplot2::aes(x = .data$x, y = .data$grupa)) +
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = .data$x, y = .data$grupa)) +
     ggplot2::geom_boxplot(width = 0.45, outlier.shape = NA, fill = kolory_zi[["light"]],
                           colour = kolory_zi[["dark"]], orientation = "y") +
     ggplot2::geom_point(colour = kolory_zi[["primary"]], size = 2.4,
-                        position = ggplot2::position_jitter(width = 0, height = 0.08, seed = 2026)) +
+                        position = ggplot2::position_jitter(width = 0, height = 0.08, seed = 2026))
+  if (granica) p <- p +
     ggplot2::geom_segment(data = granice, ggplot2::aes(x = .data$granica, xend = .data$granica,
                           y = as.numeric(.data$grupa) - 0.35, yend = as.numeric(.data$grupa) + 0.35),
                           linetype = "dotted", colour = kolory_zi[["accent"]], linewidth = 0.9) +
     ggplot2::geom_text(data = granice, ggplot2::aes(x = .data$granica, y = as.numeric(.data$grupa) + 0.42,
-                       label = .data$etykieta), size = 3, hjust = 0.5, vjust = 0) +
-    ggplot2::scale_x_continuous(labels = os_pl) +
+                       label = .data$etykieta), size = 3, hjust = 0.5, vjust = 0)
+  p + ggplot2::scale_x_continuous(labels = os_pl) +
     ggplot2::labs(x = os, y = NULL, title = tytul) +
     theme_zi()
 }

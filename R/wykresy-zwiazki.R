@@ -223,3 +223,43 @@ wykres_wplyw <- function(x, y, punkt, os_x = "x", os_y = "y", tytul = NULL) {
                                     liczba_pl(b_z[2], 2L))) +
     theme_zi()
 }
+
+#' Macierz korelacji pozycji
+#'
+#' Dolny trojkat macierzy korelacji liczonej na osobach z kompletem
+#' odpowiedzi; komorki podaja wspolczynnik z dwoma miejscami po przecinku,
+#' a podtytul N, srednia korelacje i jej zakres.
+#' @param dane Ramka danych liczbowych: jedna kolumna na pozycje.
+#' @param etykiety Nazwy pozycji na osiach.
+#' @param metoda Metoda funkcji cor(): "pearson" albo "spearman".
+#' @param tytul Tytul wykresu.
+#' @return Obiekt ggplot; wykres rysuje print().
+#' @export
+#' @examples
+#' p <- wykres_macierz_korelacji(data.frame(a = c(1, 2, 3, 4, 5), b = c(2, 1, 4, 3, 5),
+#'                                          c = c(1, 3, 2, 5, 4)))
+wykres_macierz_korelacji <- function(dane, etykiety = names(dane), metoda = c("pearson", "spearman"),
+                                     tytul = NULL) {
+  metoda <- match.arg(metoda)
+  stopifnot(is.data.frame(dane), ncol(dane) >= 2L, length(etykiety) == ncol(dane))
+  kompletne <- dane[stats::complete.cases(dane), , drop = FALSE]
+  stopifnot(nrow(kompletne) >= 3L)
+  R <- stats::cor(kompletne, method = metoda)
+  k <- ncol(R)
+  d <- expand.grid(w = seq_len(k), kol = seq_len(k))
+  d <- d[d$w > d$kol, ]
+  d$r <- R[cbind(d$w, d$kol)]
+  d$wiersz <- factor(etykiety[d$w], levels = rev(etykiety))
+  d$kolumna <- factor(etykiety[d$kol], levels = etykiety)
+  r <- R[lower.tri(R)]
+  ggplot2::ggplot(d, ggplot2::aes(x = .data$kolumna, y = .data$wiersz, fill = .data$r)) +
+    ggplot2::geom_tile(colour = "white") +
+    ggplot2::geom_text(ggplot2::aes(label = liczba_pl(.data$r, 2L)), size = 3.4) +
+    ggplot2::scale_fill_gradient(low = kolory_zi[["light"]], high = kolory_zi[["secondary"]],
+                                 limits = c(min(0, r), 1), name = "r", labels = os_pl) +
+    ggplot2::labs(x = NULL, y = NULL, title = tytul,
+                  subtitle = paste0("N = ", nrow(kompletne), " os\u00f3b z kompletem; \u015brednia korelacja ",
+                                    liczba_pl(mean(r), 2L), " (od ", liczba_pl(min(r), 2L), " do ",
+                                    liczba_pl(max(r), 2L), ")")) +
+    theme_zi() + ggplot2::theme(panel.grid = ggplot2::element_blank())
+}

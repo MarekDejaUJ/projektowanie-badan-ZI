@@ -49,7 +49,7 @@ wykres_histogram <- function(x, szerokosc, poczatek = 0, skala = c("liczebnosc",
   d$y <- d$n * mnoznik
   d$wyrozniony <- if (is.null(zaznacz)) FALSE else d$od >= min(zaznacz) - 1e-9 & d$do <= max(zaznacz) + 1e-9
   podpis <- paste0("N = ", length(x), "; szeroko\u015b\u0107 przedzia\u0142u ",
-                   liczba_pl(szerokosc, if (szerokosc %% 1 == 0) 0L else 1L), " ", jednostka)
+                   os_pl(szerokosc), " ", jednostka)
   if (!is.null(zaznacz)) {
     k <- sum(d$n[d$wyrozniony])
     podpis <- paste0(podpis, "; od ", os_pl(min(zaznacz)), " do ", os_pl(max(zaznacz)), ": ",
@@ -60,7 +60,9 @@ wykres_histogram <- function(x, szerokosc, poczatek = 0, skala = c("liczebnosc",
                                     fill = .data$wyrozniony), colour = "white", show.legend = FALSE) +
     ggplot2::scale_fill_manual(values = c(`FALSE` = kolory_zi[["secondary"]], `TRUE` = kolory_zi[["warning"]]))
   if (length(dopasuj)) {
-    siatka <- siatka_osi(min(d$od), max(d$do))
+    # Krzywa normalna obejmuje średnią +/- 3 SD, także wartości poniżej danych.
+    dol <- if ("normalny" %in% dopasuj) min(d$od, mean(x) - 3 * stats::sd(x)) else min(d$od)
+    siatka <- siatka_osi(dol, max(d$do))
     krzywe <- do.call(rbind, lapply(dopasuj, function(m) {
       y <- if (m == "normalny") stats::dnorm(siatka, mean(x), stats::sd(x)) else
         ifelse(siatka > 0, stats::dlnorm(pmax(siatka, 1e-12), mean(log(x[x > 0])), stats::sd(log(x[x > 0]))), 0)
@@ -97,13 +99,17 @@ wykres_histogram <- function(x, szerokosc, poczatek = 0, skala = c("liczebnosc",
 #'   oznaczona we wszystkich panelach linia kropkowana z opisem.
 #' @param etykieta_odniesienia Opis linii odniesienia.
 #' @param os_y Podpis osi liczebnosci; domyslnie liczba osob.
+#' @param skala "liczebnosc" albo "gestosc" (pole slupkow kazdego panelu
+#'   rowne 1, co pozwala porownac ksztalt grup o roznych N).
 #' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
 #' p <- wykres_histogram_panele(list(A = c(1, 2, 2, 3), B = c(1, 1, 4, 4)), 1)
 wykres_histogram_panele <- function(dane, szerokosc, poczatek = NULL, os = "Warto\u015b\u0107",
                                     srednia = FALSE, tytul = NULL, odniesienie = NULL,
-                                    etykieta_odniesienia = "parametr", os_y = NULL) {
+                                    etykieta_odniesienia = "parametr", os_y = NULL,
+                                    skala = c("liczebnosc", "gestosc")) {
+  skala <- match.arg(skala)
   stopifnot(is.list(dane), length(dane) >= 1L, !is.null(names(dane)), all(nzchar(names(dane))))
   szerokosc <- rep_len(szerokosc, length(dane))
   panele <- vapply(seq_along(dane), function(i)
@@ -111,13 +117,15 @@ wykres_histogram_panele <- function(dane, szerokosc, poczatek = NULL, os = "Wart
   d <- do.call(rbind, lapply(seq_along(dane), function(i) {
     z <- przedzialy_histogramu(dane[[i]], szerokosc[i], poczatek)
     z$panel <- panele[i]
+    z$y <- if (skala == "gestosc") z$n / (sum(z$n) * szerokosc[i]) else z$n
     z
   }))
   d$panel <- factor(d$panel, levels = panele)
+  if (is.null(os_y) && skala == "gestosc") os_y <- etykiety_zi$gestosc
   p <- ggplot2::ggplot(d) +
-    ggplot2::geom_rect(ggplot2::aes(xmin = .data$od, xmax = .data$do, ymin = 0, ymax = .data$n),
+    ggplot2::geom_rect(ggplot2::aes(xmin = .data$od, xmax = .data$do, ymin = 0, ymax = .data$y),
                        fill = kolory_zi[["secondary"]], colour = "white") +
-    ggplot2::facet_wrap(~panel, ncol = 1, scales = "free_y")
+    ggplot2::facet_wrap(~panel, ncol = 1, scales = if (skala == "gestosc") "fixed" else "free_y")
   if (srednia) {
     s <- data.frame(panel = factor(panele, levels = panele),
                     m = vapply(dane, function(x) mean(x[is.finite(x)]), numeric(1)))
@@ -186,11 +194,45 @@ wykres_czestosci <- function(kategorie, liczebnosc, os = "Kategoria", tytul = NU
 #' @param dopasuj Modele: "normalny" i/lub "lognormalny".
 #' @param os Podpis osi wartosci.
 #' @param tytul Tytul wykresu.
+#' @param grupa Opcjonalne etykiety grup (dlugosc jak x): osobne schodki dla
+#'   kazdej grupy, rozroznione typem linii, i wartosc F(c) kazdej grupy.
 #' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
 #' p <- wykres_dystrybuanta(c(2, 4, 6, 8, 30), prog = 8, os = "Czas [min]")
-wykres_dystrybuanta <- function(x, prog = NULL, dopasuj = character(), os = "Warto\u015b\u0107", tytul = NULL) {
+wykres_dystrybuanta <- function(x, prog = NULL, dopasuj = character(), os = "Warto\u015b\u0107", tytul = NULL,
+                                grupa = NULL) {
+  if (!is.null(grupa)) {
+    stopifnot(length(grupa) == length(x))
+    ok <- is.finite(x) & !is.na(grupa)
+    g <- factor(grupa[ok], levels = unique(grupa[ok]))
+    zakres <- range(x[ok]); margines <- 0.06 * diff(zakres)
+    czesci <- split(x[ok], g)
+    nazwy <- vapply(names(czesci), function(n) paste0(n, " (N = ", length(czesci[[n]]), ")"), character(1))
+    schodki <- do.call(rbind, lapply(names(czesci), function(n) {
+      v <- sort(czesci[[n]]); u <- unique(v)
+      data.frame(x = c(zakres[1] - margines, u, zakres[2] + margines), F = c(0, stats::ecdf(v)(u), 1),
+                 grupa = nazwy[[n]])
+    }))
+    schodki$grupa <- factor(schodki$grupa, levels = nazwy)
+    p <- ggplot2::ggplot(schodki, ggplot2::aes(x = .data$x, y = .data$F, linetype = .data$grupa)) +
+      ggplot2::geom_step(direction = "hv", colour = kolory_zi[["primary"]], linewidth = 0.9)
+    podpis <- NULL
+    if (!is.null(prog)) {
+      wartosci <- vapply(czesci, function(v) mean(v <= prog), numeric(1))
+      punkty <- data.frame(x = prog, F = wartosci, grupa = factor(nazwy, levels = nazwy))
+      p <- p + ggplot2::geom_vline(xintercept = prog, linetype = "dotted", colour = kolory_zi[["accent"]]) +
+        ggplot2::geom_point(data = punkty, ggplot2::aes(x = .data$x, y = .data$F, shape = .data$grupa), size = 3,
+                            colour = kolory_zi[["accent"]], show.legend = FALSE)
+      podpis <- paste0("F(", os_pl(prog), "): ", paste0(names(czesci), " ", liczba_pl(wartosci, 3L), collapse = "; "))
+    }
+    return(p + ggplot2::scale_linetype_manual(values = c("solid", "dashed", "dotdash", "dotted")[seq_along(nazwy)],
+                                              name = NULL) +
+      ggplot2::scale_x_continuous(labels = os_pl) +
+      ggplot2::scale_y_continuous(labels = os_pl, limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
+      ggplot2::labs(x = os, y = "Udzia\u0142 obserwacji \u2264 warto\u015bci", title = tytul, subtitle = podpis) +
+      theme_zi())
+  }
   x <- sort(x[is.finite(x)])
   stopifnot(length(x) >= 2L, all(dopasuj %in% c("normalny", "lognormalny")))
   zakres <- range(x)
@@ -490,7 +532,7 @@ wykres_ogony <- function(statystyka, rozklad = c("t", "normalny", "chi2", "F"), 
     ggplot2::scale_y_continuous(labels = os_pl) +
     ggplot2::labs(x = os, y = "G\u0119sto\u015b\u0107", title = tytul,
                   subtitle = paste0(if (dwustronny) "Pole obu ogon\u00f3w" else "Pole prawego ogona",
-                                    " = ", format_p(pole))) +
+                                    if (pole < 0.0001) " " else " = ", format_p(pole))) +
     theme_zi()
 }
 
@@ -665,7 +707,7 @@ wykres_rozklad_zerowy <- function(wartosci, obserwowana, szerokosc, os = "Warto\
   podpis <- if (dokladny) paste0("Wszystkie uk\u0142ady: ", B, "; |T| \u2265 ", liczba_pl(abs(obserwowana), 2L), ": ", k,
                                  "; p = ", k, "/", B, " = ", liczba_pl(k / B, 3L)) else
     paste0("B = ", B, "; |T| \u2265 ", liczba_pl(abs(obserwowana), 2L), ": ", k,
-           "; p_MC = ", k + 1, "/", B + 1, " = ", liczba_pl((k + 1) / (B + 1), 3L))
+           "; p_MC = ", k + 1, "/", B + 1, " = ", format_p((k + 1) / (B + 1)))
   ggplot2::ggplot(d) +
     ggplot2::geom_rect(ggplot2::aes(xmin = .data$od, xmax = .data$do, ymin = 0, ymax = .data$n,
                                     fill = .data$skrajny), colour = "white", show.legend = FALSE) +

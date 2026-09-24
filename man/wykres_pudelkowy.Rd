@@ -2,7 +2,7 @@
 \alias{wykres_pudelkowy}
 \title{Wykres pudelkowy z punktami i granica wasa}
 \usage{
-wykres_pudelkowy(x, grupa = NULL, os = "Wartość", tytul = NULL)
+wykres_pudelkowy(x, grupa = NULL, os = "Wartość", tytul = NULL, granica = TRUE)
 }
 \arguments{
 \item{x}{Wartosci liczbowe; braki sa pomijane.}
@@ -12,6 +12,8 @@ wykres_pudelkowy(x, grupa = NULL, os = "Wartość", tytul = NULL)
 \item{os}{Podpis osi wartosci.}
 
 \item{tytul}{Tytul wykresu.}
+
+\item{granica}{Czy rysowac granice Q3 + 1,5 IQR (FALSE dla skal ograniczonych).}
 }
 \value{
 Obiekt ggplot; wykres rysuje print().

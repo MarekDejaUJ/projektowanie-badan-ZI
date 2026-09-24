@@ -1,5 +1,5 @@
 ---
-title: 'C05 — Co wiemy o średniej: efekt, przedział i dwa testy'
+title: 'C05 — Niepewność estymaty: przedział, bootstrap i test jednej próby'
 subtitle: 'Zarządzanie informacją — ćwiczenie i zadanie Z05 — 2026/27'
 author: 'ID: [UZUPELNIJ_ID]'
 date: '2026/27'
@@ -14,9 +14,9 @@ output:
 ---
 
 <!-- start-sesji -->
-# Początek pracy na tych zajęciach
+# Początek pracy na ćwiczeniu C05
 
-Otwórz RStudio. Pakiet kursu jest już zainstalowany w sali; nie instalujesz go ponownie. W konsoli poniżej edytora wpisz swoje ID i adres prywatnego repozytorium otrzymany w kursie, a następnie wykonaj polecenia. Ten blok jest instrukcją do konsoli, nie chunkiem uruchamianym przy tworzeniu PDF.
+Otwórz RStudio. Pakiet kursu `badaniaZI` jest zainstalowany na komputerach w sali. Cztery polecenia z następnego bloku wpisujesz w konsoli RStudio, czyli w dolnym panelu ze znakiem `>`; w miejsce `TWOJE_ID` wpisz swoje ID, a w miejsce adresu — adres prywatnego repozytorium otrzymany na początku kursu. Dokument PDF zawiera cztery polecenia jako tekst instrukcji.
 
 ```r
 library(badaniaZI)
@@ -28,13 +28,12 @@ rozpocznij_zajecia(
 )
 ```
 
-Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie tam, nie w konsoli R. Sprawdź potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w tej sesji; pliki pracy mają je zachować także po zamknięciu RStudio.
+Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie na stronie GitHub. Sprawdź w komunikacie potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w sesji; pliki pracy zachowują je także po zamknięciu RStudio.
 
-Polecenie otwiera własny `zadanie.Rmd` i zapamiętuje katalog pracy. Nie przełączaj teraz projektu przez `.Rproj`, bo nowa sesja R utraci logowanie. Pracuj w otwartym Rmd, nie w źródłach pakietu. Uruchom pierwszy chunk przygotowania, potem wykonuj LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; nie usuwaj pracy ani nie wpisuj cudzego ID.
+Funkcja `rozpocznij_zajecia()` otwiera własny plik `zadanie.Rmd` i zapamiętuje katalog pracy. Pracuj w otwartym pliku `zadanie.Rmd` do końca zajęć; plik `.Rproj` pozostaje zamknięty, bo jego otwarcie uruchamia nową sesję R, która wymaga ponownego logowania. Najpierw uruchom blok `przygotowanie`, a potem kolejne części LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; plik pracy i własne ID pozostają bez zmian.
 <!-- /start-sesji -->
 
-
-Pierwszy blok wczytuje gotową analizę wspólnego indeksu S02 oraz funkcje do małych demonstracji. Przygotowanie zachowuje reguły czyszczenia i indeksu z poprzednich spotkań. Nie zmieniamy odpowiedzi, aby uzyskać istotny wynik.
+Pierwszy chunk, `przygotowanie`, wczytuje gotowy skrypt `analiza.R`. Skrypt tworzy zbiór S02 po trzech regułach ćwiczenia C02 (usunięcie identycznych duplikatów, kod 99 w pozycjach ankiety jako brak, czas spoza 0–120 minut jako brak) i liczy indeks sześciu pozycji według reguły 5/6 z ćwiczenia C04. Funkcja `analiza_jednej_sredniej()` wykonuje test t, bootstrap i losowe zmiany znaków ze stałym ziarnem losowania. Skrypt zawiera też dane portalu do części CHALLENGE, małe demonstracje oraz funkcje wyświetlające tabele i wykresy.
 
 ```{r przygotowanie, include=FALSE}
 source(badaniaZI::plik_pracy("Z05", "analiza.R"),
@@ -42,26 +41,24 @@ source(badaniaZI::plik_pracy("Z05", "analiza.R"),
 ustaw_material()
 ```
 
-# Zespół chce wiedzieć więcej niż „średnia jest powyżej trzech”
+# Zespół pyta o więcej niż „średnia jest powyżej trzech”
 
-Biblioteka zobaczyła korzystną średnią ocenę katalogu i pyta, czy to wystarczy do podjęcia decyzji. Analityk powinien najpierw rozdzielić trzy sprawy: o ile średnia przewyższa odniesienie, jak precyzyjnie oszacowano tę różnicę i czy wynik jest nietypowy w określonym modelu zerowym. Dopiero potem można rozważyć znaczenie dla usługi.
+Biblioteka widzi korzystną średnią ocenę katalogu i pyta, czy średnia wystarcza do decyzji. Analiza rozdziela trzy sprawy: o ile średnia przewyższa odniesienie, jak precyzyjnie oszacowano różnicę i jak nietypowy jest wynik w określonym modelu zerowym. Znaczenie dla usługi ocenia się po trzech krokach analizy.
 
-Wspólny indeks S02 opisuje deklarowaną użyteczność katalogu według dydaktycznej reguły sześciu pozycji. Nie mierzy automatycznie całej kompetencji informacyjnej ani skuteczności działania. Wartość 3 przyjmujemy jako umowny punkt odniesienia związany ze środkiem skali. Nie jest normą populacyjną, granicą „kompetentny–niekompetentny” ani zatwierdzonym standardem biblioteki.
+Indeks S02 opisuje deklarowaną użyteczność katalogu według dydaktycznej reguły sześciu pozycji (ćwiczenie C04). Wartość 3 to środek skali 1–5, przyjęty umownie jako punkt odniesienia.
 
-Pytanie główne brzmi: jaka jest średnia tego indeksu i jej różnica od 3 w modelu, którego działanie ćwiczymy? Wartość w próbie jest estymatą. Estymandę populacyjną trzeba opisać wraz z populacją i warunkami; syntetyczność danych nie pozwala przypisać otrzymanych liczb realnym użytkownikom.
+Pytanie główne brzmi: jaka jest średnia indeksu i jej różnica od 3? Wartość w próbie jest estymatą; estymanda populacyjna wymaga opisu populacji i warunków. Dane są syntetyczne, więc liczby opisują zbiór dydaktyczny.
 
-## Co robimy w 90 minut
+## Przebieg spotkania
 
-Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN, 50 minut na pięć CHALLENGE i 5 minut na zapis oraz oddanie. W LEARN uruchamiasz gotowe przykłady i sprawdzasz ich wzorcowy odczyt. W CHALLENGE wpisujesz pięć własnych krótkich akapitów pod wynikami w tym samym Rmd. Pracujesz indywidualnie, a w razie trudności pytasz prowadzącego. Rozwinięcia po części obowiązkowej służą powtórce, bez kolejnych zadań.
+Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN, 50 minut na pięć zadań CHALLENGE i 5 minut na zapis oraz oddanie. W LEARN uruchamiasz gotowy kod i porównujesz wynik z podaną interpretacją. W CHALLENGE piszesz własne krótkie akapity pod wynikami, poza blokiem R. Gdy odczyt wyniku sprawia trudność, pytasz prowadzącego. Rozwinięcia po części obowiązkowej służą powtórce i pozostają poza oceną.
 
-Scenariusz portalu w CHALLENGE zawiera gotowe indeksy po jawnej regule przygotowania. Nie musisz mieć własnego projektu badawczego ani tworzyć programu czyszczącego. Projekt zaliczeniowy zostanie przedstawiony na C09.
+Portal w CHALLENGE ma gotowe indeksy; projekt indywidualny rozpoczyna się na ćwiczeniu C09 (Warsztat projektu). Uruchamiasz gotowe funkcje z `analiza.R`; Twoją pracą są odczyt, interpretacja i uzasadnienie.
 
-Nie programujesz testu ani pętli. Uruchamiasz gotowe funkcje z pliku `analiza.R`, sprawdzasz nazwy wielkości i tłumaczysz wynik na język problemu. W zadaniu indywidualnym samodzielne są odczyt, interpretacja oraz uzasadnienie, a nie odtworzenie kodu narzędzia.
-
-# LEARN 1: ustalamy cel i jednostkę
+# LEARN 1: cel, jednostka i kierunek
 
 | Element analizy | Definicja w S02 |
-|---|---|
+|------------------------------|------------------------------------------------------|
 | Jednostka | Osoba z ważnym indeksem |
 | Zmienna | Indeks deklarowanej użyteczności katalogu, 1–5 |
 | Parametr średniej | $\mu$ w określonym modelu populacji |
@@ -71,233 +68,236 @@ Nie programujesz testu ani pętli. Uruchamiasz gotowe funkcje z pliku `analiza.R
 | Hipoteza zerowa | $H_0:\mu=3$, równoważnie $\Delta=0$ |
 | Alternatywa dwustronna | $H_1:\mu\neq3$ |
 
-Wzrost indeksu ma kierunek korzystnej deklaracji po właściwym ukierunkowaniu pozycji. Dodatnia różnica nie oznacza poprawy w czasie: nie porównujemy tutaj wyniku przed zmianą i po zmianie interfejsu. Nie oznacza też efektu przyczynowego. Jest różnicą jednej średniej od ustalonej liczby.
+Table: Elementy analizy jednej średniej
 
-Jeżeli w innym zadaniu analizowalibyśmy czas, dodatnia różnica oznaczałaby dłuższe wykonanie niż odniesienie. Znak ma sens dzięki definicji zmiennej i kolejności odejmowania. Ten sam znak nie jest zawsze „dobry” albo „zły”.
+Po ukierunkowaniu pozycji wyższy indeks oznacza korzystniejszą deklarację. Dodatnia różnica opisuje położenie średniej względem liczby 3 w jednym pomiarze; zmiana w czasie wymaga pomiaru przed i po, a efekt przyczynowy — projektu z interwencją.
 
-## Dlaczego testujemy dwustronnie
+Ocena znaku zależy od zmiennej i kolejności odejmowania: dodatni znak czasu oznacza dłuższe wykonanie niż odniesienie, a dodatni znak indeksu — korzystniejszą deklarację.
 
-Dwustronna alternatywa dopuszcza średnią wyższą i niższą od odniesienia. Kierunek obserwowanej różnicy odczytujemy z estymaty. Nie przechodzimy na test jednostronny dopiero po zobaczeniu, w którą stronę odchylił się wynik.
+## Test dwustronny
 
-Jednostronne pytanie może być uzasadnione przed badaniem, lecz wymaga innej reguły i spójnego raportowania. W rdzeniu Z05 pozostajemy przy domyślnym teście dwustronnym. Dzięki temu słowo „bardziej skrajny” oznacza duże odchylenie w dowolnym kierunku.
+Dwustronna alternatywa obejmuje średnią wyższą i niższą od odniesienia, a kierunek różnicy odczytuje się z estymaty. Rodzaj alternatywy ustala się przed obliczeniem wyniku. Zadanie Z05 stosuje test dwustronny, więc „bardziej skrajny” oznacza duże odchylenie w dowolnym kierunku.
 
 ## Najpierw osoby i rozkład
 
-W zbiorze po czyszczeniu pozostają osoby z różną kompletnością odpowiedzi. Reguła 5/6 daje brak indeksu tam, gdzie informacji jest za mało. N w teście jest liczbą ważnych indeksów, nie liczbą wszystkich odpowiedzi na pozycje.
+Reguła 5/6 daje brak indeksu u osoby z mniej niż pięcioma ważnymi pozycjami. N w teście to liczba ważnych indeksów: 147.
 
-Tabela pokazuje opis jednej zmiennej, z jedną wielkością w wierszu. Najpierw odczytaj N oraz braki, potem średnią i SD. Zauważ, że SE i d są innymi wielkościami niż SD, mimo że korzystają z tego samego rozrzutu.
+Tabela „Osoby, średnia, niepewność i efekt” podaje jedną wielkość w wierszu: N = 147 ważnych indeksów, 1 brak, średnia 3,292, SD 0,727, SE 0,060, odniesienie 3, różnica 0,292 i d = 0,402. SE i d korzystają z tego samego SD, a opisują inne wielkości.
 
 ```{r opis}
 opis <- opis_sredniej(wynik)
 print(opis)
 ```
 
-Mamy 147 ważnych indeksów i jeden brak po zastosowaniu reguły. Średnia wynosi około 3,292, a SD około 0,727 punktu. Różnica od 3 to około 0,292 punktu. Te wartości opisują syntetyczną próbę przed jakąkolwiek oceną istotności.
+Wartości opisują syntetyczną próbę; ocena istotności przychodzi po opisie.
 
-Wykres wraca do danych pojedynczych osób. Linia przerywana oznacza 3, nie średnią próby ani granicę przedziału. Odczytaj zakres i skupienie odpowiedzi, pamiętając o ograniczonej skali indeksu.
-
-```{r dane-osob}
+```{r dane-osob, fig.cap="Indeksy osób i odniesienie 3: histogram 147 indeksów z przedziałami po 0,25 punktu. Oś pozioma: indeks 1–5; oś pionowa: liczba osób. Indeksy leżą od 1,6 do 5,0; najwyższy słupek, 22 osoby, stoi nad przedziałem od 3,25 do 3,5; linia przerywana oznacza odniesienie 3."}
 osoby <- pokaz_wykres(wykres_danych)
 print(osoby)
 ```
 
-Wysokość słupka mówi o liczbie osób. Na późniejszym histogramie bootstrapu słupek będzie oznaczał liczbę replik, a na histogramie zerowym liczbę przestawień. Podobny kształt graficzny nie oznacza identycznej jednostki.
+Na wykresie „Indeksy osób i odniesienie 3” słupek oznacza liczbę osób. Dalsze histogramy mają inne jednostki: średnią repliki bootstrapowej i statystykę po zmianie znaków.
 
-Indeks traktujemy w kursie jako przybliżoną zmienną ilościową. Ograniczony zakres i pochodzenie z pozycji porządkowych pozostają częścią opisu pomiaru. Test średniej nie dowodzi równych psychologicznych odległości między kategoriami.
+Indeks jest w kursie przybliżoną zmienną ilościową; ograniczony zakres i pochodzenie z pozycji porządkowych należą do opisu pomiaru (wykład W02 i ćwiczenie C04).
 
-# LEARN 2: czytamy SE, t i stopnie swobody
+# LEARN 2: SE, t i stopnie swobody
 
 $$
-SE=\frac{s}{\sqrt N},\qquad
-t=\frac{\bar{x}-\mu_0}{SE}.
+SE=\frac{s}{\sqrt n},\qquad
+t=\frac{\bar{x}-\mu_0}{SE},
 $$
 
-SE opisuje oszacowaną zmienność średniej między hipotetycznymi niezależnymi próbami, pod standardowym modelem. SD opisuje rozrzut osób w próbie. Dla naszych danych SE wynosi około 0,060 punktu, znacznie mniej niż SD. Nie znaczy to, że osoby są niemal identyczne.
+gdzie $s$ to SD indeksów, a $n$ — liczba ważnych indeksów. SE opisuje zmienność średniej między hipotetycznymi niezależnymi próbami w standardowym modelu, a SD — rozrzut osób. SD osób wynosi 0,727, a SE średniej 0,060: osoby różnią się dwunastokrotnie bardziej niż średnie hipotetycznych prób 147 osób.
 
-Licznik t to różnica 0,292 punktu. Mianownik to około 0,060 punktu niepewności średniej. Statystyka wynosi zatem około 4,876 i nie ma jednostki. Odczyt: „średnia leży około 4,88 oszacowanego błędu standardowego powyżej odniesienia”.
+Licznik t to różnica 0,292 punktu, a mianownik — 0,060 punktu niepewności średniej. Statystyka wynosi 4,876 i jest liczbą bez jednostki: średnia leży 4,88 błędu standardowego powyżej odniesienia.
 
-Poniższy blok pokazuje klasyczny wynik w trzech kolumnach. Przeczytaj t wraz z df oraz p. Funkcja formatująca nie zamienia bardzo małego p w zero.
+Tabela „Dwustronny test t jednej średniej” podaje t = 4,876, df = 146 i p < 0,0001. Funkcja formatująca zapisuje bardzo małe p jako „< 0,0001”.
 
 ```{r test-t}
 test <- test_sredniej(wynik)
 print(test)
 ```
 
-Stopnie swobody wynoszą $N-1=146$. Identyfikują rozkład odniesienia, z którego odczytujemy skrajność t. Nie są liczbą grup, miarą jakości skali ani dowodem reprezentatywności.
+Stopnie swobody wynoszą $n-1=146$ i wskazują rozkład odniesienia t, z którego odczytuje się skrajność statystyki. Wykres „Rozkład t(146) i obserwowane t = 4,876” przedstawia rozkład t(146).
 
-Dla niezależnych obserwacji z populacji normalnej standardowy test ma dokładne uzasadnienie rozkładowe. Przy innych rozkładach wnioskowanie o średniej może korzystać z przybliżenia, którego jakość zależy od rozkładu i N. Nie stosujemy magicznego progu „powyżej 30 wszystko jest poprawne”, a sprawdzenie normalności nie zastępuje oceny niezależności.
+```{r rozklad-t, fig.cap="Rozkład t(146) i obserwowane t = 4,876. Oś pozioma: statystyka t; oś pionowa: gęstość. Krzywa jest symetryczna wokół 0, a 99,7% jej pola leży między −3 a 3. Linie przerywane przy −4,876 i 4,876 leżą daleko w ogonach; pole obu ogonów wynosi 0,0000028."}
+rozklad_t <- pokaz_wykres(wykres_t)
+print(rozklad_t)
+```
+
+Dla niezależnych obserwacji z populacji o rozkładzie normalnym test t ma dokładne uzasadnienie rozkładowe (wykład W03). Przy innych rozkładach test korzysta z przybliżenia, którego jakość zależy od kształtu rozkładu i $n$; niezależność obserwacji wynika z projektu.
 
 ## Polecenie R jako zdanie
 
-Oryginalny obiekt testu pokazuje także nazwę metody, alternatywę, przedział i estymatę. Odczytaj, którego parametru dotyczy napis „confidence interval”. W jednopróbkowym wywołaniu `t.test(x, mu=3)` jest to średnia, nie różnica od 3.
+Oryginalny wydruk testu podaje nazwę metody, alternatywę, przedział i estymatę. W wywołaniu `t.test(x, mu = 3)` napis „confidence interval” dotyczy średniej.
 
 ```{r oryginalny-wydruk}
 wydruk_R <- oryginal_testu_sredniej(wynik)
 print(wydruk_R)
 ```
 
-Argument `mu` określa wartość w hipotezie zerowej. Nie usuwa jej z danych ani nie zmienia obliczonej średniej. Jeśli zmienisz odniesienie, zmieni się różnica i wynik testu, ale standardowy dwustronny przedział tej samej średniej pozostanie taki sam.
+Argument `mu` wskazuje wartość hipotezy zerowej; dane i średnia pozostają te same. Zmiana odniesienia zmienia różnicę i wynik testu, a dwustronny przedział tej samej średniej pozostaje ten sam. Opis argumentów zawiera [dokumentacja R dla t.test](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html).
 
-Odczyt wyniku funkcji można sprawdzić w [dokumentacji R dla t.test](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html). W ćwiczeniu ważniejszy od zapamiętania nazwy argumentu jest jednak sens: porównujemy określony parametr z określoną wartością.
+## Wartość p i model zerowy
 
-## P mówi o modelu zerowym, nie o pożytku
+Klasyczne p wynosi $2{,}8\cdot10^{-6}$, czyli 0,0000028: tak rzadko pojawia się statystyka co najmniej tak skrajna przy $H_0$ i założeniach testu. Zapis `2.8e-06` oznacza bardzo małą liczbę dodatnią. Raport podaje p < 0,001 razem z estymatą i przedziałem.
 
-Klasyczne p w przykładzie wynosi około $2{,}8\cdot10^{-6}$, czyli 0,0000028. Oznacza rzadkość statystyki co najmniej tak skrajnej przy H0 i założeniach testu. Nie jest prawdopodobieństwem, że katalog jest użyteczny, ani procentem osób z pozytywną oceną.
+# LEARN 3: efekt i dwa przedziały
 
-Notacja `2.8e-06` jest komputerowym zapisem $2{,}8\cdot10^{-6}$. To bardzo mała liczba dodatnia, nie ujemna i nie zero. W raporcie można zapisać p<0,001 z zachowaniem pozostałych elementów wyniku; sam próg nie powinien zastępować estymaty.
-
-# LEARN 3: efekt i dwa różne przedziały
-
-Klasyczny przedział średniej zapisujemy:
+Klasyczny przedział średniej ma postać:
 
 $$
 CI_{95\%}(\mu)=
-\left[\bar{x}-t_{0{,}975;N-1}SE,\;
-      \bar{x}+t_{0{,}975;N-1}SE\right].
+\left[\bar{x}-t_{0{,}975;\,n-1}SE,\;
+      \bar{x}+t_{0{,}975;\,n-1}SE\right],
 $$
 
-Aby otrzymać przedział różnicy $\Delta=\mu-3$, odejmujemy 3 od obu końców. Szerokość się nie zmienia, ponieważ to przesunięcie osi. Zmienia się natomiast parametr oraz jego wartość zerowa.
+gdzie $t_{0{,}975;\,146}=1{,}976$. Przedział różnicy $\Delta=\mu-3$ powstaje przez odjęcie 3 od obu końców; szerokość pozostaje ta sama, a zmienia się parametr i jego wartość zerowa.
 
-Tabela rozdziela oba parametry. Na razie czytamy wyłącznie wiersze metody t. Później porównamy je z przedziałami bootstrapowymi obliczonymi dla dokładnie tych samych wielkości.
+Tabele „95% CI średniej [pkt]” i „95% CI różnicy od odniesienia [pkt]” podają wyniki metody t: średnia — od 3,174 do 3,411, różnica — od 0,174 do 0,411.
 
 ```{r klasyczne-przedzialy}
 przedzialy_t <- przedzialy_sredniej(wynik, metoda = "t")
 print(przedzialy_t)
 ```
 
-Średnia ma CI około [3,174; 3,411] punktu. Różnica ma CI około [0,174; 0,411] punktu. Zdanie „różnica 0,292, CI [3,174; 3,411]” byłoby niejednoznaczne i w typowym odczycie błędne, ponieważ granice należą do innego parametru.
+Zdanie „różnica 0,292, CI [3,174; 3,411]” łączy estymatę różnicy z przedziałem średniej; poprawny zapis brzmi „różnica 0,292, CI [0,174; 0,411]”.
 
-Dla pary dwustronny test t na poziomie 0,05 i odpowiadający mu przedział t 95% mamy zgodność: przedział średniej nie obejmuje 3, a przedział różnicy nie obejmuje zera. Nie przenosimy automatycznie tej reguły na dowolne inne testy i przedziały.
+Przedział średniej leży w całości powyżej 3, a przedział różnicy — powyżej 0. Dla pary „dwustronny test t na poziomie 0,05 i przedział t 95%” obowiązuje zgodność:
+
+$$
+\mu_0\notin CI_{95\%}(\mu)\iff p<0{,}05 .
+$$
+
+Zgodność dotyczy pary: dwustronny test t i przedział t (wykład W03).
 
 ## Co oznacza 95%
 
-Poziom ufności jest własnością procedury powtarzanej przy jej założeniach. Nie mówimy, że 95% użytkowników ma indeks pomiędzy 3,174 a 3,411. Rozkład osób jest znacznie szerszy, co było widać na histogramie.
-
-Nie mówimy też, że wszystkie wartości w przedziale są jednakowo prawdopodobne ani że wartości tuż poza nim są niemożliwe. Przedział jest podsumowaniem niepewności zgodnie z konkretną metodą. Ostry podział na „prawdziwe wewnątrz” i „fałszywe na zewnątrz” nie oddaje jego sensu.
+Poziom ufności jest własnością procedury powtarzanej przy jej założeniach: w wielu powtórzeniach badania 95% tak zbudowanych przedziałów obejmuje $\mu$. Indeksy osób leżą od 1,6 do 5,0 — znacznie szerzej niż przedział średniej od 3,174 do 3,411. Wartości blisko granic przedziału są zgodne z danymi w podobnym stopniu jak wartości tuż za granicą.
 
 ## Efekt surowy i efekt standaryzowany
 
-Standaryzowany efekt d ma postać:
+Standaryzowany efekt d i jego związek z t mają postać:
 
-$$d=\frac{\bar{x}-\mu_0}{s}.$$
+$$
+d=\frac{\bar{x}-\mu_0}{s},\qquad t=d\sqrt n=0{,}402\cdot\sqrt{147}=4{,}876 .
+$$
 
-Wynosi około 0,402, bo różnicę dzielimy przez SD osób, a nie przez SE. To standaryzowany opis wielkości. Statystyka t jest większa, ponieważ w jej mianowniku znajduje się mniejsze SE. Dodatnie d nie dowodzi związku przyczynowego.
+Efekt d = 0,402 dzieli różnicę przez SD osób, a t dzieli ją przez SE, więc t rośnie z $\sqrt n$ przy stałym d. Efekt surowy ma jednostkę punktów indeksu, a d jest liczbą bez jednostki.
 
-W praktyce pierwsza informacja nadal brzmi „około 0,292 punktu powyżej umownego odniesienia”. Czy to ważne, zależy od celu i jakości pomiaru. Małe p nie zamienia środka skali w standard biblioteki, a standaryzacja nie tworzy procentu kompetencji.
-
-W poprzedniej tabeli efekt surowy miał jednostkę punktów indeksu, a d nie ma jednostki. Wzór t dzieli ten sam licznik przez SE; wzór d przez SD. Dlatego większe N może zmienić t bez zmiany wielkości efektu d. Nie odczytujemy żadnej z tych miar jako procentu osób.
-
+Pierwsza informacja dla zespołu brzmi: „0,292 punktu powyżej umownego odniesienia”. Znaczenie różnicy 0,292 punktu ocenia się względem celu usługi i jakości pomiaru.
 
 # LEARN 4: bootstrap i zmiana znaków mają różne cele
 
-Bootstrap korzysta z posiadanej próby jako empirycznego przybliżenia rozkładu. Losujemy tyle obserwacji, ile było w próbie, ale z powtórzeniami. Potem liczymy średnią; jest ona jedną repliką estymaty, nie nową osobą.
+Bootstrap traktuje próbę jako empiryczne przybliżenie rozkładu. Losuje $n$ obserwacji ze zwracaniem i liczy średnią; średnia jest jedną repliką estymaty.
 
-W osobnej małej demonstracji sześć indeksów wynosi 2, 3, 3, 4, 4 i 5. Ich średnia to 3,5. Poniższa przykładowa replika wybiera osoby o numerach 2, 2, 6, 1, 4 i 4; nie zmienia odpowiedzi osoby, tylko liczbę jej wystąpień w tym losowaniu.
+W małej demonstracji sześć indeksów wynosi 2, 3, 3, 4, 4 i 5, a ich średnia — 3,5. Tabela „Jedno losowanie sześciu osób ze zwracaniem” podaje replikę z osobami numer 2, 2, 6, 1, 4 i 4. Losowanie zmienia liczbę wystąpień osoby w replice.
 
 ```{r jedna-replika}
-replika <- pokaz_tabele(jedna_replika, "Jedno losowanie sześciu osób ze zwracaniem")
+replika <- jedna_replika_do_odczytu()
 print(replika)
 ```
 
-Replika zawiera wartości 3, 3, 5, 2, 4 i 4, więc jej średnia także wynosi 3,5. To przypadkowa równość w tej demonstracji; inne losowania dają inne średnie. Powtórzenie osoby nie jest duplikatem do usunięcia: w bootstrapie wynika z definicji procedury, inaczej niż w czyszczeniu surowego eksportu.
-
-Nie tasujemy tu sześciu wartości bez powtórzeń, bo zwykłe przestawienie kolejności nie zmieniłoby średniej. Słowo „losowanie” trzeba zatem czytać razem z informacją „z powtórzeniami” i z jednostką, którą losujemy.
+Replika zawiera wartości 3, 3, 5, 2, 4 i 4, więc jej średnia także wynosi 3,5; inne losowania dają inne średnie. Powtórzenie osoby wynika z definicji losowania ze zwracaniem. Losowanie ze zwracaniem zmienia skład próby, a więc średnią; przestawienie kolejności tych samych sześciu wartości pozostawia średnią bez zmian.
 
 ## Wiele replik i przedział bootstrapowy
 
-Dla S02 gotowa funkcja tworzy 1999 replik. Każda obejmuje 147 losowań osób z powtórzeniami i jedną średnią. Poniższy histogram przedstawia rozkład tych średnich, nie histogram indeksów osób.
+Dla S02 funkcja tworzy $B=1999$ replik po 147 losowań. Percentylowy przedział bootstrapowy i bootstrapowe SE mają postać:
 
-```{r bootstrap}
+$$
+CI^{\text{boot}}_{95\%}=\left[\bar x^*_{(0{,}025)},\ \bar x^*_{(0{,}975)}\right],\qquad
+SE_{\text{boot}}=\sqrt{\frac{1}{B-1}\sum_{b=1}^{B}\left(\bar x^*_b-\overline{\bar x^*}\right)^2},
+$$
+
+gdzie $\bar x^*_b$ to średnia repliki $b$, a $\bar x^*_{(q)}$ — kwantyl rzędu $q$ średnich replik. W S02 $SE_{\text{boot}}=0{,}0605$ wobec klasycznego $SE=0{,}060$.
+
+```{r bootstrap, fig.cap="Bootstrap: niepewność średniej. Histogram 1999 średnich prób bootstrapowych z przedziałami po 0,02 punktu. Oś pozioma: średnia w próbie bootstrapowej; oś pionowa: liczba prób. Średnie leżą od 3,10 do 3,48 wokół średniej próby 3,29; linie przerywane przy 3,17 i 3,41 wyznaczają percentylowy przedział 95%."}
 srednie_replik <- pokaz_wykres(wykres_bootstrap)
 print(srednie_replik)
 ```
 
-Linia oznacza średnią obserwowaną. Rozkład replik zwykle skupia się w jej pobliżu, a nie obowiązkowo wokół 3. W tej procedurze nie narzuciliśmy hipotezy zerowej. Dlatego samo liczenie, jaka część zwykłych replik leży po jednej stronie odniesienia, nie jest procedurą zmian znaków.
+Bootstrap skupia się wokół średniej próby (3,29), bo odtwarza zmienność estymatora; hipotezę zerową wprowadza procedura zmian znaków.
 
-Percentylowy przedział bierze kwantyle 2,5% i 97,5% średnich bootstrapowych. Gotowa tabela pokazuje przedział średniej oraz przesunięty przedział różnicy. Odczytaj ich nazwy przed porównaniem z wynikiem klasycznym.
+Tabele przedziałów bootstrapowych podają: średnia — od 3,173 do 3,407, różnica — od 0,173 do 0,407. Przedziały bootstrapowe są bliskie klasycznym; zgodność dotyczy próby S02 i dwóch użytych metod.
 
 ```{r bootstrap-ci}
 przedzialy_boot <- przedzialy_sredniej(wynik, metoda = "bootstrap")
 print(przedzialy_boot)
 ```
 
-Przedział średniej wynosi około [3,173; 3,407], a różnicy [0,173; 0,407]. W tym przykładzie jest podobny do klasycznego. Podobieństwo dotyczy konkretnej próby i metod; nie dowodzi, że każdy bootstrap da poprawny przedział dla dowolnego parametru.
+Bootstrap korzysta z wartości obecnych w próbie, więc mała próba odtwarza wyłącznie obserwowaną część rozkładu; dla danych zależnych losuje się jednostki wyższego poziomu, np. osoby ze wszystkimi ich zapytaniami. Liczba replik wpływa na dokładność obliczenia, a ograniczenia próby pozostają.
 
-Prosty bootstrap zakłada odpowiednią reprezentację rozkładu i niezależność losowanych jednostek. W małej próbie nie odtworzy nieobserwowanego długiego ogona czasu, a przy danych zależnych trzeba zmienić jednostkę losowania. Więcej replik nie naprawia tych ograniczeń.
-
-Wykres porównuje dwa przedziały tego samego parametru, czyli średniej. Oba punkty znajdują się w tym samym miejscu, bo estymata jest wspólna. Różnią się tylko reguły wyznaczania granic.
-
-```{r porownanie-ci, fig.height=2.5}
+```{r porownanie-ci, fig.height=2.5, fig.cap="Ten sam parametr, dwie metody przedziału. Oś pozioma: średnia indeksu w punktach. Przedział t: od 3,174 do 3,411; bootstrap percentylowy: od 3,173 do 3,407; romby przy 3,292 oznaczają wspólną estymatę; linia przerywana przy 3 leży na lewo od obu odcinków."}
 porownanie_ci <- pokaz_wykres(wykres_ci)
 print(porownanie_ci)
 ```
 
-Nie nazywamy dłuższego przedziału „gorszym” tylko dlatego, że jest mniej korzystny dla oczekiwanego wniosku. Oceniamy założenia i działanie metody. Wybór metody po obejrzeniu granic byłby kolejną nieujawnioną decyzją analityczną.
+Oba przedziały dotyczą średniej, mają wspólną estymatę i różnią się regułą wyznaczania granic. Metodę ocenia się po założeniach i własnościach, a wybiera przed obejrzeniem granic.
 
 ## Co zmienia procedura znaków
 
-Dla testu zerowego tworzymy odchylenia $d_i=x_i-3$. Symbol $d_i$ z indeksem osoby oznacza tu pojedyncze odchylenie w punktach; nie jest standaryzowanym efektem d opisującym całą próbę. Pod H0 i dodatkowym założeniem symetrii znak każdego niezależnego odchylenia można zmienić, zachowując jego bezwzględną wielkość. W każdym losowaniu liczymy średnią tak zmienionych odchyleń.
+Test zerowy korzysta z odchyleń $e_i=x_i-\mu_0$. Przy $H_0$ i założeniu symetrii odchyleń znak każdego niezależnego odchylenia można zmienić, zachowując jego wielkość. Procedura mnoży odchylenia osób od odniesienia przez losowe znaki $\varepsilon_{ib}\in\{-1,+1\}$ i w każdym powtórzeniu liczy średnią.
 
-Nie zmieniamy tutaj kolejności odpowiedzi na pozycje ani nie losujemy nowych indeksów z rozkładu normalnego. Operujemy na odchyleniach osób od odniesienia. W materiale nazywamy to torem permutacyjnym przez zmianę znaków, wskazując dokładnie wykonywane przekształcenie.
-
-Sama hipoteza o średniej równej 3 nie gwarantuje symetrii. Rozkład może mieć dużo małych ujemnych i kilka dużych dodatnich odchyleń, które równoważą się średnią. Prosty test zmian znaków nie ma wtedy automatycznie dokładnego uzasadnienia. [Winkler i współautorzy](https://pmc.ncbi.nlm.nih.gov/articles/PMC4010955/) omawiają warunki dopuszczalnych przestawień; tu najważniejsze jest rozpoznanie różnicy między średnią a symetrią.
+Test zmian znaków zakłada symetrię odchyleń przy $H_0$: rozkład z wieloma małymi ujemnymi i kilkoma dużymi dodatnimi odchyleniami ma średnią 0 i łamie symetrię (rozwinięcie „Średnia i symetria: dwa warunki”). Warunki dopuszczalnych przestawień omawiają [Winkler i współautorzy (2014)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4010955/).
 
 ## Wzór statystyki i skrajności
 
 $$
-T_{\mathrm{obs}}=\frac{1}{N}\sum_i(x_i-\mu_0),\qquad
-T_b^*=\frac{1}{N}\sum_i s_{ib}(x_i-\mu_0),
-\quad s_{ib}\in\{-1,+1\}.
+T_{\mathrm{obs}}=\frac{1}{n}\sum_i e_i,\qquad
+T_b^*=\frac{1}{n}\sum_i \varepsilon_{ib}\,e_i,\qquad
+p_{\mathrm{MC}}=\frac{1+\#\{b:\ |T_b^*|\geq|T_{\mathrm{obs}}|\}}{B+1}.
 $$
 
-Obserwowana i przestawiona statystyka mają tę samą definicję: średnia odchyleń. T ma jednostkę punktów. Nie porównujemy więc bezpośrednio przestawionych różnic w punktach z klasycznym t, które nie ma jednostki.
+Statystyka obserwowana i statystyka po zmianie znaków mają tę samą definicję: średnia odchyleń w punktach. Klasyczne t jest liczbą bez jednostki, więc porównuje się p obu procedur.
 
-Tabela pokazuje obserwowane T, liczbę skrajnych replik, B oraz p Monte Carlo. Przeczytaj ją razem ze wzorem, a nie jako drugą bezimienną wartość p. W tym przykładzie nie znaleziono skrajnej repliki w 1999 losowaniach.
+Tabela „Zmiana znaków: T w punktach, p Monte Carlo” podaje $T_{\mathrm{obs}}=0{,}292$, 0 powtórzeń z $|T_b^*|\ge|T_{\mathrm{obs}}|$, $B=1999$ i $p_{\mathrm{MC}}=0{,}0005$.
 
 ```{r zmiany-znakow}
 znaki <- test_znakow_sredniej(wynik)
 print(znaki)
 ```
 
-Stosujemy:
+Wynik $(1+0)/(1999+1)=0{,}0005$ jest najmniejszą wartością osiągalną przy $B=1999$. Uzasadnienie dodania jedynki do licznika i mianownika podają [Phipson i Smyth (2010)](https://pubmed.ncbi.nlm.nih.gov/21044043/).
 
-$$p_{\mathrm{MC}}=\frac{1+k}{B+1},
-\quad k=\#\{|T_b^*|\geq|T_{\mathrm{obs}}|\}.$$
-
-Dla k=0 i B=1999 wynik to 0,0005. Nie zapisujemy p=0 ani „efekt jest pewny”. Jest to najmniejsza wartość, jaką może zaraportować ten losowany schemat. Uzasadnienie poprawnego liczenia losowanych p rozwijają [Phipson i Smyth (2010)](https://pubmed.ncbi.nlm.nih.gov/21044043/).
-
-Histogram pokazuje rozkład zerowy różnic. Linie wskazują dodatnią i ujemną granicę skrajności równą bezwzględnej obserwowanej różnicy. Środek tego rozkładu jest bliski zeru z powodu konstrukcji, nie dlatego, że dane osób mają średnią zero.
-
-```{r rozklad-zerowy}
+```{r rozklad-zerowy, fig.cap="Rozkład zerowy zmian znaków: histogram 1999 średnich odchyleń po losowej zmianie znaków, z przedziałami po 0,02 punktu. Oś pozioma: średnia odchyleń od 3 w punktach; oś pionowa: liczba powtórzeń. Histogram jest symetryczny wokół zera i leży od −0,21 do 0,19; linie przerywane przy −0,292 i 0,292 leżą poza wszystkimi powtórzeniami, więc p Monte Carlo = 1/2000 = 0,0005."}
 skrajnosc <- pokaz_wykres(wykres_zerowy)
 print(skrajnosc)
 ```
 
-Klasyczne p około 0,0000028 i p Monte Carlo 0,0005 nie są równymi liczbami. Oba są małe w swoich procedurach, lecz wynik losowany ma ograniczoną rozdzielczość i dodatkowe założenie symetrii. Nie wyciągamy z ilorazu tych liczb wniosku, że jedna metoda „daje dwieście razy słabszy efekt”. Efekt w punktach jest nadal ten sam.
+Rozkład zerowy ma środek przy zerze z konstrukcji: losowe znaki równoważą odchylenia. Rozciąga się od −0,21 do 0,19, a $T_{\mathrm{obs}}=0{,}292$ leży poza nim.
 
-## Gdy p znajduje się blisko umownego progu
+Klasyczne p = 0,0000028 i $p_{\mathrm{MC}}=0{,}0005$ różnią się, bo $p_{\mathrm{MC}}$ ma rozdzielczość 1/2000 i dodatkowe założenie symetrii. Efekt w punktach jest w obu procedurach ten sam.
 
-W innym zbiorze wynik klasyczny i wynik Monte Carlo mogą znaleźć się po różnych stronach 0,05 albo jeden może wypaść dokładnie na tej granicy. Nie oznacza to, że jedna procedura odkryła efekt, a druga udowodniła jego brak. Porównaj estymatę, przedział, założenia i dokładność losowania. Mała zmiana p nie jest nagłą zmianą badanego zjawiska.
+## Wynik przy umownym progu
 
-Jeżeli zapisujesz warunek „p<0,05”, równość 0,05 go nie spełnia. Nie zmieniaj znaku nierówności ani ziarna losowania po zobaczeniu wyniku. Podaj uzyskaną wartość p i objaśnij, że znajduje się przy umownym progu. Przy B=1999 losowe przybliżenie udziału około 0,05 ma orientacyjne SE około 0,0049; nie należy traktować czwartego miejsca po przecinku jako niepodważalnego rozstrzygnięcia.
+W innym zbiorze wynik klasyczny i wynik Monte Carlo mogą leżeć po dwóch stronach 0,05 albo dokładnie na granicy. Przy wynikach po dwóch stronach 0,05 raport porównuje estymatę, przedział, założenia i dokładność losowania; mała zmiana p opisuje tę samą różnicę w danych.
 
-## Trzy rozkłady, które trzeba umieć nazwać
+Warunek „p < 0,05” wymaga wartości mniejszej od 0,05. Ziarno i nierówność ustala się przed analizą, a raport podaje uzyskaną wartość p z opisem jej położenia przy progu. Przy $B=1999$ udział skrajnych powtórzeń bliski 0,05 ma SE około 0,0049, co określa dokładność czwartego miejsca po przecinku.
 
-| Obraz | Jeden element oznacza | Środek i pytanie |
-|---|---|---|
+## Trzy rozkłady do nazwania
+
+| Obraz | Jeden element oznacza | Pytanie |
+|----------------------|------------------------------------|------------------------------------|
 | Histogram danych | Indeks osoby | Jak zróżnicowani są respondenci? |
-| Histogram bootstrapu | Średnią repliki z powtórzeniami | Jak zmienia się estymata? |
-| Histogram zerowy | Statystykę po dopuszczalnej zmianie znaków | Jak skrajny jest wynik przy modelu zerowym? |
+| Histogram bootstrapu | Średnią repliki ze zwracaniem | Jak zmienia się estymata? |
+| Histogram zerowy | Statystykę po zmianie znaków | Jak skrajny jest wynik przy modelu zerowym? |
 
-Wszystkie trzy mogą mieć podobny wizualnie kształt, ale nie wolno przekładać osi między nimi. Szerokość histogramu osób jest związana z SD, szerokość bootstrapowych średnich z niepewnością estymacji, a położenie obserwowanej statystyki na tle rozkładu zerowego służy obliczeniu p.
+Table: Trzy rozkłady i ich jednostki
 
-**Samokontrola:** ktoś pokazuje histogram z 1999 wartościami i mówi, że przebadano 1999 użytkowników. Jak rozpoznać błąd? Sprawdź, czy wartości są indeksami osób, średnimi replik czy statystykami zerowymi. Liczba punktów wygenerowanych przez komputer nie mówi, ilu niezależnych ludzi dostarczyło informacji.
+```{r trzy-rozklady, fig.height=5, fig.cap="Trzy rozkłady, trzy jednostki; każdy panel ma własną oś poziomą. Górny panel: 147 indeksów osób od 1,6 do 5,0. Środkowy panel: 1999 średnich prób bootstrapowych od 3,10 do 3,48. Dolny panel: 1999 statystyk po zmianie znaków od −0,21 do 0,19 wokół zera."}
+trzy <- pokaz_wykres(wykres_trzy)
+print(trzy)
+```
 
-Druga osoba mówi: „bootstrap ma średnią około 3,29, więc hipoteza zerowa musi mieć średnią 3,29”. To pomylenie celu procedur. Zwykły bootstrap odtwarza informację z zaobserwowanej próby, a test zerowy buduje inny rozkład odniesienia. Nazwanie rozkładu jest pierwszym krokiem do poprawnego odczytu.
+Każdy histogram ma własną oś. Szerokość histogramu osób wiąże się z SD, szerokość histogramu średnich bootstrapowych — z niepewnością estymacji, a położenie obserwowanej statystyki na tle rozkładu zerowego służy obliczeniu p.
 
-# LEARN 5: od wyniku do pełnego opisu badania
+**Samokontrola:** osoba przedstawia histogram 1999 wartości i mówi, że przebadano 1999 użytkowników. Odczyt zaczyna się od pytania, czy wartości są indeksami osób, średnimi replik czy statystykami zerowymi. Liczbę osób podaje N danych, a liczbę replik B.
 
-Przed wzorcowym akapitem zestawiamy wynik klasyczny, losowany oraz efekt z przedziałami. Każda tabela zachowuje nazwę parametru i metody. Odszukaj w niej liczby użyte w opisie, zamiast traktować akapit jako formułkę do przepisania.
+Druga osoba mówi: „bootstrap ma średnią 3,29, więc hipoteza zerowa ma średnią 3,29”. Zwykły bootstrap odtwarza informację z próby, a test zerowy buduje rozkład odniesienia przy $H_0$; nazwanie rozkładu jest pierwszym krokiem odczytu.
+
+# LEARN 5: od wyniku do pełnego opisu
+
+Blok `podsumowanie-wyniku` zestawia efekt, wynik klasyczny, wynik zmian znaków i przedziały. Każda tabela zachowuje nazwę parametru i metody; liczby przykładowych akapitów pochodzą z tabel bloku `podsumowanie-wyniku`.
 
 ```{r podsumowanie-wyniku}
 raport <- podsumowanie_sredniej(wynik)
@@ -306,68 +306,66 @@ print(raport)
 
 ## Przykładowe akapity dla S02
 
-W warstwie liczbowej możemy napisać: „Dla 147 ważnych indeksów średnia wyniosła 3,292 punktu (SD=0,727). Różnica od umownego odniesienia 3 wyniosła 0,292 punktu, z klasycznym 95% CI [0,174; 0,411]. Test t dał t(146)=4,876, p<0,001, a d=0,402”.
+Warstwa liczbowa: „Dla 147 ważnych indeksów średnia wyniosła 3,292 punktu (SD = 0,727). Różnica od umownego odniesienia 3 wyniosła 0,292 punktu, z klasycznym 95% CI [0,174; 0,411]. Test t dał t(146) = 4,876, p < 0,001, a d = 0,402”.
 
-W drugiej części dodajemy metodę losowania: „Percentylowy bootstrap dał dla tej różnicy CI [0,173; 0,407]. W 1999 losowych zmianach znaków nie uzyskano równie skrajnej różnicy, stąd p Monte Carlo=0,0005 według użytej reguły. Odczyt tego testu wymaga dodatkowego założenia symetrii odchyleń pod H0”.
+Warstwa losowania: „Percentylowy bootstrap dał dla różnicy CI [0,173; 0,407]. W 1999 losowych zmianach znaków żadna średnia odchyleń nie była równie skrajna, stąd $p_{\mathrm{MC}}$ = 0,0005. Test zmian znaków zakłada symetrię odchyleń przy $H_0$”.
 
-W warstwie badawczej wynik oznacza przesunięcie średniej w stronę korzystnej deklaracji względem środka skali. Nie dowodzi wysokiej kompetencji, skuteczności wszystkich osób ani poprawy wywołanej interwencją. Dane są syntetyczne, a indeks dydaktyczny. Punkt odniesienia nie stanowi zwalidowanego progu decyzji.
+Warstwa badawcza: wynik oznacza przesunięcie średniej w stronę korzystnej deklaracji względem środka skali. Wynik dotyczy deklarowanej użyteczności w danych syntetycznych, a punkt odniesienia jest umowny.
 
-Nie musisz umieszczać wszystkich liczb w jednym długim zdaniu. Dwa krótkie akapity z jasno nazwanymi przedziałami są czytelniejsze. Nie wolno jednak pominąć parametru przedziału, znaku różnicy lub warunku procedury tylko po to, by skrócić tekst.
+Dwa krótkie akapity z nazwanymi przedziałami są czytelniejsze od jednego długiego zdania i zawierają parametr przedziału, znak różnicy oraz warunek procedury.
 
-## Zero i próg praktyczny to nie to samo
+## Zero i próg praktyczny: dwie granice
 
-Załóżmy wyłącznie na potrzeby dyskusji, że zespół uważa różnicę 0,20 punktu za wartą dalszej uwagi. Nie jest to norma dla tego indeksu, tylko hipotetyczna preferencja decydenta. Nasz przedział różnicy od około 0,174 do 0,411 leży powyżej zera, ale obejmuje wartości zarówno poniżej, jak i powyżej 0,20.
+Na potrzeby dyskusji zespół uznaje różnicę 0,20 punktu za wartą dalszej uwagi. Próg 0,20 jest hipotetyczną preferencją decydenta. Przedział [0,174; 0,411] wyklucza zero i obejmuje wartości po obu stronach 0,20; oszacowanie 0,292 leży powyżej progu.
 
-Nie można więc zamienić zdania „wykluczono zerową różnicę w odpowiadającej procedurze” na „wykazano przekroczenie progu 0,20”. To dwa twierdzenia o różnych granicach. Oszacowanie 0,292 jest powyżej progu, lecz jego niepewność obejmuje też mniejsze wartości.
+Zdanie „wykluczono zerową różnicę” i zdanie „wykazano przekroczenie progu 0,20” dotyczą dwóch granic. Pierwsze wynika z dolnej granicy 0,174 > 0; drugie wymagałoby dolnej granicy powyżej 0,20.
 
-| Pytanie decydenta | Co w tym przykładzie czytamy? |
-|---|---|
-| Czy punktowe oszacowanie jest dodatnie? | Tak: około 0,292 punktu |
-| Czy klasyczny CI obejmuje zero? | Nie: oba końce są dodatnie |
-| Czy cały CI leży powyżej umownego 0,20? | Nie: dolna granica wynosi około 0,174 |
-| Czy wiemy, że zmiana katalogu spowodowała efekt? | Nie: nie badaliśmy tutaj takiej interwencji |
+| Pytanie decydenta | Odczyt w S02 |
+|--------------------------------------|--------------------------------------------|
+| Oszacowanie punktowe | 0,292 punktu |
+| Położenie CI względem zera | Oba końce dodatnie: 0,174 i 0,411 |
+| Dolna granica CI względem progu 0,20 | 0,174, poniżej progu |
+| Przyczyna efektu | Wymaga projektu z interwencją |
 
-Ta tabela pokazuje, dlaczego odpowiedź statystyczna powinna być dopasowana do decyzji. Można rekomendować dalsze sprawdzenie konkretnego elementu usługi, ale nie przedstawiać tego jako skutku udowodnionego przez test jednej średniej. W raporcie oddzielamy opis danych, interpretację modelową i rekomendację.
+Table: Odczyt wyniku dla decydenta
+
+Odpowiedź statystyczna pasuje do decyzji: rekomendacja dotyczy dalszego sprawdzenia elementów usługi. Raport oddziela opis danych, interpretację modelową i rekomendację.
 
 # CHALLENGE — samodzielna interpretacja oceny portalu
 
-Uzupełnij pięć pól odpowiedzi krótkimi akapitami. Pisz pod wynikami poza blokami R, zastępując znaczniki. Odczytuj liczby z portalu, nie ze wspólnego S02; gotowa funkcja oblicza wyniki, ale nie pisze za Ciebie wniosku.
+W pięciu zadaniach zastąp znaczniki odpowiedzi własnymi krótkimi akapitami. Wpisuj tekst pod wynikiem, poza chunkiem. Liczby odczytujesz z wyników portalu; wniosek piszesz samodzielnie.
 
 ## Scenariusz portalu i umownego odniesienia
 
-Portal studencki oceniono sześcioma pozycjami dotyczącymi deklarowanej przejrzystości procedur. Po ukierunkowaniu pozycji i regule minimum 5/6 uzyskano indeksy 1–5; dla jednej z 25 osób indeks jest niedostępny. To osobna syntetyczna demonstracja, a nie kolejny pomiar tych samych osób z katalogu.
+Portal studencki oceniono sześcioma pozycjami o deklarowanej przejrzystości procedur. Po ukierunkowaniu pozycji i regule 5/6 powstały indeksy 1–5; jedna z 25 osób ma brak indeksu. Portal jest osobną syntetyczną demonstracją.
 
-Przed analizą ustalono pytanie o różnicę średniej od umownego odniesienia 3 oraz dwustronny test. Dodatkowo opiekun wskazał 3,5 jako hipotetyczny cel użytkowy. Ani punkt środkowy skali, ani ten cel nie są zwalidowaną granicą kompetencji. Nie zmieniaj odniesienia po zobaczeniu p.
+Przed analizą ustalono pytanie o różnicę średniej od odniesienia 3 i test dwustronny. Opiekun portalu wskazał 3,5 jako hipotetyczny cel użytkowy. Wartości 3 i 3,5 są umowne i ustalone przed analizą.
 
-## CHALLENGE 1: Jaką wielkość oszacowano?
+## CHALLENGE 1: Estymanda i estymata
 
-Zacznij od określenia populacyjnej wielkości i jej próbnego odpowiednika. Indeks jest średnią pozycji dotyczącą deklaracji, nie obserwowanym czasem. Brak indeksu wpływa na N analizy.
-
-Blok wyświetla opis wyników portalu. Znajdź liczebność, braki i obie miary zmienności. Odczytaj wzór SE ze znaczeniem symboli, nie tylko wartość liczbową.
+Pierwszy krok określa wielkość populacyjną i jej próbny odpowiednik. Indeks jest średnią pozycji deklaracji, a brak indeksu zmniejsza N analizy. Tabela „Osoby, średnia, niepewność i efekt” podaje N, braki, średnią, SD, SE, odniesienie, różnicę i d portalu.
 
 ```{r s01-estymacja}
 opis_portalu <- opis_sredniej(portal_wynik)
 print(opis_portalu)
 ```
 
-**Napisz krótki akapit:** nazwij estymandę, podaj N osób i ważnych indeksów, średnią, SD, SE oraz różnicę od 3. Wyjaśnij słownie wzór SE oraz wskaż, którą z tych liczb opisujesz jako efekt w punktach.
+**Napisz krótki akapit:** nazwij estymandę, podaj N osób i ważnych indeksów, średnią, SD, SE oraz różnicę od 3. Wyjaśnij słownie wzór SE i wskaż liczbę opisującą efekt w punktach.
 
 <!-- odpowiedz:S01 -->
 [UZUPELNIJ_S01]
 <!-- /odpowiedz:S01 -->
 
-## CHALLENGE 2: Odczytaj przedziały, nie tylko końce
+## CHALLENGE 2: Przedziały i ich parametry
 
-Klasyczny przedział opiera się na rozkładzie t, a bootstrapowy na empirycznych percentylach replik. Oba próbują opisać niepewność tej samej średniej. Ich podobieństwo nie dowodzi reprezentatywności danych.
+Klasyczny przedział korzysta z rozkładu t, a bootstrapowy — z percentyli średnich replik. Oba opisują niepewność tej samej średniej; podobieństwo przedziałów opisuje zgodność metod, a reprezentatywność zależy od doboru próby. Blok wyświetla tabele przedziałów średniej i różnicy oraz wykres „95% przedziały średniej; odniesienie 3 i cel 3,5”.
 
-Tabela zawiera też przedziały różnicy od odniesienia. Na wykresie pokazano wyłącznie średnią. Sprawdź, do którego parametru odnosi się każda liczba w odpowiedzi.
-
-```{r s02-przedzialy}
+```{r s02-przedzialy, fig.height=2.6, fig.cap="95% przedziały średniej indeksu portalu według dwóch metod. Oś pozioma: średnia w punktach skali 1–5; romb oznacza estymatę, a liczby przy końcach odcinków — granice przedziału; linie przerywane oznaczają odniesienie 3 i cel 3,5."}
 przedzialy_portalu <- przedzialy_portalu_do_raportu()
 print(przedzialy_portalu)
 ```
 
-**Napisz krótki akapit:** podaj obydwa 95% CI średniej i klasyczny CI różnicy. Popraw zdanie „95% studentów ma wynik w tym przedziale” i skomentuj precyzję oszacowania.
+**Napisz krótki akapit:** podaj oba 95% CI średniej i klasyczny CI różnicy. Popraw zdanie „95% studentów ma wynik w tym przedziale” i opisz precyzję oszacowania.
 
 <!-- odpowiedz:S02 -->
 [UZUPELNIJ_S02]
@@ -375,50 +373,44 @@ print(przedzialy_portalu)
 
 ## CHALLENGE 3: Dwa testy i ich założenia
 
-Test t sprawdza hipotezę o średniej, a procedura zmiany znaków potrzebuje symetrycznego modelu odchyleń pod $H_0$. Nie traktujemy ich jako dwóch niezależnych badań. Obydwie korzystają z tych samych ważnych indeksów.
-
-Odczytaj statystyki i p obu procedur. Przy Monte Carlo zapisz B oraz sposób liczenia skrajności dwustronnej. Wniosek musi wynikać z otrzymanych liczb, nie z oczekiwania istotności.
+Test t sprawdza hipotezę o średniej, a procedura zmian znaków wymaga symetrii odchyleń przy $H_0$. Obie procedury korzystają z tych samych 24 indeksów. Tabele „Dwustronny test t” i „Losowe zmiany znaków” podają statystyki, B i wartości p.
 
 ```{r s03-testy}
 testy_portalu <- dwa_testy_sredniej(portal_wynik)
 print(testy_portalu)
 ```
 
-**Napisz krótki akapit:** podaj H0, t, df, p, obserwowane T, B i p_MC. Wyjaśnij znaczenie p oraz warunek, bez którego zmiany znaków nie mają deklarowanego uzasadnienia.
+**Napisz krótki akapit:** podaj $H_0$, t, df, p, obserwowane T, B i $p_{\mathrm{MC}}$ oraz regułę dwustronnej skrajności. Wyjaśnij znaczenie p i warunek uzasadniający zmiany znaków. Opisz położenie obu p względem 0,05.
 
 <!-- odpowiedz:S03 -->
 [UZUPELNIJ_S03]
 <!-- /odpowiedz:S03 -->
 
-## CHALLENGE 4: Wyniki osób, średnie replik i świat zerowy
+## CHALLENGE 4: Średnie replik i świat zerowy
 
-Na dwóch wykresach nie ma rozkładu indywidualnych ocen. Pierwszy przedstawia średnie losowanych ze zwracaniem prób, drugi statystyki po zmianie znaków. Inne osie odpowiadają innym pytaniom.
+Dwa wykresy przedstawiają średnie prób bootstrapowych i statystyki po zmianie znaków. Liczba uczestników wynosi 24, a liczba replik 1999. Porównaj położenie histogramów z wynikiem CHALLENGE 1 i odczytaj położenie obserwowanego efektu na wykresie zerowym.
 
-Porównaj położenie histogramów z wynikiem CHALLENGE 1. Odczytaj, gdzie znajduje się obserwowany efekt na wykresie zerowym. Nie nazywaj 1999 replik liczbą uczestników.
-
-```{r s04-rozklady, fig.height=2.6}
+```{r s04-rozklady, fig.height=2.8, fig.cap=c("Portal: bootstrap średniej. Oś pozioma: średnia w próbie bootstrapowej w punktach; oś pionowa: liczba prób; linie przerywane wyznaczają percentylowy przedział 95%, a podtytuł podaje B, średnią replik i granice.", "Portal: rozkład zerowy zmian znaków. Oś pozioma: średnia odchyleń od 3 po zmianie znaków; oś pionowa: liczba powtórzeń; linie przerywane oznaczają obserwowaną różnicę i jej odbicie, wyróżnione słupki zawierają powtórzenia na liniach lub dalej, a podtytuł podaje ich liczbę i p Monte Carlo.")}
 rozklady_portalu <- rozklady_portalu_do_odczytu()
 print(rozklady_portalu)
 ```
 
-**Napisz krótki akapit:** opisz, co stanowi jedną wartość na każdym wykresie i jak powstała. Odróżnij N osób od B replik oraz wyjaśnij, który rozkład służy przedziałowi, a który ocenie skrajności.
+**Napisz krótki akapit:** opisz, co jest jedną wartością na każdym wykresie i jak powstała. Odróżnij N osób od B replik i wyjaśnij, który rozkład służy przedziałowi, a który ocenie skrajności.
 
 <!-- odpowiedz:S04 -->
 [UZUPELNIJ_S04]
 <!-- /odpowiedz:S04 -->
 
-## CHALLENGE 5: Czy portal spełnia cel 3,5?
+## CHALLENGE 5: Cel 3,5
 
-Wynik testu wobec 3 nie jest automatycznie odpowiedzią na pytanie o osiągnięcie 3,5. Opiekun oczekuje wniosku o znaczeniu użytkowym, nie samej etykiety „istotne”. Masz też pamiętać o syntetyczności i wąskim znaczeniu indeksu.
-
-Tabela ponownie pokazuje efekt oraz przedział średniej, aby wniosek był obok swojego dowodu. Porównaj cały zakres z obydwoma odniesieniami. Nie zamieniaj tego porównania w nowy, dobrany po wyniku test.
+Test wobec 3 odpowiada na pytanie o różnicę od środka skali; cel 3,5 wymaga porównania przedziału z wartością 3,5. Tabele „Średnia i efekt od 3 [pkt]; d standaryzowane” oraz „95% CI średniej względem odniesień 3 i 3,5” stawiają wniosek obok dowodu. Porównanie z celem 3,5 odczytuje się z przedziału.
 
 ```{r s05-wniosek}
 wniosek_portalu <- efekt_i_cel_portalu()
 print(wniosek_portalu)
 ```
 
-**Napisz krótki akapit:** odpowiedz osobno na pytanie o różnicę od 3 i o cel 3,5, wykorzystując efekt w punktach, d, przedział i wyniki CHALLENGE 3. Dodaj ograniczenie pomiaru oraz próby; nie formułuj rzeczywistej rekomendacji wdrożeniowej na podstawie symulacji.
+**Napisz krótki akapit:** odpowiedz osobno na pytanie o różnicę od 3 i o cel 3,5, wykorzystując efekt w punktach, d, przedział i wyniki CHALLENGE 3. Dodaj ograniczenie pomiaru i próby; rekomendacja dotyczy dalszego badania.
 
 <!-- odpowiedz:S05 -->
 [UZUPELNIJ_S05]
@@ -426,170 +418,181 @@ print(wniosek_portalu)
 
 # Zapis i oddanie
 
-Sprawdź pięć własnych odpowiedzi. Przy każdym przedziale nazwij parametr, przy p procedurę, a przy efekcie kierunek i jednostkę. Zapisz ten Rmd w edytorze.
+Sprawdź pięć własnych odpowiedzi: przy każdym przedziale nazwany jest parametr, przy p — procedura, a przy efekcie — kierunek i jednostka. Zapisz plik `zadanie.Rmd` w edytorze (Ctrl+S); funkcja oddania tworzy PDF z zapisanego pliku.
 
-W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy PDF z zapisanej pracy, sprawdza kompletność i wysyła go wraz z Rmd oraz `analiza.R` do Twojego prywatnego repozytorium z dostępem prowadzącego.
+W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy aktualny PDF, sprawdza kompletność i wysyła go razem z Rmd oraz `analiza.R` do Twojego prywatnego repozytorium z dostępem prowadzącego.
 
 ```r
 oddaj_zadanie("Z05")
 ```
 
-Odczytaj potwierdzenie odbioru i SHA. Jeśli pojawi się błąd, popraw wskazany problem, zapisz plik i ponownie wywołaj tę samą funkcję. Nie przepisujesz odpowiedzi do Markdown ani nie uruchamiasz osobno renderowania.
+Oddanie potwierdza komunikat z identyfikatorem SHA wysłanej wersji. Po komunikacie błędu popraw wskazany problem, zapisz plik i ponownie wywołaj `oddaj_zadanie("Z05")`; nowe potwierdzenie obejmuje nowe zmiany. Ocenę prowadzący zapisuje osobno w repozytorium.
 
-Po potwierdzonym oddaniu wykonaj w konsoli `wyloguj_github()`. Na komputerze współdzielonym wyloguj także przeglądarkę i zamknij RStudio bez zachowywania `.RData`. Przy braku sieci zachowaj źródła przed czyszczeniem komputera i poproś prowadzącego o pomoc.
+Po potwierdzonym oddaniu wykonaj w konsoli `wyloguj_github()`. Na komputerze współdzielonym wyloguj również przeglądarkę i zamknij RStudio, wybierając „Don't Save” przy pytaniu o przestrzeń roboczą `.RData`. Przy braku sieci zachowaj źródła przed czyszczeniem komputera i poproś prowadzącego o ustalenie sposobu dostarczenia pracy.
 
-## Rubryka
+## Co jest oceniane
 
-| Kryterium | Dowód rozumienia | Punkty |
-|---|---|---:|
-| Z05.1 | Właściwe N, estymata, przedział i poziom ufności | 3 |
-| Z05.2 | Bootstrap i zmiana znaków: odmienny cel oraz B | 2 |
-| Z05.3 | Oba tory, efekt, CI, t, df i p wraz z objaśnieniem | 3 |
-| Z05.4 | Precyzja, znaczenie praktyczne i ograniczenie próby | 2 |
+| Kryterium | Dowód w Twojej pracy | Odpowiedzi | Punkty |
+|----------------------------|------------------------------------------------------|--------------|------:|
+| Z05.1 Estymanda, estymata, SE i właściwie nazwany przedział | Estymanda, N osób i indeksów, średnia, SD, SE, różnica od 3 i wzór SE; oba 95% CI średniej i klasyczny CI różnicy odróżnione od zakresu wyników osób | S01, S02 | 3 |
+| Z05.2 Odmienny cel bootstrapu i zmiany znaków | Jedna replika na każdym wykresie i sposób jej tworzenia; bootstrap dla CI, zmiana znaków dla skrajności przy $H_0$; N osób odróżnione od B replik | S03, S04 | 2 |
+| Z05.3 Hipoteza, statystyki, oba p i założenia | $H_0$, t, df, p, T, B, $p_{\mathrm{MC}}$ i reguła dwustronna; p warunkowe względem $H_0$; symetria odchyleń; położenie wyników przy 0,05 | S03, S05 | 3 |
+| Z05.4 Precyzja i znaczenie praktyczne w kontekście portalu | Szerokość CI jako precyzja; różnica od 3 odróżniona od celu 3,5; efekt, d, CI, oba testy, ograniczenie pomiaru i próby | S02, S05 | 2 |
 
-Wynik nieistotny nie obniża punktacji. Oceniane są poprawny odczyt, uzasadnienie i granice wniosku, a nie uzyskanie pożądanego p. Własny akapit jest częścią oddawanej pracy, nie dodatkiem wykonywanym tylko w myślach.
+Punktacja dotyczy odczytu, uzasadnienia i granic wniosku przy każdym wyniku testu. Poziomy wykonania opisuje rubryka Z05: na stronie kursu w dokumencie `rubryki/Z05.html`, a w konsoli R po poleceniu `rubryka("Z05")`.
 
 # Rozwinięcia do powtórki — poza rdzeniem spotkania
 
-Te przykłady pomagają dokładniej zrozumieć losowanie, dobór odniesienia i ograniczenia wnioskowania. Nie wymagają dodatkowych pól odpowiedzi ani kolejnego pliku do oddania.
+Rozwinięcia rozwijają losowanie, dobór odniesienia i estymandę proporcji. Rozwinięcia służą powtórce i pozostają poza oceną.
 
-## Widzimy wszystkie możliwe znaki
+## Pełne wyliczenie układów znaków
 
-W małej demonstracji trzy wartości indeksu wynoszą 2, 4 i 5, a odniesienie nadal 3. Odchylenia to −1, 1 i 2. Obserwowana średnia odchyleń wynosi $2/3$ punktu. Dla trzech odchyleń istnieje $2^3=8$ kombinacji znaków.
+W małej demonstracji trzy indeksy wynoszą 2, 4 i 5, a odniesienie 3. Odchylenia to −1, 1 i 2, a obserwowana średnia odchyleń wynosi $2/3$ punktu. Trzy odchylenia mają $2^3=8$ układów znaków; przy $n=147$ układów jest $2^{147}$, stąd losowanie B układów.
 
-Tabela pokazuje wszystkie kombinacje, łącznie z układem obserwowanym. Kolumny z1–z3 wskazują mnożniki pierwotnych odchyleń. Ostatnia kolumna mówi, czy bezwzględne T jest co najmniej tak duże jak obserwowane.
+Tabela „Osiem układów znaków” podaje wszystkie układy, łącznie z obserwowanym: T przyjmuje wartości −4/3, −2/3, 0, 2/3 i 4/3, a sześć układów ma $|T|\ge2/3$.
 
 ```{r pelne-wyliczenie}
-pelny_zbior <- pokaz_tabele(wszystkie_znaki, "Osiem układów znaków")
+pelny_zbior <- uklady_znakow()
 print(pelny_zbior)
 ```
 
-Sześć z ośmiu układów jest co najmniej tak skrajnych, więc dokładne p dla tego wyliczenia wynosi $6/8=0{,}75$. Tu nie dopisujemy korekty +1 do licznika i mianownika, ponieważ uwzględniliśmy całą przestrzeń równoprawdopodobnych układów, w tym obserwowany. Wzór z +1 dotyczył omawianego wcześniej schematu losowego pobierania przestawień.
+Pełne wyliczenie daje p jako udział skrajnych układów: $6/8=0{,}75$. Wzór z jedynką w liczniku i mianowniku dotyczy losowania B układów; pełne wyliczenie obejmuje całą przestrzeń równoprawdopodobnych układów, w tym obserwowany. Każdy układ znaków ma jednakową wagę w przestrzeni przestawień, także przy równych wartościach T.
 
-Równe wartości T mogą pochodzić z różnych układów znaków. Nie usuwamy ich jako duplikatów, bo każdy układ jest częścią przestrzeni przestawień. Usunięcie powtarzających się statystyk zmieniłoby ich wagi, a zatem obliczane p.
+Dodatnia estymata 2/3 i p = 0,75 opisują dwie własności: wielkość różnicy i jej skrajność przy trzech obserwacjach. Małe N i osiem układów ograniczają informację z testu, a założenie symetrii obowiązuje także przy pełnym wyliczeniu.
 
-Ten przykład ma dodatnią estymatę, ale duże p. Nie ma sprzeczności: różnica w próbie oraz jej skrajność pod modelem zerowym to dwie rzeczy. Małe N i dyskretna liczba układów ograniczają to, czego możemy dowiedzieć się z testu. Założenie symetrii pozostaje konieczne mimo pełnego wyliczenia.
+## Liczba replik B i liczba osób N
 
-## Więcej losowań i więcej osób to różne decyzje
+B steruje dokładnością komputerowego przybliżenia, a N — ilością niezależnej informacji badawczej. B i N to dwie liczby raportu.
 
-B steruje dokładnością komputerowego przybliżenia. N steruje ilością niezależnej informacji badawczej, jeśli projekt rzeczywiście dostarcza niezależnych jednostek. Nie zastępujemy jednej liczby drugą.
-
-Tabela pokazuje najmniejsze raportowane p oraz orientacyjny błąd standardowy udziału skrajnych losowań przy p bliskim 0,05. Drugą wielkość przybliżamy wzorem $\sqrt{p(1-p)/B}$. To opis zmienności Monte Carlo, nie SE średniej indeksu.
+Tabela „Dokładność Monte Carlo i liczba replik B” podaje najmniejsze $p_{\mathrm{MC}}=1/(B+1)$ i SE udziału skrajnych powtórzeń przy p bliskim 0,05, $\sqrt{p(1-p)/B}$: przy B = 199 — 0,005 i 0,0154; przy B = 1999 — 0,0005 i 0,0049; przy B = 19999 — 0,00005 i 0,0015. SE dotyczy obliczenia Monte Carlo.
 
 ```{r dokladnosc-monte-carlo}
 dokladnosc <- dokladnosc_losowania()
 print(dokladnosc)
 ```
 
-Przy B=1999 orientacyjne SE udziału bliskiego 0,05 wynosi około 0,0049. Wynik w pobliżu progu może się nieco zmieniać między ziarnami. W takiej sytuacji można zwiększyć B według jawnej reguły i opisać niepewność obliczenia. Nie wolno uruchamiać analizy do pierwszego korzystnego rezultatu i ukrywać wcześniejszych.
+Wynik przy progu zmienia się między ziarnami o kilka tysięcznych. Zwiększenie B następuje według reguły ustalonej przed analizą, a raport opisuje wszystkie uruchomienia.
 
-Ustawienie ziarna pozwala odtworzyć konkretny ciąg losowań. Nie powoduje, że losowanie staje się prawdziwsze ani że p przestaje być obarczone przybliżeniem. Ta sama próbka analizowana z milionem replik nadal ma te same ograniczenia doboru, pomiaru i N.
-
-Zarówno S02, jak i portal w CHALLENGE używają B=1999. W innych analizach ta liczba może być inna, dlatego odczytuj ją z wyniku. Minimalne p zależy od schematu losowania, nie od samej nazwy testu.
+Ziarno zapewnia odtwarzalność ciągu losowań; ograniczenia doboru, pomiaru i N pozostają. S02 i portal używają B = 1999; minimalne p wynosi $1/(B+1)=0{,}0005$.
 
 ## Stały efekt i zmieniająca się liczebność
 
-Wyobraźmy sobie trzy odrębne hipotetyczne badania ze średnią 3,2, SD=0,8 i odniesieniem 3. Nie kopiujemy tych samych osób, aby powiększyć próbę; rozważamy trzy zestawy statystyk opisowych z różnych N. Naturalny efekt 0,2 punktu oraz d=0,25 są takie same.
+Trzy hipotetyczne badania mają średnią 3,2, SD 0,8, odniesienie 3 i N = 25, 100 oraz 400. Efekt 0,2 punktu i d = 0,25 są we wszystkich trzech badaniach takie same.
 
-Tabela zmienia tylko liczebność w rachunku t. Przeczytaj, co pozostaje stałe, a co zmniejsza się lub rośnie. W ostatniej kolumnie małe p jest formatowane tak, by nie pojawiło się mylące zero.
+Tabela „Ten sam efekt, różne liczebności” podaje: N = 25 — SE 0,16, t = 1,25, p = 0,223; N = 100 — SE 0,08, t = 2,50, p = 0,014; N = 400 — SE 0,04, t = 5,00, p < 0,0001. Wzór $t=d\sqrt n$ daje $0{,}25\cdot5=1{,}25$, $0{,}25\cdot10=2{,}5$ i $0{,}25\cdot20=5$.
 
 ```{r wielkosc-proby}
 liczebnosc <- efekt_i_liczebnosc()
 print(liczebnosc)
 ```
 
-SE maleje, t rośnie i p maleje wraz ze wzrostem N. Nie wynika z tego, że efekt stał się większy. Wynik jest bardziej precyzyjny przy tej samej założonej wielkości różnicy.
+```{r przedzialy-n, fig.height=2.8, fig.cap="Ten sam efekt, trzy liczebności: 95% przedziały średniej 3,2 przy SD 0,8. N = 25: od 2,87 do 3,53; N = 100: od 3,04 do 3,36; N = 400: od 3,12 do 3,28. Szerokość maleje z 0,66 do 0,16 punktu; przedział przy N = 25 obejmuje odniesienie 3 (linia przerywana), a dwa pozostałe leżą powyżej niego."}
+trzy_badania <- pokaz_wykres(wykres_n)
+print(trzy_badania)
+```
 
-Odwrotna pułapka pojawia się przy małej próbie: duży efekt może mieć szeroki przedział i nie przekroczyć progu istotności. Dlatego zdanie „w pierwszym badaniu efekt wystąpił, a w drugim nie” na podstawie samych dwóch p jest niewystarczające. Do porównania efektów potrzebne jest odpowiednie porównanie ich wielkości i niepewności.
+SE maleje, t rośnie, a p maleje wraz z N. Efekt pozostaje równy 0,2 punktu (d = 0,25); rośnie precyzja.
 
-Jeżeli osoba prowadząca bibliotekę pyta o użyteczność zmiany, pokaż najpierw punkty lub minuty oraz zakres zgodnych wartości. Dopiero potem wyjaśnij wynik testu. Kolejność opisu pomaga uniknąć utożsamienia dużej liczby obserwacji z dużą korzyścią.
+Przy małej próbie duży efekt ma szeroki przedział i duże p. Porównanie dwóch badań wymaga porównania ich efektów i przedziałów; dwie wartości p przy różnych N opisują głównie różną precyzję.
 
-## Punkt odniesienia nie może być wybierany dla wyniku
+Osoba prowadząca bibliotekę otrzymuje najpierw efekt w punktach lub minutach oraz zakres wartości zgodnych z danymi, a potem wynik testu. Kolejność opisu oddziela liczbę obserwacji od wielkości korzyści.
 
-Ten sam zbiór można porównać z różnymi wartościami. To nie znaczy, że wszystkie odpowiadają pierwotnemu pytaniu. Punkt 3 oznacza środek skali, 3,5 mógłby oznaczać umowny cel instytucji, a historyczna średnia innego badania wymagałaby uwzględnienia jej własnej niepewności.
+## Punkt odniesienia ustalony przed analizą
 
-Poniższa demonstracja używa tego samego S02 przy trzech z góry pokazanych odniesieniach. Przedział średniej pozostaje ten sam. Różnica, t i p zmieniają się, ponieważ testowane twierdzenie jest inne.
+Ten sam zbiór można porównać z różnymi wartościami; każda wartość odniesienia wyraża inne pytanie. Punkt 3 to środek skali, 3,5 — umowny cel instytucji, a średnia z innego badania ma własną niepewność.
+
+Tabele „Ten sam 95% CI średniej [pkt]” i „Trzy pytania zerowe” podają dla S02: przedział średniej od 3,174 do 3,411 przy każdym odniesieniu; przy 3 t = 4,88 i p < 0,0001, przy 3,2 t = 1,54 i p = 0,126, przy 3,5 t = −3,46 i p = 0,0007.
 
 ```{r odniesienie}
 odniesienia <- zmiana_odniesienia()
 print(odniesienia)
 ```
 
-Nie jest to instrukcja szukania najlepszego odniesienia. To ostrzeżenie: można łatwo zmienić odpowiedź przez zmianę pytania. W Z05 przy indeksie stosujemy 3 i opisujemy umowność. Ewentualne inne odniesienie wymaga uzasadnionego polecenia, a nie dopasowania do tabeli.
+Zmiana odniesienia zmienia pytanie, a przedział średniej pozostaje ten sam. Zadanie Z05 stosuje odniesienie 3 z opisem jego umowności; inne odniesienie wymaga uzasadnienia przed analizą.
 
-Jeśli odniesienie jest średnią oszacowaną w innej próbie, traktowanie go jak znanej stałej pomija jej błąd. Wtedy problem może wymagać porównania dwóch grup lub dwóch oszacowań. C06 rozszerzy rachunek o niepewność po obu stronach różnicy.
+Odniesienie oszacowane w innej próbie ma własny błąd, więc problem staje się porównaniem dwóch oszacowań. Ćwiczenie C06 (Dwie grupy) wprowadza niepewność po obu stronach różnicy.
 
-## Gdy interesuje nas powodzenie, zmienia się estymanda
+## Proporcja jako inna estymanda
 
-W osobnym przykładzie 26 z 40 osób znajduje dokument. Estymata proporcji wynosi 0,65, czyli 65%. Porównanie z umownym 50% dotyczy parametru $\pi$, prawdopodobieństwa powodzenia w zdefiniowanym modelu, a nie średniej indeksu.
+W osobnym przykładzie 26 z 40 osób znajduje dokument. Estymata proporcji wynosi 0,65, czyli 65%. Porównanie z 50% dotyczy parametru $\pi$ — prawdopodobieństwa powodzenia w zdefiniowanym modelu. Zadanie Z05 dotyczy średniej; przykład proporcji ćwiczy rozpoznanie innej estymandy.
 
-Poniżej gotowy dokładny test dwumianowy pokazuje proporcję i przedział. Nie zastępujemy nim Z05, ponieważ zadanie główne dotyczy średniej. Przykład uczy rozpoznawać, kiedy problem wymaga innej definicji wyniku.
+Próba Bernoulliego to pojedyncza próba z wynikiem 0/1 i stałym prawdopodobieństwem sukcesu $\pi$. Liczba sukcesów $K$ w 40 niezależnych próbach ma przy $H_0:\pi=0{,}5$ rozkład dwumianowy, a dwustronne p sumuje prawdopodobieństwa wyników nie bardziej prawdopodobnych niż obserwowany:
+
+$$
+P(K=k)=\binom{40}{k}0{,}5^{40},\qquad
+p=\sum_{k:\,P(K=k)\le P(K=26)}P(K=k)=P(K\ge26)+P(K\le14)=0{,}081 .
+$$
+
+```{r rozklad-dwumianowy, fig.cap="Rozkład dwumianowy Bin(40; 0,5). Oś pozioma: liczba sukcesów k wśród 40 prób; oś pionowa: prawdopodobieństwo. Słupki są symetryczne wokół 20; wyróżnione słupki k ≤ 14 i k ≥ 26 mają łączne prawdopodobieństwo 0,081, a linia przerywana oznacza obserwowane 26 sukcesów."}
+dwumianowy <- pokaz_wykres(wykres_dwumianowy)
+print(dwumianowy)
+```
+
+Tabela „Pytanie o proporcję: dokładny test dwumianowy” podaje proporcję 0,650, przedział Cloppera–Pearsona od 0,483 do 0,794 i p = 0,0807.
 
 ```{r proporcja-transfer}
 proporcja <- przyklad_proporcji_do_raportu()
 print(proporcja)
 ```
 
-Proporcja 0,65 ma przedział około [0,483; 0,794], a p około 0,081. Liczba 65% opisuje próbę; przedział wyraża niepewność proporcji populacyjnej przy modelu niezależnych prób Bernoulliego. Nie jest zakresem, w którym znajdują się wyniki 95% osób, ponieważ wynik osoby ma tylko wartości 0 i 1.
+Liczba 65% opisuje próbę, a przedział — niepewność proporcji populacyjnej w modelu niezależnych prób Bernoulliego. Wynik osoby ma wartości 0 i 1, więc przedział dotyczy proporcji. Przedział [0,483; 0,794] obejmuje 0,5 i wartości do 0,79: dane są zgodne z szerokim zakresem skuteczności.
 
-Nieodrzucenie odniesienia 50% nie dowodzi równości. Jednocześnie nie wolno twierdzić, że skuteczność wynosi dokładnie 65% w całej populacji. Tak jak przy średniej potrzebujemy wielkości, niepewności i warunków.
+Symulacja modelu dwumianowego losuje liczbę sukcesów przy $\pi_0=0{,}5$; przetasowanie listy zer i jedynek zachowuje proporcję. Nazwa „Monte Carlo” wymaga dopowiedzenia, co jest losowane.
 
-Dla tego problemu można symulować liczbę sukcesów z modelu dwumianowego przy $\pi_0=0{,}5$. Byłaby to symulacja parametrycznego modelu zerowego, nie przestawianie niezmienionej listy zer i jedynek. Samo przetasowanie tej listy nie zmieniłoby proporcji. To kolejny przykład, dlaczego nazwa „Monte Carlo” nie wystarcza do określenia metody.
+## Warsztat redakcyjny: pięć zdań do poprawy
 
-## Warsztat redakcyjny: pięć błędnych wniosków
+### „Z prawdopodobieństwem 95% osoby mają średnią w tym zakresie”
 
-## „Z prawdopodobieństwem 95% osoby mają średnią w tym zakresie”
+Zdanie łączy osoby, średnią i poziom ufności. Poprawny opis brzmi: „95% przedział dla średniej wynosi …; poziom odnosi się do procedury konstrukcji przedziału przy jej założeniach”.
 
-W tym zdaniu połączono osoby, średnią i poziom ufności. Trzeba ustalić, czy mówimy o parametrze średniej, czy o rozkładzie indywidualnych wyników. Poprawny opis brzmi: „95% przedział dla średniej wynosi...; poziom odnosi się do procedury jego konstrukcji przy założeniach”.
+Opis osób korzysta z SD, kwantyli i histogramu, a przewidywanie wyniku nowej osoby — z przedziału predykcji. Trzy pytania wymagają trzech par granic.
 
-Jeśli potrzebujemy opisu osób, wracamy do SD, kwantyli i histogramu. Jeśli chcemy przewidywać nową osobę, potrzebujemy odpowiedniego przedziału predykcji. Jedna para granic nie odpowiada na wszystkie trzy pytania.
+### „P < 0,001 dowodzi wysokich kompetencji”
 
-## „P<0,001 dowodzi wysokich kompetencji”
+Test dotyczył średniej indeksu względem 3. Poprawiona wersja mówi o średniej deklarowanej użyteczności według zastosowanego pomiaru i o różnicy od umownego odniesienia.
 
-Test dotyczył średniej indeksu względem 3, a nie całej kompetencji cyfrowej. Nawet bardzo małe p nie poszerza treści pozycji. Poprawiona wersja mówi o średniej deklarowanej użyteczności według zastosowanego pomiaru i o różnicy od umownego odniesienia.
+Wniosek o kompetencjach wymaga adekwatnego pomiaru, a wniosek o skutku poprawy katalogu — projektu porównawczego.
 
-Do wniosku o kompetencjach potrzebny byłby adekwatny pomiar oraz dowody jego interpretacji. Do wniosku o skutku poprawy katalogu potrzebny byłby odpowiedni projekt porównawczy. Test jednej średniej nie dostarcza tych elementów.
+### „Bootstrap potwierdził hipotezę, bo większość średnich jest powyżej trzech”
 
-## „Bootstrap potwierdził hipotezę, bo większość średnich jest powyżej trzech”
+Zwykły bootstrap opisuje zmienność estymatora wokół średniej próby. Opis podaje bootstrapowy przedział i jego położenie względem odniesienia, z nazwą procedury, parametru i ograniczeń.
 
-Zwykły bootstrap skupia się wokół informacji z próby. Nie jest tym samym co rozkład zerowy. Można opisać bootstrapowy przedział i jego relację do odniesienia, ale trzeba nazwać procedurę, parametr i ograniczenia, a nie traktować udziału replik jako prawdopodobieństwa hipotezy.
+Poprawa przestawia argument: estymata, niepewność według metody, zakres pytania.
 
-Poprawa nie polega na zamianie słowa „potwierdził” na „udowodnił”. Trzeba przestawić argument: jaka jest estymata, jaką niepewność pokazuje metoda i czego nie testuje dany histogram.
+### „Permutacja nie ma założeń, więc zawsze jest ważniejsza”
 
-## „Permutacja nie ma założeń, więc zawsze jest ważniejsza”
+Test zmian znaków zakłada symetrię i niezależność odchyleń. Przy skośnym czasie równość średniej i odniesienia pozostawia symetrię jako osobny warunek.
 
-W naszym teście jednej próby potrzeba symetrii i niezależności odchyleń dla dokładnego uzasadnienia. Przy skośnym czasie sama równość średniej do odniesienia nie wystarcza. Brak założenia normalności nie oznacza braku wszelkich warunków.
+Poprawiony opis podaje, co zmieniano i dlaczego zmiany znaków są dopuszczalne przy $H_0$. Przy wątpliwym warunku wynik przedstawia się jako analizę pod dodatkowym modelem.
 
-Poprawiony opis wskazuje, co zmieniano i dlaczego takie przestawienia miałyby być dopuszczalne pod H0. Jeśli warunek budzi wątpliwość, wynik można przedstawić jako demonstrację lub analizę pod dodatkowym modelem, nie jako bezwarunkowe rozstrzygnięcie.
+### „Dwa p są małe, więc ograniczenia próby nie mają znaczenia”
 
-## „Dwa p są małe, więc ograniczenia próby nie mają znaczenia”
+Obie procedury korzystają z tych samych danych i dzielą ich ograniczenia doboru i pomiaru, w tym nieodpowiedzi osób z największą trudnością.
 
-Obie procedury korzystają z tych samych danych i mogą dzielić ten sam problem doboru lub pomiaru. Zgodność nie jest niezależną replikacją badania. Nie usuwa nieodpowiedzi ani pominięcia osób, którym usługa sprawiała największą trudność.
+Lepsze zdanie oddziela dwa poziomy: „Wyniki obu procedur przy ich założeniach wskazują na odchylenie od odniesienia; zakres uogólnienia ogranicza projekt i jakość pomiaru”.
 
-Lepsze zdanie oddziela dwa poziomy: „Wyniki obu procedur przy ich założeniach wskazują na odchylenie od odniesienia; zakres uogólnienia ogranicza projekt i jakość pomiaru”. Nie ukrywamy ograniczeń za zgodnością obliczeń.
+## Średnia i symetria: dwa warunki
 
-## Średnia równa odniesieniu nie zapewnia symetrii
+Osobna demonstracja czasu: dziewięć osób kończy po 9 minutach, jedna po 19. Suma wynosi 100, a średnia 10 minut. Względem odniesienia 10 powstaje dziewięć odchyleń −1 i jedno +9: średnia 0, rozkład asymetryczny.
 
-Rozważmy osobną demonstrację czasu: dziewięć osób kończy po 9 minutach, jedna po 19. Suma wynosi 100, a średnia 10 minut. Względem odniesienia 10 mamy dziewięć odchyleń −1 i jedno +9. Średnia odchyleń jest zerowa, ale ich rozkład wyraźnie nie jest symetryczny.
+Przykład wyjaśnia logikę warunku: „średnia równa 10” i „symetryczne odchylenia” to dwa warunki. Gdy populację tworzą wyłącznie czasy 9 i 19 minut, zmiany znaków tworzą odchylenie −9, czyli czas 1 minuty spoza populacji.
 
-To mały przykład logiczny, nie test symetrii populacji. Pokazuje, że warunek „średnia równa 10” i warunek symetrycznych odchyleń znaczą różne rzeczy. Gdyby taki mechanizm kształtował populację czasów, proste niezależne zmiany znaków tworzyłyby również duże ujemne odchylenia, które nie odpowiadają temu mechanizmowi.
+Czas 19 minut jest prawidłową obserwacją ujawniającą trudność usługi. Zmiana parametru na medianę wymaga zmiany pytania.
 
-Nie rozwiązujemy problemu przez usunięcie osoby z czasem 19. To mogła być prawidłowa, ważna próba ujawniająca trudność usługi. Nie przechodzimy też automatycznie na medianę, jeśli pytanie dotyczyło średniego nakładu czasu. Zmiana parametru wymaga zmiany pytania i wyraźnego opisu.
-
-Gdyby pytanie dotyczyło czasu zamiast indeksu, trzeba byłoby szczególnie ostrożnie odczytać tor zmian znaków. Można pokazać działanie algorytmu pod dodatkowym założeniem, ale nie ogłaszać, że rozwiązuje on problem dowolnej skośności. W rzeczywistym badaniu należałoby rozważyć metodę dopasowaną do celu i rozkładu, a nie wybrać procedurę wyłącznie według p.
+Przy czasie w miejsce indeksu tor zmian znaków wymaga szczególnej ostrożności: algorytm działa pod dodatkowym założeniem symetrii. Metodę dobiera się do celu i rozkładu.
 
 ## Niezależność jest własnością projektu
 
-Inny zespół bada 15 osób, z których każda wykonuje dziesięć zapytań. W arkuszu ma 150 wierszy i używa wzoru SE z N=150. Czy uzyskał dokładność odpowiadającą stu pięćdziesięciu osobom? Niekoniecznie: czasy tej samej osoby mogą być podobne z powodu jej umiejętności, sprzętu i sposobu pracy.
+Inny zespół bada 15 osób, z których każda wykonuje dziesięć zapytań, i liczy SE ze 150 wierszy. Dokładność odpowiada bliżej 15 osobom niż 150: czasy jednej osoby są podobne z powodu jej umiejętności, sprzętu i sposobu pracy (efektywna liczebność, wykład W03).
 
-Samo sprawdzenie histogramu nie ujawni całej zależności. Potrzebujemy identyfikatora osoby i informacji o zadaniach. Można na przykład zdefiniować wynik osoby jako średni czas określonego zestawu albo zastosować model uwzględniający powtórzenia. Te wybory odpowiadają różnym celom i nie powinny być wykonywane automatycznie.
+Zależność ujawnia identyfikator osoby i informacja o zadaniach. Wynikiem osoby może być średni czas ustalonego zestawu zadań; alternatywą jest model uwzględniający powtórzenia. Wybór zależy od celu.
 
-W kursowym S02 jednostkę określa scenariusz, a identyczne duplikaty usuwa jawna reguła. Nie zwiększamy N przez kopiowanie rekordów. Bootstrap osób i zmiany znaków mają sens dopiero po ustaleniu tej jednostki; poprawny kod losowania przy błędnym N nadal daje niewłaściwie uzasadnione wnioskowanie.
+W S02 jednostkę określa scenariusz, a identyczne duplikaty usuwa jawna reguła. N wynika z jednostki analizy ustalonej przed losowaniem; bootstrap osób i zmiany znaków działają na osobach.
 
-## Co warto zapisać przed uruchomieniem testu
+## Notatka przed uruchomieniem testu
 
-W krótkiej notatce analitycznej warto zapisać nazwę zmiennej, estymandę, odniesienie, kierunek odejmowania, regułę braków i powód zastosowania procedury. Dodaj poziom ufności oraz to, które porównanie jest główne. Taka notatka nie musi być rozbudowanym dokumentem, aby ograniczać pokusę zmiany pytania po wyniku.
+Krótka notatka analityczna zawiera nazwę zmiennej, estymandę, odniesienie, kierunek odejmowania, regułę braków, powód wyboru procedury, poziom ufności i porównanie główne. Notatka jest krótka i ogranicza zmianę pytania po wyniku.
 
-Po obliczeniu warto dopisać, czy zauważono odstępstwa lub dodatkowe analizy. Nie usuwaj wcześniejszego planu, aby pasował do rezultatu. Jeśli eksploracja ujawni ciekawy wzorzec, nazwij go eksploracyjnym i wskaż, jakie nowe badanie pozwoliłoby go sprawdzić. Uczciwa granica wniosku jest częścią kompetencji statystycznej, nie oznaką słabego raportu.
+Po obliczeniu notatka podaje odstępstwa i dodatkowe analizy; plan pozostaje w notatce obok opisu odstępstw. Wzorzec z eksploracji nosi nazwę eksploracyjnego i otrzymuje propozycję nowego badania.
 
-Na C06 porównamy dwie grupy użytkowników. Zamiast znanej stałej po drugiej stronie różnicy pojawi się druga oszacowana średnia. Pozostanie ta sama zasada: najpierw zdefiniuj kierunek i jednostkę efektu, potem czytaj niepewność, statystykę oraz warunki testu.
+Ćwiczenie C06 (Dwie grupy) porównuje dwie grupy użytkowników. W miejscu znanej stałej pojawi się druga oszacowana średnia. Zasada pozostaje: najpierw kierunek i jednostka efektu, potem niepewność, statystyka i warunki testu.

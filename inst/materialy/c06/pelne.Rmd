@@ -1,5 +1,5 @@
 ---
-title: 'C06 — Dwie grupy użytkowników: kierunek, wielkość i niepewność różnicy'
+title: 'C06 — Dwie grupy: różnica czasu lub samooceny i tasowanie etykiet'
 subtitle: 'Zarządzanie informacją — ćwiczenie i zadanie Z06 — 2026/27'
 author: 'ID: [UZUPELNIJ_ID]'
 date: '2026/27'
@@ -14,9 +14,9 @@ output:
 ---
 
 <!-- start-sesji -->
-# Początek pracy na tych zajęciach
+# Początek pracy na ćwiczeniu C06
 
-Otwórz RStudio. Pakiet kursu jest już zainstalowany w sali; nie instalujesz go ponownie. W konsoli poniżej edytora wpisz swoje ID i adres prywatnego repozytorium otrzymany w kursie, a następnie wykonaj polecenia. Ten blok jest instrukcją do konsoli, nie chunkiem uruchamianym przy tworzeniu PDF.
+Otwórz RStudio. Pakiet kursu `badaniaZI` jest zainstalowany na komputerach w sali. Cztery polecenia z następnego bloku wpisujesz w konsoli RStudio, czyli w dolnym panelu ze znakiem `>`; w miejsce `TWOJE_ID` wpisz swoje ID, a w miejsce adresu — adres prywatnego repozytorium otrzymany na początku kursu. Dokument PDF zawiera cztery polecenia jako tekst instrukcji.
 
 ```r
 library(badaniaZI)
@@ -28,13 +28,12 @@ rozpocznij_zajecia(
 )
 ```
 
-Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie tam, nie w konsoli R. Sprawdź potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w tej sesji; pliki pracy mają je zachować także po zamknięciu RStudio.
+Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie na stronie GitHub. Sprawdź w komunikacie potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w sesji; pliki pracy zachowują je także po zamknięciu RStudio.
 
-Polecenie otwiera własny `zadanie.Rmd` i zapamiętuje katalog pracy. Nie przełączaj teraz projektu przez `.Rproj`, bo nowa sesja R utraci logowanie. Pracuj w otwartym Rmd, nie w źródłach pakietu. Uruchom pierwszy chunk przygotowania, potem wykonuj LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; nie usuwaj pracy ani nie wpisuj cudzego ID.
+Funkcja `rozpocznij_zajecia()` otwiera własny plik `zadanie.Rmd` i zapamiętuje katalog pracy. Pracuj w otwartym pliku `zadanie.Rmd` do końca zajęć; plik `.Rproj` pozostaje zamknięty, bo jego otwarcie uruchamia nową sesję R, która wymaga ponownego logowania. Najpierw uruchom blok `przygotowanie`, a potem kolejne części LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; plik pracy i własne ID pozostają bez zmian.
 <!-- /start-sesji -->
 
-
-Skrypt przygotowuje indeks S02 według ustalonych reguł i porównuje grupy w jawnej kolejności. Zawiera własną gotową funkcję analizy dwóch grup oraz demonstracje tasowania, przedziałów i par. Uruchomienie całego pliku od początku zapewnia, że wszystkie tabele opisują te same dane.
+Pierwszy chunk, `przygotowanie`, wczytuje gotowy skrypt `analiza.R`. Skrypt tworzy zbiór S02 po trzech regułach ćwiczenia C02 (usunięcie identycznych duplikatów, kod 99 w pozycjach ankiety jako brak, czas spoza 0–120 minut jako brak) i liczy indeks sześciu pozycji według reguły 5/6 z ćwiczenia C04. Funkcja `porownaj_grupy()` porównuje dwie grupy w jawnej kolejności. Skrypt zawiera też dane repozytorium do części CHALLENGE, demonstracje tasowania, przedziałów i par oraz funkcje wyświetlające tabele i wykresy.
 
 ```{r przygotowanie, include=FALSE}
 source(badaniaZI::plik_pracy("Z06", "analiza.R"),
@@ -44,23 +43,23 @@ ustaw_material()
 
 # Czy nowi użytkownicy inaczej oceniają katalog
 
-Na C05 średnia całej próby była porównywana z umownym punktem 3. Biblioteka chce teraz sprawdzić, czy taki zbiorczy wynik nie ukrywa różnicy między nowymi i doświadczonymi użytkownikami. Pytanie ma sens organizacyjny: wsparcie osoby rozpoczynającej korzystanie może wymagać innego rozwiązania niż wsparcie osoby znającej katalog.
+Ćwiczenie C05 (Niepewność estymaty) porównało średnią całej próby z umownym punktem 3: średnia 3,292, różnica 0,292 punktu, p < 0,001. Biblioteka sprawdza teraz, czy wynik zbiorczy obejmuje różnicę między nowymi i doświadczonymi użytkownikami. Pytanie ma sens organizacyjny: osoba rozpoczynająca korzystanie potrzebuje innego wsparcia niż osoba znająca katalog.
 
-Porównanie nie odpowie jednak samo, dlaczego powstała różnica. Doświadczeni użytkownicy mogą mieć inne zadania, oczekiwania, nawyki i wcześniejsze kontakty z biblioteką. W S02 grupa jest obserwowana, nie losowo przydzielana. Wynik ma więc język związku i różnicy, nie dowiedzionego wpływu doświadczenia.
+Przyczynę różnicy wyjaśniają cechy grup: zadania, oczekiwania, nawyki i wcześniejsze kontakty z biblioteką. Grupa w S02 jest cechą obserwowaną, więc wynik opisuje związek i różnicę.
 
-Zaczynamy od indeksu deklarowanej użyteczności katalogu. Później zestawimy go z czasem wykonania, który jest innym wskaźnikiem. Niższa ocena i dłuższy czas nie muszą występować razem. Nawet zgodny kierunek nie uczyni deklaracji i obserwacji zamiennymi pomiarami kompetencji.
+Analiza zaczyna od indeksu deklarowanej użyteczności katalogu, a potem przechodzi do czasu wykonania. Ocena i czas to dwa wskaźniki o własnych kierunkach i jednostkach.
 
-Dane są syntetyczne. LEARN pokazuje sposób analizy i opis wspólnego przykładu katalogu. W CHALLENGE samodzielnie wykonujesz analogiczną analizę czasu w repozytorium i piszesz odpowiedzi w tym samym pliku Rmd. Projekt zaliczeniowy będzie wprowadzony na C09; obecnie pracujesz na podanych scenariuszach ćwiczeń.
+Dane są syntetyczne. LEARN przedstawia sposób analizy na indeksie S02. W CHALLENGE wykonujesz analogiczną analizę czasu w repozytorium i piszesz odpowiedzi w tym samym pliku. Projekt indywidualny rozpoczyna się na ćwiczeniu C09 (Warsztat projektu).
 
-## Przebieg 90 minut
+## Przebieg spotkania
 
-Przeznacz 5 minut na uruchomienie pliku, około 30 na pięć przykładów LEARN, 50 na pięć zadań CHALLENGE i 5 na oddanie. W LEARN uruchamiasz gotowy kod i korzystasz z podanej interpretacji jako wzorca. W CHALLENGE pracujesz samodzielnie i wpisujesz własne akapity pod wynikami; w razie trudności pytasz prowadzącego. Rozwinięcia na końcu służą powtórce, nie są dodatkowymi zadaniami na to spotkanie.
+Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN, 50 minut na pięć zadań CHALLENGE i 5 minut na zapis oraz oddanie. W LEARN uruchamiasz gotowy kod i porównujesz wynik z podaną interpretacją. W CHALLENGE piszesz własne krótkie akapity pod wynikami, poza blokiem R. Gdy odczyt wyniku sprawia trudność, pytasz prowadzącego. Rozwinięcia po części obowiązkowej służą powtórce i pozostają poza oceną.
 
-Celem nie jest nauczenie się pisania funkcji t lub bootstrapu. Masz umieć sprawdzić, czy znak, jednostka, N, statystyka i przedział opowiadają tę samą historię. To częsty problem również w gotowych raportach i artykułach.
+Celem jest sprawdzenie, czy znak, jednostka, N, statystyka i przedział opowiadają tę samą historię. Ta sama kontrola przydaje się przy czytaniu gotowych raportów i artykułów.
 
 # LEARN 1: pytanie, grupy i opis danych
 
-W tym przykładzie grupa 1 to doświadczeni, a grupa 2 to nowi. Interesuje nas:
+Grupa 1 to doświadczeni, a grupa 2 — nowi. Estymanda i estymata mają postać:
 
 $$
 \Delta=\mu_{\mathrm{nowi}}-\mu_{\mathrm{doświadczeni}},
@@ -68,100 +67,126 @@ $$
 \widehat\Delta=\bar{x}_{\mathrm{nowi}}-\bar{x}_{\mathrm{doświadczeni}}.
 $$
 
-Wartość ujemna oznacza niższy średni indeks nowych. Wartość dodatnia oznacza wyższy. Nie zapisujemy po prostu „różnica między grupami”, jeśli odbiorca miałby odgadywać znak.
+Wartość ujemna oznacza niższy średni indeks nowych, a dodatnia — wyższy. Opis różnicy zawsze podaje kierunek: nowi minus doświadczeni.
 
-| Element | Jak go czytamy? |
-|---|---|
-| $\mu_g$ | Średnia określonej populacji grupy g |
-| $\bar{x}_g$ | Średnia ważnych wyników tej grupy w próbie |
-| $n_g$ | Liczba osób użytych w obliczeniu grupowym |
+| Element | Odczyt |
+|------------------|------------------------------------------------------|
+| $\mu_g$ | Średnia określonej populacji grupy $g$ |
+| $\bar{x}_g$ | Średnia ważnych wyników grupy $g$ w próbie |
+| $n_g$ | Liczba osób grupy $g$ użytych w obliczeniu |
 | $\Delta$ | Różnica średnich populacyjnych w ustalonym kierunku |
 | $\widehat\Delta$ | Oszacowana różnica z danych |
 | $H_0:\Delta=0$ | Równość średnich w testowanym modelu |
 | $H_1:\Delta\neq0$ | Dwustronna alternatywa |
 
-Nie są to pomiary przed i po. Jedna osoba należy do jednej grupy. Nie łączymy pierwszego nowego użytkownika z pierwszym doświadczonym tylko dlatego, że znajdują się w podobnych wierszach.
+Table: Symbole porównania dwóch grup
 
-Hipoteza o równości średnich jest węższa niż twierdzenie o identyczności całych rozkładów. Dwie grupy mogą mieć tę samą średnią i inny rozrzut albo ogon. To rozróżnienie wróci przy porównaniu Welcha z surowym tasowaniem etykiet.
+Każda osoba należy do jednej grupy, a grupy są niezależne; pomiary przed i po tej samej osoby wymagają innego rachunku (rozwinięcie „Pary: pomiary powiązane”).
+
+Hipoteza zerowa dotyczy średnich; rozkłady grup mogą przy równych średnich różnić się rozrzutem i ogonem. Rozróżnienie wraca przy porównaniu testu Welcha z tasowaniem etykiet.
 
 ## Opis i braki w każdej grupie
 
-Indeks wymaga co najmniej pięciu ważnych, właściwie ukierunkowanych odpowiedzi. Brak indeksu może występować tylko w jednej grupie, dlatego nie wolno zakładać identycznej liczebności analizowanej i zapisanej w surowym pliku. Do testu trafiają osoby ze znaną grupą i ważnym wynikiem.
+Indeks wymaga co najmniej pięciu ważnych, ukierunkowanych odpowiedzi. N analizy każdej grupy to liczba ważnych indeksów: 74 i 73. Do testu trafiają osoby ze znaną grupą i ważnym wynikiem.
 
-Tabela pokazuje opis grup oddzielnie. Odczytaj N i braki przed różnicą średnich. Mediana i IQR uzupełniają opis, lecz główną estymandą tego ćwiczenia pozostaje różnica średnich.
+Tabela „Opis grup [pkt 1–5]” podaje: doświadczeni — N = 74, 0 braków, średnia 3,510, SD 0,704, mediana 3,50, IQR 1,0; nowi — N = 73, 1 brak, średnia 3,072, SD 0,687, mediana 3,17, IQR 1,1. Suma N wynosi 147, jak liczba ważnych indeksów w C05.
 
 ```{r opis-grup}
 opis <- opis_porownania(wynik)
 print(opis)
 ```
 
-Doświadczeni mają 74 ważne indeksy ze średnią około 3,510, a nowi 73 ze średnią około 3,072. Jeden indeks nowych nie spełnia reguły kompletności. Suma N wynosi 147, tak jak liczba ważnych indeksów w C05.
+Średnia całej próby jest średnią ważoną średnich grup:
 
-Nie ma sprzeczności między korzystną średnią całej próby i niższą średnią jednej grupy. Średnia ogólna jest ważonym podsumowaniem obu grup. Do decyzji o wsparciu potrzebujemy zobaczyć strukturę, nie tylko wynik zbiorczy.
+$$
+\bar x=\frac{n_1\bar x_1+n_2\bar x_2}{n_1+n_2}=\frac{74\cdot3{,}510+73\cdot3{,}072}{147}=3{,}292 .
+$$
 
-## Wykres osób to nie wykres przedziału średniej
+Korzystna średnia całości i niższa średnia nowych opisują więc te same dane na dwóch poziomach; decyzja o wsparciu wymaga struktury grup.
 
-Pudełko pokazuje kwartyle i medianę; dodatkowy romb oznacza średnią. Punkty poza wąsami pozostają obserwacjami, nie automatycznymi błędami. Sprawdź, czy różnica średnich jest zgodna z tym, co widzisz, i czy rozkłady się nakładają.
+## Rozrzut osób w grupach
 
-```{r rozklady-grup}
+```{r rozklady-grup, fig.height=3, fig.cap="Indeks w dwóch grupach: osoby, pudełka i średnie. Oś pozioma: indeks 1–5; punkty: indeksy wszystkich osób. Doświadczeni: pudełko od 3,0 do 4,0, mediana 3,50, romb średniej przy 3,51. Nowi: pudełko od 2,5 do 3,6, mediana 3,17, romb średniej przy 3,07. Pudełka nakładają się między 3,0 a 3,6."}
 rozklad <- pokaz_wykres(wykres_grup)
 print(rozklad)
 ```
 
-Pudełka mogą się nakładać mimo statystycznie wyraźnej różnicy średnich. Opisują zróżnicowanie osób, a nie wyłącznie niepewność średnich. Odwrotnie, niewielkie nakładanie przy małym N nie daje bezwarunkowego prawa do mocnego uogólnienia.
+Punkty poza wąsami pozostają w danych. Pudełka opisują zróżnicowanie osób; niepewność średnich opisuje przedział różnicy (LEARN 3). Wykres „Histogramy gęstości indeksu w dwóch grupach” przedstawia kształt obu rozkładów na wspólnej osi.
 
-Wysoka ocena doświadczonego użytkownika nie oznacza, że każdy doświadczony ocenia katalog wyżej od każdego nowego. Wniosek grupowy nie jest deterministycznym rankingiem osób. To ważne, gdy wynik miałby uzasadniać przydzielanie indywidualnej pomocy.
+```{r gestosci-grup, fig.height=3.8, fig.cap="Histogramy gęstości indeksu w dwóch grupach, przedziały po 0,25 punktu. Oś pozioma: indeks 1–5; oś pionowa: gęstość na punkt. Doświadczeni (N = 74): najwyższy słupek nad przedziałem od 3,75 do 4, linia średniej przy 3,5. Nowi (N = 73): najwyższy słupek nad przedziałem od 3,25 do 3,5, linia średniej przy 3,1. Indeksy doświadczonych leżą od 2,0 do 5,0, a nowych od 1,6 do 4,67."}
+gestosci <- pokaz_wykres(wykres_gestosci)
+print(gestosci)
+```
+
+Rozkłady nakładają się w szerokim zakresie. Prawdopodobieństwo przewagi $\theta$ opisuje nakładanie jedną liczbą (wykład W04):
+
+$$
+\hat\theta=\frac{1}{n_1n_2}\sum_{i=1}^{n_1}\sum_{j=1}^{n_2}\Big[\mathbb 1(x_{2j}>x_{1i})+\tfrac12\,\mathbb 1(x_{2j}=x_{1i})\Big]=0{,}310+\tfrac12\cdot0{,}046=0{,}333,
+$$
+
+gdzie $\mathbb 1(\cdot)$ przyjmuje 1 przy spełnionym warunku i 0 w pozostałych parach. W 33% par (nowy, doświadczony) wyższą ocenę ma osoba nowa. Wniosek grupowy opisuje przesunięcie rozkładów, a decyzja o indywidualnej pomocy wymaga informacji o osobie.
 
 # LEARN 2: test Welcha — od różnicy do statystyki
 
 Oszacowana różnica wynosi:
 
-$$\widehat\Delta\approx3{,}072-3{,}510=-0{,}438\ \text{punktu}.$$
+$$\widehat\Delta=3{,}072-3{,}510=-0{,}438\ \text{punktu}.$$
 
-Ujemny wynik nie jest błędem. Mówi, że średni indeks nowych jest niższy o około 0,438 punktu. Sformułowanie „różnica wynosi 0,438” bez kierunku usuwa połowę informacji.
+Wynik ujemny oznacza średni indeks nowych niższy o 0,438 punktu.
 
-W C05 druga strona porównania była ustaloną liczbą. Tutaj obie średnie pochodzą z prób. Standardowy błąd różnicy niezależnych średnich wynosi:
+W C05 druga strona porównania była ustaloną liczbą; w C06 obie średnie pochodzą z prób. Błąd standardowy różnicy niezależnych średnich wynosi:
 
 $$
-SE(\widehat\Delta)=
-\sqrt{\frac{s_2^2}{n_2}+\frac{s_1^2}{n_1}}.
+SE(\widehat\Delta)=\sqrt{\frac{s_2^2}{n_2}+\frac{s_1^2}{n_1}}=\sqrt{0{,}00646+0{,}00669}=0{,}115 .
 $$
 
-Każdy składnik pod pierwiastkiem opisuje oszacowaną wariancję średniej grupowej. Dodajemy je, ponieważ w tym modelu grupy są niezależne. Gdy pomiary byłyby sparowane, należałoby uwzględnić ich powiązanie zamiast używać tego wzoru.
+Każdy składnik pod pierwiastkiem jest oszacowaną wariancją średniej grupowej; wariancje się sumują, bo grupy są niezależne. Pomiary sparowane wymagają wzoru różnic w parach.
 
-## Co zmienia liczebność i rozrzut
+## Liczebność i rozrzut
 
-Większe SD w grupie zwiększa jej wkład do niepewności. Większe N zmniejsza ten wkład, o ile rzeczywiście przybywa niezależnych jednostek. Bardzo mała, zróżnicowana grupa może dominować w SE nawet wtedy, gdy druga jest liczna.
+Większe SD grupy zwiększa jej wkład do niepewności, a większe $n$ zmniejsza wkład, gdy przybywa niezależnych osób. Precyzja porównania zależy od obu liczebności:
 
-To wyjaśnia, dlaczego sama suma N nie wystarcza do oceny precyzji porównania. Układ 10 i 100 osób nie jest równoważny układowi 55 i 55 przy tych samych grupowych wariancjach. W raporcie podajemy obie liczebności.
+$$
+SE=s\sqrt{\frac1{n_1}+\frac1{n_2}}:\qquad s=1:\ \ n=10\ \text{i}\ 100\ \Rightarrow\ 0{,}332;\qquad n=55\ \text{i}\ 55\ \Rightarrow\ 0{,}191 .
+$$
+
+Przy tych samych 110 osobach układ 10 i 100 daje SE o 74% większe niż układ 55 i 55, więc raport podaje obie liczebności.
 
 ## Statystyka t Welcha i stopnie swobody
 
-$$t_W=\frac{\widehat\Delta-0}{SE(\widehat\Delta)}.$$
+$$
+t_W=\frac{\widehat\Delta-0}{SE(\widehat\Delta)}=\frac{-0{,}438}{0{,}115}=-3{,}822,\qquad
+\nu=\frac{\left(\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}\right)^2}{\frac{(s_1^2/n_1)^2}{n_1-1}+\frac{(s_2^2/n_2)^2}{n_2-1}}=144{,}98 .
+$$
 
-Dla S02 SE wynosi około 0,115 punktu. Dzielenie −0,438 przez 0,115 daje t około −3,822. Jednostki punktów się skracają, więc statystyka nie jest różnicą w punktach.
+Jednostki punktów się skracają, więc t jest liczbą bez jednostki. Stopnie swobody $\nu$ są parametrem przybliżenia Welcha i mogą być niecałkowite.
 
-Tabela rozdziela różnicę, jej SE i wynik testu. Znak t ma być zgodny ze znakiem różnicy. Odczytaj df jako stopnie swobody przybliżenia Welcha, nie liczbę respondentów.
+Tabela „Test Welcha — różnica grupy 2 minus grupy 1” podaje różnicę −0,438, SE 0,115, t = −3,822, df = 144,98 i p = 0,0002. Znak t jest zgodny ze znakiem różnicy.
 
 ```{r wynik-welcha}
 test <- test_porownania(wynik)
 print(test)
 ```
 
-Df wynosi około 144,98 i może być niecałkowite. Zależy od liczebności oraz oszacowań wariancji. P około 0,000196 jest dwustronną oceną skrajności t przy H0 i założeniach procedury. Nie jest prawdopodobieństwem, że różnica wynika z przypadku, ani szansą prawdziwości H0.
+Wartość p = 0,000196 jest dwustronną oceną skrajności t przy $H_0$ i założeniach procedury. Wykres „Rozkład t(144,98) i obserwowane t = −3,822” przedstawia rozkład odniesienia.
 
-Welch nie zakłada równych wariancji, lecz nadal potrzebuje niezależności i odpowiedniego uzasadnienia wnioskowania o średnich. Dla małych prób silna skośność i wpływowe obserwacje mogą utrudniać przybliżenie. Duże N nie naprawia braku niezależności ani niewłaściwego pomiaru.
+```{r rozklad-t, fig.cap="Rozkład t(144,98) i obserwowane t = −3,822. Oś pozioma: statystyka t Welcha; oś pionowa: gęstość. Krzywa jest symetryczna wokół 0; linie przerywane przy −3,822 i 3,822 leżą w ogonach, a pole obu ogonów wynosi 0,0002."}
+rozklad_t <- pokaz_wykres(wykres_t)
+print(rozklad_t)
+```
 
-## Czytamy oryginalny wydruk
+Welch dopuszcza różne wariancje grup i wymaga niezależności obserwacji. Dla małych prób silna skośność i wpływowe obserwacje osłabiają przybliżenie. Niezależność i jakość pomiaru wynikają z projektu.
 
-Gotowy skrypt wywołuje test w jawnej kolejności: najpierw wyniki grupy 2, potem grupy 1. Dzięki temu estymata różnicy, statystyka i przedział mają jeden kierunek. Nie opieramy interpretacji na przypadkowej kolejności alfabetycznej etykiet.
+## Oryginalny wydruk
+
+Skrypt wywołuje test w jawnej kolejności: najpierw wyniki grupy 2, potem grupy 1, więc estymata, statystyka i przedział mają jeden kierunek. Kolejność grup ustala argument funkcji, a opis ją powtarza.
 
 ```{r wydruk-testu}
 wydruk <- oryginal_testu(wynik)
 print(wydruk)
 ```
 
-Jeżeli w innej analizie odwrócisz argumenty, dwustronne p pozostanie takie samo, ale t i przedział zmienią znak. Program nie wie, którą grupę uznajesz za odniesienie badawcze. To musi wynikać z kodu i opisu.
+Odwrócenie argumentów zachowuje dwustronne p i zmienia znak t oraz przedziału. Grupę odniesienia wskazuje kod i opis analizy.
 
 # LEARN 3: wielkość efektu i przedział różnicy
 
@@ -171,176 +196,174 @@ CI_{95\%}(\Delta)=
       \widehat\Delta+t_{0{,}975;\nu}SE\right].
 $$
 
-W środku znajduje się różnica −0,438 punktu. Przedział klasyczny wynosi około [−0,665; −0,212]. Obydwa końce są ujemne, więc odpowiadają średniej nowych niższej od średniej doświadczonych w tym modelu.
-
-Poniżej widzisz dwa przedziały dla tej samej różnicy. Na razie odczytaj wiersz Welcha. Drugi pochodzi z losowania osób osobno w grupach i zostanie omówiony po efekcie standaryzowanym.
+W środku przedziału leży różnica −0,438 punktu. Tabela „95% przedziały różnicy średnich” podaje przedział Welcha od −0,665 do −0,212 i przedział bootstrapowy od −0,659 do −0,227. Oba końce przedziału Welcha są ujemne: średnia nowych jest niższa od średniej doświadczonych w modelu Welcha.
 
 ```{r przedzialy}
 przedzial <- przedzial_porownania(wynik)
 print(przedzial)
 ```
 
-Różnica ma naturalną jednostkę punktów indeksu. Przedział nie opisuje 95% osób ani zakresu wszystkich różnic między pojedynczym nowym i doświadczonym użytkownikiem. Dotyczy parametru średnich grupowych.
+Przedział dotyczy różnicy średnich grupowych w punktach indeksu. Leży w całości poniżej zera, co w parze „test Welcha–przedział Welcha” odpowiada p < 0,05; przyczynę różnicy ocenia projekt.
 
-W klasycznej parze test–CI brak zera w tym przedziale jest zgodny z p<0,05. Nie dowodzi jednak, że wszystkie wartości wewnątrz są jednakowo prawdopodobne, ani że przyczyną różnicy jest doświadczenie. Założenia i projekt pozostają częścią odczytu.
+## Dwa kierunki tej samej różnicy
 
-## Odwracamy kierunek bez zmiany danych
-
-Dla kierunku doświadczeni minus nowi estymata wynosi +0,438. Przedział [L; U] przechodzi w [−U; −L], czyli około [0,212; 0,665]. Nie wystarczy zmienić obu znaków bez zamiany kolejności końców.
-
-Tabela zestawia oba poprawne opisy tych samych danych. Wskaż, co się zmienia, a co pozostaje niezmienne w dwustronnym teście. Nie interpretuj różnicy znaków jako rozbieżności metod.
+Dla kierunku doświadczeni minus nowi estymata wynosi +0,438. Odwrócenie kierunku zmienia znaki i kolejność końców: $[L;U]\to[-U;-L]$, czyli [0,212; 0,665]. Tabela „Dwa kierunki tej samej różnicy” zestawia oba poprawne opisy tych samych danych.
 
 ```{r kierunek}
-kierunek <- pokaz_tabele(odwrocenie_kierunku)
+kierunek <- kierunek_porownania()
 print(kierunek)
 ```
 
-W całym ćwiczeniu pozostajemy przy nowi minus doświadczeni. W CHALLENGE zachowasz tę kolejność, ale zmienią się dane i jednostka wyniku. Znak różnicy musi odpowiadać rzeczywistym średnim, a nie zapamiętanemu wnioskowi z LEARN.
+Ćwiczenie stosuje kierunek nowi minus doświadczeni także w CHALLENGE, gdzie zmieniają się dane i jednostka. Znak różnicy odpowiada średnim z danych.
 
 ## Efekt standaryzowany g Hedgesa
 
-Efekt naturalny mówi „ile punktów”. Efekt standaryzowany dzieli różnicę przez zdefiniowane SD, aby wyrazić ją względnie do rozrzutu. Dla niezależnych grup korzystamy z:
+Efekt naturalny odpowiada na pytanie „ile punktów”. Efekt standaryzowany dzieli różnicę przez łączone SD osób:
 
 $$
 s_p=\sqrt{\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}},
 \quad d=\frac{\widehat\Delta}{s_p},
-\quad g=Jd.
+\quad g=Jd,\quad J=1-\frac{3}{4(n_1+n_2)-9}.
 $$
 
-Współczynnik $J\approx1-3/[4(n_1+n_2)-9]$ jest małopróbkową korektą. W naszym N jest bliski jedności. Znak g zachowuje kierunek różnicy, ponieważ mianownik i korekta są dodatnie.
-
-Tabela pokazuje wszystkie składniki, aby wynik nie był bezimienną liczbą. Porównaj łączone SD około 0,695 z SE około 0,115. Pierwsze opisuje skalę rozrzutu osób, drugie niepewność różnicy.
+Tabela „Efekt surowy i standaryzowany” podaje: $s_p=0{,}695$, $d=-0{,}630$, $J=0{,}995$ i $g=-0{,}627$. Łączone SD 0,695 opisuje rozrzut osób, a SE 0,115 — niepewność różnicy. Znak g zachowuje kierunek różnicy, bo mianownik i korekta są dodatnie.
 
 ```{r efekt-standaryzowany}
 efekt <- efekt_porownania(wynik)
 print(efekt)
 ```
 
-G około −0,627 nie oznacza spadku o 62,7%, 62,7% użytkowników ani prawdopodobieństwa przewagi. Nie jest też procentem wyjaśnionej zmienności. Odczyt brzmi: różnica odpowiada około −0,63 jednostki zastosowanego rozrzutu, po korekcie.
+Wartość g = −0,627 oznacza różnicę równą 0,63 łączonego SD osób, po korekcie małopróbkowej. Interpretacja praktyczna odwołuje się do treści pozycji i punktów indeksu: do zrozumiałości filtrów, lokalizacji dokumentu i oceny wsparcia.
 
-Przy interpretacji praktycznej nadal potrzebujemy punktów i treści pytań. Uniwersalne progi wielkości efektu nie zastępują pytania, czy różnica dotyczy zrozumiałości filtrów, odnalezienia lokalizacji czy ogólnej oceny wsparcia. Standaryzacja nie waliduje indeksu.
+# LEARN 4: bootstrap i tasowanie — dwa różne losowania
 
-# LEARN 4: bootstrap i permutacja — dwa różne losowania
+Bootstrap dwóch grup losuje ze zwracaniem osobno w każdej grupie: w replice $b$ losuje 74 osoby doświadczone z ich próby i 73 nowe z ich próby, a potem liczy
 
-W każdej replice losujemy 74 osoby doświadczone z ich próby oraz 73 nowych z ich próby, z powtórzeniami. Obliczamy średnią nowych minus średnią doświadczonych. Powtarzamy B=1999 razy.
+$$
+\widehat\Delta^*_b=\bar x^*_{2,b}-\bar x^*_{1,b},\qquad CI^{\text{boot}}_{95\%}=\left[\widehat\Delta^*_{(0{,}025)},\ \widehat\Delta^*_{(0{,}975)}\right],
+$$
 
-Histogram pokazuje rozkład replik różnicy. Linia oznacza obserwowaną estymatę −0,438 punktu. Nie narzuciliśmy zera, więc środek rozkładu pozostaje w pobliżu różnicy z danych.
+gdzie $\widehat\Delta^*_{(q)}$ jest kwantylem rzędu $q$ różnic z $B=1999$ replik.
 
-```{r bootstrap}
+```{r bootstrap, fig.cap="Bootstrap różnicy średnich w grupach: histogram 1999 różnic nowi minus doświadczeni, przedziały po 0,025 punktu. Oś pozioma: różnica w próbie bootstrapowej; oś pionowa: liczba prób. Różnice leżą od −0,86 do −0,13 wokół −0,44; linie przerywane przy −0,66 i −0,23 wyznaczają percentylowy przedział 95%."}
 bootstrap <- pokaz_wykres(wykres_boot)
 print(bootstrap)
 ```
 
-W tej procedurze grupa jest zachowana. To ważne, bo celem jest przybliżenie niepewności dwóch oddzielnych średnich. Losowanie wszystkich osób z jednego wspólnego worka odpowiadałoby innemu schematowi i mogłoby zmieniać liczebności grup.
+Rozkład replik skupia się wokół różnicy z danych, −0,438. Losowanie osobno w grupach zachowuje liczebności grup i odtwarza niepewność dwóch oddzielnych średnich.
 
-Percentylowy CI wynosi około [−0,659; −0,227] punktu. Jest podobny do przedziału Welcha, ale nie ma identycznych granic. Różnią się zasady konstrukcji i skończona liczba losowań.
+Percentylowy przedział [−0,659; −0,227] jest bliski przedziałowi Welcha [−0,665; −0,212]; granice różnią się zasadą konstrukcji i skończoną liczbą losowań.
 
-Wykres porównuje estymatę oraz oba przedziały na jednej osi różnicy. Linia zerowa ma jasny sens: brak różnicy średnich. Oś jest w punktach, nie w jednostkach g.
-
-```{r wykres-przedzialow, fig.height=2.6}
+```{r wykres-przedzialow, fig.height=2.6, fig.cap="Dwa przedziały tej samej różnicy nowi minus doświadczeni. Oś pozioma: różnica w punktach. Welch: od −0,665 do −0,212; bootstrap w grupach: od −0,659 do −0,227; romby przy −0,438; linia przerywana zera leży na prawo od obu odcinków."}
 przedzialy <- pokaz_wykres(wykres_ci)
 print(przedzialy)
 ```
 
-Nie interpretujemy tego obrazu jako dwóch niezależnych badań. Oba przedziały wykorzystują tych samych respondentów i ten sam indeks. Wspólne ograniczenie pomiaru lub doboru dotyczy obu.
+Oba przedziały korzystają z tych samych 147 osób i dzielą ograniczenia pomiaru oraz doboru.
 
-## Permutacja zmienia powiązanie wyniku z etykietą
+## Tasowanie zmienia powiązanie wyniku z etykietą
 
-Teraz cel jest inny. Łączymy obserwowane indeksy i przestawiamy etykiety nowych oraz doświadczonych, zachowując liczebności. W każdej permutacji liczymy nową różnicę w tym samym kierunku.
-
-Nie zmieniamy wartości indeksów i nie tworzymy nowych osób. Zrywamy ich obserwowane przypisanie do grup w sposób dopuszczony przez przyjęty model zerowy. Statystyka pozostaje różnicą średnich w punktach, a nie t z innej skali.
+Tasowanie łączy obserwowane indeksy i losowo przestawia etykiety nowych oraz doświadczonych, zachowując liczebności 74 i 73. W każdym przestawieniu powstaje różnica w tym samym kierunku. Tasowanie zmienia przypisanie wyników do grup; statystyką jest różnica średnich w punktach.
 
 $$
 p_{\mathrm{perm}}=
-\frac{1+\#\{|\widehat\Delta_b^*|
+\frac{1+\#\{b:\ |\widehat\Delta_b^*|
              \geq|\widehat\Delta_{\mathrm{obs}}|\}}{B+1}.
 $$
 
-Tabela pokazuje obserwowaną różnicę, liczbę skrajnych przestawień i wynik p. Jedna skrajna replika przy B=1999 daje $(1+1)/2000=0{,}001$. Nie pomijamy jedynki w liczniku ani remisu w warunku skrajności.
+Tabela „Tasowanie etykiet grup” podaje różnicę obserwowaną −0,438, 1 przestawienie z $|\widehat\Delta_b^*|\ge0{,}438$ i B = 1999, więc $p_{\mathrm{perm}}=(1+1)/2000=0{,}001$. Wzór obejmuje jedynkę w liczniku i remisy w warunku $\ge$.
 
 ```{r permutacja}
 permutacja <- permutacja_porownania(wynik)
 print(permutacja)
 ```
 
-Histogram jest skupiony w pobliżu zera, ponieważ losowane etykiety nie zachowują systematycznej różnicy grup z próby. Linie wyznaczają obie strony skrajności dwustronnej. Nie pokazują przedziału ufności.
-
-```{r rozklad-zerowy}
-rozklad <- pokaz_wykres(wykres_zerowy)
-print(rozklad)
+```{r rozklad-zerowy, fig.cap="Rozkład zerowy tasowania etykiet dla indeksu: histogram 1999 różnic po przestawieniu etykiet, przedziały po 0,025 punktu. Oś pozioma: różnica średnich po tasowaniu; oś pionowa: liczba powtórzeń. Histogram jest symetryczny wokół zera i leży od −0,49 do 0,40; linie przerywane przy −0,438 i 0,438 obejmują prawie wszystkie powtórzenia, a jedno powtórzenie leży na liniach lub dalej."}
+rozklad_zerowy <- pokaz_wykres(wykres_zerowy)
+print(rozklad_zerowy)
 ```
 
-Wynik klasyczny i losowany wskazują małe p w swoich procedurach. Nie wymagamy zgodności do ostatniego miejsca po przecinku. Z jednej strony występuje przybliżenie Welcha, z drugiej konkretny model przestawień i błąd Monte Carlo.
+Histogram skupia się wokół zera, bo losowe etykiety rozbijają systematyczną różnicę grup. Wartości p Welcha (0,0002) i $p_{\mathrm{perm}}$ (0,001) różnią się rozdzielczością: najmniejsze $p_{\mathrm{perm}}$ przy B = 1999 wynosi 0,0005.
 
-## Wymienialność nie wynika z samego słowa „permutacja”
+## Wymienialność: warunek tasowania etykiet
 
-W prostym modelu niezależnych prób wspólny rozkład pod H0 pozwala przestawiać etykiety. Równość samych średnich przy różnych wariancjach i kształtach nie daje tej samej własności. Surowa różnica średnich użyta w naszym tasowaniu nie jest uniwersalnie odpornym zamiennikiem Welcha.
+Wymienialność wymaga wspólnego rozkładu grup przy $H_0$: wtedy etykiety można przestawiać. Przy różnych wariancjach grup tasowanie surowej różnicy średnich zmienia poziom α, więc przy równych średnich i różnych rozrzutach pierwszeństwo ma statystyka Welcha.
 
-Grupy obserwacyjne nie były przydzielone losowo. Procedura nie tworzy po fakcie randomizacji ani kontroli różnic między osobami. Jej odczyt jest warunkowy wobec przyjętego modelu. [Winkler i współautorzy (2014)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4010955/) opisują znaczenie dozwolonych przestawień i struktury danych.
+Grupy powstały poza kontrolą badacza, więc odczyt tasowania zależy od modelu wymienialności. Znaczenie dozwolonych przestawień i struktury danych opisują [Winkler i współautorzy (2014)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4010955/).
 
-Jeżeli wyniki torów się różnią, sprawdzamy pytanie, statystykę, N, wariancje, schemat losowania i B. Nie wybieramy automatycznie mniejszego p. Zgodność także nie usuwa potrzeby tej kontroli.
+Przy różnych wynikach dwóch procedur raport sprawdza pytanie, statystykę, N, wariancje, schemat losowania i B; tę samą kontrolę wykonuje przy wynikach zgodnych.
 
 # LEARN 5: od tabeli do akapitu wynikowego
 
-„Nowi użytkownicy mieli średni indeks 3,072 punktu (N=73, SD=0,687), a doświadczeni 3,510 (N=74, SD=0,704). Różnica nowi minus doświadczeni wyniosła −0,438 punktu, 95% CI Welcha [−0,665; −0,212]. Uzyskano t(144,98)=−3,822, p<0,001, g Hedgesa=−0,627”.
+Pierwsza część akapitu: „Nowi użytkownicy mieli średni indeks 3,072 punktu (N = 73, SD = 0,687), a doświadczeni 3,510 (N = 74, SD = 0,704). Różnica nowi minus doświadczeni wyniosła −0,438 punktu, 95% CI Welcha [−0,665; −0,212]. Uzyskano t(144,98) = −3,822, p < 0,001, g Hedgesa = −0,627”.
 
-Druga część: „Przedział percentylowy bootstrapu różnicy wyniósł [−0,659; −0,227]. Tasowanie etykiet przy B=1999 dało p=0,001 pod przyjętym modelem wymienialności. Wynik opisuje niższą deklarowaną ocenę użyteczności u nowych, ale nie dowodzi przyczynowego działania doświadczenia ani różnicy ogólnych kompetencji”.
+Druga część: „Przedział percentylowy bootstrapu różnicy wyniósł [−0,659; −0,227]. Tasowanie etykiet przy B = 1999 dało $p_{\mathrm{perm}}$ = 0,001 przy modelu wymienialności. Wynik opisuje niższą deklarowaną użyteczność katalogu u nowych użytkowników”.
 
-Nie trzeba dosłownie kopiować tego akapitu. Ma on pokazać logikę kompletnego odczytu. W Twoim zadaniu inny scenariusz może mieć inne grupy, treść indeksu i kierunek wyniku. Zachowaj strukturę argumentu, nie cudze liczby.
+Akapit przedstawia strukturę odczytu; w CHALLENGE inny scenariusz ma inne grupy, treść wyniku i kierunek. Wskazanie elementu katalogu do poprawy wymaga analizy pozycji i obserwacji zadań.
 
-Wniosek praktyczny powinien pozostać warunkowy. Można wskazać, które aspekty katalogu warto dokładniej sprawdzić u nowych, ale średnia indeksu nie identyfikuje sama jednego wadliwego elementu. Pozycje i obserwacja mogą dostarczyć bardziej szczegółowego obrazu.
+## Czas wykonania: drugi wskaźnik i szeroki przedział
 
-## Wynik nieistotny: czas wykonania — drugi wskaźnik, inne pytanie
+Indeks jest deklaracją oceny usługi, a czas — obserwowanym wynikiem zadania. Przejście do czasu zmienia jednostkę, interpretację znaku i N.
 
-Indeks jest deklaracją oceny usługi. Czas jest obserwowanym wynikiem konkretnego zadania. Przejście z jednego na drugi nie polega tylko na zmianie nazwy kolumny; zmieniają się jednostka, interpretacja znaku i czasem N.
-
-Gotowa analiza czasu zachowuje kierunek nowi minus doświadczeni. W tabeli najpierw sprawdź liczebności: 70 ważnych czasów doświadczonych i 72 nowych. To inne N niż w analizie indeksu.
+Tabela „Opis grup [min]” zachowuje kierunek nowi minus doświadczeni i podaje: doświadczeni — N = 70 ważnych czasów, 4 braki, średnia 9,97, SD 6,02 minuty; nowi — N = 72, 2 braki, średnia 10,28, SD 5,72 minuty. N różni się od N analizy indeksu.
 
 ```{r opis-czasu}
 opis_czasu <- opis_porownania(wynik_czas, jednostka='min')
 print(opis_czasu)
 ```
 
-Średnie wynoszą około 9,97 i 10,28 minuty. Różnica to około 0,31 minuty, czyli nieco ponad 18 sekund. Nie nazywamy jej od razu poprawą lub pogorszeniem, ponieważ dłuższy czas może oznaczać trudność, ale też staranniejsze wykonanie. Trzeba zestawić go z powodzeniem.
+Różnica średnich wynosi 0,31 minuty, czyli 18,5 sekundy. Dłuższy czas może oznaczać trudność albo staranność; interpretacja wymaga zestawienia z powodzeniem.
 
-Teraz odczytaj klasyczny wynik i jego przedział. Niewielka estymata ma niepewność obejmującą oba kierunki. To sytuacja inna niż w analizie indeksu.
+```{r dystrybuanty-czasu, fig.cap="Dystrybuanty czasu w dwóch grupach. Oś pozioma: czas wyszukiwania w minutach; oś pionowa: udział czasów mniejszych lub równych wartości. Linia ciągła: nowi (N = 72), linia przerywana: doświadczeni (N = 70). Krzywe przeplatają się; przy 10 minutach (linia kropkowana) dystrybuanta doświadczonych wynosi 0,643, a nowych 0,569."}
+dystrybuanty <- pokaz_wykres(wykres_ecdf_czasu)
+print(dystrybuanty)
+```
+
+Tabele „Test Welcha”, „95% przedziały różnicy” i „Tasowanie etykiet grup” podają dla czasu: SE 0,987 minuty, t = 0,313, df = 139,12, p = 0,754; przedział Welcha od −1,64 do 2,26 minuty, bootstrapowy od −1,60 do 2,21; 1544 z 1999 przestawień z $|\widehat\Delta^*|\ge0{,}309$, czyli $p_{\mathrm{perm}}=0{,}773$.
 
 ```{r porownanie-czasu}
-porownanie_czasu <- wynik_do_raportu(wynik_czas)
+porownanie_czasu <- czas_do_raportu(wynik_czas)
 print(porownanie_czasu)
 ```
 
-Klasyczny CI różnicy wynosi około [−1,64; 2,26] minuty, a p około 0,754. Wynik nie dowodzi identycznego czasu. Przy tym modelu jest zgodny zarówno z krótszym, jak i dłuższym średnim czasem nowych w zakresie pokazanym przez przedział.
+```{r rozklad-zerowy-czasu, fig.cap="Rozkład zerowy tasowania etykiet dla czasu: histogram 1999 różnic średnich po przestawieniu etykiet. Oś pozioma: różnica w minutach; oś pionowa: liczba powtórzeń. Histogram leży od −2,98 do 2,85 minuty wokół zera; linie przerywane przy −0,309 i 0,309 obejmują wąski środek, a wyróżnione słupki na liniach i poza nimi zawierają 1544 powtórzenia."}
+zerowy_czasu <- pokaz_wykres(wykres_zerowy_czasu)
+print(zerowy_czasu)
+```
 
-Nie wolno napisać, że „doświadczenie działa na oceny, ale nie działa na czas”, wyłącznie dlatego, że jedno p jest poniżej, a drugie powyżej 0,05. Badamy różne wyniki o różnych jednostkach i niepewnościach. Test różnicy między tymi relacjami nie jest równoważny porównaniu dwóch etykiet istotności.
+Przedział od −1,64 do 2,26 minuty opisuje zakres różnic zgodnych z danymi: krótszy i dłuższy średni czas nowych. Tasowanie daje $p_{\mathrm{perm}}=0{,}773$, zgodne z p Welcha 0,754.
 
-## Dlaczego niewielki czas nie musi oznaczać niewielkiego problemu
+Porównanie dwóch relacji wymaga testu różnicy dwóch relacji; dwa p dotyczą dwóch wskaźników o różnych jednostkach i precyzji. Zdanie o „działaniu doświadczenia na oceny i braku działania na czas” wymaga więc osobnej analizy.
 
-Dwie grupy mogą mieć podobny średni czas, a różną skuteczność. Jedna częściej kończy szybko błędną odpowiedzią, druga pracuje dłużej i osiąga sukces. Sama średnia czasu nie odróżnia tych mechanizmów.
+## Podobny czas i różna skuteczność
 
-W S02 nie dopisujemy osobom powodów przerwania, których nie zarejestrowano. Możemy natomiast zaplanować oddzielny opis powodzenia na C07. Własny raport powinien zachować różnicę między obliczoną statystyką a hipotetycznym wyjaśnieniem.
+Dwie grupy mogą mieć podobny średni czas i różną skuteczność: jedna częściej kończy szybko błędną odpowiedzią, druga pracuje dłużej i osiąga sukces. Rozróżnienie mechanizmów wymaga zestawienia czasu z powodzeniem.
+
+Powody przerwania pozostają poza danymi S02; powodzenie w grupach opisuje ćwiczenie C07 (Kategorie i zachowanie). Raport oddziela obliczoną statystykę od hipotetycznego wyjaśnienia.
 
 # CHALLENGE — samodzielna analiza czasu
 
+W pięciu zadaniach zastąp znaczniki odpowiedzi własnymi krótkimi akapitami. Wpisuj tekst pod wynikiem, poza chunkiem. Liczby odczytujesz z tabel repozytorium.
+
 ## Scenariusz: czas odnalezienia publikacji w repozytorium
 
-Dwie różne grupy po dwanaście osób wykonują to samo zadanie w tym samym repozytorium. Grupy oznaczają wcześniejsze doświadczenie, nie przydział do szkolenia. Zarejestrowano minuty do zakończenia próby, niezależnie od poprawności; w tym małym zbiorze nie ma kolumny sukcesu. Wszystkie czasy są ważne i syntetyczne.
+Dwie grupy po dwanaście osób wykonują to samo zadanie w tym samym repozytorium. Grupy oznaczają wcześniejsze doświadczenie i powstały bez przydziału do szkolenia. Zarejestrowano minuty do zakończenia próby, niezależnie od poprawności; zbiór zawiera wyłącznie czas. Wszystkie czasy są ważne i syntetyczne.
 
-Pytanie dotyczy różnicy średnich czasów: nowi minus doświadczeni. Krótszego czasu nie nazwiesz automatycznie większą skutecznością. Do interpretacji obu testów przyjmujemy niezależność osób, a dla tasowania dodatkowo wymienialność rozkładów pod hipotezą zerową.
+Pytanie dotyczy różnicy średnich czasów: nowi minus doświadczeni. Interpretacja obu testów przyjmuje niezależność osób, a tasowanie dodatkowo — wymienialność rozkładów przy hipotezie zerowej.
 
-## CHALLENGE 1: Jak wyglądają obie grupy?
+Funkcja `porownaj_grupy()` przyjmuje tabelę danych, nazwę kolumny wyniku, dwie etykiety grup (odejmowanie: grupa 2 minus grupa 1; domyślnie nowi minus doświadczeni), liczbę losowań `B` (domyślnie 1999) i ziarno losowania. Zwraca opis grup, test Welcha, efekt, dwa przedziały i wynik tasowania. Blok `s01-opis` zapisuje wynik w obiekcie `porownanie`, z którego korzystają bloki CHALLENGE 2–5.
 
-Zacznij od opisu czasu, zanim odczytasz p. Minimum jest wynikiem jednej osoby w próbie, nie dolną granicą czasu w populacji. Średnia i SD opisują inne własności zbioru.
+## CHALLENGE 1: Dwie grupy w liczbach
 
-Tabela i wykres pokazują grupy w tej samej kolejności. Podaj jednostki, a różnicę minimum odróżnij od różnicy średnich. Brak wyniku poprawności ogranicza ocenę działania usługi.
+Opis czasu poprzedza odczyt p. Minimum jest wynikiem jednej osoby w próbie; średnia i SD opisują inne własności zbioru. Blok wyświetla tabelę „Opis grup [min]” (N, średnia, SD, minimum i maksimum) oraz wykres „Czas w dwóch grupach repozytorium” z osobami, pudełkami i średnimi w tej samej kolejności grup.
 
-```{r s01-opis}
+```{r s01-opis, fig.height=3, fig.cap="Czas w dwóch grupach repozytorium. Oś pozioma: czas w minutach; punkty: czasy wszystkich osób; pudełko: kwartyle i mediana; romb: średnia grupy; linia kropkowana: granica Q3 + 1,5 IQR."}
 porownanie <- porownaj_grupy(repozytorium, zmienna='czas_min', ziarno=202628L)
 opis <- opis_porownania(porownanie, jednostka='min', wykres=TRUE)
 print(opis)
 ```
 
-**Napisz krótki akapit:** porównaj N, średnie i minima obu grup, z minutami. Wskaż, dlaczego na tej podstawie nie rozstrzygniesz, która grupa skuteczniej odnalazła publikację.
+**Napisz krótki akapit:** porównaj N, średnie i minima obu grup, z minutami. Wskaż dane, które rozstrzygnęłyby, która grupa skuteczniej odnalazła publikację.
 
 <!-- odpowiedz:S01 -->
 [UZUPELNIJ_S01]
@@ -348,16 +371,14 @@ print(opis)
 
 ## CHALLENGE 2: Pytanie, H0 i wynik klasyczny
 
-Hipoteza zerowa zakłada równą średnią czasu w dwóch populacjach porównania, przy przyjętym modelu. Nie głosi, że wszystkie osoby szukają równie długo. Dwustronna alternatywa dopuszcza oba kierunki różnicy.
-
-Wydruk przedstawia gotowy test Welcha. Sprawdź znak różnicy i t oraz połącz mianownik statystyki z SE. Nie zastępuj hipotezy zdaniem „p jest mniejsze niż 0,05”.
+Hipoteza zerowa zakłada równą średnią czasu w dwóch populacjach porównania w przyjętym modelu; hipoteza dotyczy średnich populacji. Dwustronna alternatywa obejmuje oba kierunki różnicy. Tabela „Test Welcha — różnica grupy 2 minus grupy 1” podaje różnicę, SE, t, df i p; znak różnicy i t oraz mianownik statystyki łączą się z SE.
 
 ```{r s02-welch}
 test <- test_porownania(porownanie)
 print(test)
 ```
 
-**Napisz krótki akapit:** zapisz H0 w symbolach i słowami, uzasadnij porównanie niezależne oraz odczytaj różnicę, SE, t, df i p. Wniosek sformułuj warunkowo względem modelu.
+**Napisz krótki akapit:** zapisz $H_0$ w symbolach i słowami, uzasadnij porównanie niezależne oraz odczytaj różnicę, SE, t, df i p. Sformułuj wniosek warunkowo względem modelu.
 
 <!-- odpowiedz:S02 -->
 [UZUPELNIJ_S02]
@@ -365,16 +386,14 @@ print(test)
 
 ## CHALLENGE 3: Wynik tasowania etykiet
 
-Drugie obliczenie zachowuje te same czasy, ale losowo przypisuje etykiety grup z zachowaniem ich liczebności. Jest to rozkład odniesienia dla obserwowanej różnicy. Nie powstają nowe osoby ani nowe pomiary.
-
-Odczytaj T, k i B oraz porównaj p z CHALLENGE 2. Wymienialność jest założeniem modelu zerowego, a nie wynikiem testu normalności. Sam podział według doświadczenia nie był randomizacją.
+Drugie obliczenie zachowuje te same czasy i losowo przypisuje etykiety grup z zachowaniem liczebności; powstaje rozkład odniesienia dla obserwowanej różnicy. Wymienialność jest założeniem modelu zerowego, a grupy doświadczenia są obserwacyjne. Tabela „Tasowanie etykiet grup” podaje różnicę obserwowaną, liczbę skrajnych przestawień, B i $p_{\mathrm{perm}}$.
 
 ```{r s03-permutacja}
 permutacja <- permutacja_porownania(porownanie)
 print(permutacja)
 ```
 
-**Napisz krótki akapit:** podaj wynik permutacyjny z B, wyjaśnij regułę skrajności i porównaj go z klasycznym. Dodaj założenie oraz granicę wniosku wynikającą z obserwacyjnych grup.
+**Napisz krótki akapit:** podaj wynik tasowania z B, wyjaśnij regułę dwustronnej skrajności i porównaj wynik z CHALLENGE 2 dla tego samego pytania i N. Dodaj założenie wymienialności i granicę wniosku wynikającą z obserwacyjnych grup.
 
 <!-- odpowiedz:S03 -->
 [UZUPELNIJ_S03]
@@ -382,209 +401,212 @@ print(permutacja)
 
 ## CHALLENGE 4: Wielkość różnicy i precyzja
 
-Przedział dotyczy różnicy średnich czasów, nie zakresu czasów pojedynczych osób. Bootstrap zachowuje grupy i losuje ze zwracaniem wewnątrz nich. Efekt g nie ma jednostki minut.
+Przedział dotyczy różnicy średnich czasów w minutach, a g — różnicy w jednostkach SD. Bootstrap zachowuje grupy i losuje ze zwracaniem wewnątrz nich. Blok wyświetla tabele „Efekty” i „95% przedziały różnicy” oraz wykres „Dwa przedziały różnicy”.
 
-Porównaj dwa CI tej samej różnicy. Odczytaj także znak g. Nie przenoś przedziału surowej różnicy do opisu standaryzowanego efektu.
-
-```{r s04-efekt}
+```{r s04-efekt, fig.height=2.6, fig.cap="Dwa przedziały różnicy średnich czasu nowi minus doświadczeni w minutach: Welch i bootstrap w grupach. Romb oznacza estymatę, liczby przy końcach odcinków — granice przedziału, a linia przerywana — zero."}
 efekt <- podsumowanie_porownania(porownanie, jednostka='min')
 print(efekt)
 ```
 
-**Napisz krótki akapit:** podaj różnicę, oba 95% CI i g. Wyjaśnij, jakie różnice pozostają zgodne z klasycznym przedziałem i jakiej dodatkowej informacji potrzeba do oceny praktycznej wagi minut.
+**Napisz krótki akapit:** podaj różnicę, oba 95% CI i g. Wyjaśnij, jakie różnice pozostają zgodne z klasycznym przedziałem, i wskaż informację potrzebną do oceny praktycznej wagi minut.
 
 <!-- odpowiedz:S04 -->
 [UZUPELNIJ_S04]
 <!-- /odpowiedz:S04 -->
 
-## CHALLENGE 5: Popraw rekomendację
+## CHALLENGE 5: Poprawiona rekomendacja
 
-W szkicu raportu napisano: „Doświadczenie spowodowało wzrost kompetencji, dlatego szkolenie zagwarantuje szybsze i skuteczniejsze szukanie”. Dane nie pochodzą z eksperymentu szkoleniowego i nie zawierają miary skuteczności. Twoim zadaniem jest napisać wniosek, który rzeczywiście wynika z analizy.
-
-Wróć do liczb z CHALLENGE 1–4; blok przypomina podstawowy wynik i przedział. Nie wystarczy usunąć słowa „spowodowało”, pozostawiając pozostałe nieuzasadnione obietnice. Oddziel zaobserwowaną różnicę od pomysłu na następne badanie.
+Szkic raportu brzmi: „Doświadczenie spowodowało wzrost kompetencji, dlatego szkolenie zagwarantuje szybsze i skuteczniejsze szukanie”. Dane pochodzą z porównania obserwacyjnego i zawierają wyłącznie czas. Tabele „Test Welcha” i „Klasyczny 95% przedział różnicy” przypominają podstawowy wynik; liczby z CHALLENGE 1–4 uzupełniają opis.
 
 ```{r s05-raport}
 raport <- wynik_do_raportu(porownanie)
 print(raport)
 ```
 
-**Napisz krótki akapit:** zastąp szkic opisem różnicy czasu z N, efektem, CI i wynikami obu testów. Zakończ konkretnym ograniczeniem oraz propozycją pomiaru, który pozwoliłby zbadać skuteczność lub efekt szkolenia.
+**Napisz krótki akapit:** zastąp szkic opisem różnicy czasu z N, efektem, CI i wynikami obu testów. Oddziel zaobserwowaną różnicę od pomysłu na następne badanie. Zakończ ograniczeniem i propozycją pomiaru skuteczności albo projektu oceny szkolenia.
 
 <!-- odpowiedz:S05 -->
 [UZUPELNIJ_S05]
 <!-- /odpowiedz:S05 -->
 
-# Oddanie Z06 i kryteria oceny
+# Zapis i oddanie
 
-| Kryterium | Oczekiwany dowód | Punkty |
-|---|---|---:|
-| Z06.1 | Pytanie, skala, niezależność i uzasadnienie analizy | 3 |
-| Z06.2 | Opis grup, wykres, różnica, g i właściwie nazwany CI | 3 |
-| Z06.3 | Welch i tasowanie: N, t, df, oba p i kierunek | 2 |
-| Z06.4 | Własna interpretacja oraz znaczenie praktyczne | 2 |
+Sprawdź pięć własnych odpowiedzi: każda różnica ma kierunek i jednostkę, każdy przedział — nazwany parametr, a każde p — procedurę. Zapisz plik `zadanie.Rmd` w edytorze (Ctrl+S); funkcja oddania tworzy PDF z zapisanego pliku.
 
-Zapisz ten plik Rmd po uzupełnieniu pięciu odpowiedzi CHALLENGE. Następnie w konsoli R wywołaj jedno polecenie; nie umieszczaj wysyłki w wykonywanym chunku dokumentu.
+W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy aktualny PDF, sprawdza kompletność i wysyła go razem z Rmd oraz `analiza.R` do Twojego prywatnego repozytorium z dostępem prowadzącego.
 
 ```r
-badaniaZI::oddaj_zadanie("Z06")
+oddaj_zadanie("Z06")
 ```
 
-Funkcja tworzy PDF z zapisanej wersji Rmd, sprawdza kompletność i wysyła PDF wraz z Rmd oraz plikiem pomocniczym R do Twojego prywatnego repozytorium dostępnego prowadzącemu. Zwrócone potwierdzenie i SHA identyfikują oddaną wersję. Jeżeli pojawi się błąd, popraw wskazany problem, zapisz plik i ponów to samo polecenie. Nie wypełniasz dodatkowego formularza Markdown.
+Oddanie potwierdza komunikat z identyfikatorem SHA wysłanej wersji. Po komunikacie błędu popraw wskazany problem, zapisz plik i ponownie wywołaj `oddaj_zadanie("Z06")`; nowe potwierdzenie obejmuje nowe zmiany. Ocenę prowadzący zapisuje osobno w repozytorium.
 
-# Rozwinięcia do powtórki
+Po potwierdzonym oddaniu wykonaj w konsoli `wyloguj_github()`. Na komputerze współdzielonym wyloguj również przeglądarkę i zamknij RStudio, wybierając „Don't Save” przy pytaniu o przestrzeń roboczą `.RData`. Przy braku sieci zachowaj źródła przed czyszczeniem komputera i poproś prowadzącego o ustalenie sposobu dostarczenia pracy.
 
-Poniższe przykłady rozwijają LEARN. Nie są dodatkowymi zadaniami do oddania i nie wymagają osobnych odpowiedzi.
+## Co jest oceniane
+
+| Kryterium | Dowód w Twojej pracy | Odpowiedzi | Punkty |
+|----------------------------|------------------------------------------------------|--------------|------:|
+| Z06.1 Pytanie, niezależność i warunki dwóch procedur | $H_0$ o różnicy średnich czasów i uzasadnienie niezależnych grup; tasowanie etykiet, dwustronna skrajność i wymienialność przy $H_0$; grupy obserwacyjne | S02, S03 | 3 |
+| Z06.2 Opis grup, różnica czasu i jej niepewność | N, średnie i minima z jednostkami; różnica nowi minus doświadczeni, oba 95% CI i g; przedziały minut przypisane różnicy średnich | S01, S04 | 3 |
+| Z06.3 Statystyka Welcha i wynik permutacyjny | Różnica, SE, t, df i p ze zgodnym znakiem; T, B i $p_{\mathrm{perm}}$ porównane z Welchem dla tego samego pytania i N | S02, S03 | 2 |
+| Z06.4 Ostrożna rekomendacja oparta na wynikach | Własny opis N, różnicy, CI i obu testów; czas odróżniony od skuteczności, istotność od praktycznej wagi minut; ograniczenie i propozycja pomiaru | S01, S04, S05 | 2 |
+
+Ocena dotyczy zgodności zdania z danymi. Poziomy wykonania opisuje rubryka Z06: na stronie kursu w dokumencie `rubryki/Z06.html`, a w konsoli R po poleceniu `rubryka("Z06")`.
+
+# Rozwinięcia do powtórki — poza rdzeniem spotkania
+
+Rozwinięcia rozwijają LEARN: pełne wyliczenie podziałów, przedziały średnich i różnicy, pary, założenie o wariancjach i redakcję wniosków. Rozwinięcia służą powtórce i pozostają poza oceną.
 
 ## Wszystkie podziały czterech osób
 
-W dodatkowej demonstracji cztery osoby mają indeksy 1, 2, 4 i 5. Dwie pierwsze przypisano do doświadczonych, dwie ostatnie do nowych. Obserwowana różnica nowych minus doświadczonych wynosi $4{,}5-1{,}5=3$ punkty.
+W demonstracji cztery osoby mają indeksy 1, 2, 4 i 5. Osoby a i b należą do doświadczonych, c i d — do nowych. Obserwowana różnica nowi minus doświadczeni wynosi $4{,}5-1{,}5=3$ punkty.
 
-Tabela pokazuje wszystkie sześć sposobów wybrania dwóch osób do grupy nowych. Pozostałe dwie tworzą grupę doświadczonych. Zachowujemy więc liczebności 2 i 2 oraz wszystkie cztery wyniki.
+Tabela „Sześć podziałów czterech osób” podaje wszystkie sposoby wybrania dwóch osób do grupy nowych, z liczebnościami 2 i 2 oraz wszystkimi czterema wynikami. Sześć podziałów daje różnice −3, −1, 0, 0, 1 i 3 punkty.
 
 ```{r wszystkie-permutacje}
-uklady <- pokaz_tabele(mini_permutacje)
+uklady <- podzialy_czterech_osob()
 print(uklady)
 ```
 
-Dwa z sześciu układów dają bezwzględną różnicę co najmniej 3. Dokładny udział wynosi $2/6=1/3$. Mimo dużej obserwowanej różnicy tak mały zbiór możliwych układów nie daje małego dwustronnego p.
+Dwa z sześciu podziałów dają bezwzględną różnicę co najmniej 3, więc $p=2/6=1/3$. Przy czterech osobach najmniejsze osiągalne p wynosi 2/6 = 1/3, także przy dużej obserwowanej różnicy.
 
-W pełnym wyliczeniu przestrzeni nie używamy korekty +1 tak jak przy wcześniejszym schemacie losowania B przestawień. Liczymy wszystkie układy, łącznie z obserwowanym. Każdy ma określoną wagę w modelu; powtarzające się wartości różnicy nie są duplikatami do usunięcia.
+Pełne wyliczenie daje p jako udział skrajnych układów, łącznie z obserwowanym; każdy układ ma tę samą wagę. Rozkład zerowy powstaje ze zmiany przypisania wyników do grup; przestawienie kolejności wierszy wewnątrz grupy zachowuje średnie.
 
-Jeśli zamiast etykiet tylko przestawisz kolejność wierszy wewnątrz każdej grupy, średnie się nie zmienią. Nie zbudujesz w ten sposób rozkładu zerowego różnicy. Operacja ma zmienić powiązanie wyniku z grupą, a nie wyłącznie wygląd tabeli.
+## Przedziały średnich i przedział różnicy
 
-## Nakładanie przedziałów średnich nie jest testem różnicy
+Niepewność różnicy niezależnych średnich wynika z sumy ich wariancji:
 
-Przedział dla każdej średniej grupowej i przedział ich różnicy to nie ten sam obiekt. Ocenianie istotności tylko przez wzrokową kontrolę nakładania dwóch osobnych CI może prowadzić do błędu. Dla niezależnych grup niepewność różnicy wynika z sumy wariancji średnich, a nie z sumy ich marginesów.
+$$
+SE(\bar x_B-\bar x_A)=\sqrt{SE_A^2+SE_B^2}.
+$$
 
-Rozważmy hipotetyczne grupy A i B, każda N=100, SD=1, o średnich 3 i 3,3 punktu. Tabela pokazuje osobne 95% przedziały t średnich. Nie są to dane S02 ani wynik indywidualnego projektu.
+Hipotetyczne grupy A i B mają po 100 osób, SD 1 oraz średnie 3 i 3,3 punktu. Tabele „95% przedziały średnich grup A i B” i „95% przedział różnicy B − A” podają: A — od 2,802 do 3,198, B — od 3,102 do 3,498; różnica 0,3, SE 0,1414, przedział od 0,021 do 0,579.
 
 ```{r osobne-przedzialy}
-przedzialy_grup <- pokaz_tabele(ci_grup_demo)
+przedzialy_grup <- przedzialy_grup_demo()
 print(przedzialy_grup)
 ```
 
-Przedział A kończy się około 3,198, a B zaczyna około 3,102. Nakładają się. Gdybyśmy stosowali regułę „nakładanie oznacza brak istotności”, od razu zakończylibyśmy analizę, ale byłaby to niewłaściwa reguła.
-
-Wykres uwidacznia wspólny zakres obu przedziałów. Kropki nadal wskazują dwie różne estymaty średnich. Nie zastępuj tego obrazu wykresem pudełkowym, bo ten dotyczyłby rozrzutu osób, nie niepewności średnich.
-
-```{r nakladanie-ci, fig.height=2.5}
-przedzialy_grup <- pokaz_wykres(wykres_nakladania)
-print(przedzialy_grup)
+```{r nakladanie-ci, fig.height=2.5, fig.cap="Przedziały średnich grup A i B. Oś pozioma: średnia w punktach. Grupa A: od 2,802 do 3,198, romb przy 3,0; grupa B: od 3,102 do 3,498, romb przy 3,3. Wspólny zakres obu przedziałów leży między 3,102 a 3,198."}
+nakladanie <- pokaz_wykres(wykres_nakladania)
+print(nakladanie)
 ```
 
-Teraz obliczamy niepewność różnicy B minus A: $SE=\sqrt{1/100+1/100}\approx0{,}1414$. Dla tych statystyk df Welcha wynosi 198. Gotowa tabela podaje różnicę oraz jej przedział.
+Przedziały średnich nakładają się między 3,102 a 3,198, a przedział różnicy [0,021; 0,579] leży powyżej zera. Wykres przedstawia niepewność średnich; rozrzut osób przedstawia wykres pudełkowy. Właściwa estymanda ma własny przedział.
 
-```{r ci-roznicy-demo}
-przedzial_roznicy <- pokaz_tabele(ci_roznicy_demo)
-print(przedzial_roznicy)
-```
+## Pary: pomiary powiązane
 
-Przedział różnicy wynosi około [0,021; 0,579] punktu i nie obejmuje zera. Osobne CI średnich mogą więc częściowo się nakładać, a odpowiadający test różnicy być istotny. Nie potrzebujemy nowej zasady wzrokowej; potrzebujemy właściwego przedziału dla właściwej estymandy.
-
-## Pary to nie inny przycisk dla tych samych niezależnych danych
-
-Wróćmy do osobnego przykładu sześciu osób przed instruktażem i po nim z W04. Każde ID ma dwa powiązane czasy. Różnicę definiujemy jako po minus przed, więc skrócenie ma znak ujemny.
-
-Tabela pokazuje dane i różnicę każdej osoby. Zwróć uwagę, że powiązania nie wynikają z podobnych wartości czasu. Nawet bardzo różne wyniki jednej osoby nadal tworzą tę samą parę.
+Sześć osób z wykładu W04 wykonało zadanie przed instruktażem i po nim. Parę tworzy identyfikator osoby; różnica po minus przed ma znak ujemny przy skróceniu czasu. Tabela „Sześć par pomiarów” podaje zmiany: −1, −2, −1, −3, −2 i −4 minuty.
 
 ```{r dane-parowane}
-pomiary <- pokaz_tabele(pary)
+pomiary <- dane_par()
 print(pomiary)
 ```
 
-Test parowany analizuje średnią zmian i ich SD. Jest to odpowiednik testu jednej średniej różnic względem zera. N wynosi sześć, bo mamy sześć kompletnych par, a nie dwanaście niezależnych wyników.
+```{r wykres-par, fig.cap="Sześć par: czas przed instruktażem i po nim. Oś pionowa: czas w minutach. Każdy odcinek łączy dwa pomiary jednej osoby; wszystkie sześć odcinków opada, o 1 do 4 minut, a etykiety przy pomiarze po podają osobę i zmianę."}
+pary_wykres <- pokaz_wykres(wykres_par)
+print(pary_wykres)
+```
 
-Gotowe podsumowanie pozwala sprawdzić znak i jednostkę. Odczytaj SD zmian oraz SE średniej zmiany. Nie zastępuj ich rozrzutem wszystkich czasów połączonych w jednym wektorze.
+Test par jest testem jednej średniej zmian względem zera; N wynosi sześć par:
+
+$$
+t=\frac{\bar d}{s_d/\sqrt{n_{\text{par}}}}=\frac{-2{,}17}{1{,}17/\sqrt6}=-4{,}54 .
+$$
+
+Tabela „Test par: średnia zmian po − przed” podaje: średnia zmiana −2,167 minuty, SD zmian 1,169, SE 0,477, 95% CI od −3,394 do −0,940, t = −4,540, df = 5, p = 0,0062.
 
 ```{r test-parowany}
-zmiana <- pokaz_tabele(pionowo(podsumowanie_par))
+zmiana <- test_par_do_raportu()
 print(zmiana)
 ```
 
-Dobór wariantu „paired” w programie musi wynikać z rzeczywistego powiązania danych. Nie wolno parować nowych i doświadczonych tylko po to, by uzyskać korzystniejsze p. Również pominięcie parowania w prawdziwym projekcie przed–po zmienia rachunek niepewności.
+Wariant „paired” wynika z projektu: te same osoby w dwóch pomiarach. Zmiana po instruktażu łączy działanie instruktażu z efektem powtórzenia zadania; rozdzielenie wymaga grupy kontrolnej.
 
-Nie ma automatycznej gwarancji przyczynowości. Osoby mogą poprawić wynik po instruktażu z powodu samego powtórzenia zadania. Test zmiany nie oddziela tych wyjaśnień bez odpowiedniego projektu kontrolnego.
+## Mała grupa z dużym rozrzutem: znaczenie założenia Welcha
 
-## Mała grupa z dużym rozrzutem: po co Welch
+Pierwsza grupa liczy 10 osób i ma SD 10 minut, druga — 100 osób i SD 2 minuty. Wkłady do wariancji różnicy wynoszą $100/10=10$ i $4/100=0{,}04$, więc SE Welcha wynosi $\sqrt{10{,}04}=3{,}17$ minuty.
 
-W dodatkowym rachunku pierwsza grupa liczy 10 osób i ma SD=10 minut, a druga 100 osób i SD=2 minuty. Wkłady do wariancji różnicy wynoszą $100/10=10$ i $4/100=0{,}04$. SE Welcha wynosi zatem $\sqrt{10{,}04}\approx3{,}17$ minuty.
+Wspólna wariancja łączy oba oszacowania: $(9\cdot100+99\cdot4)/108=12$, a SE w modelu równych wariancji wynosi $\sqrt{12\,(1/10+1/100)}=1{,}15$ minuty. Tabela „SE różnicy przy nierównych wariancjach” zestawia oba wyniki.
 
-Gdyby narzucić wspólną wariancję przez połączenie obu oszacowań, wynik łączonej wariancji wyniósłby 12. SE w modelu równych wariancji wyniosłoby $\sqrt{12(1/10+1/100)}\approx1{,}15$ minuty. Rachunki wykorzystują te same N i SD, ale inne założenia.
+```{r se-dwoch-modeli}
+se_modeli <- se_dwoch_modeli()
+print(se_modeli)
+```
 
-Różnica jest duża, ponieważ mała, bardzo zróżnicowana grupa zostaje w modelu wspólnej wariancji silnie „ściągnięta” przez dużą grupę o małym rozrzucie. Ten przykład nie stanowi reguły, że jedna metoda zawsze daje większe p. Pokazuje, dlaczego trzeba nazwać założenie i dlaczego Welch nie wymaga wstępnego uznania wariancji za równe.
-
-Surowe tasowanie etykiet też miesza te różne rozrzuty między grupami. Nie wolno więc opisywać go jako bezwarunkowej naprawy tego problemu. Jeśli potrzebujemy innej procedury, musi ona mieć uzasadnienie dla pytania o średnie przy nierównych wariancjach.
+Przedział Welcha jest prawie trzykrotnie szerszy: w modelu wspólnej wariancji mała, zróżnicowana grupa zostaje „ściągnięta” przez dużą grupę o małym rozrzucie. Przykład przedstawia wpływ założenia o wariancjach na SE. Tasowanie etykiet łączy rozrzuty grup, więc przy nierównych wariancjach wymaga statystyki studentyzowanej.
 
 ## Próby interpretacyjne z omówieniem
 
-## Próba A: znak się nie zgadza
+### Próba A: znak niezgodny z opisem
 
-Raport podaje „nowi minus doświadczeni = −0,44”, t=+3,82 i CI [0,21; 0,66]. Wszystkie trzy liczby mogą pochodzić z poprawnych obliczeń, ale nie z tego samego kierunku. Prawdopodobnie połączono różnicę 2−1 z testem 1−2.
+Raport podaje „nowi minus doświadczeni = −0,44”, t = +3,82 i CI [0,21; 0,66]. Trzy liczby pochodzą z dwóch kierunków odejmowania: różnica 2−1 połączona z testem 1−2.
 
-Poprawa polega na ujednoliceniu definicji, nie na usunięciu znaków. Dla kierunku nowi minus doświadczeni t i CI powinny być ujemne w tym przykładzie. Jeśli opis ma mówić o przewadze doświadczonych, trzeba przestawić cały wynik oraz nazwać nową kolejność.
+Poprawa ujednolica kierunek: dla kierunku nowi minus doświadczeni t i CI są ujemne. Opis przewagi doświadczonych wymaga przestawienia całego wyniku i nazwania nowej kolejności.
 
-## Próba B: „g=0,6, więc 60% osób korzysta”
+### Próba B: „g = 0,6, więc 60% osób korzysta”
 
-G nie jest proporcją. Powstaje przez podzielenie różnicy średnich przez miarę SD i ewentualną korektę. W jego wzorze nie ma licznika osób spełniających warunek ani mianownika całej grupy.
+g jest ilorazem różnicy średnich i SD. Poprawiony opis podaje naturalną różnicę oraz g jako standaryzowaną wielkość z nazwaną definicją. Pytanie o udział korzystających wymaga zmiennej kategorialnej i proporcji.
 
-Poprawiony opis podaje naturalną różnicę oraz g jako standaryzowaną wielkość z nazwaną definicją. Jeśli pytanie dotyczy udziału korzystających, potrzebujemy zmiennej kategorialnej i proporcji. Zaokrąglenie g do jednej cyfry nie zmienia rodzaju wielkości.
+### Próba C: „p = 0,75 dowodzi takich samych czasów”
 
-## Próba C: „p=0,75 dowodzi takich samych czasów”
+Przedział od −1,64 do 2,26 minuty opisuje zakres różnic zgodnych z danymi; część zakresu może mieć znaczenie praktyczne dla biblioteki.
 
-Brak odrzucenia H0 nie dowodzi równości. W naszym przykładzie czasu przedział obejmuje różnice od około −1,64 do 2,26 minuty. W zależności od celu biblioteki część tego zakresu może być praktycznie ważna.
+Bliskość wyników wykazuje test równoważności z tolerancją ustaloną przed badaniem.
 
-Gdy celem jest wykazanie wystarczającej bliskości wyników, potrzebujemy wcześniej zdefiniowanego zakresu tolerancji i odpowiedniej analizy równoważności. Nie zamieniamy standardowego testu różnicy w taki test przez zmianę słowa w raporcie.
+### Próba D: „istotna różnica oznacza dwie rozłączne grupy”
 
-## Próba D: „istotna różnica oznacza dwie rozłączne grupy”
+Wyniki osób mogą się silnie nakładać przy precyzyjnie oszacowanych średnich. Test dotyczy średnich; θ = 0,333 opisuje nakładanie rozkładów osób.
 
-Wyniki osób mogą się silnie nakładać, choć średnie są oszacowane dostatecznie precyzyjnie, aby odrzucić zero. Test dotyczy parametru średnich, nie bezbłędnej klasyfikacji każdej osoby. Pudełka i histogramy pomagają zachować tę perspektywę.
+Decyzja o indywidualnym wsparciu opiera się na obserwowanych potrzebach osoby; statystyka grupowa opisuje wzorzec.
 
-W decyzji o indywidualnym wsparciu warto rozważyć obserwowane potrzeby, nie tylko przynależność do grupy. Statystyka grupowa jest informacją o wzorcu, nie pełną diagnozą jednostki.
+### Próba E: „obie metody dowodzą wpływu”
 
-## Próba E: „obie metody dowodzą wpływu”
+Welch i tasowanie korzystają z tych samych danych obserwacyjnych. Cecha nieobserwowana różniąca grupy wpływa na obie analizy jednakowo.
 
-Welch i permutacja działają na tych samych obserwacyjnych danych. Nie tworzą dwóch niezależnych eksperymentów. Jeśli grupy różnią się cechą nieobserwowaną, obie analizy mogą odzwierciedlać tę samą mieszankę mechanizmów.
-
-Poprawna interpretacja mówi, że w syntetycznej próbie odnotowano różnicę związanej z grupą oceny, przy określonych założeniach wnioskowania. Wniosek o przyczynie wymaga dodatkowego projektu. Większa stanowczość języka nie zastąpi brakujących danych.
+Poprawna interpretacja brzmi: w syntetycznej próbie odnotowano różnicę oceny związaną z grupą, przy określonych założeniach wnioskowania. Wniosek o przyczynie wymaga dodatkowego projektu.
 
 ## Laboratorium odpornego wniosku
 
-## Jedna długa próba i dwa różne pytania
+### Jedna długa próba i dwa pytania
 
-W dodatkowym przykładzie nowi mają czasy 8, 9, 10, 11 i 42 minuty, a doświadczeni 7, 8, 9, 10 i 11. Średnie wynoszą 16 i 9, więc różnica średnich to 7 minut. Mediany wynoszą 10 i 9, więc różnica median to 1 minuta.
+Nowi mają czasy 8, 9, 10, 11 i 42 minuty, a doświadczeni 7, 8, 9, 10 i 11. Średnie wynoszą 16 i 9, więc różnica średnich to 7 minut; mediany wynoszą 10 i 9, a różnica median — 1 minuta.
 
 | Podsumowanie | Nowi | Doświadczeni | Nowi minus doświadczeni |
-|---|---:|---:|---:|
-| N ważnych czasów | 5 | 5 | Nie dotyczy |
+|--------------------------|---------:|---------:|---------:|
+| N ważnych czasów | 5 | 5 | — |
 | Średnia czasu [min] | 16 | 9 | 7 |
 | Mediana czasu [min] | 10 | 9 | 1 |
 
-Czy raportowanie różnicy 7 minut jest błędem? Nie, jeżeli pytanie rzeczywiście dotyczy średniego nakładu czasu, a 42 jest prawidłową obserwacją. Ta jedna długa próba może mieć duże znaczenie dla planowania wsparcia. Jednocześnie sama różnica średnich nie oddaje doświadczenia środka rozkładu.
+Table: Średnia i mediana przy jednej długiej próbie
 
-Gdyby usunąć 42, średnia pozostałych nowych spadłaby do 9,5, a różnica do 0,5 minuty. Ta zmiana pokazuje wpływ obserwacji, ale nie daje uzasadnienia do jej usunięcia. Potrzebujemy informacji o pomiarze: czy zegar działał poprawnie, czy osoba miała przerwę, czy zadanie należało do zaplanowanej procedury.
+Różnica 7 minut odpowiada na pytanie o średni nakład czasu, gdy 42 minuty są prawidłową obserwacją; długa próba ma znaczenie dla planowania wsparcia. Środek rozkładu opisuje mediana.
 
-Jeżeli stwierdzono błąd, korekta musi mieć podstawę w protokole i dzienniku. Jeżeli obserwacja jest prawidłowa, analiza dodatkowa bez niej może być jawnie oznaczonym sprawdzeniem wrażliwości, lecz nie powinna po cichu zastąpić głównego wyniku. Nie wybieramy wersji dającej mniejsze p lub oczekiwany kierunek.
+Po pominięciu 42 minut średnia nowych wynosi 9,5, a różnica 0,5 minuty. Decyzja o obserwacji wymaga informacji o pomiarze: działanie zegara, przerwa osoby, zgodność zadania z procedurą.
 
-Przejście na medianę również wymaga nazwania nowej estymandy. Może być sensowne dla pytania o środkowego użytkownika, ale nie odpowiada dokładnie na pytanie o łączny koszt czasu. Kompetencja statystyczna polega tutaj na zachowaniu obu perspektyw, nie na znalezieniu jednej „najlepszej” liczby dla każdego celu.
+Korekta błędu ma podstawę w protokole i dzienniku. Analiza bez prawidłowej obserwacji jest jawnie oznaczonym sprawdzeniem wrażliwości, a wynik główny zawiera wszystkie prawidłowe obserwacje.
 
-## Zaokrąglenie może ukryć znak przedziału
+Mediana odpowiada na pytanie o środkowego użytkownika; raport zachowuje obie perspektywy.
 
-Wyobraź sobie przedział różnicy [−0,004; 0,206] punktu. Po zaokrągleniu do dwóch miejsc dolna granica może wyglądać jak 0,00 lub −0,00. Nie powinno się na tej podstawie twierdzić, że przedział na pewno wyklucza zero.
+### Zaokrąglenie i znak przedziału
 
-Do decyzji używamy wartości niezaokrąglonych, a do prezentacji dobieramy tyle cyfr, aby nie zgubić istotnego dla interpretacji szczegółu. Nie oznacza to wypisywania kilkunastu miejsc po przecinku. Wystarczy pokazać w razie potrzeby trzy miejsca i wyraźnie opisać, że przedział obejmuje zero.
+Przedział różnicy [−0,004; 0,206] punktu po zaokrągleniu do dwóch miejsc ma dolną granicę 0,00. Dolna granica −0,004 oznacza przedział obejmujący zero.
 
-Ta sama zasada dotyczy p bliskiego progu. Liczba 0,0496 po zaokrągleniu do dwóch miejsc jest równa 0,05, ale nie staje się innym wynikiem obliczenia. Wniosek naukowy i tak nie powinien opierać się wyłącznie na położeniu po jednej stronie granicy.
+Decyzja korzysta z wartości niezaokrąglonych, a prezentacja — z liczby cyfr zachowującej istotny szczegół. Trzy miejsca po przecinku wystarczają, razem z opisem „przedział obejmuje zero”.
 
-## Ta sama nazwa grupy, różne mechanizmy doboru
+Wartość p = 0,0496 po zaokrągleniu do dwóch miejsc wynosi 0,05 i pozostaje wynikiem obliczenia 0,0496; wniosek opiera się na efekcie i przedziale.
 
-„Nowi użytkownicy” mogą oznaczać osoby na pierwszej wizycie, osoby korzystające krócej niż miesiąc albo uczestników, którzy sami tak się określili. Te definicje nie muszą obejmować tych samych ludzi. W projekcie trzeba użyć kryterium scenariusza, a w realnym badaniu podać regułę kwalifikacji.
+### Ta sama nazwa grupy, różne mechanizmy doboru
 
-Jeśli doświadczonych zaproszono podczas zaawansowanego szkolenia, a nowych przez otwarty formularz internetowy, porównanie łączy doświadczenie z różnymi mechanizmami rekrutacji. Równość N i poprawny Welch nie usuwają tej różnicy. Należy ją wymienić jako konkretne ograniczenie, zamiast dopisywać ogólne „wyniki wymagają dalszych badań”.
+„Nowi użytkownicy” mogą oznaczać osoby na pierwszej wizycie, osoby korzystające krócej niż miesiąc albo osoby, które same tak się określiły. Trzy definicje wyznaczają trzy różne grupy; raport podaje regułę kwalifikacji.
 
-Sensowna dalsza praca mogłaby ujednolicić zadanie, urządzenie i rekrutację, a także zebrać informacje o wcześniejszej znajomości podobnych narzędzi. Jeśli celem jest ocena nowej pomocy, można zaplanować przydział jej wersji niezależnie od doświadczenia. To projekt odpowiadający na pytanie o interwencję, nie tylko kolejny test tej samej tabeli.
+Doświadczeni zaproszeni podczas zaawansowanego szkolenia i nowi zaproszeni przez otwarty formularz różnią się także mechanizmem rekrutacji. Różny mechanizm rekrutacji jest konkretnym ograniczeniem porównania.
 
-## Zdanie, które pozostaje prawdziwe po zmianie p
+Dalsza praca ujednolica zadanie, urządzenie i rekrutację oraz zbiera informacje o znajomości podobnych narzędzi. Projekt z przydziałem wersji pomocy niezależnym od doświadczenia odpowiada na pytanie o interwencję.
 
-Spróbuj opisać wielkość i kierunek różnicy, nie używając słów „istotny” i „nieistotny”. Następnie dodaj przedział oraz ograniczenie. Dopiero na końcu dopisz statystykę i p. Jeśli po zmianie ostatniej liczby cały opis problemu staje się fałszywy, prawdopodobnie za dużo znaczenia przypisano samemu testowi.
+### Zdanie odporne na zmianę p
 
-W S02 niższa średnia oceny nowych jest własnością danych. Precyzja i p mówią, jak odczytywać tę różnicę w przyjętym modelu. Brak eksperymentu i ograniczony zakres indeksu pozostają ograniczeniami niezależnie od tego, ile miejsc po przecinku ma p.
+Opis zaczyna się od wielkości i kierunku różnicy, bez słów „istotny” i „nieistotny”; potem dochodzi przedział i ograniczenie, a na końcu statystyka i p. Opis, który przestaje być prawdziwy po zmianie ostatniej liczby, przypisuje za dużo znaczenia samemu testowi.
+
+W S02 niższa średnia oceny nowych jest własnością danych. Precyzja i p opisują odczyt różnicy −0,438 w przyjętym modelu. Ograniczenia projektu i indeksu pozostają przy każdej wartości p.

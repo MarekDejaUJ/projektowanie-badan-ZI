@@ -7,7 +7,8 @@ wykres_dystrybuanta(
   prog = NULL,
   dopasuj = character(),
   os = "Wartość",
-  tytul = NULL
+  tytul = NULL,
+  grupa = NULL
 )
 }
 \arguments{
@@ -20,6 +21,9 @@ wykres_dystrybuanta(
 \item{os}{Podpis osi wartosci.}
 
 \item{tytul}{Tytul wykresu.}
+
+\item{grupa}{Opcjonalne etykiety grup (dlugosc jak x): osobne schodki dla
+kazdej grupy, rozroznione typem linii, i wartosc F(c) kazdej grupy.}
 }
 \value{
 Obiekt ggplot; wykres rysuje print().
