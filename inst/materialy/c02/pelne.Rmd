@@ -55,6 +55,8 @@ Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN,
 
 Dane projektu indywidualnego poznasz na ćwiczeniu C09 (Warsztat projektu). Na C02 pracujesz na gotowym eksporcie, słowniku i procedurze przygotowania, a Twoim zadaniem jest opis skutków procedury. Rozwinięcia po CHALLENGE służą powtórce i pozostają poza oceną.
 
+Bloki LEARN kończą się **wzorcem zapisu** — przykładowym zdaniem według standardu APA (*Publication Manual of the American Psychological Association*, 7. wydanie, 2020): symbol statystyczny kursywą, jednostka przy liczbie, przecinek jako separator dziesiętny. Na ćwiczeniu C02 wzorce dotyczą części metodycznej raportu: wczytania danych, duplikatów, braków i liczebności. Zadania CHALLENGE stosują wzorce do eksportu cyfrowego archiwum.
+
 # Surowy plik i dokumenty, które go objaśniają
 
 W LEARN pracujemy na małym eksporcie badania katalogu: siedem rekordów opisuje sześć osób. CHALLENGE dotyczy odrębnego badania cyfrowego archiwum. Pełny zbiór S02 wraca w rozwinięciu po CHALLENGE. Wszystkie dane są syntetyczne i opisujemy je jako dane dydaktyczne; znaczenie przygotowanych sytuacji odczytujemy ze słownika.
@@ -134,6 +136,10 @@ Klasa `factor` przechowuje kategorie jako poziomy o kolejnych numerach. Numer po
 
 Etykiety „nowi” i „nowi ” (ze spacją na końcu) R traktuje jako dwie kategorie, bo końcowa spacja jest częścią tekstu. Usunięcie nadmiarowych spacji jest uzasadnione, gdy dokumentacja potwierdza, że obie etykiety oznaczają tę samą kategorię. Łączenie etykiet obejmuje wyłącznie zapisy tej samej kategorii.
 
+**Wzorzec zapisu importu (APA).**
+
+> Dane wczytano z pliku CSV (separator pól: średnik, znak dziesiętny: przecinek). Eksport zawierał 7 rekordów i 5 zmiennych; czas zadania odczytano jako zmienną liczbową w minutach, a ocenę — jako liczbę całkowitą na skali 1–5 z kodem braku 99.
+
 # LEARN 2: duplikat i konflikt identyfikatora
 
 Identyczny duplikat powtarza cały rekord. W demonstracji u02 ma dwa wiersze z tymi samymi danymi. Eksport zawiera jeden pomiar na osobę, więc dodatkowa kopia powtarza tę samą obserwację i podwaja jej wagę w średniej i odsetku.
@@ -157,6 +163,10 @@ print(konflikt)
 Dwie wersje mogą pochodzić z poprawionego pomiaru, dwóch zadań tej samej osoby albo błędu przypisania ID. Wybór wersji wymaga źródła: protokołu, numeru zadania lub informacji o wersji. Funkcja `przygotuj_ankiete()` zatrzymuje analizę przy konflikcie i wskazuje identyfikator do wyjaśnienia.
 
 Gdy osoba wykonała dwa zadania, oba rekordy są poprawne. Wiersz oznacza wtedy parę osoba–zadanie, a analiza wymaga agregacji do jednej wartości na osobę albo modelu pomiarów zależnych. Usunięcie powtórzonego ID usunęłoby wtedy część badania.
+
+**Wzorzec zapisu duplikatów (APA).**
+
+> Eksport zawierał 7 rekordów; identyczną kopię rekordu u02 usunięto, więc analizy objęły 6 osób. Kontrola identyfikatorów wykazała 0 konfliktów, czyli przypadków tego samego identyfikatora z różnymi wartościami.
 
 # LEARN 3: kod braku 99
 
@@ -250,7 +260,9 @@ Czas 35 minut może obejmować udokumentowaną przerwę techniczną. Analiza akt
 
 W rzeczywistym projekcie warto zaplanować rejestrację przerw, pomocy bibliotekarza i przerwania zadania. Takie pola oddzielają trudność wyszukiwania od technicznego zakłócenia. Brak pól o przerwach jest ograniczeniem pomiaru, zapisywanym w raporcie.
 
-**Przykładowy opis porównania:** „Cztery ważne czasy dają średnią 13,5 minuty. Po wyłączeniu prawidłowego pomiaru 35 minut zostałyby trzy osoby ze średnią 6,33 minuty. Niższa średnia wynika z pominięcia jednej długiej próby. Bez dowodu błędu zachowuję ten pomiar w opisie”.
+**Wzorzec zapisu braków i analizy wrażliwości (APA).**
+
+> Kod 99 w pozycji oceny (1 odpowiedź) oznaczono jako brak danych, a czas −2 min jako wartość spoza zakresu 0–120 min; średnia ocena pięciu ważnych odpowiedzi wyniosła *M* = 3,60 (skala 1–5). Cztery ważne czasy dały *M* = 13,50 min (*Mdn* = 7,25 min); po wyłączeniu prawidłowego pomiaru 35 min średnia wyniosłaby *M* = 6,33 min (*n* = 3), więc pomiar pozostaje w analizie.
 
 # LEARN 4: rachunek liczebności
 
@@ -303,7 +315,9 @@ print(pary)
 
 Usunięcie braków osobno z każdej kolumny przesuwa pozycje w wektorach. Funkcja obliczyłaby wtedy związek między wartościami różnych osób, choć działałaby bez komunikatu błędu. Warunek kompletności dotyczy wiersza pary.
 
-**Przykładowy odczyt:** „Po przygotowaniu pozostaje sześć osób, cztery ważne czasy i pięć ważnych ocen. Do wspólnej analizy czasu i oceny wchodzą trzy kompletne pary: u01, u03 i u06. Osoba u02 ma czas 8 minut i brak oceny, osoba u05 ma ocenę 2 i brak czasu; obie osoby wnoszą informację do opisów pojedynczych zmiennych”.
+**Wzorzec zapisu liczebności (APA).**
+
+> Po przygotowaniu danych analizy objęły 6 osób: 4 ważne czasy, 5 ważnych ocen i 5 ważnych wyników zadania. Analiza związku czasu i oceny objęła *n* = 3 kompletne pary (u01, u03 i u06); osoby u02 i u05 wnoszą informację do opisów pojedynczych zmiennych.
 
 # LEARN 5: dziennik decyzji, który można przeczytać
 
@@ -317,113 +331,181 @@ Zapis „oczyszczono bazę, usuwając błędy” pomija regułę, podstawę i za
 | To samo ID ma różne wyniki | Konflikt klucza | Identyfikatory do wyjaśnienia | Wstrzymanie analizy do rozstrzygnięcia |
 | Czas jest długi i mieści się w zakresie | Protokół bez informacji o błędzie | Obserwacje do sprawdzenia | Zachowanie ich jako obserwacji |
 
-Opis małej demonstracji brzmi: „Siedem rekordów obejmowało jedną identyczną kopię, więc po deduplikacji pozostało sześć osób. Kod 99 w ocenie oznaczono jako brak. Ujemny czas uznano za niedopuszczalny pomiar i oznaczono jako brak, zachowując pozostałe odpowiedzi osoby u05”.
-
-Uzupełnienie opisu brzmi: „Dostępne są cztery ważne czasy, pięć ocen i pięć wyników powodzenia. Do analizy związku czasu i oceny wchodzą trzy kompletne pary. Przyczyna braku u04 i źródło ujemnego czasu u05 pozostają nieznane”. Opis dotyczy demonstracji; archiwum w CHALLENGE ma własne liczby.
+Opis przygotowania łączy każdą regułę z liczbą objętych nią rekordów lub komórek i z konsekwencją dla liczebności. Wzorzec zapisu na końcu LEARN 5 opisuje demonstrację; archiwum w CHALLENGE ma własne liczby.
 
 Kody 99 i niedopuszczalne czasy liczy się jako komórki; mogą dotyczyć tych samych rekordów, a reguły braków zachowują wszystkie wiersze. Dlatego tabela dziennika podaje nazwę działania razem z liczbą.
 
-Chunk `notatka-demo` wyświetla dwie tabele: „Etapy przygotowania” (liczby jak w tabeli etapów) i „Dane do krótkiej notatki” z dziewięcioma miarami: 6 osób, 4 ważne czasy, średnia 13,5 i mediana 7,25 minuty, 5 ważnych ocen, 5 ważnych wyników, 3 powodzenia, czyli 60% ważnych wyników, oraz 3 pary czasu i oceny. Każde zdanie przykładowej notatki odsyła do jednej komórki. W CHALLENGE 5 sporządzisz analogiczną notatkę dla eksportu archiwum.
+Chunk `notatka-demo` wyświetla dwie tabele: „Etapy przygotowania” (liczby jak w tabeli etapów) i „Dane do krótkiej notatki” z dziewięcioma miarami: 6 osób, 4 ważne czasy, średnia 13,5 i mediana 7,25 minuty, 5 ważnych ocen, 5 ważnych wyników, 3 powodzenia, czyli 60% ważnych wyników, oraz 3 pary czasu i oceny. Każda liczba wzorca zapisu odsyła do jednej komórki tych tabel. W CHALLENGE 5 powstaje analogiczna notatka dla eksportu archiwum.
 
 ```{r notatka-demo}
 notatka <- podsumowanie_przygotowania(czyste_demo, etapy_demo)
 print(notatka)
 ```
 
+**Wzorzec zapisu przygotowania danych (APA).**
+
+> Eksport zawierał 7 rekordów; po usunięciu 1 identycznej kopii pozostało 6 osób. Kod 99 w ocenie (1 komórka) i ujemny czas (1 komórka) oznaczono jako braki danych, zachowując pozostałe pola tych osób. Dostępne były 4 ważne czasy (*M* = 13,50 min, *Mdn* = 7,25 min), 5 ważnych ocen i 5 wyników zadania, w tym 3 sukcesy (60%). Przyczyna braku czasu u04 i źródło ujemnego czasu u05 pozostają nieznane.
+
 # CHALLENGE — samodzielny audyt cyfrowego archiwum
 
-W pięciu zadaniach zastąp znaczniki odpowiedzi własnymi krótkimi akapitami. Pisz pod wynikami, poza blokami R. Surowe dane pozostają bez zmian.
+Instytucja sprawdza, czy opis kolekcji ułatwia znalezienie wskazanego obiektu. Eksport zawiera identyfikator, grupę doświadczenia, czas w minutach, ocenę zrozumiałości opisu 1–5 i sukces 0/1. Kod 99 oznacza brak oceny, a puste pole — brak danej wartości; czas od 0 do 120 minut jest dopuszczalny. Protokół archiwum podaje dwie dodatkowe informacje: zero minut oznacza zarejestrowane natychmiastowe zakończenie zadania bez sukcesu, a czas 35 minut jest potwierdzonym pomiarem. Surowy eksport pozostaje bez zmian, a wszystkie reguły są udokumentowane.
 
-## Scenariusz cyfrowego archiwum
+Każde z pięciu zadań ma ten sam układ:
 
-Instytucja sprawdza, czy opis kolekcji ułatwia znalezienie wskazanego obiektu. Eksport zawiera identyfikator, grupę doświadczenia, czas w minutach, ocenę zrozumiałości opisu 1–5 i sukces 0/1. Kod 99 oznacza brak oceny, a puste pole — brak danej wartości. Czas od 0 do 120 minut jest dopuszczalny.
+1. **Zadanie** — jedno zdanie z przedmiotem opisu.
+2. **Blok R** — uruchom go; wynik zawiera wszystkie liczby potrzebne do odpowiedzi.
+3. **Wskazówki** — gdzie w wyniku szukać informacji, jak ją nazwać i wzór zdania do uzupełnienia.
+4. **W akapicie wymagane** — elementy, które sprawdza prowadzący.
+5. **Twój akapit** — pole odpowiedzi w ramce: znacznik w nawiasie kwadratowym zastępujesz własnym tekstem, a linie komentarza nad nim i pod nim pozostawiasz bez zmian.
 
-Protokół archiwum podaje dwie dodatkowe informacje. Zero minut oznacza zarejestrowane natychmiastowe zakończenie zadania bez sukcesu. Czas 35 minut jest potwierdzonym pomiarem. Surowy eksport pozostaje bez zmian, a wszystkie reguły są udokumentowane.
+Akapit liczy 3–5 zdań zwykłego tekstu, bez kodu R. Liczby przepisujesz z wyniku bloku, z jednostką i mianownikiem.
 
 ## CHALLENGE 1: Audyt importu
 
-Analiza zaczyna się od kontroli importu: odczyt 7,5 minuty jako tekstu albo rozdzielenie liczby na dwa pola zmienia każdy dalszy wynik.
-
-Blok wyświetla trzy elementy: tabelę „Import archiwum”, tabelę „Typy kolumn” z klasą R i liczbą braków każdej kolumny oraz surowy tekst eksportu. Odczytaj nazwy kolumn, liczbę kolumn i klasę czasu. Odpowiedź podaje dowody z wydruku.
+**Zadanie:** opisz wczytanie eksportu archiwum: liczbę rekordów i kolumn, umowę pliku oraz typ czasu.
 
 ```{r s01-import}
 import_archiwum <- kontrola_importu_archiwum()
 print(import_archiwum)
 ```
 
-**Napisz krótki akapit:** podaj liczbę rekordów i kolumn, separator pól, znak dziesiętny oraz typ czasu. Wyjaśnij, jak ustalić liczbę różnych osób na podstawie liczby rekordów.
+Blok wyświetla tabelę „Import archiwum” z siedmioma rekordami, tabelę „Typy kolumn” z klasą R i liczbą braków każdej kolumny oraz surowy tekst eksportu.
+
+*Wskazówki:*
+
+- Separator pól i znak dziesiętny odczytasz z surowego tekstu: znak między polami rozdziela kolumny, a znak wewnątrz liczby „7,5” jest znakiem dziesiętnym.
+- Klasa `numeric` kolumny `czas_min` potwierdza, że czasy są liczbami; klasa `character` oznaczałaby czasy odczytane jako tekst.
+- Liczba rekordów to liczba wierszy tabeli. Liczbę osób ustala kontrola identyfikatorów: sprawdź, który identyfikator występuje dwa razy.
+- Wzorzec APA: „Dane wczytano z pliku CSV (separator: [..], znak dziesiętny: [..]). Eksport zawierał [..] rekordów i [..] zmiennych; czas zadania odczytano jako zmienną [klasa] w minutach. Identyfikator [..] występował dwa razy, więc [..] rekordów opisuje [..] osób”.
+
+*W akapicie wymagane:* (i) liczba rekordów i kolumn; (ii) separator pól i znak dziesiętny; (iii) klasa kolumny czasu; (iv) rozróżnienie rekordu i osoby na przykładzie powtórzonego identyfikatora.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S01.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S01 -->
 [UZUPELNIJ_S01]
 <!-- /odpowiedz:S01 -->
+:::
 
 ## CHALLENGE 2: Powtórzenie i konflikt
 
-W surowym eksporcie a03 występuje dwa razy z identycznymi polami. Dodatkowa tabela przedstawia inną sytuację: ten sam identyfikator z różnymi wynikami. Rozróżnienie obu sytuacji poprzedza decyzję o usunięciu informacji.
-
-Blok wyświetla tabelę „Etapy przygotowania” z liczbą rekordów i ważnych wartości na trzech etapach oraz tabelę „Odrębny przykład konfliktu”. Tabela konfliktu jest osobną ilustracją, poza analizowanym zbiorem.
+**Zadanie:** uzasadnij usunięcie identycznego powtórzenia a03 i opisz decyzję potrzebną przy konflikcie identyfikatora.
 
 ```{r s02-duplikat}
 powtorzenia <- kontrola_powtorzen_archiwum()
 print(powtorzenia)
 ```
 
-**Napisz krótki akapit:** uzasadnij usunięcie identycznego powtórzenia, podaj N przed i po oraz wyjaśnij, jakiej innej decyzji wymaga konflikt. Wskaż źródło informacji, które pozwala rozstrzygnąć konflikt.
+Blok wyświetla tabelę „Etapy przygotowania” z liczbą rekordów oraz ważnych czasów, ocen i wyników na trzech etapach oraz tabelę „Odrębny przykład konfliktu” — ilustrację spoza analizowanego zbioru.
+
+*Wskazówki:*
+
+- Wiersze „surowe” i „bez_duplikatu” różnią się o jedną identyczną kopię a03; kopia powtarza ten sam pomiar i podwoiłaby jego wagę w średniej i odsetku.
+- Konflikt to ten sam identyfikator z różnymi wartościami: w tabeli konfliktu a03 ma czas 12 i 18 minut oraz powodzenie 1 i 0.
+- Wybór wersji przy konflikcie wymaga źródła: protokołu obserwacji, numeru zadania albo informacji o wersji rekordu.
+- Wzorzec APA: „Eksport zawierał [..] rekordów; identyczną kopię rekordu [id] usunięto, więc analizy objęły [..] osób. Konflikt identyfikatora — ten sam [id] z różnymi wynikami — wymaga wyjaśnienia w [źródło] przed analizą”.
+
+*W akapicie wymagane:* (i) N przed usunięciem kopii i po nim; (ii) uzasadnienie usunięcia identycznego powtórzenia; (iii) różnica między identyczną kopią a konfliktem; (iv) źródło informacji rozstrzygające konflikt.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S02.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S02 -->
 [UZUPELNIJ_S02]
 <!-- /odpowiedz:S02 -->
+:::
 
 ## CHALLENGE 3: Zero, 99, 121 i NA
 
-W archiwum występują cztery sytuacje: obserwowane zero, kod braku oceny, czas poza zakresem i puste pole. Każda ma własne znaczenie i własną regułę.
-
-Blok wyświetla tabelę „Po zastosowaniu reguł” i tabelę „Kompletność par czasu i oceny”. Zestaw pierwszą z tabelą „Import archiwum” z CHALLENGE 1 i wskaż pola zmienione oraz zachowane.
+**Zadanie:** opisz obsługę czterech zapisów — zera, kodu 99, czasu 121 minut i pustego pola — oraz skutek reguł dla liczebności.
 
 ```{r s03-czyste}
 reguly <- kontrola_regul_archiwum()
 print(reguly)
 ```
 
-**Napisz krótki akapit:** opisz obsługę wartości 0, 99, 121 i pustej komórki. Podaj N ważnych czasów oraz kompletnych par czasu i oceny. Oddziel brak pomiaru od porażki zadania.
+Blok wyświetla tabelę „Cztery zapisy przed regułami i po nich” (osoba, kolumna, wartość przed regułą i po niej, reguła), tabelę „Po zastosowaniu reguł” i tabelę „Kompletność par czasu i oceny”.
+
+*Wskazówki:*
+
+- Zero minut u a01 jest zarejestrowanym wynikiem: według protokołu oznacza natychmiastowe zakończenie zadania bez sukcesu, więc zostaje w danych.
+- Reguła zmienia komórkę, a rekord zostaje: a03 zachowuje czas i powodzenie, a05 — ocenę i powodzenie.
+- Liczbę ważnych czasów policz w kolumnie `czas_min` tabeli „Po zastosowaniu reguł”; kompletne pary mają wartość `TRUE` w kolumnie `para`.
+- Brak pomiaru (NA) oznacza nieznany wynik, a porażka zadania to zarejestrowane powodzenie 0.
+- Wzorzec APA: „Kod 99 w ocenie ([..] komórka) i czas spoza zakresu 0–120 min ([..] komórka) oznaczono jako braki danych; zarejestrowany czas 0 min pozostał w analizie. Dostępnych było [..] ważnych czasów i [..] kompletnych par czasu i oceny”.
+
+*W akapicie wymagane:* (i) postępowanie z zerem, kodem 99, czasem 121 minut i pustym polem; (ii) rozróżnienie zmiany komórki i usunięcia rekordu; (iii) N ważnych czasów i kompletnych par; (iv) rozróżnienie braku pomiaru od porażki zadania.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S03.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S03 -->
 [UZUPELNIJ_S03]
 <!-- /odpowiedz:S03 -->
+:::
 
 ## CHALLENGE 4: Wynik z długą próbą i bez niej
 
-Osoba redagująca raport proponuje usunąć 35 minut, ponieważ „reszta użytkowników szukała krócej”. Instytucję interesuje także koszt trudnych, długich poszukiwań. Decyzję o obserwacji uzasadnia dowód o pomiarze.
+Osoba redagująca raport proponuje usunąć 35 minut, ponieważ „reszta użytkowników szukała krócej”. Instytucję interesuje także koszt trudnych, długich poszukiwań.
 
-Blok wyświetla tabelę „Z prawidłowym długim czasem i bez niego” z N i średnią dla dwóch wariantów oraz wykres „Zero, długi czas i brak: trzy różne zapisy”. Przy odczycie uwzględnij obserwowane zero. Średnia opisuje jawnie określony zbiór.
+**Zadanie:** porównaj opis czasu z potwierdzonym czasem 35 minut i bez niego oraz oceń propozycję usunięcia.
 
 ```{r s04-dlugi-czas, fig.cap="Zero, długi czas i brak: trzy różne zapisy. Oś pozioma: osoby a01, a02, a03 i a06; oś pionowa: czas w minutach. Punkty leżą przy 0; 7,5; 12 i 35 minutach. Osoby a04 (puste pole) i a05 (121 minut poza zakresem) mają brak czasu i nie mają punktu."}
 dlugi_czas <- wrazliwosc_archiwum()
 print(dlugi_czas)
 ```
 
-**Napisz krótki akapit:** podaj obie średnie i N, wyjaśnij zmianę oraz oceń propozycję usunięcia 35 minut. Zakończ zdaniem o informacji spoza wykresu, której wymaga ocena poprawności czasu 35 minut.
+Blok wyświetla tabelę „Z prawidłowym długim czasem i bez niego” z N, średnią i medianą dla obu wariantów oraz wykres „Zero, długi czas i brak: trzy różne zapisy”.
+
+*Wskazówki:*
+
+- Średnia zależy od każdej wartości, więc jedna długa próba przesuwa ją silnie; mediana zależy od kolejności wartości.
+- Protokół archiwum potwierdza czas 35 minut, a wykluczenie pomiaru wymaga dowodu błędu.
+- Oba warianty opisują różne zbiory osób: wszystkie ważne czasy albo osoby bez najdłuższej próby.
+- Informacja spoza wykresu to np. zapis przerw, pomocy bibliotekarza albo problemu technicznego w protokole.
+- Wzorzec APA: „Cztery ważne czasy dały *M* = [..] min (*Mdn* = [..] min). Po wyłączeniu potwierdzonego pomiaru 35 min średnia wyniosłaby *M* = [..] min (*n* = [..]); pomiar pozostaje w analizie, ponieważ [..]”.
+
+*W akapicie wymagane:* (i) obie średnie i mediany z N; (ii) źródło zmiany średniej; (iii) ocena propozycji z odwołaniem do protokołu; (iv) informacja spoza wykresu potrzebna do oceny czasu 35 minut.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S04.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S04 -->
 [UZUPELNIJ_S04]
 <!-- /odpowiedz:S04 -->
+:::
 
 ## CHALLENGE 5: Notatka o danych gotowych do analizy
 
-Badacz przekazuje przygotowany zbiór osobie opisującej wyniki. Osoba opisująca potrzebuje krótkiej notatki z regułami i mianownikami; dokumentację tworzy notatka, a nazwa pliku „czyste” pozostaje etykietą.
+Badacz przekazuje przygotowany zbiór osobie opisującej wyniki. Dokumentację tworzy notatka z regułami i mianownikami; nazwa pliku „czyste” pozostaje etykietą.
 
-Blok wyświetla tabelę „Etapy przygotowania” i tabelę „Dane do krótkiej notatki” z dziewięcioma miarami. Wybierz liczby opisujące wykonane działania. Notatka opisuje reguły i liczebności; reprezentatywność wymaga opisu doboru próby.
+**Zadanie:** napisz notatkę metodyczną o przygotowaniu danych archiwum w stylu APA.
 
 ```{r s05-dziennik}
 notatka <- podsumowanie_przygotowania(archiwum_czyste, archiwum_etapy)
 print(notatka)
 ```
 
-**Napisz krótki akapit:** przedstaw N surowe i końcowe, duplikat, dwie reguły braków, N ważnego czasu i sukcesu oraz jedno ograniczenie. Wyjaśnij, po co zachowuje się surowy plik i skrypt, który można wykonać ponownie.
+Blok wyświetla tabelę „Etapy przygotowania” i tabelę „Dane do krótkiej notatki” z dziewięcioma miarami: osoby, ważne czasy, średnia i mediana czasu, ważne oceny, ważne wyniki, powodzenia, odsetek powodzeń i pary czasu i oceny.
+
+*Wskazówki:*
+
+- Kolejność notatki: N surowe, usunięta kopia, reguły braków, ważne N każdej zmiennej, jedno ograniczenie.
+- Liczbę komórek zmienionych regułami podaje różnica między etapami „bez_duplikatu” i „po_regulach” w tabeli „Etapy przygotowania”.
+- Ograniczenie wynika z małej syntetycznej próby: przy pięciu znanych wynikach zmiana wyniku jednej osoby przesuwa odsetek powodzeń o 20 punktów procentowych.
+- Surowy plik i skrypt pozwalają odtworzyć wynik i sprawdzić każdą liczbę notatki.
+- Wzorzec APA: „Eksport zawierał [..] rekordów; po usunięciu [..] identycznej kopii pozostało [..] osób. [..] kod 99 i [..] czas spoza zakresu 0–120 min oznaczono jako braki danych. Dostępnych było [..] ważnych czasów (*M* = [..] min, *Mdn* = [..] min) i [..] wyników zadania, w tym [..] sukcesy ([..]%)”.
+
+*W akapicie wymagane:* (i) N surowe i końcowe z usuniętą kopią; (ii) dwie reguły braków z liczbą komórek; (iii) N ważnego czasu i wyników z miarami; (iv) jedno ograniczenie; (v) powód zachowania surowego pliku i skryptu.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S05.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S05 -->
 [UZUPELNIJ_S05]
 <!-- /odpowiedz:S05 -->
+:::
 
 # Zapis i oddanie
 

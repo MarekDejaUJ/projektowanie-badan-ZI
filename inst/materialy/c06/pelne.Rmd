@@ -57,6 +57,8 @@ Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN,
 
 Celem jest sprawdzenie, czy znak, jednostka, N, statystyka i przedział opowiadają tę samą historię. Ta sama kontrola przydaje się przy czytaniu gotowych raportów i artykułów.
 
+Bloki LEARN kończą się **wzorcem zapisu** — przykładowym zdaniem według standardu APA (*Publication Manual of the American Psychological Association*, 7. wydanie, 2020): symbol statystyczny kursywą, stopnie swobody w nawiasie, przedział w nawiasie kwadratowym, przecinek jako separator dziesiętny. Na ćwiczeniu C06 wzorce dotyczą porównania dwóch grup: opisu, testu Welcha, efektu z przedziałem, bootstrapu i tasowania. Zadania CHALLENGE stosują wzorce do czasu w repozytorium.
+
 # LEARN 1: pytanie, grupy i opis danych
 
 Grupa 1 to doświadczeni, a grupa 2 — nowi. Estymanda i estymata mają postać:
@@ -126,6 +128,10 @@ $$
 
 gdzie $\mathbb 1(\cdot)$ przyjmuje 1 przy spełnionym warunku i 0 w pozostałych parach. W 33% par (nowy, doświadczony) wyższą ocenę ma osoba nowa. Wniosek grupowy opisuje przesunięcie rozkładów, a decyzja o indywidualnej pomocy wymaga informacji o osobie.
 
+**Wzorzec zapisu opisu dwóch grup (APA).**
+
+> Doświadczeni użytkownicy (*n* = 74) uzyskali średni indeks *M* = 3,51 (*SD* = 0,70; *Mdn* = 3,50), a nowi (*n* = 73; 1 brak) *M* = 3,07 (*SD* = 0,69; *Mdn* = 3,17). Rozkłady grup w dużej części się nakładają: w 33% par (nowy, doświadczony) wyższą ocenę ma osoba nowa, $\hat\theta=0{,}33$.
+
 # LEARN 2: test Welcha — od różnicy do statystyki
 
 Oszacowana różnica wynosi:
@@ -188,6 +194,10 @@ print(wydruk)
 
 Odwrócenie argumentów zachowuje dwustronne p i zmienia znak t oraz przedziału. Grupę odniesienia wskazuje kod i opis analizy.
 
+**Wzorzec zapisu testu Welcha (APA).**
+
+> Średni indeks nowych był niższy niż doświadczonych o 0,438 punktu, *t*(144,98) = −3,82, *p* < 0,001 (dwustronny test *t* Welcha).
+
 # LEARN 3: wielkość efektu i przedział różnicy
 
 $$
@@ -234,6 +244,10 @@ print(efekt)
 ```
 
 Wartość g = −0,627 oznacza różnicę równą 0,63 łączonego SD osób, po korekcie małopróbkowej. Interpretacja praktyczna odwołuje się do treści pozycji i punktów indeksu: do zrozumiałości filtrów, lokalizacji dokumentu i oceny wsparcia.
+
+**Wzorzec zapisu efektu i przedziału różnicy (APA).**
+
+> Różnica nowi minus doświadczeni wyniosła −0,438 punktu, 95% CI [−0,665; −0,212], *g* = −0,63; oba końce przedziału są ujemne.
 
 # LEARN 4: bootstrap i tasowanie — dwa różne losowania
 
@@ -287,19 +301,25 @@ Histogram skupia się wokół zera, bo losowe etykiety rozbijają systematyczną
 
 ## Wymienialność: warunek tasowania etykiet
 
-Wymienialność wymaga wspólnego rozkładu grup przy $H_0$: wtedy etykiety można przestawiać. Przy różnych wariancjach grup tasowanie surowej różnicy średnich zmienia poziom α, więc przy równych średnich i różnych rozrzutach pierwszeństwo ma statystyka Welcha.
+Wymienialność wymaga wspólnego rozkładu grup przy $H_0$: wtedy etykiety można przestawiać. Przy różnych wariancjach grup tasowanie surowej różnicy średnich zmienia poziom $\alpha$, więc przy równych średnich i różnych rozrzutach pierwszeństwo ma statystyka Welcha.
 
 Grupy powstały poza kontrolą badacza, więc odczyt tasowania zależy od modelu wymienialności. Znaczenie dozwolonych przestawień i struktury danych opisują [Winkler i współautorzy (2014)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4010955/).
 
 Przy różnych wynikach dwóch procedur raport sprawdza pytanie, statystykę, N, wariancje, schemat losowania i B; tę samą kontrolę wykonuje przy wynikach zgodnych.
 
+**Wzorzec zapisu bootstrapu i tasowania (APA).**
+
+> Percentylowy przedział bootstrapowy różnicy (*B* = 1999, losowanie osobno w grupach) wyniósł [−0,659; −0,227]. Tasowanie etykiet grup (*B* = 1999) dało *p*~perm~ = 0,001, ponieważ 1 z 1999 przestawień było co najmniej tak skrajne jak obserwowana różnica; wynik zakłada wymienialność grup przy *H*~0~.
+
 # LEARN 5: od tabeli do akapitu wynikowego
 
-Pierwsza część akapitu: „Nowi użytkownicy mieli średni indeks 3,072 punktu (N = 73, SD = 0,687), a doświadczeni 3,510 (N = 74, SD = 0,704). Różnica nowi minus doświadczeni wyniosła −0,438 punktu, 95% CI Welcha [−0,665; −0,212]. Uzyskano t(144,98) = −3,822, p < 0,001, g Hedgesa = −0,627”.
+**Wzorzec zapisu wyniku porównania (APA).**
 
-Druga część: „Przedział percentylowy bootstrapu różnicy wyniósł [−0,659; −0,227]. Tasowanie etykiet przy B = 1999 dało $p_{\mathrm{perm}}$ = 0,001 przy modelu wymienialności. Wynik opisuje niższą deklarowaną użyteczność katalogu u nowych użytkowników”.
+> Nowi użytkownicy mieli średni indeks *M* = 3,07 (*SD* = 0,69; *n* = 73), a doświadczeni *M* = 3,51 (*SD* = 0,70; *n* = 74). Różnica nowi minus doświadczeni wyniosła −0,438 punktu, 95% CI [−0,665; −0,212], *t*(144,98) = −3,82, *p* < 0,001, *g* = −0,63.
+>
+> Percentylowy przedział bootstrapowy różnicy wyniósł [−0,659; −0,227], a tasowanie etykiet (*B* = 1999) dało *p*~perm~ = 0,001 przy modelu wymienialności. Wynik opisuje niższą deklarowaną użyteczność katalogu u nowych użytkowników.
 
-Akapit przedstawia strukturę odczytu; w CHALLENGE inny scenariusz ma inne grupy, treść wyniku i kierunek. Wskazanie elementu katalogu do poprawy wymaga analizy pozycji i obserwacji zadań.
+Wzorzec przedstawia strukturę odczytu; w CHALLENGE inny scenariusz ma inne grupy, treść wyniku i kierunek. Wskazanie elementu katalogu do poprawy wymaga analizy pozycji i obserwacji zadań.
 
 ## Czas wykonania: drugi wskaźnik i szeroki przedział
 
@@ -341,21 +361,29 @@ Dwie grupy mogą mieć podobny średni czas i różną skuteczność: jedna czę
 
 Powody przerwania pozostają poza danymi S02; powodzenie w grupach opisuje ćwiczenie C07 (Kategorie i zachowanie). Raport oddziela obliczoną statystykę od hipotetycznego wyjaśnienia.
 
+**Wzorzec zapisu wyniku z przedziałem obejmującym zero (APA).**
+
+> Średni czas nowych był dłuższy o 0,31 min, 95% CI [−1,64; 2,26], *t*(139,12) = 0,31, *p* = 0,754; tasowanie etykiet (*B* = 1999) dało *p*~perm~ = 0,773. Przedział obejmuje krótszy i dłuższy średni czas nowych, więc kierunek i wielkość różnicy czasu pozostają nieustalone.
+
 # CHALLENGE — samodzielna analiza czasu
 
-W pięciu zadaniach zastąp znaczniki odpowiedzi własnymi krótkimi akapitami. Wpisuj tekst pod wynikiem, poza chunkiem. Liczby odczytujesz z tabel repozytorium.
+Dwie grupy po dwanaście osób wykonują to samo zadanie w tym samym repozytorium. Grupy oznaczają wcześniejsze doświadczenie i powstały bez przydziału do szkolenia. Zarejestrowano minuty do zakończenia próby, niezależnie od poprawności; zbiór zawiera wyłącznie czas, a wszystkie czasy są ważne i syntetyczne. Pytanie dotyczy różnicy średnich czasów w kierunku nowi minus doświadczeni. Interpretacja obu testów przyjmuje niezależność osób, a tasowanie dodatkowo — wymienialność rozkładów przy hipotezie zerowej.
 
-## Scenariusz: czas odnalezienia publikacji w repozytorium
+Funkcja `porownaj_grupy()` w bloku CHALLENGE 1 przyjmuje tabelę danych, nazwę kolumny wyniku, ziarno losowania i domyślnie B = 1999 losowań. Zwraca opis grup, test Welcha, efekt, dwa przedziały i wynik tasowania w obiekcie `porownanie`, z którego korzystają bloki CHALLENGE 2–5.
 
-Dwie grupy po dwanaście osób wykonują to samo zadanie w tym samym repozytorium. Grupy oznaczają wcześniejsze doświadczenie i powstały bez przydziału do szkolenia. Zarejestrowano minuty do zakończenia próby, niezależnie od poprawności; zbiór zawiera wyłącznie czas. Wszystkie czasy są ważne i syntetyczne.
+Każde z pięciu zadań ma ten sam układ:
 
-Pytanie dotyczy różnicy średnich czasów: nowi minus doświadczeni. Interpretacja obu testów przyjmuje niezależność osób, a tasowanie dodatkowo — wymienialność rozkładów przy hipotezie zerowej.
+1. **Zadanie** — jedno zdanie z przedmiotem opisu.
+2. **Blok R** — uruchom go; wynik zawiera wszystkie liczby potrzebne do odpowiedzi.
+3. **Wskazówki** — gdzie w wyniku szukać informacji, jak ją nazwać i wzór zdania do uzupełnienia.
+4. **W akapicie wymagane** — elementy, które sprawdza prowadzący.
+5. **Twój akapit** — pole odpowiedzi w ramce: znacznik w nawiasie kwadratowym zastępujesz własnym tekstem, a linie komentarza nad nim i pod nim pozostawiasz bez zmian.
 
-Funkcja `porownaj_grupy()` przyjmuje tabelę danych, nazwę kolumny wyniku, dwie etykiety grup (odejmowanie: grupa 2 minus grupa 1; domyślnie nowi minus doświadczeni), liczbę losowań `B` (domyślnie 1999) i ziarno losowania. Zwraca opis grup, test Welcha, efekt, dwa przedziały i wynik tasowania. Blok `s01-opis` zapisuje wynik w obiekcie `porownanie`, z którego korzystają bloki CHALLENGE 2–5.
+Akapit liczy 3–5 zdań zwykłego tekstu, bez kodu R. Liczby przepisujesz z wyniku bloku, z jednostką, symbolem i mianownikiem.
 
 ## CHALLENGE 1: Dwie grupy w liczbach
 
-Opis czasu poprzedza odczyt p. Minimum jest wynikiem jednej osoby w próbie; średnia i SD opisują inne własności zbioru. Blok wyświetla tabelę „Opis grup [min]” (N, średnia, SD, minimum i maksimum) oraz wykres „Czas w dwóch grupach repozytorium” z osobami, pudełkami i średnimi w tej samej kolejności grup.
+**Zadanie:** porównaj czas obu grup liczebnością, średnią, SD, minimum i maksimum oraz wskaż dane potrzebne do oceny skuteczności.
 
 ```{r s01-opis, fig.height=3, fig.cap="Czas w dwóch grupach repozytorium. Oś pozioma: czas w minutach; punkty: czasy wszystkich osób; pudełko: kwartyle i mediana; romb: średnia grupy; linia kropkowana: granica Q3 + 1,5 IQR."}
 porownanie <- porownaj_grupy(repozytorium, zmienna='czas_min', ziarno=202628L)
@@ -363,71 +391,143 @@ opis <- opis_porownania(porownanie, jednostka='min', wykres=TRUE)
 print(opis)
 ```
 
-**Napisz krótki akapit:** porównaj N, średnie i minima obu grup, z minutami. Wskaż dane, które rozstrzygnęłyby, która grupa skuteczniej odnalazła publikację.
+Blok wyświetla tabelę „Opis grup [min]” (N, średnia, SD, minimum i maksimum) oraz wykres „Czas w dwóch grupach repozytorium” z osobami, pudełkami i średnimi.
+
+*Wskazówki:*
+
+- Minimum i maksimum to wyniki pojedynczych osób; średnia i SD opisują całą grupę.
+- Z wykresu odczytaj, czy pudełka się nakładają: nakładanie oznacza, że część nowych osób szukała krócej niż część doświadczonych.
+- Zbiór zawiera wyłącznie czas; ocena skuteczności wymaga wyniku 0/1 każdej osoby według kryterium poprawnej publikacji.
+- Wzorzec APA: „Doświadczeni (*n* = [..]) szukali średnio *M* = [..] min (*SD* = [..] min; od [..] do [..] min), a nowi (*n* = [..]) *M* = [..] min (*SD* = [..] min; od [..] do [..] min)”.
+
+*W akapicie wymagane:* (i) N obu grup; (ii) średnie i SD z minutami; (iii) minima i maksima jako wyniki pojedynczych osób; (iv) jedna cecha wykresu; (v) dane potrzebne do oceny skuteczności.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S01.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S01 -->
 [UZUPELNIJ_S01]
 <!-- /odpowiedz:S01 -->
+:::
 
 ## CHALLENGE 2: Pytanie, H0 i wynik klasyczny
 
-Hipoteza zerowa zakłada równą średnią czasu w dwóch populacjach porównania w przyjętym modelu; hipoteza dotyczy średnich populacji. Dwustronna alternatywa obejmuje oba kierunki różnicy. Tabela „Test Welcha — różnica grupy 2 minus grupy 1” podaje różnicę, SE, t, df i p; znak różnicy i t oraz mianownik statystyki łączą się z SE.
+**Zadanie:** zapisz hipotezę zerową porównania i odczytaj wynik testu Welcha z różnicą, SE, t, df i p.
 
 ```{r s02-welch}
 test <- test_porownania(porownanie)
 print(test)
 ```
 
-**Napisz krótki akapit:** zapisz $H_0$ w symbolach i słowami, uzasadnij porównanie niezależne oraz odczytaj różnicę, SE, t, df i p. Sformułuj wniosek warunkowo względem modelu.
+Blok wyświetla tabelę „Test Welcha — różnica grupy 2 minus grupy 1” z różnicą, SE, t, df i p.
+
+*Wskazówki:*
+
+- $H_0\colon \mu_{\text{nowi}}-\mu_{\text{doświadczeni}}=0$: średnie czasy w obu populacjach są równe; alternatywa dwustronna obejmuje oba kierunki.
+- Porównanie jest niezależne, bo każda osoba należy do jednej grupy i ma jeden pomiar.
+- t = różnica / SE: znak t jest zgodny ze znakiem różnicy, a df Welcha może być niecałkowite.
+- Wniosek jest warunkowy: p opisuje skrajność wyniku przy prawdziwej $H_0$ i założeniach testu.
+- Wzorzec APA: „Średni czas nowych był [dłuższy/krótszy] niż doświadczonych o [..] min (*SE* = [..] min), *t*([df]) = [..], *p* = [..] (dwustronny test *t* Welcha)”.
+
+*W akapicie wymagane:* (i) $H_0$ symbolami i słowami; (ii) uzasadnienie porównania niezależnego; (iii) różnica i SE z minutami; (iv) t, df i p; (v) wniosek sformułowany warunkowo względem modelu.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S02.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S02 -->
 [UZUPELNIJ_S02]
 <!-- /odpowiedz:S02 -->
+:::
 
 ## CHALLENGE 3: Wynik tasowania etykiet
 
-Drugie obliczenie zachowuje te same czasy i losowo przypisuje etykiety grup z zachowaniem liczebności; powstaje rozkład odniesienia dla obserwowanej różnicy. Wymienialność jest założeniem modelu zerowego, a grupy doświadczenia są obserwacyjne. Tabela „Tasowanie etykiet grup” podaje różnicę obserwowaną, liczbę skrajnych przestawień, B i $p_{\mathrm{perm}}$.
+Drugie obliczenie zachowuje te same czasy i losowo przypisuje etykiety grup z zachowaniem liczebności; powstaje rozkład odniesienia dla obserwowanej różnicy.
+
+**Zadanie:** odczytaj wynik tasowania etykiet, porównaj go z testem Welcha i nazwij założenie oraz granicę wniosku.
 
 ```{r s03-permutacja}
-permutacja <- permutacja_porownania(porownanie)
+permutacja <- tasowanie_i_welch(porownanie)
 print(permutacja)
 ```
 
-**Napisz krótki akapit:** podaj wynik tasowania z B, wyjaśnij regułę dwustronnej skrajności i porównaj wynik z CHALLENGE 2 dla tego samego pytania i N. Dodaj założenie wymienialności i granicę wniosku wynikającą z obserwacyjnych grup.
+Blok wyświetla tabelę „Tasowanie etykiet grup” (różnica obserwowana, liczba tasowań co najmniej tak skrajnych k, B i $p_{\mathrm{perm}}$) oraz tabelę „Test Welcha tego samego pytania”.
+
+*Wskazówki:*
+
+- $p_{\mathrm{perm}}=(k+1)/(B+1)$: podstaw k i B z tabeli.
+- Skrajność dwustronna liczy tasowania z różnicą co najmniej tak odległą od zera jak obserwowana, w obu kierunkach.
+- Oba testy dotyczą tego samego pytania i tych samych 24 osób; porównaj p Welcha i $p_{\mathrm{perm}}$.
+- Wymienialność zakłada wspólny rozkład grup przy $H_0$; grupy doświadczenia są obserwacyjne, więc wynik opisuje związek doświadczenia z czasem.
+- Wzorzec APA: „Tasowanie etykiet grup (*B* = [..]) dało *p*~perm~ = ([k] + 1)/([B] + 1) = [..], zbliżone do wyniku testu Welcha (*p* = [..]); wynik zakłada wymienialność grup przy *H*~0~”.
+
+*W akapicie wymagane:* (i) k, B i $p_{\mathrm{perm}}$ z rachunkiem; (ii) reguła dwustronnej skrajności; (iii) porównanie z p Welcha dla tego samego pytania i N; (iv) założenie wymienialności; (v) granica wniosku wynikająca z obserwacyjnych grup.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S03.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S03 -->
 [UZUPELNIJ_S03]
 <!-- /odpowiedz:S03 -->
+:::
 
 ## CHALLENGE 4: Wielkość różnicy i precyzja
 
-Przedział dotyczy różnicy średnich czasów w minutach, a g — różnicy w jednostkach SD. Bootstrap zachowuje grupy i losuje ze zwracaniem wewnątrz nich. Blok wyświetla tabele „Efekty” i „95% przedziały różnicy” oraz wykres „Dwa przedziały różnicy”.
+**Zadanie:** opisz różnicę czasu z dwoma 95% przedziałami i g oraz wskaż informację potrzebną do oceny praktycznej wagi minut.
 
 ```{r s04-efekt, fig.height=2.6, fig.cap="Dwa przedziały różnicy średnich czasu nowi minus doświadczeni w minutach: Welch i bootstrap w grupach. Romb oznacza estymatę, liczby przy końcach odcinków — granice przedziału, a linia przerywana — zero."}
 efekt <- podsumowanie_porownania(porownanie, jednostka='min')
 print(efekt)
 ```
 
-**Napisz krótki akapit:** podaj różnicę, oba 95% CI i g. Wyjaśnij, jakie różnice pozostają zgodne z klasycznym przedziałem, i wskaż informację potrzebną do oceny praktycznej wagi minut.
+Blok wyświetla tabelę „Efekty” (różnica średnich, łączone SD, d, korekta J i g Hedgesa), tabelę „95% przedziały różnicy” (Welch i bootstrap w grupach) oraz wykres „Dwa przedziały różnicy”.
+
+*Wskazówki:*
+
+- Przedział dotyczy różnicy średnich w minutach; wartości wewnątrz przedziału Welcha są zgodne z danymi przy założeniach metody.
+- Dolna granica przedziału bliska zera i górna rzędu 4 minut oznaczają szeroki zakres zgodnych różnic przy 12 osobach w grupie.
+- g dzieli różnicę przez łączone SD osób i jest liczbą bez jednostki; efekt w minutach pozostaje efektem głównym.
+- Praktyczną wagę minut ocenia się względem progu ustalonego przez instytucję, np. kosztu czasu przy typowym zadaniu.
+- Wzorzec APA: „Różnica nowi minus doświadczeni wyniosła [..] min, 95% CI [[..]; [..]] (Welch), a percentylowy przedział bootstrapowy [[..]; [..]]; *g* = [..]”.
+
+*W akapicie wymagane:* (i) różnica w minutach; (ii) oba 95% CI z nazwą metody; (iii) g jako efekt bez jednostki; (iv) zakres różnic zgodnych z przedziałem Welcha; (v) informacja potrzebna do oceny praktycznej wagi minut.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S04.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S04 -->
 [UZUPELNIJ_S04]
 <!-- /odpowiedz:S04 -->
+:::
 
 ## CHALLENGE 5: Poprawiona rekomendacja
 
-Szkic raportu brzmi: „Doświadczenie spowodowało wzrost kompetencji, dlatego szkolenie zagwarantuje szybsze i skuteczniejsze szukanie”. Dane pochodzą z porównania obserwacyjnego i zawierają wyłącznie czas. Tabele „Test Welcha” i „Klasyczny 95% przedział różnicy” przypominają podstawowy wynik; liczby z CHALLENGE 1–4 uzupełniają opis.
+Szkic raportu brzmi: „Doświadczenie spowodowało wzrost kompetencji, dlatego szkolenie zagwarantuje szybsze i skuteczniejsze szukanie”. Dane pochodzą z porównania obserwacyjnego i zawierają wyłącznie czas.
+
+**Zadanie:** zastąp szkic opisem różnicy czasu z liczbami obu testów i zaproponuj następne badanie.
 
 ```{r s05-raport}
 raport <- wynik_do_raportu(porownanie)
 print(raport)
 ```
 
-**Napisz krótki akapit:** zastąp szkic opisem różnicy czasu z N, efektem, CI i wynikami obu testów. Oddziel zaobserwowaną różnicę od pomysłu na następne badanie. Zakończ ograniczeniem i propozycją pomiaru skuteczności albo projektu oceny szkolenia.
+Blok wyświetla tabele „Opis grup [min]”, „Test Welcha”, „95% przedziały różnicy”, „Tasowanie etykiet grup” i „Efekt standaryzowany” — komplet liczb do akapitu wynikowego.
+
+*Wskazówki:*
+
+- Szkic zawiera trzy błędy: przyczynę („spowodowało”) przy grupach obserwacyjnych, kompetencje przy pomiarze wyłącznie czasu i skuteczność bez wyniku 0/1.
+- Opis wyniku podaje N, średnie, różnicę z przedziałem, oba testy i g.
+- Następne badanie: pomiar poprawności odnalezionej publikacji albo porównanie osób losowo przydzielonych do szkolenia i grupy bez szkolenia.
+- Wzorzec APA: „Nowi (*n* = [..]) szukali średnio *M* = [..] min (*SD* = [..]), a doświadczeni (*n* = [..]) *M* = [..] min (*SD* = [..]). Różnica wyniosła [..] min, 95% CI [[..]; [..]], *t*([df]) = [..], *p* = [..], *p*~perm~ = [..], *g* = [..]. Grupy są obserwacyjne, a zbiór zawiera wyłącznie czas; ocena szkolenia wymaga [..]”.
+
+*W akapicie wymagane:* (i) N, średnie, różnica i przedział; (ii) wyniki obu testów i g; (iii) zaobserwowana różnica oddzielona od pomysłu na badanie; (iv) ograniczenie: grupy obserwacyjne i sam czas; (v) propozycja pomiaru skuteczności albo projektu oceny szkolenia.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S05.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S05 -->
 [UZUPELNIJ_S05]
 <!-- /odpowiedz:S05 -->
+:::
 
 # Zapis i oddanie
 
@@ -557,7 +657,7 @@ Bliskość wyników wykazuje test równoważności z tolerancją ustaloną przed
 
 ### Próba D: „istotna różnica oznacza dwie rozłączne grupy”
 
-Wyniki osób mogą się silnie nakładać przy precyzyjnie oszacowanych średnich. Test dotyczy średnich; θ = 0,333 opisuje nakładanie rozkładów osób.
+Wyniki osób mogą się silnie nakładać przy precyzyjnie oszacowanych średnich. Test dotyczy średnich; $\theta=0{,}333$ opisuje nakładanie rozkładów osób.
 
 Decyzja o indywidualnym wsparciu opiera się na obserwowanych potrzebach osoby; statystyka grupowa opisuje wzorzec.
 

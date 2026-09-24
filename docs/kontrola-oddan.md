@@ -10,11 +10,15 @@ Samo `Rscript --vanilla` nie izoluje systemu plików ani sieci.
 
 ## Przygotowanie stanowiska kontroli
 
-Informatyk przygotowuje Docker z obsługą kontenerów Linux i zaufaną paczkę
-wersji kursu. Z katalogu źródeł tej samej wersji buduje obraz:
+Informatyk instaluje Docker Desktop z kontenerami Linux (w Windows z WSL 2)
+albo Docker Engine w systemie Linux. Następnie pobiera źródła wydania kursu,
+buduje z nich paczkę i z tego samego katalogu buduje obraz kontroli:
 
 ```sh
-Rscript --vanilla tools/kontrola/build.R /sciezka/do/badaniaZI_2.0.0.tar.gz
+git clone --branch v2.3.5 https://github.com/MarekDejaUJ/projektowanie-badan-ZI.git
+cd projektowanie-badan-ZI
+R CMD build --no-build-vignettes .
+Rscript --vanilla tools/kontrola/build.R badaniaZI_2.3.5.tar.gz
 ```
 
 Budowa ma dostęp do sieci w celu instalacji narzędzi. Jej kontekst obejmuje

@@ -1,7 +1,7 @@
 Package: badaniaZI
 Type: Package
 Title: Projektowanie Badan i Analiza Danych Ankietowych
-Version: 2.0.0
+Version: 2.3.5
 Authors@R: person("Marek", "Deja", role = c("aut", "cre"), email = "marek.deja@uj.edu.pl")
 Description: Materialy i narzedzia do ilosciowej czesci kursu projektowania
     badan na kierunku Zarzadzanie informacja. Zawiera indywidualne dane

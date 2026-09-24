@@ -334,7 +334,9 @@ wykres_pudelkowy <- function(x, grupa = NULL, os = "Warto\u015b\u0107", tytul = 
                           linetype = "dotted", colour = kolory_zi[["accent"]], linewidth = 0.9) +
     ggplot2::geom_text(data = granice, ggplot2::aes(x = .data$granica, y = as.numeric(.data$grupa) + 0.42,
                        label = .data$etykieta), size = 3, hjust = 0.5, vjust = 0)
-  p + ggplot2::scale_x_continuous(labels = os_pl) +
+  # Etykieta granicy wasa potrzebuje miejsca po prawej stronie osi.
+  p + ggplot2::scale_x_continuous(labels = os_pl,
+                                  expand = ggplot2::expansion(mult = c(0.05, if (granica) 0.2 else 0.05))) +
     ggplot2::labs(x = os, y = NULL, title = tytul) +
     theme_zi()
 }
@@ -433,5 +435,76 @@ wykres_log <- function(log, os = "Minuta sesji", tytul = NULL) {
                        hjust = -0.25, size = 3.1) +
     ggplot2::scale_x_continuous(labels = os_pl, expand = ggplot2::expansion(mult = c(0.05, 0.2))) +
     ggplot2::labs(x = os, y = NULL, title = tytul) +
+    theme_zi()
+}
+
+#' Sklad grup w populacji i w probie odpowiadajacych
+#'
+#' Dwa slupki skumulowane przedstawiaja udzialy grup [%] w populacji i wsrod
+#' osob, ktore odpowiedzialy. Napis w segmencie podaje udzial i srednia grupy,
+#' a podpis slupka srednia calosci wazona liczebnosciami: przy tych samych
+#' srednich grupowych srednia calosci zmienia sie wraz ze skladem.
+#' @param grupy Nazwy grup.
+#' @param populacja Liczebnosci grup w populacji.
+#' @param odpowiedzi Liczby odpowiedzi w grupach.
+#' @param srednie Srednie grupowe (te same w populacji i wsrod odpowiadajacych).
+#' @param cyfry Liczba miejsc po przecinku w srednich.
+#' @param tytul Tytul wykresu.
+#' @return Obiekt ggplot; wykres rysuje print().
+#' @export
+#' @examples
+#' p <- wykres_selekcja(c("Nowi", "Doswiadczeni"), c(700, 300), c(20, 80), c(3, 4))
+wykres_selekcja <- function(grupy, populacja, odpowiedzi, srednie, cyfry = 1L, tytul = NULL) {
+  n <- length(grupy)
+  stopifnot(n >= 2L, length(populacja) == n, length(odpowiedzi) == n, length(srednie) == n,
+            all(populacja >= 0), all(odpowiedzi >= 0), sum(populacja) > 0, sum(odpowiedzi) > 0)
+  zbiory <- c(paste0("Populacja\n\u015brednia ", liczba_pl(stats::weighted.mean(srednie, populacja), cyfry)),
+              paste0("Odpowiadaj\u0105cy\n\u015brednia ", liczba_pl(stats::weighted.mean(srednie, odpowiedzi), cyfry)))
+  d <- data.frame(zbior = factor(rep(zbiory, each = n), levels = zbiory),
+                  grupa = factor(rep(grupy, 2L), levels = rev(grupy)),
+                  udzial = c(100 * populacja / sum(populacja), 100 * odpowiedzi / sum(odpowiedzi)),
+                  srednia = rep(srednie, 2L))
+  d$etykieta <- paste0(liczba_pl(d$udzial, 0L), "%; \u015brednia ", liczba_pl(d$srednia, cyfry))
+  ggplot2::ggplot(d, ggplot2::aes(x = .data$zbior, y = .data$udzial, fill = .data$grupa)) +
+    ggplot2::geom_col(width = 0.6, colour = "white") +
+    ggplot2::geom_text(ggplot2::aes(label = .data$etykieta, group = .data$grupa),
+                       position = ggplot2::position_stack(vjust = 0.5), size = 3.2) +
+    ggplot2::scale_fill_manual(values = rev(unname(kolory_zi[c("secondary", "warning", "success", "info")][seq_len(n)])),
+                               name = NULL, breaks = grupy) +
+    ggplot2::scale_y_continuous(labels = os_pl, limits = c(0, 100.5)) +
+    ggplot2::labs(x = NULL, y = "Udzia\u0142 grupy [%]", title = tytul) +
+    theme_zi()
+}
+
+#' Polowa szerokosci przedzialu ufnosci roznicy srednich wobec liczebnosci
+#'
+#' Krzywa z * SD * pierwiastek(2 / n) dla dwoch rownych, niezaleznych grup
+#' o wspolnym odchyleniu standardowym; punkty z napisami oznaczaja wskazane
+#' liczebnosci grupy.
+#' @param sd Robocze odchylenie standardowe w obu grupach.
+#' @param n Liczebnosci jednej grupy opisane punktami.
+#' @param poziom Poziom przedzialu.
+#' @param os Podpis osi polowy szerokosci.
+#' @param tytul Tytul wykresu.
+#' @return Obiekt ggplot; wykres rysuje print().
+#' @export
+#' @examples
+#' p <- wykres_precyzja(0.8, c(25, 50, 100, 200))
+wykres_precyzja <- function(sd, n, poziom = 0.95, os = "Po\u0142owa szeroko\u015bci CI", tytul = NULL) {
+  stopifnot(length(sd) == 1L, sd > 0, all(n >= 2), poziom > 0, poziom < 1)
+  z <- stats::qnorm((1 + poziom) / 2)
+  siatka <- data.frame(n = seq(min(n), max(n), length.out = 200L))
+  siatka$h <- z * sd * sqrt(2 / siatka$n)
+  punkty <- data.frame(n = n, h = z * sd * sqrt(2 / n))
+  punkty$etykieta <- liczba_pl(punkty$h, 2L)
+  ggplot2::ggplot(siatka, ggplot2::aes(x = .data$n, y = .data$h)) +
+    ggplot2::geom_line(colour = kolory_zi[["primary"]], linewidth = 0.9) +
+    ggplot2::geom_point(data = punkty, colour = kolory_zi[["accent"]], size = 2.6) +
+    ggplot2::geom_text(data = punkty, ggplot2::aes(label = .data$etykieta), vjust = -0.9, hjust = 0, size = 3.2) +
+    ggplot2::scale_x_continuous(breaks = n, expand = ggplot2::expansion(mult = c(0.04, 0.1))) +
+    ggplot2::scale_y_continuous(labels = os_pl, limits = c(0, max(punkty$h) * 1.2)) +
+    ggplot2::labs(x = "Liczba os\u00f3b w jednej grupie", y = os, title = tytul,
+                  subtitle = paste0("SD = ", os_pl(sd), "; po\u0142owa szeroko\u015bci = ",
+                                    liczba_pl(z, 2L), " \u00b7 SD \u00b7 \u221a(2/n)")) +
     theme_zi()
 }

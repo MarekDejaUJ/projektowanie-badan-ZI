@@ -421,8 +421,6 @@ dziennik decyzji, który można przeczytać</a></li>
 <li><a href="#challenge-samodzielny-audyt-cyfrowego-archiwum" id="toc-challenge-samodzielny-audyt-cyfrowego-archiwum">CHALLENGE —
 samodzielny audyt cyfrowego archiwum</a>
 <ul>
-<li><a href="#scenariusz-cyfrowego-archiwum" id="toc-scenariusz-cyfrowego-archiwum">Scenariusz cyfrowego
-archiwum</a></li>
 <li><a href="#challenge-1-audyt-importu" id="toc-challenge-1-audyt-importu">CHALLENGE 1: Audyt importu</a></li>
 <li><a href="#challenge-2-powt%C3%B3rzenie-i-konflikt" id="toc-challenge-2-powtórzenie-i-konflikt">CHALLENGE 2: Powtórzenie i
 konflikt</a></li>
@@ -535,6 +533,13 @@ Gdy odczyt wyniku sprawia trudność, pytasz prowadzącego.</p>
 projektu). Na C02 pracujesz na gotowym eksporcie, słowniku i procedurze
 przygotowania, a Twoim zadaniem jest opis skutków procedury. Rozwinięcia
 po CHALLENGE służą powtórce i pozostają poza oceną.</p>
+<p>Bloki LEARN kończą się <strong>wzorcem zapisu</strong> — przykładowym
+zdaniem według standardu APA (<em>Publication Manual of the American
+Psychological Association</em>, 7. wydanie, 2020): symbol statystyczny
+kursywą, jednostka przy liczbie, przecinek jako separator dziesiętny. Na
+ćwiczeniu C02 wzorce dotyczą części metodycznej raportu: wczytania
+danych, duplikatów, braków i liczebności. Zadania CHALLENGE stosują
+wzorce do eksportu cyfrowego archiwum.</p>
 </div>
 <div id="surowy-plik-i-dokumenty-które-go-objaśniają" class="section level1">
 <h1>Surowy plik i dokumenty, które go objaśniają</h1>
@@ -1016,6 +1021,13 @@ kategorie, bo końcowa spacja jest częścią tekstu. Usunięcie nadmiarowych
 spacji jest uzasadnione, gdy dokumentacja potwierdza, że obie etykiety
 oznaczają tę samą kategorię. Łączenie etykiet obejmuje wyłącznie zapisy
 tej samej kategorii.</p>
+<p><strong>Wzorzec zapisu importu (APA).</strong></p>
+<blockquote>
+<p>Dane wczytano z pliku CSV (separator pól: średnik, znak dziesiętny:
+przecinek). Eksport zawierał 7 rekordów i 5 zmiennych; czas zadania
+odczytano jako zmienną liczbową w minutach, a ocenę — jako liczbę
+całkowitą na skali 1–5 z kodem braku 99.</p>
+</blockquote>
 </div>
 </div>
 <div id="learn-2-duplikat-i-konflikt-identyfikatora" class="section level1">
@@ -1213,6 +1225,13 @@ wskazuje identyfikator do wyjaśnienia.</p>
 oznacza wtedy parę osoba–zadanie, a analiza wymaga agregacji do jednej
 wartości na osobę albo modelu pomiarów zależnych. Usunięcie powtórzonego
 ID usunęłoby wtedy część badania.</p>
+<p><strong>Wzorzec zapisu duplikatów (APA).</strong></p>
+<blockquote>
+<p>Eksport zawierał 7 rekordów; identyczną kopię rekordu u02 usunięto,
+więc analizy objęły 6 osób. Kontrola identyfikatorów wykazała 0
+konfliktów, czyli przypadków tego samego identyfikatora z różnymi
+wartościami.</p>
+</blockquote>
 </div>
 <div id="learn-3-kod-braku-99" class="section level1">
 <h1>LEARN 3: kod braku 99</h1>
@@ -1536,7 +1555,7 @@ jest konwencją graficzną, a rozpoznanie błędu wymaga protokołu.</p>
 <pre class="r"><code>pudelko &lt;- pokaz_wykres(wykres_pudelka)
 print(pudelko)</code></pre>
 <div class="figure" style="text-align: center">
-<img role="img" aria-label="Cztery ważne czasy na wykresie pudełkowym. Oś pozioma: czas w minutach. Pudełko obejmuje czasy od 6,0 do 14,75 minuty, kreska mediany leży przy 7,25 minuty; kropkowana linia oznacza granicę Q3 + 1,5 IQR = 27,9 minuty, a punkt 35 minut leży na prawo od granicy." src="data:image/png;base64,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" alt="Cztery ważne czasy na wykresie pudełkowym. Oś pozioma: czas w minutach. Pudełko obejmuje czasy od 6,0 do 14,75 minuty, kreska mediany leży przy 7,25 minuty; kropkowana linia oznacza granicę Q3 + 1,5 IQR = 27,9 minuty, a punkt 35 minut leży na prawo od granicy." width="100%" />
+<img role="img" aria-label="Cztery ważne czasy na wykresie pudełkowym. Oś pozioma: czas w minutach. Pudełko obejmuje czasy od 6,0 do 14,75 minuty, kreska mediany leży przy 7,25 minuty; kropkowana linia oznacza granicę Q3 + 1,5 IQR = 27,9 minuty, a punkt 35 minut leży na prawo od granicy." src="data:image/png;base64,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" alt="Cztery ważne czasy na wykresie pudełkowym. Oś pozioma: czas w minutach. Pudełko obejmuje czasy od 6,0 do 14,75 minuty, kreska mediany leży przy 7,25 minuty; kropkowana linia oznacza granicę Q3 + 1,5 IQR = 27,9 minuty, a punkt 35 minut leży na prawo od granicy." width="100%" />
 <p class="caption">
 Cztery ważne czasy na wykresie pudełkowym. Oś pozioma: czas w minutach.
 Pudełko obejmuje czasy od 6,0 do 14,75 minuty, kreska mediany leży przy
@@ -1622,11 +1641,16 @@ przypuszczenie o przerwie pozostaje przypuszczeniem.</p>
 bibliotekarza i przerwania zadania. Takie pola oddzielają trudność
 wyszukiwania od technicznego zakłócenia. Brak pól o przerwach jest
 ograniczeniem pomiaru, zapisywanym w raporcie.</p>
-<p><strong>Przykładowy opis porównania:</strong> „Cztery ważne czasy
-dają średnią 13,5 minuty. Po wyłączeniu prawidłowego pomiaru 35 minut
-zostałyby trzy osoby ze średnią 6,33 minuty. Niższa średnia wynika z
-pominięcia jednej długiej próby. Bez dowodu błędu zachowuję ten pomiar w
-opisie”.</p>
+<p><strong>Wzorzec zapisu braków i analizy wrażliwości
+(APA).</strong></p>
+<blockquote>
+<p>Kod 99 w pozycji oceny (1 odpowiedź) oznaczono jako brak danych, a
+czas −2 min jako wartość spoza zakresu 0–120 min; średnia ocena pięciu
+ważnych odpowiedzi wyniosła <em>M</em> = 3,60 (skala 1–5). Cztery ważne
+czasy dały <em>M</em> = 13,50 min (<em>Mdn</em> = 7,25 min); po
+wyłączeniu prawidłowego pomiaru 35 min średnia wyniosłaby <em>M</em> =
+6,33 min (<em>n</em> = 3), więc pomiar pozostaje w analizie.</p>
+</blockquote>
 </div>
 </div>
 <div id="learn-4-rachunek-liczebności" class="section level1">
@@ -1932,11 +1956,13 @@ TRUE
 wektorach. Funkcja obliczyłaby wtedy związek między wartościami różnych
 osób, choć działałaby bez komunikatu błędu. Warunek kompletności dotyczy
 wiersza pary.</p>
-<p><strong>Przykładowy odczyt:</strong> „Po przygotowaniu pozostaje
-sześć osób, cztery ważne czasy i pięć ważnych ocen. Do wspólnej analizy
-czasu i oceny wchodzą trzy kompletne pary: u01, u03 i u06. Osoba u02 ma
-czas 8 minut i brak oceny, osoba u05 ma ocenę 2 i brak czasu; obie osoby
-wnoszą informację do opisów pojedynczych zmiennych”.</p>
+<p><strong>Wzorzec zapisu liczebności (APA).</strong></p>
+<blockquote>
+<p>Po przygotowaniu danych analizy objęły 6 osób: 4 ważne czasy, 5
+ważnych ocen i 5 ważnych wyników zadania. Analiza związku czasu i oceny
+objęła <em>n</em> = 3 kompletne pary (u01, u03 i u06); osoby u02 i u05
+wnoszą informację do opisów pojedynczych zmiennych.</p>
+</blockquote>
 </div>
 </div>
 <div id="learn-5-dziennik-decyzji-który-można-przeczytać" class="section level1">
@@ -1992,15 +2018,9 @@ konsekwencję dla wyniku.</p>
 </tr>
 </tbody>
 </table>
-<p>Opis małej demonstracji brzmi: „Siedem rekordów obejmowało jedną
-identyczną kopię, więc po deduplikacji pozostało sześć osób. Kod 99 w
-ocenie oznaczono jako brak. Ujemny czas uznano za niedopuszczalny pomiar
-i oznaczono jako brak, zachowując pozostałe odpowiedzi osoby u05”.</p>
-<p>Uzupełnienie opisu brzmi: „Dostępne są cztery ważne czasy, pięć ocen
-i pięć wyników powodzenia. Do analizy związku czasu i oceny wchodzą trzy
-kompletne pary. Przyczyna braku u04 i źródło ujemnego czasu u05
-pozostają nieznane”. Opis dotyczy demonstracji; archiwum w CHALLENGE ma
-własne liczby.</p>
+<p>Opis przygotowania łączy każdą regułę z liczbą objętych nią rekordów
+lub komórek i z konsekwencją dla liczebności. Wzorzec zapisu na końcu
+LEARN 5 opisuje demonstrację; archiwum w CHALLENGE ma własne liczby.</p>
 <p>Kody 99 i niedopuszczalne czasy liczy się jako komórki; mogą dotyczyć
 tych samych rekordów, a reguły braków zachowują wszystkie wiersze.
 Dlatego tabela dziennika podaje nazwę działania razem z liczbą.</p>
@@ -2008,9 +2028,9 @@ Dlatego tabela dziennika podaje nazwę działania razem z liczbą.</p>
 przygotowania” (liczby jak w tabeli etapów) i „Dane do krótkiej notatki”
 z dziewięcioma miarami: 6 osób, 4 ważne czasy, średnia 13,5 i mediana
 7,25 minuty, 5 ważnych ocen, 5 ważnych wyników, 3 powodzenia, czyli 60%
-ważnych wyników, oraz 3 pary czasu i oceny. Każde zdanie przykładowej
-notatki odsyła do jednej komórki. W CHALLENGE 5 sporządzisz analogiczną
-notatkę dla eksportu archiwum.</p>
+ważnych wyników, oraz 3 pary czasu i oceny. Każda liczba wzorca zapisu
+odsyła do jednej komórki tych tabel. W CHALLENGE 5 powstaje analogiczna
+notatka dla eksportu archiwum.</p>
 <pre class="r"><code>notatka &lt;- podsumowanie_przygotowania(czyste_demo, etapy_demo)
 print(notatka)</code></pre>
 <p><strong>Etapy przygotowania</strong></p>
@@ -2175,33 +2195,46 @@ Pary czasu i oceny
 </tr>
 </tbody>
 </table>
+<p><strong>Wzorzec zapisu przygotowania danych (APA).</strong></p>
+<blockquote>
+<p>Eksport zawierał 7 rekordów; po usunięciu 1 identycznej kopii
+pozostało 6 osób. Kod 99 w ocenie (1 komórka) i ujemny czas (1 komórka)
+oznaczono jako braki danych, zachowując pozostałe pola tych osób.
+Dostępne były 4 ważne czasy (<em>M</em> = 13,50 min, <em>Mdn</em> = 7,25
+min), 5 ważnych ocen i 5 wyników zadania, w tym 3 sukcesy (60%).
+Przyczyna braku czasu u04 i źródło ujemnego czasu u05 pozostają
+nieznane.</p>
+</blockquote>
 </div>
 <div id="challenge-samodzielny-audyt-cyfrowego-archiwum" class="section level1">
 <h1>CHALLENGE — samodzielny audyt cyfrowego archiwum</h1>
-<p>W pięciu zadaniach zastąp znaczniki odpowiedzi własnymi krótkimi
-akapitami. Pisz pod wynikami, poza blokami R. Surowe dane pozostają bez
-zmian.</p>
-<div id="scenariusz-cyfrowego-archiwum" class="section level2">
-<h2>Scenariusz cyfrowego archiwum</h2>
 <p>Instytucja sprawdza, czy opis kolekcji ułatwia znalezienie wskazanego
 obiektu. Eksport zawiera identyfikator, grupę doświadczenia, czas w
 minutach, ocenę zrozumiałości opisu 1–5 i sukces 0/1. Kod 99 oznacza
-brak oceny, a puste pole — brak danej wartości. Czas od 0 do 120 minut
-jest dopuszczalny.</p>
-<p>Protokół archiwum podaje dwie dodatkowe informacje. Zero minut
-oznacza zarejestrowane natychmiastowe zakończenie zadania bez sukcesu.
-Czas 35 minut jest potwierdzonym pomiarem. Surowy eksport pozostaje bez
-zmian, a wszystkie reguły są udokumentowane.</p>
-</div>
+brak oceny, a puste pole — brak danej wartości; czas od 0 do 120 minut
+jest dopuszczalny. Protokół archiwum podaje dwie dodatkowe informacje:
+zero minut oznacza zarejestrowane natychmiastowe zakończenie zadania bez
+sukcesu, a czas 35 minut jest potwierdzonym pomiarem. Surowy eksport
+pozostaje bez zmian, a wszystkie reguły są udokumentowane.</p>
+<p>Każde z pięciu zadań ma ten sam układ:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Zadanie</strong> — jedno zdanie z przedmiotem opisu.</li>
+<li><strong>Blok R</strong> — uruchom go; wynik zawiera wszystkie liczby
+potrzebne do odpowiedzi.</li>
+<li><strong>Wskazówki</strong> — gdzie w wyniku szukać informacji, jak
+ją nazwać i wzór zdania do uzupełnienia.</li>
+<li><strong>W akapicie wymagane</strong> — elementy, które sprawdza
+prowadzący.</li>
+<li><strong>Twój akapit</strong> — pole odpowiedzi w ramce: znacznik w
+nawiasie kwadratowym zastępujesz własnym tekstem, a linie komentarza nad
+nim i pod nim pozostawiasz bez zmian.</li>
+</ol>
+<p>Akapit liczy 3–5 zdań zwykłego tekstu, bez kodu R. Liczby
+przepisujesz z wyniku bloku, z jednostką i mianownikiem.</p>
 <div id="challenge-1-audyt-importu" class="section level2">
 <h2>CHALLENGE 1: Audyt importu</h2>
-<p>Analiza zaczyna się od kontroli importu: odczyt 7,5 minuty jako
-tekstu albo rozdzielenie liczby na dwa pola zmienia każdy dalszy
-wynik.</p>
-<p>Blok wyświetla trzy elementy: tabelę „Import archiwum”, tabelę „Typy
-kolumn” z klasą R i liczbą braków każdej kolumny oraz surowy tekst
-eksportu. Odczytaj nazwy kolumn, liczbę kolumn i klasę czasu. Odpowiedź
-podaje dowody z wydruku.</p>
+<p><strong>Zadanie:</strong> opisz wczytanie eksportu archiwum: liczbę
+rekordów i kolumn, umowę pliku oraz typ czasu.</p>
 <pre class="r"><code>import_archiwum &lt;- kontrola_importu_archiwum()
 print(import_archiwum)</code></pre>
 <p><strong>Import archiwum</strong></p>
@@ -2428,22 +2461,41 @@ a03;doświadczeni;12,0;99;1
 a04;nowi;;2;
 a05;doświadczeni;121,0;5;0
 a06;doświadczeni;35,0;4;1</code></pre>
-<p><strong>Napisz krótki akapit:</strong> podaj liczbę rekordów i
-kolumn, separator pól, znak dziesiętny oraz typ czasu. Wyjaśnij, jak
-ustalić liczbę różnych osób na podstawie liczby rekordów.</p>
+<p>Blok wyświetla tabelę „Import archiwum” z siedmioma rekordami, tabelę
+„Typy kolumn” z klasą R i liczbą braków każdej kolumny oraz surowy tekst
+eksportu.</p>
+<p><em>Wskazówki:</em></p>
+<ul>
+<li>Separator pól i znak dziesiętny odczytasz z surowego tekstu: znak
+między polami rozdziela kolumny, a znak wewnątrz liczby „7,5” jest
+znakiem dziesiętnym.</li>
+<li>Klasa <code>numeric</code> kolumny <code>czas_min</code> potwierdza,
+że czasy są liczbami; klasa <code>character</code> oznaczałaby czasy
+odczytane jako tekst.</li>
+<li>Liczba rekordów to liczba wierszy tabeli. Liczbę osób ustala
+kontrola identyfikatorów: sprawdź, który identyfikator występuje dwa
+razy.</li>
+<li>Wzorzec APA: „Dane wczytano z pliku CSV (separator: [..], znak
+dziesiętny: [..]). Eksport zawierał [..] rekordów i [..] zmiennych; czas
+zadania odczytano jako zmienną [klasa] w minutach. Identyfikator [..]
+występował dwa razy, więc [..] rekordów opisuje [..] osób”.</li>
+</ul>
+<p><em>W akapicie wymagane:</em> (i) liczba rekordów i kolumn; (ii)
+separator pól i znak dziesiętny; (iii) klasa kolumny czasu; (iv)
+rozróżnienie rekordu i osoby na przykładzie powtórzonego
+identyfikatora.</p>
+<div class="framed" style="border: 2px solid #0072B2; padding: 0.6em 1em;">
+<p><strong>Twój akapit S01.</strong> Znacznik w nawiasie kwadratowym
+zastąp własnym tekstem.</p>
 <!-- odpowiedz:S01 -->
 <p>[UZUPELNIJ_S01] <!-- /odpowiedz:S01 --></p>
 </div>
+</div>
 <div id="challenge-2-powtórzenie-i-konflikt" class="section level2">
 <h2>CHALLENGE 2: Powtórzenie i konflikt</h2>
-<p>W surowym eksporcie a03 występuje dwa razy z identycznymi polami.
-Dodatkowa tabela przedstawia inną sytuację: ten sam identyfikator z
-różnymi wynikami. Rozróżnienie obu sytuacji poprzedza decyzję o
-usunięciu informacji.</p>
-<p>Blok wyświetla tabelę „Etapy przygotowania” z liczbą rekordów i
-ważnych wartości na trzech etapach oraz tabelę „Odrębny przykład
-konfliktu”. Tabela konfliktu jest osobną ilustracją, poza analizowanym
-zbiorem.</p>
+<p><strong>Zadanie:</strong> uzasadnij usunięcie identycznego
+powtórzenia a03 i opisz decyzję potrzebną przy konflikcie
+identyfikatora.</p>
 <pre class="r"><code>powtorzenia &lt;- kontrola_powtorzen_archiwum()
 print(powtorzenia)</code></pre>
 <p><strong>Etapy przygotowania</strong></p>
@@ -2561,23 +2613,133 @@ a03
 </tr>
 </tbody>
 </table>
-<p><strong>Napisz krótki akapit:</strong> uzasadnij usunięcie
-identycznego powtórzenia, podaj N przed i po oraz wyjaśnij, jakiej innej
-decyzji wymaga konflikt. Wskaż źródło informacji, które pozwala
-rozstrzygnąć konflikt.</p>
+<p>Blok wyświetla tabelę „Etapy przygotowania” z liczbą rekordów oraz
+ważnych czasów, ocen i wyników na trzech etapach oraz tabelę „Odrębny
+przykład konfliktu” — ilustrację spoza analizowanego zbioru.</p>
+<p><em>Wskazówki:</em></p>
+<ul>
+<li>Wiersze „surowe” i „bez_duplikatu” różnią się o jedną identyczną
+kopię a03; kopia powtarza ten sam pomiar i podwoiłaby jego wagę w
+średniej i odsetku.</li>
+<li>Konflikt to ten sam identyfikator z różnymi wartościami: w tabeli
+konfliktu a03 ma czas 12 i 18 minut oraz powodzenie 1 i 0.</li>
+<li>Wybór wersji przy konflikcie wymaga źródła: protokołu obserwacji,
+numeru zadania albo informacji o wersji rekordu.</li>
+<li>Wzorzec APA: „Eksport zawierał [..] rekordów; identyczną kopię
+rekordu [id] usunięto, więc analizy objęły [..] osób. Konflikt
+identyfikatora — ten sam [id] z różnymi wynikami — wymaga wyjaśnienia w
+[źródło] przed analizą”.</li>
+</ul>
+<p><em>W akapicie wymagane:</em> (i) N przed usunięciem kopii i po nim;
+(ii) uzasadnienie usunięcia identycznego powtórzenia; (iii) różnica
+między identyczną kopią a konfliktem; (iv) źródło informacji
+rozstrzygające konflikt.</p>
+<div class="framed" style="border: 2px solid #0072B2; padding: 0.6em 1em;">
+<p><strong>Twój akapit S02.</strong> Znacznik w nawiasie kwadratowym
+zastąp własnym tekstem.</p>
 <!-- odpowiedz:S02 -->
 <p>[UZUPELNIJ_S02] <!-- /odpowiedz:S02 --></p>
 </div>
+</div>
 <div id="challenge-3-zero-99-121-i-na" class="section level2">
 <h2>CHALLENGE 3: Zero, 99, 121 i NA</h2>
-<p>W archiwum występują cztery sytuacje: obserwowane zero, kod braku
-oceny, czas poza zakresem i puste pole. Każda ma własne znaczenie i
-własną regułę.</p>
-<p>Blok wyświetla tabelę „Po zastosowaniu reguł” i tabelę „Kompletność
-par czasu i oceny”. Zestaw pierwszą z tabelą „Import archiwum” z
-CHALLENGE 1 i wskaż pola zmienione oraz zachowane.</p>
+<p><strong>Zadanie:</strong> opisz obsługę czterech zapisów — zera, kodu
+99, czasu 121 minut i pustego pola — oraz skutek reguł dla
+liczebności.</p>
 <pre class="r"><code>reguly &lt;- kontrola_regul_archiwum()
 print(reguly)</code></pre>
+<p><strong>Cztery zapisy przed regułami i po nich</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Osoba
+</th>
+<th style="text-align:left;">
+Kolumna
+</th>
+<th style="text-align:left;">
+Przed regułą
+</th>
+<th style="text-align:left;">
+Po regule
+</th>
+<th style="text-align:left;">
+Reguła
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+a01
+</td>
+<td style="text-align:left;">
+czas_min
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+zarejestrowane zero zostaje
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a03
+</td>
+<td style="text-align:left;">
+ocena
+</td>
+<td style="text-align:left;">
+99
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+kod braku oceny
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a05
+</td>
+<td style="text-align:left;">
+czas_min
+</td>
+<td style="text-align:left;">
+121
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+czas poza 0–120 min
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a04
+</td>
+<td style="text-align:left;">
+czas_min
+</td>
+<td style="text-align:left;">
+puste pole
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+brak zapisu zostaje brakiem
+</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Po zastosowaniu reguł</strong></p>
 <table>
 <thead>
@@ -2809,22 +2971,44 @@ TRUE
 </tr>
 </tbody>
 </table>
-<p><strong>Napisz krótki akapit:</strong> opisz obsługę wartości 0, 99,
-121 i pustej komórki. Podaj N ważnych czasów oraz kompletnych par czasu
-i oceny. Oddziel brak pomiaru od porażki zadania.</p>
+<p>Blok wyświetla tabelę „Cztery zapisy przed regułami i po nich”
+(osoba, kolumna, wartość przed regułą i po niej, reguła), tabelę „Po
+zastosowaniu reguł” i tabelę „Kompletność par czasu i oceny”.</p>
+<p><em>Wskazówki:</em></p>
+<ul>
+<li>Zero minut u a01 jest zarejestrowanym wynikiem: według protokołu
+oznacza natychmiastowe zakończenie zadania bez sukcesu, więc zostaje w
+danych.</li>
+<li>Reguła zmienia komórkę, a rekord zostaje: a03 zachowuje czas i
+powodzenie, a05 — ocenę i powodzenie.</li>
+<li>Liczbę ważnych czasów policz w kolumnie <code>czas_min</code> tabeli
+„Po zastosowaniu reguł”; kompletne pary mają wartość <code>TRUE</code> w
+kolumnie <code>para</code>.</li>
+<li>Brak pomiaru (NA) oznacza nieznany wynik, a porażka zadania to
+zarejestrowane powodzenie 0.</li>
+<li>Wzorzec APA: „Kod 99 w ocenie ([..] komórka) i czas spoza zakresu
+0–120 min ([..] komórka) oznaczono jako braki danych; zarejestrowany
+czas 0 min pozostał w analizie. Dostępnych było [..] ważnych czasów i
+[..] kompletnych par czasu i oceny”.</li>
+</ul>
+<p><em>W akapicie wymagane:</em> (i) postępowanie z zerem, kodem 99,
+czasem 121 minut i pustym polem; (ii) rozróżnienie zmiany komórki i
+usunięcia rekordu; (iii) N ważnych czasów i kompletnych par; (iv)
+rozróżnienie braku pomiaru od porażki zadania.</p>
+<div class="framed" style="border: 2px solid #0072B2; padding: 0.6em 1em;">
+<p><strong>Twój akapit S03.</strong> Znacznik w nawiasie kwadratowym
+zastąp własnym tekstem.</p>
 <!-- odpowiedz:S03 -->
 <p>[UZUPELNIJ_S03] <!-- /odpowiedz:S03 --></p>
+</div>
 </div>
 <div id="challenge-4-wynik-z-długą-próbą-i-bez-niej" class="section level2">
 <h2>CHALLENGE 4: Wynik z długą próbą i bez niej</h2>
 <p>Osoba redagująca raport proponuje usunąć 35 minut, ponieważ „reszta
 użytkowników szukała krócej”. Instytucję interesuje także koszt
-trudnych, długich poszukiwań. Decyzję o obserwacji uzasadnia dowód o
-pomiarze.</p>
-<p>Blok wyświetla tabelę „Z prawidłowym długim czasem i bez niego” z N i
-średnią dla dwóch wariantów oraz wykres „Zero, długi czas i brak: trzy
-różne zapisy”. Przy odczycie uwzględnij obserwowane zero. Średnia
-opisuje jawnie określony zbiór.</p>
+trudnych, długich poszukiwań.</p>
+<p><strong>Zadanie:</strong> porównaj opis czasu z potwierdzonym czasem
+35 minut i bez niego oraz oceń propozycję usunięcia.</p>
 <pre class="r"><code>dlugi_czas &lt;- wrazliwosc_archiwum()
 print(dlugi_czas)</code></pre>
 <p><strong>Z prawidłowym długim czasem i bez niego</strong></p>
@@ -2840,6 +3024,9 @@ N
 <th style="text-align:right;">
 Średnia [min]
 </th>
+<th style="text-align:right;">
+Mediana [min]
+</th>
 </tr>
 </thead>
 <tbody>
@@ -2853,6 +3040,9 @@ Wszystkie ważne czasy
 <td style="text-align:right;">
 13,625
 </td>
+<td style="text-align:right;">
+9,75
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2864,11 +3054,14 @@ Bez prawidłowych 35 minut
 <td style="text-align:right;">
 6,500
 </td>
+<td style="text-align:right;">
+7,50
+</td>
 </tr>
 </tbody>
 </table>
 <div class="figure" style="text-align: center">
-<img role="img" aria-label="Zero, długi czas i brak: trzy różne zapisy. Oś pozioma: osoby a01, a02, a03 i a06; oś pionowa: czas w minutach. Punkty leżą przy 0; 7,5; 12 i 35 minutach. Osoby a04 (puste pole) i a05 (121 minut poza zakresem) mają brak czasu i nie mają punktu." src="data:image/png;base64,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" alt="Zero, długi czas i brak: trzy różne zapisy. Oś pozioma: osoby a01, a02, a03 i a06; oś pionowa: czas w minutach. Punkty leżą przy 0; 7,5; 12 i 35 minutach. Osoby a04 (puste pole) i a05 (121 minut poza zakresem) mają brak czasu i nie mają punktu." width="100%" />
+<img role="img" aria-label="Zero, długi czas i brak: trzy różne zapisy. Oś pozioma: osoby a01, a02, a03 i a06; oś pionowa: czas w minutach. Punkty leżą przy 0; 7,5; 12 i 35 minutach. Osoby a04 (puste pole) i a05 (121 minut poza zakresem) mają brak czasu i nie mają punktu." src="data:image/png;base64,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" alt="Zero, długi czas i brak: trzy różne zapisy. Oś pozioma: osoby a01, a02, a03 i a06; oś pionowa: czas w minutach. Punkty leżą przy 0; 7,5; 12 i 35 minutach. Osoby a04 (puste pole) i a05 (121 minut poza zakresem) mają brak czasu i nie mają punktu." width="100%" />
 <p class="caption">
 Zero, długi czas i brak: trzy różne zapisy. Oś pozioma: osoby a01, a02,
 a03 i a06; oś pionowa: czas w minutach. Punkty leżą przy 0; 7,5; 12 i 35
@@ -2876,23 +3069,42 @@ minutach. Osoby a04 (puste pole) i a05 (121 minut poza zakresem) mają
 brak czasu i nie mają punktu.
 </p>
 </div>
-<p><strong>Napisz krótki akapit:</strong> podaj obie średnie i N,
-wyjaśnij zmianę oraz oceń propozycję usunięcia 35 minut. Zakończ zdaniem
-o informacji spoza wykresu, której wymaga ocena poprawności czasu 35
+<p>Blok wyświetla tabelę „Z prawidłowym długim czasem i bez niego” z N,
+średnią i medianą dla obu wariantów oraz wykres „Zero, długi czas i
+brak: trzy różne zapisy”.</p>
+<p><em>Wskazówki:</em></p>
+<ul>
+<li>Średnia zależy od każdej wartości, więc jedna długa próba przesuwa
+ją silnie; mediana zależy od kolejności wartości.</li>
+<li>Protokół archiwum potwierdza czas 35 minut, a wykluczenie pomiaru
+wymaga dowodu błędu.</li>
+<li>Oba warianty opisują różne zbiory osób: wszystkie ważne czasy albo
+osoby bez najdłuższej próby.</li>
+<li>Informacja spoza wykresu to np. zapis przerw, pomocy bibliotekarza
+albo problemu technicznego w protokole.</li>
+<li>Wzorzec APA: „Cztery ważne czasy dały <em>M</em> = [..] min
+(<em>Mdn</em> = [..] min). Po wyłączeniu potwierdzonego pomiaru 35 min
+średnia wyniosłaby <em>M</em> = [..] min (<em>n</em> = [..]); pomiar
+pozostaje w analizie, ponieważ [..]”.</li>
+</ul>
+<p><em>W akapicie wymagane:</em> (i) obie średnie i mediany z N; (ii)
+źródło zmiany średniej; (iii) ocena propozycji z odwołaniem do
+protokołu; (iv) informacja spoza wykresu potrzebna do oceny czasu 35
 minut.</p>
+<div class="framed" style="border: 2px solid #0072B2; padding: 0.6em 1em;">
+<p><strong>Twój akapit S04.</strong> Znacznik w nawiasie kwadratowym
+zastąp własnym tekstem.</p>
 <!-- odpowiedz:S04 -->
 <p>[UZUPELNIJ_S04] <!-- /odpowiedz:S04 --></p>
 </div>
+</div>
 <div id="challenge-5-notatka-o-danych-gotowych-do-analizy" class="section level2">
 <h2>CHALLENGE 5: Notatka o danych gotowych do analizy</h2>
-<p>Badacz przekazuje przygotowany zbiór osobie opisującej wyniki. Osoba
-opisująca potrzebuje krótkiej notatki z regułami i mianownikami;
-dokumentację tworzy notatka, a nazwa pliku „czyste” pozostaje
-etykietą.</p>
-<p>Blok wyświetla tabelę „Etapy przygotowania” i tabelę „Dane do
-krótkiej notatki” z dziewięcioma miarami. Wybierz liczby opisujące
-wykonane działania. Notatka opisuje reguły i liczebności;
-reprezentatywność wymaga opisu doboru próby.</p>
+<p>Badacz przekazuje przygotowany zbiór osobie opisującej wyniki.
+Dokumentację tworzy notatka z regułami i mianownikami; nazwa pliku
+„czyste” pozostaje etykietą.</p>
+<p><strong>Zadanie:</strong> napisz notatkę metodyczną o przygotowaniu
+danych archiwum w stylu APA.</p>
 <pre class="r"><code>notatka &lt;- podsumowanie_przygotowania(archiwum_czyste, archiwum_etapy)
 print(notatka)</code></pre>
 <p><strong>Etapy przygotowania</strong></p>
@@ -3057,12 +3269,37 @@ Pary czasu i oceny
 </tr>
 </tbody>
 </table>
-<p><strong>Napisz krótki akapit:</strong> przedstaw N surowe i końcowe,
-duplikat, dwie reguły braków, N ważnego czasu i sukcesu oraz jedno
-ograniczenie. Wyjaśnij, po co zachowuje się surowy plik i skrypt, który
-można wykonać ponownie.</p>
+<p>Blok wyświetla tabelę „Etapy przygotowania” i tabelę „Dane do
+krótkiej notatki” z dziewięcioma miarami: osoby, ważne czasy, średnia i
+mediana czasu, ważne oceny, ważne wyniki, powodzenia, odsetek powodzeń i
+pary czasu i oceny.</p>
+<p><em>Wskazówki:</em></p>
+<ul>
+<li>Kolejność notatki: N surowe, usunięta kopia, reguły braków, ważne N
+każdej zmiennej, jedno ograniczenie.</li>
+<li>Liczbę komórek zmienionych regułami podaje różnica między etapami
+„bez_duplikatu” i „po_regulach” w tabeli „Etapy przygotowania”.</li>
+<li>Ograniczenie wynika z małej syntetycznej próby: przy pięciu znanych
+wynikach zmiana wyniku jednej osoby przesuwa odsetek powodzeń o 20
+punktów procentowych.</li>
+<li>Surowy plik i skrypt pozwalają odtworzyć wynik i sprawdzić każdą
+liczbę notatki.</li>
+<li>Wzorzec APA: „Eksport zawierał [..] rekordów; po usunięciu [..]
+identycznej kopii pozostało [..] osób. [..] kod 99 i [..] czas spoza
+zakresu 0–120 min oznaczono jako braki danych. Dostępnych było [..]
+ważnych czasów (<em>M</em> = [..] min, <em>Mdn</em> = [..] min) i [..]
+wyników zadania, w tym [..] sukcesy ([..]%)”.</li>
+</ul>
+<p><em>W akapicie wymagane:</em> (i) N surowe i końcowe z usuniętą
+kopią; (ii) dwie reguły braków z liczbą komórek; (iii) N ważnego czasu i
+wyników z miarami; (iv) jedno ograniczenie; (v) powód zachowania
+surowego pliku i skryptu.</p>
+<div class="framed" style="border: 2px solid #0072B2; padding: 0.6em 1em;">
+<p><strong>Twój akapit S05.</strong> Znacznik w nawiasie kwadratowym
+zastąp własnym tekstem.</p>
 <!-- odpowiedz:S05 -->
 <p>[UZUPELNIJ_S05] <!-- /odpowiedz:S05 --></p>
+</div>
 </div>
 </div>
 <div id="zapis-i-oddanie" class="section level1">

@@ -136,7 +136,10 @@ wykres_portalu <- ggplot2::ggplot(portal_wykres, ggplot2::aes(czas_min, pewnosc,
 # Warstwa prezentacji: w Rmd wystarczy przypisanie oraz print(wynik).
 ustaw_material <- function() {
   knitr::opts_chunk$set(echo=TRUE,message=FALSE,warning=FALSE,
-    results='asis',fig.width=6,fig.height=3.3,fig.align='center')
+    results='asis',fig.width=6,fig.height=3.3,fig.align='center',fig.pos='H')
+  # Rysunek [H] zostaje przy swoim zadaniu także w PDF bez preambuły kursu.
+  if(isTRUE(getOption('knitr.in.progress'))&&knitr::is_latex_output())
+    knitr::knit_meta_add(list(rmarkdown::latex_dependency('float')))
   invisible(NULL)
 }
 wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L,markdown=list()) {

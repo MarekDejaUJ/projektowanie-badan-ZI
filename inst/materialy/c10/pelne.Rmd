@@ -1,6 +1,6 @@
 ---
-title: 'C10 — Od wyniku do raportu: dwie analizy i uzasadniony wniosek'
-subtitle: 'Zarządzanie informacją — ćwiczenie i szkic wyników Z10 — 2026/27'
+title: 'C10 — Od wyniku do raportu: interpretacja, ograniczenia i odtwarzalność'
+subtitle: 'Zarządzanie informacją — ćwiczenie i zadanie Z10 — 2026/27'
 author: 'ID: [UZUPELNIJ_ID]'
 date: '2026/27'
 lang: pl-PL
@@ -16,9 +16,9 @@ output:
 ---
 
 <!-- start-sesji -->
-# Początek pracy na tych zajęciach
+# Początek pracy na ćwiczeniu C10
 
-Otwórz RStudio. Pakiet kursu jest już zainstalowany w sali; nie instalujesz go ponownie. W konsoli poniżej edytora wpisz swoje ID i adres prywatnego repozytorium otrzymany w kursie, a następnie wykonaj polecenia. Ten blok jest instrukcją do konsoli, nie chunkiem uruchamianym przy tworzeniu PDF.
+Otwórz RStudio. Pakiet kursu `badaniaZI` jest zainstalowany na komputerach w sali. Cztery polecenia z następnego bloku wpisujesz w konsoli RStudio, czyli w dolnym panelu ze znakiem `>`; w miejsce `TWOJE_ID` wpisz swoje ID, a w miejsce adresu — adres prywatnego repozytorium otrzymany na początku kursu. Dokument PDF zawiera cztery polecenia jako tekst instrukcji.
 
 ```r
 library(badaniaZI)
@@ -30,12 +30,12 @@ rozpocznij_zajecia(
 )
 ```
 
-Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie tam, nie w konsoli R. Sprawdź potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w tej sesji; pliki pracy mają je zachować także po zamknięciu RStudio.
+Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie na stronie GitHub. Sprawdź w komunikacie potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w sesji; pliki pracy zachowują je także po zamknięciu RStudio.
 
-Polecenie otwiera własny `zadanie.Rmd` i zapamiętuje katalog pracy. Nie przełączaj teraz projektu przez `.Rproj`, bo nowa sesja R utraci logowanie. Pracuj w otwartym Rmd, nie w źródłach pakietu. Uruchom pierwszy chunk przygotowania, potem wykonuj LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; nie usuwaj pracy ani nie wpisuj cudzego ID.
+Funkcja `rozpocznij_zajecia()` otwiera własny plik `zadanie.Rmd` i zapamiętuje katalog pracy. Pracuj w otwartym pliku `zadanie.Rmd` do końca zajęć; plik `.Rproj` pozostaje zamknięty, bo jego otwarcie uruchamia nową sesję R, która wymaga ponownego logowania. Najpierw uruchom blok `przygotowanie`, a potem kolejne części LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; plik pracy i własne ID pozostają bez zmian.
 <!-- /start-sesji -->
 
-Pomocniczy `analiza.R` zawiera przygotowanie danych, obie analizy oraz prezentację tabel i wykresów. Nie piszesz testów ani kodu formatującego. Uruchom przygotowanie, a następnie gotowe bloki; własne akapity wpisujesz poza kodem.
+Pierwszy chunk, `przygotowanie`, wczytuje gotowy skrypt `analiza.R`. Skrypt odczytuje wariant danych zapisany na C09, przygotowuje go po regułach ćwiczeń C02–C04 i liczy obie analizy projektu: porównanie indeksu w grupach (test Welcha, bootstrap osób, tasowanie etykiet) oraz tabelę 2 × 2 (test chi-kwadrat, tabele Monte Carlo, przedział różnicy odsetków) albo korelację rang Spearmana (test, tasowanie, bootstrap par). Skrypt zawiera też dwa przykłady LEARN dla ID demo001: scenariusz S02 ze ścieżką tabeli i scenariusz S05 ze ścieżką korelacji.
 
 ```{r przygotowanie, include=FALSE}
 source(badaniaZI::plik_pracy("Z10", "analiza.R"),
@@ -43,407 +43,513 @@ source(badaniaZI::plik_pracy("Z10", "analiza.R"),
 ustaw_material()
 ```
 
-# Historia: liczby muszą odpowiadać na pytanie
+# Od liczb do odpowiedzi na pytanie
 
-Na C09 powstała karta projektu: problem usługi informacyjnej, dwa pytania, znaczenie zmiennych, reguły przygotowania i pierwszy opis własnego wariantu danych. Dziś wracasz do tej samej karty. Nie wybierasz nowego tematu, nie zbierasz odpowiedzi od ludzi i nie programujesz dodatkowego czyszczenia. Uruchamiasz przygotowane analizy i piszesz, czego rzeczywiście można się z nich dowiedzieć.
+Na C09 powstała karta projektu: problem usługi, dwa pytania, znaczenie zmiennych, reguły przygotowania i pierwszy opis własnego wariantu danych. Na C10 praca toczy się na tym samym temacie i wariancie: gotowe bloki liczą obie analizy, a akapity opisują, co wynika z liczb dla pytania instytucji.
 
-W przykładzie S02 biblioteka rozważa pomoc dla nowych użytkowników katalogu. Pierwsze pytanie dotyczy różnicy deklarowanej użyteczności katalogu między nowymi i doświadczonymi. Drugie dotyczy różnicy odsetków osób, które odnalazły dokument. Ocena katalogu nie jest wynikiem testu kompetencji, a odszukanie jednego dokumentu nie jest pełną miarą zachowań informacyjnych. Te zastrzeżenia wpływają na treść wniosku, nie tylko na ostatnie zdanie raportu.
+W przykładzie S02 biblioteka rozważa pomoc dla nowych użytkowników katalogu. Pierwsze pytanie dotyczy różnicy deklarowanej użyteczności katalogu między nowymi i doświadczonymi, drugie — różnicy odsetka osób, które znalazły wskazany dokument. Ocena katalogu opisuje deklarowaną użyteczność, a znalezienie dokumentu — wykonanie jednego zadania; zakres obu pomiarów wyznacza treść wniosku.
 
-Raport nie powinien być wydrukiem wszystkich obiektów R. Ma prowadzić od problemu, przez pomiar i dane, do dwóch odpowiedzi oraz ograniczonej rekomendacji. Czytelnik musi móc sprawdzić, skąd pochodzi każda liczba. Gotowy skrypt zapewnia obliczenia; ty odpowiadasz za znaczenie swojego tekstu.
+Raport prowadzi od problemu, przez pomiar i dane, do dwóch odpowiedzi i ograniczonej rekomendacji, a czytelnik sprawdza, skąd pochodzi każda liczba. Skrypt wykonuje obliczenia; akapity nadają liczbom znaczenie.
 
-LEARN pokazuje kompletny odczyt znanego przykładu. CHALLENGE stosuje ten sam tok do twoich danych z C09. Publiczny podgląd używa demonstracyjnego ID `DEMO_C09`; nie jest to indywidualna praca do oddania. W twojej kopii ID powinno odpowiadać potwierdzonej tożsamości kursowej, a scenariusz, rocznik, wersja generatora i hash danych — karcie Z09.
+## Projekt: pięć akapitów Z10 w raporcie
 
-## Praca w 90 minut i rezultat
+Zadanie Z10 dostarcza pięciu z dziesięciu akapitów projektu. Akapit S01 staje się polem P05 raportu (kontrola danych), S02 — polem P07 (pierwsza analiza), S03 — polem P08 (druga analiza), S04 — polem P09 (wnioski i ograniczenia), a S05 — polem P10 (rekomendacja). Rozdział „Projekt końcowy: raport z dziesięciu akapitów” opisuje przejście od zadań Z09 i Z10 do raportu.
 
-Przeznacz około 5 minut na logowanie i odtworzenie, 30 minut na pięć LEARN, 50 minut na pięć CHALLENGE i 5 minut na zapis oraz oddanie. Pracujesz indywidualnie przed komputerem. Jeżeli wynik lub instrukcja są niejasne, pytasz prowadzącego, nie zmieniasz samodzielnie wnętrza procedury.
+## Przebieg spotkania
 
-W tym samym Rmd powstaje pięć krótkich akapitów: kontrola danych, pierwsza analiza, druga analiza, wspólna interpretacja i ostrożna rekomendacja. Nie przepisujesz wzorcowych akapitów LEARN. Dłuższe rozwinięcia po części obowiązkowej służą powtórce i redakcji projektu, bez dodatkowych pól do oddania.
+Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN, 50 minut na pięć zadań CHALLENGE i 5 minut na zapis oraz oddanie. W LEARN czytasz pełny odczyt przykładu S02 i przykładu korelacyjnego S05. W CHALLENGE stosujesz ten sam tok do własnego wariantu z C09 i piszesz pięć akapitów pod wynikami, poza blokiem R. Gdy odczyt wyniku sprawia trudność, pytasz prowadzącego. Rozwinięcia po części obowiązkowej służą powtórce i redakcji raportu i pozostają poza oceną Z10.
 
-Z10 jest szkicem wyników twojego projektu, a nie drugim projektem badawczym. Plan z Z09 i wyniki z Z10 tworzą podstawę końcowego raportu na tych samych danych. Materiał dydaktyczny jest dłuższy od raportu studenta: wyjaśnienia metod nie muszą być kopiowane do własnego opracowania.
+Bloki LEARN kończą się **wzorcem zapisu** — przykładowym zdaniem według standardu APA (*Publication Manual of the American Psychological Association*, 7. wydanie, 2020): symbol statystyczny kursywą, stopnie swobody w nawiasie, przedział w nawiasie kwadratowym, przecinek jako separator dziesiętny. Na ćwiczeniu C10 wzorce dotyczą części wynikowej raportu: liczebności, porównania grup, tabeli 2 × 2, korelacji rang, syntezy i rekomendacji.
 
-# LEARN 1: zanim opiszesz efekt, ustal dane i mianownik
+Publiczny podgląd materiału używa w CHALLENGE oznaczenia DEMO_C09. W pracy studenta wiersz „ID” manifestu podaje własne ID, a scenariusz, rocznik, wersja generatora i hash danych zgadzają się z kartą Z09.
 
-**Pytanie:** czy raport na pewno dotyczy tego wariantu, pomiaru i zbioru osób, które zaplanowano? W przykładzie demonstracyjnym analizujemy S02 dla `demo001`. Jest to stały przykład z kursu, nie twoje ID i nie wynik rzeczywistego badania biblioteki.
+# LEARN 1: Dane i mianownik każdej analizy
 
-Przypomnijmy przygotowanie: identyczne duplikaty usuwamy, kod 99 w pozycjach ankiety traktujemy jako brak, a czas poza technicznym zakresem 0–120 minut oznaczamy jako brak czasu. Pozycję trzecią odwracamy przez `6 - x`. Indeks jest średnią co najmniej pięciu z sześciu ważnych pozycji; jedna pozycja pozostaje porządkowa, a przybliżone traktowanie indeksu jako ilościowego jest założeniem analizy.
-
-Poniższa funkcja pokazuje, ile osób dostarcza poszczególnych pomiarów. Wiersz „Dane do drugiego pytania” dotyczy relacji zapisanej w scenariuszu, nie dowolnie wybranego testu. Różnica między liczbą osób a N konkretnej analizy nie oznacza automatycznie błędu.
+Raport zaczyna od kontroli: wariant, pomiar i zbiór osób zgadzają się z planem Z09. Przykład demo001 (S02) jest stałym przykładem kursu. Gotowy skrypt usuwa identyczne duplikaty, zamienia kod 99 w pozycjach ankiety na brak, oznacza czas spoza 0–120 minut jako brak czasu, odwraca pozycję 3 według $6-x$ i liczy indeks jako średnią co najmniej pięciu z sześciu ważnych pozycji. Indeks traktuje się jako zmienną ilościową; to założenie analizy, bo pojedyncza pozycja ma skalę porządkową.
 
 ```{r learn-1-bilans}
 bilans_przykladu <- bilans_wariantu(wariant_demo)
 print(bilans_przykladu)
 ```
 
-**Wzorcowy odczyt.** Z 150 surowych rekordów pozostaje 148 osób po usunięciu dwóch identycznych powtórzeń. Ważny indeks ma 147 osób: 74 doświadczone i 73 nowe. Druga analiza, dotycząca powodzenia zadania, obejmuje 148 osób. Nie zmniejszamy jej N do 147 tylko dlatego, że jednej osobie brakuje indeksu; indeks nie jest zmienną tej tabeli.
+Tabela „Bilans liczebności” podaje: ze 150 rekordów surowych zostaje 148 osób po usunięciu 2 identycznych powtórzeń, ważny indeks ma 147 osób, a druga analiza obejmuje 148 osób z wartością 0/1. Tabela „Dostępne pomiary w grupach” rozdziela ważne indeksy na 74 osoby doświadczone i 73 nowe. Druga analiza zachowuje 148 osób, bo jej zmiennymi są grupa i pole 0/1.
 
-To rozróżnienie jest częścią argumentu statystycznego. Średnią liczymy z ważnych wartości, różnicę średnich z dwóch takich zbiorów, a korelację wyłącznie z kompletnych par tych samych osób. W tabeli krzyżowej N jest sumą komórek po uwzględnieniu obu zmiennych. Podawanie wszędzie „N = 150” ukryłoby powtórzenia i różne braki.
+Każda analiza podaje własne N. Średnią liczy się z ważnych wartości, różnicę średnich — z dwóch zbiorów ważnych wartości, korelację — z kompletnych par tych samych osób, a N tabeli krzyżowej jest sumą jej komórek. Raport opisuje reguły przygotowania i ich liczbowy rezultat; losowość braków i reprezentatywność odpowiadających pozostają założeniami opisanymi w ograniczeniach.
 
-**Od karty projektu do raportu.** C09 dostarczyło reguły; C10 pokazuje ich konsekwencje dla analizy. Nie wymaga się nowego programu czyszczącego. W raporcie wystarczy opisać wykonane reguły i ich liczbowy rezultat. Dziennik dokumentuje działania na danych, lecz sam nie uzasadnia, że braki są losowe ani że odpowiadający reprezentują całą populację użytkowników.
+```{r learn-1-symbole}
+symbole <- symbole_do_odczytu()
+print(symbole)
+```
 
-| Oznaczenie | Co odczytujesz w raporcie | Czego nie należy z nim mylić |
-|---|---|---|
-| $N$, $n_1$, $n_2$ | ważne osoby lub pary; liczebności grup | liczba surowych wierszy |
-| $\Delta$, $\widehat{\Delta}$ | różnica w populacji; jej oszacowanie | statystyka testowa |
-| $SE$, $SD$ | niepewność estymaty; rozrzut obserwacji | dwa określenia tej samej miary |
-| $CI$ | przedział parametru przy założeniach metody | zakres 95% indywidualnych wyników |
-| $t$, $\chi^2$, $S$ | statystyka właściwego testu | efekt w jednostce pomiaru |
-| $p$, $p_{\mathrm{MC}}$ | ocena skrajności pod modelem zerowym | szansa, że hipoteza jest prawdziwa |
-| $B$, $k$ | liczba losowań; wyniki co najmniej tak skrajne | liczba badanych osób |
+Tabela „Symbole wyniku i przykład z S02” zestawia siedem grup symboli z wartościami z przykładu. Każda metoda ma własny zestaw liczb: test Welcha — $t$, df i $p$; tabela 2 × 2 — $\chi^2$, df i $p$; korelacja rang Spearmana — $r_S$, $S$ i $p$ bez stopni swobody; opis średniej — średnią, SD i N.
 
-Nie każda analiza drukuje wszystkie symbole. Spearman nie wymaga dopisywania stopni swobody obok statystyki $S$, a opis średniej bez testu nie potrzebuje p. Kompletność oznacza dobranie informacji do metody, nie wypełnienie jednej uniwersalnej tabeli za wszelką cenę.
+**Wzorzec zapisu liczebności (APA).**
 
-# LEARN 2: pierwsza analiza — różnica ma znak i jednostkę
+> Analizy objęły 148 osób po usunięciu 2 identycznych powtórzeń ze 150 rekordów surowych. Porównanie indeksu objęło 147 osób z ważnym indeksem (74 doświadczone, 73 nowe), a analiza wyniku zadania — 148 osób z wartością 0/1.
 
-**Pytanie:** o ile średnia deklarowana użyteczność katalogu różni się między nowymi a doświadczonymi? Kontrast w S02 jest ustalony jako „nowi minus doświadczeni”. W innych scenariuszach funkcja także drukuje kolejność, którą należy zachować w tekście i w odczycie przedziału.
+# LEARN 2: Pierwsza analiza — różnica ze znakiem i jednostką
+
+Pierwsze pytanie S02 dotyczy tego, o ile średnia deklarowana użyteczność katalogu nowych różni się od średniej doświadczonych. Kontrast jest ustalony jako „nowi minus doświadczeni”; funkcja wypisuje kontrast każdego scenariusza w karcie „Analiza 1: kontrast i jednostka”.
 
 $$
-\widehat{\Delta}=\bar{x}_{\mathrm{nowi}}-\bar{x}_{\mathrm{doświadczeni}},
-\qquad
-t=\frac{\widehat{\Delta}-0}
-{\sqrt{s_{\mathrm{nowi}}^2/n_{\mathrm{nowi}}+
-s_{\mathrm{doświadczeni}}^2/n_{\mathrm{doświadczeni}}}}.
+\widehat{\Delta}=\bar{x}_{\text{nowi}}-\bar{x}_{\text{doświadczeni}},\qquad
+SE=\sqrt{\frac{s_{\text{nowi}}^2}{n_{\text{nowi}}}+\frac{s_{\text{doświadczeni}}^2}{n_{\text{doświadczeni}}}},\qquad
+t=\frac{\widehat{\Delta}}{SE},\qquad
+CI_{95\%}=\widehat{\Delta}\pm t_{0{,}975;\,\nu}\,SE.
 $$
 
-Pierwszy wzór mówi: odejmujemy średnie w ustalonej kolejności, otrzymując punkty indeksu. Drugi mówi: dzielimy odległość tej różnicy od zera przez jej szacowany błąd standardowy. Dlatego $t$ nie ma jednostki, a $\widehat{\Delta}$ nadal ma jednostkę pomiaru. Ujemne $t$ oraz ujemna różnica muszą być zgodne dla tego samego kontrastu.
-
-Gotowy wynik łączy opis grup, test Welcha, dwa przedziały i tasowanie etykiet. Najpierw odczytaj średnie i różnicę; następnie CI i test, a dopiero na końcu porównaj oba p. Hedges $g$ jest standaryzowanym uzupełnieniem, nie zastępuje różnicy w punktach indeksu.
+Pierwszy wzór odejmuje średnie w ustalonej kolejności i daje wynik w punktach indeksu. $SE$ łączy wariancje i liczebności obu grup bez założenia równych wariancji. Statystyka $t$ dzieli różnicę przez $SE$, więc jest liczbą bez jednostki, a przedział dodaje do różnicy $\pm t_{0{,}975;\nu}$ błędów standardowych, gdzie $\nu$ oznacza stopnie swobody Welcha. Ujemne $t$ i ujemna różnica wynikają z tego samego kontrastu. Bootstrap osób w grupach (wykład W03) daje drugi przedział z percentyli 2,5 i 97,5 różnic w $B=1999$ próbach bootstrapowych.
 
 ```{r learn-2-wynik}
 pierwszy_wynik <- wynik_pierwszej_analizy(analizy_demo)
 print(pierwszy_wynik)
 ```
 
-**Wzorcowy akapit.** W syntetycznej próbie S02 nowi użytkownicy uzyskali niższy średni indeks deklarowanej użyteczności katalogu (M = 3,072; SD = 0,687; n = 73) niż doświadczeni (M = 3,510; SD = 0,704; n = 74). Różnica nowych minus doświadczonych wynosiła −0,438 punktu, 95% CI Welcha [−0,665; −0,212], przy $t(144{,}98)=-3{,}822$, $p=0{,}000196$. Bootstrap w grupach dał CI [−0,659; −0,227], a tasowanie etykiet $p_{\mathrm{perm}}=0{,}001$ przy B = 1999. Oba tory wskazują na niezgodność z przyjętym modelem zerowym, lecz nie dowodzą, że staż korzystania spowodował zmianę oceny.
+Tabela „Opis grup [pkt 1–5]” podaje średnie 3,510 ($n=74$) i 3,072 ($n=73$). Tabela „Test Welcha” podaje różnicę $-0{,}438$ punktu, $SE=0{,}115$, $t=-3{,}822$, $df=144{,}98$ i $p=0{,}0002$. Tabela „95% CI różnicy średnich [pkt]” podaje przedział Welcha $[-0{,}665; -0{,}212]$ i bootstrapowy $[-0{,}659; -0{,}227]$; tabela „Tasowanie etykiet grup” — $k=1$ i $p_{\mathrm{perm}}=0{,}0010$ przy $B=1999$; tabela „Efekt standaryzowany” — Hedges $g=-0{,}627$.
 
-Akapit prowadzi od pomiaru i osób do kierunku, rozmiaru, precyzji oraz ograniczenia. Różnica −0,438 to nie spadek o 43,8% i nie wynik „o 0,438 odchylenia standardowego”. W tej analizie $g\approx-0{,}627$ wyraża osobną, standaryzowaną miarę. Jej sens nadal zależy od konstruktu i porównywanych grup; etykieta „średni efekt” nie rozstrzyga potrzeby zmiany katalogu.
+```{r learn-2-tory, fig.cap=c("Tor bootstrapu w pierwszej analizie S02: 1999 różnic średnich z losowania osób ze zwracaniem w każdej grupie. Oś pozioma: różnica w punktach indeksu; linie przerywane oznaczają granice 95%, −0,66 i −0,23.", "Tor tasowania w pierwszej analizie S02: 1999 różnic średnich po tasowaniu etykiet grup przy hipotezie zerowej. Linie przerywane oznaczają obserwowaną różnicę ±0,438; wartość co najmniej tak odległą od zera dało 1 tasowanie.")}
+tory <- wykres_dwa_tory(analizy_demo)
+print(tory)
+```
 
-CI Welcha i bootstrapu są dość podobne, ale nie identyczne. Pierwszy wykorzystuje błąd standardowy i rozkład t z przybliżonymi stopniami swobody; drugi percentyle różnic po losowaniu osób ze zwracaniem w każdej grupie. Bootstrap zachowuje obserwowane różnice, a permutacja buduje rozkład pod określonym modelem zerowym. Nie nazywamy bootstrapowego CI „przedziałem z testu permutacyjnego”.
+Wykres „Bootstrap osób w grupach: rozkład różnicy” przedstawia 1999 różnic bootstrapowych skupionych wokół $-0{,}44$ z granicami 95% równymi $-0{,}66$ i $-0{,}23$. Wykres „Tasowanie etykiet: rozkład różnicy przy H0” przedstawia 1999 różnic po tasowaniu skupionych wokół zera; wartość bezwzględną 0,438 osiągnęła jedna różnica z 1999, stąd $p_{\mathrm{perm}}=(1+1)/(1999+1)=0{,}001$. Bootstrap opisuje zmienność różnicy przy zachowanym podziale na grupy, a tasowanie buduje rozkład zerowy.
 
-Tasowanie surowych etykiet wymaga wymienialności pod hipotezą zerową. Nie jest dokładnym testem samej równości średnich przy dowolnie różnych rozkładach grup. Welch dopuszcza nierówne wariancje, ale nie usuwa problemu zależnych obserwacji ani selekcji do grup. Dwa podobne p nie sprawdzają tych założeń za badacza.
+Różnica $-0{,}438$ jest wyrażona w punktach indeksu 1–5, a $g=-0{,}627$ — w jednostkach łączonego SD równego 0,695. Potrzebę zmiany katalogu ocenia się względem konstruktu i decyzji instytucji. Tasowanie etykiet wymaga wymienialności, a test Welcha dopuszcza nierówne wariancje; niezależność obserwacji i dobór do grup ocenia projekt badania.
 
-# LEARN 3: druga analiza odpowiada na inne pytanie
+**Wzorzec zapisu porównania grup (APA).**
 
-W S02 pytamy teraz o odsetek powodzeń zadania, nie o ocenę użyteczności. Tabela ma własne N i własną jednostkę efektu. Wynik Welcha oraz jego wersja permutacyjna nie są „dwiema analizami projektu”: dotyczą jednego pytania i jednego kontrastu. Drugie pytanie dotyczy innej relacji.
+> Nowi użytkownicy uzyskali niższy średni indeks użyteczności katalogu (*M* = 3,07; *SD* = 0,69; *n* = 73) niż doświadczeni (*M* = 3,51; *SD* = 0,70; *n* = 74). Różnica nowi minus doświadczeni wyniosła −0,44 punktu, 95% CI [−0,66; −0,21], *t*(144,98) = −3,82, *p* < 0,001, *g* = −0,63; bootstrapowy 95% CI wyniósł [−0,66; −0,23], a test permutacyjny (*B* = 1999) dał *p*~perm~ = 0,001. Grupy są obserwacyjne, więc wynik opisuje związek stażu korzystania z oceną katalogu.
 
-## Ścieżka tabeli 2×2: osoby, odsetki i punkty procentowe
+# LEARN 3: Druga analiza — inne pytanie, własne N i jednostka
+
+W S02 drugie pytanie dotyczy odsetka osób, które znalazły dokument: analiza ma własne N (148 osób) i własną jednostkę efektu (punkty procentowe). Test Welcha i tasowanie etykiet to dwa tory pierwszego pytania, a tabela 2 × 2 odpowiada na drugie pytanie.
+
+## Ścieżka tabeli 2 × 2: osoby, odsetki i punkty procentowe
 
 $$
-\widehat{\pi}_g=\frac{\text{liczba osób z kodem 1 w grupie }g}{n_g},
-\qquad
-\widehat{\Delta}_{pp}=100(\widehat{\pi}_{\mathrm{nowi}}
--\widehat{\pi}_{\mathrm{doświadczeni}}).
+\widehat{\pi}_g=\frac{x_g}{n_g},\qquad
+\widehat{\Delta}_{pp}=100\,(\widehat{\pi}_{\text{nowi}}-\widehat{\pi}_{\text{doświadczeni}}),\qquad
+V=\sqrt{\frac{\chi^2}{N}}.
 $$
 
-Licznik to powodzenia w danej grupie; mianownik to osoby z ważną odpowiedzią w tej samej grupie. Mnożenie różnicy proporcji przez 100 zmienia jednostkę na punkty procentowe. Nie dzielimy przez ogólną liczbę powodzeń, bo odpowiadałoby to na inne pytanie: z której grupy pochodzą osoby, które odniosły sukces.
-
-Funkcja drukuje treść pytania binarnego, więc znaczenie kodu 1 nie zależy od technicznej nazwy kolumny. W S02 oznacza on odnalezienie dokumentu; w innym scenariuszu może oznaczać deklarację albo niepożądane zdarzenie. W tabeli wyników zwróć uwagę na najmniejszą liczebność oczekiwaną, wybraną metodę i CI różnicy proporcji.
+Symbol $x_g$ oznacza liczbę osób z kodem 1 w grupie $g$, a $n_g$ — liczbę osób z ważną odpowiedzią w tej grupie. Mnożenie różnicy proporcji przez 100 zmienia jednostkę na punkty procentowe. Mianownikiem jest liczebność grupy; dzielenie przez łączną liczbę osób z kodem 1 opisywałoby skład grupy sukcesów, czyli inne pytanie. V Craméra dla tabeli 2 × 2 jest nieujemne: w S02 $V=\sqrt{1{,}466/148}=0{,}0995$, a kierunek podaje $\widehat{\Delta}_{pp}$.
 
 ```{r learn-3-tabela}
 drugi_wynik <- wynik_drugiej_analizy(analizy_demo)
 print(drugi_wynik)
 ```
 
-**Wzorcowy akapit.** W S02 dokument odnalazło 45 z 74 nowych osób (60,8%) i 52 z 74 doświadczonych (70,3%). Różnica odsetków nowych minus doświadczonych wyniosła −9,46 punktu procentowego, z przybliżonym 95% CI [−24,70; 5,78] oraz bootstrapowym CI [−24,32; 5,41]. Test niezależności dał $\chi^2(1)=1{,}466$, $p=0{,}226$, a losowanie tabel przy stałych marginesach $p_{\mathrm{MC}}=0{,}297$ dla B = 1999; V Cramera wyniosło 0,100. Nie odrzucono modelu zerowego, ale szeroki CI nie pozwala stwierdzić, że skuteczność grup jest praktycznie taka sama.
+Karta „Analiza 2: pole 0/1” podaje treść pytania, znaczenie kodu 1, źródło pola i metodę główną. Tabela „Liczby i odsetki kodu 1 w grupach” podaje 52 z 74 doświadczonych (70,3%) i 45 z 74 nowych (60,8%). Tabela „Test chi-kwadrat bez korekty ciągłości” podaje $\chi^2(1)=1{,}466$, $p=0{,}2260$ i najmniejszą liczebność oczekiwaną 25,5; tabela „Tabele Monte Carlo przy stałych marginesach” — $k=593$ i $p_{\mathrm{MC}}=0{,}2970$ przy $B=1999$. Tabela „95% CI różnicy odsetków kodu 1 [pp]” podaje różnicę $-9{,}46$ pp z przedziałem dużopróbkowym $[-24{,}70; 5{,}78]$ i bootstrapowym $[-24{,}32; 5{,}41]$, a tabela „V Craméra: natężenie bez kierunku” — $V=0{,}100$.
 
-To nie jest sprzeczność z pierwszą analizą. Osoby mogą różnić się oceną katalogu, a dane o powodzeniu mogą być za mało precyzyjne, by rozstrzygnąć interesującą różnicę. Równie ważne: „jedno p istotne, drugie nieistotne” nie jest testem różnicy między tymi efektami. W dodatku efekty dotyczą różnych pomiarów i jednostek.
+Przy $\alpha=0{,}05$ hipoteza niezależności pozostaje, a przedział od $-24{,}7$ do $5{,}8$ pp obejmuje zarówno brak różnicy, jak i różnice praktycznie ważne. Dwie analizy opisują dwa pomiary o różnych jednostkach i precyzji: różnica ocen ma przedział po jednej stronie zera, a różnica odsetków — przedział obejmujący zero. Porównanie efektów obu analiz wymagałoby osobnego testu różnicy efektów.
 
-V jest nieujemne i nie podaje kierunku. Kierunek bierze się z procentów oraz różnicy podpisanych grup. Wniosek o zerowym związku nie wynika z tego, że V jest liczbowo małe; nie wynika też z dodatniej dolnej granicy zwykłego percentylowego bootstrapu V, miary ograniczonej od dołu zerem. Tutaj niepewność opisujemy CI kierunkowej różnicy proporcji.
+Klasyczne $p$ (0,226) i $p_{\mathrm{MC}}$ (0,297) różnią się: pierwsze pochodzi z ciągłego przybliżenia rozkładem $\chi^2(1)$, drugie z dyskretnego rozkładu tabel o tych samych marginesach. Raport podaje oba $p$ i nazwę metody głównej. Przy liczebności oczekiwanej poniżej 5 funkcja dodaje tabelę „Test Fishera: iloraz szans z 95% CI”; przedział Fishera dotyczy ilorazu szans, a dużopróbkowy przedział różnicy odsetków wymaga wtedy ostrożnego odczytu.
 
-Klasyczne p i Monte Carlo mogą się różnić: pierwsze pochodzi z ciągłego przybliżenia chi-kwadrat, a drugie z dyskretnego rozkładu tabel o tych samych marginesach. Nie wybieramy mniejszego. Przy rzadkich komórkach funkcja pokazuje także Fishera; wtedy dużopróbkowy CI różnicy wymaga szczególnej ostrożności, a dokładny CI ilorazu szans dotyczy innego parametru.
+**Wzorzec zapisu tabeli 2 × 2 (APA).**
 
-## Ścieżka korelacji: ten sam tok opisu, inna estymanda
+> Wskazany dokument znalazło 45 z 74 nowych użytkowników (60,8%) i 52 z 74 doświadczonych (70,3%); różnica nowi minus doświadczeni wyniosła −9,46 punktu procentowego, 95% CI [−24,70; 5,78]. Test niezależności dał $\chi^2$(1) = 1,47, *p* = 0,226, a test Monte Carlo przy stałych marginesach (*B* = 1999) *p*~MC~ = 0,297; *V* = 0,10. Przedział obejmuje zarówno brak różnicy, jak i różnice rzędu 20 punktów procentowych, więc wielkość różnicy skuteczności pozostaje nieustalona.
 
-Jeżeli scenariusz przewiduje Spearmana, drugą analizą jest związek indeksu z czasem albo częstością korzystania. Przykład S05 dotyczy przejrzystości procedur w portalu oraz czasu zadania. To odrębny wariant demonstracyjny, a nie dodatkowe poszukiwanie istotności w S02.
+## Ścieżka korelacji: ten sam tok, inna estymanda
+
+W scenariuszu korelacyjnym druga analiza opisuje związek indeksu z czasem albo z częstością korzystania. Przykład S05 (portal uczelni, ID demo001) jest odrębnym wariantem demonstracyjnym ścieżki korelacyjnej.
 
 $$
-\widehat{\rho}_s=\operatorname{cor}(\operatorname{rank}(X),
-\operatorname{rank}(Y)).
+r_S=r\big(R(x),\,R(y)\big).
 $$
 
-Czytamy: współczynnik Spearmana jest korelacją rang dwóch zmiennych w kompletnych parach. Remisy dostają rangi średnie. Wynik opisuje kierunek i siłę relacji monotonicznej, nie spadek czasu o określoną liczbę minut. Jednostką analizy jest osoba z obiema wartościami, nie dwie niezależne listy pomiarów.
-
-Poniższy wynik służy jako wzorzec dla projektów korelacyjnych. Odczytaj rho, N par, statystykę S, przybliżone p, permutacyjne p i CI bootstrapu par. Nie przenoś tu CI Pearsona ani stopni swobody testu t.
+Współczynnik Spearmana to korelacja Pearsona rang $R(x)$ i $R(y)$ w kompletnych parach; remisy dostają rangi średnie (ćwiczenie C08). Współczynnik $r_S$ opisuje kierunek i siłę relacji monotonicznej osób z obiema wartościami, a parametr populacji oznacza się $\rho_S$. Wynik Spearmana raportuje się ze statystyką $S$, wartością $p$, przedziałem z bootstrapu par i $p$ z tasowania.
 
 ```{r learn-3-korelacja}
 wynik_korelacyjny <- wynik_drugiej_analizy(analizy_korelacji)
 print(wynik_korelacyjny)
 ```
 
-**Wzorcowy akapit.** W demonstracji S05, przy 140 kompletnych parach, związek indeksu deklarowanej przejrzystości portalu z czasem zadania był ujemny i niewielki: $\rho_s=-0{,}100$, bootstrapowy 95% CI [−0,276; 0,082]. Otrzymano S = 503075,19 oraz przybliżone $p=0{,}239$; tasowanie jednej zmiennej dało $p_{\mathrm{perm}}=0{,}2315$ przy B = 1999. Dane nie dają mocnych podstaw do odrzucenia przyjętego modelu zerowego, ale zakres CI nie jest dowodem dokładnego braku relacji ani dowodem, że wyższa ocena portalu skraca czas.
+Tabela „Kompletność par” podaje 148 osób i 140 kompletnych par (8 par niekompletnych). Tabela „Test Spearmana” podaje $r_S=-0{,}100$, $S=503\,075$ i $p=0{,}2394$; tabela „95% CI współczynnika rS” — przedział $[-0{,}276; 0{,}082]$ z 1999 ważnych replik; tabela „Tasowanie jednej zmiennej” — $k=462$ i $p_{\mathrm{perm}}=0{,}2315$.
 
-Oba przykłady pokazują ten sam schemat pisania: pomiar, liczebność, estymata, przedział, właściwe statystyki, dwa tory i granica wniosku. Nie trzeba wykonywać obu ścieżek drugiej analizy we własnym zadaniu. Właściwą wybiera plan scenariusza, a nie to, gdzie uzyskano korzystniejsze p.
+**Wzorzec zapisu korelacji rang (APA).**
 
-# LEARN 4: od tabel do wspólnej interpretacji
+> W przykładzie S05 (*N* = 140 kompletnych par) indeks przejrzystości procedur słabo i ujemnie współwystępował z czasem zadania, *r*~S~ = −0,10, *S* = 503 075, *p* = 0,24, bootstrapowy 95% CI [−0,28; 0,08]; test permutacyjny (*B* = 1999) dał *p*~perm~ = 0,23. Przedział obejmuje słaby związek ujemny i brak związku.
 
-**Błędne zdanie:** „Doświadczenie poprawia kompetencje, ponieważ różnica ocen jest istotna, a użytkownicy mają taką samą skuteczność, bo drugie p przekracza 0,05”.
+Oba przykłady mają ten sam tok opisu: pomiar, liczebność, estymata, przedział, statystyka testu, dwa tory i granica wniosku. Ścieżkę drugiej analizy wybrał plan scenariusza na C09, więc każda praca wykonuje jedną z dwóch ścieżek.
 
-Zdanie wymaga kilku odrębnych poprawek. Nie zmierzono pełnych kompetencji, lecz deklarowaną użyteczność. Grupy nie powstały przez losowy przydział do stażu korzystania, więc różnica nie jest efektem przyczynowym doświadczenia. Brak odrzucenia modelu zerowego dla powodzenia nie stanowi dowodu równoważności.
+# LEARN 4: Od tabel do wspólnej interpretacji
 
-Wykresy pomagają połączyć opis z liczbami, ale nie zastępują testów ani przedziałów parametrów. Pudełka pokazują rozrzut indeksu, a słupki odsetki kodu 1 w grupach. Zwróć uwagę na jednostki i nakładanie się wyników, zanim sformułujesz zdanie o użytkownikach.
+**Zdanie do poprawy:** „Doświadczenie poprawia kompetencje, ponieważ różnica ocen jest istotna, a użytkownicy mają taką samą skuteczność, bo drugie p przekracza 0,05”.
 
-```{r learn-4-wykresy}
+Zdanie wymaga trzech poprawek. Zmierzono deklarowaną użyteczność katalogu, a twierdzenie o kompetencjach wymagałoby szerszego pomiaru. Grupy wynikają ze stażu korzystania, więc różnica opisuje związek stażu z oceną. Pozostawienie hipotezy zerowej dla odsetka znalezionych dokumentów opisuje niepewność: przedział $[-24{,}7; 5{,}8]$ pp obejmuje różnice praktycznie ważne, a równoważność grup wymaga testu równoważności z granicą ustaloną przed analizą.
+
+```{r learn-4-efekty, fig.height=3.6, fig.cap="Efekty obu analiz S02 z 95% CI, każdy w swojej jednostce. Górny panel: różnica średnich indeksu, −0,44 punktu, przedział od −0,66 do −0,21. Dolny panel: różnica odsetków kodu 1, −9,46 punktu procentowego, przedział od −24,70 do 5,78. Linia przerywana oznacza zero."}
+efekty_przykladu <- efekty_projektu(analizy_demo)
+print(efekty_przykladu)
+```
+
+Tabela „Efekty obu analiz z 95% CI” i wykres „Efekty obu analiz w ich jednostkach” zestawiają dwa efekty: różnica indeksu $-0{,}44$ punktu z przedziałem $[-0{,}66; -0{,}21]$ leży w całości poniżej zera, a różnica odsetków $-9{,}46$ pp z przedziałem $[-24{,}70; 5{,}78]$ przecina zero. Panele mają osobne osie, bo punkty indeksu i punkty procentowe to różne jednostki.
+
+```{r learn-4-wykresy, fig.cap=c("Indeks użyteczności katalogu w grupach S02. Pudełko obejmuje środkowe 50% wyników, kreska oznacza medianę: 3,50 u doświadczonych i 3,17 u nowych; punkty oznaczają osoby.", "Kod 1 (znaleziony dokument) w grupach S02. Lewy panel: liczba osób z kodem 1; prawy panel: odsetek w grupie, 70,3% (52 z 74) u doświadczonych i 60,8% (45 z 74) u nowych.")}
 obrazy_przykladu <- wykresy_wariantu(analizy_demo)
 print(obrazy_przykladu)
 ```
 
-**Wzorcowa poprawa.** W syntetycznym S02 nowe osoby przeciętnie niżej oceniały użyteczność katalogu, lecz wyniki osób z obu grup częściowo się nakładały. Oszacowano także niższy odsetek powodzeń u nowych, ale CI tej różnicy pozostawia znaczną niepewność co do jej wielkości i kierunku w modelu populacyjnym. Łącznie wyniki uzasadniają pytanie o bariery korzystania, nie wniosek, że staż poprawia kompetencje lub że skuteczność grup jest równoważna.
+Wykres indeksu w grupach przedstawia rozkłady z medianą 3,50 u doświadczonych i 3,17 u nowych. Rozkłady w dużej części się nakładają, więc część nowych osób ocenia katalog wyżej niż część doświadczonych. Wykres „Analiza 2: kod 1 w grupach” przedstawia 52 z 74 (70,3%) i 45 z 74 (60,8%) osób z kodem 1. Odczyt zbiorczy opisuje grupy; opis pojedynczej osoby wymagałby jej danych.
 
-Poprawa nie polega na dodaniu „być może” do każdego czasownika. Trzeba zmienić przedmiot twierdzenia, podać liczby tam, gdzie są potrzebne, i wyjaśnić konkretną alternatywę. Doświadczone osoby mogły znać typ dokumentu, częściej korzystać z podobnych baz albo różnić się motywacją. Bez odpowiedniego projektu nie oddzielimy tych wyjaśnień od stażu korzystania.
+Poprawa zmienia przedmiot twierdzenia i nazywa alternatywne wyjaśnienia: doświadczone osoby mogą znać typ dokumentu, częściej korzystać z podobnych baz albo różnić się motywacją. Rozdzielenie alternatywnych wyjaśnień od stażu korzystania wymaga projektu badania, np. pomiaru znajomości typu dokumentu.
 
-Wykres indeksu nie informuje, że każda nowa osoba uzyskała wynik niższy od każdej doświadczonej. Słupek procentowy nie pokazuje, które jednostki potrzebowały pomocy ani ile prób podjęły. Odczyt zbiorczy nie powinien zmieniać się w opis każdej osoby z grupy.
+**Wzorzec zapisu syntezy (APA).**
 
-# LEARN 5: rekomendacja i odtwarzalność to dwa różne zobowiązania
+> W syntetycznym S02 nowi użytkownicy przeciętnie niżej oceniali użyteczność katalogu (różnica −0,44 punktu, 95% CI [−0,66; −0,21]), a rozkłady ocen obu grup w dużej części się nakładały. Odsetek znalezionych dokumentów był u nowych niższy o 9,5 punktu procentowego, 95% CI [−24,7; 5,8], więc wielkość różnicy skuteczności pozostaje nieustalona. Łącznie wyniki uzasadniają pytanie o bariery pierwszego korzystania z katalogu; znajomość typu dokumentu, korzystanie z podobnych baz i motywacja pozostają alternatywnymi wyjaśnieniami różnicy ocen.
 
-**Pytanie:** co instytucja mogłaby rozsądnie zrobić dalej i co musi otrzymać czytelnik raportu? Rekomendacja wynika z problemu, pomiaru i siły dowodów. Odtwarzalność oznacza możliwość ponownego uzyskania wyników z zapisanych danych i kodu. Żadna z tych rzeczy nie zastępuje drugiej.
+# LEARN 5: Rekomendacja i odtwarzalność
 
-Gotowa karta przypomina wariant, reguły oraz parametry losowania. Hash danych identyfikuje zawartość danych, a zdalne SHA po oddaniu identyfikuje wersję plików w repozytorium. Sam ciąg znaków nie potwierdza trafności pomiaru ani poprawności interpretacji.
+Rekomendacja i odtwarzalność to dwa zobowiązania raportu. Rekomendacja wynika z problemu, pomiaru i siły dowodów; odtwarzalność oznacza ponowne uzyskanie wyników z zapisanych danych i kodu.
+
+$$
+\text{wynik}=f\big(\text{dane surowe},\ \text{reguły},\ \text{ziarno},\ \text{wersje}\big).
+$$
+
+Cztery składniki wyznaczają wynik: dane surowe z manifestu, reguły przygotowania, ziarno losowania i wersje oprogramowania. Te same cztery składniki dają ten sam wynik. Hash danych identyfikuje zawartość danych, a zdalne SHA po oddaniu — wersję plików w repozytorium; trafność pomiaru i poprawność interpretacji ocenia się osobno.
 
 ```{r learn-5-slad}
 karta_odtworzenia <- slad_analizy(analizy_demo)
 print(karta_odtworzenia)
 ```
 
-**Wzorcowy akapit.** Gdyby podobny wzorzec uzyskano w odpowiednio zaplanowanym realnym badaniu, warto byłoby najpierw sprawdzić zrozumiałość pomocy i filtrów dla nowych użytkowników, a następnie ocenić konkretną zmianę w porównywalnych warunkach. Syntetyczny S02 sam nie uzasadnia wdrożenia ani rankingu użytkowników. Raport powinien zachować pytania, definicje pomiarów, dane i manifest, reguły przygotowania oraz obie analizy z ich niepewnością, tak aby czytelnik mógł odtworzyć liczby i sprawdzić granice rekomendacji.
+Karta „Odtworzenie wyniku” podaje wariant demo001 / S02 / 2026-27, wersję generatora 1.0.0, pierwszą grupę hasha 5f8f14d1, reguły przygotowania, $B=1999$ i ziarno 202627. Tabela „Wersje środowiska tego wykonania” podaje wersje R i pakietów użytych do obliczeń.
 
-Dobre zakończenie mówi, co byłoby kolejnym sprawdzalnym krokiem. „Trzeba zwiększyć kompetencje cyfrowe” jest zbyt szerokie, jeżeli dane dotyczą zrozumiałości katalogu. „Należy usunąć filtr” jest zbyt stanowcze, jeżeli nie porównano interfejsów. Propozycja pilotażu pomocy jest hipotezą do oceny, nie udowodnionym rozwiązaniem.
+Dobre zakończenie raportu wskazuje kolejny sprawdzalny krok wynikający z mierzonego konstruktu. Przy danych o zrozumiałości katalogu zalecenie „zwiększyć kompetencje cyfrowe” wykracza poza pomiar, a zalecenie „usunąć filtr” wymaga porównania interfejsów; pilotaż pomocy dla nowych użytkowników jest hipotezą do oceny.
 
-Odtworzenie zaczyna się od plików, nie od obiektów pozostawionych w Environment. Zapisany Rmd ma zawierać własne akapity i poprawne metadane, a analiza.R — procedury, z których pochodzą tabele. Pokwitowanie zdalnego SHA powstaje po wysyłce. Nie wpisujesz tego SHA do pliku, który właśnie ma identyfikować: taka zmiana tworzyłaby następną wersję.
+Odtworzenie zaczyna się od zapisanych plików: Rmd z własnymi akapitami i poprawnymi metadanymi oraz `analiza.R` z procedurami tabel. Zdalne SHA powstaje po wysyłce i pozostaje w potwierdzeniu oddania; wpisanie SHA do pliku, który SHA identyfikuje, utworzyłoby nową wersję pliku.
 
-# CHALLENGE: wyniki twojego projektu — Z10
+**Wzorzec zapisu rekomendacji (APA).**
 
-Kontynuujesz scenariusz wybrany na C09. Przygotowanie Z10 zachowuje kopię tych samych danych, słownika i karty. Nie wpisujesz ponownie kodu scenariusza i nie uruchamiasz nowego losowania. Publiczny podgląd pokazuje S02, natomiast twoja praca odczytuje własny zapis Z09. Nie zmieniaj ID ani scenariusza po obejrzeniu p i nie wybieraj drugiej relacji ponownie.
+> Gdyby podobny wzorzec wystąpił w zaplanowanym badaniu użytkowników, bibliotece warto byłoby najpierw sprawdzić zrozumiałość pomocy i filtrów dla nowych użytkowników, a następnie porównać wersję katalogu z pomocą i bez niej w porównywalnych warunkach. Syntetyczne dane S02 ilustrują analizę, więc rekomendacja dotyczy planu realnego badania. Wyniki odtwarzają zapisane dane (hash zaczynający się od 5f8f14d1), reguły przygotowania, ziarno 202627 i skrypt analizy.
 
-Uruchamiaj bloki od góry. Każdy pokazuje dowód potrzebny do jednej odpowiedzi; tekst wpisuj w miejsce znacznika poza kodem. Napisz po jednym krótkim akapicie, proporcjonalnym do pytania. Nie ma limitu słów ani dodatkowych odpowiedzi w LEARN.
+# CHALLENGE — wyniki własnego projektu (Z10)
 
-## CHALLENGE 1: potwierdź wariant i rzeczywiste N
+Pięć zadań stosuje tok LEARN do wariantu zapisanego na C09. Blok CHALLENGE 1 odczytuje zapis Z09: ten sam scenariusz, ID i wariant danych. Akapity S01–S05 przechodzą później do raportu jako pola P05 i P07–P10, więc wszystkie dotyczą liczb własnego wariantu.
 
-Pierwszy blok odtwarza dane twojego scenariusza, stosuje poznane reguły i przygotowuje obie analizy. Porównaj kartę z Z09: ID, scenariusz, rocznik, wersję generatora i hash danych. Przy niezgodności wyjaśnij ją z prowadzącym przed interpretacją; samo podobieństwo średnich nie potwierdza tego samego wariantu.
+Każde z pięciu zadań ma ten sam układ:
 
-```{r challenge-1-wariant}
+1. **Zadanie** — jedno zdanie z przedmiotem opisu.
+2. **Blok R** — uruchom go; wynik zawiera wszystkie liczby potrzebne do odpowiedzi.
+3. **Wskazówki** — gdzie w wyniku szukać informacji, jak ją nazwać i wzór zdania do uzupełnienia.
+4. **W akapicie wymagane** — elementy, które sprawdza prowadzący.
+5. **Twój akapit** — pole odpowiedzi w ramce: znacznik w nawiasie kwadratowym zastępujesz własnym tekstem, a linie komentarza nad nim i pod nim pozostawiasz bez zmian.
+
+Akapit liczy 3–6 zdań zwykłego tekstu, bez kodu R. Liczby przepisujesz z wyniku bloku, z jednostką, symbolem i mianownikiem.
+
+## CHALLENGE 1: Wariant i N każdej analizy
+
+**Zadanie:** potwierdź zgodność wariantu z Z09 i opisz dane, na których działają obie analizy.
+
+```{r challenge-1}
 projekt <- przygotuj_wariant_projektu()
 moje_analizy <- analizy_wariantu(projekt)
 print(projekt)
-```
-
-Druga część tego samego zadania pokazuje reguły i liczebności. Odczytaj osobno usunięte rekordy i komórki zamienione na braki. N pierwszej i drugiej analizy mogą być różne bez zmiany scenariusza.
-
-```{r challenge-1-bilans}
 moje_przygotowanie <- przygotowanie_wariantu(projekt)
-moj_bilans <- bilans_wariantu(projekt)
 print(moje_przygotowanie)
+moj_bilans <- bilans_wariantu(projekt)
 print(moj_bilans)
 ```
 
-Napisz jeden krótki akapit: wskaż wariant zgodny z Z09, nazwij konstrukt indeksu i pomiar drugiego pytania, podaj N obu analiz oraz wyjaśnij jedną rzeczywistą zmianę wynikającą z reguł przygotowania. Zaznacz syntetyczność. Nie przepisuj całych hashy; służą kontroli tożsamości danych, nie zastępują opisu.
+Blok wyświetla kartę „Karta wybranego wariantu”, tabelę „Manifest wariantu: pochodzenie danych”, kartę „Reguły gotowego skryptu” oraz tabele „Dziennik przygotowania: wykonane zmiany”, „Bilans liczebności” i „Dostępne pomiary w grupach”.
+
+*Wskazówki:*
+
+- Porównaj ID, scenariusz, rocznik, wersję generatora i pierwszą grupę hasha z akapitem S01 zadania Z09; zgodność pięciu elementów potwierdza ten sam wariant.
+- Konstrukt indeksu podaje wiersz „Konstrukt indeksu”, a pomiar drugiego pytania — wiersz „Druga relacja”.
+- N analizy 1 i N analizy 2 podaje tabela „Bilans liczebności”; różnica N wynika z różnych zmiennych obu analiz.
+- Jedną zmianę z dziennika opisz z liczbą i skutkiem: usunięty rekord zmniejsza liczbę osób, zmieniona komórka zostawia osobę w danych.
+- Wzór zdania: „Analizy dotyczą wariantu [ID] / [scenariusz] / [rocznik] (generator [..], hash zaczynający się od [8 znaków]), zgodnego z kartą Z09; dane są syntetyczne. Indeks mierzy [konstrukt], a drugie pytanie — [pomiar]. Analiza 1 objęła [N] osób z ważnym indeksem, a analiza 2 — [N] [osób albo par], ponieważ [..]. Reguła [..] zmieniła [liczba] [rekordów albo komórek], co [skutek]”.
+
+*W akapicie wymagane:* (i) wariant z ID, scenariuszem, rocznikiem, wersją generatora i pierwszą grupą hasha; (ii) konstrukt indeksu i pomiar drugiego pytania; (iii) N obu analiz z wyjaśnieniem różnicy; (iv) jedna zmiana z dziennika z liczbą i skutkiem; (v) informacja o danych syntetycznych.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S01.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S01 -->
 [UZUPELNIJ_S01]
 <!-- /odpowiedz:S01 -->
+:::
 
-## CHALLENGE 2: opisz pierwsze porównanie
+## CHALLENGE 2: Pierwsze porównanie
 
-Funkcja prezentuje pierwszą analizę dla twoich danych, z jawnym kontrastem. Nie korzystaj z liczb przykładu LEARN. Dwa CI dotyczą różnicy średnich, nie średniej każdej grupy z osobna ani przedziału indywidualnych ocen.
+**Zadanie:** opisz różnicę indeksu między grupami z jej niepewnością i odpowiedz na pierwsze pytanie.
 
-```{r challenge-2-porownanie}
+```{r challenge-2}
 moj_pierwszy_wynik <- wynik_pierwszej_analizy(moje_analizy)
 print(moj_pierwszy_wynik)
 ```
 
-Napisz jeden krótki akapit wyniku: nazwij grupy i pomiar, podaj ich N i średnie, znak oraz wielkość różnicy w punktach indeksu, CI Welcha i jego relację do CI bootstrapu. Odczytaj t, df i p klasyczne oraz p permutacyjne z B. Zakończ odpowiedzią na pierwsze pytanie, bez przypisywania przyczyny i bez oceniania pracy po istotności.
+Blok wyświetla kartę „Analiza 1: kontrast i jednostka” oraz tabele „Opis grup [pkt 1–5]”, „Test Welcha”, „95% CI różnicy średnich [pkt]”, „Tasowanie etykiet grup” i „Efekt standaryzowany”.
+
+*Wskazówki:*
+
+- Kontrast z karty ustala znak: różnica ujemna oznacza niższą średnią pierwszej grupy z wiersza „Kontrast”.
+- Oba przedziały dotyczą różnicy średnich w punktach indeksu; porównaj ich granice.
+- $p_{\mathrm{perm}}=(k+1)/(B+1)$: podstaw $k$ i $B$ z tabeli „Tasowanie etykiet grup”.
+- Grupy są obserwacyjne, więc odpowiedź na pytanie opisuje związek przynależności do grupy z oceną.
+- Wzorzec APA: „Grupa [A] uzyskała średni indeks *M* = [..] (*SD* = [..]; *n* = [..]), a grupa [B] *M* = [..] (*SD* = [..]; *n* = [..]). Różnica [A] minus [B] wyniosła [..] punktu, 95% CI [[..]; [..]], *t*([df]) = [..], *p* = [..], *g* = [..]; bootstrapowy 95% CI wyniósł [[..]; [..]], a test permutacyjny (*B* = [..]) dał *p*~perm~ = [..]”.
+
+*W akapicie wymagane:* (i) grupy, pomiar, n, średnie i SD; (ii) różnica ze znakiem w punktach indeksu i Hedges $g$; (iii) CI Welcha i CI bootstrapu z porównaniem granic; (iv) $t$, df i $p$ oraz $k$, $B$ i $p_{\mathrm{perm}}$; (v) odpowiedź na pierwsze pytanie jako opis związku.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S02.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S02 -->
 [UZUPELNIJ_S02]
 <!-- /odpowiedz:S02 -->
+:::
 
-## CHALLENGE 3: opisz drugą relację
+## CHALLENGE 3: Druga relacja
 
-Blok sam wybiera tabelę 2×2 albo Spearmana na podstawie scenariusza z C09. Nie uruchamiasz dodatkowej metody, aby znaleźć mniejsze p. Nazwa kolumny `powodzenie` nie upoważnia do nazywania każdej odpowiedzi z kodem 1 sukcesem; odczytaj treść pytania wydrukowaną z wynikiem.
+**Zadanie:** opisz drugą relację scenariusza z efektem, przedziałem i dwoma torami oraz odpowiedz na drugie pytanie.
 
-```{r challenge-3-relacja}
+```{r challenge-3}
 moj_drugi_wynik <- wynik_drugiej_analizy(moje_analizy)
 print(moj_drugi_wynik)
 ```
 
-Napisz jeden krótki akapit zgodnie ze swoją ścieżką. Dla tabeli: podaj liczby i odsetki kodu 1 w grupach, ich mianowniki, różnicę w punktach procentowych z CI, test klasyczny z p oraz Monte Carlo z B; V opisz jako miarę bez kierunku. Dla Spearmana: podaj N par, znaczenie znaku rho, CI bootstrapu par, S i przybliżone p oraz p permutacyjne z B, bez dopisywania df. W obu ścieżkach odpowiedz na drugie pytanie i nazwij istotne ograniczenie pomiaru lub wnioskowania.
+Blok wyświetla wynik jednej z dwóch ścieżek, zgodnie z planem scenariusza: kartę „Analiza 2: pole 0/1” z tabelami liczb i odsetków, testu chi-kwadrat, tabel Monte Carlo, przedziału różnicy odsetków i V Craméra albo kartę „Analiza 2: korelacja rang” z tabelami kompletności par, testu Spearmana, przedziału $r_S$ i tasowania.
+
+*Wskazówki — tabela 2 × 2:*
+
+- Znaczenie kodu 1 podaje wiersz „Kod 1” karty; kierunek „korzystny” wynika z treści pytania.
+- Odsetek kodu 1 liczy się w każdej grupie osobno: liczba osób z kodem 1 podzielona przez n grupy.
+- Różnica w punktach procentowych ma znak zgodny z kontrastem; V opisuje natężenie związku bez kierunku.
+- Wzorzec APA: „[Zdarzenie] dotyczyło [x] z [n] osób w grupie [A] ([..]%) i [x] z [n] w grupie [B] ([..]%); różnica [A] minus [B] wyniosła [..] pp, 95% CI [[..]; [..]]. Test niezależności dał $\chi^2$(1) = [..], *p* = [..], a test Monte Carlo (*B* = [..]) *p*~MC~ = [..]; *V* = [..]”.
+
+*Wskazówki — korelacja rang:*
+
+- Znak dodatni $r_S$ oznacza, że wyższy indeks współwystępuje z wyższą wartością drugiej zmiennej, a znak ujemny — z niższą.
+- N par podaje tabela „Kompletność par”; statystyka $S$ ma wartość $p$ bez stopni swobody.
+- Wzorzec APA: „W [N] kompletnych parach indeks i [zmienna] [kierunek] współwystępowały, *r*~S~ = [..], *S* = [..], *p* = [..], bootstrapowy 95% CI [[..]; [..]]; test permutacyjny (*B* = [..]) dał *p*~perm~ = [..]”.
+
+*W akapicie wymagane — tabela 2 × 2:* (i) treść kodu 1 oraz odsetki z mianownikami; (ii) różnica w punktach procentowych z CI; (iii) test chi-kwadrat albo Fishera z $p$ i test Monte Carlo z $B$; (iv) V jako natężenie bez kierunku; (v) odpowiedź na drugie pytanie z jednym ograniczeniem pomiaru.
+
+*W akapicie wymagane — korelacja rang:* (i) N par i znaczenie znaku; (ii) $r_S$ z CI bootstrapu par; (iii) $S$, $p$ oraz $p_{\mathrm{perm}}$ z $B$; (iv) skala współczynnika: liczba bez jednostki od $-1$ do $1$; (v) odpowiedź na drugie pytanie z jednym ograniczeniem pomiaru.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S03.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S03 -->
 [UZUPELNIJ_S03]
 <!-- /odpowiedz:S03 -->
+:::
 
-## CHALLENGE 4: połącz dowody bez rozszerzania wniosku
+## CHALLENGE 4: Wspólna interpretacja
 
-Dwa wykresy dotyczą tych samych analiz, które właśnie opisałeś. Sprawdź zgodność kierunku, jednostek i liczebności z własnymi akapitami. Dla korelacji kropka oznacza kompletną parę; nakładanie się kropek może ukrywać powtórzone wartości.
+**Zadanie:** połącz obie odpowiedzi z problemem usługi i określ granicę wniosku przyczynowego.
 
-```{r challenge-4-wykresy}
+```{r challenge-4, fig.height=3.6, fig.cap=c("Efekty obu analiz własnego wariantu z 95% CI, każdy w swojej jednostce; linia przerywana oznacza zero.", "Indeks w grupach własnego wariantu: pudełko obejmuje środkowe 50% wyników, kreska oznacza medianę, punkty oznaczają osoby.", "Druga analiza własnego wariantu: kod 1 w grupach (liczba i odsetek) albo kompletne pary indeksu i drugiej zmiennej.")}
+moje_efekty <- efekty_projektu(moje_analizy)
+print(moje_efekty)
 moje_wykresy <- wykresy_wariantu(moje_analizy)
 print(moje_wykresy)
 ```
 
-Napisz jeden krótki akapit łączący obie odpowiedzi z problemem usługi. Wykorzystaj jedną konkretną cechę każdego wykresu oraz właściwe efekty lub przedziały, bez powtarzania wszystkich statystyk. Wyjaśnij, dlaczego sformułowanie „wyniki dowodzą, że zmiana indeksu powoduje zmianę drugiego wyniku” byłoby nieuprawnione; podaj alternatywne wyjaśnienie adekwatne do swojego scenariusza.
+Blok wyświetla tabelę „Efekty obu analiz z 95% CI”, wykres „Efekty obu analiz w ich jednostkach”, wykres indeksu w grupach i wykres drugiej analizy.
+
+*Wskazówki:*
+
+- Problem usługi podaje karta wariantu z CHALLENGE 1; obie odpowiedzi odnoszą się do problemu usługi.
+- Z każdego wykresu weź jedną cechę: nakładanie się rozkładów indeksu, różnicę wysokości słupków albo kształt chmury punktów.
+- Przedział po jednej stronie zera opisuje kierunek efektu; przedział przecinający zero pozostawia otwarte kierunek i wielkość efektu.
+- Wniosek przyczynowy wymagałby losowego przydziału do grup albo pomiaru przed zmianą i po niej. Alternatywne wyjaśnienie z własnego scenariusza to np. inne zadania, inna motywacja albo wcześniejsza znajomość zasobu.
+- Wzór zdania: „W syntetycznym [scenariusz] grupa [A] [wynik 1: efekt z CI], a [wynik 2: efekt z CI]. Wykres [..] pokazuje [..]. Łącznie wyniki uzasadniają [ograniczony wniosek o problemie usługi]; [alternatywne wyjaśnienie] pozostaje możliwe, a wniosek przyczynowy wymagałby [projektu]”.
+
+*W akapicie wymagane:* (i) oba efekty z CI i jednostkami; (ii) jedna cecha każdego z dwóch wykresów wyników; (iii) powiązanie wyników z problemem usługi; (iv) projekt potrzebny do wniosku przyczynowego; (v) jedno alternatywne wyjaśnienie adekwatne do scenariusza.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S04.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S04 -->
 [UZUPELNIJ_S04]
 <!-- /odpowiedz:S04 -->
+:::
 
-## CHALLENGE 5: sformułuj rekomendację i zachowaj podstawę raportu
+## CHALLENGE 5: Rekomendacja i podstawa odtworzenia
 
-Ostatnia karta pokazuje, co pozwala odtworzyć twoje liczby. Zestaw ją z planem z Z09 i pięcioma odpowiedziami wpisywanymi dzisiaj. Nie trzeba otwierać kolejnego pliku odpowiedzi ani przepisywać tabel do edytora tekstu.
+**Zadanie:** zaproponuj proporcjonalny kolejny krok dla instytucji i wskaż, co pozwala sprawdzić podstawę rekomendacji.
 
-```{r challenge-5-odtworzenie}
+```{r challenge-5}
 moj_slad <- slad_analizy(moje_analizy)
 print(moj_slad)
 ```
 
-Napisz jeden krótki akapit: zaproponuj proporcjonalny kolejny krok dla instytucji, wskaż najważniejszą niepewność lub ograniczenie i wyjaśnij, jak zmieniłbyś plan realnego badania, aby je ograniczyć. Powiąż rekomendację z konkretnym wynikiem, zaznacz syntetyczność i wskaż, jakie elementy zapisanej pracy pozwalają czytelnikowi sprawdzić jej podstawę. Nie ogłaszaj wdrożenia na podstawie danych dydaktycznych.
+Blok wyświetla kartę „Odtworzenie wyniku” i tabelę „Wersje środowiska tego wykonania”.
+
+*Wskazówki:*
+
+- Rekomendacja dotyczy planu realnego badania w instytucji: kolejny sprawdzalny krok to np. pilotaż, porównanie dwóch wersji usługi albo dodatkowy pomiar.
+- Powiąż rekomendację z jednym konkretnym wynikiem (efekt z CI) i z najważniejszą niepewnością.
+- Zmiana planu realnego badania ogranicza konkretną niepewność: większa próba — precyzję, inny kanał rekrutacji — selekcję, dodatkowy pomiar — zakres konstruktu, losowy przydział — pytanie przyczynowe.
+- Podstawę sprawdzenia tworzą zapisane elementy z karty „Odtworzenie wyniku”: dane z hashem, reguły, ziarno, wersje oraz Rmd z `analiza.R`.
+- Wzór zdania: „Gdyby podobny wzorzec wystąpił w zaplanowanym badaniu, [instytucja] mogłaby [krok], ponieważ [wynik z CI]. Największą niepewność stanowi [..]; ograniczyłaby ją [zmiana planu]. Dane są syntetyczne, więc rekomendacja dotyczy planu badania. Wyniki odtwarzają zapisane dane (hash zaczynający się od [8 znaków]), reguły przygotowania, ziarno [..] i skrypt analizy”.
+
+*W akapicie wymagane:* (i) proporcjonalny kolejny krok dla instytucji; (ii) powiązanie z konkretnym wynikiem; (iii) najważniejsza niepewność i zmiana planu, która ją ogranicza; (iv) informacja o danych syntetycznych; (v) elementy zapisanej pracy, które pozwalają sprawdzić wynik.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S05.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S05 -->
 [UZUPELNIJ_S05]
 <!-- /odpowiedz:S05 -->
+:::
 
-## Zapis i oddanie Z10
+# Zapis i oddanie
 
-Zapisz Rmd po uzupełnieniu pięciu odpowiedzi. Sprawdź, że używasz tego samego wariantu co w Z09, własnych wyników w CHALLENGE i że nie pozostały znaczniki odpowiedzi. Do typowego oddania wykonujesz jedno polecenie w konsoli, nie w chunku:
+Sprawdź pięć własnych akapitów: wariant zgadza się z Z09, liczby pochodzą z wydruków własnego wariantu, a znak, jednostka i mianownik każdego efektu są zgodne z tabelą. Zapisz plik `zadanie.Rmd` w edytorze (Ctrl+S); funkcja oddania tworzy PDF z zapisanego pliku.
+
+W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy aktualny PDF, sprawdza kompletność i wysyła go razem z Rmd, `analiza.R` i danymi wariantu do Twojego prywatnego repozytorium z dostępem prowadzącego.
 
 ```r
 oddaj_zadanie("Z10")
 ```
 
-Funkcja ma utworzyć PDF z zapisanej pracy, sprawdzić kompletność i przesłać PDF oraz źródła do twojego prywatnego repozytorium dostępnego prowadzącemu. Potwierdzenie powinno zawierać zdalne SHA. Sam lokalny PDF albo lokalny commit nie oznacza skutecznego oddania; gdy wysyłka się nie powiedzie, zachowaj pliki i komunikat błędu.
+Oddanie potwierdza komunikat z identyfikatorem SHA wysłanej wersji. Po komunikacie błędu popraw wskazany problem, zapisz plik i ponownie wywołaj `oddaj_zadanie("Z10")`; nowe potwierdzenie obejmuje nowe zmiany. Ocenę prowadzący zapisuje osobno w repozytorium.
 
-| Kryterium Z10 | Punkty |
-|---|---:|
-| Ten sam wariant i odtworzenie gotowych analiz od danych surowych | 3 |
-| Pięć własnych odpowiedzi w Rmd i zgodny PDF z tabelami i wykresami | 2 |
-| Interpretacja dwóch relacji i obu torów, efekt, CI oraz granice wniosku | 3 |
-| Zgodne źródła, opis odtworzenia i potwierdzona zdalna wersja pracy | 2 |
+Po potwierdzonym oddaniu wykonaj w konsoli `wyloguj_github()`. Na komputerze współdzielonym wyloguj również przeglądarkę i zamknij RStudio, wybierając „Don't Save” przy pytaniu o przestrzeń roboczą `.RData`. Ćwiczenie C10 zamyka cykl ćwiczeń; dalsza praca to redakcja raportu projektu.
 
-Automatyczna kontrola plików nie ocenia trafności twojego rozumowania. Prowadzący sprawdza, czy opis dotyczy rzeczywistych liczb i pomiarów, czy nie mylisz jednostek oraz czy wniosek jest proporcjonalny do danych. Poprawny wynik bez własnego akapitu nie spełnia zadania.
+## Co jest oceniane
 
-Po potwierdzeniu wysyłki wyloguj sesję kursową i przeglądarkę na współdzielonym komputerze. Nie zapisuj przestrzeni roboczej jako zastępstwa plików źródłowych. To ostatnie ćwiczenie; dalsza praca polega na redakcji tego samego projektu, a nie przygotowaniu materiału na C11.
+| Kryterium | Dowód w Twojej pracy | Odpowiedzi | Punkty |
+|----------------------------|------------------------------------------------------|--------------|------:|
+| Z10.1 Ten sam wariant i odtworzenie obu analiz | Wariant zgodny z Z09; pomiar, reguły przygotowania i N obu analiz; analizy odtwarzają się w świeżej sesji | S01 | 3 |
+| Z10.2 Pięć własnych odpowiedzi i zgodny PDF | Pięć akapitów poza kodem; PDF z tego samego Rmd zawiera akapity, tabele i wykresy | S01–S05 | 2 |
+| Z10.3 Interpretacja dwóch relacji i obu torów | Efekty z jednostkami, CI i oba tory; synteza bez wniosku przyczynowego; proporcjonalna rekomendacja | S02–S05 | 3 |
+| Z10.4 Zdalne SHA i opis odtworzenia | Zapisane źródła, dane i manifest odtwarzają wyniki; potwierdzenie oddania ze zdalnym SHA | S01–S05 | 2 |
 
-```r
-wyloguj_github()
+Ocena dotyczy poprawności odczytu i proporcjonalności wniosku. Poziomy wykonania opisuje rubryka Z10: na stronie kursu w dokumencie `rubryki/Z10.html`, a w konsoli R po poleceniu `rubryka("Z10")`.
+
+# Projekt końcowy: raport z dziesięciu akapitów
+
+Po oddaniu Z09 i Z10 projekt końcowy powstaje z tych samych akapitów. Raport ma dziewięć rozdziałów i jedenaście pól: dziesięć pól przejmuje akapity CHALLENGE, a pole P11 (bibliografia i zakres wsparcia narzędzi SI) wypełnia się w raporcie.
+
+```{r droga, fig.height=5, fig.cap="Droga od zadań do raportu w pięciu krokach, od góry do dołu: akapity Z09 i Z10, funkcja przygotowania raportu kopiująca je do pól P01–P10, redakcja pliku raportu z nowym polem P11 i oddanie projektu z potwierdzeniem zdalnego SHA."}
+droga <- pokaz_wykres(droga_raportu())
+print(droga)
 ```
 
-# Rozwinięcia do powtórki i redakcji projektu
+```{r mapa-projektu}
+mapa <- mapa_projektu()
+print(mapa)
+```
 
-## Od dwóch zadań do jednego raportu
+Wykres „Droga od zadań Z09 i Z10 do raportu projektu” przedstawia pięć kroków: akapity Z09, akapity Z10, funkcję `przygotuj_raport()`, redakcję pliku `raport.Rmd` i oddanie funkcją `oddaj_projekt()`. Tabela „Raport projektu: jedenaście pól i ich źródła” przypisuje akapity polom raportu: akapit Z10 S01 staje się polem P05, a akapity Z10 S02–S05 — polami P07–P10.
 
-Gdy przechodzisz do redakcji projektu końcowego, odtwórz własną pracę według instrukcji z początku C10. Najpierw zapisz odpowiedzi w Z09 i Z10. Następnie wykonaj w konsoli, poza chunkiem:
+## Sześć kroków pracy nad raportem
+
+1. Zapisz i oddaj zadania Z09 i Z10.
+2. W konsoli wykonaj `przygotuj_raport()`. Funkcja tworzy katalog `projekty/ilosciowy` z plikiem `raport.Rmd`, kopią danych wariantu i gotowym `analiza.R`; dziesięć akapitów trafia do pól P01–P10, a pola bez akapitu czekają na uzupełnienie.
+3. Otwórz plik `projekty/ilosciowy/raport.Rmd` i uruchom bloki od pierwszego. Każdy rozdział raportu ma układ zadania CHALLENGE: komentarz z zadaniem, wskazówkami i wymaganymi elementami (widoczny w edytorze RStudio, pominięty w PDF), gotowy blok R i pole odpowiedzi.
+4. Zredaguj pola P01–P10 w jeden tekst: usuń powtórzenia, uzgodnij liczby z tabelami raportu i dopisz przejścia między rozdziałami.
+5. Wypełnij pole P11: źródła w formacie APA z informacją, do czego służą w raporcie, oraz opis faktycznego wsparcia narzędzi SI.
+6. Zapisz plik i w konsoli wykonaj `oddaj_projekt()`.
 
 ```r
 przygotuj_raport()
+oddaj_projekt()
 ```
 
-Otwórz `projekty/ilosciowy/raport.Rmd` we własnym katalogu pracy. Przy pierwszym utworzeniu raport przejmuje pięć odpowiedzi Z09 i pięć Z10, dane oraz gotowy silnik analiz. Nie przepisujesz akapitów: redagujesz je w jeden spójny tekst, dopisujesz potrzebne wyjaśnienia i uzupełniasz bibliografię oraz faktyczny zakres wsparcia w P11. Nieuzupełnione wcześniej odpowiedzi pozostaną pustymi polami, a funkcja nie napisze ich za ciebie.
+Ponowne wywołanie `przygotuj_raport()` otwiera istniejący raport z poprawkami; akapity z Z09 i Z10 kopiuje się raz. Raport korzysta z tych samych pytań i danych co Z09 i Z10, a gotowe bloki R raportu tworzą tabele i wykresy z zapisanego wariantu.
 
-Ponowne wywołanie `przygotuj_raport()` zachowuje istniejący raport, zamiast ponownie kopiować odpowiedzi i usuwać twoje poprawki. Od tej chwili redaguj tekst końcowy właśnie w raporcie. Po zapisaniu kompletnego Rmd użyj w konsoli `oddaj_projekt()`. Projekt korzysta z tych samych pytań i danych; nie zaczynasz nowego badania ani nie wybierasz korzystniejszego wariantu.
+| Element przygotowany w Z09 | Uzupełnienie z Z10 | Miejsce w raporcie |
+|---|---|---|
+| problem, dwa pytania i estymandy | odpowiedzi na te pytania | cel i wnioski |
+| populacja, rekrutacja, pomiar | ograniczenia uogólnienia i konstruktu | metoda i ograniczenia |
+| reguły, dane i manifest | faktyczne N obu analiz | przygotowanie danych |
+| pierwszy opis grup | efekty, CI, testy i wykres drugiej relacji | wyniki |
+| uzasadnienie planu | proporcjonalny następny krok | dyskusja i rekomendacja |
 
-Poniższe fragmenty wyjaśniają częste problemy przy pisaniu raportu. Nie wprowadzają nowych zadań do oddania. Możesz do nich wrócić podczas korekty własnych akapitów, zwłaszcza gdy analiza działa, lecz trudno sformułować wniosek.
+# Rozwinięcia do powtórki i redakcji raportu
 
-## 1. Efekt, precyzja i decyzja nie są jednym wynikiem
+Siedem rozwinięć omawia typowe trudności przy redakcji raportu: efekt i precyzję, odczyt Monte Carlo, połączenie planu z wynikiem, poziomy pomiaru, ograniczenia, korektę liczb i zakres odtwarzalności. Rozwinięcia pozostają poza oceną Z10.
 
-Wyobraźmy sobie trzy oszacowania różnicy ocen usługi. Dwa mają taką samą wartość punktową 0,2, ale inne przedziały; trzecie wskazuje większą różnicę. To celowo hipotetyczne liczby służące czytaniu CI, nie kolejne próby generowane w celu uzyskania pożądanego p.
+## 1. Efekt, precyzja i decyzja: trzy informacje
 
-Wykres oddziela położenie punktu od długości odcinka niepewności. Linia przy zerze pomaga odczytać kierunek i zgodność przedziału z zerową różnicą. Nie oznacza granicy między badaniem wartościowym a bezwartościowym.
+Trzy oszacowania różnicy ocen usługi są hipotetyczne: dwa mają wartość punktową 0,2 i różne przedziały, trzecie wskazuje większą różnicę.
 
-```{r powtorka-precyzja}
+```{r powtorka-precyzja, fig.height=3, fig.cap="Trzy hipotetyczne oszacowania różnicy w punktach indeksu z 95% CI. Szeroki: 0,2 [−0,5; 0,9]; precyzyjnie mały: 0,2 [0,1; 0,3]; wyraźna różnica: 0,8 [0,5; 1,1]. Linia przerywana oznacza zero."}
 porownanie_precyzji <- precyzja_do_raportu()
 print(porownanie_precyzji)
 ```
 
-Wariant szeroki, 0,2 z CI [−0,5; 0,9], pozostawia zgodne z procedurą zarówno ujemne, jak i dodatnie różnice o wyraźnej wielkości. Opis „nie ma różnicy” usuwa tę informację. Wariant precyzyjnie mały, 0,2 z CI [0,1; 0,3], ogranicza zakres niepewności, lecz nie przesądza, czy taka zmiana uzasadnia koszt modyfikacji usługi. Wariant 0,8 z CI [0,5; 1,1] wskazuje inną skalę różnicy, ale nadal nie odpowiada na pytanie o przyczynę.
+Tabela „Trzy hipotetyczne oszacowania różnicy” i wykres „Estymata i precyzja: trzy hipotetyczne oszacowania” oddzielają położenie punktu od długości przedziału. Wariant szeroki, 0,2 z przedziałem $[-0{,}5; 0{,}9]$, obejmuje różnice ujemne i dodatnie o wyraźnej wielkości. Wariant precyzyjnie mały, 0,2 z przedziałem $[0{,}1; 0{,}3]$, ogranicza niepewność, a decyzja o koszcie zmiany usługi wymaga kryterium praktycznej ważności. Wariant 0,8 z przedziałem $[0{,}5; 1{,}1]$ opisuje większą różnicę; jej przyczyna wymaga projektu badania.
 
-Próg praktycznej ważności trzeba uzasadnić przez pomiar i decyzję. Dwie minuty oszczędzone przy częstym, prostym zadaniu mogą znaczyć coś innego niż przy rzadkim przeglądzie literatury. W indeksie deklaracji wartość 0,2 punktu nie przelicza się automatycznie na liczbę poprawnie znalezionych źródeł. Koszt zmiany, dostępność i ryzyko wykluczenia użytkowników również należą do decyzji.
+Próg praktycznej ważności uzasadnia się pomiarem i decyzją. Dwie minuty oszczędzone przy częstym, prostym zadaniu ważą inaczej niż przy rzadkim przeglądzie literatury, a 0,2 punktu indeksu deklaracji wymaga odniesienia do treści pozycji. Koszt zmiany, dostępność i ryzyko wykluczenia użytkowników również należą do decyzji. Równoważność wykazuje test z granicą praktycznie zaniedbywalnej różnicy ustaloną przed analizą; raport projektu nazywa pytania, które pozostają otwarte.
 
-Dowód równoważności wymagałby zaplanowanej granicy różnic uznawanych za praktycznie zaniedbywalne i właściwej procedury. Samo p większe od 0,05 z testu zerowej różnicy tego nie zapewnia. W projekcie kursowym nie trzeba implementować nowego testu; trzeba poprawnie nazwać to, czego użyta analiza nie rozstrzyga.
-
-## 2. Jak czytać Monte Carlo bez traktowania go jak wyroczni
+## 2. Odczyt Monte Carlo
 
 $$
 p_{\mathrm{MC}}=\frac{k+1}{B+1}.
 $$
 
-$B$ to liczba losowań pod modelem zerowym, a $k$ liczba statystyk co najmniej tak skrajnych jak obserwowana. Dla testu dwustronnego różnicy porównujemy wartości bezwzględne. Dla chi-kwadrat duże dodatnie wartości są skrajne, więc nie dodajemy drugiego ogona z ujemnymi chi-kwadrat.
+Symbol $B$ oznacza liczbę losowań przy modelu zerowym, a $k$ — liczbę statystyk co najmniej tak skrajnych jak obserwowana. Dla testu dwustronnego różnicy porównuje się wartości bezwzględne, a dla $\chi^2$ skrajność obejmuje duże wartości dodatnie.
 
-W S02 pierwsze porównanie ma k = 1 przy B = 1999, a zatem p = 2/2000 = 0,001. Tabela krzyżowa ma k = 593, stąd 594/2000 = 0,297. W demonstracji korelacyjnej S05 k = 462 daje 463/2000 = 0,2315. Liczby odnoszą się do różnych modeli zerowych; ich porównanie nie szereguje ważności problemów instytucji.
+W S02 pierwsze porównanie ma $k=1$ przy $B=1999$, więc $p_{\mathrm{perm}}=2/2000=0{,}001$. Tabela krzyżowa ma $k=593$, stąd $p_{\mathrm{MC}}=594/2000=0{,}297$. W przykładzie korelacyjnym S05 $k=462$ daje $463/2000=0{,}2315$. Trzy wartości $p$ dotyczą trzech modeli zerowych i trzech pytań.
 
-Dodanie jedynki zapobiega raportowaniu p = 0 tylko dlatego, że w skończonym losowaniu nie pojawił się wynik skrajniejszy. Przy B = 1999 najmniejsza możliwa wartość z tego wzoru wynosi 0,0005. Większe B poprawia rozdzielczość i zmniejsza błąd Monte Carlo, lecz nie naprawia błędnego pomiaru, zależnych obserwacji ani niewłaściwego schematu tasowania.
+Dodanie jedynki w liczniku i mianowniku sprawia, że najmniejsza możliwa wartość przy $B=1999$ wynosi $1/2000=0{,}0005$ (Phipson i Smyth, 2010). Większe $B$ poprawia rozdzielczość i zmniejsza błąd Monte Carlo; pomiar, zależność obserwacji i schemat tasowania ocenia projekt. Ziarno losowania ustala się przed analizą, a ponowne uruchomienie zapisanego kodu sprawdza odtwarzalność.
 
-Stałe ziarno pozwala odtworzyć konkretny przebieg obliczeń. Nie wolno szukać ziarna, które daje mniejsze p. Jeżeli wynik leży blisko progu decyzyjnego, należy opisać niepewność symulacji i wcześniej ustaloną procedurę, a nie dopasowywać raport do korzystniejszego losowania. Powtórne uruchomienie tego samego zapisanego kodu ma sprawdzać odtwarzalność, nie służyć wybieraniu najlepszego przebiegu.
+Oba tory korzystają z tych samych osób, więc ich zgodność opisuje zgodność metod na jednej próbie. Rozbieżność torów ma kilka możliwych źródeł: przybliżenie rozkładu, dyskretność, warunkowanie na marginesach, remisy rang albo inne założenia hipotezy zerowej. Odczyt rozbieżności zaczyna się od N, statystyki i procedury.
 
-Zgodność klasycznego i permutacyjnego wyniku nie jest replikacją badania: oba tory korzystają z tych samych osób. Rozbieżność również nie oznacza automatycznie błędu. Może wynikać z przybliżenia, dyskretności, warunkowania na marginesach, remisu rang albo różnych założeń hipotezy zerowej. Najpierw sprawdzamy N, statystykę i procedurę, potem interpretujemy różnicę.
+## 3. Plan i wynik w jednym raporcie
 
-## 3. Jak połączyć plan z wynikiem, nie przepisując projektu od nowa
+Karta Z09 określiła pytania przed odczytem testów. W raporcie końcowym pozostają te same pytania, ta sama definicja indeksu i ten sam wariant danych, a akapity Z10 dostarczają odpowiedzi. Zmianę planu raportuje się jawnie wraz z jej powodem i konsekwencją.
 
-Karta Z09 określała pytania przed odczytem testów. W raporcie końcowym pozostają te same pytania, ta sama definicja indeksu i ten sam wariant danych. Akapity Z10 dostarczają odpowiedzi. Jeżeli dostrzegasz błąd w planie, popraw go jawnie i wyjaśnij konsekwencję, zamiast przedstawiać decyzję podjętą po wyniku jako pierwotne założenie.
+Raport podaje, co porównano, jak powstał pomiar, ile osób weszło do analizy i co oznacza znak efektu. Część metodyczna rozdziela plan realnego badania od wykonanej analizy syntetycznej: „W planowanym badaniu zaproszeni zostaną użytkownicy…; w projekcie dydaktycznym analizowano wygenerowany wariant…”. Rekrutację, obserwację i zgody opisuje się jako plan.
 
-| Element przygotowany w Z09 | Co dopowiada Z10 | Miejsce w raporcie |
-|---|---|---|
-| problem, dwa pytania i estymandy | odpowiedzi odnoszące się do tych pytań | cel i wnioski |
-| populacja, rekrutacja, pomiar | ograniczenia uogólnienia i konstruktu | metoda i ograniczenia |
-| reguły, dane i manifest | faktyczne N użyte przez analizy | przygotowanie danych |
-| pierwszy opis grup | efekty, CI, testy i wykres drugiej relacji | wyniki |
-| uzasadnienie planu | proporcjonalny następny krok | dyskusja i rekomendacja |
+Przygotowanie danych opisuje się przez regułę i jej rezultat: co uznano za duplikat, gdzie kod 99 oznacza brak, ile pomiarów utracono i dlaczego osoba bez czasu zostaje w pozostałych analizach. Surowe dane i manifest służą odtworzeniu, a dziennik i bilans N — wyjaśnieniu.
 
-Raport nie musi powtarzać całej lekcji o statystyce t. Powinien jednak zawierać wystarczająco informacji, aby czytelnik wiedział, co porównano, jak powstał pomiar, ile osób weszło do analizy i co oznacza znak efektu. Sformułowanie „wykonano standardowe analizy” nie zastępuje tych informacji.
+## 4. Deklaracja, wykonanie i kompetencja
 
-W części metodycznej rozdziel plan realnego badania od wykonanej analizy syntetycznej. Można napisać: „W planowanym badaniu zaprosilibyśmy użytkowników…; w projekcie dydaktycznym analizowano wygenerowany wariant…”. Nie można sugerować, że rekrutacja, obserwacja i zgody rzeczywiście miały miejsce. To istotne również wtedy, gdy syntetyczne wyniki wyglądają wiarygodnie.
+Odpowiedź „łatwo odnajduję potrzebne treści” opisuje doświadczenie lub samoocenę osoby. Poprawne odnalezienie dokumentu opisuje wykonanie konkretnego zadania w określonych warunkach. Twierdzenie o kompetencjach wymaga uzasadnienia, że zestaw zadań i kryteriów obejmuje interesujący zakres umiejętności.
 
-Przygotowanie danych opisujesz przez regułę oraz jej rezultat: co uznano za duplikat, gdzie 99 oznacza brak, ile pomiarów utracono i dlaczego nie usuwano całego wiersza przy brakującym czasie. Nie trzeba drukować wszystkich 150 rekordów. Surowe dane i manifest służą odtworzeniu, a krótki dziennik oraz bilans N służą wyjaśnieniu.
+Różnica deklaracji i wykonania ma kilka źródeł: inne zadania odniesienia, inna grupa porównawcza, inne rozumienie słowa „łatwo”. Niski związek samooceny z czasem wskazuje na dwa odrębne konstrukty, a wysoki związek opisuje współzmienność dwóch pomiarów.
 
-## 4. Deklaracja, wykonanie i kompetencja — trzy różne poziomy
+Hargittai (2002) uzasadnia pomiar wykonania obok deklaracji, a Internet Skills Scale (van Deursen, Helsper i Eynon, 2016) ilustruje wielowymiarowy pomiar umiejętności. Nazwa konstruktu wynika z treści pozycji. Znaczenie kodu 1 wynika z treści pytania: „ponownie skorzystam z repozytorium” jest deklaracją zamiaru, a „znalazłem sprzeczne informacje” — zdarzeniem niekorzystnym. Projekt rozdziela poziomy deklaracji, wykonania i kompetencji; rekomendacja wykraczająca poza mierzony konstrukt zawęża się albo proponuje dodatkowy pomiar.
 
-W badaniach zachowań informacyjnych odpowiedź „łatwo odnajduję potrzebne treści” mówi o doświadczeniu lub samoocenie osoby. Obserwacja poprawnego odnalezienia dokumentu mówi o wykonaniu konkretnego zadania w określonych warunkach. Szersze twierdzenie o kompetencjach wymaga uzasadnienia, że zestaw zadań i kryteriów obejmuje interesujący zakres umiejętności.
+## 5. Ograniczenie zmienia interpretację
 
-Różnica między deklaracją i wykonaniem nie musi oznaczać nieszczerości. Osoba może odpowiadać o innych zadaniach niż zadanie kursowe, porównywać się z inną grupą albo inaczej rozumieć „łatwo”. Niski związek między samooceną a czasem nie dowodzi, że deklaracje są bezwartościowe: mogą mierzyć inny konstrukt. Wysoki związek nie dowodzi natomiast, że oba pomiary są zamienne.
+Dobre ograniczenie wskazuje mechanizm i jego konsekwencję dla wniosku. Rekrutacja wyłącznie wśród aktywnych użytkowników katalogu pomija osoby, które z niego zrezygnowały, więc opis doświadczeń może pomijać największe bariery.
 
-Badanie Hargittai uzasadnia ostrożność wobec zastępowania sprawdzianu umiejętności prostą deklaracją, ale nie dostarcza wyników dla naszego syntetycznego S02. Internet Skills Scale dostarcza przykładu wielowymiarowego myślenia o umiejętnościach internetowych; sześć kursowych pozycji użyteczności nie jest automatycznie walidowaną wersją tej skali. Nazwa konstruktu powinna wynikać z treści pozycji, a nie z ambicji rekomendacji.
+Osoby, które przerwały zadanie, mogą różnić się od osób, które ukończyły zadanie; analiza kompletnych par opisuje osoby z kompletem danych. Raport podaje, jak reguła braków określa osoby objęte wnioskiem.
 
-Kod 1 także wymaga odczytania treści pytania. „Ponownie skorzystam z repozytorium” jest deklaracją zamiaru; „znalazłem sprzeczne informacje” opisuje inne zdarzenie niż sukces wyszukiwania. Nie należy mechanicznie pisać „wzrost powodzenia” na podstawie nazwy kolumny. Kierunek pożądanej zmiany zależy od znaczenia pomiaru i problemu instytucji.
+Staż korzystania współwystępuje ze znajomością dziedziny, częstotliwością korzystania i warunkami dostępu. Różnica średnich pozostaje użytecznym opisem, a przypisanie jej samemu doświadczeniu wymagałoby innego projektu; kontrola zmiennej wymaga planu i analizy.
 
-W projekcie własnym wystarczy poprawnie rozdzielić te poziomy i wskazać granicę. Nie wymaga się stworzenia i walidacji nowego narzędzia psychometrycznego. Jeżeli rekomendacja wykracza poza mierzony konstrukt, zawęź rekomendację albo zaproponuj dodatkowy pomiar jako przyszły krok.
+Krótszy czas ma kilka znaczeń: sprawne wykonanie, szybką rezygnację albo pobieżną ocenę źródła. Czas czyta się razem z kryterium ukończenia i jakością wykonania.
 
-## 5. Ograniczenie powinno zmieniać interpretację
+Dane syntetyczne służą ćwiczeniu procedur i języka wnioskowania, więc wniosek praktyczny ma formę warunkowej propozycji przyszłego sprawdzenia.
 
-Zdanie „badanie ma ograniczenia” nie informuje czytelnika, gdzie kończy się wniosek. Dobre ograniczenie wskazuje mechanizm oraz możliwą konsekwencję. Przy selekcji użytkowników aktywnych w katalogu osoby, które z niego zrezygnowały, mogą w ogóle nie wejść do próby; opis doświadczeń może wtedy pomijać największe bariery.
+## 6. Korekta tekstu: liczba i znaczenie
 
-Przy brakach czasu osoby, które przerwały zadanie, mogą różnić się od tych, które je ukończyły. Analiza kompletnych par opisuje wtedy szczególny podzbiór. Samo pominięcie NA przez funkcję nie uzasadnia traktowania braków jako losowych. W raporcie trzeba powiedzieć, jak reguła określa osoby objęte wnioskiem.
+Zdanie „grupa uzyskała wynik 3,5” pozostawia otwarte, czy chodzi o średnią, medianę czy indeks i jaki jest jego zakres. Zdanie „średni indeks deklarowanej użyteczności wyniósł 3,5 punktu na skali 1–5” ustala pomiar i jednostkę; N i SD opisują podstawę i zróżnicowanie, a przedział — precyzję estymaty.
 
-Przy porównaniu nowych i doświadczonych staż może współwystępować ze znajomością dziedziny, częstotliwością korzystania i warunkami dostępu. Różnica średnich pozostaje użytecznym opisem, ale jej przypisanie wyłącznie doświadczeniu wymagałoby silniejszych założeń lub innego projektu. Dołożenie słowa „kontrolowano” bez rzeczywistego planu i analizy nie rozwiązuje problemu.
+$$
+60\% - 70\% = -10\ \text{pp},\qquad \frac{60-70}{70}\cdot100\% = -14{,}3\%.
+$$
 
-Przy pomiarze czasu krótszy wynik nie zawsze jest korzystniejszy. Osoba może szybko zrezygnować, pobieżnie ocenić źródło albo poprawnie znaleźć dokument. Czas należy czytać razem z kryterium ukończenia i jakością wykonania. W kursie nie porównujemy szybkości bezrefleksyjnie z kompetencją.
+Porównanie 60% i 70% daje dwie różne miary: różnicę $-10$ punktów procentowych w kierunku pierwsza minus druga grupa oraz zmianę względną $-14{,}3\%$ wobec 70%. Każda miara ma własny mianownik, a raport podaje miarę zgodną z estymandą z planu.
 
-W danych syntetycznych najważniejsza granica jest jeszcze wcześniejsza: nie są próbą z rzeczywistej populacji użytkowników. Można ćwiczyć poprawne procedury i język wnioskowania, ale nie można kierować realnej polityki biblioteki na podstawie tych liczb. Wniosek praktyczny powinien mieć formę warunkowej propozycji przyszłego sprawdzenia.
+Przedział dla parametru opisuje niepewność oszacowania różnicy przy założeniach metody; zakres wyników pojedynczych osób opisuje rozkład, np. wykres pudełkowy. Poziom 95% odnosi się do własności procedury w powtarzanych próbach.
 
-## 6. Korekta tekstu na poziomie liczby i znaczenia
+Wartość $p$ opisuje skrajność statystyki przy modelu zerowym i procedurze; efekt opisują estymata i przedział. Zdanie „$p = 0{,}03$ oznacza 97% pewności efektu” miesza skrajność statystyki z pewnością efektu.
 
-„Grupa uzyskała wynik 3,5” jest niepełne: nie wiadomo, czy chodzi o średnią, medianę, indeks ani jego zakres. „Średni indeks deklarowanej użyteczności wyniósł 3,5 punktu na skali 1–5” ustala pomiar i jednostkę. Dodanie N i SD pomaga odczytać podstawę i zróżnicowanie, a CI dotyczy innego pytania — precyzji estymaty.
+Korelacja $r_S=-0{,}4$ jest liczbą bez jednostki i opisuje rangowy związek monotoniczny. Nachylenie regresji ma jednostkę, np. minut na punkt indeksu, a efekt interwencji wymaga eksperymentu.
 
-„Różnica wyniosła 10%” wymaga poprawy, gdy porównano 60% i 70%. Różnica to −10 punktów procentowych w kierunku pierwsza minus druga grupa; względna zmiana wobec 70% wynosiłaby około −14,3%. Są to różne miary i różne mianowniki. Nie wolno zamieniać ich tylko po to, aby efekt brzmiał mocniej.
+## 7. Zakres kontroli odtwarzalności
 
-„95% badanych mieści się w przedziale różnicy” jest błędne, bo przedział parametru nie opisuje rozkładu indywidualnych wyników. Poprawny opis mówi o niepewności oszacowania różnicy przy założeniach metody. Interpretacja częstościowa 95% odnosi się do własności procedury w powtarzanych próbach, nie do prawdopodobieństwa tego jednego ustalonego parametru po zobaczeniu danych.
+Świeże renderowanie potwierdza, że zapisane źródła ponownie wytwarzają tabele i wykresy. Wartość pytania, reprezentatywność próby, trafność pomiaru i adekwatność języka ocenia się osobno: analiza może być w pełni odtwarzalna i odpowiadać na źle postawione pytanie.
 
-„p = 0,03 oznacza 97% pewności efektu” również jest niepoprawne. p odnosi się do skrajności statystyki przy przyjętym modelu zerowym i procedurze, nie do prawdopodobieństwa alternatywy. Efekt opisują estymata oraz jej niepewność. Wartość p nie jest miarą trafności kwestionariusza ani prawdopodobieństwa, że badanie da się powtórzyć.
+Weryfikacja idzie w obie strony: od akapitu do liczby i od liczby do pytania. Przedział innej zmiennej w akapicie albo proporcje w kolumnach przy pytaniu o proporcje w grupach to błędy odczytu, które świeże renderowanie zachowuje.
 
-„Korelacja −0,4 oznacza, że każda dodatkowa ocena skraca czas o 0,4 minuty” miesza współczynnik bez jednostki z nachyleniem regresji. Spearman opisuje rangowy związek monotoniczny. Nawet rzeczywiste nachylenie regresji o jednostce minuty na punkt nie stałoby się automatycznie efektem interwencji.
+Tożsamość danych potwierdza manifest: ten sam identyfikator osoby przy innym scenariuszu albo wersji generatora daje inne dane. PDF powstaje z aktualnego Rmd, więc zmiana akapitu zmienia wynikowy PDF. Potwierdzenie zdalne identyfikuje odebraną wersję plików; błąd wysyłki zgłasza się prowadzącemu, a praca pozostaje w katalogu studenta i jego repozytorium.
 
-## 7. Co odtwarzalność sprawdza, a czego nie
+## Źródła i ich rola w raporcie
 
-Świeże renderowanie pokazuje, że zapisane źródła potrafią ponownie wytworzyć tabele i wykresy. Nie dowodzi, że pytanie jest wartościowe, próba reprezentatywna, pomiar trafny albo język adekwatny. Analiza może być w pełni odtwarzalna i odpowiadać na źle postawione pytanie.
+[Wilson (1999), modele zachowań informacyjnych](https://informationr.net/tdw/publ/papers/1999JDoc.html), osadza korzystanie z katalogu w szerszym problemie potrzeb, kontekstu i barier; pojedynczy czas zadania jest jednym wskaźnikiem tego zachowania.
 
-Weryfikacja powinna przechodzić w obie strony: od akapitu do liczby oraz od liczby do pytania. Jeżeli w tekście widnieje CI innej zmiennej, poprawność kodu nie uratuje raportu. Jeżeli tabela poprawnie pokazuje proporcje w kolumnach, ale pytanie dotyczy proporcji w grupach, sam brak błędu R nie oznacza poprawnej analizy.
+[Hargittai (2002), pomiar rzeczywistych umiejętności internetowych](https://webuse.org/p/a09/), oraz [van Deursen, Helsper i Eynon (2016), Internet Skills Scale](https://eprints.lse.ac.uk/64485/), pomagają rozdzielić wykonanie, deklarację i zakres konstruktu.
 
-Wersje są częścią wyniku. Ten sam identyfikator osoby przy innym scenariuszu albo wersji generatora nie musi oznaczać tych samych danych. Zachowanie manifestu i surowych danych pozwala odróżnić ponowne wykonanie analizy od wygenerowania nowego wariantu. Zmiana odpowiedzi w Rmd powinna zmienić wynikowy PDF; wysłanie starego PDF obok nowego źródła tworzyłoby niespójny dowód pracy.
+[Stanowisko ASA o wartościach p (Wasserstein i Lazar, 2016)](https://doi.org/10.1080/00031305.2016.1154108) uzasadnia raportowanie efektu, niepewności i kontekstu obok wartości $p$. [Phipson i Smyth (2010)](https://doi.org/10.2202/1544-6115.1585) wyjaśniają dodanie jedynki we wzorze na $p$ z losowanych permutacji.
 
-Zdalne potwierdzenie mówi, którą wersję plików odebrano. Nie należy utożsamiać go z nazwą folderu ani datą komputera studenta. Praca bez sieci może być dalej redagowana i renderowana lokalnie; dopiero udana wysyłka daje potwierdzenie zdalne. Nie rozwiązujemy błędu wysyłki przez usunięcie własnej pracy lub użycie repozytorium innej osoby.
-
-## Źródła i sens ich wykorzystania
-
-[Wilson (1999), modele zachowań informacyjnych](https://informationr.net/tdw/publ/papers/1999JDoc.html), pomaga osadzić korzystanie z katalogu w szerszym problemie potrzeb, kontekstu i barier. Nie uzasadnia sprowadzenia zachowania informacyjnego do pojedynczego czasu zadania.
-
-[Hargittai (2002), pomiar rzeczywistych umiejętności internetowych](https://webuse.org/p/a09/), oraz [van Deursen, Helsper i Eynon, Internet Skills Scale](https://eprints.lse.ac.uk/64485/), pomagają rozdzielić wykonanie, deklarację i zakres konstruktu. Nie są źródłem liczb ani walidacją kursowego indeksu.
-
-[Stanowisko ASA o wartościach p (2016)](https://doi.org/10.1080/00031305.2016.1154108) uzasadnia raportowanie efektu, niepewności i kontekstu zamiast budowania wniosku wyłącznie na progu p. [Phipson i Smyth (2010)](https://doi.org/10.2202/1544-6115.1585) wyjaśniają problem zerowych p przy losowanych permutacjach.
-
-Pełniejsze opisy bibliograficzne znajdują się w kursowej bibliografii. Wszystkie liczby w przykładach C10 pochodzą z danych syntetycznych albo jawnie hipotetycznych demonstracji. Cytowanie badań LIS ma pomóc formułować pytania i granice interpretacji, nie nadawać danym kursowym statusu opublikowanego badania.
+Pełne opisy bibliograficzne zawiera bibliografia kursu. Liczby w przykładach C10 pochodzą z danych syntetycznych albo z jawnie hipotetycznych demonstracji, a cytowane badania pomagają formułować pytania i granice interpretacji.

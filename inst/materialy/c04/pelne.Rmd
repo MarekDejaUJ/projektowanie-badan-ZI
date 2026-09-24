@@ -57,6 +57,8 @@ Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN,
 
 Po spotkaniu umiesz przeczytać wzór indeksu, prześledzić jeden rekord, uzasadnić mianownik i nazwać zakres pomiaru. Najważniejsza umiejętność: wyjaśnić, jaka informacja zostaje w indeksie, a jaka pozostaje w pojedynczych pozycjach.
 
+Bloki LEARN kończą się **wzorcem zapisu** — przykładowym zdaniem według standardu APA (*Publication Manual of the American Psychological Association*, 7. wydanie, 2020): symbol statystyczny kursywą, skala odpowiedzi przy wyniku, przecinek jako separator dziesiętny. Na ćwiczeniu C04 wzorce dotyczą opisu pomiaru: rozkładu pozycji, rekodacji, indeksu, odpowiedzi wielokrotnych oraz deklaracji i wykonania. Zadania CHALLENGE stosują wzorce do ankiety cyfrowego archiwum.
+
 # LEARN 1: od konstruktu do konkretnego zdania
 
 Konstrukt jest pojęciem teoretycznym, np. kompetencja informacyjna, poczucie skuteczności albo postrzegana użyteczność usługi. Wskaźnik jest obserwowalną odpowiedzią lub zachowaniem, które dostarcza informacji o konstrukcie. Operacjonalizacja opisuje procedurę uzyskania i interpretacji wskaźnika.
@@ -119,7 +121,9 @@ print(szesc_pozycji)
 
 Rozkłady sześciu pozycji są podobne: odpowiedzi 4 i 5 stanowią od 38,2% do 45,1%, a odpowiedzi 1 i 2 — od 16,7% (pozycja 6) do 24,3% (pozycje 4 i 5). Podobieństwo rozkładów jest warunkiem rozsądnego łączenia pozycji w indeks; wspólną treść pozycji ocenia się osobno.
 
-**Przykładowy opis pozycji 3:** „Odpowiedzi udzieliły 144 osoby, a 4 osoby mają brak. Najczęstsza była kategoria 3: 58 ze 144, czyli 40,3%. Kategorie 4 i 5 wybrało łącznie 29 osób, czyli 20,1% ważnych odpowiedzi. Odsetek opisuje deklarowaną trudność odczytania rekordu; błędy w zadaniu mierzy obserwacja”.
+**Wzorzec zapisu rozkładu pozycji (APA).**
+
+> Na pozycję 3 („Odczytanie rekordu wymaga ode mnie zgadywania”) odpowiedziały 144 osoby (4 braki). Najczęściej wybierano odpowiedź 3 (*n* = 58; 40,3%), a odpowiedzi 4 i 5 łącznie wybrało 29 osób (20,1% ważnych odpowiedzi); odsetek opisuje deklarowaną trudność odczytania rekordu, a błędy w zadaniu mierzy obserwacja.
 
 # LEARN 2: odwrócenie kierunku pozycji 3
 
@@ -129,7 +133,7 @@ $$x^*_{i3}=1+5-x_{i3}=6-x_{i3}.$$
 
 Wzór brzmi słownie: „ukierunkowana odpowiedź osoby $i$ na pozycję 3 równa się sumie końców skali minus odpowiedź pierwotna”. Pierwotne 5, oznaczające największą trudność, staje się 1 w kierunku korzystnej oceny, a środek 3 pozostaje równy 3.
 
-Tabela „Ta sama odpowiedź w przeciwnym kierunku” podaje wszystkie przejścia: 1 ↔ 5, 2 ↔ 4 i 3 ↔ 3. Ponowne odwrócenie przywraca kod pierwotny, więc dwukrotne wykonanie rekodacji jest błędem.
+Tabela „Ta sama odpowiedź w przeciwnym kierunku” podaje wszystkie przejścia: $1\leftrightarrow5$, $2\leftrightarrow4$ i $3\leftrightarrow3$. Ponowne odwrócenie przywraca kod pierwotny, więc dwukrotne wykonanie rekodacji jest błędem.
 
 ```{r mapa-rekodacji}
 kierunek <- pokaz_tabele(odwrocenie, "Ta sama odpowiedź w przeciwnym kierunku", 0L)
@@ -160,7 +164,9 @@ print(ukierunkowane)
 
 Poprawną interpretację potwierdza prześledzenie pojedynczych rekordów: reguła wyjaśniona na osobach a, b i c obowiązuje w całym zbiorze.
 
-**Przykładowy odczyt rekodacji:** „Osoba a zaznaczyła 1 przy zdaniu o konieczności zgadywania. W korzystnym kierunku skali otrzymuje 5, bo $6-1=5$. Pozostałe odpowiedzi i braki osoby a pozostają bez zmian; zmienia się liczbowy zapis tej samej odpowiedzi”.
+**Wzorzec zapisu rekodacji (APA).**
+
+> Pozycję 3, sformułowaną w przeciwnym kierunku niż pozostałe, przekodowano według wzoru 6 − *x*, tak aby wyższe wartości wszystkich pozycji oznaczały korzystniejszą ocenę katalogu; odpowiedź 1 osoby a otrzymała po przekodowaniu wartość 5, a pozostałe odpowiedzi i braki tej osoby pozostały bez zmian.
 
 # LEARN 3: wzór indeksu jako instrukcja pomiaru
 
@@ -262,7 +268,9 @@ Osoby z sześcioma odpowiedziami mają ten sam indeks w obu wariantach; osoby z 
 
 Podobny wynik obu wariantów (3,292 i 3,297) opisuje zbiór S02 i reguły 5/6 oraz 6/6; mechanizm braków pozostaje nieznany. Przypisanie brakowi wartości 3 dodaje deklarację „ani tak, ani nie” i zmniejsza zróżnicowanie. Średnia z dostępnych pozycji jest jawną regułą opartą na zarejestrowanych odpowiedziach.
 
-**Przykładowa interpretacja reguły:** „W S02 regułę minimum pięciu odpowiedzi spełnia 147 ze 148 osób: 125 ma komplet sześciu pozycji, a 22 ma po pięć. Wariant wymagający sześciu odpowiedzi zostawia 125 indeksów. Indeksy osób z kompletem pozostają te same; zmienia się zbiór osób opisany średnią. Losowość braków pozostaje założeniem”.
+**Wzorzec zapisu indeksu (APA).**
+
+> Indeks użyteczności katalogu obliczono jako średnią sześciu pozycji (skala 1–5) po przekodowaniu pozycji 3, przy co najmniej pięciu ważnych odpowiedziach. Warunek spełniło 147 ze 148 osób (125 z kompletem sześciu pozycji, 22 z pięcioma); w analizie wrażliwości wymagającej sześciu odpowiedzi indeks ma 125 osób, a losowość braków pozostaje założeniem.
 
 # LEARN 4: pytanie wielokrotnego wyboru
 
@@ -333,7 +341,9 @@ print(wspolne)
 
 Dokładną liczbę wspólnych wyborów podaje tabela krzyżowa odpowiedzi osób; marginalne liczebności wyznaczają przedział od 5 do 25.
 
-**Przykładowy akapit o kanałach:** „W demonstracji kompletne odpowiedzi pochodzą od czterech z sześciu osób. Dwie z czterech wskazały WWW, czyli 50% kompletnych respondentów. Dwa wybory WWW stanowią jedną trzecią sześciu wskazań wszystkich kanałów. Osoba z czterema zerami pozostaje w mianowniku, a dwie osoby z niepełną odpowiedzią są pominięte zgodnie z przyjętą regułą”.
+**Wzorzec zapisu odpowiedzi wielokrotnych (APA).**
+
+> Kompletne odpowiedzi o kanałach kontaktu podały 4 z 6 osób; WWW wskazały 2 z nich (50% kompletnych respondentów), a wskazania WWW stanowiły 2 z 6 wszystkich wskazań (33,3%). Osoba bez wskazań (cztery zera) pozostała w mianowniku, a dwie osoby z niepełną odpowiedzią pominięto.
 
 # LEARN 5: deklaracja i obserwacja odpowiadają na różne pytania
 
@@ -391,92 +401,173 @@ pomiar <- deklaracja_i_obserwacja()
 print(pomiar)
 ```
 
-**Przykładowa interpretacja:** „Osoba a ma indeks deklarowanej użyteczności 4,5 i poprawne wykonanie po 6 minutach. Osoba b ma korzystny indeks 4 i niepowodzenie po 12 minutach. Deklaracja i wykonanie mogą się rozchodzić. Osoba c ma wynik obserwacyjny (sukces po 8 minutach) i brak indeksu”.
+**Wzorzec zapisu deklaracji i wykonania (APA).**
+
+> Osoba a miała indeks deklarowanej użyteczności 4,5 (skala 1–5) i poprawnie wykonała zadanie w 6 min, a osoba b przy indeksie 4 zakończyła zadanie niepowodzeniem po 12 min; deklaracja i wykonanie opisują dwie różne informacje. Osoba c ma wynik obserwacyjny (sukces po 8 min) i brak indeksu.
 
 Ocena kompetencji wymaga zadań o zdefiniowanej treści i trudności oraz kryteriów poprawności; indeks oceny usługi uzupełnia pomiar wykonania. Opis osoby jako kompetentnej wymaga wielu zadań z wybranego obszaru.
 
 # CHALLENGE — samodzielny audyt pomiaru
 
-W pięciu zadaniach zastąp znaczniki odpowiedzi własnymi krótkimi akapitami. Wpisuj tekst pod wynikiem, poza chunkiem. Cyfrowe archiwum ma własne dane: osiem osób a1–a8; liczby odczytujesz z tabel archiwum.
+Osiem hipotetycznych osób ocenia interfejs cyfrowego archiwum. Pozycje brzmią: p1 — łatwo znaleźć pole wyszukiwania; p2 — etykiety filtrów są zrozumiałe; p3 — odczytanie rekordu wymaga zgadywania; p4 — łatwo ustalić dostęp do obiektu; p5 — komunikaty pomagają zmienić zapytanie; p6 — interfejs wspiera wykonanie zadania. Odpowiedzi: 1 zdecydowanie nie, 2 raczej nie, 3 ani tak, ani nie, 4 raczej tak, 5 zdecydowanie tak; braki zapisano jako NA. Indeks jest średnią co najmniej pięciu ukierunkowanych pozycji, a odwrócenia wymaga wyłącznie p3.
 
-## Scenariusz: użyteczność cyfrowego archiwum
+Każde z pięciu zadań ma ten sam układ:
 
-Osiem hipotetycznych osób ocenia interfejs archiwum. Pozycje brzmią: p1 — łatwo znaleźć pole wyszukiwania; p2 — etykiety filtrów są zrozumiałe; p3 — odczytanie rekordu wymaga zgadywania; p4 — łatwo ustalić dostęp do obiektu; p5 — komunikaty pomagają zmienić zapytanie; p6 — interfejs wspiera wykonanie zadania. Odpowiedzi: 1 zdecydowanie nie, 2 raczej nie, 3 ani tak, ani nie, 4 raczej tak, 5 zdecydowanie tak. Braki zapisano jako NA. Indeks jest średnią co najmniej pięciu ukierunkowanych pozycji; odwrócenia wymaga wyłącznie p3.
+1. **Zadanie** — jedno zdanie z przedmiotem opisu.
+2. **Blok R** — uruchom go; wynik zawiera wszystkie liczby potrzebne do odpowiedzi.
+3. **Wskazówki** — gdzie w wyniku szukać informacji, jak ją nazwać i wzór zdania do uzupełnienia.
+4. **W akapicie wymagane** — elementy, które sprawdza prowadzący.
+5. **Twój akapit** — pole odpowiedzi w ramce: znacznik w nawiasie kwadratowym zastępujesz własnym tekstem, a linie komentarza nad nim i pod nim pozostawiasz bez zmian.
+
+Akapit liczy 3–5 zdań zwykłego tekstu, bez kodu R. Liczby przepisujesz z wyniku bloku, z jednostką i mianownikiem.
 
 ## CHALLENGE 1: Rozkład pojedynczej pozycji
 
-Pozycja p2 ma brak odpowiedzi, więc mianownik jest mniejszy od ośmiu. Blok wyświetla tabelę „Pierwotne pozycje cyfrowego archiwum” (osiem osób, pozycje p1–p6) i tabelę „Rozkład p2: etykiety filtrów są zrozumiałe” (liczba i procent każdej odpowiedzi, N i braki). Zgodę definiuje się z góry jako odpowiedź 4 lub 5.
+**Zadanie:** opisz rozkład odpowiedzi na pozycję p2 z mianownikiem, brakiem i odsetkiem zgody.
 
 ```{r s01-pozycja}
 pozycja_archiwum <- opis_pozycji_archiwum()
 print(pozycja_archiwum)
 ```
 
-**Napisz krótki akapit:** nazwij treść i porządkową skalę p2, podaj zakres kodów, N, braki i odsetek zgody 4–5 z mianownikiem. Opisz, jak brak odpowiedzi wpływa na mianownik.
+Blok wyświetla tabelę „Pierwotne pozycje cyfrowego archiwum” (osiem osób, sześć pozycji), tabelę „Rozkład p2: etykiety filtrów są zrozumiałe” (liczba i procent każdej odpowiedzi z N i brakami) oraz tabelę „Zgoda z p2” (odpowiedzi 4 lub 5).
+
+*Wskazówki:*
+
+- Pozycja p2 ma skalę porządkową: kody 1–5 mają kolejność, a odległości między kategoriami pozostają nieznane.
+- Mianownik odsetków to liczba ważnych odpowiedzi N; osoba z brakiem odpowiedzi wypada z mianownika.
+- Zgoda to suma odpowiedzi 4 i 5; tabela „Zgoda z p2” podaje liczbę, N i procent.
+- Wzorzec APA: „Na pozycję p2 („[treść]”, skala 1–5) odpowiedziało [N] z 8 osób ([..] brak). Najczęściej wybierano odpowiedzi [..], a zgodę (odpowiedzi 4 lub 5) wyraziło [..] z [N] osób ([..]%)”.
+
+*W akapicie wymagane:* (i) treść p2 i porządkowa skala odpowiedzi; (ii) N ważnych odpowiedzi i liczba braków; (iii) rozkład odpowiedzi; (iv) odsetek zgody z licznikiem i mianownikiem; (v) wpływ braku odpowiedzi na mianownik.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S01.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S01 -->
 [UZUPELNIJ_S01]
 <!-- /odpowiedz:S01 -->
+:::
 
 ## CHALLENGE 2: Kierunek i mianownik indeksu
 
-Analityk policzył średnią pozycji przed odwróceniem p3. Poprawiony wynik wymaga wspólnego kierunku wszystkich sześciu stwierdzeń. Blok wyświetla tabelę „Audyt poprawnego indeksu” (ważne pozycje, suma ważnych i indeks każdej osoby) oraz tabelę „Błędny oraz poprawny kierunek pozycji”. Odczytaj osoby a1 i a5; osoba a5 ma dwie brakujące odpowiedzi, a brak indeksu jest pomijany przez średnią.
+**Zadanie:** wyjaśnij odwrócenie p3, odtwórz indeks osoby a1 i uzasadnij brak indeksu osoby a5.
 
 ```{r s02-konstrukcja}
 indeks_archiwum <- konstrukcja_indeksu_archiwum()
 print(indeks_archiwum)
 ```
 
-**Napisz krótki akapit:** połącz przeciwny kierunek p3 z treścią p3, odtwórz słownie licznik i mianownik poprawnego indeksu a1 z regułą $6-x$, porównaj wynik z błędną wersją i uzasadnij status a5. Nazwij konstrukt pełną nazwą zgodną z treścią pozycji.
+Blok wyświetla tabelę „Rekord a1 przed odwróceniem p3 i po nim”, tabelę „Audyt poprawnego indeksu” (liczba ważnych pozycji, suma ważnych odpowiedzi i indeks każdej osoby) oraz tabelę „Błędny oraz poprawny kierunek pozycji” (indeks bez odwrócenia p3 i po odwróceniu).
+
+*Wskazówki:*
+
+- Pozycja p3 mówi o zgadywaniu, więc wysoka odpowiedź oznacza trudność; odwrócenie 6 − x nadaje jej kierunek pozostałych pozycji.
+- Indeks a1 to suma sześciu ukierunkowanych odpowiedzi podzielona przez liczbę ważnych pozycji: odczytaj licznik i mianownik z tabeli audytu.
+- Osoba a5 ma cztery ważne pozycje, a reguła wymaga co najmniej pięciu.
+- Nazwa konstruktu wynika z treści pozycji: dotyczą one deklarowanej użyteczności interfejsu archiwum.
+- Wzorzec APA: „Pozycję p3 przekodowano według wzoru 6 − *x*. Indeks osoby a1 wynosi [suma]/[m] = [..] (bez odwrócenia: [..]). Osoba a5 ma [..] ważne pozycje, więc indeks pozostaje brakiem”.
+
+*W akapicie wymagane:* (i) kierunek p3 powiązany z jej treścią; (ii) licznik i mianownik indeksu a1 z regułą 6 − x; (iii) porównanie z wersją bez odwrócenia; (iv) uzasadnienie braku indeksu a5; (v) pełna nazwa konstruktu zgodna z treścią pozycji.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S02.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S02 -->
 [UZUPELNIJ_S02]
 <!-- /odpowiedz:S02 -->
+:::
 
 ## CHALLENGE 3: Reguła 5/6 wobec 6/6
 
-Zaostrzenie reguły kompletności zmienia zestaw osób z indeksem i może wykluczyć osoby o specyficznych trudnościach; regułę ustala się przed obliczeniami. Blok wyświetla tabelę „Wynik każdej osoby w dwóch wariantach” (indeks przy minimum 5 i przy minimum 6) oraz tabelę „Liczby ważnych indeksów”. Wskaż osobę, której status się zmienia. Analiza podstawowa stosuje regułę z opisu badania.
+Zaostrzenie reguły kompletności zmienia zestaw osób z indeksem i może wykluczyć osoby o specyficznych trudnościach; regułę ustala się przed obliczeniami.
+
+**Zadanie:** porównaj regułę minimum pięciu i minimum sześciu pozycji i opisz ich skutek dla liczby indeksów.
 
 ```{r s03-kompletnosc}
 reguly_archiwum <- kompletnosc_archiwum()
 print(reguly_archiwum)
 ```
 
-**Napisz krótki akapit:** podaj N obu wariantów i opisz skutek dla a7. Uzasadnij wybór analizy podstawowej i opisz, jak przedstawić drugi wariant jako analizę wrażliwości.
+Blok wyświetla tabelę „Wynik każdej osoby w dwóch wariantach” (indeks przy minimum 5 i przy minimum 6) oraz tabelę „Liczby ważnych indeksów”.
+
+*Wskazówki:*
+
+- Porównaj kolumny obu wariantów wiersz po wierszu: status zmienia się u osoby z pięcioma ważnymi pozycjami.
+- Indeksy osób z kompletem sześciu pozycji są w obu wariantach takie same; zmienia się zbiór osób opisany wynikiem.
+- Analiza podstawowa stosuje regułę z opisu badania (minimum 5), a wariant 6/6 może towarzyszyć jej jako jawna analiza wrażliwości.
+- Wzorzec APA: „Przy regule co najmniej pięciu ważnych pozycji indeks obliczono dla [..] z 8 osób; wymaganie sześciu pozycji zmniejsza tę liczbę do [..], ponieważ osoba [..] ma [..] ważnych pozycji”.
+
+*W akapicie wymagane:* (i) N indeksów w obu wariantach; (ii) osoba, której status się zmienia, z jej wynikiem; (iii) uzasadnienie analizy podstawowej; (iv) sposób przedstawienia drugiego wariantu jako analizy wrażliwości.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S03.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S03 -->
 [UZUPELNIJ_S03]
 <!-- /odpowiedz:S03 -->
+:::
 
 ## CHALLENGE 4: Kanały pomocy
 
-Archiwum pyta o korzystanie z WWW, e-maila, mediów społecznościowych i kontaktu bezpośredniego i dopuszcza wiele wskazań. Obowiązuje wspólny mianownik kompletnych respondentów, jak w LEARN 4. Blok wyświetla tabelę „Surowe wybory kanałów” z zerami, jedynkami i brakami oraz tabele mianowników i odsetków. Prześledź osobę z czterema zerami i osobę z brakami; licznik i mianownik każdego odsetka mają tę samą jednostkę.
+Archiwum pyta o korzystanie z WWW, e-maila, mediów społecznościowych i kontaktu bezpośredniego i dopuszcza wiele wskazań. Obowiązuje wspólny mianownik kompletnych respondentów, jak w LEARN 4.
+
+**Zadanie:** opisz wybór WWW dwoma procentami — wśród kompletnych respondentów i wśród wszystkich wskazań.
 
 ```{r s04-kanaly}
 kanaly_archiwum <- kanaly_pomocy_archiwum()
 print(kanaly_archiwum)
 ```
 
-**Napisz krótki akapit:** podaj N kompletnych respondentów, liczbę i procent respondentów wybierających WWW oraz udział WWW we wszystkich wskazaniach. Wyjaśnij różnicę dwóch procentów oraz traktowanie kompletu zer i braków.
+Blok wyświetla tabelę „Surowe wybory kanałów” z zerami, jedynkami i brakami, tabelę „Mianowniki i kompletność” (kompletni respondenci, pominięte niepełne odpowiedzi, suma wskazań) oraz tabelę „Odsetki osób oraz udział w puli wskazań”.
+
+*Wskazówki:*
+
+- Kompletny respondent ma cztery wartości 0 albo 1; osoba z czterema zerami odpowiedziała i pozostaje w mianowniku.
+- Osoby z brakiem w którymkolwiek kanale są pominięte zgodnie z regułą wspólnego mianownika.
+- Procent osób dzieli liczbę osób wybierających kanał przez liczbę kompletnych respondentów; udział we wskazaniach dzieli liczbę wyborów kanału przez sumę wszystkich wskazań.
+- Procenty osób mogą sumować się powyżej 100%, bo jedna osoba wybiera kilka kanałów.
+- Wzorzec APA: „Kompletne odpowiedzi o kanałach podało [..] z 8 osób; WWW wskazało [..] z nich ([..]% kompletnych respondentów), a wskazania WWW stanowiły [..] z [..] wszystkich wskazań ([..]%)”.
+
+*W akapicie wymagane:* (i) N kompletnych respondentów; (ii) liczba i procent osób wybierających WWW; (iii) udział WWW we wszystkich wskazaniach; (iv) wyjaśnienie różnicy dwóch procentów; (v) traktowanie kompletu zer i braków.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S04.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S04 -->
 [UZUPELNIJ_S04]
 <!-- /odpowiedz:S04 -->
+:::
 
 ## CHALLENGE 5: Nazwa konstruktu i zakres wniosku
 
-Kierownik chce opisać wysoki indeks jako dowód kompetencji cyfrowej. Pozycje archiwum dotyczą deklarowanej użyteczności interfejsu, a wykonanie pojedynczego zadania jest osobnym pomiarem. Tabela „Indeks deklaracji i wynik zadania” zawiera osiem osób: indeks, czas w minutach i sukces 0/1. Związek statystyczny indeksu i wykonania liczy ćwiczenie C08 (Samoocena a wykonanie).
+Kierownik chce opisać wysoki indeks jako dowód kompetencji cyfrowej. Pozycje archiwum dotyczą deklarowanej użyteczności interfejsu, a wykonanie pojedynczego zadania jest osobnym pomiarem; związek statystyczny indeksu i wykonania liczy ćwiczenie C08 (Samoocena a wykonanie).
+
+**Zadanie:** popraw tezę kierownika na podstawie wyników co najmniej dwóch osób i zaproponuj pomiar kompetencji.
 
 ```{r s05-trafnosc}
 pomiar_archiwum_tabela <- pomiar_archiwum()
 print(pomiar_archiwum_tabela)
 ```
 
-**Napisz krótki akapit:** popraw tezę kierownika na podstawie wartości co najmniej dwóch osób. Rozdziel pojedynczą pozycję, indeks i obserwację wykonania. Zaproponuj treść zadań i kryterium oceny poprawności potrzebne do badania kompetencji. Nazwij indeks zgodnie z treścią pozycji.
+Blok wyświetla tabelę „Indeks deklaracji i wynik zadania” z ośmioma osobami: indeks 1–5, czas w minutach i sukces 0/1.
+
+*Wskazówki:*
+
+- Znajdź osoby, u których indeks i wynik zadania się rozchodzą, np. wysoki indeks i niepowodzenie albo niski indeks i sukces.
+- Pojedyncza pozycja opisuje jedną deklarację, indeks — średnią deklaracji, a zadanie — obserwację wykonania.
+- Pomiar kompetencji wymaga kilku zadań o różnej trudności i kryterium poprawności każdego zadania.
+- Wzorzec APA: „Osoba [..] miała indeks deklarowanej użyteczności [..] (skala 1–5) i [wynik] po [..] min, a osoba [..] przy indeksie [..] — [wynik] po [..] min. Indeks opisuje deklarowaną użyteczność interfejsu; ocena kompetencji wymaga [..]”.
+
+*W akapicie wymagane:* (i) wyniki co najmniej dwóch osób z indeksem, czasem i sukcesem; (ii) rozróżnienie pozycji, indeksu i obserwacji wykonania; (iii) nazwa indeksu zgodna z treścią pozycji; (iv) proponowane zadania i kryterium poprawności do badania kompetencji.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S05.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S05 -->
 [UZUPELNIJ_S05]
 <!-- /odpowiedz:S05 -->
+:::
 
 # Zapis i oddanie
 

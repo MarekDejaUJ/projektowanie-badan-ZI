@@ -148,7 +148,10 @@ repo_ecdf <- badaniaZI::wykres_dystrybuanta(repozytorium$czas_wyszukiwania, prog
 # Warstwa prezentacji: w Rmd wystarczy przypisanie oraz print(wynik).
 ustaw_material <- function() {
   knitr::opts_chunk$set(echo=TRUE,message=FALSE,warning=FALSE,
-    results='asis',fig.width=6,fig.height=3.3,fig.align='center')
+    results='asis',fig.width=6,fig.height=3.3,fig.align='center',fig.pos='H')
+  # Rysunek [H] zostaje przy swoim zadaniu także w PDF bez preambuły kursu.
+  if(isTRUE(getOption('knitr.in.progress'))&&knitr::is_latex_output())
+    knitr::knit_meta_add(list(rmarkdown::latex_dependency('float')))
   invisible(NULL)
 }
 wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L,markdown=list()) {
@@ -244,8 +247,28 @@ portret_repozytorium <- function() {
     'Opis ważnych czasów [min]'=repo_opis))
 }
 kwantyle_i_dystrybuanta <- function() {
-  wydruk_zi(tabele=list('Kwantyle czasu [min]'=repo_kwantyle),
+  czas <- repozytorium$czas_wyszukiwania[!is.na(repozytorium$czas_wyszukiwania)]
+  tab <- rbind(repo_kwantyle,data.frame(Miara='IQR = Q3 − Q1',Minuty=repo_kwantyle$Minuty[3]-repo_kwantyle$Minuty[1]))
+  udzial <- data.frame('Ważne czasy'=length(czas),'Czasy do 10 min'=sum(czas<=10),
+    'Udział [%]'=100*mean(czas<=10),check.names=FALSE)
+  wydruk_zi(tabele=list('Kwantyle czasu [min]'=tab,'Dystrybuanta przy 10 minutach'=udzial),
     wykresy=list(repo_ecdf),digits=2L)
+}
+wniosek_repozytorium <- function(prog_min=10) {
+  # Komplet liczb do akapitu dla instytucji: położenie, rozrzut i trzy wskaźniki skuteczności.
+  czas <- repozytorium$czas_wyszukiwania
+  wazne <- !is.na(czas)
+  para <- wazne & repozytorium$powodzenie==1 & czas<=prog_min
+  miary <- data.frame(Miara=c('Osoby','Ważne czasy','Średnia [min]','Mediana [min]','SD [min]',
+      'IQR [min]','P90 [min]'),
+    'Wartość'=c(nrow(repozytorium),sum(wazne),mean(czas,na.rm=TRUE),median(czas,na.rm=TRUE),
+      sd(czas,na.rm=TRUE),IQR(czas,na.rm=TRUE),unname(quantile(czas,.9,na.rm=TRUE))),check.names=FALSE)
+  skutecznosc <- data.frame(Wskaźnik=c('Sukces (wszystkie osoby)',paste('Sukces w najwyżej',prog_min,'min')),
+    Licznik=c(sum(repozytorium$powodzenie),sum(para)),Mianownik=c(nrow(repozytorium),sum(wazne)),
+    check.names=FALSE)
+  skutecznosc$'Procent [%]' <- 100*skutecznosc$Licznik/skutecznosc$Mianownik
+  wydruk_zi(tabele=list('Miary czasu do akapitu'=miary,'Skuteczność do akapitu'=skutecznosc),
+    wykresy=list(repo_wykres),digits=2L)
 }
 wrazliwosc_repozytorium <- function() {
   tab <- repo_wrazliwosc[c('zakres','N','srednia','mediana','SD')]

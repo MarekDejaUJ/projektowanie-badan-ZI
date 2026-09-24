@@ -1,36 +1,48 @@
-# Gotowy silnik raportu: od zapisanych danych do tabel i wykresów.
-# Nie generuje nowego wariantu i nie zapisuje odpowiedzi za studenta.
-# Warstwa prezentacji: w Rmd wystarczy przypisanie oraz print(wynik).
+# Gotowy silnik raportu: od zapisanych danych wariantu do tabel i wykresów.
+# Odczytuje dane zapisane na C09 i C10 bez nowego losowania; akapity pisze autor raportu.
+
+# ---- Część wspólna z raportem projektu: początek ----
+# ---- Prezentacja: tabele, karty i wykresy ----
 ustaw_material <- function() {
   knitr::opts_chunk$set(echo=TRUE,message=FALSE,warning=FALSE,
-    results='asis',fig.width=6,fig.height=3.3,fig.align='center')
+    results='asis',fig.width=6,fig.height=3.3,fig.align='center',fig.pos='H')
+  # Rysunek [H] zostaje przy swoim zadaniu także w PDF bez preambuły kursu.
+  if(isTRUE(getOption('knitr.in.progress'))&&knitr::is_latex_output())
+    knitr::knit_meta_add(list(rmarkdown::latex_dependency('float')))
   invisible(NULL)
 }
-wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L,karty=list()) {
-  stopifnot(is.list(tabele),is.list(wykresy),is.numeric(digits),length(digits)==1L)
-  structure(list(tabele=tabele,wykresy=wykresy,tekst=tekst,digits=digits,karty=karty),
-    class='zi_wydruk')
+wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L,karty=list(),markdown=list()) {
+  stopifnot(is.list(tabele),is.list(wykresy),is.list(karty),is.list(markdown),
+    is.numeric(digits),length(digits)==1L)
+  structure(list(tabele=tabele,wykresy=wykresy,tekst=tekst,digits=digits,karty=karty,
+    markdown=markdown),class='zi_wydruk')
+}
+# Karta to tabela Markdown z dwiema kolumnami; długie treści zawijają się w PDF i HTML.
+karta_markdown <- function(karta) {
+  znak <- function(s) gsub('|','\\|',s,fixed=TRUE)
+  tresc <- vapply(karta,function(z) paste(as.character(z),collapse=' '),character(1))
+  c('| Element | Treść |','|:-------------|:---------------------------------------------------|',
+    paste0('| ',znak(names(karta)),' | ',znak(tresc),' |'))
 }
 print.zi_wydruk <- function(x,...) {
   dokument <- isTRUE(getOption('knitr.in.progress'))
   for(nazwa in names(x$karty)) {
-    if(dokument) cat('\n\n**',nazwa,'**\n\n',sep='') else cat('\n',nazwa,'\n',sep='')
     karta <- x$karty[[nazwa]]
-    for(pole in names(karta)) {
-      if(dokument) cat('**',pole,':** ',karta[[pole]],'\n\n',sep='')
-      else cat(pole,': ',karta[[pole]],'\n',sep='')
+    if(dokument) cat('\n\n**',nazwa,'**\n\n',paste(karta_markdown(karta),collapse='\n'),'\n\n',sep='')
+    else {
+      cat('\n',nazwa,'\n',sep='')
+      for(pole in names(karta)) cat(pole,': ',karta[[pole]],'\n',sep='')
     }
   }
   for(nazwa in names(x$tabele)) {
     tab <- x$tabele[[nazwa]]
     if(dokument) {
       format <- if(knitr::is_latex_output()) 'latex' else 'html'
-      # Podpis jest Markdownem, więc znaki takie jak % są escapowane przez Pandoc.
       # Brak środowiska float utrzymuje tabelę bezpośrednio przy swoim zadaniu.
       cat('\n\n**',nazwa,'**\n\n',sep='')
       if(format=='latex') cat('\\begin{center}\n')
       tresc <- as.character(knitr::kable(tab,format=format,caption=NULL,
-        digits=x$digits,row.names=FALSE))
+        digits=x$digits,row.names=FALSE,format.args=list(decimal.mark=',')))
       if(format=='html') tresc <- gsub('$','&#36;',tresc,fixed=TRUE)
       cat(tresc,'\n',sep='')
       if(format=='latex') cat('\\end{center}\n')
@@ -40,6 +52,7 @@ print.zi_wydruk <- function(x,...) {
       print(tab,row.names=FALSE)
     }
   }
+  for(md in x$markdown) cat(paste(as.character(md),collapse='\n'),'\n\n',sep='')
   if(!is.null(x$tekst)) {
     if(dokument) cat('\n\n```text\n',paste(x$tekst,collapse='\n'),'\n```\n\n',sep='')
     else cat(paste(x$tekst,collapse='\n'),'\n')
@@ -51,28 +64,39 @@ pokaz_tabele <- function(tabela,tytul='Wynik analizy',digits=3L) {
   wydruk_zi(tabele=setNames(list(tabela),tytul),digits=digits)
 }
 pokaz_wykres <- function(wykres) wydruk_zi(wykresy=list(wykres))
+liczba <- function(x,cyfry=3L) {
+  s <- formatC(x,format='f',digits=cyfry,decimal.mark=',')
+  # Wartość zaokrąglona do zera traci znak minus; pozostałe ujemne dostają znak −.
+  sub('^-','−',sub('^-(0,0*)$','\\1',s))
+}
+formatuj_p <- function(p) ifelse(p<0.0001,'< 0,0001',formatC(p,format='f',digits=4,decimal.mark=','))
 
-
+# ---- Wariant projektu: przygotowanie, karty i opis ----
 przygotuj_zapisany_wariant <- function(pakiet) {
   porzadek <- badaniaZI::przygotuj_ankiete(pakiet$dane)
   dane <- porzadek$dane
   pozycje <- dane[paste0('pozycja_',1:6)]
   pozycje$pozycja_3 <- badaniaZI::odwroc_pozycje(pozycje$pozycja_3)
   dane$indeks <- badaniaZI::indeks_ankiety(pozycje,minimum=5L)
-  # W całym projekcie: pierwsza grupa z karty minus druga, jawnie podpisane.
-  grupy <- rev(unlist(pakiet$scenariusz$grupy))
+  cfg <- pakiet$scenariusz
+  # W całym projekcie kontrast to pierwsza grupa z karty minus druga, jawnie podpisany.
+  grupy <- rev(unlist(cfg$grupy))
   opis <- do.call(rbind,lapply(grupy,function(g) {
     z <- dane[dane$grupa==g,,drop=FALSE]
+    czas <- z$czas_wyszukiwania[is.finite(z$czas_wyszukiwania)]
     data.frame(grupa=g,N_osob=nrow(z),N_indeks=sum(is.finite(z$indeks)),
       srednia=mean(z$indeks,na.rm=TRUE),SD=sd(z$indeks,na.rm=TRUE),
-      N_czas=sum(is.finite(z$czas_wyszukiwania)),
+      mediana=median(z$indeks,na.rm=TRUE),N_czas=length(czas),
+      maks_czas=if(length(czas)) max(czas) else NA_real_,
       N_wynik=sum(is.finite(z$powodzenie)),row.names=NULL)
   }))
-  drugie_n <- if(pakiet$scenariusz$druga_analiza=='tabela krzyżowa')
-    sum(complete.cases(dane[c('grupa','powodzenie')])) else
-    sum(complete.cases(dane[c('indeks',pakiet$scenariusz$zmienna_druga)]))
-  bilans <- data.frame(zakres=c('Rekordy surowe','Osoby po usunięciu duplikatów',
-    'Ważny indeks','Ważny czas','Dane do drugiego pytania'),
+  tabela <- cfg$druga_analiza=='tabela krzyżowa'
+  drugie_n <- if(tabela) sum(complete.cases(dane[c('grupa','powodzenie')])) else
+    sum(complete.cases(dane[c('indeks',cfg$zmienna_druga)]))
+  bilans <- data.frame(Zakres=c('Rekordy surowe','Osoby po usunięciu duplikatów',
+    'Analiza 1: osoby z ważnym indeksem','Osoby z ważnym czasem',
+    if(tabela) 'Analiza 2: osoby z wartością 0/1' else
+      paste('Analiza 2: kompletne pary — indeks i',nazwa_drugiej(cfg,FALSE))),
     N=c(nrow(pakiet$dane),nrow(dane),sum(is.finite(dane$indeks)),
       sum(is.finite(dane$czas_wyszukiwania)),drugie_n))
   structure(list(pakiet=pakiet,dane=dane,pozycje=pozycje,dziennik=porzadek$dziennik,
@@ -80,34 +104,20 @@ przygotuj_zapisany_wariant <- function(pakiet) {
     class='zi_projekt')
 }
 skrot_do_odczytu <- function(x) {
-  # Spacje tylko w wydruku, oryginalny manifest zachowuje pełny SHA-256.
+  # Spacje tylko w wydruku, oryginalny manifest zachowuje pełny ciąg znaków.
   paste(substring(x,seq(1,nchar(x),8),pmin(seq(1,nchar(x),8)+7,nchar(x))),collapse=' ')
-}
-print.zi_projekt <- function(x,...) {
-  cfg <- x$pakiet$scenariusz
-  m <- x$pakiet$manifest
-  karta <- list('Scenariusz'=paste(cfg$id,cfg$tytul),
-    'Problem usługi'=cfg$problem,
-    'Konstrukt indeksu'=nazwa_indeksu(cfg),
-    'Kontrast pierwszego porównania'=kontrast_do_druku(x),
-    'Druga relacja'=cfg$pytanie_drugie,
-    'Wersja opisu pomiaru'=pole_opisu(cfg,'wersja_opisu','starsza karta bez odrębnego numeru'),
-    'Klucz wariantu (grupy znaków)'=skrot_do_odczytu(m$klucz_wariantu),
-    'SHA-256 danych (grupy znaków)'=skrot_do_odczytu(m$hash_danych))
-  meta <- data.frame(pole=c('ID','Scenariusz','Rocznik','Generator',
-    'Rekordy surowe','Wersja R','Syntetyczne'),
-    wartosc=c(m$id,m$scenariusz,m$rocznik,m$wersja_generatora,m$n,
-      m$wersja_R,as.character(m$syntetyczne)))
-  print(wydruk_zi(karty=list('Karta wybranego wariantu'=karta),
-    tabele=list('Manifest: pochodzenie, nie jakość pomiaru'=meta)))
-  invisible(x)
 }
 pole_opisu <- function(cfg,nazwa,domyslnie) {
   x <- cfg[[nazwa]]
   if(is.character(x)&&length(x)==1L&&!is.na(x)&&nzchar(x)) x else domyslnie
 }
 nazwa_indeksu <- function(cfg) {
-  pole_opisu(cfg,'nazwa_indeksu',paste('Indeks:',cfg$konstrukt,'(deklaracje)'))
+  pole_opisu(cfg,'nazwa_indeksu',paste('Indeks',cfg$konstrukt))
+}
+nazwa_drugiej <- function(cfg,jednostka=TRUE) {
+  if(cfg$zmienna_druga=='czas_wyszukiwania')
+    paste0(tolower(pole_opisu(cfg,'nazwa_czasu','Czas zadania')),if(jednostka) ' [min]' else '') else
+    paste0('częstość korzystania',if(jednostka) ' [kategorie 1–5]' else '')
 }
 etykiety_grup <- function(cfg,kody) {
   etykiety <- unlist(cfg$etykiety_grup,use.names=FALSE)
@@ -122,55 +132,125 @@ kontrast_do_druku <- function(projekt) {
   paste(etykiety_grup(cfg,projekt$porownywana),'minus',
     etykiety_grup(cfg,projekt$odniesienie))
 }
-grupy_do_druku <- function(projekt,tabela) {
-  tabela$grupa <- etykiety_grup(projekt$pakiet$scenariusz,tabela$grupa)
-  tabela
+print.zi_projekt <- function(x,...) {
+  cfg <- x$pakiet$scenariusz
+  m <- x$pakiet$manifest
+  karta <- list('Scenariusz'=paste(cfg$id,'—',cfg$tytul),
+    'Problem usługi'=cfg$problem,
+    'Projekt badania'=pole_opisu(cfg,'projekt_badania','Badanie obserwacyjne dwóch grup.'),
+    'Konstrukt indeksu'=nazwa_indeksu(cfg),
+    'Pierwsze porównanie'=kontrast_do_druku(x),
+    'Druga relacja'=cfg$pytanie_drugie,
+    'Klucz wariantu (grupy po 8 znaków)'=skrot_do_odczytu(m$klucz_wariantu),
+    'Hash SHA-256 danych (grupy po 8 znaków)'=skrot_do_odczytu(m$hash_danych))
+  meta <- data.frame(Pole=c('ID','Scenariusz','Rocznik','Wersja generatora',
+    'Rekordy surowe','Wersja R','Dane syntetyczne'),
+    Wartosc=c(m$id,m$scenariusz,m$rocznik,m$wersja_generatora,m$n,
+      m$wersja_R,if(isTRUE(m$syntetyczne)) 'tak' else 'nie'))
+  names(meta)[2] <- 'Wartość'
+  print(wydruk_zi(karty=list('Karta wybranego wariantu'=karta),
+    tabele=list('Manifest wariantu: pochodzenie danych'=meta)))
+  invisible(x)
 }
 pomiar_wariantu <- function(projekt) {
   cfg <- projekt$pakiet$scenariusz
   pozycje <- as.list(unlist(cfg$pozycje))
   names(pozycje) <- paste('Pozycja',1:6)
   karta <- c(pozycje,list(
-    'Kontekst pozycji'=pole_opisu(cfg,'kontekst_pozycji','Ustal wspólny punkt odniesienia dla obu grup.'),
+    'Kontekst pozycji'=pole_opisu(cfg,'kontekst_pozycji','Wspólny punkt odniesienia dla obu grup.'),
     'Odpowiedzi na pozycje'='1 zdecydowanie nie, 2 raczej nie, 3 ani tak, ani nie, 4 raczej tak, 5 zdecydowanie tak.',
-    'Kierunek i kompletność'='Pozycja 3: 6-x po obsłudze braków. Średnia przy minimum 5 z 6 ważnych pozycji.',
+    'Kierunek i kompletność'='Pozycja 3 po odwróceniu 6 − x; indeks jest średnią przy co najmniej 5 z 6 ważnych pozycji.',
     'Definicja grup'=pole_opisu(cfg,'opis_grup',paste(unlist(cfg$grupy),collapse=' / ')),
+    'Zadanie obserwacyjne'=pole_opisu(cfg,'zadanie_obserwacyjne','Zadanie opisane w karcie scenariusza.'),
+    'Czas'=pole_opisu(cfg,'nazwa_czasu','Czas zadania'),
+    'Protokół czasu'=pole_opisu(cfg,'protokol_czasu','Minuty od udostępnienia zadania do zgłoszenia odpowiedzi.'),
     'Częstość korzystania'=pole_opisu(cfg,'opis_czestosci',
       '1 nigdy, 2 rzadko, 3 czasami, 4 często, 5 bardzo często; kategorie porządkowe.'),
-    'Czas'=pole_opisu(cfg,'nazwa_czasu','Czas zadania'),
-    'Protokół czasu'=pole_opisu(cfg,'protokol_czasu',
-      'Minuty; techniczny zakres 0–120 nie definiuje startu, końca ani postępowania przy przerwie.'),
     'Treść pola 0/1'=cfg$pytanie_binarne,
-    'Źródło pola 0/1'=pole_opisu(cfg,'rodzaj_binarnego','Odczytaj źródło w zapisanej karcie scenariusza.'),
-    'Kod 1'=pole_opisu(cfg,'kod_1','Tak dla treści pytania; nie zawsze oznacza sukces.'),
-    'Kod 0'=pole_opisu(cfg,'kod_0','Nie dla treści pytania; nie oznacza braku odpowiedzi.'),
-    'Granica odczytu'=pole_opisu(cfg,'ograniczenie_binarnego',
-      'Deklaracja nie jest obserwacją, a nieznany wynik nie jest kodem 0.'),
-    'Kanały'=paste(unlist(cfg$kanaly),collapse=', ')))
+    'Źródło pola 0/1'=pole_opisu(cfg,'rodzaj_binarnego','zapisane w karcie scenariusza'),
+    'Kod 1'=pole_opisu(cfg,'kod_1','odpowiedź „tak” na pytanie pola 0/1'),
+    'Kod 0'=pole_opisu(cfg,'kod_0','odpowiedź „nie” na pytanie pola 0/1'),
+    'Granica odczytu pola 0/1'=pole_opisu(cfg,'ograniczenie_binarnego',
+      'Wynik dotyczy jednego zadania w określonych warunkach.'),
+    'Kanały (odpowiedź wielokrotna)'=paste(unlist(cfg$kanaly),collapse=', ')))
   wydruk_zi(karty=list('Kwestionariusz i pomiary w wybranym scenariuszu'=karta))
 }
+plan_wariantu <- function(projekt) {
+  cfg <- projekt$pakiet$scenariusz
+  a <- etykiety_grup(cfg,projekt$porownywana)
+  b <- etykiety_grup(cfg,projekt$odniesienie)
+  pierwsza <- list('Pomiar'=paste0(nazwa_indeksu(cfg),': średnia sześciu pozycji, skala 1–5'),
+    'Grupy i kolejność'=paste(a,'minus',b),
+    'Estymanda'=paste0('różnica średnich indeksu w populacji: średnia (',a,') minus średnia (',b,')'),
+    'Jednostka efektu'='punkty indeksu 1–5',
+    'Hipoteza zerowa'='H0: średnie w populacji są równe, różnica wynosi 0; test dwustronny',
+    'Tor klasyczny'='test t Welcha z 95% CI różnicy średnich',
+    'Tor losowany'='tasowanie etykiet grup (B = 1999) przy wymienialności; bootstrap osób w grupach daje drugi 95% CI',
+    'Liczebność'='osoby ze znaną grupą i ważnym indeksem; osobne n każdej grupy')
+  druga <- if(cfg$druga_analiza=='tabela krzyżowa')
+    list('Pomiar'=paste0('pole 0/1 — ',cfg$pytanie_binarne,' Kod 1: ',
+        pole_opisu(cfg,'kod_1','odpowiedź „tak”'),'.'),
+      'Grupy i kolejność'=paste(a,'minus',b),
+      'Estymanda'=paste0('różnica odsetków kodu 1 w populacji: odsetek (',a,') minus odsetek (',b,')'),
+      'Jednostka efektu'='punkty procentowe (pp)',
+      'Hipoteza zerowa'='H0: grupa i pole 0/1 są niezależne, różnica odsetków wynosi 0',
+      'Tor klasyczny'='test chi-kwadrat (przy liczebności oczekiwanej poniżej 5: test Fishera) i 95% CI różnicy odsetków',
+      'Tor losowany'='tabele Monte Carlo przy stałych marginesach (B = 1999); bootstrap osób w grupach daje drugi 95% CI',
+      'Miara uzupełniająca'='V Craméra: natężenie związku bez kierunku',
+      'Liczebność'='osoby ze znaną grupą i wartością 0/1; odsetki liczone w każdej grupie osobno') else
+    list('Pomiar'=paste0('indeks oraz ',nazwa_drugiej(cfg)),
+      'Estymanda'=paste0('korelacja rang Spearmana indeksu i zmiennej „',nazwa_drugiej(cfg,FALSE),'” w populacji'),
+      'Jednostka efektu'='współczynnik bez jednostki, od −1 do 1',
+      'Hipoteza zerowa'=paste0('H0: indeks i ',nazwa_drugiej(cfg,FALSE),' są niezależne, korelacja rang wynosi 0'),
+      'Tor klasyczny'='test Spearmana: statystyka S i przybliżone p',
+      'Tor losowany'='tasowanie jednej zmiennej względem drugiej (B = 1999); bootstrap całych par daje 95% CI',
+      'Liczebność'='kompletne pary: osoby z obiema wartościami')
+  wydruk_zi(karty=list('Analiza 1 — porównanie grup'=pierwsza,
+    'Analiza 2 — relacja ze scenariusza'=druga))
+}
 przygotowanie_wariantu <- function(projekt) {
-  pokaz_tabele(projekt$dziennik,'Reguły przygotowania wykonane przez gotowy skrypt',0L)
+  dziennik <- projekt$dziennik
+  dziennik$regula <- gsub('--','–',dziennik$regula,fixed=TRUE)
+  names(dziennik) <- c('Reguła','Liczba')
+  reguly <- list('Identyczne duplikaty'='z kilku identycznych rekordów zostaje jeden; liczba osób maleje',
+    'Kod 99'='w pozycjach ankiety oznacza brak odpowiedzi i zmienia komórkę na NA; osoba zostaje w danych',
+    'Czas poza 0–120 min'='zmienia komórkę czasu na NA; osoba zostaje w analizach bez czasu',
+    'Długi czas w zakresie 0–120 min'='zostaje jako ważna obserwacja',
+    'Pozycja 3'='sformułowana odwrotnie; odwrócenie 6 − x nadaje jej kierunek pozostałych pozycji',
+    'Indeks'='średnia sześciu pozycji przy co najmniej 5 ważnych odpowiedziach; przy 4 lub mniej indeks jest brakiem')
+  wydruk_zi(karty=list('Reguły gotowego skryptu'=reguly),
+    tabele=list('Dziennik przygotowania: wykonane zmiany'=dziennik),digits=0L)
 }
 bilans_wariantu <- function(projekt) {
-  tab <- grupy_do_druku(projekt,projekt$opis[c('grupa','N_osob','N_indeks','N_czas','N_wynik')])
-  wydruk_zi(tabele=list('Bilans analiz'=projekt$bilans,'Dostępne pomiary w grupach'=tab),digits=0L)
+  tab <- projekt$opis[c('grupa','N_osob','N_indeks','N_czas','maks_czas','N_wynik')]
+  tab$grupa <- etykiety_grup(projekt$pakiet$scenariusz,tab$grupa)
+  names(tab) <- c('Grupa','Osoby','Ważny indeks','Ważny czas','Najdłuższy ważny czas [min]','Wartość 0/1')
+  wydruk_zi(tabele=list('Bilans liczebności'=projekt$bilans,
+    'Dostępne pomiary w grupach'=tab),digits=1L)
+}
+wykres_indeksu <- function(projekt) {
+  cfg <- projekt$pakiet$scenariusz
+  d <- projekt$dane[projekt$dane$grupa %in% c(projekt$odniesienie,projekt$porownywana),]
+  d <- d[order(match(d$grupa,c(projekt$odniesienie,projekt$porownywana))),]
+  badaniaZI::wykres_pudelkowy(d$indeks,etykiety_grup(cfg,d$grupa),
+    os='Indeks [pkt 1–5]',granica=FALSE,
+    tytul=paste(strwrap(paste('Indeks w grupach:',nazwa_indeksu(cfg)),width=52),collapse='\n'))
 }
 pierwszy_opis_wariantu <- function(projekt,z_wykresem=TRUE) {
-  plot <- ggplot2::ggplot(projekt$dane,ggplot2::aes(grupa,indeks,fill=grupa))+
-    ggplot2::geom_boxplot(width=.55,alpha=.7,na.rm=TRUE)+
-    ggplot2::scale_fill_manual(values=c('#0072B2','#D55E00'))+
-    ggplot2::scale_x_discrete(labels=function(x)
-      vapply(etykiety_grup(projekt$pakiet$scenariusz,x),function(z)
-        paste(strwrap(z,width=22),collapse='\n'),character(1)))+
-    ggplot2::labs(x='Grupa',y='Indeks [pkt 1–5]',
-      title=paste(strwrap(nazwa_indeksu(projekt$pakiet$scenariusz),width=48),collapse='\n'))+
-    badaniaZI::theme_zi()+ggplot2::theme(legend.position='none')
-  wydruk_zi(tabele=list('Opis indeksu w grupach'=
-    grupy_do_druku(projekt,projekt$opis[c('grupa','N_osob','N_indeks','srednia','SD')])),
-    wykresy=if(z_wykresem) list(plot) else list())
+  cfg <- projekt$pakiet$scenariusz
+  opis <- projekt$opis[c('grupa','N_osob','N_indeks','srednia','SD','mediana')]
+  opis$grupa <- etykiety_grup(cfg,opis$grupa)
+  names(opis) <- c('Grupa','Osoby','n (ważny indeks)','Średnia','SD','Mediana')
+  roznica <- data.frame(Kontrast=kontrast_do_druku(projekt),
+    'Różnica średnich [pkt]'=projekt$opis$srednia[2]-projekt$opis$srednia[1],check.names=FALSE)
+  wydruk_zi(tabele=list('Opis indeksu w grupach [pkt 1–5]'=opis,
+      'Różnica średnich w kolejności kontrastu'=roznica),
+    karty=list('Źródło do uzasadnienia planu'=list('Lektura scenariusza'=pole_opisu(cfg,'inspiracja',
+      'Wybierz źródło z bibliografii kursu.'))),
+    wykresy=if(z_wykresem) list(wykres_indeksu(projekt)) else list())
 }
 
+# ---- Silniki analiz: porównanie grup, tabela 2 × 2, korelacja rang ----
 porownaj_grupy <- function(dane, zmienna='indeks', grupa_1='doświadczeni',
                            grupa_2='nowi', B=1999L, ziarno=202627L) {
   stopifnot(zmienna %in% names(dane),is.numeric(dane[[zmienna]]),
@@ -212,7 +292,6 @@ porownaj_grupy <- function(dane, zmienna='indeks', grupa_1='doświadczeni',
        przedzialy=data.frame(metoda=c('Welch','Bootstrap w grupach'),
          estymata=delta,dol=c(test$conf.int[1],ci[1]),gora=c(test$conf.int[2],ci[2])))
 }
-
 statystyka_chi <- function(tab) {
   if(any(rowSums(tab)==0) || any(colSums(tab)==0)) return(NA_real_)
   E <- outer(rowSums(tab),colSums(tab))/sum(tab)
@@ -223,7 +302,7 @@ analiza_tabeli <- function(tab, B=1999L, ziarno=202627L) {
   stopifnot(all(dim(tab)==c(2,2)),all(is.finite(tab)),all(tab>=0),
             all(tab==round(tab)),all(rowSums(tab)>0),all(colSums(tab)>0),
             length(B)==1L,B>=99L,B==as.integer(B))
-  # Kolumny 0 i 1; kontrast proporcji sukcesu: wiersz 2 minus wiersz 1.
+  # Kolumny 0 i 1; kontrast proporcji kodu 1: wiersz 2 minus wiersz 1.
   N <- sum(tab)
   E <- outer(rowSums(tab),colSums(tab))/N
   dimnames(E) <- dimnames(tab)
@@ -237,18 +316,15 @@ analiza_tabeli <- function(tab, B=1999L, ziarno=202627L) {
   y <- lapply(1:2,function(i) rep(0:1,times=tab[i,]))
   prop <- tab[,2]/rowSums(tab)
   delta <- prop[2]-prop[1]
-  # Ten prosty CI różnicy jest przybliżeniem dużopróbkowym, nie metodą dla rzadkich komórek.
+  # Przedział dużopróbkowy; przy rzadkich komórkach wynik czyta się razem z testem Fishera.
   test_prop <- suppressWarnings(prop.test(tab[2:1,2],rowSums(tab)[2:1],correct=FALSE))
   boot <- replicate(B,{
     b1 <- sample(y[[1]],replace=TRUE)
     b2 <- sample(y[[2]],replace=TRUE)
-    tb <- rbind(tabulate(b1+1,nbins=2),tabulate(b2+1,nbins=2))
-    c(roznica=mean(b2)-mean(b1),V=sqrt(statystyka_chi(tb)/N))
+    c(roznica=mean(b2)-mean(b1))
   })
-  ci_delta <- unname(quantile(boot['roznica',],c(.025,.975)))
-  vboot <- boot['V',is.finite(boot['V',])]
-  ci_v <- unname(quantile(vboot,c(.025,.975)))
-  list(tab=tab,E=E,wklady=(tab-E)^2/E,reszty=(tab-E)/sqrt(E),
+  ci_delta <- unname(quantile(boot,c(.025,.975)))
+  list(tab=tab,E=E,
     opis=data.frame(grupa=rownames(tab),N=as.integer(rowSums(tab)),
       sukcesy=as.integer(tab[,2]),procent=100*prop,row.names=NULL),
     klasyczny=data.frame(N=N,chi2=chi,df=1,p_chi2=pchi,min_E=min(E),
@@ -256,84 +332,42 @@ analiza_tabeli <- function(tab, B=1999L, ziarno=202627L) {
     fisher=data.frame(OR_warunkowe=unname(fisher$estimate),
       CI_OR_dol=fisher$conf.int[1],CI_OR_gora=fisher$conf.int[2],
       p_Fisher=fisher$p.value),
-    wybor=if(any(E<5)) 'Fisher dla tabeli 2 x 2; chi-kwadrat opisowo' else
-      'Chi-kwadrat bez korekty ciągłości',
+    rzadkie=any(E<5),
     losowanie=data.frame(chi2=chi,skrajne=k,B=B,p_MC=(1+k)/(1+B)),
-    zerowy=zerowy,przykladowa_tabela=tabele_zerowe[[1]],
-    efekty=data.frame(roznica_proporcji=unname(delta),
-      roznica_pp=100*unname(delta),
-      iloraz_proporcji=unname(prop[2]/prop[1]),
-      OR_surowe=unname((tab[2,2]/tab[2,1])/(tab[1,2]/tab[1,1])),
-      V=sqrt(chi/N)),
-    przedzialy=data.frame(metoda=c('Przybliżenie bez korekty','Bootstrap w grupach'),
+    zerowy=zerowy,
+    efekty=data.frame(roznica_pp=100*unname(delta),V=sqrt(chi/N)),
+    przedzialy=data.frame(metoda=c('Przybliżenie dużopróbkowe','Bootstrap w grupach'),
       estymata=unname(delta),dol=c(test_prop$conf.int[1],ci_delta[1]),
       gora=c(test_prop$conf.int[2],ci_delta[2])),
-    bootstrap_roznicy=boot['roznica',],bootstrap_V=vboot,
-    opis_boot_V=data.frame(V=sqrt(chi/N),percentyl_025=ci_v[1],
-      percentyl_975=ci_v[2],B_wazne=length(vboot),B_nieokreslone=B-length(vboot)))
+    bootstrap_roznicy=boot)
 }
-analizuj_zwiazek <- function(x,y,B=1999L,ziarno=202627L) {
+analizuj_spearmana <- function(x,y,B=1999L,ziarno=202627L) {
   stopifnot(is.numeric(x),is.numeric(y),length(x)==length(y),B>=99L,B==as.integer(B))
   ok <- is.finite(x)&is.finite(y)
   pary <- data.frame(x=x[ok],y=y[ok])
   n <- nrow(pary)
   stopifnot(n>=4L,sd(pary$x)>0,sd(pary$y)>0)
-  pear <- cor.test(pary$x,pary$y,method='pearson')
-  spear <- cor.test(pary$x,pary$y,method='spearman',exact=FALSE)
-  obs <- c(Pearson=unname(pear$estimate),Spearman=unname(spear$estimate))
+  test <- cor.test(pary$x,pary$y,method='spearman',exact=FALSE)
+  r <- unname(test$estimate)
   set.seed(ziarno)
-  perm <- replicate(B,{
-    yy <- sample(pary$y)
-    c(Pearson=cor(pary$x,yy),Spearman=cor(pary$x,yy,method='spearman'))
-  })
-  k <- rowSums(abs(perm)>=abs(obs)-1e-12)
+  perm <- replicate(B,cor(pary$x,sample(pary$y),method='spearman'))
+  k <- sum(abs(perm)>=abs(r)-1e-12)
   boot <- replicate(B,{
     i <- sample.int(n,replace=TRUE)
-    if(sd(pary$x[i])==0||sd(pary$y[i])==0) return(c(Pearson=NA_real_,Spearman=NA_real_))
-    c(Pearson=cor(pary$x[i],pary$y[i]),
-      Spearman=cor(pary$x[i],pary$y[i],method='spearman'))
+    if(sd(pary$x[i])==0||sd(pary$y[i])==0) NA_real_ else
+      cor(pary$x[i],pary$y[i],method='spearman')
   })
-  ci_boot <- t(apply(boot,1,quantile,probs=c(.025,.975),na.rm=TRUE))
-  model <- lm(y~x,data=pary)
-  sm <- summary(model)
-  cf <- coef(sm)
-  ci_b <- confint(model)
+  ci <- unname(quantile(boot,c(.025,.975),na.rm=TRUE))
   list(pary=pary,N_wejscie=length(x),N_par=n,N_brak=length(x)-n,
-    klasyczny=data.frame(metoda=c('Pearson','Spearman, przybliżenie'),
-      N=n,wspolczynnik=obs,statystyka=c(unname(pear$statistic),unname(spear$statistic)),
-      symbol=c('t','S'),df=c(n-2,NA),p=c(pear$p.value,spear$p.value),row.names=NULL),
-    przedzialy=data.frame(metoda=c('Pearson: transformacja Fishera',
-      'Pearson: bootstrap par','Spearman: bootstrap par'),
-      dol=c(pear$conf.int[1],ci_boot[1,1],ci_boot[2,1]),
-      gora=c(pear$conf.int[2],ci_boot[1,2],ci_boot[2,2])),
-    losowanie=data.frame(metoda=names(obs),wspolczynnik=obs,skrajne=k,
-      B=B,p_perm=(k+1)/(B+1),row.names=NULL),
-    bootstrap_info=data.frame(metoda=rownames(boot),
-      B_wazne=rowSums(is.finite(boot)),B_nieokreslone=rowSums(!is.finite(boot))),
-    perm=perm,boot=boot,model=model,
-    regresja=data.frame(parametr=c('Wyraz wolny','Nachylenie'),
-      estymata=cf[,1],SE=cf[,2],t=cf[,3],df=df.residual(model),p=cf[,4],
-      CI_dol=ci_b[,1],CI_gora=ci_b[,2],row.names=NULL),
-    dopasowanie=data.frame(N=n,R2=sm$r.squared,SD_reszt=sm$sigma,
-      SSE=sum(resid(model)^2),SST=sum((pary$y-mean(pary$y))^2)),
-    diagnostyka=data.frame(x=pary$x,y=pary$y,przewidywany=fitted(model),
-      reszta=resid(model),dzwignia=hatvalues(model),Cook=cooks.distance(model)))
-}
-
-formatuj_wynik <- function(x) {
-  for(nm in names(x)[grepl('^p($|_)',names(x))])
-    if(is.numeric(x[[nm]])) x[[nm]] <- format.pval(x[[nm]],digits=3,eps=.0001)
-  x
-}
-pionowo <- function(x) {
-  y <- formatuj_wynik(x)
-  data.frame(wielkosc=names(y),wartosc=vapply(y,function(z)
-    if(is.numeric(z)) format(signif(z[1],5),trim=TRUE) else as.character(z[1]),
-    character(1)),row.names=NULL)
+    klasyczny=data.frame(N=n,r_S=r,S=unname(test$statistic),p=test$p.value),
+    przedzialy=data.frame(metoda='Bootstrap par',estymata=r,dol=ci[1],gora=ci[2],
+      B_wazne=sum(is.finite(boot))),
+    losowanie=data.frame(r_S=r,skrajne=k,B=B,p_perm=(k+1)/(B+1)),
+    perm=perm,boot=boot)
 }
 analizy_wariantu <- function(projekt,B=1999L,ziarno=202627L) {
   stopifnot(inherits(projekt,'zi_projekt'))
-  # Zachowaj stan sesji; powtórne wydrukowanie wyniku nie zmienia losowania danych.
+  # Zachowaj stan sesji; powtórne wydrukowanie wyniku zostawia generator liczb losowych bez zmian.
   rng_istnial <- exists('.Random.seed',envir=globalenv(),inherits=FALSE)
   if(rng_istnial) rng <- get('.Random.seed',envir=globalenv(),inherits=FALSE)
   on.exit(if(rng_istnial) assign('.Random.seed',rng,envir=globalenv()) else
@@ -343,111 +377,164 @@ analizy_wariantu <- function(projekt,B=1999L,ziarno=202627L) {
   a <- porownaj_grupy(projekt$dane,grupa_1=projekt$odniesienie,
     grupa_2=projekt$porownywana,B=B,ziarno=ziarno)
   tabelaryczna <- cfg$druga_analiza=='tabela krzyżowa'
-  if(tabelaryczna) {
-    tab <- table(factor(projekt$dane$grupa,
-      levels=c(projekt$odniesienie,projekt$porownywana)),
+  b <- if(tabelaryczna) {
+    tab <- table(factor(projekt$dane$grupa,levels=c(projekt$odniesienie,projekt$porownywana)),
       factor(projekt$dane$powodzenie,levels=0:1))
-    b <- analiza_tabeli(tab,B=B,ziarno=ziarno)
-  } else {
-    b <- analizuj_zwiazek(projekt$dane$indeks,
-      projekt$dane[[cfg$zmienna_druga]],B=B,ziarno=ziarno)
-  }
+    analiza_tabeli(tab,B=B,ziarno=ziarno)
+  } else analizuj_spearmana(projekt$dane$indeks,projekt$dane[[cfg$zmienna_druga]],B=B,ziarno=ziarno)
   structure(list(projekt=projekt,pierwsza=a,druga=b,
     rodzaj=if(tabelaryczna) 'tabela' else 'Spearman',B=B,ziarno=ziarno),
     class='zi_analizy')
 }
+
+# ---- Wyniki do akapitów: tabele, wykresy i karta odtworzenia ----
 wynik_pierwszej_analizy <- function(analizy) {
+  p <- analizy$projekt
   a <- analizy$pierwsza
-  opis <- grupy_do_druku(analizy$projekt,a$opis[c('grupa','N','srednia','SD')])
-  wydruk_zi(karty=list('Analiza 1'=list('Kontrast'=kontrast_do_druku(analizy$projekt),
-    'Jednostka'='Punkty indeksu 1–5, nie punkty procentowe.')),
-    tabele=list('Opis grup'=opis,'Welch — oszacowanie i test'=pionowo(a$klasyczny),
-      '95% CI różnicy średnich'=a$przedzialy,
-      'Etykiety grup tasowane pod wymienialnością'=formatuj_wynik(a$losowanie),
-      'Standaryzowany efekt opisowy'=a$efekt[c('roznica','Hedges_g')]))
+  cfg <- p$pakiet$scenariusz
+  opis <- data.frame(Grupa=etykiety_grup(cfg,a$opis$grupa),n=a$opis$N,
+    'Średnia'=liczba(a$opis$srednia),SD=liczba(a$opis$SD),Mediana=liczba(a$opis$mediana),
+    check.names=FALSE)
+  k <- a$klasyczny
+  welch <- data.frame('Różnica [pkt]'=liczba(k$roznica),SE=liczba(k$SE),t=liczba(k$t),
+    df=liczba(k$df,2L),p=formatuj_p(k$p),check.names=FALSE)
+  ci <- data.frame(Metoda=a$przedzialy$metoda,'Różnica [pkt]'=liczba(a$przedzialy$estymata),
+    'Dolna granica'=liczba(a$przedzialy$dol),'Górna granica'=liczba(a$przedzialy$gora),check.names=FALSE)
+  l <- a$losowanie
+  perm <- data.frame('Różnica obserwowana [pkt]'=liczba(l$T_obserwowane),k=l$skrajne,B=l$B,
+    p_perm=formatuj_p(l$p_perm),check.names=FALSE)
+  g <- data.frame('Różnica [pkt]'=liczba(a$efekt$roznica),'SD łączone'=liczba(a$efekt$SD_laczone),
+    'Hedges g'=liczba(a$efekt$Hedges_g),check.names=FALSE)
+  wydruk_zi(karty=list('Analiza 1: kontrast i jednostka'=list('Pomiar'=nazwa_indeksu(cfg),
+      'Kontrast'=kontrast_do_druku(p),'Jednostka różnicy'='punkty indeksu 1–5')),
+    tabele=list('Opis grup [pkt 1–5]'=opis,'Test Welcha'=welch,
+      '95% CI różnicy średnich [pkt]'=ci,'Tasowanie etykiet grup'=perm,
+      'Efekt standaryzowany'=g))
+}
+wykres_dwa_tory <- function(analizy) {
+  a <- analizy$pierwsza
+  delta <- a$klasyczny$roznica
+  szer <- signif(diff(range(c(a$zerowy,a$bootstrap)))/40,1)
+  boot <- badaniaZI::wykres_bootstrap(a$bootstrap,szer,os='Różnica średnich [pkt]',
+    tytul='Bootstrap osób w grupach: rozkład różnicy')
+  zero <- badaniaZI::wykres_rozklad_zerowy(a$zerowy,delta,szer,os='Różnica średnich po tasowaniu [pkt]',
+    tytul='Tasowanie etykiet: rozkład różnicy przy H0')
+  wydruk_zi(wykresy=list(boot,zero))
 }
 wynik_drugiej_analizy <- function(analizy) {
   p <- analizy$projekt
   cfg <- p$pakiet$scenariusz
   b <- analizy$druga
   if(analizy$rodzaj=='tabela') {
-    opis <- grupy_do_druku(p,b$opis)
-    names(opis) <- c('Grupa','N','Kod 1','Odsetek [%]')
-    liczby <- data.frame(Grupa=etykiety_grup(cfg,rownames(b$tab)),'Kod 0'=b$tab[,1],
-      'Kod 1'=b$tab[,2],check.names=FALSE,row.names=NULL)
-    ci <- b$przedzialy
-    ci[c('estymata','dol','gora')] <- 100*ci[c('estymata','dol','gora')]
-    test <- b$klasyczny
-    if(any(b$E<5)) test <- cbind(test,b$fisher)
-    return(wydruk_zi(karty=list('Analiza 2 — odpowiedź binarna'=list(
+    grupy <- etykiety_grup(cfg,rownames(b$tab))
+    liczby <- data.frame(Grupa=grupy,'Kod 0'=b$tab[,1],'Kod 1'=b$tab[,2],n=rowSums(b$tab),
+      'Kod 1 [% grupy]'=liczba(b$opis$procent,1L),check.names=FALSE,row.names=NULL)
+    k <- b$klasyczny
+    test <- data.frame(N=k$N,'Chi-kwadrat'=liczba(k$chi2),df=k$df,p=formatuj_p(k$p_chi2),
+      'Najmniejsza oczekiwana'=liczba(k$min_E,1L),'Komórki z oczekiwaną < 5'=k$komorki_E_mniejsze_5,
+      check.names=FALSE)
+    l <- b$losowanie
+    mc <- data.frame('Chi-kwadrat obserwowane'=liczba(l$chi2),k=l$skrajne,B=l$B,
+      p_MC=formatuj_p(l$p_MC),check.names=FALSE)
+    ci <- data.frame(Metoda=b$przedzialy$metoda,'Różnica [pp]'=liczba(100*b$przedzialy$estymata,2L),
+      'Dolna granica'=liczba(100*b$przedzialy$dol,2L),'Górna granica'=liczba(100*b$przedzialy$gora,2L),
+      check.names=FALSE)
+    tabele <- list('Liczby i odsetki kodu 1 w grupach'=liczby,'Test chi-kwadrat bez korekty ciągłości'=test)
+    if(isTRUE(b$rzadkie)) tabele[['Test Fishera: iloraz szans z 95% CI']] <- data.frame(
+      'Iloraz szans'=liczba(b$fisher$OR_warunkowe),'Dolna granica'=liczba(b$fisher$CI_OR_dol),
+      'Górna granica'=liczba(b$fisher$CI_OR_gora),p=formatuj_p(b$fisher$p_Fisher),check.names=FALSE)
+    tabele <- c(tabele,list('Tabele Monte Carlo przy stałych marginesach'=mc,
+      '95% CI różnicy odsetków kodu 1 [pp]'=ci,
+      'V Craméra: natężenie bez kierunku'=data.frame(V=liczba(b$efekty$V))))
+    return(wydruk_zi(karty=list('Analiza 2: pole 0/1'=list(
       'Pytanie'=cfg$pytanie_binarne,
-      'Źródło i kod 1'=paste(pole_opisu(cfg,'rodzaj_binarnego','Odczytaj kartę'),
-        '—',pole_opisu(cfg,'kod_1','Tak dla treści pytania; nie zawsze sukces.')),
+      'Kod 1'=pole_opisu(cfg,'kod_1','odpowiedź „tak”'),
+      'Źródło pola'=pole_opisu(cfg,'rodzaj_binarnego','zapisane w karcie scenariusza'),
       'Kontrast'=kontrast_do_druku(p),
-      'Metoda klasyczna'=b$wybor,
-      'Przedział różnicy'=if(any(b$E<5))
-        'Rzadkie komórki: CI różnicy jest tylko przybliżeniem; odczytaj także dokładny CI ilorazu szans Fishera.' else
-        'Dużopróbkowy CI różnicy proporcji; drugi CI z bootstrapu w grupach.')),
-      tabele=list('Liczby odpowiedzi 0 i 1'=liczby,'Mianowniki i procenty w grupach'=opis,
-        'Test i ocena liczebności oczekiwanych'=pionowo(test),
-        'Tabele Monte Carlo przy stałych marginesach'=formatuj_wynik(b$losowanie),
-        '95% CI różnicy [punkty procentowe]'=ci,
-        'Efekt kierunkowy i V bez kierunku'=b$efekty[c('roznica_pp','V')])))
+      'Metoda główna'=if(isTRUE(b$rzadkie)) 'test Fishera (liczebność oczekiwana poniżej 5); chi-kwadrat opisowo' else
+        'test chi-kwadrat bez korekty ciągłości (wszystkie liczebności oczekiwane co najmniej 5)')),
+      tabele=tabele))
   }
-  kl <- b$klasyczny[2,c('N','wspolczynnik','statystyka','symbol','p')]
-  rownames(kl) <- NULL
-  ci <- b$przedzialy[3,,drop=FALSE]
-  mc <- b$losowanie[2,,drop=FALSE]
-  rownames(ci) <- rownames(mc) <- NULL
-  wydruk_zi(karty=list('Analiza 2 — korelacja rang'=list(
-    'Zmienne'=paste('Indeks oraz',cfg$zmienna_druga),
-    'Metoda'='Spearman: rho bez jednostki; S i przybliżone p, bez dopisywania df.',
-    'Przedział'='95% CI bootstrapu kompletnych par; nie CI Pearsona.',
-    'Tasowanie'='Jedna zmienna przestawiana względem drugiej pod niezależnością i wymienialnością par.')),
-    tabele=list('Kompletność'=data.frame(N_osob=b$N_wejscie,N_par=b$N_par,
-      N_niekompletne=b$N_brak),
-      'Spearman — odczyt wyniku'=pionowo(kl),'95% CI współczynnika'=ci,
-      'Permutacje jednej zmiennej'=formatuj_wynik(mc),
-      'Ważne replikacje bootstrapu'=b$bootstrap_info[2,,drop=FALSE]))
+  k <- b$klasyczny
+  test <- data.frame('N par'=k$N,rS=liczba(k$r_S),S=liczba(k$S,0L),p=formatuj_p(k$p),check.names=FALSE)
+  ci <- data.frame(Metoda=b$przedzialy$metoda,rS=liczba(b$przedzialy$estymata),
+    'Dolna granica'=liczba(b$przedzialy$dol),'Górna granica'=liczba(b$przedzialy$gora),
+    'Ważne repliki'=b$przedzialy$B_wazne,check.names=FALSE)
+  l <- b$losowanie
+  perm <- data.frame(rS=liczba(l$r_S),k=l$skrajne,B=l$B,p_perm=formatuj_p(l$p_perm),check.names=FALSE)
+  wydruk_zi(karty=list('Analiza 2: korelacja rang'=list(
+      'Zmienne'=paste('indeks oraz',nazwa_drugiej(cfg)),
+      'Współczynnik'='rS Spearmana: liczba bez jednostki od −1 do 1',
+      'Przedział'='95% CI z bootstrapu całych par',
+      'Tasowanie'='jedna zmienna przestawiana względem drugiej przy niezależności')),
+    tabele=list('Kompletność par'=data.frame(Osoby=b$N_wejscie,'Kompletne pary'=b$N_par,
+        'Pary niekompletne'=b$N_brak,check.names=FALSE),
+      'Test Spearmana'=test,'95% CI współczynnika rS'=ci,'Tasowanie jednej zmiennej'=perm))
+}
+tabela_efektow <- function(analizy) {
+  a <- analizy$pierwsza
+  b <- analizy$druga
+  druga <- if(analizy$rodzaj=='tabela')
+    data.frame(Analiza='2: odsetek kodu 1',Efekt='różnica odsetków',Jednostka='pp',
+      Estymata=100*b$przedzialy$estymata[1],dol=100*b$przedzialy$dol[1],gora=100*b$przedzialy$gora[1]) else
+    data.frame(Analiza='2: korelacja rang',Efekt='rS Spearmana',Jednostka='bez jednostki',
+      Estymata=b$przedzialy$estymata,dol=b$przedzialy$dol,gora=b$przedzialy$gora)
+  rbind(data.frame(Analiza='1: indeks',Efekt='różnica średnich',Jednostka='pkt',
+    Estymata=a$przedzialy$estymata[1],dol=a$przedzialy$dol[1],gora=a$przedzialy$gora[1]),druga)
+}
+efekty_projektu <- function(analizy) {
+  e <- tabela_efektow(analizy)
+  tab <- data.frame(Analiza=e$Analiza,Efekt=e$Efekt,Jednostka=e$Jednostka,Estymata=liczba(e$Estymata,2L),
+    'Dolna granica'=liczba(e$dol,2L),'Górna granica'=liczba(e$gora,2L),check.names=FALSE)
+  e$panel <- factor(paste0(e$Analiza,' [',e$Jednostka,']'),levels=paste0(e$Analiza,' [',e$Jednostka,']'))
+  e$etykieta <- paste0(liczba(e$Estymata,2L),' [',liczba(e$dol,2L),'; ',liczba(e$gora,2L),']')
+  kol <- badaniaZI::paleta_zi()
+  wykres <- ggplot2::ggplot(e,ggplot2::aes(y=0)) +
+    ggplot2::geom_vline(xintercept=0,linetype=2,colour='gray40') +
+    ggplot2::geom_segment(ggplot2::aes(x=.data$dol,xend=.data$gora,yend=0),linewidth=1.1,colour=kol[['primary']]) +
+    ggplot2::geom_point(ggplot2::aes(x=.data$Estymata),shape=18,size=4.5,colour=kol[['accent']]) +
+    ggplot2::geom_text(ggplot2::aes(x=.data$Estymata,label=.data$etykieta),vjust=-1.3,size=3.2) +
+    ggplot2::facet_wrap(~panel,ncol=1,scales='free_x') +
+    ggplot2::scale_y_continuous(breaks=NULL,limits=c(-0.6,0.9)) +
+    ggplot2::scale_x_continuous(labels=function(x) sub('^-','−',format(x,decimal.mark=',',trim=TRUE,drop0trailing=TRUE))) +
+    ggplot2::labs(x='Efekt z 95% CI (linia przerywana: zero)',y=NULL,title='Efekty obu analiz w ich jednostkach') +
+    badaniaZI::theme_zi()
+  wydruk_zi(tabele=list('Efekty obu analiz z 95% CI'=tab),wykresy=list(wykres))
 }
 wykresy_wariantu <- function(analizy) {
   p <- analizy$projekt
-  pierwszy <- pierwszy_opis_wariantu(p)$wykresy[[1]]
+  cfg <- p$pakiet$scenariusz
   b <- analizy$druga
-  if(analizy$rodzaj=='tabela') {
-    drugi <- ggplot2::ggplot(b$opis,ggplot2::aes(grupa,procent,fill=grupa))+
-      ggplot2::geom_col(width=.55)+ggplot2::scale_y_continuous(limits=c(0,100))+
-      ggplot2::scale_fill_manual(values=c('#0072B2','#D55E00'))+
-      ggplot2::scale_x_discrete(labels=function(x)
-        vapply(etykiety_grup(p$pakiet$scenariusz,x),function(z)
-          paste(strwrap(z,width=22),collapse='\n'),character(1)))+
-      ggplot2::labs(x='Grupa',y='Odpowiedzi z kodem 1 [% w grupie]',
-        title='Druga analiza: mianownik właściwy każdej grupie')+
-      badaniaZI::theme_zi()+ggplot2::theme(legend.position='none')
-  } else {
-    etykieta <- if(p$pakiet$scenariusz$zmienna_druga=='czas_wyszukiwania')
-      paste0(pole_opisu(p$pakiet$scenariusz,'nazwa_czasu','Czas zadania'),' [min]') else
-      'Częstość korzystania [kategoria 1–5]'
-    drugi <- ggplot2::ggplot(b$pary,ggplot2::aes(x,y))+
-      ggplot2::geom_point(alpha=.5,colour='#0072B2')+
-      ggplot2::labs(x='Indeks deklaracji [pkt 1–5]',y=etykieta,
-        title=paste('Druga analiza:',b$N_par,'kompletnych par'))+badaniaZI::theme_zi()
+  drugi <- if(analizy$rodzaj=='tabela')
+    badaniaZI::wykres_licznosci_odsetki(etykiety_grup(cfg,rownames(b$tab)),b$tab[,2],rowSums(b$tab),
+      zdarzenie='kod 1',tytul='Analiza 2: kod 1 w grupach') else {
+    czestosc <- cfg$zmienna_druga!='czas_wyszukiwania'
+    ggplot2::ggplot(b$pary,ggplot2::aes(.data$x,.data$y))+
+      ggplot2::geom_point(alpha=.55,colour=badaniaZI::paleta_zi()[['primary']],
+        position=ggplot2::position_jitter(width=0,height=if(czestosc) 0.15 else 0,seed=2026))+
+      ggplot2::labs(x='Indeks [pkt 1–5]',y=paste0(toupper(substring(nazwa_drugiej(cfg),1,1)),substring(nazwa_drugiej(cfg),2)),
+        title=paste0('Analiza 2: ',b$N_par,' kompletnych par'))+badaniaZI::theme_zi()
   }
-  wydruk_zi(wykresy=list(pierwszy,drugi))
+  wydruk_zi(wykresy=list(wykres_indeksu(p),drugi))
 }
 slad_analizy <- function(analizy) {
   p <- analizy$projekt
   m <- p$pakiet$manifest
-  wydruk_zi(karty=list('Odtworzenie tego wyniku'=list(
-    'Wariant'=paste(m$id,m$scenariusz,m$rocznik,sep=' / '),
-    'Generator'=m$wersja_generatora,
-    'Hash surowych danych'=skrot_do_odczytu(m$hash_danych),
-    'Reguły'='Identyczne duplikaty; 99 jako NA; czas poza 0–120 jako NA; pozycja 3 odwrócona; indeks minimum 5/6.',
-    'Losowania'=paste('B =',analizy$B,'; zapisane ziarno =',analizy$ziarno),
-    'Źródło obliczeń'='Zapisany Rmd i towarzyszący analiza.R; bez obiektów z poprzedniej sesji.',
-    'Wersja wysłana'='Odrębne pokwitowanie zdalnego SHA po oddaniu; nie jest hashem danych.')))
+  karta <- list('Wariant danych'=paste(m$id,m$scenariusz,m$rocznik,sep=' / '),
+    'Wersja generatora'=m$wersja_generatora,
+    'Hash danych (pierwsza grupa)'=substr(m$hash_danych,1,8),
+    'Reguły przygotowania'='identyczne duplikaty usunięte; 99 w pozycjach jako brak; czas poza 0–120 min jako brak; pozycja 3 odwrócona; indeks przy co najmniej 5 z 6 pozycji',
+    'Losowania'=paste0('B = ',analizy$B,'; ziarno = ',analizy$ziarno),
+    'Źródła obliczeń'='zapisany plik Rmd i towarzyszący mu analiza.R',
+    'Wersja wysłana'='zdalne SHA z potwierdzenia oddania')
+  wersje <- data.frame(Element=c('R','badaniaZI','knitr','rmarkdown'),
+    Wersja=c(as.character(getRversion()),as.character(utils::packageVersion('badaniaZI')),
+      as.character(utils::packageVersion('knitr')),as.character(utils::packageVersion('rmarkdown'))))
+  wydruk_zi(karty=list('Odtworzenie wyniku'=karta),tabele=list('Wersje środowiska tego wykonania'=wersje))
 }
+# ---- Część wspólna z raportem projektu: koniec ----
 
+# ---- Raport: odczyt zapisanych danych i tabele opisu ----
 parametry_raportu <- function(plik=badaniaZI::plik_pracy('PROJEKT')) {
   if(isTRUE(getOption('knitr.in.progress'))) {
     parametry <- get0('params',envir=knitr::knit_global(),inherits=FALSE)
@@ -456,7 +543,7 @@ parametry_raportu <- function(plik=badaniaZI::plik_pracy('PROJEKT')) {
     tekst <- readLines(plik,encoding='UTF-8',warn=FALSE)
     granice <- which(tekst=='---')
     if(length(granice)<2L||granice[1]!=1L)
-      stop('Nagłówek raportu jest niekompletny. Odtwórz kopię pliku, nie zmieniaj ID.',call.=FALSE)
+      stop('Nagłówek raportu jest niekompletny. Odtwórz kopię pliku z zachowanym ID.',call.=FALSE)
     parametry <- yaml::yaml.load(paste(tekst[2:(granice[2]-1)],collapse='\n'),
       eval.expr=FALSE)$params
     id_sesji <- get0('ID',envir=globalenv(),inherits=FALSE)
@@ -480,7 +567,7 @@ wczytaj_projekt_raportu <- function(katalog_danych=badaniaZI::plik_pracy('PROJEK
   if(!all(file.exists(sciezki)))
     stop('Brak kompletu zapisanych danych raportu: ',
       paste(wymagane[!file.exists(sciezki)],collapse=', '),
-      '. Odtwórz pliki swojego wariantu; nie generuj innego zbioru.',call.=FALSE)
+      '. Odtwórz pliki swojego wariantu z pomocą prowadzącego.',call.=FALSE)
   m <- jsonlite::read_json(file.path(katalog_danych,'manifest.json'),simplifyVector=TRUE)
   zgodne <- identical(m$id,parametry$id_studenta)&&
     identical(m$scenariusz,parametry$scenariusz)&&identical(m$rocznik,parametry$rocznik)&&
@@ -491,7 +578,7 @@ wczytaj_projekt_raportu <- function(katalog_danych=badaniaZI::plik_pracy('PROJEK
     hash <- digest::digest(file=file.path(katalog_danych,paste0('surowe.',ext)),algo='sha256')
     if(!identical(hash,m[[paste0('sha256_',ext)]]))
       stop('Zapisane dane surowe zmieniły się: surowe.',ext,
-        '. Przywróć potwierdzoną wersję; nie edytuj manifestu.',call.=FALSE)
+        '. Przywróć potwierdzoną wersję danych; manifest pozostaje bez zmian.',call.=FALSE)
   }
   metadane <- c(slownik='slownik.csv',scenariusz='scenariusz.yml')
   for(pole in names(metadane)) {
@@ -522,17 +609,19 @@ wczytaj_projekt_raportu <- function(katalog_danych=badaniaZI::plik_pracy('PROJEK
   przygotuj_zapisany_wariant(pakiet)
 }
 opis_raportu <- function(projekt) {
+  cfg <- projekt$pakiet$scenariusz
+  indeks <- projekt$opis
+  tab_indeks <- data.frame(Grupa=etykiety_grup(cfg,indeks$grupa),Osoby=indeks$N_osob,
+    'n (ważny indeks)'=indeks$N_indeks,'Średnia'=liczba(indeks$srednia),SD=liczba(indeks$SD),
+    Mediana=liczba(indeks$mediana),check.names=FALSE)
   czas <- do.call(rbind,lapply(c(projekt$odniesienie,projekt$porownywana),function(g) {
     y <- projekt$dane$czas_wyszukiwania[projekt$dane$grupa==g]
     y <- y[is.finite(y)]
-    data.frame(grupa=g,N=length(y),srednia=mean(y),SD=sd(y),
-      mediana=median(y),IQR=IQR(y))
+    data.frame(Grupa=etykiety_grup(cfg,g),n=length(y),'Średnia'=liczba(mean(y),1L),
+      SD=liczba(sd(y),1L),Mediana=liczba(median(y),1L),IQR=liczba(IQR(y),1L),check.names=FALSE)
   }))
-  tabele <- list('Indeks w grupach [pkt 1–5]'=
-    grupy_do_druku(projekt,projekt$opis[c('grupa','N_osob','N_indeks','srednia','SD')]),
-    grupy_do_druku(projekt,czas))
-  names(tabele)[2] <- paste0(pole_opisu(projekt$pakiet$scenariusz,
-    'nazwa_czasu','Czas zadania'),' w grupach [min]')
+  tabele <- list('Indeks w grupach [pkt 1–5]'=tab_indeks,czas)
+  names(tabele)[2] <- paste0(pole_opisu(cfg,'nazwa_czasu','Czas zadania'),' w grupach [min]')
   wydruk_zi(tabele=tabele)
 }
 kanaly_raportu <- function(projekt) {
@@ -543,18 +632,9 @@ kanaly_raportu <- function(projekt) {
   karta <- as.list(unlist(projekt$pakiet$scenariusz$kanaly))
   names(karta) <- paste0('K',1:4)
   wydruk_zi(karty=list('Odpowiedzi wielokrotne — etykiety kanałów'=karta),
-    tabele=list('Kanały: wspólny mianownik osób z kompletem czterech kodów'=wynik))
+    tabele=list('Kanały: wspólny mianownik osób z kompletem czterech kodów'=wynik),digits=1L)
 }
 wykres_raportu <- function(analizy,numer=1L) {
   stopifnot(length(numer)==1L,numer %in% 1:2)
   wydruk_zi(wykresy=wykresy_wariantu(analizy)$wykresy[numer])
-}
-wersje_raportu <- function(analizy) {
-  meta <- data.frame(element=c('R','badaniaZI','knitr','rmarkdown','Generator danych',
-    'B losowań','Ziarno analiz'),
-    wartosc=c(as.character(getRversion()),as.character(utils::packageVersion('badaniaZI')),
-      as.character(utils::packageVersion('knitr')),as.character(utils::packageVersion('rmarkdown')),
-      analizy$projekt$pakiet$manifest$wersja_generatora,
-      as.character(analizy$B),as.character(analizy$ziarno)))
-  pokaz_tabele(meta,'Wersje i parametry tego wykonania')
 }

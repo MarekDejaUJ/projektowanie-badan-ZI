@@ -50,7 +50,7 @@ kolory <- badaniaZI::paleta_zi()
 # Wartość p po polsku: cztery miejsca albo „< 0,0001”.
 formatuj_p <- function(p) ifelse(p < 0.0001, '< 0,0001', formatC(p, format = 'f', digits = 4, decimal.mark = ','))
 nazwy_opisu <- c(N = 'N (ważne indeksy)', braki = 'Braki indeksu', srednia = 'Średnia [pkt]', SD = 'SD [pkt]',
-                 SE = 'SE średniej [pkt]', odniesienie = 'Odniesienie μ0 [pkt]',
+                 SE = 'SE średniej [pkt]', odniesienie = 'Odniesienie [pkt]',
                  roznica = 'Różnica od odniesienia [pkt]', d = 'd (bez jednostki)')
 
 # Wykresy S02: osoby, rozkład t, bootstrap, rozkład zerowy i dwa przedziały.
@@ -147,7 +147,10 @@ portal_wykres_zerowy <- badaniaZI::wykres_rozklad_zerowy(portal_wynik$zerowy, po
 # Warstwa prezentacji: w Rmd wystarczy przypisanie oraz print(wynik).
 ustaw_material <- function() {
   knitr::opts_chunk$set(echo=TRUE,message=FALSE,warning=FALSE,
-    results='asis',fig.width=6,fig.height=3.3,fig.align='center')
+    results='asis',fig.width=6,fig.height=3.3,fig.align='center',fig.pos='H')
+  # Rysunek [H] zostaje przy swoim zadaniu także w PDF bez preambuły kursu.
+  if(isTRUE(getOption('knitr.in.progress'))&&knitr::is_latex_output())
+    knitr::knit_meta_add(list(rmarkdown::latex_dependency('float')))
   invisible(NULL)
 }
 wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L,markdown=list()) {
@@ -197,7 +200,7 @@ tabela_klasyczna <- function(analiza) {
 tabela_losowania <- function(analiza) {
   tab <- data.frame(analiza$losowanie$T_obserwowane, analiza$losowanie$skrajne, analiza$losowanie$B,
                     formatuj_p(analiza$losowanie$p_MC))
-  names(tab) <- c('T obserwowane [pkt]', 'Repliki |T*| ≥ |T|', 'B', 'p_MC')
+  names(tab) <- c('T obserwowane [pkt]', 'Repliki co najmniej tak skrajne (k)', 'B', 'p_MC')
   tab
 }
 tabela_przedzialow <- function(tab) {
@@ -245,7 +248,7 @@ jedna_replika_do_odczytu <- function() pokaz_tabele(jedna_replika, 'Jedno losowa
 uklady_znakow <- function() {
   tab <- wszystkie_znaki
   tab$skrajne <- ifelse(tab$skrajne, 'tak', 'nie')
-  names(tab) <- c('Znak 1', 'Znak 2', 'Znak 3', 'T [pkt]', '|T| ≥ 2/3')
+  names(tab) <- c('Znak 1', 'Znak 2', 'Znak 3', 'T [pkt]', 'Co najmniej 2/3 od zera')
   pokaz_tabele(tab, 'Osiem układów znaków', 3L)
 }
 dokladnosc_losowania <- function() {
@@ -264,11 +267,11 @@ zmiana_odniesienia <- function() {
   names(ci) <- c('Dolna granica', 'Górna granica')
   tab <- wplyw_odniesienia[c('odniesienie', 'roznica', 't')]
   tab$p <- formatuj_p(wplyw_odniesienia$p)
-  names(tab) <- c('Odniesienie μ0', 'Różnica [pkt]', 't', 'p')
+  names(tab) <- c('Odniesienie [pkt]', 'Różnica [pkt]', 't', 'p')
   wydruk_zi(tabele = list('Ten sam 95% CI średniej [pkt]' = ci, 'Trzy pytania zerowe' = tab), digits = 3L)
 }
 przyklad_proporcji_do_raportu <- function() {
-  tab <- data.frame(Miara = c('Sukcesy', 'N', 'Proporcja', 'Odniesienie π0', 'Dolna granica 95% CI',
+  tab <- data.frame(Miara = c('Sukcesy', 'N', 'Proporcja', 'Odniesienie (proporcja)', 'Dolna granica 95% CI',
                               'Górna granica 95% CI', 'p (test dwumianowy)'),
                     `Wartość` = c(format(c(26, 40)), formatC(c(przyklad_proporcji$proporcja, 0.5,
                                   przyklad_proporcji$CI_dol, przyklad_proporcji$CI_gora), format = 'f',
@@ -282,11 +285,25 @@ przedzialy_portalu_do_raportu <- function() {
   wynik_portalu
 }
 rozklady_portalu_do_odczytu <- function() {
-  wydruk_zi(wykresy = list(portal_wykres_boot, portal_wykres_zerowy))
+  # Jedna tabela nazywa jednostkę każdego histogramu: osoby N i repliki B to różne liczby.
+  boot <- portal_ci_sredniej[portal_ci_sredniej$metoda != 't', ]
+  l <- portal_wynik$losowanie
+  liczba <- function(x) sub('^-', '−', formatC(x, format = 'f', digits = 3, decimal.mark = ','))
+  wiersze <- c(
+    paste0('| Bootstrap | średnia indeksów wylosowanych ze zwracaniem | ', portal_wynik$opis$N, ' | ', l$B, ' | ',
+      liczba(mean(portal_wynik$bootstrap)), ' | granice 95%: ', liczba(boot$dol), ' i ', liczba(boot$gora), ' |'),
+    paste0('| Zmiana znaków | średnia odchyleń od 3 po losowej zmianie znaków | ', portal_wynik$opis$N, ' | ', l$B, ' | ',
+      liczba(mean(portal_wynik$zerowy)), ' | k = ', l$skrajne, ', p_MC = ', formatuj_p(l$p_MC), ' |'))
+  md <- paste(c('**Dwa rozkłady replik portalu**', '',
+    '| Rozkład | Jedna wartość | Osoby N | B | Środek [pkt] | Odczyt |',
+    '|:----------|:------------------------|------:|------:|------:|:--------------------|', wiersze), collapse = '\n')
+  wydruk_zi(markdown = list(md), wykresy = list(portal_wykres_boot, portal_wykres_zerowy))
 }
 efekt_i_cel_portalu <- function() {
   tab <- portal_wynik$opis[c('srednia', 'odniesienie', 'roznica', 'd')]
   names(tab) <- c('Średnia [pkt]', 'Odniesienie [pkt]', 'Różnica [pkt]', 'd')
+  testy <- cbind(tabela_klasyczna(portal_wynik), p_MC = formatuj_p(portal_wynik$losowanie$p_MC))
   wydruk_zi(tabele = list('Średnia i efekt od 3 [pkt]; d standaryzowane' = tab,
-    '95% CI średniej względem odniesień 3 i 3,5' = tabela_przedzialow(portal_ci_sredniej)), digits = 3L)
+    '95% CI średniej względem odniesień 3 i 3,5' = tabela_przedzialow(portal_ci_sredniej),
+    'Dwa testy wobec 3' = testy), digits = 3L)
 }

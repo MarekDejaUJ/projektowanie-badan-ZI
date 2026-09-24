@@ -20,12 +20,16 @@ test_that("wykresy dydaktyczne budują się dla małych przykładów", {
   zbuduj(wykres_log(data.frame(id = c("u1", "u1"), minuta = c(0, 5), zdarzenie = c("start", "koniec"))))
   d <- data.frame(g = c("a", "a", "b"), x = c(1, NA, 2))
   zbuduj(wykres_braki(d, "x", "g", "Zmienna x"))
+  zbuduj(wykres_selekcja(c("Nowi", "Doświadczeni"), c(700, 300), c(20, 80), c(3, 4)))
+  zbuduj(wykres_precyzja(0.8, c(25, 50, 100, 200)))
 })
 
 test_that("wykresy odrzucają niespójne wejście", {
   expect_error(wykres_przedzialy("a", 5, 6, 7))
   expect_error(wykres_przeplyw_proby("a", c(1, 2)))
   expect_error(wykres_transformacje(c(2, 2), c("a", "b")))
+  expect_error(wykres_selekcja("a", 1, 1, 3))
+  expect_error(wykres_precyzja(-1, 10))
 })
 
 test_that("etykiety liczb używają przecinka i znaku minus", {

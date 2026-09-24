@@ -1,8 +1,8 @@
 rocznik: "2026-27"
 kod_sylabusa: "UJ.WZZINS.21.17306.26"
 zakres_sylabusa: [9, 10, 11, 12, 13, 14, 15]
-pakiet: "2.0.0"
-materialy: "2.0.0"
+pakiet: "2.3.5"
+materialy: "2.3.5"
 format_pracy: "rmd-1"
 generator: "1.0.0"
 opisy_scenariuszy: "1.1.0"

@@ -161,7 +161,10 @@ archiwum_wynik <- analiza_tabeli(archiwum_tab,ziarno=202628L)
 # Warstwa prezentacji: w Rmd wystarczy przypisanie oraz print(wynik).
 ustaw_material <- function() {
   knitr::opts_chunk$set(echo=TRUE,message=FALSE,warning=FALSE,
-    results='asis',fig.width=6,fig.height=3.3,fig.align='center')
+    results='asis',fig.width=6,fig.height=3.3,fig.align='center',fig.pos='H')
+  # Rysunek [H] zostaje przy swoim zadaniu także w PDF bez preambuły kursu.
+  if(isTRUE(getOption('knitr.in.progress'))&&knitr::is_latex_output())
+    knitr::knit_meta_add(list(rmarkdown::latex_dependency('float')))
   invisible(NULL)
 }
 wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L,markdown=list()) {
@@ -223,7 +226,7 @@ tabela_chi <- function(analiza) {
 }
 tabela_mc <- function(analiza) {
   l <- analiza$losowanie
-  data.frame(`Chi-kwadrat obserwowane` = l$chi2, `Tabele z χ²* ≥ χ² (k)` = l$skrajne, B = l$B,
+  data.frame(`Chi-kwadrat obserwowane` = l$chi2, `Tabele co najmniej tak skrajne (k)` = l$skrajne, B = l$B,
              p_MC = formatuj_p(l$p_MC), check.names = FALSE)
 }
 tabela_przedzialow <- function(analiza) {
@@ -340,6 +343,19 @@ testy_archiwum <- function() {
   out$tabele <- c(list('E przy niezależności' = tabela_z_etykietami(archiwum_wynik$E),
     'Wkłady do chi-kwadrat' = tabela_z_etykietami(archiwum_wynik$wklady)), out$tabele)
   out
+}
+odpowiedz_archiwum <- function() {
+  # Komplet liczb do akapitu raportowego: osoby, odsetki, efekt z przedziałami i dwa p.
+  opis <- archiwum_wynik$opis
+  names(opis) <- c('Grupa', 'N', 'Sukcesy', 'Sukcesy [%]')
+  k <- archiwum_wynik$klasyczny
+  testy <- data.frame(`Chi-kwadrat` = k$chi2, df = k$df, p = formatuj_p(k$p_chi2),
+    `Najmniejsze E` = k$min_E, p_MC = formatuj_p(archiwum_wynik$losowanie$p_MC), B = archiwum_wynik$losowanie$B,
+    check.names = FALSE)
+  wydruk_zi(tabele = list('N grup i sukcesy' = opis,
+    'Efekt: sukces wiersza 2 minus sukces wiersza 1' = tabela_efektow(archiwum_wynik),
+    '95% CI różnicy [punkty procentowe]' = tabela_przedzialow(archiwum_wynik), 'Dwa testy niezależności' = testy),
+    digits = 3L)
 }
 efekt_archiwum <- function() {
   wydruk_zi(tabele = list('Efekt: sukces wiersza 2 minus sukces wiersza 1' = tabela_efektow(archiwum_wynik),

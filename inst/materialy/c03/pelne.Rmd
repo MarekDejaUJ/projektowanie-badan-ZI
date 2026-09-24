@@ -57,6 +57,8 @@ Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN,
 
 Wynikiem C03 jest opis próby. Wniosek o populacji wymaga wnioskowania, które wprowadzają wykład W03 (Losowość, estymacja i dwa tory wnioskowania) i ćwiczenie C05 (Niepewność estymaty), a wniosek o przyczynie — projektu z losowym przydziałem.
 
+Bloki LEARN kończą się **wzorcem zapisu** — przykładowym zdaniem według standardu APA (*Publication Manual of the American Psychological Association*, 7. wydanie, 2020): symbol statystyczny kursywą (*N*, *n*, *M*, *Mdn*, *SD*, *IQR*), jednostka przy liczbie, przecinek jako separator dziesiętny. Na ćwiczeniu C03 wzorce dotyczą opisu próby: położenia, rozrzutu, kwartyli, odsetków i porównania grup. Zadania CHALLENGE stosują wzorce do danych repozytorium.
+
 # LEARN 1: pytanie, mianownik i środek rozkładu
 
 | Pytanie zespołu | Miara | Jednostka lub mianownik |
@@ -134,7 +136,9 @@ Dla czasów 2, 4, 8 i 10 minut mediana wynosi $(4+8)/2=6$ minut. Mediana 6 minut
 
 Przy pojedynczej pozycji porządkowej mediana liczona jako średnia dwóch środkowych kodów może wypaść między kategoriami, np. 3,5. Wartość 3,5 leży między kategoriami „ani tak, ani nie” i „raczej tak”; opis podaje kategorię medianową według przyjętej konwencji i pełny rozkład odpowiedzi.
 
-**Przykładowa interpretacja S02:** „W 148 rekordach dostępne są 142 ważne czasy i 6 braków. Średnia wyniosła 10,13 minuty, a mediana 8,25 minuty. Średnia uwzględnia pełny nakład czasu, w tym dłuższe próby; mediana opisuje środek uporządkowanych pomiarów. Poprawność wykonania opisuje osobno kolumna powodzenia”.
+**Wzorzec zapisu położenia (APA).**
+
+> W 148 rekordach zarejestrowano 142 ważne czasy wyszukiwania (6 braków). Średni czas wyniósł *M* = 10,13 min, a mediana *Mdn* = 8,25 min; średnia uwzględnia pełny nakład czasu, w tym dłuższe próby, a mediana opisuje środek uporządkowanych pomiarów.
 
 # LEARN 2: odczyt odchylenia standardowego
 
@@ -154,7 +158,7 @@ print(odchylenia)
 
 Suma kwadratów 40 minut kwadratowych podzielona przez $5-1=4$ daje wariancję 10, a SD wynosi $\sqrt{10}=3{,}16$ minuty. SD jest pierwiastkiem ze skorygowanej średniej kwadratów odchyleń.
 
-Tabela „Położenie i rozrzut tych samych czasów [min]” zestawia serie: A — SD 3,16 i IQR 4 minuty, B — SD 11,40 i IQR 4 minuty. Jeden czas 30 minut w serii B wnosi odchylenie 20 minut i czterokrotnie zwiększa SD. W raporcie częściej występuje SD niż wariancja, bo SD ma jednostkę minut.
+Tabela „Położenie i rozrzut tych samych czasów [min]” zestawia serie: A — SD 3,16 i IQR 4 minuty, B — SD 11,40 i IQR 4 minuty. Jeden czas 30 minut w serii B wnosi odchylenie 20 minut i zwiększa SD 3,6 razy. W raporcie częściej występuje SD niż wariancja, bo SD ma jednostkę minut.
 
 ```{r rozrzut-demo}
 rozrzut <- rozrzut_serii()
@@ -175,7 +179,9 @@ Dwie grupy mogą mieć podobne SD czasu i różną precyzję średniej, gdy ró�
 
 Wykład W02 (Język danych, pomiar i opis) wprowadził błąd standardowy średniej, $SE=s/\sqrt{n}$, a ćwiczenie C05 liczy go dla danych S02. Znak „±” w raporcie wymaga podpisu: SD, SE albo przedział.
 
-**Przykładowy opis:** „Seria A ma SD 3,16 minuty, a seria B 11,40 minuty. W serii B jedna długa próba znacznie zwiększa rozrzut wokół średniej”.
+**Wzorzec zapisu rozrzutu (APA).**
+
+> Seria A miała średni czas *M* = 6,00 min (*SD* = 3,16 min), a seria B *M* = 10,00 min (*SD* = 11,40 min) przy tej samej medianie 6 min i tym samym *IQR* = 4 min; jedna próba trwająca 30 min zwiększa SD serii B 3,6 razy.
 
 # LEARN 3: kwartyle i rozstęp międzykwartylowy
 
@@ -217,7 +223,9 @@ print(kwantyle)
 
 Wśród pięciu osób możliwe udziały to 20%, 40%, 60%, 80% i 100%; P90 = 21,2 minuty leży między czwartą wartością (8 minut) a piątą (30 minut). Przy małym N percentyl zależy od interpolacji, więc raport podaje go jako opis próby.
 
-**Przykładowy opis pełnego zbioru:** „W S02 kwartyle czasu wynoszą 5,8 i 12,975 minuty, a IQR 7,175 minuty. Mediana 8,25 minuty leży bliżej pierwszego kwartyla. Wartości opisują zróżnicowanie ważnych pomiarów”.
+**Wzorzec zapisu kwartyli (APA).**
+
+> Mediana czasu wyszukiwania wyniosła *Mdn* = 8,25 min, a rozstęp międzykwartylowy *IQR* = 7,175 min (*Q*~1~ = 5,800 min, *Q*~3~ = 12,975 min); mediana leży bliżej pierwszego kwartyla, co wskazuje na dłuższy prawy ogon rozkładu.
 
 # LEARN 4: dystrybuanta podaje udział prób do danego czasu
 
@@ -268,7 +276,9 @@ print(skutecznosc)
 
 Różnica odsetków wynosi $70{,}3-60{,}8=9{,}5$ punktu procentowego; względnie odsetek nowych stanowi $60{,}8/70{,}3=0{,}865$ odsetka doświadczonych. Istotność różnicy odsetków sprawdza test w ćwiczeniu C07 (Kategorie i zachowanie).
 
-**Przykładowa interpretacja progów:** „Czas nie przekroczył 10 minut w 86 ze 142 ważnych pomiarów, czyli w 60,6%. Sukces w najwyżej 10 minut odnotowano w 55 ze 142 kompletnych par, czyli w 38,7%. Pierwsza liczba obejmuje także szybkie niepowodzenia; cel łączący poprawność i szybkość opisuje drugi wskaźnik”.
+**Wzorzec zapisu odsetków z progiem (APA).**
+
+> Czas wyszukiwania wyniósł najwyżej 10 min w 86 ze 142 ważnych pomiarów (60,6%), a sukces w najwyżej 10 min osiągnięto w 55 ze 142 kompletnych par czasu i wyniku (38,7%). Pierwszy wskaźnik obejmuje także szybkie niepowodzenia, a drugi łączy poprawność z szybkością.
 
 # LEARN 5: dwie grupy na jednym wykresie
 
@@ -323,96 +333,173 @@ Po zapisaniu sprawdź każdą liczbę w tabeli. Opis zawiera cechy obecne na his
 
 Table: Pięć zdań do korekty
 
-**Przykładowy akapit porównawczy:** „W grupie doświadczonych użytkowników dostępnych było 70 ważnych czasów: średnia 9,97 minuty, mediana 7,9 i SD 6,02 minuty. U nowych było 72 ważnych pomiarów: średnia 10,28, mediana 8,5 i SD 5,72 minuty. Średnie różnią się opisowo o 0,31 minuty przy dużym zróżnicowaniu wewnątrz obu grup. Powodzenie: 52 z 74 doświadczonych (70,3%) i 45 z 74 nowych (60,8%). Opis dotyczy próby; test różnicy wykonuje ćwiczenie C06 (Dwie grupy)”.
+**Wzorzec zapisu opisu dwóch grup (APA).**
+
+> Doświadczeni użytkownicy (*n* = 70 ważnych czasów) szukali średnio *M* = 9,97 min (*Mdn* = 7,90 min, *SD* = 6,02 min), a nowi (*n* = 72) *M* = 10,28 min (*Mdn* = 8,50 min, *SD* = 5,72 min); średnie różnią się o 0,31 min przy dużym zróżnicowaniu wewnątrz obu grup. Wskazany dokument znalazło 52 z 74 doświadczonych (70,3%) i 45 z 74 nowych (60,8%). Opis dotyczy próby; test różnicy przedstawia ćwiczenie C06 (Dwie grupy).
 
 # CHALLENGE — samodzielny portret repozytorium
 
-W pięciu zadaniach zastąp znaczniki odpowiedzi własnymi krótkimi akapitami. Wpisuj tekst pod wynikiem, poza chunkiem. Dane repozytorium są odrębne od S02 i serii A/B: przenosisz sposób odczytu, a liczby odczytujesz z tabel repozytorium.
+Dwanaście hipotetycznych osób (r01–r12) szuka wskazanej publikacji w repozytorium uczelni. Obserwator zapisuje czas w minutach i powodzenie 0/1. Osoba r12 ma nieznany czas i znany wynik zadania; protokół potwierdza czas 24 minut osoby r11 jako pomiar bez przerwy technicznej. Dane repozytorium są odrębne od S02 i serii A/B: z LEARN przenosisz sposób odczytu i zapisu, a liczby odczytujesz z tabel repozytorium.
+
+Każde z pięciu zadań ma ten sam układ:
+
+1. **Zadanie** — jedno zdanie z przedmiotem opisu.
+2. **Blok R** — uruchom go; wynik zawiera wszystkie liczby potrzebne do odpowiedzi.
+3. **Wskazówki** — gdzie w wyniku szukać informacji, jak ją nazwać i wzór zdania do uzupełnienia.
+4. **W akapicie wymagane** — elementy, które sprawdza prowadzący.
+5. **Twój akapit** — pole odpowiedzi w ramce: znacznik w nawiasie kwadratowym zastępujesz własnym tekstem, a linie komentarza nad nim i pod nim pozostawiasz bez zmian.
+
+Akapit liczy 3–5 zdań zwykłego tekstu, bez kodu R. Liczby przepisujesz z wyniku bloku, z jednostką i mianownikiem.
 
 ## CHALLENGE 1: Raport o czasie w repozytorium
 
-Dwanaście hipotetycznych osób (r01–r12) szuka wskazanej publikacji w repozytorium uczelni. Osoba r12 ma nieznany czas i znany wynik zadania. Potwierdzone 24 minuty pozostają prawidłowym pomiarem.
-
-Blok wyświetla tabelę „Dwanaście osób w repozytorium” (osoba, czas, powodzenie 0/1) i tabelę „Opis ważnych czasów [min]” z N, brakami, średnią, medianą, SD, kwartylami, IQR i P90. Wybierz miary odpowiadające na pytanie o typową wartość i o nakład czasu. Brakujący czas pozostaje brakiem.
+**Zadanie:** opisz czas wyszukiwania w repozytorium średnią, medianą i SD oraz wyjaśnij rozbieżność średniej i mediany.
 
 ```{r s01-opis}
 opis_repozytorium <- portret_repozytorium()
 print(opis_repozytorium)
 ```
 
-**Napisz krótki akapit:** podaj N osób, N ważnych czasów, średnią, medianę i SD. Wyjaśnij rozbieżność średniej i mediany, opisując, na jakie pytanie odpowiada każda z dwóch miar.
+Blok wyświetla tabelę „Dwanaście osób w repozytorium” (osoba, czas, powodzenie 0/1) i tabelę „Opis ważnych czasów [min]” z N, brakami, średnią, medianą, SD, kwartylami, IQR i P90.
+
+*Wskazówki:*
+
+- N osób to liczba wierszy pierwszej tabeli; N ważnych czasów podaje pierwszy wiersz drugiej tabeli.
+- Średnia odpowiada na pytanie o przeciętny nakład czasu i uwzględnia każdą próbę, także 24 minuty; mediana opisuje środek uporządkowanych czasów.
+- Średnia wyższa od mediany wskazuje na długie próby po prawej stronie rozkładu.
+- Brakujący czas r12 pozostaje brakiem; wynik zadania r12 wchodzi do opisu powodzenia.
+- Wzorzec APA: „Spośród [N] osób czas zarejestrowano u [n] (1 brak). Średni czas wyszukiwania wyniósł *M* = [..] min (*SD* = [..] min), a mediana *Mdn* = [..] min; średnia jest wyższa od mediany, ponieważ [..]”.
+
+*W akapicie wymagane:* (i) N osób i N ważnych czasów; (ii) średnia, mediana i SD z jednostką; (iii) pytanie, na które odpowiada średnia, i pytanie, na które odpowiada mediana; (iv) źródło rozbieżności obu miar.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S01.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S01 -->
 [UZUPELNIJ_S01]
 <!-- /odpowiedz:S01 -->
+:::
 
 ## CHALLENGE 2: Obietnica „90% użytkowników”
 
-Opiekun repozytorium chce poznać czas odpowiadający percentylowi 90. według przyjętej konwencji. P90 opisuje próbę; kwantyl z interpolacji różni się od odsetka policzonego przy zadanym progu.
+Opiekun repozytorium chce napisać w poradniku: „90% przyszłych studentów na pewno zmieści się w P90”.
 
-Blok wyświetla tabelę „Kwantyle czasu [min]” (Q1, mediana, Q3, P90) oraz wykres „Dystrybuanta czasu w repozytorium”, na którym schodki rosną przy każdym z jedenastu zapisanych czasów, a romb oznacza wartość dystrybuanty przy 10 minutach. Sprawdź, skąd bierze się liczba ważnych obserwacji.
+**Zadanie:** opisz kwartyle, IQR i P90 próby oraz zastąp zdanie z poradnika opisem dopuszczalnym dla jedenastu czasów.
 
 ```{r s02-kwantyle, fig.cap="Dystrybuanta czasu w repozytorium (N = 11). Oś pozioma: czas w minutach od 2 do 24; oś pionowa: udział czasów mniejszych lub równych wartości. Schodki rosną o 1/11 przy każdym czasie; romb przy 10 minutach podaje wartość dystrybuanty; ostatni schodek, przy 24 minutach, osiąga 1."}
 kwantyle_repozytorium <- kwantyle_i_dystrybuanta()
 print(kwantyle_repozytorium)
 ```
 
-**Napisz krótki akapit:** podaj Q1, Q3, IQR i P90 z jednostkami. Zastąp zdanie „90% przyszłych studentów na pewno zmieści się w P90” opisem dopuszczalnym dla próby jedenastu czasów.
+Blok wyświetla tabelę „Kwantyle czasu [min]” (Q1, mediana, Q3, P90 i IQR), tabelę „Dystrybuanta przy 10 minutach” (liczba ważnych czasów, liczba czasów do 10 minut i ich udział) oraz wykres dystrybuanty.
+
+*Wskazówki:*
+
+- Q1, mediana i Q3 dzielą uporządkowane czasy na ćwiartki; IQR = Q3 − Q1 opisuje rozrzut środkowej połowy prób.
+- P90 obliczono z 11 czasów przez interpolację według przyjętej konwencji; opisuje on próbę.
+- Obietnica o przyszłych studentach dotyczy populacji i wymaga wnioskowania z losowej próby; zdanie o próbie podaje udział prób do danego czasu.
+- Wzorzec APA: „Mediana czasu wyniosła *Mdn* = [..] min (*Q*~1~ = [..] min, *Q*~3~ = [..] min, *IQR* = [..] min). W próbie [n] osób [..] czasów ([..]%) wyniosło najwyżej 10 min, a percentyl 90. wyniósł [..] min”.
+
+*W akapicie wymagane:* (i) Q1, Q3 i IQR z jednostkami; (ii) P90 z jednostką i informacją o liczbie czasów; (iii) udział prób do 10 minut; (iv) poprawione zdanie o próbie w miejsce obietnicy o przyszłych studentach.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S02.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S02 -->
 [UZUPELNIJ_S02]
 <!-- /odpowiedz:S02 -->
+:::
 
 ## CHALLENGE 3: Długi czas i średnia
 
-Osoba redagująca raport proponuje wykluczyć 24 minuty, aby średnia była niższa. Protokół potwierdza pomiar bez przerwy technicznej. Analiza wrażliwości ujawnia konsekwencję wyboru.
+Osoba redagująca raport proponuje wykluczyć 24 minuty, aby średnia była niższa. Protokół potwierdza ten pomiar bez przerwy technicznej.
 
-Tabela „Wrażliwość opisu czasu [min]” zestawia dwa warianty: z prawidłowym czasem 24 minut i bez niego, każdy z N, średnią, medianą i SD. Czas r12 pozostaje brakiem w obu wariantach.
+**Zadanie:** porównaj opis czasu z potwierdzonym pomiarem 24 minut i bez niego oraz wskaż wersję podstawową raportu.
 
 ```{r s03-wrazliwosc}
 warianty <- wrazliwosc_repozytorium()
 print(warianty)
 ```
 
-**Napisz krótki akapit:** opisz zmianę miar i N, oceń propozycję wykluczenia oraz wskaż wersję podstawową raportu. Uzasadnij decyzję znaczeniem danych.
+Blok wyświetla tabelę „Wrażliwość opisu czasu [min]” z dwoma wariantami — z prawidłowym czasem 24 minut i bez niego — oraz N, średnią, medianą i SD każdego wariantu. Czas r12 pozostaje brakiem w obu wariantach.
+
+*Wskazówki:*
+
+- Porównaj zmianę średniej, mediany i SD: miara zależna od każdej wartości zmienia się silniej niż miara zależna od kolejności.
+- Wykluczenie potwierdzonego pomiaru zmienia opisywany zbiór osób, a wersja podstawowa raportu obejmuje wszystkie ważne pomiary.
+- Wariant bez 24 minut może towarzyszyć wersji podstawowej jako jawna analiza wrażliwości z uzasadnieniem.
+- Wzorzec APA: „Jedenaście ważnych czasów dało *M* = [..] min (*Mdn* = [..] min, *SD* = [..] min). Po wyłączeniu potwierdzonego pomiaru 24 min średnia wyniosłaby *M* = [..] min (*n* = [..]); pomiar pozostaje w wersji podstawowej, ponieważ [..]”.
+
+*W akapicie wymagane:* (i) N, średnia, mediana i SD obu wariantów; (ii) która miara zmienia się najsilniej i dlaczego; (iii) ocena propozycji wykluczenia z odwołaniem do protokołu; (iv) wersja podstawowa raportu.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S03.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S03 -->
 [UZUPELNIJ_S03]
 <!-- /odpowiedz:S03 -->
+:::
 
 ## CHALLENGE 4: Trzy odsetki, trzy pytania
 
-Łączny sukces, krótki czas i sukces w krótkim czasie to trzy różne wskaźniki działania usługi; ostatni wymaga pary obserwacji tej samej osoby. Każdy z trzech odsetków odpowiada na inne pytanie.
+Łączny sukces, krótki czas i sukces w krótkim czasie to trzy różne wskaźniki działania usługi; ostatni wymaga pary obserwacji tej samej osoby.
 
-Blok wyświetla tabelę „Powodzenie niezależnie od czasu” (sukcesy, N, procent) i tabelę „Warunki czasu i powodzenia” z licznikiem i mianownikiem dwóch warunków. Odnieś liczby do rekordów z CHALLENGE 1 i nazwij zbiór odniesienia każdego odsetka.
+**Zadanie:** odczytaj trzy odsetki z licznikami i mianownikami i wskaż miarę celu „poprawna publikacja w najwyżej 10 minut”.
 
 ```{r s04-skutecznosc}
 trzy_wskazniki <- skutecznosc_repozytorium(prog_min = 10)
 print(trzy_wskazniki)
 ```
 
-**Napisz krótki akapit:** odczytaj trzy odsetki wraz z ułamkami i wyjaśnij ich rozbieżność. Wskaż miarę najlepiej odpowiadającą celowi „poprawna publikacja w najwyżej 10 minut”.
+Blok wyświetla tabelę „Powodzenie niezależnie od czasu” (sukcesy, N, procent) i tabelę „Warunki czasu i powodzenia” z progiem, licznikiem, mianownikiem i procentem dwóch warunków: samego czasu i sukcesu w czasie.
+
+*Wskazówki:*
+
+- Każdy odsetek ma własny mianownik: powodzenie liczy wszystkie osoby ze znanym wynikiem, a warunki z czasem — osoby z ważnym czasem.
+- Warunek „sam czas” obejmuje także szybkie niepowodzenia; warunek „sukces i czas” wymaga obu warunków u tej samej osoby.
+- Odsetek podajesz z ułamkiem: „[licznik] z [mianownik] ([procent]%)”.
+- Wzorzec APA: „Wskazaną publikację znalazło [..] z [..] osób ([..]%). Czas wyniósł najwyżej 10 min w [..] z [..] ważnych pomiarów ([..]%), a sukces w najwyżej 10 min osiągnęło [..] z [..] osób z ważnym czasem ([..]%)”.
+
+*W akapicie wymagane:* (i) trzy odsetki z licznikami i mianownikami; (ii) zbiór odniesienia każdego odsetka; (iii) wyjaśnienie rozbieżności; (iv) miara odpowiadająca celowi łączącemu poprawność i szybkość.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S04.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S04 -->
 [UZUPELNIJ_S04]
 <!-- /odpowiedz:S04 -->
+:::
 
 ## CHALLENGE 5: Akapit dla instytucji
 
-Instytucja rozważa zmianę instrukcji wyszukiwania. Opis obecnej próby wskazuje problemy do zbadania; skutek zmiany instrukcji wymaga eksperymentu.
+Instytucja rozważa zmianę instrukcji wyszukiwania. Opis obecnej próby wskazuje problemy do zbadania, a skutek zmiany instrukcji wymaga eksperymentu.
 
-Wykres „Odnalezienie wskazanej publikacji w repozytorium” ma na osi poziomej czas w minutach, a na osi pionowej osoby r01–r11; koło pełne oznacza sukces, koło puste niepowodzenie. Wykorzystaj także tabelę miar z CHALLENGE 1.
+**Zadanie:** napisz akapit opisu próby dla instytucji: czas, zróżnicowanie, skuteczność, ograniczenie i następny pomiar.
 
 ```{r s05-wniosek, fig.cap="Odnalezienie wskazanej publikacji w repozytorium. Oś pozioma: czas w minutach; oś pionowa: jedenaście osób z zapisanym czasem. Koła puste (niepowodzenie) mają osoby r01 (2 minuty), r05 (6 minut) i r10 (12 minut); pozostałe osoby mają koła pełne (sukces), w tym r11 przy 24 minutach."}
-czas_i_sukces <- pokaz_wykres(repo_wykres)
+czas_i_sukces <- wniosek_repozytorium(prog_min = 10)
 print(czas_i_sukces)
 ```
 
-**Napisz krótki akapit:** przygotuj spójny opis czasu, zróżnicowania i skuteczności z liczbami uzasadniającymi opis. Zakończ ograniczeniem i propozycją następnego pomiaru; opisz związek bez wniosku o przyczynie.
+Blok wyświetla tabelę „Miary czasu do akapitu” (osoby, ważne czasy, średnia, mediana, SD, IQR, P90), tabelę „Skuteczność do akapitu” (sukces wszystkich osób i sukces w najwyżej 10 minut z licznikiem, mianownikiem i procentem) oraz wykres czasu i wyniku każdej osoby.
+
+*Wskazówki:*
+
+- Kolejność akapitu: liczebność, położenie, rozrzut, skuteczność, obserwacja z wykresu, ograniczenie, następny pomiar.
+- Z wykresu odczytaj, przy jakich czasach wystąpiły niepowodzenia: krótkie próby mogą oznaczać szybką rezygnację.
+- Ograniczenie: jedenaście czasów z jednego zadania w próbie syntetycznej; opis dotyczy próby.
+- Następny pomiar dotyczy mechanizmu: np. zapis przyczyny zakończenia próby albo porównanie dwóch instrukcji z losowym przydziałem.
+- Wzorzec APA: „W repozytorium [n] z [N] osób miało zarejestrowany czas (*M* = [..] min, *Mdn* = [..] min, *SD* = [..] min, *IQR* = [..] min). Publikację znalazło [..] z [..] osób ([..]%), a w najwyżej 10 min — [..] z [..] ([..]%). [Obserwacja z wykresu]. Opis dotyczy próby; skutek zmiany instrukcji wymaga [..]”.
+
+*W akapicie wymagane:* (i) N i miary czasu z jednostkami; (ii) skuteczność z mianownikiem; (iii) jedna obserwacja z wykresu; (iv) ograniczenie opisu; (v) propozycja następnego pomiaru bez wniosku o przyczynie.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S05.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S05 -->
 [UZUPELNIJ_S05]
 <!-- /odpowiedz:S05 -->
+:::
 
 # Zapis i oddanie
 

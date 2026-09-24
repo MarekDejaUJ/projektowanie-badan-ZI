@@ -181,13 +181,16 @@ archiwum_wykres <- ggplot2::ggplot(archiwum_czyste[!is.na(archiwum_czyste$czas_m
     ggplot2::aes(id,czas_min))+
   ggplot2::geom_point(colour=kolory[['primary']],size=3)+
   ggplot2::labs(x='Osoba',y='Czas [min]',title='Zero, długi czas i brak: trzy różne zapisy',
-    caption='Cztery ważne czasy po regułach; a04 ma puste pole, a05 ma czas 121 min spoza zakresu, więc obie osoby mają brak czasu.')+
+    caption='Cztery ważne czasy po regułach.\na04 ma puste pole, a05 czas 121 min spoza zakresu: obie osoby mają brak czasu.')+
   badaniaZI::theme_zi()
 
 # Warstwa prezentacji: w Rmd wystarczy przypisanie oraz print(wynik).
 ustaw_material <- function() {
   knitr::opts_chunk$set(echo=TRUE,message=FALSE,warning=FALSE,
-    results='asis',fig.width=6,fig.height=3.3,fig.align='center')
+    results='asis',fig.width=6,fig.height=3.3,fig.align='center',fig.pos='H')
+  # Rysunek [H] zostaje przy swoim zadaniu także w PDF bez preambuły kursu.
+  if(isTRUE(getOption('knitr.in.progress'))&&knitr::is_latex_output())
+    knitr::knit_meta_add(list(rmarkdown::latex_dependency('float')))
   invisible(NULL)
 }
 wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L,markdown=list()) {
@@ -310,12 +313,19 @@ kontrola_powtorzen_archiwum <- function() {
     'Odrębny przykład konfliktu'=archiwum_konflikt))
 }
 kontrola_regul_archiwum <- function() {
-  wydruk_zi(tabele=list('Po zastosowaniu reguł'=archiwum_czyste,
-    'Kompletność par czasu i oceny'=archiwum_pary))
+  # Cztery zapisy obok siebie: student porównuje wartość przed regułą i po niej bez wracania do importu.
+  zapisy <- data.frame(Osoba=c('a01','a03','a05','a04'),Kolumna=c('czas_min','ocena','czas_min','czas_min'),
+    'Przed regułą'=c('0','99','121','puste pole'),'Po regule'=c('0','NA','NA','NA'),
+    'Reguła'=c('zarejestrowane zero zostaje','kod braku oceny','czas poza 0–120 min','brak zapisu zostaje brakiem'),
+    check.names=FALSE)
+  wydruk_zi(tabele=list('Cztery zapisy przed regułami i po nich'=zapisy,
+    'Po zastosowaniu reguł'=archiwum_czyste,'Kompletność par czasu i oceny'=archiwum_pary))
 }
 wrazliwosc_archiwum <- function() {
   tab <- archiwum_wrazliwosc
-  names(tab) <- c('Wariant','N','Średnia [min]')
+  czasy <- archiwum_czyste$czas_min[!is.na(archiwum_czyste$czas_min)]
+  tab$mediana <- c(median(czasy),median(czasy[czasy!=35]))
+  names(tab) <- c('Wariant','N','Średnia [min]','Mediana [min]')
   wydruk_zi(tabele=list('Z prawidłowym długim czasem i bez niego'=tab),
     wykresy=list(archiwum_wykres))
 }

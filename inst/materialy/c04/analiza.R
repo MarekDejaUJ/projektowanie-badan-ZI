@@ -161,7 +161,10 @@ mini_pomiar <- data.frame(osoba = mini$osoba, indeks = mini_wynik$indeks,
 # Warstwa prezentacji: w Rmd wystarczy przypisanie oraz print(wynik).
 ustaw_material <- function() {
   knitr::opts_chunk$set(echo=TRUE,message=FALSE,warning=FALSE,
-    results='asis',fig.width=6,fig.height=3.3,fig.align='center')
+    results='asis',fig.width=6,fig.height=3.3,fig.align='center',fig.pos='H')
+  # Rysunek [H] zostaje przy swoim zadaniu także w PDF bez preambuły kursu.
+  if(isTRUE(getOption('knitr.in.progress'))&&knitr::is_latex_output())
+    knitr::knit_meta_add(list(rmarkdown::latex_dependency('float')))
   invisible(NULL)
 }
 wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L,markdown=list()) {
@@ -269,15 +272,20 @@ opis_pozycji_archiwum <- function() {
   names(tab)[1] <- 'Osoba'
   opis <- rozklad_pozycji(archiwum_pozycje$p2)[c('odpowiedz', 'liczba', 'N', 'braki', 'procent')]
   names(opis) <- c('Odpowiedź', 'Liczba', 'N', 'Braki', 'Procent [%]')
+  p2 <- archiwum_pozycje$p2[!is.na(archiwum_pozycje$p2)]
+  zgoda <- data.frame(Odpowiedzi = '4 lub 5 (zgoda)', Liczba = sum(p2 >= 4), N = length(p2),
+    `Procent [%]` = 100 * mean(p2 >= 4), check.names = FALSE)
   wydruk_zi(tabele = list('Pierwotne pozycje cyfrowego archiwum' = tab,
-    'Rozkład p2: etykiety filtrów są zrozumiałe' = opis), digits = 1L)
+    'Rozkład p2: etykiety filtrów są zrozumiałe' = opis, 'Zgoda z p2' = zgoda), digits = 1L)
 }
 konstrukcja_indeksu_archiwum <- function() {
   audyt <- archiwum_indeks
   names(audyt) <- naglowki_audytu
   porownanie <- archiwum_porownanie[c('osoba', 'bez_odwrocenia', 'poprawny')]
   names(porownanie) <- c('Osoba', 'Bez odwrócenia', 'Po odwróceniu')
-  wydruk_zi(tabele = list('Audyt poprawnego indeksu' = audyt,
+  a1 <- rbind(archiwum_pozycje[1, -1], archiwum_kierunek[1, -1])
+  a1 <- cbind(Zapis = c('Pierwotne odpowiedzi a1', 'Po odwróceniu p3 (6 − x)'), a1)
+  wydruk_zi(tabele = list('Rekord a1 przed odwróceniem p3 i po nim' = a1, 'Audyt poprawnego indeksu' = audyt,
     'Błędny oraz poprawny kierunek pozycji' = porownanie), digits = 2L)
 }
 kompletnosc_archiwum <- function() {

@@ -20,31 +20,34 @@ output:
 ---
 
 <!--
-To jest jeden roboczy plik raportu. Pola P01–P10 odpowiadają twoim zapisanym
-odpowiedziom z Z09 i Z10; po przeniesieniu tekstu poprawiasz go tutaj, bez
-ponownego wpisywania tych samych odpowiedzi w dwóch plikach. Jeżeli pole jest
-puste, uzupełnij je własnym akapitem. Nie kopiuj wzorcowych odpowiedzi LEARN.
+JAK PRACOWAĆ Z RAPORTEM (komentarze są widoczne w edytorze RStudio i pominięte w PDF)
 
-Nie obowiązuje limit słów ani stron raportu. Dopisz to, czego brakuje do
-odpowiedzi na pytanie, usuń powtórzenia, pozostaw liczby, jednostki i granice
-wniosku. Uporządkuj bibliografię w P11. Instrukcje w komentarzach nie pojawią
-się w PDF; własny tekst wpisuj między znacznikami odpowiedzi, poza komentarzem
-i poza chunkiem. Znaczników nie usuwaj.
+Raport ma dziewięć rozdziałów i jedenaście pól odpowiedzi P01–P11. Każdy rozdział
+ma układ zadania CHALLENGE z ćwiczeń:
+  ZADANIE     — co opisuje pole odpowiedzi;
+  BLOK R      — gotowy blok, który wyświetla liczby potrzebne do akapitu;
+  WSKAZÓWKI   — gdzie szukać liczb, jak je nazwać i wzór zdania;
+  WYMAGANE    — elementy sprawdzane w ocenie projektu (kryteria A01–A07).
 
-Uruchamiaj chunki od początku. Pierwszy wczytuje zapisane dane, słownik,
-manifest i kartę scenariusza; nie generuje nowego wariantu. Gotowy analiza.R
-wykonuje obliczenia oraz prezentację. Nie zmieniaj surowych danych ani
-parametrów metadanych w nagłówku, aby dopasować wynik.
+Pola P01–P10 zawierają akapity z zadań Z09 i Z10 przeniesione przez
+przygotuj_raport(). Redagujesz je tutaj w jeden tekst: usuwasz powtórzenia,
+uzgadniasz liczby z tabelami raportu i dopisujesz przejścia między rozdziałami.
+Pole bez akapitu z Z09 lub Z10 zawiera znacznik w nawiasie kwadratowym; zastąp
+go własnym akapitem. Pole P11 (źródła i zakres wsparcia SI) wypełniasz w raporcie.
 
-Zapisz raport, a do oddania użyj w konsoli oddaj_projekt(). Ta funkcja ma
-utworzyć aktualny PDF i przesłać go razem ze źródłami oraz danymi. Zdalne SHA
-zachowuje pokwitowanie, nie dopisuj go do pliku, który samo identyfikuje.
+Tekst wpisujesz między znacznikami odpowiedzi, poza komentarzami i poza blokami R;
+znaczniki i komentarze zostają bez zmian. Raport nie ma limitu słów.
+
+Bloki uruchamiasz od pierwszego (Ctrl+Alt+R uruchamia wszystkie). Pierwszy blok
+wczytuje zapisane dane, słownik, manifest i kartę scenariusza; nowe losowanie
+danych wykracza poza raport. Gotowy analiza.R wykonuje obliczenia i tabele;
+surowe dane i parametry nagłówka pozostają bez zmian.
+
+Zapisz raport (Ctrl+S) i w konsoli wykonaj oddaj_projekt(). Funkcja tworzy
+aktualny PDF i wysyła go razem ze źródłami i danymi; zdalne SHA z potwierdzenia
+oddania pozostaje w potwierdzeniu.
 -->
 
-<!--
-Przygotowanie łączy zapisany wariant z regułami poznanymi na C02–C04.
-Obie analizy odpowiadają pytaniom zapisanym w scenariuszu na C09.
--->
 ```{r przygotowanie, include=FALSE}
 source(badaniaZI::plik_pracy("PROJEKT", "analiza.R"),
        local = knitr::knit_global(), encoding = "UTF-8")
@@ -56,10 +59,16 @@ analizy <- analizy_wariantu(projekt)
 # 1. Problem informacyjny i cel
 
 <!--
-P01: punkt wyjścia Z09/S01. Zachowaj własny opis instytucji, problemu,
-odbiorców i decyzji, której miałoby służyć badanie. Wyraźnie rozdziel plan
-realnego badania od wykonanej analizy danych syntetycznych. Szczegóły
-manifestu umieść w części o danych, nie zastępuj nimi problemu.
+ZADANIE P01 (akapit z Z09 S01): problem usługi, odbiorcy i decyzja, której
+służyłoby badanie; plan realnego badania oddzielony od analizy danych syntetycznych.
+BLOK R: rozdział 1 ma sam akapit; karta wariantu i manifest stoją w rozdziale 4.
+WSKAZÓWKI: zacznij od problemu instytucji. Informacja o danych syntetycznych stoi
+w pierwszym akapicie raportu; ID, hash i wersje należą do rozdziału 4.
+Wzór zdania: „[Instytucja] chce ustalić [problem], aby zdecydować, czy [decyzja].
+Raport przedstawia plan badania [kogo] oraz analizę syntetycznego wariantu danych
+scenariusza [kod]”.
+WYMAGANE (A01): (i) problem i odbiorcy usługi; (ii) decyzja, której służy badanie;
+(iii) rozdzielenie planu badania od analizy danych syntetycznych.
 -->
 <!-- odpowiedz:P01 -->
 [UZUPELNIJ_P01]
@@ -67,12 +76,25 @@ manifestu umieść w części o danych, nie zastępuj nimi problemu.
 
 # 2. Pytania, estymandy i plan analiz
 
+```{r plan}
+plan <- plan_wariantu(projekt)
+print(plan)
+```
+
 <!--
-P02: punkt wyjścia Z09/S02. Zapisz dokładnie dwa pytania zgodne ze scenariuszem,
-zmienne, estymandy i hipotezy zerowe. Uzasadnij metody skalą i projektem,
-wskaż niezależność obserwacji oraz założenie wymienialności przy tasowaniu.
-Klasyczny i permutacyjny wynik jednego porównania nie są dwoma pytaniami.
-Nie zmieniaj planu tylko dlatego, że uzyskano p większe od wybranego progu.
+ZADANIE P02 (akapit z Z09 S02): dwa pytania, estymandy, kolejność grup, jednostki
+i hipotezy zerowe oraz metody obu analiz.
+BLOK R: karty „Analiza 1 — porównanie grup” i „Analiza 2 — relacja ze scenariusza”.
+WSKAZÓWKI: pytania zgadzają się z kartami; kolejność grup nadaje znak różnicy.
+Test klasyczny i test permutacyjny to dwa tory jednej analizy; projekt ma dwie
+analizy. Metody wynikają ze skali i projektu: niezależność obserwacji dla testu
+Welcha, wymienialność dla tasowania. Plan pozostaje ten sam przy każdym wyniku.
+Wzór zdania (APA): „Pierwsze pytanie dotyczy różnicy średniego indeksu [konstrukt]
+między grupami [A] i [B]; estymandą jest różnica średnich w populacji ([A] minus [B],
+punkty indeksu), a H0 zakłada równość średnich. Drugie pytanie dotyczy [..];
+estymandą jest [..] ([jednostka]), a H0 zakłada niezależność [..]”.
+WYMAGANE (A01, A05): (i) dwa pytania; (ii) estymandy z jednostkami i kolejnością
+grup; (iii) hipotezy zerowe; (iv) metody obu analiz z warunkami.
 -->
 <!-- odpowiedz:P02 -->
 [UZUPELNIJ_P02]
@@ -80,72 +102,76 @@ Nie zmieniaj planu tylko dlatego, że uzyskano p większe od wybranego progu.
 
 # 3. Populacja, rekrutacja i operacjonalizacja
 
-<!--
-P03: punkt wyjścia Z09/S03. Rozwiń plan realnej populacji i doboru próby:
-kto, gdzie, w jakim okresie i jak mógłby zostać zaproszony; kto może nie
-odpowiedzieć. Określ kategorie grup i okres odniesienia deklaracji.
-Nie opisuj tej rekrutacji jako już przeprowadzonej.
-
-Wyjaśnij, co mierzy indeks, jak pozycje odpowiadają konstruktowi i dlaczego
-pozycję trzecią odwracamy. Nie nazywaj przykładów zwalidowaną skalą.
-Zapisz konkretną instrukcję zadania, start i koniec pomiaru czasu, jednostkę,
-pomoc i przerwanie próby. Dla pola 0/1 odczytaj treść pytania: może to być
-wykonanie, deklaracja zamiaru albo inne zdarzenie, nie zawsze sukces.
-Nazwij sposób przyszłego pomiaru, odróżniając brak zapisu od wartości 0.
-
-Doprecyzuj dobrowolność udziału i ograniczenie zbierania danych osobowych.
-Nie zbierasz danych od ludzi w ramach tego projektu. Podaj jedno
-ograniczenie pomiaru i sposób sprawdzenia zrozumiałości instrukcji.
--->
-<!-- odpowiedz:P03 -->
-[UZUPELNIJ_P03]
-<!-- /odpowiedz:P03 -->
-
-<!--
-Ta karta zawiera rzeczywiste pozycje i kody zapisane dla analizowanego
-wariantu. Nie trzeba przepisywać ich do oddzielnego kwestionariusza.
--->
 ```{r pomiar}
 karta_pomiaru <- pomiar_wariantu(projekt)
 print(karta_pomiaru)
 ```
 
+<!--
+ZADANIE P03 (akapit z Z09 S03): plan populacji i doboru, grupy, pomiar indeksu,
+czasu i pola 0/1 w przyszłym badaniu.
+BLOK R: karta „Kwestionariusz i pomiary w wybranym scenariuszu” z rzeczywistymi
+pozycjami i kodami analizowanego wariantu.
+WSKAZÓWKI: populacja — kto, gdzie i w jakim okresie; rama — kanał zaproszenia;
+selekcja — kogo kanał pomija. Kryterium grup i okres odniesienia deklaracji ustala
+plan przed rekrutacją. Nazwij aspekt konstruktu mierzony przez jedną pozycję;
+pozycja 3 ma odwrotny kierunek. Czas: start, koniec, jednostka, pomoc i przerwanie
+próby. Pole 0/1: wykonanie, deklaracja albo inne zdarzenie według wiersza „Kod 1”;
+brak zapisu to brak danych. Udział jest dobrowolny, a dane osobowe ograniczone do
+potrzebnych. Rekrutację i pilotaż opisujesz w czasie przyszłym.
+Wzór zdania: „Populację stanowią [..] w [okres]; zaproszenie przez [kanał] dociera
+do [..], a pomija [..]. Deklarowaną [konstrukt] zmierzy sześć pozycji, np. „[treść]”.
+Obserwator zarejestruje [pomiar 0/1 albo czas] według [kryterium]. Pilotaż sprawdzi [..]”.
+WYMAGANE (A01, A02): (i) populacja, okres, rama i selekcja; (ii) kryterium grup;
+(iii) konkretna pozycja i konstrukt indeksu; (iv) definicja czasu i pola 0/1;
+(v) jedno ograniczenie pomiaru i sposób sprawdzenia zrozumiałości instrukcji.
+-->
+<!-- odpowiedz:P03 -->
+[UZUPELNIJ_P03]
+<!-- /odpowiedz:P03 -->
+
 # 4. Dane i reguły przygotowania
 
-<!--
-Manifest identyfikuje wariant, nie poświadcza jakości pomiaru ani
-reprezentatywności. Dane i karta scenariusza zostały odczytane z zapisanych
-plików, bez wywoływania generatora podczas renderowania.
--->
 ```{r wariant}
 print(projekt)
 ```
 
+```{r przygotowanie-danych}
+dziennik <- przygotowanie_wariantu(projekt)
+print(dziennik)
+bilans <- bilans_wariantu(projekt)
+print(bilans)
+```
+
 <!--
-P04: punkt wyjścia Z09/S04. Uzasadnij reguły duplikatów, kodu 99, czasu,
-odwrócenia pozycji i minimum 5/6. Zachowaj rozróżnienie zmiany komórek
-i usunięcia całych rekordów; nie usuwaj poprawnych skrajnych wyników dla p.
+ZADANIE P04 (akapit z Z09 S04): reguły przygotowania danych i ich uzasadnienie.
+BLOK R: karta „Reguły gotowego skryptu” i tabela „Dziennik przygotowania: wykonane zmiany”.
+WSKAZÓWKI: każda reguła ma powód — duplikaty, kod 99 w pozycjach, czas poza
+0–120 min, odwrócenie 6 − x, minimum 5 z 6 pozycji. Usunięcie duplikatu zmienia
+liczbę osób; zamiana kodu na brak zmienia komórkę. Długie czasy z zakresu 0–120 min
+zostają jako ważne obserwacje.
+Wzór zdania (APA): „Zbiór surowy zawierał [..] rekordów; po usunięciu [..] identycznych
+powtórzeń analizy objęły [..] osób. [..] odpowiedzi z kodem 99 zamieniono na braki,
+a [..] czasów spoza zakresu 0–120 min oznaczono jako braki czasu”.
+WYMAGANE (A03): (i) reguły z uzasadnieniem; (ii) rozróżnienie zmiany komórki
+i usunięcia rekordu; (iii) postępowanie z długimi ważnymi czasami.
 -->
 <!-- odpowiedz:P04 -->
 [UZUPELNIJ_P04]
 <!-- /odpowiedz:P04 -->
 
 <!--
-Dziennik pokazuje skutki gotowego przygotowania. Bilans wskazuje, które
-osoby mogą wejść do poszczególnych analiz i skąd bierze się różnica N.
--->
-```{r przygotowanie-danych}
-dziennik <- przygotowanie_wariantu(projekt)
-bilans <- bilans_wariantu(projekt)
-print(dziennik)
-print(bilans)
-```
-
-<!--
-P05: punkt wyjścia Z10/S01. Porównaj faktyczne N i metadane z wcześniejszym
-planem. Usuń powtórzenia z P04; tutaj podsumuj rezultat kontroli, liczebności
-obu analiz i konsekwencję braków. Nie dopisuj, że braki są losowe, jeśli
-nie masz dowodu. Nie przepisuj całych hashy do akapitu.
+ZADANIE P05 (akapit z Z10 S01): kontrola wariantu i N obu analiz.
+BLOK R: karta i manifest wariantu oraz tabele „Bilans liczebności” i „Dostępne
+pomiary w grupach”.
+WSKAZÓWKI: P05 podsumowuje wynik kontroli, a P04 opisuje reguły; usuń powtórzenia
+między polami. Losowość braków pozostaje założeniem opisanym w ograniczeniach.
+W akapicie wystarcza pierwsza grupa ośmiu znaków hasha.
+Wzór zdania: „Analizy dotyczą wariantu [ID] / [scenariusz] / [rocznik] (generator [..],
+hash zaczynający się od [8 znaków]). Analiza 1 objęła [N] osób z ważnym indeksem,
+a analiza 2 — [N] [osób albo par], ponieważ [..]”.
+WYMAGANE (A03): (i) zgodność wariantu z Z09; (ii) N obu analiz z wyjaśnieniem różnicy;
+(iii) konsekwencja braków dla wniosku.
 -->
 <!-- odpowiedz:P05 -->
 [UZUPELNIJ_P05]
@@ -153,33 +179,30 @@ nie masz dowodu. Nie przepisuj całych hashy do akapitu.
 
 # 5. Opis próby i pomiarów
 
-<!--
-Tabele rozdzielają indeks i czas, z własnymi N oraz jednostkami.
-W odpowiedziach wielokrotnych procenty mają wspólny mianownik osób z kompletem
-kodów, a nie liczbę wszystkich zaznaczeń; suma może przekraczać 100%.
--->
 ```{r opis}
 opis_danych <- opis_raportu(projekt)
-opis_kanalow <- kanaly_raportu(projekt)
 print(opis_danych)
+opis_kanalow <- kanaly_raportu(projekt)
 print(opis_kanalow)
 ```
 
-<!--
-Pierwszy wykres pokazuje zróżnicowanie indeksu w grupach.
-Pudełko nie jest przedziałem ufności średniej ani testem różnicy.
--->
-```{r wykres-indeksu}
-obraz_indeksu <- wykres_raportu(analizy,numer=1)
+```{r wykres-indeksu, fig.cap="Indeks w grupach: pudełko obejmuje środkowe 50% wyników, kreska w pudełku oznacza medianę, a punkty — pojedyncze osoby."}
+obraz_indeksu <- wykres_raportu(analizy, numer = 1)
 print(obraz_indeksu)
 ```
 
 <!--
-P06: punkt wyjścia Z09/S05. Zachowaj własny pierwszy opis indeksu, sprawdź
-N/średnie/SD z bieżącą tabelą i dodaj krótki odczyt czasu oraz kanałów.
-Uzasadnij średnią lub medianę dla czasu i wskaż właściwy mianownik kanałów.
-O planie analiz pisz w części 2; tutaj opisuj próbę, a nie populację.
-Drugi wykres znajduje się przy drugiej analizie, nie trzeba go dublować.
+ZADANIE P06 (akapit z Z09 S05): opis próby — indeks, czas i kanały.
+BLOK R: tabele indeksu i czasu w grupach, tabela kanałów oraz wykres indeksu w grupach.
+WSKAZÓWKI: sprawdź n, średnie i SD z Z09 z tabelą indeksu. Dla czasu podaj średnią
+albo medianę z uzasadnieniem (skośny rozkład czasu przemawia za medianą i IQR).
+Odsetki kanałów mają wspólny mianownik osób z kompletem czterech kodów, a ich suma
+może przekraczać 100%. Rozdział 5 opisuje próbę; plan analiz stoi w rozdziale 2.
+Wzór zdania (APA): „Grupa [A] (n = [..]) uzyskała średni indeks M = [..] (SD = [..]),
+a grupa [B] (n = [..]) M = [..] (SD = [..]). Mediana czasu wyniosła [..] min (IQR [..])
+w grupie [A] i [..] min w grupie [B]. Kanał [..] wskazało [..]% osób”.
+WYMAGANE (A04): (i) n, średnie i SD indeksu; (ii) miara położenia czasu z uzasadnieniem;
+(iii) kanały z mianownikiem; (iv) jedna cecha wykresu indeksu.
 -->
 <!-- odpowiedz:P06 -->
 [UZUPELNIJ_P06]
@@ -187,21 +210,23 @@ Drugi wykres znajduje się przy drugiej analizie, nie trzeba go dublować.
 
 # 6. Pierwsza analiza — porównanie indeksu w grupach
 
-<!--
-Gotowa procedura zachowuje kolejność kontrastu z karty scenariusza.
-CI dotyczy różnicy średnich; Welcha, bootstrapu oraz tasowania etykiet
-nie traktujemy jako procedur o identycznych założeniach.
--->
 ```{r analiza-pierwsza}
 porownanie <- wynik_pierwszej_analizy(analizy)
 print(porownanie)
 ```
 
 <!--
-P07: punkt wyjścia Z10/S02. Popraw własny akapit wyniku: pomiar i grupy,
-N/średnie, różnica w punktach indeksu, CI Welcha i bootstrapu, t/df/p oraz
-p permutacyjne z B. Odpowiedz na pierwsze pytanie i nazwij granicę wniosku.
-Nie zastępuj efektu samym p ani progu praktycznej ważności etykietą g.
+ZADANIE P07 (akapit z Z10 S02): wynik pierwszej analizy i odpowiedź na pierwsze pytanie.
+BLOK R: karta kontrastu oraz tabele opisu grup, testu Welcha, 95% CI, tasowania
+etykiet i efektu standaryzowanego.
+WSKAZÓWKI: różnica ma znak zgodny z kontrastem i jednostkę punktów indeksu;
+Hedges g uzupełnia efekt naturalny. Oba przedziały dotyczą różnicy średnich.
+p_perm = (k + 1)/(B + 1). Grupy są obserwacyjne, więc odpowiedź opisuje związek.
+Wzór zdania (APA): „Różnica [A] minus [B] wyniosła [..] punktu, 95% CI [[..]; [..]],
+t([df]) = [..], p = [..], g = [..]; bootstrapowy 95% CI wyniósł [[..]; [..]],
+a test permutacyjny (B = [..]) dał p_perm = [..]”.
+WYMAGANE (A05, A06): (i) grupy, n, średnie i SD; (ii) różnica z jednostką i g;
+(iii) oba przedziały; (iv) t, df, p oraz k, B i p_perm; (v) odpowiedź z granicą wniosku.
 -->
 <!-- odpowiedz:P07 -->
 [UZUPELNIJ_P07]
@@ -209,32 +234,32 @@ Nie zastępuj efektu samym p ani progu praktycznej ważności etykietą g.
 
 # 7. Druga analiza — relacja ze scenariusza
 
-<!--
-Plan scenariusza wybiera tabelę albo Spearmana, nie wynik pierwszego p.
-Kod 1 ma znaczenie zapisane w pytaniu; rho jest bez jednostki, a różnica
-proporcji może być wyrażona w punktach procentowych.
--->
 ```{r analiza-druga}
 relacja <- wynik_drugiej_analizy(analizy)
 print(relacja)
 ```
 
-<!--
-Drugi wykres przedstawia odsetki w grupach albo kompletne pary tej samej
-osoby. Porównaj jego kierunek i osie z efektem z tabeli.
--->
-```{r wykres-relacji}
-obraz_relacji <- wykres_raportu(analizy,numer=2)
+```{r wykres-relacji, fig.cap="Druga analiza: liczba i odsetek kodu 1 w grupach albo kompletne pary indeksu i drugiej zmiennej."}
+obraz_relacji <- wykres_raportu(analizy, numer = 2)
 print(obraz_relacji)
 ```
 
 <!--
-P08: punkt wyjścia Z10/S03. Dla tabeli podaj liczby i mianowniki, różnicę
-odsetków z CI, klasyczny test i Monte Carlo z B; V czytaj bez kierunku.
-Przy rzadkich komórkach odróżnij Fishera i jego CI ilorazu szans od
-dużopróbkowego CI różnicy. Dla Spearmana podaj N par, rho, S, przybliżone p,
-p permutacyjne z B oraz CI bootstrapu par, bez fikcyjnego df lub CI Pearsona.
-Zakończ odpowiedzią na drugie pytanie, nie wnioskiem przyczynowym.
+ZADANIE P08 (akapit z Z10 S03): wynik drugiej analizy i odpowiedź na drugie pytanie.
+BLOK R: karta i tabele drugiej analizy oraz jej wykres.
+WSKAZÓWKI — tabela 2 × 2: znaczenie kodu 1 z karty, odsetki w każdej grupie osobno,
+różnica w punktach procentowych z CI, test chi-kwadrat (albo Fishera przy liczebności
+oczekiwanej poniżej 5) i Monte Carlo z B; V opisuje natężenie bez kierunku.
+Przedział Fishera dotyczy ilorazu szans.
+WSKAZÓWKI — korelacja rang: N par, znak i wartość rS, CI z bootstrapu par,
+statystyka S z p oraz p_perm z B; rS jest liczbą bez jednostki.
+Wzór zdania (APA, tabela): „[Zdarzenie] dotyczyło [x] z [n] osób w grupie [A] ([..]%)
+i [x] z [n] w grupie [B] ([..]%); różnica wyniosła [..] pp, 95% CI [[..]; [..]].
+Test niezależności dał chi2(1) = [..], p = [..], a test Monte Carlo (B = [..]) p_MC = [..]”.
+Wzór zdania (APA, korelacja): „W [N] kompletnych parach rS = [..], S = [..], p = [..],
+bootstrapowy 95% CI [[..]; [..]]; test permutacyjny (B = [..]) dał p_perm = [..]”.
+WYMAGANE (A05, A06): (i) pomiar i N; (ii) efekt z jednostką i CI; (iii) oba tory;
+(iv) odpowiedź na drugie pytanie w formie opisu związku.
 -->
 <!-- odpowiedz:P08 -->
 [UZUPELNIJ_P08]
@@ -242,22 +267,41 @@ Zakończ odpowiedzią na drugie pytanie, nie wnioskiem przyczynowym.
 
 # 8. Wnioski, ograniczenia i rekomendacja
 
+```{r efekty, fig.height=3.6, fig.cap="Efekty obu analiz z 95% CI, każdy w swojej jednostce; linia przerywana oznacza zero."}
+efekty <- efekty_projektu(analizy)
+print(efekty)
+```
+
 <!--
-P09: punkt wyjścia Z10/S04. Połącz obie odpowiedzi z problemem instytucji.
-Wykorzystaj efekty, CI i wykresy, nie powtarzaj pełnych wyników testów.
-Wyjaśnij ograniczenie pomiaru, doboru i syntetyczności; podaj konkretną
-alternatywę dla nieuprawnionego wniosku przyczynowego. Różne decyzje przy p
-nie są testem różnicy między dwoma efektami.
+ZADANIE P09 (akapit z Z10 S04): synteza obu odpowiedzi, ograniczenia i granica
+wniosku przyczynowego.
+BLOK R: tabela „Efekty obu analiz z 95% CI” i wykres efektów.
+WSKAZÓWKI: połącz oba efekty z problemem instytucji; wystarczają efekty i przedziały.
+Ograniczenia: pomiar (deklaracja albo jedno zadanie), dobór (kanał rekrutacji)
+i dane syntetyczne. Wniosek przyczynowy wymagałby losowego przydziału albo pomiaru
+przed zmianą i po niej; nazwij jedno alternatywne wyjaśnienie. Porównanie dwóch
+efektów wymaga osobnego testu różnicy efektów.
+Wzór zdania: „W syntetycznym [scenariusz] [wynik 1 z CI], a [wynik 2 z CI]. Łącznie
+wyniki uzasadniają [ograniczony wniosek]; [alternatywne wyjaśnienie] pozostaje możliwe”.
+WYMAGANE (A06): (i) oba efekty z CI; (ii) związek z problemem instytucji;
+(iii) ograniczenia pomiaru, doboru i syntetyczności; (iv) alternatywa dla wniosku
+przyczynowego.
 -->
 <!-- odpowiedz:P09 -->
 [UZUPELNIJ_P09]
 <!-- /odpowiedz:P09 -->
 
 <!--
-P10: punkt wyjścia Z10/S05. Powiąż warunkową rekomendację z konkretnym
-wynikiem i najważniejszą niepewnością. Zaproponuj sposób sprawdzenia jej
-w rzeczywistym badaniu. Symulacja nie jest podstawą realnej decyzji
-o instytucji; samo powiększenie N nie naprawi złego pomiaru.
+ZADANIE P10 (akapit z Z10 S05): warunkowa rekomendacja i sposób jej sprawdzenia.
+BLOK R: tabela efektów powyżej oraz karta odtworzenia w rozdziale 9.
+WSKAZÓWKI: rekomendacja wynika z konkretnego wyniku i najważniejszej niepewności
+i dotyczy planu realnego badania. Większa próba zwiększa precyzję; trafność pomiaru
+wymaga lepszego narzędzia.
+Wzór zdania: „Gdyby podobny wzorzec wystąpił w zaplanowanym badaniu, [instytucja]
+mogłaby [krok], ponieważ [wynik z CI]. Największą niepewność stanowi [..];
+ograniczyłaby ją [zmiana planu]”.
+WYMAGANE (A06): (i) warunkowa rekomendacja związana z wynikiem; (ii) najważniejsza
+niepewność; (iii) sposób sprawdzenia w realnym badaniu.
 -->
 <!-- odpowiedz:P10 -->
 [UZUPELNIJ_P10]
@@ -266,37 +310,34 @@ o instytucji; samo powiększenie N nie naprawi złego pomiaru.
 # 9. Źródła i odtworzenie
 
 <!--
-P11: uporządkuj źródła rzeczywiście wykorzystane w swoim planie i opisie.
-Podaj autora, rok, tytuł i DOI lub URL oraz wyjaśnij, do jakiego pojęcia,
-pomiaru lub decyzji odwołujesz się w raporcie. Nie przenoś wyników badań
-LIS do danych syntetycznych i nie przypisuj kursowym pozycjom walidacji.
-
-Jeżeli generatywna SI pomagała w zrozumieniu lub poprawieniu kodu, oznacz
-takie fragmenty kodu i opisz rzeczywisty zakres wsparcia. Interpretację
-i wnioski piszesz samodzielnie; odpowiedź modelu nie jest źródłem naukowym.
-Nie przekazuj danych osobowych ani poświadczeń. Korzystanie z SI nie jest
-wymagane. Nie dopisuj deklaracji użycia narzędzia, z którego nie korzystałeś.
+ZADANIE P11 (nowe pole raportu): źródła rzeczywiście wykorzystane w raporcie
+i opis wsparcia narzędzi SI.
+BLOK R: pole P11 ma sam tekst; karta odtworzenia stoi niżej.
+WSKAZÓWKI: każde źródło w formacie APA 7, a po nim jedno zdanie o tym, do czego
+służy w raporcie (pojęcie, pomiar albo decyzja). Wyniki badań z literatury
+opisują ich własne próby; liczby raportu pochodzą z danych syntetycznych.
+Wzór wpisu (APA): „Hargittai, E. (2002). Beyond logs and surveys: In-depth measures
+of people's web use skills. Journal of the American Society for Information Science
+and Technology, 53(14), 1239–1244. https://doi.org/10.1002/asi.10166 — uzasadnia
+pomiar wykonania zadania obok samooceny (rozdział 3)”.
+Wsparcie SI — jedno z dwóch zdań zgodnych z faktami:
+„Raport powstał bez użycia narzędzi generatywnej SI”. albo
+„Narzędzie [nazwa] pomogło w [zakres, np. objaśnieniu symbolu albo korekcie
+językowej rozdziału 3]; liczby, źródła i wnioski sprawdził autor raportu”.
+Interpretację i wnioski pisze autor; odpowiedź modelu nie jest źródłem naukowym.
+Dane osobowe i hasła pozostają poza narzędziami SI. Użycie SI jest dobrowolne.
+WYMAGANE (A07): (i) użyte źródła w formacie APA z rolą w raporcie; (ii) zgodny
+z faktami opis wsparcia SI.
 -->
 <!-- odpowiedz:P11 -->
 [UZUPELNIJ_P11]
 <!-- /odpowiedz:P11 -->
 
-Zapisane `raport.Rmd` i `analiza.R` oraz katalog `dane` tworzą podstawę
-odtworzenia. Katalog danych zawiera surowe CSV i RDS, słownik, manifest
-oraz kartę scenariusza. Analiza sprawdza zgodność ID, wariantu i hashy
-przed przygotowaniem danych. Nie korzysta z poprzedniej przestrzeni roboczej
-i nie wywołuje nowego losowania danych.
+Zapisane pliki `raport.Rmd` i `analiza.R` oraz katalog `dane` tworzą podstawę odtworzenia. Katalog danych zawiera surowe dane w formatach CSV i RDS, słownik, manifest oraz kartę scenariusza. Analiza sprawdza zgodność ID, wariantu i hashy przed przygotowaniem danych i korzysta wyłącznie z zapisanych plików.
 
-Aby odtworzyć wynik, otwórz raport w RStudio i uruchom chunki od początku
-albo renderuj ten zapisany Rmd. Tabele i wykresy powstają w dokumencie;
-nie trzeba przepisywać wyników z konsoli ani osobno wstawiać obrazów.
-Wersję wysłaną do oceny identyfikuje odrębne pokwitowanie zdalnego SHA.
+Wynik odtwarza się przez uruchomienie bloków raportu od pierwszego albo utworzenie PDF z zapisanego pliku; tabele i wykresy powstają w dokumencie. Wersję wysłaną do oceny identyfikuje zdalne SHA z potwierdzenia oddania.
 
-<!--
-Poniższa tabela zapisuje wersje środowiska tego wykonania, a nie deklarację
-autora z pamięci. Wersja generatora pochodzi z manifestu zachowanych danych.
--->
-```{r wersje}
-srodowisko <- wersje_raportu(analizy)
+```{r slad}
+srodowisko <- slad_analizy(analizy)
 print(srodowisko)
 ```

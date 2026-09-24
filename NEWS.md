@@ -1,3 +1,35 @@
+# badaniaZI 2.3.5 — materiały przepisane i zadania z wzorcami zapisu
+
+Wersja 2.3.5 zastępuje 2.0.0 jako wydanie kursu na rok 2026/27. Format pracy,
+generator danych, scenariusze i rubryki pozostają bez zmian.
+
+## Materiały
+
+- Pięć wykładów i dziesięć ćwiczeń ma tekst twierdzący z jawnym odniesieniem:
+  każde zdanie nazywa tabelę, wykres albo liczbę, o której mówi. Wzory mają
+  objaśnione symbole, a wykresy — podpisy z odczytem wyniku.
+- Bloki LEARN kończą się wzorcem zapisu wyniku według standardu APA.
+- Każde zadanie CHALLENGE ma ten sam układ: zadanie w jednym zdaniu, blok R
+  z kompletem liczb potrzebnych do odpowiedzi, wskazówki ze wzorem zdania,
+  listę wymaganych elementów i pole odpowiedzi w ramce.
+- Rysunki w PDF pracy studenta zostają przy swoich zadaniach, a symbole
+  greckie i nierówności są drukowane jako wzory.
+
+## Projekt indywidualny
+
+- Projekt składa się z dziesięciu akapitów zadań Z09 i Z10 oraz pola P11.
+  `raport.Rmd` ma w każdym rozdziale komentarz z zadaniem, wskazówkami i
+  wymaganymi elementami oraz gotowe bloki: plan analiz, efekty obu analiz
+  z przedziałami i kartę odtworzenia wyniku.
+- C09 i C10 opisują drogę od karty projektu do raportu; C10 i raport korzystają
+  ze wspólnego kodu analiz.
+
+## Pakiet
+
+- Nowe wykresy dydaktyczne, m.in. `wykres_selekcja()`, `wykres_precyzja()`,
+  `wykres_galeria_r()` z panelem danych oraz wykresy rozkładów, kategorii
+  i związków używane w materiałach.
+
 # badaniaZI 2.0.0 — wydanie kursu ZI 2026/27
 
 Wersja 2.0.0 jest przypiętym wydaniem części ilościowej kursu na rok 2026/27.

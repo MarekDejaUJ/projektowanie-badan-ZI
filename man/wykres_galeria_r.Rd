@@ -2,7 +2,13 @@
 \alias{wykres_galeria_r}
 \title{Galeria korelacji o zadanych wartosciach r}
 \usage{
-wykres_galeria_r(r, n = 100L, tytul = NULL)
+wykres_galeria_r(
+  r,
+  n = 100L,
+  tytul = NULL,
+  dane = NULL,
+  etykieta_danych = "Dane"
+)
 }
 \arguments{
 \item{r}{Wartosci wspolczynnika korelacji.}
@@ -10,6 +16,11 @@ wykres_galeria_r(r, n = 100L, tytul = NULL)
 \item{n}{Liczba par w panelu.}
 
 \item{tytul}{Tytul wykresu.}
+
+\item{dane}{Opcjonalna ramka z kolumnami x i y: pierwszy panel przedstawia
+te dane po standaryzacji, z obliczonym r.}
+
+\item{etykieta_danych}{Nazwa panelu danych.}
 }
 \value{
 Obiekt ggplot; wykres rysuje print().

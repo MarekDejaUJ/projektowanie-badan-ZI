@@ -91,3 +91,13 @@ test_that("mozaika, ogon Monte Carlo i przejścia podają liczby z tabel", {
   zbuduj(przejscia)
   expect_match(przejscia$labels$subtitle, "poprawa 10, pogorszenie 2, bez zmiany 38")
 })
+
+test_that("galeria korelacji dodaje panel danych z obliczonym r", {
+  dane <- data.frame(x = c(1, 2, 3, 4, 5, 6), y = c(3, 1, 4, 2, 6, 5))
+  galeria <- wykres_galeria_r(c(-0.5, -0.9), n = 6, dane = dane, etykieta_danych = "Próba")
+  zbuduj(galeria)
+  panele <- levels(ggplot2::ggplot_build(galeria)$layout$layout$panel)
+  expect_equal(length(panele), 3L)
+  expect_match(panele[1], "Próba: r = 0,66")
+  expect_match(galeria$labels$subtitle, "6 par z danych")
+})

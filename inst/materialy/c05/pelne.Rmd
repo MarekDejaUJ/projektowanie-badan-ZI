@@ -55,6 +55,8 @@ Przeznacz około 5 minut na odtworzenie pracy, 30 minut na pięć bloków LEARN,
 
 Portal w CHALLENGE ma gotowe indeksy; projekt indywidualny rozpoczyna się na ćwiczeniu C09 (Warsztat projektu). Uruchamiasz gotowe funkcje z `analiza.R`; Twoją pracą są odczyt, interpretacja i uzasadnienie.
 
+Bloki LEARN kończą się **wzorcem zapisu** — przykładowym zdaniem według standardu APA (*Publication Manual of the American Psychological Association*, 7. wydanie, 2020): symbol statystyczny kursywą, stopnie swobody w nawiasie, przedział w nawiasie kwadratowym, przecinek jako separator dziesiętny. Na ćwiczeniu C05 wzorce dotyczą jednej średniej: opisu, testu t, efektu z przedziałem, bootstrapu i zmian znaków. Zadania CHALLENGE stosują wzorce do indeksu portalu.
+
 # LEARN 1: cel, jednostka i kierunek
 
 | Element analizy | Definicja w S02 |
@@ -100,6 +102,10 @@ Na wykresie „Indeksy osób i odniesienie 3” słupek oznacza liczbę osób. D
 
 Indeks jest w kursie przybliżoną zmienną ilościową; ograniczony zakres i pochodzenie z pozycji porządkowych należą do opisu pomiaru (wykład W02 i ćwiczenie C04).
 
+**Wzorzec zapisu opisu średniej (APA).**
+
+> Indeks deklarowanej użyteczności katalogu obliczono dla 147 osób (1 brak); średnia wyniosła *M* = 3,29 (*SD* = 0,73) na skali 1–5, a różnica od umownego odniesienia 3 — 0,29 punktu.
+
 # LEARN 2: SE, t i stopnie swobody
 
 $$
@@ -141,6 +147,10 @@ Argument `mu` wskazuje wartość hipotezy zerowej; dane i średnia pozostają te
 ## Wartość p i model zerowy
 
 Klasyczne p wynosi $2{,}8\cdot10^{-6}$, czyli 0,0000028: tak rzadko pojawia się statystyka co najmniej tak skrajna przy $H_0$ i założeniach testu. Zapis `2.8e-06` oznacza bardzo małą liczbę dodatnią. Raport podaje p < 0,001 razem z estymatą i przedziałem.
+
+**Wzorzec zapisu testu t (APA).**
+
+> Średni indeks był wyższy od umownego odniesienia 3, *t*(146) = 4,88, *p* < 0,001 (test dwustronny).
 
 # LEARN 3: efekt i dwa przedziały
 
@@ -186,6 +196,10 @@ $$
 Efekt d = 0,402 dzieli różnicę przez SD osób, a t dzieli ją przez SE, więc t rośnie z $\sqrt n$ przy stałym d. Efekt surowy ma jednostkę punktów indeksu, a d jest liczbą bez jednostki.
 
 Pierwsza informacja dla zespołu brzmi: „0,292 punktu powyżej umownego odniesienia”. Znaczenie różnicy 0,292 punktu ocenia się względem celu usługi i jakości pomiaru.
+
+**Wzorzec zapisu efektu i przedziału (APA).**
+
+> Średni indeks wyniósł *M* = 3,29 punktu, 95% CI [3,17; 3,41]; różnica od odniesienia 3 wyniosła 0,29 punktu, 95% CI [0,17; 0,41], *d* = 0,40.
 
 # LEARN 4: bootstrap i zmiana znaków mają różne cele
 
@@ -295,20 +309,28 @@ Każdy histogram ma własną oś. Szerokość histogramu osób wiąże się z SD
 
 Druga osoba mówi: „bootstrap ma średnią 3,29, więc hipoteza zerowa ma średnią 3,29”. Zwykły bootstrap odtwarza informację z próby, a test zerowy buduje rozkład odniesienia przy $H_0$; nazwanie rozkładu jest pierwszym krokiem odczytu.
 
+**Wzorzec zapisu bootstrapu i zmian znaków (APA).**
+
+> Percentylowy przedział bootstrapowy (*B* = 1999) dla różnicy od 3 wyniósł [0,17; 0,41]. Test zmian znaków (*B* = 1999) dał *p*~MC~ = 0,0005, ponieważ 0 z 1999 powtórzeń było co najmniej tak skrajnych jak obserwowana różnica; test zakłada symetrię odchyleń przy *H*~0~.
+
 # LEARN 5: od wyniku do pełnego opisu
 
-Blok `podsumowanie-wyniku` zestawia efekt, wynik klasyczny, wynik zmian znaków i przedziały. Każda tabela zachowuje nazwę parametru i metody; liczby przykładowych akapitów pochodzą z tabel bloku `podsumowanie-wyniku`.
+Blok `podsumowanie-wyniku` zestawia efekt, wynik klasyczny, wynik zmian znaków i przedziały. Każda tabela zachowuje nazwę parametru i metody; liczby wzorców zapisu pochodzą z tabel bloku `podsumowanie-wyniku`.
 
 ```{r podsumowanie-wyniku}
 raport <- podsumowanie_sredniej(wynik)
 print(raport)
 ```
 
-## Przykładowe akapity dla S02
+## Wzorce zapisu dla S02
 
-Warstwa liczbowa: „Dla 147 ważnych indeksów średnia wyniosła 3,292 punktu (SD = 0,727). Różnica od umownego odniesienia 3 wyniosła 0,292 punktu, z klasycznym 95% CI [0,174; 0,411]. Test t dał t(146) = 4,876, p < 0,001, a d = 0,402”.
+**Wzorzec zapisu warstwy liczbowej (APA).**
 
-Warstwa losowania: „Percentylowy bootstrap dał dla różnicy CI [0,173; 0,407]. W 1999 losowych zmianach znaków żadna średnia odchyleń nie była równie skrajna, stąd $p_{\mathrm{MC}}$ = 0,0005. Test zmian znaków zakłada symetrię odchyleń przy $H_0$”.
+> Dla 147 ważnych indeksów średnia wyniosła *M* = 3,29 (*SD* = 0,73). Różnica od umownego odniesienia 3 wyniosła 0,29 punktu, 95% CI [0,17; 0,41], *t*(146) = 4,88, *p* < 0,001, *d* = 0,40.
+
+**Wzorzec zapisu warstwy losowania (APA).**
+
+> Percentylowy bootstrap (*B* = 1999) dał dla różnicy 95% CI [0,17; 0,41]. W 1999 losowych zmianach znaków średnia odchyleń co najmniej tak skrajna jak obserwowana wystąpiła 0 razy, stąd *p*~MC~ = 0,0005; test zmian znaków zakłada symetrię odchyleń przy *H*~0~.
 
 Warstwa badawcza: wynik oznacza przesunięcie średniej w stronę korzystnej deklaracji względem środka skali. Wynik dotyczy deklarowanej użyteczności w danych syntetycznych, a punkt odniesienia jest umowny.
 
@@ -333,88 +355,163 @@ Odpowiedź statystyczna pasuje do decyzji: rekomendacja dotyczy dalszego sprawdz
 
 # CHALLENGE — samodzielna interpretacja oceny portalu
 
-W pięciu zadaniach zastąp znaczniki odpowiedzi własnymi krótkimi akapitami. Wpisuj tekst pod wynikiem, poza chunkiem. Liczby odczytujesz z wyników portalu; wniosek piszesz samodzielnie.
+Portal studencki oceniono sześcioma pozycjami o deklarowanej przejrzystości procedur. Po ukierunkowaniu pozycji i regule 5/6 powstały indeksy 1–5; jedna z 25 osób ma brak indeksu. Portal jest osobną syntetyczną demonstracją. Przed analizą ustalono pytanie o różnicę średniej od odniesienia 3 i test dwustronny, a opiekun portalu wskazał 3,5 jako hipotetyczny cel użytkowy; obie wartości są umowne.
 
-## Scenariusz portalu i umownego odniesienia
+Każde z pięciu zadań ma ten sam układ:
 
-Portal studencki oceniono sześcioma pozycjami o deklarowanej przejrzystości procedur. Po ukierunkowaniu pozycji i regule 5/6 powstały indeksy 1–5; jedna z 25 osób ma brak indeksu. Portal jest osobną syntetyczną demonstracją.
+1. **Zadanie** — jedno zdanie z przedmiotem opisu.
+2. **Blok R** — uruchom go; wynik zawiera wszystkie liczby potrzebne do odpowiedzi.
+3. **Wskazówki** — gdzie w wyniku szukać informacji, jak ją nazwać i wzór zdania do uzupełnienia.
+4. **W akapicie wymagane** — elementy, które sprawdza prowadzący.
+5. **Twój akapit** — pole odpowiedzi w ramce: znacznik w nawiasie kwadratowym zastępujesz własnym tekstem, a linie komentarza nad nim i pod nim pozostawiasz bez zmian.
 
-Przed analizą ustalono pytanie o różnicę średniej od odniesienia 3 i test dwustronny. Opiekun portalu wskazał 3,5 jako hipotetyczny cel użytkowy. Wartości 3 i 3,5 są umowne i ustalone przed analizą.
+Akapit liczy 3–5 zdań zwykłego tekstu, bez kodu R. Liczby przepisujesz z wyniku bloku, z jednostką, symbolem i mianownikiem.
 
 ## CHALLENGE 1: Estymanda i estymata
 
-Pierwszy krok określa wielkość populacyjną i jej próbny odpowiednik. Indeks jest średnią pozycji deklaracji, a brak indeksu zmniejsza N analizy. Tabela „Osoby, średnia, niepewność i efekt” podaje N, braki, średnią, SD, SE, odniesienie, różnicę i d portalu.
+**Zadanie:** nazwij estymandę portalu i opisz średnią indeksu z SD, SE i różnicą od 3.
 
 ```{r s01-estymacja}
 opis_portalu <- opis_sredniej(portal_wynik)
 print(opis_portalu)
 ```
 
-**Napisz krótki akapit:** nazwij estymandę, podaj N osób i ważnych indeksów, średnią, SD, SE oraz różnicę od 3. Wyjaśnij słownie wzór SE i wskaż liczbę opisującą efekt w punktach.
+Blok wyświetla tabelę „Osoby, średnia, niepewność i efekt” z N ważnych indeksów, brakami, średnią, SD, SE, odniesieniem, różnicą od odniesienia i d.
+
+*Wskazówki:*
+
+- Estymanda to różnica średniego indeksu w populacji użytkowników portalu od 3; średnia próby jest jej estymatą.
+- N osób to ważne indeksy plus braki; N analizy to liczba ważnych indeksów.
+- SE = SD / $\sqrt{n}$: SD opisuje rozrzut osób, a SE — niepewność średniej.
+- Efekt w punktach to różnica od odniesienia; d dzieli tę różnicę przez SD i jest liczbą bez jednostki.
+- Wzorzec APA: „Indeks przejrzystości procedur obliczono dla [n] z [N] osób ([..] brak); średnia wyniosła *M* = [..] (*SD* = [..], *SE* = [..]) na skali 1–5, a różnica od umownego odniesienia 3 — [..] punktu (*d* = [..])”.
+
+*W akapicie wymagane:* (i) estymanda słowami; (ii) N osób i N ważnych indeksów; (iii) średnia, SD i SE; (iv) słowny opis wzoru SE; (v) różnica od 3 jako efekt w punktach.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S01.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S01 -->
 [UZUPELNIJ_S01]
 <!-- /odpowiedz:S01 -->
+:::
 
 ## CHALLENGE 2: Przedziały i ich parametry
 
-Klasyczny przedział korzysta z rozkładu t, a bootstrapowy — z percentyli średnich replik. Oba opisują niepewność tej samej średniej; podobieństwo przedziałów opisuje zgodność metod, a reprezentatywność zależy od doboru próby. Blok wyświetla tabele przedziałów średniej i różnicy oraz wykres „95% przedziały średniej; odniesienie 3 i cel 3,5”.
+**Zadanie:** opisz oba 95% przedziały średniej i przedział różnicy oraz popraw zdanie o „95% studentów”.
 
 ```{r s02-przedzialy, fig.height=2.6, fig.cap="95% przedziały średniej indeksu portalu według dwóch metod. Oś pozioma: średnia w punktach skali 1–5; romb oznacza estymatę, a liczby przy końcach odcinków — granice przedziału; linie przerywane oznaczają odniesienie 3 i cel 3,5."}
 przedzialy_portalu <- przedzialy_portalu_do_raportu()
 print(przedzialy_portalu)
 ```
 
-**Napisz krótki akapit:** podaj oba 95% CI średniej i klasyczny CI różnicy. Popraw zdanie „95% studentów ma wynik w tym przedziale” i opisz precyzję oszacowania.
+Blok wyświetla tabele „95% CI średniej [pkt]” i „95% CI różnicy od odniesienia [pkt]” (metoda t i bootstrap percentylowy) oraz wykres przedziałów średniej z liniami odniesienia 3 i celu 3,5.
+
+*Wskazówki:*
+
+- Przedział dotyczy parametru — średniej albo różnicy — a indeksy pojedynczych osób rozciągają się znacznie szerzej.
+- Zdanie „95% studentów ma wynik w tym przedziale” myli przedział średniej z zakresem wyników osób; poprawny zapis mówi o niepewności oszacowania średniej.
+- Przedział różnicy powstaje przez odjęcie 3 od obu granic przedziału średniej.
+- Precyzję opisuje szerokość przedziału: różnica granic.
+- Wzorzec APA: „Średni indeks wyniósł *M* = [..], 95% CI [[..]; [..]] (metoda *t*), a percentylowy przedział bootstrapowy [[..]; [..]]. Różnica od 3 wyniosła [..] punktu, 95% CI [[..]; [..]]”.
+
+*W akapicie wymagane:* (i) oba 95% CI średniej z nazwą metody; (ii) klasyczny CI różnicy od 3; (iii) poprawione zdanie o 95%; (iv) opis precyzji na podstawie szerokości przedziału.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S02.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S02 -->
 [UZUPELNIJ_S02]
 <!-- /odpowiedz:S02 -->
+:::
 
 ## CHALLENGE 3: Dwa testy i ich założenia
 
-Test t sprawdza hipotezę o średniej, a procedura zmian znaków wymaga symetrii odchyleń przy $H_0$. Obie procedury korzystają z tych samych 24 indeksów. Tabele „Dwustronny test t” i „Losowe zmiany znaków” podają statystyki, B i wartości p.
+**Zadanie:** opisz wynik testu t i testu zmian znaków wobec 3 oraz położenie obu wartości p względem 0,05.
 
 ```{r s03-testy}
 testy_portalu <- dwa_testy_sredniej(portal_wynik)
 print(testy_portalu)
 ```
 
-**Napisz krótki akapit:** podaj $H_0$, t, df, p, obserwowane T, B i $p_{\mathrm{MC}}$ oraz regułę dwustronnej skrajności. Wyjaśnij znaczenie p i warunek uzasadniający zmiany znaków. Opisz położenie obu p względem 0,05.
+Blok wyświetla tabelę „Dwustronny test t” (t, df, p) i tabelę „Losowe zmiany znaków” (obserwowane T, liczba replik co najmniej tak skrajnych k, B i $p_{\mathrm{MC}}$).
+
+*Wskazówki:*
+
+- Hipoteza zerowa: średnia w populacji wynosi 3; test dwustronny traktuje jako skrajne duże odchylenia w obu kierunkach.
+- $p_{\mathrm{MC}}=(k+1)/(B+1)$: podstaw k i B z tabeli.
+- Wartość p opisuje skrajność wyniku przy prawdziwej $H_0$ i założeniach testu; test zmian znaków wymaga symetrii odchyleń od 3 przy $H_0$.
+- Warunek „p < 0,05” wymaga wartości mniejszej od 0,05; wartość równa 0,05 leży na granicy.
+- Wzorzec APA: „Średni indeks różnił się od umownego odniesienia 3, *t*([df]) = [..], *p* = [..] (test dwustronny). Test zmian znaków (*B* = [..]) dał *p*~MC~ = ([k] + 1)/([B] + 1) = [..]”.
+
+*W akapicie wymagane:* (i) $H_0$ słowami i symbolem; (ii) t, df i p; (iii) T, k, B i $p_{\mathrm{MC}}$ z rachunkiem; (iv) znaczenie p i warunek symetrii; (v) położenie obu p względem 0,05.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S03.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S03 -->
 [UZUPELNIJ_S03]
 <!-- /odpowiedz:S03 -->
+:::
 
 ## CHALLENGE 4: Średnie replik i świat zerowy
 
-Dwa wykresy przedstawiają średnie prób bootstrapowych i statystyki po zmianie znaków. Liczba uczestników wynosi 24, a liczba replik 1999. Porównaj położenie histogramów z wynikiem CHALLENGE 1 i odczytaj położenie obserwowanego efektu na wykresie zerowym.
+**Zadanie:** nazwij jedną wartość każdego z dwóch rozkładów replik i odróżnij rozkład przedziału od rozkładu oceny skrajności.
 
 ```{r s04-rozklady, fig.height=2.8, fig.cap=c("Portal: bootstrap średniej. Oś pozioma: średnia w próbie bootstrapowej w punktach; oś pionowa: liczba prób; linie przerywane wyznaczają percentylowy przedział 95%, a podtytuł podaje B, średnią replik i granice.", "Portal: rozkład zerowy zmian znaków. Oś pozioma: średnia odchyleń od 3 po zmianie znaków; oś pionowa: liczba powtórzeń; linie przerywane oznaczają obserwowaną różnicę i jej odbicie, wyróżnione słupki zawierają powtórzenia na liniach lub dalej, a podtytuł podaje ich liczbę i p Monte Carlo.")}
 rozklady_portalu <- rozklady_portalu_do_odczytu()
 print(rozklady_portalu)
 ```
 
-**Napisz krótki akapit:** opisz, co jest jedną wartością na każdym wykresie i jak powstała. Odróżnij N osób od B replik i wyjaśnij, który rozkład służy przedziałowi, a który ocenie skrajności.
+Blok wyświetla tabelę „Dwa rozkłady replik portalu” (jedna wartość, liczba osób N, liczba replik B, środek rozkładu i odczyt) oraz dwa histogramy: bootstrap średniej i rozkład zerowy zmian znaków.
+
+*Wskazówki:*
+
+- N to liczba osób z ważnym indeksem; B to liczba powtórzeń obliczenia.
+- Bootstrap skupia się wokół średniej próby, bo odtwarza zmienność estymatora; służy przedziałowi.
+- Rozkład zerowy skupia się wokół zera, bo losowe znaki równoważą odchylenia przy $H_0$; służy ocenie skrajności obserwowanej różnicy.
+- Wzorzec APA: „Bootstrap (*B* = [..]) utworzył [..] średnich z [N] indeksów losowanych ze zwracaniem; ich percentyle 2,5 i 97,5 wyniosły [..] i [..]. Rozkład zerowy (*B* = [..]) skupia się wokół [..], a obserwowana różnica [..] punktu leży [położenie]”.
+
+*W akapicie wymagane:* (i) jedna wartość każdego rozkładu i sposób jej powstania; (ii) rozróżnienie N osób i B replik; (iii) środek każdego rozkładu z uzasadnieniem; (iv) rozkład służący przedziałowi i rozkład służący ocenie skrajności.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S04.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S04 -->
 [UZUPELNIJ_S04]
 <!-- /odpowiedz:S04 -->
+:::
 
 ## CHALLENGE 5: Cel 3,5
 
-Test wobec 3 odpowiada na pytanie o różnicę od środka skali; cel 3,5 wymaga porównania przedziału z wartością 3,5. Tabele „Średnia i efekt od 3 [pkt]; d standaryzowane” oraz „95% CI średniej względem odniesień 3 i 3,5” stawiają wniosek obok dowodu. Porównanie z celem 3,5 odczytuje się z przedziału.
+Test wobec 3 odpowiada na pytanie o różnicę od środka skali, a cel 3,5 wymaga porównania przedziału z wartością 3,5.
+
+**Zadanie:** odpowiedz osobno na pytanie o różnicę od 3 i o cel 3,5 oraz zaproponuj dalsze badanie.
 
 ```{r s05-wniosek}
 wniosek_portalu <- efekt_i_cel_portalu()
 print(wniosek_portalu)
 ```
 
-**Napisz krótki akapit:** odpowiedz osobno na pytanie o różnicę od 3 i o cel 3,5, wykorzystując efekt w punktach, d, przedział i wyniki CHALLENGE 3. Dodaj ograniczenie pomiaru i próby; rekomendacja dotyczy dalszego badania.
+Blok wyświetla tabelę „Średnia i efekt od 3 [pkt]; d standaryzowane”, tabelę „95% CI średniej względem odniesień 3 i 3,5” oraz tabelę „Dwa testy wobec 3” (t, df, p i $p_{\mathrm{MC}}$).
+
+*Wskazówki:*
+
+- Pytanie o 3: porównaj położenie przedziału średniej z wartością 3 i odczytaj oba p.
+- Pytanie o cel 3,5: sprawdź, czy 3,5 leży wewnątrz przedziału; przedział obejmujący 3,5 pozostawia otwarte, czy średnia osiąga cel.
+- Efekt w punktach i d opisują wielkość różnicy; p opisuje skrajność przy $H_0$.
+- Ograniczenia: 24 indeksy, deklaracje z jednego portalu, umowne wartości 3 i 3,5; rekomendacja dotyczy dalszego badania.
+- Wzorzec APA: „Średni indeks (*M* = [..], 95% CI [[..]; [..]]) był wyższy od umownego odniesienia 3 o [..] punktu (*d* = [..]; *p* = [..], *p*~MC~ = [..]). Przedział obejmuje wartość 3,5, więc dane pozostawiają otwarte osiągnięcie celu; [propozycja dalszego badania]”.
+
+*W akapicie wymagane:* (i) odpowiedź o różnicy od 3 z efektem w punktach, d i przedziałem; (ii) oba p z odczytem; (iii) odpowiedź o celu 3,5 z przedziału; (iv) ograniczenie pomiaru i próby; (v) rekomendacja dalszego badania.
+
+::: {.framed data-latex="" style="border: 2px solid #0072B2; padding: 0.6em 1em;"}
+**Twój akapit S05.** Znacznik w nawiasie kwadratowym zastąp własnym tekstem.
 
 <!-- odpowiedz:S05 -->
 [UZUPELNIJ_S05]
 <!-- /odpowiedz:S05 -->
+:::
 
 # Zapis i oddanie
 
@@ -523,7 +620,7 @@ P(K=k)=\binom{40}{k}0{,}5^{40},\qquad
 p=\sum_{k:\,P(K=k)\le P(K=26)}P(K=k)=P(K\ge26)+P(K\le14)=0{,}081 .
 $$
 
-```{r rozklad-dwumianowy, fig.cap="Rozkład dwumianowy Bin(40; 0,5). Oś pozioma: liczba sukcesów k wśród 40 prób; oś pionowa: prawdopodobieństwo. Słupki są symetryczne wokół 20; wyróżnione słupki k ≤ 14 i k ≥ 26 mają łączne prawdopodobieństwo 0,081, a linia przerywana oznacza obserwowane 26 sukcesów."}
+```{r rozklad-dwumianowy, fig.cap="Rozkład dwumianowy Bin(40; 0,5). Oś pozioma: liczba sukcesów k wśród 40 prób; oś pionowa: prawdopodobieństwo. Słupki są symetryczne wokół 20; wyróżnione słupki k od 0 do 14 i od 26 do 40 mają łączne prawdopodobieństwo 0,081, a linia przerywana oznacza obserwowane 26 sukcesów."}
 dwumianowy <- pokaz_wykres(wykres_dwumianowy)
 print(dwumianowy)
 ```

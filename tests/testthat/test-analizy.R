@@ -103,12 +103,13 @@ test_that("C08 liczy kompletne pary i odróżnia CI od przedziału predykcji", {
   expect_equal(a$regresja$CI_dol, unname(confint(fit)[, 1]))
   expect_equal(a$dopasowanie$R2, unname(rp$estimate)^2)
   pred <- e$przewidywanie_czasu(a, 3)$tabele[[1]]
-  expect_equal(as.numeric(pred[1, c("czas", "dol", "gora")]),
+  kolumny <- c("Czas [min]", "Dolna granica", "Górna granica")
+  expect_equal(as.numeric(pred[1, kolumny]),
                as.numeric(predict(fit, data.frame(x = 3), interval = "confidence")))
-  expect_equal(as.numeric(pred[2, c("czas", "dol", "gora")]),
+  expect_equal(as.numeric(pred[2, kolumny]),
                as.numeric(predict(fit, data.frame(x = 3), interval = "prediction")))
-  expect_lt(pred$dol[2], pred$dol[1])
-  expect_gt(pred$gora[2], pred$gora[1])
+  expect_lt(pred[["Dolna granica"]][2], pred[["Dolna granica"]][1])
+  expect_gt(pred[["Górna granica"]][2], pred[["Górna granica"]][1])
   expect_error(e$analizuj_zwiazek(rep(1, 10), 1:10))
   expect_equal(e$korelacja_do_odczytu(a, "Spearman")$tabele[[1]]$df, "—")
 })

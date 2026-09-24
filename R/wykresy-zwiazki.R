@@ -137,19 +137,29 @@ wykres_kalibracja <- function(deklaracja, wynik, jednostka = "%", tytul = NULL) 
 #' @param r Wartosci wspolczynnika korelacji.
 #' @param n Liczba par w panelu.
 #' @param tytul Tytul wykresu.
+#' @param dane Opcjonalna ramka z kolumnami x i y: pierwszy panel przedstawia
+#'   te dane po standaryzacji, z obliczonym r.
+#' @param etykieta_danych Nazwa panelu danych.
 #' @return Obiekt ggplot; wykres rysuje print().
 #' @export
 #' @examples
 #' p <- wykres_galeria_r(c(0, -0.5))
-wykres_galeria_r <- function(r, n = 100L, tytul = NULL) {
+wykres_galeria_r <- function(r, n = 100L, tytul = NULL, dane = NULL, etykieta_danych = "Dane") {
   stopifnot(all(abs(r) < 1))
   x <- stats::qnorm(stats::ppoints(n))
   e <- stats::qnorm(stats::ppoints(n))[order(sin(seq_len(n) * 12.9898))]
   e <- stats::resid(stats::lm(e ~ x))
   x <- x / stats::sd(x); e <- e / stats::sd(e)
-  panele <- paste0("r = ", liczba_pl(r, 1L))
+  panele <- paste0("r = ", os_pl(r))
   d <- do.call(rbind, lapply(seq_along(r), function(i)
     data.frame(x = x, y = r[i] * x + sqrt(1 - r[i]^2) * e, panel = panele[i])))
+  if (!is.null(dane)) {
+    stopifnot(is.data.frame(dane), all(c("x", "y") %in% names(dane)))
+    dane <- dane[is.finite(dane$x) & is.finite(dane$y), , drop = FALSE]
+    nazwa <- paste0(etykieta_danych, ": r = ", liczba_pl(stats::cor(dane$x, dane$y), 2L))
+    d <- rbind(data.frame(x = as.vector(scale(dane$x)), y = as.vector(scale(dane$y)), panel = nazwa), d)
+    panele <- c(nazwa, panele)
+  }
   d$panel <- factor(d$panel, levels = panele)
   ggplot2::ggplot(d, ggplot2::aes(x = .data$x, y = .data$y)) +
     ggplot2::geom_point(colour = kolory_zi[["primary"]], size = 1.2, alpha = 0.8) +
@@ -158,7 +168,8 @@ wykres_galeria_r <- function(r, n = 100L, tytul = NULL) {
     ggplot2::scale_x_continuous(labels = NULL) +
     ggplot2::scale_y_continuous(labels = NULL) +
     ggplot2::labs(x = "x (standaryzowane)", y = "y (standaryzowane)", title = tytul,
-                  subtitle = paste0(n, " syntetycznych par w ka\u017cdym panelu")) +
+                  subtitle = if (is.null(dane)) paste0(n, " syntetycznych par w ka\u017cdym panelu") else
+                    paste0("Pierwszy panel: ", nrow(dane), " par z danych; pozosta\u0142e: ", n, " par syntetycznych")) +
     theme_zi()
 }
 

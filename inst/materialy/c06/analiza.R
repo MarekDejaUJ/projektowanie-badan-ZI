@@ -155,7 +155,10 @@ repo_wynik <- porownaj_grupy(repozytorium,'czas_min',ziarno=202628L)
 # Warstwa prezentacji: w Rmd wystarczy przypisanie oraz print(wynik).
 ustaw_material <- function() {
   knitr::opts_chunk$set(echo=TRUE,message=FALSE,warning=FALSE,
-    results='asis',fig.width=6,fig.height=3.3,fig.align='center')
+    results='asis',fig.width=6,fig.height=3.3,fig.align='center',fig.pos='H')
+  # Rysunek [H] zostaje przy swoim zadaniu także w PDF bez preambuły kursu.
+  if(isTRUE(getOption('knitr.in.progress'))&&knitr::is_latex_output())
+    knitr::knit_meta_add(list(rmarkdown::latex_dependency('float')))
   invisible(NULL)
 }
 wydruk_zi <- function(tabele=list(),wykresy=list(),tekst=NULL,digits=3L,markdown=list()) {
@@ -215,7 +218,7 @@ tabela_efektu <- function(analiza) {
 tabela_tasowania <- function(analiza) {
   tab <- data.frame(analiza$losowanie$T_obserwowane, analiza$losowanie$skrajne, analiza$losowanie$B,
                     formatuj_p(analiza$losowanie$p_perm))
-  names(tab) <- c('Różnica obserwowana', 'Tasowania |Δ*| ≥ |Δ|', 'B', 'p_perm')
+  names(tab) <- c('Różnica obserwowana', 'Tasowania co najmniej tak skrajne (k)', 'B', 'p_perm')
   tab
 }
 opis_porownania <- function(analiza, jednostka = 'pkt 1–5', wykres = FALSE) {
@@ -247,6 +250,11 @@ efekt_porownania <- function(analiza) {
 permutacja_porownania <- function(analiza) {
   pokaz_tabele(tabela_tasowania(analiza), 'Tasowanie etykiet grup', 3L)
 }
+tasowanie_i_welch <- function(analiza) {
+  # Wynik tasowania obok klasycznego p tego samego pytania: porównanie bez wracania do poprzedniego zadania.
+  wydruk_zi(tabele = list('Tasowanie etykiet grup' = tabela_tasowania(analiza),
+    'Test Welcha tego samego pytania' = tabela_welcha(analiza)), digits = 3L)
+}
 podsumowanie_porownania <- function(analiza, jednostka = 'pkt 1–5') {
   ci <- badaniaZI::wykres_przedzialy(analiza$przedzialy$metoda, analiza$przedzialy$estymata,
     analiza$przedzialy$dol, analiza$przedzialy$gora, odniesienie = 0,
@@ -255,8 +263,13 @@ podsumowanie_porownania <- function(analiza, jednostka = 'pkt 1–5') {
     wykresy = list(ci), digits = 3L)
 }
 wynik_do_raportu <- function(analiza) {
-  wydruk_zi(tabele = list('Test Welcha' = tabela_welcha(analiza),
-    'Klasyczny 95% przedział różnicy' = tabela_przedzialow(analiza)[1, ]), digits = 3L)
+  # Komplet liczb do akapitu: grupy, efekt, dwa przedziały i dwa tory testu.
+  opis <- analiza$opis[, c('grupa', 'N', 'srednia', 'SD')]
+  names(opis) <- c('Grupa', 'N', 'Średnia', 'SD')
+  g <- data.frame(`g Hedgesa` = analiza$efekt$Hedges_g, check.names = FALSE)
+  wydruk_zi(tabele = list('Opis grup [min]' = opis, 'Test Welcha' = tabela_welcha(analiza),
+    '95% przedziały różnicy' = tabela_przedzialow(analiza), 'Tasowanie etykiet grup' = tabela_tasowania(analiza),
+    'Efekt standaryzowany' = g), digits = 3L)
 }
 czas_do_raportu <- function(analiza) {
   wydruk_zi(tabele = list('Test Welcha' = tabela_welcha(analiza),
@@ -266,7 +279,7 @@ czas_do_raportu <- function(analiza) {
 podzialy_czterech_osob <- function() {
   tab <- mini_permutacje
   tab$skrajna <- ifelse(tab$skrajna, 'tak', 'nie')
-  names(tab) <- c('Nowi', 'Doświadczeni', 'Różnica [pkt]', '|różnica| ≥ 3')
+  names(tab) <- c('Nowi', 'Doświadczeni', 'Różnica [pkt]', 'Różnica co najmniej 3 od zera')
   pokaz_tabele(tab, 'Sześć podziałów czterech osób', 2L)
 }
 przedzialy_grup_demo <- function() {

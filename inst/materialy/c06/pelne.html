@@ -437,8 +437,6 @@ skuteczność</a></li>
 <li><a href="#challenge-samodzielna-analiza-czasu" id="toc-challenge-samodzielna-analiza-czasu">CHALLENGE — samodzielna
 analiza czasu</a>
 <ul>
-<li><a href="#scenariusz-czas-odnalezienia-publikacji-w-repozytorium" id="toc-scenariusz-czas-odnalezienia-publikacji-w-repozytorium">Scenariusz:
-czas odnalezienia publikacji w repozytorium</a></li>
 <li><a href="#challenge-1-dwie-grupy-w-liczbach" id="toc-challenge-1-dwie-grupy-w-liczbach">CHALLENGE 1: Dwie grupy w
 liczbach</a></li>
 <li><a href="#challenge-2-pytanie-h0-i-wynik-klasyczny" id="toc-challenge-2-pytanie-h0-i-wynik-klasyczny">CHALLENGE 2: Pytanie,
@@ -542,6 +540,14 @@ oceną.</p>
 <p>Celem jest sprawdzenie, czy znak, jednostka, N, statystyka i
 przedział opowiadają tę samą historię. Ta sama kontrola przydaje się
 przy czytaniu gotowych raportów i artykułów.</p>
+<p>Bloki LEARN kończą się <strong>wzorcem zapisu</strong> — przykładowym
+zdaniem według standardu APA (<em>Publication Manual of the American
+Psychological Association</em>, 7. wydanie, 2020): symbol statystyczny
+kursywą, stopnie swobody w nawiasie, przedział w nawiasie kwadratowym,
+przecinek jako separator dziesiętny. Na ćwiczeniu C06 wzorce dotyczą
+porównania dwóch grup: opisu, testu Welcha, efektu z przedziałem,
+bootstrapu i tasowania. Zadania CHALLENGE stosują wzorce do czasu w
+repozytorium.</p>
 </div>
 </div>
 <div id="learn-1-pytanie-grupy-i-opis-danych" class="section level1">
@@ -749,6 +755,15 @@ przyjmuje 1 przy spełnionym warunku i 0 w pozostałych parach. W 33% par
 (nowy, doświadczony) wyższą ocenę ma osoba nowa. Wniosek grupowy opisuje
 przesunięcie rozkładów, a decyzja o indywidualnej pomocy wymaga
 informacji o osobie.</p>
+<p><strong>Wzorzec zapisu opisu dwóch grup (APA).</strong></p>
+<blockquote>
+<p>Doświadczeni użytkownicy (<em>n</em> = 74) uzyskali średni indeks
+<em>M</em> = 3,51 (<em>SD</em> = 0,70; <em>Mdn</em> = 3,50), a nowi
+(<em>n</em> = 73; 1 brak) <em>M</em> = 3,07 (<em>SD</em> = 0,69;
+<em>Mdn</em> = 3,17). Rozkłady grup w dużej części się nakładają: w 33%
+par (nowy, doświadczony) wyższą ocenę ma osoba nowa,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>θ</mi><mo accent="true">̂</mo></mover><mo>=</mo><mn>0</mn><mo>,</mo><mn>33</mn></mrow><annotation encoding="application/x-tex">\hat\theta=0{,}33</annotation></semantics></math>.</p>
+</blockquote>
 </div>
 </div>
 <div id="learn-2-test-welcha-od-różnicy-do-statystyki" class="section level1">
@@ -875,6 +890,12 @@ mean of x mean of y
 </code></pre>
 <p>Odwrócenie argumentów zachowuje dwustronne p i zmienia znak t oraz
 przedziału. Grupę odniesienia wskazuje kod i opis analizy.</p>
+<p><strong>Wzorzec zapisu testu Welcha (APA).</strong></p>
+<blockquote>
+<p>Średni indeks nowych był niższy niż doświadczonych o 0,438 punktu,
+<em>t</em>(144,98) = −3,82, <em>p</em> &lt; 0,001 (dwustronny test
+<em>t</em> Welcha).</p>
+</blockquote>
 </div>
 </div>
 <div id="learn-3-wielkość-efektu-i-przedział-różnicy" class="section level1">
@@ -1093,6 +1114,13 @@ g Hedgesa = J · d
 korekcie małopróbkowej. Interpretacja praktyczna odwołuje się do treści
 pozycji i punktów indeksu: do zrozumiałości filtrów, lokalizacji
 dokumentu i oceny wsparcia.</p>
+<p><strong>Wzorzec zapisu efektu i przedziału różnicy
+(APA).</strong></p>
+<blockquote>
+<p>Różnica nowi minus doświadczeni wyniosła −0,438 punktu, 95% CI
+[−0,665; −0,212], <em>g</em> = −0,63; oba końce przedziału są
+ujemne.</p>
+</blockquote>
 </div>
 </div>
 <div id="learn-4-bootstrap-i-tasowanie-dwa-różne-losowania" class="section level1">
@@ -1172,7 +1200,7 @@ print(permutacja)</code></pre>
 Różnica obserwowana
 </th>
 <th style="text-align:right;">
-Tasowania |Δ*| ≥ |Δ|
+Tasowania co najmniej tak skrajne (k)
 </th>
 <th style="text-align:right;">
 B
@@ -1224,8 +1252,10 @@ przy B = 1999 wynosi 0,0005.</p>
 <p>Wymienialność wymaga wspólnego rozkładu grup przy
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>:
 wtedy etykiety można przestawiać. Przy różnych wariancjach grup
-tasowanie surowej różnicy średnich zmienia poziom α, więc przy równych
-średnich i różnych rozrzutach pierwszeństwo ma statystyka Welcha.</p>
+tasowanie surowej różnicy średnich zmienia poziom
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>,
+więc przy równych średnich i różnych rozrzutach pierwszeństwo ma
+statystyka Welcha.</p>
 <p>Grupy powstały poza kontrolą badacza, więc odczyt tasowania zależy od
 modelu wymienialności. Znaczenie dozwolonych przestawień i struktury
 danych opisują <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4010955/">Winkler i
@@ -1233,21 +1263,32 @@ współautorzy (2014)</a>.</p>
 <p>Przy różnych wynikach dwóch procedur raport sprawdza pytanie,
 statystykę, N, wariancje, schemat losowania i B; tę samą kontrolę
 wykonuje przy wynikach zgodnych.</p>
+<p><strong>Wzorzec zapisu bootstrapu i tasowania (APA).</strong></p>
+<blockquote>
+<p>Percentylowy przedział bootstrapowy różnicy (<em>B</em> = 1999,
+losowanie osobno w grupach) wyniósł [−0,659; −0,227]. Tasowanie etykiet
+grup (<em>B</em> = 1999) dało <em>p</em><sub>perm</sub> = 0,001,
+ponieważ 1 z 1999 przestawień było co najmniej tak skrajne jak
+obserwowana różnica; wynik zakłada wymienialność grup przy
+<em>H</em><sub>0</sub>.</p>
+</blockquote>
 </div>
 </div>
 <div id="learn-5-od-tabeli-do-akapitu-wynikowego" class="section level1">
 <h1>LEARN 5: od tabeli do akapitu wynikowego</h1>
-<p>Pierwsza część akapitu: „Nowi użytkownicy mieli średni indeks 3,072
-punktu (N = 73, SD = 0,687), a doświadczeni 3,510 (N = 74, SD = 0,704).
-Różnica nowi minus doświadczeni wyniosła −0,438 punktu, 95% CI Welcha
-[−0,665; −0,212]. Uzyskano t(144,98) = −3,822, p &lt; 0,001, g Hedgesa =
-−0,627”.</p>
-<p>Druga część: „Przedział percentylowy bootstrapu różnicy wyniósł
-[−0,659; −0,227]. Tasowanie etykiet przy B = 1999 dało
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">m</mi></mrow></msub><annotation encoding="application/x-tex">p_{\mathrm{perm}}</annotation></semantics></math>
-= 0,001 przy modelu wymienialności. Wynik opisuje niższą deklarowaną
-użyteczność katalogu u nowych użytkowników”.</p>
-<p>Akapit przedstawia strukturę odczytu; w CHALLENGE inny scenariusz ma
+<p><strong>Wzorzec zapisu wyniku porównania (APA).</strong></p>
+<blockquote>
+<p>Nowi użytkownicy mieli średni indeks <em>M</em> = 3,07 (<em>SD</em> =
+0,69; <em>n</em> = 73), a doświadczeni <em>M</em> = 3,51 (<em>SD</em> =
+0,70; <em>n</em> = 74). Różnica nowi minus doświadczeni wyniosła −0,438
+punktu, 95% CI [−0,665; −0,212], <em>t</em>(144,98) = −3,82, <em>p</em>
+&lt; 0,001, <em>g</em> = −0,63.</p>
+<p>Percentylowy przedział bootstrapowy różnicy wyniósł [−0,659; −0,227],
+a tasowanie etykiet (<em>B</em> = 1999) dało <em>p</em><sub>perm</sub> =
+0,001 przy modelu wymienialności. Wynik opisuje niższą deklarowaną
+użyteczność katalogu u nowych użytkowników.</p>
+</blockquote>
+<p>Wzorzec przedstawia strukturę odczytu; w CHALLENGE inny scenariusz ma
 inne grupy, treść wyniku i kierunek. Wskazanie elementu katalogu do
 poprawy wymaga analizy pozycji i obserwacji zadań.</p>
 <div id="czas-wykonania-drugi-wskaźnik-i-szeroki-przedział" class="section level2">
@@ -1459,7 +1500,7 @@ Bootstrap w grupach
 Różnica obserwowana
 </th>
 <th style="text-align:right;">
-Tasowania |Δ*| ≥ |Δ|
+Tasowania co najmniej tak skrajne (k)
 </th>
 <th style="text-align:right;">
 B
@@ -1516,38 +1557,52 @@ powodzeniem.</p>
 <p>Powody przerwania pozostają poza danymi S02; powodzenie w grupach
 opisuje ćwiczenie C07 (Kategorie i zachowanie). Raport oddziela
 obliczoną statystykę od hipotetycznego wyjaśnienia.</p>
+<p><strong>Wzorzec zapisu wyniku z przedziałem obejmującym zero
+(APA).</strong></p>
+<blockquote>
+<p>Średni czas nowych był dłuższy o 0,31 min, 95% CI [−1,64; 2,26],
+<em>t</em>(139,12) = 0,31, <em>p</em> = 0,754; tasowanie etykiet
+(<em>B</em> = 1999) dało <em>p</em><sub>perm</sub> = 0,773. Przedział
+obejmuje krótszy i dłuższy średni czas nowych, więc kierunek i wielkość
+różnicy czasu pozostają nieustalone.</p>
+</blockquote>
 </div>
 </div>
 <div id="challenge-samodzielna-analiza-czasu" class="section level1">
 <h1>CHALLENGE — samodzielna analiza czasu</h1>
-<p>W pięciu zadaniach zastąp znaczniki odpowiedzi własnymi krótkimi
-akapitami. Wpisuj tekst pod wynikiem, poza chunkiem. Liczby odczytujesz
-z tabel repozytorium.</p>
-<div id="scenariusz-czas-odnalezienia-publikacji-w-repozytorium" class="section level2">
-<h2>Scenariusz: czas odnalezienia publikacji w repozytorium</h2>
 <p>Dwie grupy po dwanaście osób wykonują to samo zadanie w tym samym
 repozytorium. Grupy oznaczają wcześniejsze doświadczenie i powstały bez
 przydziału do szkolenia. Zarejestrowano minuty do zakończenia próby,
-niezależnie od poprawności; zbiór zawiera wyłącznie czas. Wszystkie
-czasy są ważne i syntetyczne.</p>
-<p>Pytanie dotyczy różnicy średnich czasów: nowi minus doświadczeni.
-Interpretacja obu testów przyjmuje niezależność osób, a tasowanie
-dodatkowo — wymienialność rozkładów przy hipotezie zerowej.</p>
-<p>Funkcja <code>porownaj_grupy()</code> przyjmuje tabelę danych, nazwę
-kolumny wyniku, dwie etykiety grup (odejmowanie: grupa 2 minus grupa 1;
-domyślnie nowi minus doświadczeni), liczbę losowań <code>B</code>
-(domyślnie 1999) i ziarno losowania. Zwraca opis grup, test Welcha,
-efekt, dwa przedziały i wynik tasowania. Blok <code>s01-opis</code>
-zapisuje wynik w obiekcie <code>porownanie</code>, z którego korzystają
+niezależnie od poprawności; zbiór zawiera wyłącznie czas, a wszystkie
+czasy są ważne i syntetyczne. Pytanie dotyczy różnicy średnich czasów w
+kierunku nowi minus doświadczeni. Interpretacja obu testów przyjmuje
+niezależność osób, a tasowanie dodatkowo — wymienialność rozkładów przy
+hipotezie zerowej.</p>
+<p>Funkcja <code>porownaj_grupy()</code> w bloku CHALLENGE 1 przyjmuje
+tabelę danych, nazwę kolumny wyniku, ziarno losowania i domyślnie B =
+1999 losowań. Zwraca opis grup, test Welcha, efekt, dwa przedziały i
+wynik tasowania w obiekcie <code>porownanie</code>, z którego korzystają
 bloki CHALLENGE 2–5.</p>
-</div>
+<p>Każde z pięciu zadań ma ten sam układ:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Zadanie</strong> — jedno zdanie z przedmiotem opisu.</li>
+<li><strong>Blok R</strong> — uruchom go; wynik zawiera wszystkie liczby
+potrzebne do odpowiedzi.</li>
+<li><strong>Wskazówki</strong> — gdzie w wyniku szukać informacji, jak
+ją nazwać i wzór zdania do uzupełnienia.</li>
+<li><strong>W akapicie wymagane</strong> — elementy, które sprawdza
+prowadzący.</li>
+<li><strong>Twój akapit</strong> — pole odpowiedzi w ramce: znacznik w
+nawiasie kwadratowym zastępujesz własnym tekstem, a linie komentarza nad
+nim i pod nim pozostawiasz bez zmian.</li>
+</ol>
+<p>Akapit liczy 3–5 zdań zwykłego tekstu, bez kodu R. Liczby
+przepisujesz z wyniku bloku, z jednostką, symbolem i mianownikiem.</p>
 <div id="challenge-1-dwie-grupy-w-liczbach" class="section level2">
 <h2>CHALLENGE 1: Dwie grupy w liczbach</h2>
-<p>Opis czasu poprzedza odczyt p. Minimum jest wynikiem jednej osoby w
-próbie; średnia i SD opisują inne własności zbioru. Blok wyświetla
-tabelę „Opis grup [min]” (N, średnia, SD, minimum i maksimum) oraz
-wykres „Czas w dwóch grupach repozytorium” z osobami, pudełkami i
-średnimi w tej samej kolejności grup.</p>
+<p><strong>Zadanie:</strong> porównaj czas obu grup liczebnością,
+średnią, SD, minimum i maksimum oraz wskaż dane potrzebne do oceny
+skuteczności.</p>
 <pre class="r"><code>porownanie &lt;- porownaj_grupy(repozytorium, zmienna=&#39;czas_min&#39;, ziarno=202628L)
 opis &lt;- opis_porownania(porownanie, jednostka=&#39;min&#39;, wykres=TRUE)
 print(opis)</code></pre>
@@ -1619,26 +1674,43 @@ nowi
 </tbody>
 </table>
 <div class="figure" style="text-align: center">
-<img role="img" aria-label="Czas w dwóch grupach repozytorium. Oś pozioma: czas w minutach; punkty: czasy wszystkich osób; pudełko: kwartyle i mediana; romb: średnia grupy; linia kropkowana: granica Q3 + 1,5 IQR." src="data:image/png;base64,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" alt="Czas w dwóch grupach repozytorium. Oś pozioma: czas w minutach; punkty: czasy wszystkich osób; pudełko: kwartyle i mediana; romb: średnia grupy; linia kropkowana: granica Q3 + 1,5 IQR." width="100%" />
+<img role="img" aria-label="Czas w dwóch grupach repozytorium. Oś pozioma: czas w minutach; punkty: czasy wszystkich osób; pudełko: kwartyle i mediana; romb: średnia grupy; linia kropkowana: granica Q3 + 1,5 IQR." src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABIAAAAJACAMAAADCTu3mAAACMVBMVEUAAAAAADoAAGYAOjoAOmYAOpAAZrYAcrIiIiIiIk4iInUiTk4iTnUiTpoidXUidb06AAA6OgA6Ojo6OmY6ZpA6ZrY6kNtAQEBBQWRBQYZBZGRBZIZBZKZBhsROIiJOIk5OTiJOTk5OTnVOdU5OdXVOdZpOdb1Omr1Omt5kQUFkZEFkZGRkZIZkhoZkhqZkhsRkpsRkpuJmAABmADpmOgBmOjpmZmZmkJBmkLZmkNtmtttmtv91IiJ1TiJ1Tk51dU51dXV1dZp1mpp1mr11mt51vd51vf+GQUGGZEGGZGSGhkGGhmSGhqaGpqaGpsSGpuKGxOKGxP+QOgCQOjqQZjqQtraQttuQ2/+aTiKadU6adXWadZqamk6amnWamr2avZqavb2avd6a3pqa3r2a3t6a3v+f4OCmZEGmhmSmxMSmxOKm4sSm4v+2ZgC2Zjq2kDq2tpC22/+2//+9dSK9dU69mk69mnW9mpq9vXW9vZq9vd693pq93t693v+9///EhkHEhmTEpmTEpobEpqbExIbExKbE4qbE4v/E///VXgDbkDrbtmbbtpDb27bb2//b///emk7emnXevXXevZrevb3evd7e3pre3r3e3t7e3v/e/97e///g4ODipmTipobixIbixKbi4qbi4sTi4uLi4v/i/8Ti///w8/X/tmb/vXX/xIb/25D/27b/29v/3pr/3r3/3t7/4qb/4sT/4uL//7b//73//8T//9v//97//+L///8L2CZYAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO2dj58exX3fHxGw7hBEl2DySAbUiBiiM0lciMgPYrAbG4kkrYNsxbHdxg1tKa7rI8HnOmkLlpO6gROOUSApjeULcZuA7lAQorJOmr+u+3tn9sez+8xzz8x3d97v1wt0z/Ps7sx9buZ9s7OzexMFAOCJie8KAEC4ICAA8AYCAgBvICAA8AYCAgBvICAA8AYCAgBvICAA8AYCAgBvICAA8AYCAgBvICAA8AYCAgBvICAA8AYCAgBvICAA8MYYBHTlD46vRBz66DMXfVcl4kJclxO9N7/xxXj7B2dusxNvcqeEb64JybW78q+/3X/j5Cd3eHmVgQaGL6A3Hl8pWH3Qfz+YU0A73f4R3cUl1+7Gt47djoBkM3QB3fjmisEdL/mu0XwCSgZAXVvL7eIxYmsX/2pCQMIZuIDSExid1Wc9V2k+Ae302VhsF0+QWrv3jq0gIPEMXECbqXQ+/beRi17/2RUJXWEuAf34E322ldrFU6TWbm4BgQeGLaAdQzk3Uh2d8lunOeeA+iC1i6dIrR0CGgKDFlB6Ala2/eprLyAgISCgITBoAe1UJ312Vj/6lRdVfWooO7G/8uXkev3q8fiULeeNTyanbofu/0q1D+kq2SwPkx68Os5644movR/69MVirz57X/lyXPahB54xDnXjW0/E25S1zLv4lS8lZfytauLNvAJJxzuRF3v7t688EZ+kXjREodViJ/3q/W/FVblfr0ljXBa1M6uRHDneVDvEjErUQ6r9cNM3Tugfrz67U/vpN6Rt1qycA2qOKvkqerdIOg4jOuTqA96vfAyXQQtos+13b6OAbnypfGP1M9mW7z3e8GbGTtl647mavKjk68pv1iv5YVafzcXTvfeVsuw7tD73V8eKt09oFbnzB/kFv9UnZ3zHq89WBPTf08Odmi2gotDiMmJjXFa1M6thHDlfNtFWiaaQ6j/cC9p3lvr3zos1ATWlbdasn4B+kBd/x7fTsrQoYG6GLCDzN1/9E7MJVt5Ld3vvWMObOZor0u3SrzWzGFtm/e94dqDOvV8/1lR0NpFl9J1knzs0VdamuX5cfrj6bw0BraZT81HhswR0vDx2NqJsjMuudmY19LCK+rRUojGk+g83yTffJfsFUBVQY9pmzXoJ6FB5nDu1Y3qeeBwuQxZQ2q+bfvRNArpgvpXooLpd5Rr+ZnH8C1ozK99tKy5t4B177zTsUq9m8m5109qor7kCatN4PUtA9YM3xWVZO7MalbpqEms4RlNI9R+u/psoOwOrCqg5bbNmvQTUgsA5sGEweAHNXvdTdv3sloeonbyfnCwk+yVHuCOeNVJvPn7oX/xhZf5ip9rmi6/NM7C0dccD+yvahrP3TscByaTIG8eKCmVSvfOl/N2koKz3xBVNTySq3/RO5fOagOIdZgtI27mscyUuy9qZ1Uh+JKtPXszWkKYbN1eiLaTaD1f71rIzMGVOQrccqKFm3QJajX7Or2e7RVGkP3Lvy8+GypAFVJuDbt4iH7n/9R8c16ZhylFI++g52TDeJz9riL9O2rVxBmZcfNssSpy99wWt8ukJ1OFid60raYOl6rsa2l5ZL9EEdPtLWhhtAtJ3Tr5uimuR2uXVSI6Wfd+VHl+vREtItR+udtBC+4aAZqVdBNRPQLq6DhflICBLRi2gbIanuri1bFLp9MUzTfsmbK5og4esOV+odTGth+YvTnTtbc5fFW1Y755qMx+TpQc4Val8SwXSb1oTUL7tLAHlRTZ1pnJbu9qZ1dBn0MppsuZKtISkf5/ZoTZroRsCajuQGVA/AR0ut03LMdKHORmzgLLBQOWC1ft/8njR7PI56EO/+d8az+HzEVLc3JLZx1OtZ2D5W1pbn7W3uUilaOTNa1eMAsq+VmDspVXAvEo4S0DFWs6aQGpxzV07sxr66oR8vqatEi0haa/yT4v9i2GnsXfbgcyA+gnoRPWbbl6WAf0YvIBm/OSz+zQ0Q/31l9NLHsV+2izkasMKluyEKWlihzeT1qe1cKMeZjM+0bV3ZfWece2+NqFpvNvQxdsqoC0/UrMFVGxkHL0al13tzGoYl9HMI9cq0RKSdpz8h1uMzbSTas06bQcyA+onoFPVbxoBLcKQBdR+FSxBv/YUc0Vb2JK/b17YqC0oywYsSUGndlaK9SUn6gWZzfhE196VGx/zl3ZdvK0C5qa9BFTu3BDXIgIyxdF45FolWkIqvtZ+uPku6dLC5C1NQG0HMmuLgDwwZAFp0y0Z7x1/suge1QmgnfT16v1f+d96i3m9/CXfcHoRt8l0VW26wO/2b5dzDAVtXXjW3pXFRPIE1BSXawG1hKQaZveyi1/paFN7q3HpFgKSw5AFVF8JHTehB7SrLdqn6esH49OsSot5P723oNKiU9JVxZtl437yi/U+2HYGNGtvd6dgvQRU7Jzv0hjXvgmotni0uRKtp2DVH24xnZSONtO3+p6CISCfDFpA1VnotCnoSwzLIY3267Ohxbz/Xz9Z2V47YrLKNxvef/TYSq3/mFOcWqOesXefSej8zrbOLj5zErpRQNqVm4Yp9FMtcdnVznyv+V7d5kq0zR03XV1Ij3tBe7vvJHSHgMqoENASGLSA9HusYtJZ6aRBVecI9PXLzddNmy/xFEt/8+VuK/ULb21XwWftbZ4+mpfh80MVA7yuLj7zMrwpIH1+RF8HpO8cV6QxLrvame/NGEXVKtESUv2Hm9ftTu0MTP+Bth1opoBqUSGgJTBoAWXt9rB+G6I2xWL0BO2CxzeL5nvjzW89caw+Yq+VoF06b+o+m2V7vbGpFzxj7+6FiGWv6dfFWxYiFptq0sk20gSUfePFgRrjWqR2+Xu6C3b+2f2ffvFieyVaQqr/cIu9dBXoNw3PSrtBQM1RIaAlMGwBZa3u0JPFLQNpe2pYgZhu+fMXi6s7xWrA9Pr7m483uiVfxazfzlp7amd2J8QzlTshZu4981aM+JaE//V40Sc7u3hWgRfzb6NRQFmJWi31WzFWyxtJitmRSly2tWvo5slNHum9nOWUWK0SzSG1LC/VZa99v0+qG38z+1aMBgE1R4WAlsDABVS/P7D8zalzqmifBcUvb3O7Kpvl1vnXrRuZB+/Yu1p29n7r7Z6zunhLBSqb1jaacTNqY1yWtWvyYIFxL1ilEs0hNfxw9eMWYiraRnGeWNunTUDNUSGgJTBwAdX+KkbjrdzFGuSMnytu52rqUCZpy9W7ScND9vSDH9enqWftfaG56LYHXswUkNarb/83xQaVTfVnjxwvOk1y8J8sn6ahL++txmVXuxnVMBYW1yrRHFKLgLL3tQm6vK7JwRrTbhVQY1QIaAkMXUCVvwuWPQyrqY0WXWr1M9rtFPpjYpoe9JV1bf25Pk1/N6F8xtaD7+kCmrm3/ogsbV67fORX/hywbgGVDwS646W2y/DF2p7owKfKO9rSNTJFOvmzwJrjsqpd9T3t+84jb6lEY0htAnqvPKPTw296/FuedquAGqNCQEtg+AJS6s300aHHH3gxf6e5jb4Rr/dJHqWpXeNRb3xp9t9V1aZjZzW1N5MHkj7wkjIE1LF3+jddD5UVTzfMH3radBdXi4Cy7y5+mmm7gLIniN7/zEVVFZC2v3HAWlwWtau/9+aX4uWfq2VprZVoCKlNQOYdp8W3W9a0nna7gJqiQkBLYAwCAoPN+fpDZZWwH/ajEuWtrTAcENAY2Dz+qT98Ub+XfI5+OBoBNa8wAtkgoDGQTrd+Ju58b5arwfsxFgG9rq8AhaGAgMZAy0Xz/vsOXEDFtBB/BmxoIKBRUFm3Ms+JyBgEtGMhXhABAhoF5nKoB+eZCBmTgPDP4EBAI+HGnzyRPNlo9f6Wv5zaxhgElPx5yUP8gdIBgoAAwBsICAC8gYAAwBsICAC8gYAAwBsICAC8gYAAwBsICAC8gYAAwBsICAC8gYAAwBsICAC8gYAAwBsICAC8gYAAwBujF9APfVdAAGRABEpoBggoAMiACJTQDBBQAJABESihGSCgACADIlBCM0BAAUAGRKCEZoCAAoAMiEAJzQABBQAZEIESmgECCgAyIAIlNAMEFABkQARKaAYIKADIgAiU0AwQUACQAREooRkgoAAgAyJQQjNAQAFABkSghGaAgAKADIhACc0AAQUAGRCBEpoBAgoAMiACJTQDBBQAZEAESmgGCCgAyIAIlNAMEFAAkIG0CL736Npk8hN3f794fXIyOfBrr3XveO2RD5kvJwm3fCN/5921/GuzjHzL+K25yrn8aK1qe8/HR36s+yg9QEABQAayIrh2MpfBz6RvnE9f3fqN2ftFbEwMAb271iagahmlgPStu8t5tV61y9mh7u48Sg8QUACQgagIIhcceCwaUlw+m3Xid9cOPBa9PGnKpYG9jYm5zaXaLpmAamVce+SW/5hu8b21OcqJDHfbC9GQZ3JbMQba+9zk1uitP5oc+P2Ow/QBAQUAGYiKYKPozZfWJr+RvJGMUsqzp5Tz+QApJz5RM+Wxkeyvkx2kVkYpoFo5NbRy8uNoBV3KRlDnOz3WBwQUAGQgKQK9/5/XRhaxI2YKKDpRu/tVo9fvfa42CkmPXi9DE1C1nCpaOdFoJxVPOdQq3tofEFAAkIGkCHSvXHtEM8i7a7e91rZh8vrWL1TOua49cusfR6OVu14o30rVUy9DE9ClchIosklOeVytnMJwZd269DUnCCgAyEBQBOYIYqM0xatrlaFF7RRMVSd98jlobcdEQA1lFALae1WbA2oUkFZOg4Dir179qckkstR+gIACgAwERWAMekrJbEwmBypdultAl6KTpdfUP53V5oMTATWUoV8Fu637OvylYg7InAtKBHTWuIS3GAgoAMhAUATmKUw+k7v3+Z9emxz49fxtbWRinvCYAjpf6KGQQSagWhnaOqDHeqwDulReBYsUt/d8WY9Lk0n2FlfB+iCn5fmDDARF0DICUsn18fzEqaeAyneLQU37CCg+Bet98bwoJ1ui9KvFKdilfOizwVWwPshpef4gA0ERtM4BGR6J6T4Fy9EuenXNAZ3XJ4w654BUek3+rhf0OaDatNAiIKAAIANJEbReBat26XkEZI6AZl0F29DHVD0EVH1dyK5zOVEvEFAAkIGkCPKO+/zd30/X6BTjlXkF1LBKp7IOqCijFNC1R/qcOlUFVI7Uigtjl/pMZneCgAKADERFsJEZYXLgV/KV0OYlp4zuEdBGZbmgqqyE1soo1wGZJ2Et5OWczxdplyO1jfrM9wIgoAAgA1ERXDuZ3qf16tok796N15V6rQOKdrx8UhuL5PeCVcsoBRTpqnvokpdzaRLfpva9Na0qUaEffoGrYH2R1PJ8QQayItg7W8y8pGt/LmUv+o9MsiFJdo3qlnIpdH7yVS3DuBese+xSiO55belQVuiltb617QECCgAykBbBX56NOvGBu37vbNa1k4fufPiFzv2qAkp31B/wU04Nm2VoAjLnoWeXE42hfqp49k9RaHzku3rUtgcIKADIQGwElx+1nEi59su9T4DyMhbPYI5C+4KAAoAMxhfB+fmvgS+egUWhXSCgACCD0UWw9/n5xyILZ2BTaBcIKADIgAiU0AwQUACQAREooRkgoAAgAyJQQjNAQAFABkSghGaAgAKADIhACc0AAQUAGRCBEpoBAgoAMiACJTQDBBQAZEAESmgGCCgAyIAIlNAMEFAAkAERKKEZIKAAIAMiUEIzQEABQAZEoIRmgIACgAyIQAnNAAEFABkQgRKaAQIKADIgAiU0AwQUAGRABEpoBggoAMiACJTQDBBQAJBBaBFsxVTfFJkBAgoAMggtAgQkBpGpO4YMQosAAYlBZOqOIYPQIkBAYhCZumPIILQIEJAYRKbuGDIgAiU0AwQUAGRABEpoBggoAMiACJTQDBBQAJABESihGSCgACADIlBCM0BAAUAGRKCEZoCAAoAMiEAJzQABBQAZEIESmgECCgAyIAIlNAMEFABkQARKaAYIaFisjJul5TayZmCFyAwQ0LDwbYgls7TcRtYMrBCZAQIaFr4NsWSWltvImoEVIjNAQMMi6qTveCTVxPIOvrTcRtYMrBCZAQIaFgjIjpE1AytEZoCAhgUCsmNkzaALngckBpGp24OA7BhZM+gCAYlBZOr2ICA7RtYMukBAYhCZuj0IyI6RNYMuEJAYRKZuDwKyY2TNoAsEJAaRqduDgOwYWTOwQmQGCGhYICA7RtYMrBCZAQIaFgjIjpE1AytEZoCAhgUCsmNkzcAKkRkgoGGBgOwYWTOwQmQGCGhYICA7RtYMrBCZAQIaFgjIjpE1AytEZoCAhgUCsmNkzcAKkRkgoGGBgOwYWTOwQmQGCGhYICA7RtYMrBCZAQIaFgjIjpE1AytEZoCAhgUCsmNkzcAKkRkgoGGBgOwYWTOwQmQGCGhYICA7RtYMrBCZAQIaFgjIjpE1AytEZoCAhoULAR3MaHYEAhoAPA9IDCJTt2f5Ajqo0eQIBDQAEJAYRKZuDwKyY2TNoAsEJAaRqduzdAEdPDjLQAhoGCAgMYhM3Z5lC+jgwZkGQkDDAAGJQWTq9vgQUNSWNUcgoKEiMgMENCw8CCj5bVo6AgENFZEZIKBh4V5AW1uagRDQgBGZAQIaFs4FtLWlGwgBDRiRGSAgT+Q9fM7dXAtoa8swEAIaMCIzQEBe0Pv4XDs6FtDWlmkgBDRgRGYwEAFdP33k63Z7ikx9KALa2qoYCAENGJEZICAfmN18nj2dLkTcqoKAhozIDAYiIHskpl6daJljV5e3YtT8s7WFgAaMyAwQkAeGIaAG/2QGWlLJCGi5iMwAAXlAtIByBTX6JzXQksrtIyCriTMlsxm4RmQGvgS0Oz36ylsfm07v+Vr6+uafRy8+8tm3o6+emz4cv3P99PTet+MvtqPXsueA5u0VLgWUlzGvDVr8kxhoH4vR6RaQ7cyZ0M7nGJEZeBTQb08TzsQvP3gqfXHPK7FwEvFcXY8cpWIhRe6RLKD5e4U7AemlzCWDVv/EBtq/YgwQ0HIRmYE/AU2nH39bfXA6sUw06jkSDYXeWo/dc3U9kc12Jqer69F7QxHQSi+qAuq3V848fdrWDDP8Exlo34oxmTO3+VKzYOktxzEISCMS0H3pv7FZ0v8no54zsY1i8ZybPpSci23HGzYJ6IcysOgVtgKau4+bxfRXwUz/lPfGL1pMhWXFZovvljVKqr3Yn4By5cT/nkttlH1xLlXO0e/G46FUR3JHQDa9wq4nzd/Jq+X0d8FcIyD7YkyWE5s9S245yyT5OVXfZASksZtO8MRTzWeKeeds/mc3PRG790fr0TaRiF4ZkoAsdrIoqV+PXsAM88wB7aOA9j/qDJGdb3kgoC4MASX/K99ObLM9fTgZ/Owmg6ORCchmNtWiky9ihhn+QUDiQUBdzBJQdA72cPTfmeJfBFQvp0+PXsgM7f5BQOJBQF3MOgWL552TM6/oXOwfkzOw0Qlo8bVDfXr0YmZo9Q8CEg8C6sIQUGUSWl1dP/oX68k80NHvpp+MT0CLltOnRy9ohjb/hCCgZf84fYCANEwBGZfhk2VBvxOLJ/r3ofTkDAF5EFDdQM13w9sWU91ejoBc/EDdg4A0TAEZCxFVPBCaZmuBis0QkHsBVQ3U8jwgu2LqeyCg5YKANEwBlbdivJx9mg6Jon9TI8kV0ALP9lmgGKvLYP3EYFDxTyACcvQjdQ0C0qgISLsZNXs3vx/s4ewNsQJy9Otyv3r5nJj+2UcBNewiRUCLlCMZBOQDBLSQgPr8VQybqjXtg4CWCwLygcTHcSxSxrw6WUw/7/T5u2CuBLTIqRECQkB+EJm6BbYCWhzNP54F5OhxHAjIIQhoIPgTUPffhreoGQJyj8iugIAGgkcBaTQL6J35K2YnIDePZEVADkFAAwEBLQQCEtoVENBQkOCf9r8LNm+9EJB7RHYFBDQYBPhn//4woWQBsRDRIQhoMIxKQBUD5QdfWnjciiG0KyCgAeFbP/v6t+HrPkVAy0VkV0BAw2K/ur8lgQho8I/j4HlAYhCZuj3jEdD8j+NYhJE1gy4QkBhEpm7PmATUcPCl5TayZtAFAhKDyNTtQUB2jKwZdIGAxCAydXsQkB0jawZdICAxiEzdHgRkx8iagRUiM0BAwwIB2TGyZmCFyAwQ0LBAQHaMrBlYITIDBDQsEJAdI2sGVojMAAENCwRkx8iagRUiM0BAwwIB2TGyZmCFyAwQ0LBAQHaMrBlYITIDBDQsEJAdI2sGVojMAAENCwRkx8iagRUiM0BAwwIB2TGyZmCFyAwQ0LBAQHaMrBlYITIDBDQsEJAdI2sGVojMAAENCwRkx8iagRUiM0BAwwIB2TGyZmCFyAwQ0LBAQHaMrBlYITIDBDQsVsbN0nIbWTPogucBiUFk6vb4NsRSWWJuI2sGXSAgMYhM3R7fjlgqS8xtZM2gCwQkBpGpO4YMQosAAYlBZOqOIYPQIkBAYhCZumPIgAiU0AwQUACQAREooRkgoAAgAyJQQjNAQAFABkSghGaAgAKADIhACc0AAQUAGRCBEpoBAgoAMiACJTQDBBQAZEAESmgGCCgAyIAIlNAMEFAAkAERKKEZIKAAIAMiUEIzQEABQAZEoIRmgIACgAyIQAnNAAEFABkQgRKaAQIKADIgAiU0AwQUAGQQWgQ8D0gMIlN3DBmEFgECEoPI1B1DBqFFgIDEIDJ1x5BBaBEgIDGITN0xZBBaBAhIDCJTdwwZEIESmgECCgAyIAIlNAMEFABkQARKaAYIKADIgAiU0AwQUACQAREooRkgoAAgAyJQQjNAQAFABkSghGaAgAKADIhACc0AAQUAGRCBEpoBAgoAMiACJTQDBBQAZEAESmgGCCgAyIAIlNAMEFAAkAERKKEZIKAAIAMiUEIzQEABQAZEoIRmgIACgAyIQAnNAAEFABkQgRKaAQIKADIgAiU0AwQUAGRABEpoBggoAMiACJTQDBBQAJABESihGSCgACADIlBCM0BAAUAGRKCEZoCAAoAMiEAJzQABBQAZEIESmgECCgAyIAIlNAMEFABkQARKaAYIKACcZvC9R9cmk5+4+/vF65OTyYFfe617x2uPfMh8OUm45Rv5O++u5V+bZeRbxm+1laNFYJbz7tpt+j57Z6Mjf/iF7toOEJFdAQEFgMMMrp3MZfAz6Rvn01e3fmP2fhEbE0NA7661CahaRikgfWsTLQKjnL3PTXQBZYdqO8qwEdkVEFAAuMsg6sAHHos69OWzk8nd8Rvvrh14LHp50pRLA3sbE3ObS7VdMgHVyrj2SDEyWmsrp4igUk7kR11AG5PbXlCXTSmNBpFdAQEFgLsMNoque2lt8hvJG8kopTx7SjmfD5By4hM1Ux4byf462UFqZZQCqpVTkEdQKSceZmmyKRR34PdnfZcDRWRXQEAB4CwDvf+f13u25ojsQ1NA0UDk7lcNAe19riaB9Oj1MrSDV8sp+GFjOdEJ2K/qc0Dns49qfhwFIrsCAgoAZxnoHdcYRlSmeusCuvULlXOua4/c+sfRaOUubT44VU+9DM06l8rpm0guOR8qBWSWszH5kFGzfNRVP/0bAyK7AgIKAFcZRH1eO23aKE3x6lrlfKppiGH2+nwOWtsxEVBDGYWA9l5dM0Y3dQGZ5VyKBlC6gIpRV9WX40BkV0BAAeAqA3PupJDMxmRy4Avmlt0CuhSdLL2m/unspDxkIqCGMvSrYG3iaBJQcigE5BcEFADuBKTPwOQTKnuf/+m1yYFfz9/WRibmfI0poHxvbRyVCahWhrYO6LEe64CKcpJDtwhojBfiRXYFBBQAnkdAKrk+np849RRQ+W4hiPYRUHygvT+azLh21SCgdAabEZBfEFAAeJ8DMjwS030KlqMNRrrmgM7rE0adc0DvriW2QUB+QUAB4P8qWLVLzyMgcwQ06yrYhj6m6hLQ+Ybl01wFcw4CCgDn64Cev/v76RlOMV6ZV0DFjtq75jqgooxSQNceaRVHPwHl1WIdkDMQUAC4Xgkd3yzxK/lK6Hwu2VBD9wgo20E/4zJWQmtllPPS5kmYTuNl+PSgrIT2CQIKAIf3gp1M79N6dW2S34MRX03fe74yQdxrHVC04+WT2txRrodqGaWA9lrv4uonoGj/W7kXzCkIKAAcZrB3tjixSdf+XMpetIxMNHIxZLPD2SnSLeVS6Pzkq1qGcS9Yy8lTl4CyQi9zN7xjEFAAOM3gL+Mn6hy46/fOZqsCLz8avezzhJ2KgNId9Qf8lBfEzDL0pUEbLfLoKaDkFvvJh8c4/hHaFRBQAPjJ4PKjljO513659wxM7zI6I5ij0KEisisgoAAYWAbnl3AG1BnBMgoVhshmgIACYFgZ7H1+CWORrgiWUqgwRDYDBBQAZEAESmgGCCgAyIAIlNAMEFAAkAERKKEZIKAAIAMiUEIzQEABQAZEoIRmgIACgAyIQAnNAAEFABkQgRKaAQIKADIgAiU0AwQUAGRABEpoBggoAMiACJTQDBBQAJABESihGSCgACADIlBCM0BAAUAGRKCEZoCAAoAMiEAJzQABBQAZEIESmgECCgAyIAIlNAMEFABkQARKaAYIKABGlcFWzNx7jSoCS0RmgIACYFQZICBbRGaAgAJgVBkgIFtEZoCAAmBUGSAgW0RmgIACYFQZICBbRGaAgAKADIhACc0AAQUAGRCBEpoBAgoAMiACJTQDBBQAZEAESmgGCCgAyIAIlNAMEFAAkAERKKEZIKAAIAMiUEIzQEABQAZEoIRmgIACgAyIQAnNAAEFABkQgRKaAQJyyooEfIfgA1nNwA8iM0BATvHtngTfIfhAVjPwg8gMEJBTfLsnwXcIPpDVDPwgMgME5JSo+7+zFFK19NvQdwg+kNUM/CAyAwTkFATkCVnNwA8iM0BATkFAC8PzgGwRmQECcgoCWhgEZIvIDBCQUxDQwiAgW1pm4QQAABHqSURBVERmgICcgoAWBgHZIjIDBOQUBLQwCMgWkRkgIKcgIE/IagZ+EJkBAnIKAvKErGbgB5EZICCnICBPyGoGfhCZAQJyCgLyhKxm4AeRGSAgpyAgT8hqBn4QmQECcgoC8oSsZuAHkRkgIKcgIE/IagZ+EJkBAnIKAvKErGbgB5EZICCnICBPyGoGfhCZAQJyCgLyhKxm4AeRGSAgpyAgT8hqBn4QmQECcgoC8oSsZuAHkRkgIKcgIE/IagZ+EJkBAnIKAvKErGbgB5EZICCnICBPyGoGfhCZAQJyCgLSOJgx3148D8gWkRkgIKcgoIKDGvPsh4BsEZkBAnIKAipAQK4RmQECcgoCyjl40NJACMgWkRkgIKcgoIyDB20NhIBsEZkBAtoH+veihQW0tTWngPK6jUZAdojsfI4RmQECWph5+tGiAop/+88jIL1uCChwRGaAgBbGoYCS049GAyGg2YjsfI4RmQECWpS5OtJiAtraajVQs4DMuvUVkAspICD3iMwAAVWYt0fM15NKSZjjkrn802SgRgFV69ZLQG60gIDcIzIDBGQwf5+wE1BtYDKXfxoMhIBmI7LzOUZkBu0Curp+5OuNH+xOpw+37HP9dMs+Mw/Yg5kHnsloBLS1NctA+yYgR15AQO4RmYGFgM5N7327ZZ+hC8iiU1gJqO6FOf1TM9B+CciZGNz6R2bnc4zIDOYXkLVHFhGQPfOkbtP7bATUJIY5/VM10OAE5OhUL0dk53OMyAzmF9D29IxdUQjIXkB1/1QMhIBmI7LzOUZkBhanYLYgIGsBNfnHNNDwBOTmcn+OyM7nGJEZNAjo5p9/bDq952u5L5KXH/ns2+Vn01/4WvTVc+lU9PXT2ZTQdvQ6n6r54Kvr2WYNB/x/34k+/KWXVXKMnOQYelG706OvvJXsl5biYg5IqoCa/WMYaIgCconIzucYkRnUBXT9qVQJv5j64oPs5T2vKM0Y98XCSaRxdT0yRfJRtHnmie1cKx9vOODV9eRVvFNFQNf1oiIB/Xb6Mj7jkysgm4WIcwqozT+6gfZrISICGi8iM6gJKJLCkaeV+lEkg7jPxy+jMchb64kitpMX6q34o2xAs50p4up6tEHqiUgxH387UVd+BO2A0YjpnpfVB6djh+VsVzaMi9qN/fV2vGGsKjsB5b1opSfV3jf/Xj02n1tA7f7RDNQsoHfqpSwlAnusG+6ciOx8jhGZQU1Au9O0q0eiiL/IX0ZSORNfgS+1EfkiFs+56UPJudh2/FHqiWxslO1TO+DRV7Ri0iKTI2kbJrulZe1m2qoL6IcdLKYSKQKapR/NQMWxByagrh8ijIxOARWOSYclxcvki3PToy+bW14/ffS7sW9SHZmeSE3SfMD0M5V56uFUaMWG9+nmaxNQF64EVO7Xa2OnI6DGx3HMkUHfBKyZ94fK84DsEZlBVUD53HLW88uXybAmPi/6yGf/IX1nN34nOvP60Xo0polEZJwp3fy//zOeiD7TfsCc66erStpNi0pGStnbFgIye9Ly9pmLFbdzQA10dPpq1ZaQwYIgIFtEZtAgoEwDSZ/XrRAL4e+SGeQjiYOSDbanDye77CYWyTzxwVfzueUz7QcsC0xP2KJPCqKiFhWQXU9adt+zEpD1VbB33pn7gWQIaLyIzGBOAamb/yO5VJXo4Fw0mDkXfZ7/m3vig1glD/3if/rReg8BnctEg4DmNlBlYNMkoHopCChYRGYw3ylYyt9/dZpdE7svOfOKTpn+MTkDyzyRzxRdXe8+BdsuJqMravIjoGWvjluxvBesyz8IqAORnc8xIjNomITORLPbMAmdk9rh6vrRv1hP5oGOfjefx9EHOenVrZYDpv9mF8BiKmryJaDlsmJ7N3yHf1gH1IHIzucYkRnUBJReO09X5VQvwxeO2M3XEf5OrJHo34fSnQwBxcsMzzQcMBsrxYfKLoClbOcnY9v7MQktsydZC2h0d8M7RmTnc4zIDOoroc9Nj/zu28kC6MaFiE9H//x95o1z2SLEc9PCFulZVnwK9n+eKj6tHDBeiPjcNLl0pg+r4oVC8T0e35mm64DGLCCLJyLO9A8C6kBk53OMyAzqAsrvj/hXlVsxjJu37s3u10rHR7vT4kpWthI64Z8/ly/w0Q+YfXrkjHbLRnqcvKhkr7ELaG4O6v6peQsBzUZk53OMyAya7oZ/a8bNqG89FC8FejrdML8RtTiTyi/D/1ZklF96uZj+qRwwvhn1F2KfVQSUFnUkuU8VAdVlovmnNnLaLwG5flCYK0R2PseIzGC8z4QW2ZMWEtBBzT9LE5Dj5/S4QmTnc4zIDMYrIJE9aTEBHSz9g4DmQ2Tnc4zIDBCQUxYU0MHCP8sTkNsHhblCZOdzjMgMRiwgiT1pUQEdzP2zTAGNEZGdzzEiMxi1gGJkpb6wgAyZIKDeyGoGfhCZAQJyCgLyhKxm4AeRGSAgpyAgT8hqBn4QmQECcsoiCxFn+QcBdSCrGfhBZAYIyCkLCOidWf7Zt5tRx4qsZuAHkRkgIKc4FlDDPggoWERmgICcsoiAZt7AGo6AeB6QLSIzQEBOWUxAM9ivR7LKBwHZIjIDBOQU9wJq2NB3CIuBgGwRmQECcgoCWhgEZIvIDBCQUxDQwiAgW0RmgICcgoA8IasZ+EFkBgjIKQjIE7KagR9EZoCAnIKAPCGrGfhBZAYIyCkIyBOymoEfRGaAgJyCgDwhqxn4QWQGCMgpCMgTspqBH0RmgICcgoA8IasZ+EFkBgjIKQjIE7KagR9EZoCAnIKAPCGrGfhBZAYIyCkIyBOymoEfRGaAgJyCgDwhqxn4QWQGCMgpCMgTspqBH0RmgICcgoA8IasZ+EFkBgjIKQjIE7KagR9EZoCAnIKAPCGrGfhBZAYIyCkrEvAdwmLwPCBbRGaAgJzi2z0rQ9cPArJHZAYIyCm+7bOCgMJFZAYIKABGlQECskVkBggoAEaVAQKyRWQGCCgAyIAIlNAMEFAAkAERKKEZIKAAIAMiUEIzQEABQAZEoIRmgIACgAyIQAnNAAEFABkQgRKaAQIKADIgAiU0AwQUAGRABEpoBggoAMiACJTQDBBQAJABESihGSCgACADIlBCM0BAAUAGRKCEZoCAAoAMiEAJzQABBQAZEIESmgECCgAyIAIlNAMEFACjyoDnAdkiMgMEFACjygAB2SIyAwQUAKPKAAHZIjIDBBQAo8oAAdkiMgMEFACjygAB2SIyAwQUAGRABEpoBggoAMiACJTQDBBQAJABESihGSCgACADIlBCM0BAAUAGRKCEZoCAAoAMiEAJzQABBQAZEIESmgECCgAyIAIlNAMEFABkQARKaAYIKADIgAiU0AwQUACQAREooRkgoAAgAyJQQjNAQAFABkSghGaAgAKADIhACc0AAQUAGRCBEpoBAgoAMiACJTQDBBQAZEAESmgGCCgAyIAIlNAMEFAAkAERKKEZIKAAIAMiUEIzQEABQAZEoIRmgIACgAyIQAnNAAEFABkQgRKaAQIKADIgAiU0AwQUAGRABEpoBggoAMiACJTQDBBQAJABESihGSCgACADIlBCM0BAAUAGRKCEZoCAAoAMiEAJzQABBQAZEIESmgECCgAyIAIlNAMEFABkQARKaAYIKADIgAiU0AwQUACQAREooRkgoAAgAyJQQjNAQAFABkSghGaAgAKADIhACc0AAQUAGRCBEpoBAgoAMiACJTQDBBQAZEAESmgGCCgAyIAIlNAMEFAAkAERKKEZIKAAIAMiUEIzQEABQAZEoIRmgIACgAyIQAnNAAEFABkQgRKawegFBAByQUAA4A0EBADeQEAA4A0EBADeQEAA4A0EBADeQEAA4A0EBADeQEAA4A0EBADeQEAA4A0EBADeQEAA4A0EBADeQEAA4A0EBADeGLOAbj43Tbn3bd9V8cTu9OH8y7c+Np1+5GmflfFDEUGgreGDr67HP/j8exbXDMYsoOung2xyJVEAuYDOpUnc57U+HigjCLM1bJvftLxmMGYBXV0Pqq3VuP7UNO9929MjT6ubfzYtR0RhoEUQZGvYnU4//g/q5t+tp84R2AzGLKBdSaZ3z9Vo7J21tHwcsD09+orXOjlGiyDM1nAu+6Yj83xdZjMYs4C2BYneOTe/M53e81SWwG7W4qIWeMZrrZxiRBBkayh+3ukXEpvBmAV0LrZ+qFxdP/K7N5/LOt12/tv/XEi90Igg7NaQKkdiMxixgK6fPvqff2s6PfLZ8E79I67+y5dV0fvOlS0voPMQI4LAW8N6LCCJzWDEAkomAGLuEXPC65i895XDgO2wrgFp33rYrSGZ9RHZDEYsoN3o993XlHprXU7ajkFA5bcedGuI7Puw0GYwYgHlc/3p8DNEEJDSpsHCbQ3Xn0p+7CKbwYgFVCDojNctCEj71nPCaw1RBskEvMhmEIKABMXtFgTUIKDgIojGP+kFQJHNAAGNGO0qWH4tOrRf/wjog9PTfAGCxGaAgEZM4OuAYoIX0NX16dGXs68lNoPxCqhoevU2GAraJSB5S2DdUDsLDaw1RP4p1x1IbAbjFVBx3WN3GuoaWG0VnrybgNxQuwoWVmuIfvDaeE9iMxixgGL5v1zeCRwg+qzjVNpt0G7QFyIG2BoqqhHYDEYsILWbLX69L6Rzfp1SQDflPQjGDWUEIbaG4hlI2UMBBDaDMQsofxqc72p4Q5/vEPcoPDdoEQTYGor7T4qnkohrBqMWEADIBgEBgDcQEAB4AwEBgDcQEAB4AwEBgDcQEAB4AwEBgDcQEAB4AwEBgDcQEAB4AwEBgDcQEAB4AwEBgDcQEFhx44srKyt3Xkxf7KzEHM4+2tQ+6eC9Y9G2p/LDHW7e6MJKyqmex2r5KOJEr0qBQxAQ2BFr4fZvp19vJt07e/XjT/Tv6ggodBAQ2BGPelafTb5MlFO8miGCGggodBAQ2KENdHYMQ+hDo97sg4BmgIDEgoDADk0ZuSHSV3NMATUercaF9o/mYBMBSQQBgSUXctEk8ljJX80zBVSCgAIFAYElxSRQcoLzqWP6q1O6hnbSc7LYMdEWbzwRvbz/xfSjhjmgCyvVEVQpoJ3ko/e/Ge116MlokzeTY73UcKxqQQhIKAgILEkcE3f4xET/Pn+VTQFpJ2KbqUASL/yHfLSUuqAuoMQ/dxhTSBUB/Wk2oXPnD75pTA6ZAqoUhICEgoDAksIZqWs2jVfaRbJcVMWZmmaNmoCS+ezKFLYpoAbScsxjVQpCQEJBQGBLNgmUnW1lr5Lef0IV/6ZiiJWSemH1SXXjvxQz1lUBJa9vf6leji6gBy+qN9JR0M9fTI91on6sSkEISCgICGzJ5nbeS2d/tH+KU7HkHCz3R+KFZLBSrqKuCOjKJ4rxjEZFQMmOm7laEv01yKxSEAISCgICW7Jzq2zSJ3u1k59CZUJKJVB4IbXBpr5R+eFPNvqnKqAT+XulYxoEVCkIAQkFAYEt6VmWMRV0OJ9xLs/B8jOw6sKhBgGtaGdMGhUBnTKOUM52N62qvoCAhIOAwJrEDEW/Ty5R/aCY+smumSf/lEbqFlDXCCj9HAGNBAQE1iSnW3+6oi0AWv13x4w7xKIvN/NBSzktPVNA9VXUVgKqFISAhIKAwJpEMT+7oi+I/tSKeY/8iXib9I0+Avq54hxLAwGNGAQE1hTDlrRjb1ZmcZJzsNeLN3oI6EF91rgAAY0YBAT2XDCmbXYMHWUDpE8WQ5puAR3O3jhRLwUBjRQEBPZkytGfRKbPIl8wPu4loKYhEAIaMQgI7MmUk51zZWdkpT6yx/DoH3cKqFxYWICARgwCAnsy5eSzxheMKaDinohntVedAiqXGBYgoBGDgGABLhjnXDvGFFD+cX5ZvaeAkiHQjMdxIKBRgYBgAXZ0w6Tu0EcvxpRyTwFpy50zENCIQUCwPLK1iAvCExFHDAKC5XGhejZlfRQENFIQECyN1xsW9VjAX8UYMQgIlsOmsQhoERDQiEFAsBxSAa3aW6MAAY0YBATL4a9i/TzwUveGnSCgEYOAAMAbCAgAvIGAAMAbCAgAvIGAAMAbCAgAvIGAAMAbCAgAvIGAAMAbCAgAvIGAAMAbCAgAvIGAAMAbCAgAvIGAAMAb/x8kxjQ4YT7/cwAAAABJRU5ErkJggg==" alt="Czas w dwóch grupach repozytorium. Oś pozioma: czas w minutach; punkty: czasy wszystkich osób; pudełko: kwartyle i mediana; romb: średnia grupy; linia kropkowana: granica Q3 + 1,5 IQR." width="100%" />
 <p class="caption">
 Czas w dwóch grupach repozytorium. Oś pozioma: czas w minutach; punkty:
 czasy wszystkich osób; pudełko: kwartyle i mediana; romb: średnia grupy;
 linia kropkowana: granica Q3 + 1,5 IQR.
 </p>
 </div>
-<p><strong>Napisz krótki akapit:</strong> porównaj N, średnie i minima
-obu grup, z minutami. Wskaż dane, które rozstrzygnęłyby, która grupa
-skuteczniej odnalazła publikację.</p>
+<p>Blok wyświetla tabelę „Opis grup [min]” (N, średnia, SD, minimum i
+maksimum) oraz wykres „Czas w dwóch grupach repozytorium” z osobami,
+pudełkami i średnimi.</p>
+<p><em>Wskazówki:</em></p>
+<ul>
+<li>Minimum i maksimum to wyniki pojedynczych osób; średnia i SD opisują
+całą grupę.</li>
+<li>Z wykresu odczytaj, czy pudełka się nakładają: nakładanie oznacza,
+że część nowych osób szukała krócej niż część doświadczonych.</li>
+<li>Zbiór zawiera wyłącznie czas; ocena skuteczności wymaga wyniku 0/1
+każdej osoby według kryterium poprawnej publikacji.</li>
+<li>Wzorzec APA: „Doświadczeni (<em>n</em> = [..]) szukali średnio
+<em>M</em> = [..] min (<em>SD</em> = [..] min; od [..] do [..] min), a
+nowi (<em>n</em> = [..]) <em>M</em> = [..] min (<em>SD</em> = [..] min;
+od [..] do [..] min)”.</li>
+</ul>
+<p><em>W akapicie wymagane:</em> (i) N obu grup; (ii) średnie i SD z
+minutami; (iii) minima i maksima jako wyniki pojedynczych osób; (iv)
+jedna cecha wykresu; (v) dane potrzebne do oceny skuteczności.</p>
+<div class="framed" style="border: 2px solid #0072B2; padding: 0.6em 1em;">
+<p><strong>Twój akapit S01.</strong> Znacznik w nawiasie kwadratowym
+zastąp własnym tekstem.</p>
 <!-- odpowiedz:S01 -->
 <p>[UZUPELNIJ_S01] <!-- /odpowiedz:S01 --></p>
 </div>
+</div>
 <div id="challenge-2-pytanie-h0-i-wynik-klasyczny" class="section level2">
 <h2>CHALLENGE 2: Pytanie, H0 i wynik klasyczny</h2>
-<p>Hipoteza zerowa zakłada równą średnią czasu w dwóch populacjach
-porównania w przyjętym modelu; hipoteza dotyczy średnich populacji.
-Dwustronna alternatywa obejmuje oba kierunki różnicy. Tabela „Test
-Welcha — różnica grupy 2 minus grupy 1” podaje różnicę, SE, t, df i p;
-znak różnicy i t oraz mianownik statystyki łączą się z SE.</p>
+<p><strong>Zadanie:</strong> zapisz hipotezę zerową porównania i
+odczytaj wynik testu Welcha z różnicą, SE, t, df i p.</p>
 <pre class="r"><code>test &lt;- test_porownania(porownanie)
 print(test)</code></pre>
 <p><strong>Test Welcha — różnica grupy 2 minus grupy 1</strong></p>
@@ -1682,22 +1754,44 @@ p
 </tr>
 </tbody>
 </table>
-<p><strong>Napisz krótki akapit:</strong> zapisz
+<p>Blok wyświetla tabelę „Test Welcha — różnica grupy 2 minus grupy 1” z
+różnicą, SE, t, df i p.</p>
+<p><em>Wskazówki:</em></p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>μ</mi><mtext mathvariant="normal">nowi</mtext></msub><mo>−</mo><msub><mi>μ</mi><mtext mathvariant="normal">doświadczeni</mtext></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_0\colon \mu_{\text{nowi}}-\mu_{\text{doświadczeni}}=0</annotation></semantics></math>:
+średnie czasy w obu populacjach są równe; alternatywa dwustronna
+obejmuje oba kierunki.</li>
+<li>Porównanie jest niezależne, bo każda osoba należy do jednej grupy i
+ma jeden pomiar.</li>
+<li>t = różnica / SE: znak t jest zgodny ze znakiem różnicy, a df Welcha
+może być niecałkowite.</li>
+<li>Wniosek jest warunkowy: p opisuje skrajność wyniku przy prawdziwej
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>
-w symbolach i słowami, uzasadnij porównanie niezależne oraz odczytaj
-różnicę, SE, t, df i p. Sformułuj wniosek warunkowo względem modelu.</p>
+i założeniach testu.</li>
+<li>Wzorzec APA: „Średni czas nowych był [dłuższy/krótszy] niż
+doświadczonych o [..] min (<em>SE</em> = [..] min), <em>t</em>([df]) =
+[..], <em>p</em> = [..] (dwustronny test <em>t</em> Welcha)”.</li>
+</ul>
+<p><em>W akapicie wymagane:</em> (i)
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>
+symbolami i słowami; (ii) uzasadnienie porównania niezależnego; (iii)
+różnica i SE z minutami; (iv) t, df i p; (v) wniosek sformułowany
+warunkowo względem modelu.</p>
+<div class="framed" style="border: 2px solid #0072B2; padding: 0.6em 1em;">
+<p><strong>Twój akapit S02.</strong> Znacznik w nawiasie kwadratowym
+zastąp własnym tekstem.</p>
 <!-- odpowiedz:S02 -->
 <p>[UZUPELNIJ_S02] <!-- /odpowiedz:S02 --></p>
+</div>
 </div>
 <div id="challenge-3-wynik-tasowania-etykiet" class="section level2">
 <h2>CHALLENGE 3: Wynik tasowania etykiet</h2>
 <p>Drugie obliczenie zachowuje te same czasy i losowo przypisuje
 etykiety grup z zachowaniem liczebności; powstaje rozkład odniesienia
-dla obserwowanej różnicy. Wymienialność jest założeniem modelu zerowego,
-a grupy doświadczenia są obserwacyjne. Tabela „Tasowanie etykiet grup”
-podaje różnicę obserwowaną, liczbę skrajnych przestawień, B i
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">m</mi></mrow></msub><annotation encoding="application/x-tex">p_{\mathrm{perm}}</annotation></semantics></math>.</p>
-<pre class="r"><code>permutacja &lt;- permutacja_porownania(porownanie)
+dla obserwowanej różnicy.</p>
+<p><strong>Zadanie:</strong> odczytaj wynik tasowania etykiet, porównaj
+go z testem Welcha i nazwij założenie oraz granicę wniosku.</p>
+<pre class="r"><code>permutacja &lt;- tasowanie_i_welch(porownanie)
 print(permutacja)</code></pre>
 <p><strong>Tasowanie etykiet grup</strong></p>
 <table>
@@ -1707,7 +1801,7 @@ print(permutacja)</code></pre>
 Różnica obserwowana
 </th>
 <th style="text-align:right;">
-Tasowania |Δ*| ≥ |Δ|
+Tasowania co najmniej tak skrajne (k)
 </th>
 <th style="text-align:right;">
 B
@@ -1734,19 +1828,86 @@ p_perm
 </tr>
 </tbody>
 </table>
-<p><strong>Napisz krótki akapit:</strong> podaj wynik tasowania z B,
-wyjaśnij regułę dwustronnej skrajności i porównaj wynik z CHALLENGE 2
-dla tego samego pytania i N. Dodaj założenie wymienialności i granicę
-wniosku wynikającą z obserwacyjnych grup.</p>
+<p><strong>Test Welcha tego samego pytania</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+Różnica
+</th>
+<th style="text-align:right;">
+SE
+</th>
+<th style="text-align:right;">
+t
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:left;">
+p
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2,25
+</td>
+<td style="text-align:right;">
+1,031
+</td>
+<td style="text-align:right;">
+2,183
+</td>
+<td style="text-align:right;">
+21,361
+</td>
+<td style="text-align:left;">
+0,0403
+</td>
+</tr>
+</tbody>
+</table>
+<p>Blok wyświetla tabelę „Tasowanie etykiet grup” (różnica obserwowana,
+liczba tasowań co najmniej tak skrajnych k, B i
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">m</mi></mrow></msub><annotation encoding="application/x-tex">p_{\mathrm{perm}}</annotation></semantics></math>)
+oraz tabelę „Test Welcha tego samego pytania”.</p>
+<p><em>Wskazówki:</em></p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">m</mi></mrow></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mi>B</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p_{\mathrm{perm}}=(k+1)/(B+1)</annotation></semantics></math>:
+podstaw k i B z tabeli.</li>
+<li>Skrajność dwustronna liczy tasowania z różnicą co najmniej tak
+odległą od zera jak obserwowana, w obu kierunkach.</li>
+<li>Oba testy dotyczą tego samego pytania i tych samych 24 osób;
+porównaj p Welcha i
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">m</mi></mrow></msub><annotation encoding="application/x-tex">p_{\mathrm{perm}}</annotation></semantics></math>.</li>
+<li>Wymienialność zakłada wspólny rozkład grup przy
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>;
+grupy doświadczenia są obserwacyjne, więc wynik opisuje związek
+doświadczenia z czasem.</li>
+<li>Wzorzec APA: „Tasowanie etykiet grup (<em>B</em> = [..]) dało
+<em>p</em><sub>perm</sub> = ([k] + 1)/([B] + 1) = [..], zbliżone do
+wyniku testu Welcha (<em>p</em> = [..]); wynik zakłada wymienialność
+grup przy <em>H</em><sub>0</sub>”.</li>
+</ul>
+<p><em>W akapicie wymagane:</em> (i) k, B i
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">m</mi></mrow></msub><annotation encoding="application/x-tex">p_{\mathrm{perm}}</annotation></semantics></math>
+z rachunkiem; (ii) reguła dwustronnej skrajności; (iii) porównanie z p
+Welcha dla tego samego pytania i N; (iv) założenie wymienialności; (v)
+granica wniosku wynikająca z obserwacyjnych grup.</p>
+<div class="framed" style="border: 2px solid #0072B2; padding: 0.6em 1em;">
+<p><strong>Twój akapit S03.</strong> Znacznik w nawiasie kwadratowym
+zastąp własnym tekstem.</p>
 <!-- odpowiedz:S03 -->
 <p>[UZUPELNIJ_S03] <!-- /odpowiedz:S03 --></p>
 </div>
+</div>
 <div id="challenge-4-wielkość-różnicy-i-precyzja" class="section level2">
 <h2>CHALLENGE 4: Wielkość różnicy i precyzja</h2>
-<p>Przedział dotyczy różnicy średnich czasów w minutach, a g — różnicy w
-jednostkach SD. Bootstrap zachowuje grupy i losuje ze zwracaniem
-wewnątrz nich. Blok wyświetla tabele „Efekty” i „95% przedziały różnicy”
-oraz wykres „Dwa przedziały różnicy”.</p>
+<p><strong>Zadanie:</strong> opisz różnicę czasu z dwoma 95%
+przedziałami i g oraz wskaż informację potrzebną do oceny praktycznej
+wagi minut.</p>
 <pre class="r"><code>efekt &lt;- podsumowanie_porownania(porownanie, jednostka=&#39;min&#39;)
 print(efekt)</code></pre>
 <p><strong>Efekty</strong></p>
@@ -1861,21 +2022,92 @@ minutach: Welch i bootstrap w grupach. Romb oznacza estymatę, liczby
 przy końcach odcinków — granice przedziału, a linia przerywana — zero.
 </p>
 </div>
-<p><strong>Napisz krótki akapit:</strong> podaj różnicę, oba 95% CI i g.
-Wyjaśnij, jakie różnice pozostają zgodne z klasycznym przedziałem, i
-wskaż informację potrzebną do oceny praktycznej wagi minut.</p>
+<p>Blok wyświetla tabelę „Efekty” (różnica średnich, łączone SD, d,
+korekta J i g Hedgesa), tabelę „95% przedziały różnicy” (Welch i
+bootstrap w grupach) oraz wykres „Dwa przedziały różnicy”.</p>
+<p><em>Wskazówki:</em></p>
+<ul>
+<li>Przedział dotyczy różnicy średnich w minutach; wartości wewnątrz
+przedziału Welcha są zgodne z danymi przy założeniach metody.</li>
+<li>Dolna granica przedziału bliska zera i górna rzędu 4 minut oznaczają
+szeroki zakres zgodnych różnic przy 12 osobach w grupie.</li>
+<li>g dzieli różnicę przez łączone SD osób i jest liczbą bez jednostki;
+efekt w minutach pozostaje efektem głównym.</li>
+<li>Praktyczną wagę minut ocenia się względem progu ustalonego przez
+instytucję, np. kosztu czasu przy typowym zadaniu.</li>
+<li>Wzorzec APA: „Różnica nowi minus doświadczeni wyniosła [..] min, 95%
+CI [[..]; [..]] (Welch), a percentylowy przedział bootstrapowy [[..];
+[..]]; <em>g</em> = [..]”.</li>
+</ul>
+<p><em>W akapicie wymagane:</em> (i) różnica w minutach; (ii) oba 95% CI
+z nazwą metody; (iii) g jako efekt bez jednostki; (iv) zakres różnic
+zgodnych z przedziałem Welcha; (v) informacja potrzebna do oceny
+praktycznej wagi minut.</p>
+<div class="framed" style="border: 2px solid #0072B2; padding: 0.6em 1em;">
+<p><strong>Twój akapit S04.</strong> Znacznik w nawiasie kwadratowym
+zastąp własnym tekstem.</p>
 <!-- odpowiedz:S04 -->
 <p>[UZUPELNIJ_S04] <!-- /odpowiedz:S04 --></p>
+</div>
 </div>
 <div id="challenge-5-poprawiona-rekomendacja" class="section level2">
 <h2>CHALLENGE 5: Poprawiona rekomendacja</h2>
 <p>Szkic raportu brzmi: „Doświadczenie spowodowało wzrost kompetencji,
 dlatego szkolenie zagwarantuje szybsze i skuteczniejsze szukanie”. Dane
-pochodzą z porównania obserwacyjnego i zawierają wyłącznie czas. Tabele
-„Test Welcha” i „Klasyczny 95% przedział różnicy” przypominają
-podstawowy wynik; liczby z CHALLENGE 1–4 uzupełniają opis.</p>
+pochodzą z porównania obserwacyjnego i zawierają wyłącznie czas.</p>
+<p><strong>Zadanie:</strong> zastąp szkic opisem różnicy czasu z
+liczbami obu testów i zaproponuj następne badanie.</p>
 <pre class="r"><code>raport &lt;- wynik_do_raportu(porownanie)
 print(raport)</code></pre>
+<p><strong>Opis grup [min]</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Grupa
+</th>
+<th style="text-align:right;">
+N
+</th>
+<th style="text-align:right;">
+Średnia
+</th>
+<th style="text-align:right;">
+SD
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+doświadczeni
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+9,00
+</td>
+<td style="text-align:right;">
+2,296
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nowi
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+11,25
+</td>
+<td style="text-align:right;">
+2,734
+</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Test Welcha</strong></p>
 <table>
 <thead>
@@ -1917,7 +2149,7 @@ p
 </tr>
 </tbody>
 </table>
-<p><strong>Klasyczny 95% przedział różnicy</strong></p>
+<p><strong>95% przedziały różnicy</strong></p>
 <table>
 <thead>
 <tr>
@@ -1950,14 +2182,105 @@ Welch
 4,391
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+Bootstrap w grupach
+</td>
+<td style="text-align:right;">
+2,25
+</td>
+<td style="text-align:right;">
+0,333
+</td>
+<td style="text-align:right;">
+4,167
+</td>
+</tr>
 </tbody>
 </table>
-<p><strong>Napisz krótki akapit:</strong> zastąp szkic opisem różnicy
-czasu z N, efektem, CI i wynikami obu testów. Oddziel zaobserwowaną
-różnicę od pomysłu na następne badanie. Zakończ ograniczeniem i
-propozycją pomiaru skuteczności albo projektu oceny szkolenia.</p>
+<p><strong>Tasowanie etykiet grup</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+Różnica obserwowana
+</th>
+<th style="text-align:right;">
+Tasowania co najmniej tak skrajne (k)
+</th>
+<th style="text-align:right;">
+B
+</th>
+<th style="text-align:left;">
+p_perm
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2,25
+</td>
+<td style="text-align:right;">
+71
+</td>
+<td style="text-align:right;">
+1999
+</td>
+<td style="text-align:left;">
+0,0360
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Efekt standaryzowany</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+g Hedgesa
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0,86
+</td>
+</tr>
+</tbody>
+</table>
+<p>Blok wyświetla tabele „Opis grup [min]”, „Test Welcha”, „95%
+przedziały różnicy”, „Tasowanie etykiet grup” i „Efekt standaryzowany” —
+komplet liczb do akapitu wynikowego.</p>
+<p><em>Wskazówki:</em></p>
+<ul>
+<li>Szkic zawiera trzy błędy: przyczynę („spowodowało”) przy grupach
+obserwacyjnych, kompetencje przy pomiarze wyłącznie czasu i skuteczność
+bez wyniku 0/1.</li>
+<li>Opis wyniku podaje N, średnie, różnicę z przedziałem, oba testy i
+g.</li>
+<li>Następne badanie: pomiar poprawności odnalezionej publikacji albo
+porównanie osób losowo przydzielonych do szkolenia i grupy bez
+szkolenia.</li>
+<li>Wzorzec APA: „Nowi (<em>n</em> = [..]) szukali średnio <em>M</em> =
+[..] min (<em>SD</em> = [..]), a doświadczeni (<em>n</em> = [..])
+<em>M</em> = [..] min (<em>SD</em> = [..]). Różnica wyniosła [..] min,
+95% CI [[..]; [..]], <em>t</em>([df]) = [..], <em>p</em> = [..],
+<em>p</em><sub>perm</sub> = [..], <em>g</em> = [..]. Grupy są
+obserwacyjne, a zbiór zawiera wyłącznie czas; ocena szkolenia wymaga
+[..]”.</li>
+</ul>
+<p><em>W akapicie wymagane:</em> (i) N, średnie, różnica i przedział;
+(ii) wyniki obu testów i g; (iii) zaobserwowana różnica oddzielona od
+pomysłu na badanie; (iv) ograniczenie: grupy obserwacyjne i sam czas;
+(v) propozycja pomiaru skuteczności albo projektu oceny szkolenia.</p>
+<div class="framed" style="border: 2px solid #0072B2; padding: 0.6em 1em;">
+<p><strong>Twój akapit S05.</strong> Znacznik w nawiasie kwadratowym
+zastąp własnym tekstem.</p>
 <!-- odpowiedz:S05 -->
 <p>[UZUPELNIJ_S05] <!-- /odpowiedz:S05 --></p>
+</div>
 </div>
 </div>
 <div id="zapis-i-oddanie" class="section level1">
@@ -2072,7 +2395,7 @@ Doświadczeni
 Różnica [pkt]
 </th>
 <th style="text-align:left;">
-|różnica| ≥ 3
+Różnica co najmniej 3 od zera
 </th>
 </tr>
 </thead>
@@ -2610,8 +2933,9 @@ przed badaniem.</p>
 <div id="próba-d-istotna-różnica-oznacza-dwie-rozłączne-grupy" class="section level3">
 <h3>Próba D: „istotna różnica oznacza dwie rozłączne grupy”</h3>
 <p>Wyniki osób mogą się silnie nakładać przy precyzyjnie oszacowanych
-średnich. Test dotyczy średnich; θ = 0,333 opisuje nakładanie rozkładów
-osób.</p>
+średnich. Test dotyczy średnich;
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>333</mn></mrow><annotation encoding="application/x-tex">\theta=0{,}333</annotation></semantics></math>
+opisuje nakładanie rozkładów osób.</p>
 <p>Decyzja o indywidualnym wsparciu opiera się na obserwowanych
 potrzebach osoby; statystyka grupowa opisuje wzorzec.</p>
 </div>
