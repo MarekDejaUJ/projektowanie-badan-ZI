@@ -17,14 +17,21 @@ adres_wysylki <- function(link, nazwa) {
 # Jedyne miejsce, które łączy się z serwerem; testy podstawiają tu atrapę.
 nc_put <- function(plik, url, naglowki) {
   curl::curl_upload(plik, url, verbose = FALSE, httpheader = naglowki,
-                    connecttimeout = 20, timeout = 300)
+                    connecttimeout = 30, timeout = 300)
 }
+
+pauza_ponowienia <- function() 5
 
 # NULL oznacza przyjęcie pliku; tekst opisuje przyczynę odmowy.
 wyslij_do_folderu <- function(plik, nazwa, link, podpis) {
   naglowki <- c("X-Requested-With: XMLHttpRequest",
                 paste0("X-NC-Nickname: ", utils::URLencode(enc2utf8(podpis), reserved = TRUE)))
-  odp <- tryCatch(nc_put(plik, adres_wysylki(link, nazwa), naglowki), error = function(e) e)
+  # Po błędzie sieci jedna ponowna próba; odmowa serwera (kod HTTP) nie jest powtarzana.
+  for (proba in 1:2) {
+    odp <- tryCatch(nc_put(plik, adres_wysylki(link, nazwa), naglowki), error = function(e) e)
+    if (!inherits(odp, "error") || proba == 2L) break
+    Sys.sleep(pauza_ponowienia())
+  }
   if (inherits(odp, "error"))
     return(paste0("brak po\u0142\u0105czenia z serwerem (", conditionMessage(odp), ")"))
   kod <- odp$status_code

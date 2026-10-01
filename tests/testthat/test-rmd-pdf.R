@@ -125,21 +125,21 @@ test_that("oddanie tworzy PDF przed połączeniem i zachowuje go offline", {
   polaczenia <- 0L
   local_mocked_bindings(sprawdz_narzedzia_pdf = function() TRUE,
     narzedzia_pdf_gotowe = function() TRUE,
-    uruchom_render_pracy = render_pdf_test,
+    uruchom_render_pracy = render_pdf_test, pauza_ponowienia = function() 0,
     nc_put = function(...) {
       polaczenia <<- polaczenia + 1L
       expect_true(sprawdz_zadanie("Z01", k, uruchom = FALSE)$ok)
       stop("Brak sieci")
     }, .package = "badaniaZI")
   expect_error(oddaj_zadanie("Z01", k, potwierdz = FALSE), "brak połączenia")
-  expect_equal(polaczenia, 1L)
+  expect_equal(polaczenia, 2L)
   expect_true(sprawdz_zadanie("Z01", k, uruchom = FALSE)$ok)
   expect_false(file.exists(file.path(k, "oddania.csv")))
   p <- file.path(k, "zadania/z01/zadanie.Rmd")
   tekst <- readLines(p, encoding = "UTF-8")
   badaniaZI:::pisz_linie(badaniaZI:::wstaw_odpowiedz(tekst, "S03", "[UZUPELNIJ]"), p)
   expect_error(oddaj_zadanie("Z01", k, potwierdz = FALSE), "S03")
-  expect_equal(polaczenia, 1L)
+  expect_equal(polaczenia, 2L)
 })
 
 test_that("niezapisany bufor edytora wymaga zapisu, nie jest nadpisywany", {

@@ -142,3 +142,26 @@ test_that("ostrzeżenie po terminie nie blokuje oddania", {
   expect_false(badaniaZI:::ostrzez_po_terminie("PROJEKT", cfg))
   expect_false(badaniaZI:::ostrzez_po_terminie("Z05", konfiguracja_kursu()))
 })
+
+test_that("po błędzie sieci wysyłka jest powtarzana raz, a odmowa serwera nie", {
+  plik <- tempfile(fileext = ".pdf")
+  on.exit(unlink(plik), add = TRUE)
+  writeBin(charToRaw("%PDF-test"), plik)
+  proby <- 0L
+  local_mocked_bindings(pauza_ponowienia = function() 0,
+    nc_put = function(...) { proby <<- proby + 1L
+      if (proby == 1L) stop("Timeout was reached") else list(status_code = 201L, content = raw()) },
+    .package = "badaniaZI")
+  expect_null(badaniaZI:::wyslij_do_folderu(plik, "a.pdf", "https://nc.uj.edu.pl/s/ABC", "Anna Kowalska s017"))
+  expect_equal(proby, 2L)
+  proby <- 0L
+  local_mocked_bindings(nc_put = function(...) { proby <<- proby + 1L; stop("Timeout was reached") }, .package = "badaniaZI")
+  wynik <- badaniaZI:::wyslij_do_folderu(plik, "a.pdf", "https://nc.uj.edu.pl/s/ABC", "x")
+  expect_match(wynik, "brak połączenia")
+  expect_equal(proby, 2L)
+  proby <- 0L
+  local_mocked_bindings(nc_put = function(...) { proby <<- proby + 1L; list(status_code = 403L, content = raw()) }, .package = "badaniaZI")
+  wynik <- badaniaZI:::wyslij_do_folderu(plik, "a.pdf", "https://nc.uj.edu.pl/s/ABC", "x")
+  expect_match(wynik, "bez hasła")
+  expect_equal(proby, 1L)
+})
