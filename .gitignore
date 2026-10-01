@@ -12,3 +12,5 @@
 *.synctex.gz
 *_cache/
 _site/
+tests/testthat/_problems/
+tests/testthat/testthat-problems.rds
