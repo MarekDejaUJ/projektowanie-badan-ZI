@@ -131,7 +131,11 @@ for (sciezka in c(file.path("bin", "windows", "contrib", wersje_r),
                             "contrib", wersje_r))) {
   d <- file.path(out, "pakiet", sciezka)
   dir.create(d, recursive = TRUE, showWarnings = FALSE)
+  # R pobiera przez HTTP najpierw PACKAGES.rds i PACKAGES.gz, dlatego zapisujemy komplet
+  # pustych indeksów w formacie indeksu źródłowego.
   file.create(file.path(d, "PACKAGES"))
+  close(gzfile(file.path(d, "PACKAGES.gz"), "w"))
+  saveRDS(readRDS(file.path(repo, "PACKAGES.rds"))[0, , drop = FALSE], file.path(d, "PACKAGES.rds"))
 }
 indeks <- read.dcf(file.path(repo, "PACKAGES"))
 stopifnot(identical(unname(indeks[, "Package"]), "badaniaZI"), identical(unname(indeks[, "Version"]), wydanie$pakiet))
