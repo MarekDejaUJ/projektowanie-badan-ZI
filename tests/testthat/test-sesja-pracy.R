@@ -1,6 +1,11 @@
+wyczysc_sesje <- function() {
+  s <- badaniaZI:::sesja_pracy
+  rm(list = ls(s, all.names = TRUE), envir = s)
+}
+
 test_that("kontekst nie zmienia katalogu i nie wybiera cudzej pracy", {
-  wyloguj_github(FALSE)
-  on.exit(wyloguj_github(FALSE), add = TRUE)
+  wyczysc_sesje()
+  on.exit(wyczysc_sesje(), add = TRUE)
   k <- tempfile("sesja żółta ")
   obcy <- tempfile("inna praca ")
   on.exit(unlink(c(k, obcy), recursive = TRUE), add = TRUE)
@@ -22,115 +27,84 @@ test_that("kontekst nie zmienia katalogu i nie wybiera cudzej pracy", {
   cfg$id <- "s019"
   badaniaZI:::pisz_linie(yaml::as.yaml(cfg), file.path(k, "kurs.yml"))
   expect_error(plik_pracy("Z01"), "zmieniła ID")
-  wyloguj_github(FALSE)
-  expect_length(ls(badaniaZI:::sesja_pracy), 0L)
   expect_true(file.exists(p))
 })
 
-test_that("start otwiera Rmd w tej samej sesji i zachowuje lokalną odpowiedź", {
-  wyloguj_github(FALSE)
-  on.exit(wyloguj_github(FALSE), add = TRUE)
+test_that("pierwszy start tworzy przestrzeń z ID i nazwiskiem bez zmiany katalogu", {
+  wyczysc_sesje()
+  on.exit(wyczysc_sesje(), add = TRUE)
+  rodzic <- tempfile("posit cloud ")
+  dir.create(rodzic)
+  on.exit(unlink(rodzic, recursive = TRUE), add = TRUE)
+  withr::with_dir(rodzic, {
+    expect_error(rozpocznij_zajecia("C01", otworz = FALSE), "pierwszym starcie")
+    expect_error(rozpocznij_zajecia("C01", "s017", otworz = FALSE), "pierwszym starcie")
+    expect_error(rozpocznij_zajecia("C01", "s017", "Imię Nazwisko", otworz = FALSE), "imię i nazwisko")
+    expect_false(dir.exists("moje-badania"))
+    cwd <- getwd()
+    expect_message(x <- rozpocznij_zajecia("C01", "s017", "Anna  Kowalska", otworz = FALSE), "s017 \\(Anna Kowalska\\)")
+    expect_identical(getwd(), cwd)
+    expect_identical(x$stan, "utworzono")
+    k <- normalizePath("moje-badania", winslash = "/")
+    expect_identical(x$katalog, k)
+    cfg <- badaniaZI:::czytaj_yaml(file.path(k, "kurs.yml"))
+    expect_identical(cfg$id, "s017")
+    expect_identical(cfg$student, "Anna Kowalska")
+    expect_null(cfg$repo)
+    expect_true(all(file.exists(file.path(k, "materialy/c01",
+      c("C01.html", "C01.pdf", "rubryka-Z01.html", "rubryka-Z01.pdf")))))
+    expect_false(dir.exists(file.path(k, "materialy/scenariusze")))
+    expect_identical(plik_pracy("Z01"), x$plik)
+  })
+})
+
+test_that("kolejny start zachowuje odpowiedzi i pilnuje ID", {
+  wyczysc_sesje()
+  on.exit(wyczysc_sesje(), add = TRUE)
   k <- tempfile("start sesji ")
   on.exit(unlink(k, recursive = TRUE), add = TRUE)
-  utworz_projekt("s017", katalog = k, repo = "kurs/praca-s017")
-  p <- przygotuj_zadanie("Z01", k)
+  otwarty <- NULL
+  local_mocked_bindings(otworz_plik_pracy = function(plik) { otwarty <<- plik; invisible(TRUE) },
+    .package = "badaniaZI")
+  x <- rozpocznij_zajecia("C01", "s017", "Anna Kowalska", katalog = k)
+  p <- x$plik
+  expect_identical(otwarty, p)
   t <- readLines(p, encoding = "UTF-8")
   t <- sub("[UZUPELNIJ_S01]", "Własny krótki akapit.", t, fixed = TRUE)
   badaniaZI:::pisz_linie(t, p)
   hash <- digest::digest(file = p)
-  pid <- Sys.getpid()
-  cwd <- getwd()
-  auth <- badaniaZI:::sesja_github
-  auth$token <- "test-token-only"
-  otwarty <- NULL
-  local_mocked_bindings(
-    sprawdz_repo = function(katalog, id = NULL) {
-      cfg <- badaniaZI:::czytaj_yaml(file.path(katalog, "kurs.yml"))
-      if (!is.null(id) && !identical(cfg$id, id)) stop("To projekt innego ID.")
-      cfg
-    },
-    otworz_plik_pracy = function(plik) { otwarty <<- plik; invisible(TRUE) },
-    .package = "badaniaZI")
-  local_mocked_bindings(
-    git_status = function(...) data.frame(file = "zadania/z01/zadanie.Rmd"),
-    git_fetch = function(...) stop("Nie wolno pobierać przy lokalnych zmianach"),
-    .package = "gert")
-  expect_message(x <- rozpocznij_zajecia("C01", "s017", katalog = k), "lokalne zmiany")
-  expect_identical(x$aktualizacja, "lokalne_zmiany")
-  expect_identical(otwarty, p)
-  expect_identical(plik_pracy("Z01"), p)
-  expect_identical(Sys.getpid(), pid)
-  expect_identical(getwd(), cwd)
-  expect_identical(badaniaZI:::token_sesji(), "test-token-only")
-  expect_identical(digest::digest(file = p), hash)
-  expect_message(x2 <- rozpocznij_zajecia("C01", "s017", otworz = FALSE), "ID: s017")
+  expect_message(x2 <- rozpocznij_zajecia("C01", otworz = FALSE), "ID: s017")
+  expect_identical(x2$stan, "otwarto")
   expect_identical(x2$plik, p)
-  expect_error(rozpocznij_zajecia("C01", "s018", katalog = k), "innego ID")
-  expect_error(rozpocznij_zajecia("C01", "s017", "https://github.com/kurs/inna", k), "Adres")
+  expect_identical(digest::digest(file = p), hash)
+  expect_error(rozpocznij_zajecia("C01", "s018", katalog = k), "należy do ID s017")
+  expect_message(rozpocznij_zajecia("C02", "s017", "Anna Maria Kowalska", katalog = k, otworz = FALSE),
+                 "Zapisano imię i nazwisko")
+  expect_identical(badaniaZI:::czytaj_yaml(file.path(k, "kurs.yml"))$student, "Anna Maria Kowalska")
   expect_identical(digest::digest(file = p), hash)
 })
 
-test_that("czysty start pobiera aktualizację, a obce metadane blokują otwarcie", {
-  wyloguj_github(FALSE)
-  on.exit(wyloguj_github(FALSE), add = TRUE)
-  k <- tempfile("czysty start ")
+test_that("przestrzeń bez nazwiska przypomina o jego dopisaniu", {
+  wyczysc_sesje()
+  on.exit(wyczysc_sesje(), add = TRUE)
+  k <- tempfile("bez nazwiska ")
   on.exit(unlink(k, recursive = TRUE), add = TRUE)
-  utworz_projekt("s017", katalog = k, repo = "kurs/praca-s017")
-  auth <- badaniaZI:::sesja_github
-  auth$token <- "test-token-only"
-  pobrania <- 0L
-  obce <- FALSE
-  local_mocked_bindings(
-    sprawdz_repo = function(katalog, ...) badaniaZI:::czytaj_yaml(file.path(katalog, "kurs.yml")),
-    aktualizuj_repo_lokalne = function(katalog) {
-      if (obce) {
-        cfg <- badaniaZI:::czytaj_yaml(file.path(katalog, "kurs.yml"))
-        cfg$id <- "s018"
-        badaniaZI:::pisz_linie(yaml::as.yaml(cfg), file.path(katalog, "kurs.yml"))
-      }
-    }, .package = "badaniaZI")
-  local_mocked_bindings(
-    git_status = function(...) data.frame(file = character()),
-    git_fetch = function(...) { pobrania <<- pobrania + 1L }, .package = "gert")
-  expect_message(x <- rozpocznij_zajecia("C01", "s017", katalog = k, otworz = FALSE), "ID: s017")
-  expect_identical(x$aktualizacja, "sprawdzono")
-  expect_equal(pobrania, 1L)
-  obce <- TRUE
-  expect_error(rozpocznij_zajecia("C02", "s017", katalog = k, otworz = FALSE), "zmieniła tożsamość")
-  expect_false(dir.exists(file.path(k, "zadania/z02")))
-})
-
-test_that("pierwsze pobranie zapamiętuje nowy katalog bez zmiany sesji", {
-  wyloguj_github(FALSE)
-  on.exit(wyloguj_github(FALSE), add = TRUE)
-  k <- tempfile("pobranie sesji ")
-  on.exit(unlink(k, recursive = TRUE), add = TRUE)
-  auth <- badaniaZI:::sesja_github
-  auth$token <- "test-token-only"
-  local_mocked_bindings(pobierz_zadanie = function(repo_url, katalog, id_studenta) {
-    utworz_projekt(id_studenta, katalog = katalog, repo = badaniaZI:::nazwa_repo(repo_url))
-  }, .package = "badaniaZI")
-  expect_message(x <- rozpocznij_zajecia("C01", "s017", "https://github.com/kurs/praca-s017", k, FALSE), "ID: s017")
-  expect_identical(x$aktualizacja, "pobrano")
-  expect_identical(x$plik, plik_pracy("Z01"))
+  utworz_projekt("s017", katalog = k)
+  expect_message(rozpocznij_zajecia("C01", katalog = k, otworz = FALSE), "Brakuje imienia i nazwiska")
 })
 
 test_that("każdy start przypomina wykonanie chunków, miejsce odpowiedzi i numer oddania", {
-  wyloguj_github(FALSE)
-  on.exit(wyloguj_github(FALSE), add = TRUE)
+  wyczysc_sesje()
+  on.exit(wyczysc_sesje(), add = TRUE)
   k <- tempfile("przypomnienie pracy ")
   on.exit(unlink(k, recursive = TRUE, force = TRUE), add = TRUE)
-  utworz_projekt("s017", katalog = k, repo = "kurs/praca-s017")
-  auth <- badaniaZI:::sesja_github
-  auth$token <- "test-token-only"
+  utworz_projekt("s017", katalog = k, student = "Anna Kowalska")
   local_mocked_bindings(
-    sprawdz_repo = function(katalog, ...) badaniaZI:::czytaj_yaml(file.path(katalog, "kurs.yml")),
     przygotuj_zadanie = function(id, katalog) file.path(katalog, "zadania", tolower(id), "zadanie.Rmd"),
     .package = "badaniaZI")
-  local_mocked_bindings(git_status = function(...) data.frame(file = "kurs.yml"), .package = "gert")
   for (nr in sprintf("%02d", 1:10)) {
     msg <- character()
-    withCallingHandlers(rozpocznij_zajecia(paste0("C", nr), "s017", katalog = k, otworz = FALSE),
+    withCallingHandlers(rozpocznij_zajecia(paste0("C", nr), katalog = k, otworz = FALSE),
       message = function(m) { msg <<- c(msg, conditionMessage(m)); invokeRestart("muffleMessage") })
     txt <- paste(msg, collapse = "\n")
     expect_match(txt, "pierwszy blok R (chunk)", fixed = TRUE)
@@ -138,8 +112,11 @@ test_that("każdy start przypomina wykonanie chunków, miejsce odpowiedzi i nume
     expect_match(txt, "[UZUPELNIJ_S01]", fixed = TRUE)
     expect_match(txt, "[UZUPELNIJ_S05]", fixed = TRUE)
     expect_match(txt, paste0('oddaj_zadanie("Z', nr, '")'), fixed = TRUE)
-    expect_match(txt, "Poczekaj na potwierdzenie odbioru", fixed = TRUE)
+    expect_match(txt, "Poczekaj na potwierdzenie oddania", fixed = TRUE)
+    expect_match(txt, paste0("materialy/c", nr), fixed = TRUE)
   }
+  karty <- list.files(file.path(k, "materialy/scenariusze"), "^S[0-9]{2}[.](html|pdf)$")
+  expect_length(karty, 40L)
 })
 
 test_that("otwarcie edytora używa navigateToFile i obsługuje brak API", {

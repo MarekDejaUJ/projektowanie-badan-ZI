@@ -1,6 +1,6 @@
 # Rubryka PROJEKT
 
-Wersja 1.1.0 — rocznik 2026-27
+Wersja 1.2.0 — rocznik 2026-27
 
 Maksimum: 100 punktów. Wagi i terminy określa konfiguracja rocznika.
 
@@ -94,7 +94,7 @@ Dowód: P09–P10 łączą wyniki z problemem, opisują konkretne ograniczenia i
 
 Raport Rmd i zgodny PDF, gotowy silnik R, słownik, dane i manifest tworzą odtwarzalną, identyfikowalną całość.
 
-Dowód: Zapisany Rmd odtwarza własne akapity, tabele i wykresy w PDF, korzystając z zachowanych danych, manifestu i karty scenariusza. P11 zawiera użyte źródła; wersje i parametry są zapisane, a oddanie potwierdza zdalne SHA w pokwitowaniu. Nie wymaga się limitu słów, powtórnego wpisania odpowiedzi Z09/Z10, samodzielnego programowania, ręcznego eksportu CSV/PNG ani wpisania SHA do tego samego Rmd.
+Dowód: Zapisany Rmd odtwarza własne akapity, tabele i wykresy w PDF, korzystając z zachowanych danych, manifestu i karty scenariusza. P11 zawiera użyte źródła; wersje i parametry są zapisane, a potwierdzenie oddania podaje nazwy PDF i archiwum źródeł oraz ich sumy SHA-256. Nie wymaga się limitu słów, powtórnego wpisania odpowiedzi Z09/Z10, samodzielnego programowania, ręcznego eksportu CSV/PNG ani wpisania sumy do tego samego Rmd.
 
 | Punkty | Obserwowalny dowód |
 |--------:|---------------------------------------------------------------|
@@ -102,4 +102,4 @@ Dowód: Zapisany Rmd odtwarza własne akapity, tabele i wykresy w PDF, korzystaj
 | 2.5 | Raport lub gotowy skrypt nie zgadza się z danymi i wynikami. |
 | 5 | Część pracy jest odtwarzalna; brakuje pliku, parametru, wersji lub instrukcji. |
 | 7.5 | Całość jest odtwarzalna; pozostaje drobna luka źródła albo wersji. |
-| 10 | Rmd, aktualny PDF, silnik R, słownik, dane i manifest tworzą odtwarzalną całość. Źródła i wersje są jawne, a pokwitowanie identyfikuje oddaną wersję; własne odpowiedzi pozostały w dokumencie. |
+| 10 | Rmd, aktualny PDF, silnik R, słownik, dane i manifest tworzą odtwarzalną całość. Źródła i wersje są jawne, a potwierdzenie oddania identyfikuje oddaną wersję; własne odpowiedzi pozostały w dokumencie. |

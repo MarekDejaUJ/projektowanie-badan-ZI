@@ -16,21 +16,16 @@ output:
 <!-- start-sesji -->
 # Początek pracy na ćwiczeniu C03
 
-Otwórz RStudio. Pakiet kursu `badaniaZI` jest zainstalowany na komputerach w sali. Cztery polecenia z następnego bloku wpisujesz w konsoli RStudio, czyli w dolnym panelu ze znakiem `>`; w miejsce `TWOJE_ID` wpisz swoje ID, a w miejsce adresu — adres prywatnego repozytorium otrzymany na początku kursu. Dokument PDF zawiera cztery polecenia jako tekst instrukcji.
+Otwórz swój projekt kursu w Posit Cloud albo RStudio na własnym komputerze; pakiet kursu `badaniaZI` jest w nim zainstalowany. Dwa polecenia z następnego bloku wpisujesz w konsoli RStudio, czyli w dolnym panelu ze znakiem `>`; w miejsce `TWOJE_ID` wpisz swoje ID, a w miejsce `Imię Nazwisko` — swoje imię i nazwisko. Dokument PDF zawiera dwa polecenia jako tekst instrukcji.
 
 ```r
 library(badaniaZI)
-ID <- "TWOJE_ID"
-zaloguj_github()
-rozpocznij_zajecia(
-  "C03", id_studenta = ID,
-  repo_url = "ADRES_TWOJEGO_PRYWATNEGO_REPOZYTORIUM"
-)
+rozpocznij_zajecia("C03", id_studenta = "TWOJE_ID", student = "Imię Nazwisko")
 ```
 
-Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie na stronie GitHub. Sprawdź w komunikacie potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w sesji; pliki pracy zachowują je także po zamknięciu RStudio.
+Sprawdź w komunikacie ID oraz imię i nazwisko. Przy pierwszym starcie funkcja tworzy folder `moje-badania` i zapisuje w nim oba dane; pliki pracy zachowują je także po zamknięciu projektu, a imię i nazwisko trafiają do nazwy oddawanego pliku.
 
-Funkcja `rozpocznij_zajecia()` otwiera własny plik `zadanie.Rmd` i zapamiętuje katalog pracy. Pracuj w otwartym pliku `zadanie.Rmd` do końca zajęć; plik `.Rproj` pozostaje zamknięty, bo jego otwarcie uruchamia nową sesję R, która wymaga ponownego logowania. Najpierw uruchom blok `przygotowanie`, a potem kolejne części LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; plik pracy i własne ID pozostają bez zmian.
+Funkcja `rozpocznij_zajecia()` otwiera własny plik `zadanie.Rmd`, zapamiętuje katalog pracy i kopiuje do folderu `moje-badania/materialy` wersję HTML i PDF ćwiczenia oraz rubrykę zadania. Pracuj w otwartym pliku `zadanie.Rmd` do końca zajęć. Najpierw uruchom blok `przygotowanie`, a potem kolejne części LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; plik pracy i własne ID pozostają bez zmian.
 <!-- /start-sesji -->
 
 Pierwszy chunk, `przygotowanie`, wczytuje gotowy skrypt `analiza.R`. Skrypt tworzy zbiór S02 po trzech regułach ćwiczenia C02 (usunięcie identycznych duplikatów, kod 99 w pozycjach ankiety jako brak, czas spoza 0–120 minut jako brak), dwie małe serie A i B po pięć czasów, tabelę `repozytorium` dwunastu osób do części CHALLENGE oraz funkcje wyświetlające tabele i wykresy. Wszystkie czasy z zakresu 0–120 minut, także długie, pozostają w danych. Skrypt działa bez zmian.
@@ -505,15 +500,15 @@ Blok wyświetla tabelę „Miary czasu do akapitu” (osoby, ważne czasy, śred
 
 Sprawdź pięć własnych odpowiedzi: każda liczba odnosi się do właściwego zbioru, miary i jednostki. Sprawdź nazwy miar: SD opisuje osoby, a sukces opisuje kolumna powodzenia. Zapisz plik `zadanie.Rmd` w edytorze (Ctrl+S); funkcja oddania tworzy PDF z zapisanego pliku.
 
-W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy aktualny PDF, sprawdza kompletność i wysyła go razem z Rmd oraz `analiza.R` do Twojego prywatnego repozytorium z dostępem prowadzącego.
+W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy aktualny PDF, sprawdza kompletność, otwiera PDF do obejrzenia i po potwierdzeniu literą `t` wysyła go do folderu zadania prowadzącego na serwerze UJ (nc.uj.edu.pl). Nazwa pliku zawiera Twoje ID oraz nazwisko i imię.
 
 ```r
 oddaj_zadanie("Z03")
 ```
 
-Oddanie potwierdza komunikat z identyfikatorem SHA wysłanej wersji. Po komunikacie błędu popraw wskazany problem, zapisz plik i ponownie wywołaj `oddaj_zadanie("Z03")`; nowe potwierdzenie obejmuje nowe zmiany. Ocenę prowadzący zapisuje osobno w repozytorium.
+Oddanie potwierdza komunikat z nazwą wysłanego pliku, folderem i czasem; plik `oddania.csv` w folderze `moje-badania` zapisuje także sumę SHA-256 wysłanego PDF. Po komunikacie błędu popraw wskazany problem, zapisz plik i ponownie wywołaj `oddaj_zadanie("Z03")`; nowa wersja trafia do folderu obok poprzedniej. Ocenę prowadzący przekazuje osobno.
 
-Po potwierdzonym oddaniu wykonaj w konsoli `wyloguj_github()`. Na komputerze współdzielonym wyloguj również przeglądarkę i zamknij RStudio, wybierając „Don't Save” przy pytaniu o przestrzeń roboczą `.RData`. Przy braku sieci zachowaj źródła przed czyszczeniem komputera i poproś prowadzącego o ustalenie sposobu dostarczenia pracy.
+Po potwierdzonym oddaniu możesz zamknąć projekt: Posit Cloud zachowuje folder `moje-badania` do kolejnych zajęć. Na komputerze współdzielonym wyloguj się z Posit Cloud w przeglądarce. Przy braku sieci PDF pozostaje w folderze zadania; wyślij go tym samym poleceniem po odzyskaniu połączenia, a gdy problem trwa, poproś prowadzącego o ustalenie sposobu dostarczenia pracy.
 
 ## Co jest oceniane
 

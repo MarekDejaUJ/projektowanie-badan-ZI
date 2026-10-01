@@ -1,5 +1,5 @@
 id: Z10
-version: 1.2.0
+version: 1.3.0
 rocznik: 2026-27
 max_points: 10.0
 criteria:
@@ -75,11 +75,12 @@ criteria:
     observable_description: Obie relacje i ich tory opisano poprawnie; efekty, CI,
       pomiar, ograniczenie i rekomendacja są spójne z wynikami, niezależnie od p.
 - id: Z10.4
-  title: Wersja robocza ma identyfikowalne zdalne SHA i instrukcję odtworzenia zgodną
+  title: Oddana wersja ma potwierdzenie z sumą SHA-256 i kartę odtworzenia zgodną
     z plikami.
-  evidence: Zapisane źródła, dane i manifest pozwalają odtworzyć wyniki; pokwitowanie
-    wysyłki wskazuje zdalne SHA tej wersji. Nie wymaga się wpisania SHA do tego samego
-    Rmd ani ręcznego programowania procedur lub przepisywania wyników.
+  evidence: Karta odtworzenia w PDF (wariant, hash danych, reguły, losowania i wersje)
+    jest zgodna z zapisanymi źródłami, danymi i manifestem; potwierdzenie oddania
+    wskazuje nazwę pliku i sumę SHA-256 tej wersji PDF. Nie wymaga się wpisania sumy
+    do tego samego Rmd ani ręcznego programowania procedur lub przepisywania wyników.
   answer_fields: [S01, S02, S03, S04, S05]
   max_points: 2.0
   review_mode: mixed
@@ -90,11 +91,11 @@ criteria:
   - points: 0.0
     observable_description: Brak dowodu lub wynik nie realizuje kryterium.
   - points: 0.5
-    observable_description: Pliki są lokalne bez potwierdzenia zdalnej wersji.
+    observable_description: PDF pozostał lokalnie, bez potwierdzonego oddania.
   - points: 1.0
-    observable_description: Zdalne SHA podane; instrukcja nie odtwarza wyników.
+    observable_description: Oddanie potwierdzone; karta odtworzenia nie odtwarza wyników.
   - points: 1.5
-    observable_description: SHA i odtworzenie poprawne; jedna wersja zależności niepodana.
+    observable_description: Oddanie i odtworzenie poprawne; jedna wersja zależności niepodana.
   - points: 2.0
-    observable_description: Wersja robocza ma identyfikowalne zdalne SHA i instrukcję
+    observable_description: Oddana wersja ma potwierdzenie z sumą SHA-256 i kartę
       odtworzenia zgodną z plikami.

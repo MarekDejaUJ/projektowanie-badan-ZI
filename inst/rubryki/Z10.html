@@ -234,7 +234,6 @@ span.underline{text-decoration: underline;}
 div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
-.display.math{display: block; text-align: center; margin: 0.5rem auto;}
 </style>
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -355,7 +354,7 @@ display: none;
 
 <div id="rubryka-z10" class="section level1">
 <h1>Rubryka Z10</h1>
-<p>Wersja 1.2.0 — rocznik 2026-27</p>
+<p>Wersja 1.3.0 — rocznik 2026-27</p>
 <p>Maksimum: 10 punktów. Wagi i terminy określa konfiguracja
 rocznika.</p>
 <p>Kontrola techniczna sprawdza pliki i odtworzenie; dobór,
@@ -505,12 +504,13 @@ ograniczenie i rekomendacja są spójne z wynikami, niezależnie od p.</td>
 </div>
 <div id="z10.4-2-pkt" class="section level2">
 <h2>Z10.4 — 2 pkt</h2>
-<p>Wersja robocza ma identyfikowalne zdalne SHA i instrukcję odtworzenia
+<p>Oddana wersja ma potwierdzenie z sumą SHA-256 i kartę odtworzenia
 zgodną z plikami.</p>
-<p>Dowód: Zapisane źródła, dane i manifest pozwalają odtworzyć wyniki;
-pokwitowanie wysyłki wskazuje zdalne SHA tej wersji. Nie wymaga się
-wpisania SHA do tego samego Rmd ani ręcznego programowania procedur lub
-przepisywania wyników.</p>
+<p>Dowód: Karta odtworzenia w PDF (wariant, hash danych, reguły,
+losowania i wersje) jest zgodna z zapisanymi źródłami, danymi i
+manifestem; potwierdzenie oddania wskazuje nazwę pliku i sumę SHA-256
+tej wersji PDF. Nie wymaga się wpisania sumy do tego samego Rmd ani
+ręcznego programowania procedur lub przepisywania wyników.</p>
 <p>Pola odpowiedzi: S01, S02, S03, S04, S05</p>
 <table>
 <colgroup>
@@ -530,20 +530,21 @@ przepisywania wyników.</p>
 </tr>
 <tr class="even">
 <td align="right">0.5</td>
-<td>Pliki są lokalne bez potwierdzenia zdalnej wersji.</td>
+<td>PDF pozostał lokalnie, bez potwierdzonego oddania.</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
-<td>Zdalne SHA podane; instrukcja nie odtwarza wyników.</td>
+<td>Oddanie potwierdzone; karta odtworzenia nie odtwarza wyników.</td>
 </tr>
 <tr class="even">
 <td align="right">1.5</td>
-<td>SHA i odtworzenie poprawne; jedna wersja zależności niepodana.</td>
+<td>Oddanie i odtworzenie poprawne; jedna wersja zależności
+niepodana.</td>
 </tr>
 <tr class="odd">
 <td align="right">2</td>
-<td>Wersja robocza ma identyfikowalne zdalne SHA i instrukcję
-odtworzenia zgodną z plikami.</td>
+<td>Oddana wersja ma potwierdzenie z sumą SHA-256 i kartę odtworzenia
+zgodną z plikami.</td>
 </tr>
 </tbody>
 </table>

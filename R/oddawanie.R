@@ -1,156 +1,168 @@
 #' Oddanie zadania z konsoli R
 #'
-#' Z zapisanego Rmd tworzy aktualny PDF i wysyła go razem ze źródłami.
-#' Sprawdza własne odpowiedzi, gotowy kod i dane; nie przyznaje punktów.
-#' Wysyła wyłącznie jawną listę plików. Potwierdzeniem jest zdalny SHA oraz
-#' rekord odbioru utworzony przez GitHub, z czasem serwera. Zielony stan
-#' odbioru nie jest oceną merytoryczną ani wynikiem kontroli kodu.
+#' Sprawdza zapisany Rmd (odpowiedzi, gotowy kod, ID i dane), tworzy od
+#' początku aktualny PDF w świeżej sesji R i wysyła go do folderu zadania
+#' prowadzącego na nc.uj.edu.pl. Nazwa pliku zawiera ID oraz nazwisko i imię,
+#' np. s017_kowalska_anna_Z03.pdf. W sesji interaktywnej najpierw otwiera PDF
+#' i pyta o potwierdzenie. Ponowne oddanie dodaje nową wersję obok poprzedniej.
+#' Funkcja nie przyznaje punktów.
 #' @param id Z01--Z10.
 #' @param katalog Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.
-#' @return Lista z repo, SHA, ID odbioru i czasem serwera.
+#' @param potwierdz Czy pokazać PDF i zapytać przed wysłaniem.
+#' @return Lista: stan, zadanie, nazwy wysłanych plików, czas i sumy SHA-256,
+#'   niewidocznie.
 #' @export
 #' @examples
-#' \dontrun{ oddaj_zadanie("Z01", "moje-badania") }
-oddaj_zadanie <- function(id, katalog = NULL) {
+#' \dontrun{ oddaj_zadanie("Z01") }
+oddaj_zadanie <- function(id, katalog = NULL, potwierdz = interactive()) {
   id <- toupper(id)
   sprawdz_id(id, "zadanie", "^Z(0[1-9]|10)$")
-  oddaj_prace(id, katalog)
+  oddaj_prace(id, katalog, potwierdz)
 }
 
 #' Oddanie indywidualnego projektu ilościowego
-#' @param katalog Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.
-#' @return Pokwitowanie GitHub z SHA i czasem serwera.
+#'
+#' Tak jak oddaj_zadanie() tworzy i sprawdza PDF raportu, a do folderu
+#' projektu wysyła dwa pliki: PDF oraz archiwum ZIP ze źródłami (raport.Rmd,
+#' analiza.R, dane wariantu, metadane i PDF), np. s017_kowalska_anna_PROJEKT.pdf
+#' i s017_kowalska_anna_PROJEKT_zrodla.zip.
+#' @inheritParams oddaj_zadanie
+#' @return Lista jak w oddaj_zadanie(), niewidocznie.
 #' @export
 #' @examples
-#' \dontrun{ oddaj_projekt("moje-badania") }
-oddaj_projekt <- function(katalog = NULL) oddaj_prace("PROJEKT", katalog)
+#' \dontrun{ oddaj_projekt() }
+oddaj_projekt <- function(katalog = NULL, potwierdz = interactive()) {
+  oddaj_prace("PROJEKT", katalog, potwierdz)
+}
 
-oddaj_prace <- function(id, katalog) {
+oddaj_prace <- function(id, katalog, potwierdz) {
+  if (isTRUE(getOption("knitr.in.progress")))
+    stop("Uruchom polecenie oddania w konsoli, nie w bloku dokumentu.", call. = FALSE)
+  if (!is.logical(potwierdz) || length(potwierdz) != 1L || is.na(potwierdz))
+    stop("potwierdz musi mie\u0107 warto\u015b\u0107 TRUE albo FALSE.", call. = FALSE)
   katalog <- katalog_kursu(katalog)
+  cfg <- czytaj_yaml(file.path(katalog, "kurs.yml"))
+  if (is.null(cfg$student))
+    stop("Brakuje imienia i nazwiska do nazwy pliku oddania. Dopisz je, np.\n",
+         "  rozpocznij_zajecia(\"C01\", student = \"Anna Kowalska\")", call. = FALSE)
+  nazwa <- nazwa_oddania(cfg$id, cfg$student, id)
+  link <- folder_oddania(id, konfiguracja_kursu(cfg$rocznik))
+  zapewnij_narzedzia_pdf(potwierdz)
   kontrola <- sprawdz_zadanie(id, katalog)
-  if (!kontrola$ok) stop(paste(kontrola$kontrole$opis[!kontrola$kontrole$ok], collapse = "\n"),
-                        "\nNiczego nie wys\u0142ano.", call. = FALSE)
-  hashe_oddania <- hashe_plikow(katalog, kontrola$pliki)
-  # Lokalny PDF pozostaje dostępny także wtedy, gdy logowanie lub sieć zawiedzie.
-  cfg <- sprawdz_repo(katalog)
-  message("Pliki oddania:\n", paste(kontrola$pliki, collapse = "\n"))
-  staged <- gert::git_status(staged = TRUE, repo = katalog)
-  if (any(!staged$file %in% kontrola$pliki)) stop("W indeksie Git s\u0105 pliki spoza tego oddania. Sprawd\u017a je w zak\u0142adce Git RStudio.", call. = FALSE)
-  operacja_git(gert::git_fetch("origin", password = token_sesji(), repo = katalog, verbose = FALSE))
-  roznice <- operacja_git(gert::git_ahead_behind(upstream = "origin/main", repo = I(katalog)))
-  if (roznice$behind > 0L)
-    stop("Repozytorium zdalne ma nowsze commity. Zachowaj swoje pliki i uzgodnij wersje przed oddaniem; niczego nie nadpisano ani nie wys\u0142ano.", call. = FALSE)
-  baza <- operacja_git(gert::git_commit_id("origin/main", repo = I(katalog)))
-  sprawdz_historie_oddania(katalog, id, kontrola$pliki,
-    gert::git_info(repo = I(katalog))$commit, baza)
-  # Logowanie i sieć mogły trwać dłużej niż lokalny render.
-  sprawdz_aktualnosc_pdf(kontroluj_wejscia_rmd(id, katalog))
-  operacja_git(gert::git_add(kontrola$pliki, repo = katalog))
-  if (nrow(gert::git_status(staged = TRUE, repo = katalog))) {
-    sygnatura <- gert::git_signature(sesja_github$login,
-      paste0(sesja_github$id, "+", sesja_github$login, "@users.noreply.github.com"))
-    operacja_git(gert::git_commit(paste("Oddaj", id), author = sygnatura, committer = sygnatura, repo = katalog))
+  if (!kontrola$ok)
+    stop(paste(kontrola$kontrole$opis[!kontrola$kontrole$ok], collapse = "\n"),
+         "\nNiczego nie wys\u0142ano.", call. = FALSE)
+  pdf <- sciezka_pracy(katalog, pliki_pdf_pracy(id)[1L])
+  pliki <- stats::setNames(pdf, paste0(nazwa, ".pdf"))
+  if (id == "PROJEKT") {
+    zip <- spakuj_oddanie(katalog, kontrola$pliki)
+    on.exit(unlink(zip), add = TRUE)
+    pliki <- c(pliki, stats::setNames(zip, paste0(nazwa, "_zrodla.zip")))
   }
-  sha <- gert::git_info(repo = katalog)$commit
-  sprawdz_bajty_commitu(katalog, kontrola$pliki, hashe_oddania, sha)
-  sprawdz_historie_oddania(katalog, id, kontrola$pliki, sha, baza)
-  if (identical(sha, baza)) {
-    poprzednie <- ostatnie_oddanie(cfg$repo, id)
-    if (!is.null(poprzednie) &&
-        identyczne_oddanie(katalog, kontrola$pliki, hashe_oddania, poprzednie$sha)) {
-      sprawdz_bajty_commitu(katalog, kontrola$pliki, hashe_oddania, sha)
-      wynik <- pokwitowanie(cfg$repo, poprzednie$sha, id, poprzednie$odbior)
-      message("Pliki nie zmieni\u0142y si\u0119. Zachowano odbi\u00f3r ", id, ". SHA: ", wynik$sha,
-        ". Czas GitHub: ", wynik$czas_serwera, ".")
-      return(wynik)
+  folder <- if (id == "PROJEKT") "projekt" else paste0("z", as.integer(sub("^Z", "", id)))
+  message("\nGotowe do oddania ", id, ":\n",
+          paste0("  ", names(pliki), " (", format_rozmiar(file.size(pliki)), ")", collapse = "\n"), "\n",
+          "  autor:  ", cfg$student, ", ID ", cfg$id, "\n",
+          "  folder: ", folder, " na ", sub("^https://([^/]+)/.*$", "\\1", link))
+  ostrzez_po_terminie(id, konfiguracja_kursu(cfg$rocznik))
+  if (potwierdz) {
+    pokaz_plik(pdf)
+    odp <- zapytaj("Obejrzyj PDF. Wys\u0142a\u0107 go prowadz\u0105cemu? [t/n]: ")
+    if (!tolower(trimws(odp)) %in% c("t", "tak")) {
+      message("Nie wys\u0142ano. PDF zosta\u0142 w ", pdf, ". Gdy b\u0119dziesz gotowy, powt\u00f3rz polecenie oddania.")
+      return(invisible(list(stan = "niewyslane", zadanie = id, pliki = character())))
     }
   }
-  operacja_git(gert::git_push("origin", refspec = paste0(sha, ":refs/heads/main"),
-                             password = token_sesji(), force = FALSE, verbose = FALSE, repo = katalog))
-  remote <- github_api(paste0("repos/", cfg$repo, "/git/ref/heads/main"))$dane$object$sha
-  if (!identical(remote, sha)) stop("Zdalna ga\u0142\u0105\u017a zmieni\u0142a si\u0119 podczas wysy\u0142ki. Sprawd\u017a status i zachowaj lokaln\u0105 prac\u0119.", call. = FALSE)
-  odbior <- znajdz_odbior(cfg$repo, sha, id)
-  if (is.null(odbior)) odbior <- github_api(paste0("repos/", cfg$repo, "/statuses/", sha), "POST",
-    list(state = "success", context = paste0("badaniaZI/odbior/", id),
-         description = paste("Odebrano", id, "\u2014 kontrola i ocena osobno"),
-         target_url = paste0("https://github.com/", cfg$repo, "/commit/", sha)))$dane
-  wynik <- pokwitowanie(cfg$repo, sha, id, odbior)
-  message("Odebrano ", id, ". SHA: ", sha, ". Czas GitHub: ", wynik$czas_serwera, ".")
-  wynik
-}
-
-# Odtwarzamy lokalny commit bez sieci i bez zmiany roboczego katalogu/Gita.
-# Sprawdzenie łapie m.in. zmianę końców linii przez stare reguły repozytorium.
-sprawdz_bajty_commitu <- function(katalog, pliki, hashe, sha) {
-  tmp <- tempfile("kontrola-commitu-")
-  if (file.exists(tmp)) stop("Nie mo\u017cna przygotowa\u0107 lokalnej kontroli commitu.", call. = FALSE)
-  on.exit({ gc(); unlink(tmp, recursive = TRUE) }, add = TRUE)
-  operacja_git(gert::git_clone(katalog, path = tmp, branch = "main", verbose = FALSE))
-  if (!identical(gert::git_info(repo = tmp)$commit, sha) ||
-      !identical(gert::git_info(repo = katalog)$commit, sha) ||
-      !identical(hashe_plikow(tmp, pliki), hashe) ||
-      !identical(hashe_plikow(katalog, pliki), hashe))
-    stop("Zapis w Git r\u00f3\u017cni si\u0119 od plik\u00f3w u\u017cytych do PDF. Zachowano lokaln\u0105 prac\u0119 i commit, niczego nie wys\u0142ano. Nie zmieniaj regu\u0142 repozytorium samodzielnie; popro\u015b prowadz\u0105cego o sprawdzenie ko\u0144c\u00f3w linii i wersji plik\u00f3w.", call. = FALSE)
-  invisible(TRUE)
-}
-
-lista_statusow <- function(repo, sha) {
-  wyniki <- list()
-  strona <- 1L
-  repeat {
-    x <- github_api(paste0("repos/", repo, "/commits/", sha, "/statuses?per_page=100&page=", strona))$dane
-    wyniki <- c(wyniki, x)
-    if (length(x) < 100L) return(wyniki)
-    strona <- strona + 1L
+  # Plik mógł zmienić się podczas oglądania PDF: wysyłamy tylko wersję zgodną z Rmd.
+  sprawdz_aktualnosc_pdf(kontroluj_wejscia_rmd(id, katalog))
+  sumy <- vapply(pliki, function(p) digest::digest(file = p, algo = "sha256"), character(1))
+  wyslane <- character()
+  for (n in names(pliki)) {
+    problem <- wyslij_do_folderu(pliki[[n]], n, link, paste(cfg$student, cfg$id))
+    if (!is.null(problem))
+      stop("Nie wys\u0142ano pliku ", n, ": ", problem, ".",
+           if (length(wyslane)) paste0("\nWys\u0142ano wcze\u015bniej: ", paste(wyslane, collapse = ", "), "."),
+           "\nTwoja praca i PDF s\u0105 zapisane: ", pdf,
+           "\nSpr\u00f3buj ponownie za chwil\u0119. Je\u015bli b\u0142\u0105d si\u0119 powtarza, otw\u00f3rz ", link,
+           " i przeci\u0105gnij plik do okna przegl\u0105darki albo zg\u0142o\u015b problem prowadz\u0105cemu.", call. = FALSE)
+    wyslane <- c(wyslane, n)
   }
+  czas <- Sys.time()
+  zapisz_rejestr_oddan(katalog, id, names(pliki), sumy, file.size(pliki), czas)
+  message("Oddano ", id, ": ", paste(names(pliki), collapse = ", "), " do folderu ", folder,
+          " (", format(czas, "%d.%m.%Y %H:%M"), ").\n",
+          "Je\u015bli poprawisz prac\u0119 przed terminem, oddaj j\u0105 ponownie tym samym poleceniem; nowa wersja trafi obok poprzedniej.")
+  invisible(list(stan = "wyslano", zadanie = id, pliki = names(pliki),
+                 czas = format(czas, "%Y-%m-%dT%H:%M:%S%z"), sha256 = unname(sumy)))
 }
 
-znajdz_odbior <- function(repo, sha, id) {
-  x <- lista_statusow(repo, sha)
-  x <- Filter(function(y) identical(tolower(y$context), tolower(paste0("badaniaZI/odbior/", id))) &&
-                identical(y$state, "success") && !is.null(y$created_at), x)
-  if (!length(x)) return(NULL)
-  x[[which.min(vapply(x, function(y) as.numeric(as.POSIXct(y$created_at, format = "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")), numeric(1)))]]
+# Odpowiedź i podgląd w osobnych funkcjach, aby dało się je sprawdzić bez konsoli.
+zapytaj <- function(tekst) readline(tekst)
+pokaz_plik <- function(plik) invisible(tryCatch(utils::browseURL(plik), error = function(e) NULL))
+
+# Archiwum zawiera jawną listę plików oddania ze ścieżkami względnymi.
+spakuj_oddanie <- function(katalog, pliki) {
+  zip <- tempfile("oddanie-", fileext = ".zip")
+  zip::zip(zip, files = pliki, root = katalog, mode = "mirror")
+  if (!file.exists(zip) || !setequal(zip::zip_list(zip)$filename, pliki))
+    stop("Nie mo\u017cna przygotowa\u0107 archiwum \u017ar\u00f3de\u0142 projektu. Niczego nie wys\u0142ano.", call. = FALSE)
+  zip
 }
 
-pokwitowanie <- function(repo, sha, id, odbior) {
-  list(stan = "odebrane", zadanie = id, repo = repo, sha = sha, id_odbioru = odbior$id,
-       czas_serwera = odbior$created_at, url = paste0("https://github.com/", repo, "/commit/", sha),
-       kontrola = "sprawdz_osobno", ocena = "sprawdz_osobno")
+format_rozmiar <- function(bajty) {
+  vapply(bajty, function(b) format(structure(b, class = "object_size"), units = "auto", standard = "SI"), character(1))
 }
 
-#' Status odbioru i kontroli
+ostrzez_po_terminie <- function(id, konfiguracja) {
+  data <- if (id == "PROJEKT") konfiguracja$termin_projektu else termin_zadania(id, konfiguracja)$data
+  if (is.null(data)) return(invisible(FALSE))
+  termin <- czas_iso(data)
+  if (!is.na(termin) && Sys.time() > termin) {
+    message("Uwaga: termin oddania ", id, " min\u0105\u0142 ", format(termin, "%d.%m.%Y %H:%M", tz = konfiguracja$timezone),
+            ". Prowadz\u0105cy widzi czas przyj\u0119cia pliku; zasady sp\u00f3\u017anie\u0144 opisuje strona kursu.")
+    return(invisible(TRUE))
+  }
+  invisible(FALSE)
+}
+
+plik_rejestru <- function(katalog) file.path(katalog, "oddania.csv")
+
+zapisz_rejestr_oddan <- function(katalog, id, nazwy, sumy, rozmiary, czas) {
+  wiersze <- data.frame(czas = format(czas, "%Y-%m-%d %H:%M:%S"), zadanie = id, plik = nazwy,
+                        bajty = as.numeric(rozmiary), sha256 = unname(sumy))
+  plik <- plik_rejestru(katalog)
+  utils::write.table(wiersze, plik, sep = ",", row.names = FALSE, col.names = !file.exists(plik),
+                     append = file.exists(plik), fileEncoding = "UTF-8", qmethod = "double")
+  invisible(plik)
+}
+
+#' Lokalny rejestr oddanych prac
 #'
-#' Domyślnie odszukuje ostatnie potwierdzone oddanie wskazanego zadania na
-#' zdalnej gałęzi main, również po oddaniu innych zadań. Nie ocenia lokalnych,
-#' niewysłanych zmian. Bez pokwitowania zwraca stan brak_oddania.
-#' @param id Z01--Z10 albo PROJEKT.
+#' Każde udane oddanie dopisuje do pliku oddania.csv w przestrzeni pracy
+#' czas, nazwę wysłanego pliku, rozmiar i sumę SHA-256. Rejestr pokazuje, co
+#' wysłano z tej przestrzeni; prowadzący widzi pliki w swoim folderze.
+#' @param id Opcjonalnie Z01--Z10 albo PROJEKT; NULL zwraca wszystkie oddania.
 #' @param katalog Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.
-#' @param sha Opcjonalne SHA konkretnej wersji; domyślnie ostatnie oddanie zadania.
-#' @return Stan odbioru; wynik kontroli Actions jest osobnym polem.
+#' @return Ramka danych oddań, od najstarszego.
 #' @export
 #' @examples
-#' \dontrun{ status_oddania("Z01", "moje-badania") }
-status_oddania <- function(id, katalog = NULL, sha = NULL) {
+#' k <- tempfile("rejestr-")
+#' utworz_projekt("s017", katalog = k, student = "Anna Kowalska")
+#' status_oddania(katalog = k)
+#' unlink(k, recursive = TRUE)
+status_oddania <- function(id = NULL, katalog = NULL) {
   katalog <- katalog_kursu(katalog)
-  id <- toupper(id)
-  sprawdz_id(id, "zadanie", "^(Z(0[1-9]|10)|PROJEKT)$")
-  cfg <- sprawdz_repo(katalog)
-  if (is.null(sha)) {
-    poprzednie <- ostatnie_oddanie(cfg$repo, id)
-    if (is.null(poprzednie)) return(list(stan = "brak_oddania", zadanie = id, sha = NULL))
-    sha <- poprzednie$sha
-    odbior <- poprzednie$odbior
-  } else {
-    sprawdz_id(sha, "sha", "^[0-9a-f]{40}$")
-    commit <- github_api(paste0("repos/", cfg$repo, "/commits/", sha), brak_ok = TRUE)$dane
-    if (is.null(commit)) return(list(stan = "tylko_lokalnie", zadanie = id, sha = sha))
-    odbior <- znajdz_odbior(cfg$repo, sha, id)
-    if (is.null(odbior)) return(list(stan = "wyslane_bez_pokwitowania", zadanie = id, sha = sha))
+  if (!is.null(id)) {
+    id <- toupper(id)
+    sprawdz_id(id, "zadanie", "^(Z(0[1-9]|10)|PROJEKT)$")
   }
-  wynik <- pokwitowanie(cfg$repo, sha, id, odbior)
-  runy <- github_api(paste0("repos/", cfg$repo, "/actions/runs?head_sha=", sha, "&per_page=100"))$dane$workflow_runs
-  wynik$kontrole <- lapply(runy, function(r) list(nazwa = r$name, status = r$status,
-                         wynik = r$conclusion, url = r$html_url))
-  wynik
+  plik <- plik_rejestru(katalog)
+  pusty <- data.frame(czas = character(), zadanie = character(), plik = character(),
+                      bajty = numeric(), sha256 = character())
+  x <- if (file.exists(plik)) utils::read.csv(plik, encoding = "UTF-8", stringsAsFactors = FALSE,
+                                             colClasses = c("character", "character", "character", "numeric", "character")) else pusty
+  if (!is.null(id)) x <- x[x$zadanie == id, , drop = FALSE]
+  if (!nrow(x)) message("Brak zapisu oddania", if (!is.null(id)) paste0(" ", id), " w tej przestrzeni pracy.")
+  rownames(x) <- NULL
+  x
 }

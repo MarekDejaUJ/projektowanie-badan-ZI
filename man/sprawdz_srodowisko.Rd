@@ -10,8 +10,9 @@ Tabela narzedzi, stanow i znaczenia brakow.
 \description{
 Nie instaluje pakietow, nie laczy sie z siecia ani nie zmienia konfiguracji.
 R Markdown, knitr, Pandoc i XeLaTeX sa potrzebne do utworzenia wlasnego PDF
-przy oddawaniu pracy. W sali zapewnia je informatyk. Czytanie gotowych
-materialow HTML/PDF nie wymaga tych narzedzi.
+przy oddawaniu pracy; brakujacy XeLaTeX instaluje przygotuj_pdf(). Pakiet
+curl wysyla PDF do folderu prowadzacego. Czytanie gotowych materialow
+HTML/PDF nie wymaga tych narzedzi.
 }
 \examples{
 sprawdz_srodowisko()

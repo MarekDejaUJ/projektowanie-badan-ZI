@@ -44,8 +44,8 @@ danych wykracza poza raport. Gotowy analiza.R wykonuje obliczenia i tabele;
 surowe dane i parametry nagłówka pozostają bez zmian.
 
 Zapisz raport (Ctrl+S) i w konsoli wykonaj oddaj_projekt(). Funkcja tworzy
-aktualny PDF i wysyła go razem ze źródłami i danymi; zdalne SHA z potwierdzenia
-oddania pozostaje w potwierdzeniu.
+aktualny PDF i wysyła go do folderu projektu prowadzącego razem z archiwum ZIP
+źródeł i danych; sumy SHA-256 obu plików pozostają w potwierdzeniu oddania.
 -->
 
 ```{r przygotowanie, include=FALSE}
@@ -335,7 +335,7 @@ z faktami opis wsparcia SI.
 
 Zapisane pliki `raport.Rmd` i `analiza.R` oraz katalog `dane` tworzą podstawę odtworzenia. Katalog danych zawiera surowe dane w formatach CSV i RDS, słownik, manifest oraz kartę scenariusza. Analiza sprawdza zgodność ID, wariantu i hashy przed przygotowaniem danych i korzysta wyłącznie z zapisanych plików.
 
-Wynik odtwarza się przez uruchomienie bloków raportu od pierwszego albo utworzenie PDF z zapisanego pliku; tabele i wykresy powstają w dokumencie. Wersję wysłaną do oceny identyfikuje zdalne SHA z potwierdzenia oddania.
+Wynik odtwarza się przez uruchomienie bloków raportu od pierwszego albo utworzenie PDF z zapisanego pliku; tabele i wykresy powstają w dokumencie. Wersję wysłaną do oceny identyfikuje suma SHA-256 z potwierdzenia oddania.
 
 ```{r slad}
 srodowisko <- slad_analizy(analizy)

@@ -3,8 +3,14 @@ args <- commandArgs(trailingOnly = TRUE)
 stopifnot(length(args) == 1L, file.exists(args[1L]))
 wejscie <- normalizePath(args[1L], winslash = "/", mustWork = TRUE)
 options(tinytex.install_packages = FALSE)
+# cairo_pdf osadza polskie znaki; na macOS bez XQuartz zastępuje go Quartz.
+dziala <- function(otworz) isTRUE(tryCatch({
+  otworz(tempfile(fileext = ".pdf")); grDevices::dev.off(); TRUE
+}, error = function(e) FALSE, warning = function(w) FALSE))
+urzadzenie <- if (dziala(grDevices::cairo_pdf)) "cairo_pdf" else
+  if (isTRUE(capabilities("aqua")) && dziala(function(f) grDevices::quartz(type = "pdf", file = f))) "quartz_pdf" else "pdf"
 tex <- rmarkdown::render(wejscie,
-  output_format = rmarkdown::latex_document(latex_engine = "xelatex", dev = "cairo_pdf",
+  output_format = rmarkdown::latex_document(latex_engine = "xelatex", dev = urzadzenie,
     fig_crop = FALSE, md_extensions = "-raw_attribute", pandoc_args = "--sandbox"),
   runtime = "static", knit_root_dir = dirname(wejscie),
   envir = new.env(parent = globalenv()), quiet = TRUE)

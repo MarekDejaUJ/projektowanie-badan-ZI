@@ -527,7 +527,7 @@ slad_analizy <- function(analizy) {
     'Reguły przygotowania'='identyczne duplikaty usunięte; 99 w pozycjach jako brak; czas poza 0–120 min jako brak; pozycja 3 odwrócona; indeks przy co najmniej 5 z 6 pozycji',
     'Losowania'=paste0('B = ',analizy$B,'; ziarno = ',analizy$ziarno),
     'Źródła obliczeń'='zapisany plik Rmd i towarzyszący mu analiza.R',
-    'Wersja wysłana'='zdalne SHA z potwierdzenia oddania')
+    'Wersja wysłana'='suma SHA-256 z potwierdzenia oddania')
   wersje <- data.frame(Element=c('R','badaniaZI','knitr','rmarkdown'),
     Wersja=c(as.character(getRversion()),as.character(utils::packageVersion('badaniaZI')),
       as.character(utils::packageVersion('knitr')),as.character(utils::packageVersion('rmarkdown'))))
@@ -602,7 +602,7 @@ droga_raportu <- function() {
       'Akapity S01–S05: kontrola danych, analiza 1, analiza 2, synteza, rekomendacja',
       'Kopiuje dziesięć akapitów do pól P01–P10 raportu, dane wariantu i gotowy analiza.R',
       'Redakcja pól P01–P10, nowe pole P11 (źródła i zakres wsparcia SI), gotowe tabele i wykresy',
-      'PDF raportu, źródła i dane w prywatnym repozytorium; potwierdzenie ze zdalnym SHA'),
+      'PDF raportu i archiwum źródeł z danymi w folderze prowadzącego; potwierdzenie z sumą SHA-256'),
     c('akapity','akapity','raport','raport','oddanie'),
     tytul='Droga od zadań Z09 i Z10 do raportu projektu')
 }

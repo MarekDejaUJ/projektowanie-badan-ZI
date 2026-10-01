@@ -1,5 +1,5 @@
 id: Z01
-version: 1.1.0
+version: 1.2.0
 rocznik: 2026-27
 max_points: 10.0
 criteria:
@@ -61,7 +61,7 @@ criteria:
     observable_description: "S02 odróżnia kod w chunku, wynik i tekst interpretacji. S03 wskazuje brakującą informację o p04. S05 porównuje dwa konkretne rekordy, rozdziela pewność, czas i poprawność oraz proponuje dodatkowy pomiar bez diagnozowania ogólnych kompetencji."
 - id: Z01.4
   title: "Własne ID, pliki i potwierdzona oddana wersja."
-  evidence: "Metadane Rmd/PDF i prywatnego repozytorium odpowiadają własnemu ID. Pokwitowanie wysyłki wskazuje zdalne SHA oraz status odbioru. Nie trzeba dopisywać SHA do Rmd ani tworzyć szóstej odpowiedzi; ocenia się zapisane pliki i pokwitowanie."
+  evidence: "Metadane Rmd/PDF i nazwa pliku w folderze oddania odpowiadają własnemu ID. Potwierdzenie oddania podaje nazwę pliku, czas i sumę SHA-256 PDF. Nie trzeba dopisywać sumy do Rmd ani tworzyć szóstej odpowiedzi; ocenia się oddany PDF i jego zapis w folderze oddania."
   answer_fields: [S01, S02, S03, S04, S05]
   max_points: 2.0
   review_mode: mixed
@@ -72,10 +72,10 @@ criteria:
   - points: 0.0
     observable_description: "Brak dowodu albo opis sprzeczny z istotą kryterium."
   - points: 0.5
-    observable_description: "Pliki istnieją, lecz nie można powiązać ich z właściwym ID i repozytorium."
+    observable_description: "Pliki istnieją, lecz nie można powiązać ich z właściwym ID i osobą."
   - points: 1.0
-    observable_description: "Własne ID i pliki są zgodne, ale dostępny jest tylko lokalny zapis lub commit, bez potwierdzenia odbioru."
+    observable_description: "Własne ID i pliki są zgodne, ale PDF pozostał tylko w lokalnym zapisie, bez potwierdzonego oddania."
   - points: 1.5
-    observable_description: "Odbiór i ID są potwierdzone; pozostała drobna niespójność oznaczenia wersji pliku."
+    observable_description: "Oddanie i ID są potwierdzone; pozostała drobna niespójność oznaczenia wersji pliku."
   - points: 2.0
-    observable_description: "Metadane Rmd/PDF i prywatnego repozytorium odpowiadają własnemu ID. Pokwitowanie wysyłki wskazuje zdalne SHA oraz status odbioru. Nie trzeba dopisywać SHA do Rmd ani tworzyć szóstej odpowiedzi; ocenia się zapisane pliki i pokwitowanie."
+    observable_description: "Metadane Rmd/PDF i nazwa pliku w folderze oddania odpowiadają własnemu ID. Potwierdzenie oddania podaje nazwę pliku, czas i sumę SHA-256 PDF. Nie trzeba dopisywać sumy do Rmd ani tworzyć szóstej odpowiedzi; ocenia się oddany PDF i jego zapis w folderze oddania."

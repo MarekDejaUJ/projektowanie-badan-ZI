@@ -70,24 +70,26 @@ otworz_material <- function(id, format = c("html", "pdf", "Rmd", "R", "tex"),
 #'
 #' Nie instaluje pakietow, nie laczy sie z siecia ani nie zmienia konfiguracji.
 #' R Markdown, knitr, Pandoc i XeLaTeX sa potrzebne do utworzenia wlasnego PDF
-#' przy oddawaniu pracy. W sali zapewnia je informatyk. Czytanie gotowych
-#' materialow HTML/PDF nie wymaga tych narzedzi.
+#' przy oddawaniu pracy; brakujacy XeLaTeX instaluje przygotuj_pdf(). Pakiet
+#' curl wysyla PDF do folderu prowadzacego. Czytanie gotowych materialow
+#' HTML/PDF nie wymaga tych narzedzi.
 #' @return Tabela narzedzi, stanow i znaczenia brakow.
 #' @export
 #' @examples
 #' sprawdz_srodowisko()
 sprawdz_srodowisko <- function() {
-  narzedzie <- c("R >= 4.3", "badaniaZI", "Git/libgit2", "GitHub CLI", "R Markdown",
-                "knitr", "Pandoc", "XeLaTeX", "katalog roboczy", "IDE")
+  narzedzie <- c("R >= 4.3", "badaniaZI", "R Markdown", "knitr", "Pandoc", "XeLaTeX",
+                "curl (wysy\u0142ka)", "katalog roboczy", "IDE")
   pakiet <- function(x) requireNamespace(x, quietly = TRUE)
   ide <- pakiet("rstudioapi") && isTRUE(tryCatch(rstudioapi::isAvailable(), error = function(e) FALSE))
   pandoc <- pakiet("rmarkdown") && isTRUE(tryCatch(rmarkdown::pandoc_available(), error = function(e) FALSE))
-  ok <- c(getRversion() >= "4.3.0", TRUE, pakiet("gert"), nzchar(Sys.which("gh")),
-          pakiet("rmarkdown"), pakiet("knitr"), pandoc, nzchar(Sys.which("xelatex")),
-          file.access(getwd(), 2) == 0L, ide)
+  dodaj_tinytex_do_path()
+  ok <- c(getRversion() >= "4.3.0", TRUE, pakiet("rmarkdown"), pakiet("knitr"), pandoc,
+          nzchar(Sys.which("xelatex")), pakiet("curl"), file.access(getwd(), 2) == 0L, ide)
   data.frame(narzedzie = narzedzie, dostepne = ok,
-             znaczenie = c("Wymagane", "Zainstalowany pakiet kursu", "Wymagane do pobierania i oddawania",
-               "Wymagane dla logowania gh; alternatywa device z client ID",
-               rep("Wymagane do PDF oddawanej pracy; w sali zapewnia informatyk", 4),
-               "Wymagane do zapisania pracy", "RStudio lub Positron zalecane; konsola R r\u00f3wnie\u017c dzia\u0142a"))
+             znaczenie = c("Wymagane", "Zainstalowany pakiet kursu",
+               rep("Wymagane do PDF oddawanej pracy", 3),
+               "Wymagane do PDF; brak usuwa jednorazowo przygotuj_pdf()",
+               "Wymagane do wys\u0142ania PDF do folderu prowadz\u0105cego",
+               "Wymagane do zapisania pracy", "RStudio, Posit Cloud lub Positron zalecane; konsola R r\u00f3wnie\u017c dzia\u0142a"))
 }

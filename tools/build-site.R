@@ -12,8 +12,11 @@ manifest_text <- readLines("inst/materialy/manifest.yml", encoding = "UTF-8", wa
 manifest <- yaml::yaml.load(paste(manifest_text, collapse = "\n"))$jednostki
 stopifnot(length(manifest) == 15L)
 
-copy_tree <- function(from, to) {
+# Strona udostępnia materiały do czytania: HTML, PDF, Rmd i rubryki. Skrypty R
+# oraz źródła handoutów zostają w pakiecie, który student instaluje w Posit Cloud.
+copy_tree <- function(from, to, pomin = "[.](R|tex)$|_files/") {
   files <- list.files(from, recursive = TRUE, full.names = TRUE, all.files = FALSE)
+  files <- files[!grepl(pomin, files)]
   for (src in files) {
     rel <- substring(src, nchar(from) + 2L)
     dst <- file.path(to, rel)
@@ -26,7 +29,8 @@ copy_tree <- function(from, to) {
 copy_tree("inst/materialy", file.path(out, "materialy"))
 copy_tree("inst/rubryki", file.path(out, "rubryki"))
 copy_tree("inst/scenariusze", file.path(out, "scenariusze"))
-copy_tree("inst/szablony", file.path(out, "szablony"))
+dir.create(file.path(out, "szablony", "projekt"), recursive = TRUE)
+stopifnot(file.copy("inst/szablony/projekt/raport.Rmd", file.path(out, "szablony", "projekt", "raport.Rmd")))
 file.copy("README.md", file.path(out, "README.md"), overwrite = TRUE)
 stopifnot(file.copy("NEWS.md", file.path(out, "NEWS.md")))
 
@@ -44,7 +48,6 @@ card <- function(x) {
     links <- c("HTML" = paste0("materialy/", unit, "/pelne.html"),
                "PDF" = paste0("materialy/", unit, "/pelne.pdf"),
                "Rmd" = paste0("materialy/", unit, "/pelne.Rmd"),
-               "gotowy R" = paste0("materialy/", unit, "/analiza.R"),
                "rubryka" = paste0("rubryki/Z", substring(id, 2), ".html"))
   } else {
     links <- c("wykład HTML" = paste0("materialy/", unit, "/pelne.html"),
@@ -52,8 +55,6 @@ card <- function(x) {
                "handout HTML" = paste0("materialy/", unit, "/handout.html"),
                "handout PDF" = paste0("materialy/", unit, "/handout.pdf"),
                "źródło Rmd" = paste0("materialy/", unit, "/pelne.Rmd"))
-    if (file.exists(file.path("inst/materialy", unit, "analiza.R")))
-      links <- c(links, "gotowy R" = paste0("materialy/", unit, "/analiza.R"))
   }
   hrefs <- paste(sprintf('<a href="%s">%s</a>', unname(links), names(links)), collapse = " · ")
   sprintf('<article><h3>%s — %s</h3><p>%s</p></article>', id, esc(x$tytul), hrefs)
@@ -75,48 +76,68 @@ html <- c('<!doctype html>', '<html lang="pl"><head><meta charset="utf-8">',
   '<p>Zarządzanie informacją, rok 2026/27. Materiały łączą ankietę z obserwowanym zadaniem wyszukiwawczym. Kod analiz jest gotowy; praca studenta polega na wyborze wskazanych parametrów oraz samodzielnej interpretacji.</p>',
   '<aside><strong>Terminy:</strong> Z01–Z09 do początku kolejnych ćwiczeń; Z10 do 26.01.2027, 10:30. Projekt do 27.01.2027. Spóźnione oddanie do 10.02.2027 ma ocenę maksymalną 4,5; poprawa projektu do 24.02.2027.</aside>',
   '<h2>Przed pierwszymi zajęciami</h2>',
-  '<ol><li>Załóż konto GitHub i włącz uwierzytelnianie dwuskładnikowe (2FA).</li>',
-  '<li>Przekaż prowadzącemu swój login GitHub. Prowadzący przydziela pseudonimowe ID (np. <code>s017</code>) i prywatne repozytorium; przyjmij zaproszenie z e-maila od GitHub albo ze strony powiadomień GitHub.</li>',
-  '<li>Zapisz swoje ID i adres repozytorium: wpisujesz je na początku każdych zajęć.</li>',
-  '<li>W sali wszystkie programy są zainstalowane. Na własnym komputerze zainstaluj je według sekcji „Własny komputer” na końcu strony.</li></ol>',
+  '<ol><li>Załóż bezpłatne konto w <a href="https://posit.cloud">Posit Cloud</a> (RStudio w przeglądarce) albo dołącz do przestrzeni kursu z zaproszenia prowadzącego. Pracujesz w przeglądarce; w sali nie trzeba niczego instalować, a praca zostaje w projekcie Posit Cloud.</li>',
+  '<li>Otwórz projekt kursu z przestrzeni prowadzącego albo utwórz własny projekt RStudio i zainstaluj w nim pakiet kursu według sekcji „Instalacja pakietu” na końcu strony.</li>',
+  '<li>Zapisz swoje pseudonimowe ID (np. <code>s017</code>) otrzymane od prowadzącego. ID wyznacza indywidualne dane syntetyczne; przy pierwszym starcie podajesz je razem z imieniem i nazwiskiem.</li></ol>',
   '<h2>Przebieg zajęć</h2>',
-  '<ol><li><strong>Start.</strong> W RStudio, w konsoli (dolny panel ze znakiem <code>&gt;</code>), wpisz cztery polecenia z początku materiału ćwiczeń: swoje ID, adres repozytorium i numer bieżących ćwiczeń.',
-  '<pre><code>library(badaniaZI)\nID &lt;- "TWOJE_ID"\nzaloguj_github()\nrozpocznij_zajecia(\n  "C01", id_studenta = ID,\n  repo_url = "ADRES_TWOJEGO_PRYWATNEGO_REPOZYTORIUM"\n)</code></pre></li>',
-  '<li><strong>Logowanie.</strong> W konsoli pojawia się jednorazowy kod, a przeglądarka otwiera stronę GitHub. Hasło, drugi składnik i kod wpisujesz wyłącznie na stronie GitHub, nigdy w konsoli R.</li>',
-  '<li><strong>Praca.</strong> Plik <code>zadanie.Rmd</code> otwiera się automatycznie; plik <code>.Rproj</code> pozostaje zamknięty, bo jego otwarcie uruchamia nową sesję R bez logowania. Uruchamiaj bloki R od pierwszego. LEARN pokazuje odczyt wyników i wzorce zapisu; w pięciu zadaniach CHALLENGE blok R wyświetla potrzebne liczby, a akapit wpisujesz w ramce „Twój akapit”, poza blokami R. Orientacyjnie: 5 minut startu, 30 LEARN, 50 CHALLENGE i 5 oddania.</li>',
-  '<li><strong>Wysłanie.</strong> Zapisz plik (Ctrl+S; macOS Cmd+S) i w konsoli wpisz polecenie z numerem bieżącego zadania:',
+  '<ol><li><strong>Start.</strong> W konsoli RStudio (dolny panel ze znakiem <code>&gt;</code>) wpisz dwa polecenia z początku materiału ćwiczeń: numer bieżących ćwiczeń, swoje ID oraz imię i nazwisko.',
+  '<pre><code>library(badaniaZI)\nrozpocznij_zajecia("C01", id_studenta = "TWOJE_ID", student = "Imię Nazwisko")</code></pre>',
+  'Przy pierwszym starcie funkcja tworzy folder <code>moje-badania</code> i zapisuje w nim ID oraz imię i nazwisko; na kolejnych zajęciach wystarczy <code>rozpocznij_zajecia("C02")</code>. Funkcja otwiera plik <code>zadanie.Rmd</code> bieżących ćwiczeń i kopiuje do <code>moje-badania/materialy</code> wersję HTML i PDF ćwiczenia oraz rubrykę.</li>',
+  '<li><strong>Praca.</strong> Uruchamiaj bloki R od pierwszego. LEARN pokazuje odczyt wyników i wzorce zapisu; w pięciu zadaniach CHALLENGE blok R wyświetla potrzebne liczby, a akapit wpisujesz w ramce „Twój akapit”, poza blokami R. Orientacyjnie: 5 minut startu, 30 LEARN, 50 CHALLENGE i 5 oddania.</li>',
+  '<li><strong>Oddanie.</strong> Zapisz plik (Ctrl+S; macOS Cmd+S) i w konsoli wpisz polecenie z numerem bieżącego zadania:',
   '<pre><code>oddaj_zadanie("Z01")</code></pre>',
-  'Funkcja sprawdza akapity, tworzy aktualny PDF i wysyła go razem ze źródłami do prywatnego repozytorium. Wysyłkę potwierdza komunikat ze zdalnym SHA; przy błędzie popraw wskazany problem i wyślij ponownie tym samym poleceniem.</li>',
-  '<li><strong>Koniec zajęć.</strong> Wpisz <code>wyloguj_github()</code>, wyloguj się z GitHub w przeglądarce i zamknij RStudio, wybierając „Don\'t Save”.</li>',
-  '<li><strong>Po zajęciach.</strong> <code>status_oddania("Z01")</code> potwierdza odbiór, a <code>pobierz_ocene("Z01")</code> pobiera ocenę po jej wystawieniu.</li></ol>',
+  'Funkcja sprawdza akapity, tworzy aktualny PDF w świeżej sesji R, otwiera go do obejrzenia i po potwierdzeniu literą <code>t</code> wysyła do folderu zadania prowadzącego na serwerze UJ (nc.uj.edu.pl), pod nazwą z Twoim ID oraz nazwiskiem i imieniem, np. <code>s017_kowalska_anna_Z01.pdf</code>. Oddanie potwierdza komunikat z nazwą pliku i czasem; przy błędzie popraw wskazany problem i oddaj ponownie tym samym poleceniem. Nowa wersja trafia do folderu obok poprzedniej.</li>',
+  '<li><strong>Po zajęciach.</strong> Posit Cloud zachowuje folder <code>moje-badania</code> do kolejnych zajęć. <code>status_oddania()</code> pokazuje zapis Twoich oddań z tego projektu. Ocenę prowadzący przekazuje osobno.</li></ol>',
   '<h2>Wykłady i handouty</h2>', vapply(lectures, card, character(1)),
-  '<h2>Ćwiczenia i gotowe skrypty</h2>', vapply(exercises, card, character(1)),
+  '<h2>Ćwiczenia</h2>', vapply(exercises, card, character(1)),
   '<h2>Projekt indywidualny</h2>',
-  '<p>C01–C08 korzystają z podanych scenariuszy. Projekt zaczyna się na C09: wybierasz scenariusz, zapisujesz syntetyczny wariant i plan. C10 odczytuje te same dane. Po obu zadaniach <code>przygotuj_raport()</code> jednorazowo przenosi dziesięć własnych odpowiedzi do <code>projekty/ilosciowy/raport.Rmd</code>. Otwórz ten plik, uporządkuj tekst, uzupełnij P11 z bibliografią i zakresem wsparcia. Po zapisaniu użyj <code>oddaj_projekt()</code>. Nie generuj nowego wariantu. Poniższe źródła są do wglądu; własny raport przygotowuje funkcja z zachowanych Z09/Z10.</p>',
-  '<p><a href="szablony/projekt/raport.Rmd">raport Rmd z planem pomiaru</a> · <a href="szablony/projekt/analiza.R">gotowy silnik analiz</a> · <a href="rubryki/PROJEKT.html">rubryka HTML</a> · <a href="rubryki/PROJEKT.pdf">rubryka PDF</a></p>',
+  '<p>C01–C08 korzystają z podanych scenariuszy. Projekt zaczyna się na C09: wybierasz scenariusz, zapisujesz syntetyczny wariant i plan; karty scenariuszy trafiają wtedy także do <code>moje-badania/materialy/scenariusze</code>. C10 odczytuje te same dane. Po oddaniu Z09 i Z10 polecenie <code>przygotuj_raport()</code> jednorazowo przenosi dziesięć własnych odpowiedzi do <code>moje-badania/projekty/ilosciowy/raport.Rmd</code> razem z gotowym silnikiem analiz i danymi wariantu. Otwórz ten plik, uporządkuj tekst, uzupełnij P11 z bibliografią i zakresem wsparcia. Po zapisaniu użyj <code>oddaj_projekt()</code>: funkcja wysyła do folderu projektu PDF raportu i archiwum ZIP ze źródłami i danymi. Nie generuj nowego wariantu. Raport Rmd poniżej jest do wglądu; własny raport przygotowuje funkcja z zachowanych Z09/Z10.</p>',
+  '<p><a href="szablony/projekt/raport.Rmd">raport Rmd z planem pomiaru</a> · <a href="rubryki/PROJEKT.html">rubryka HTML</a> · <a href="rubryki/PROJEKT.pdf">rubryka PDF</a></p>',
   paste0('<p><strong>Scenariusze:</strong> ', scenario_links, '</p>'),
   paste0('<p><strong>Rubryki zadań:</strong> ', rubric_links, '</p>'),
-  '<h2>Własny komputer</h2>',
-  '<p>Zainstaluj R w wersji 4.3 lub nowszej (cran.r-project.org), RStudio Desktop (posit.co) i GitHub CLI (cli.github.com). Następnie w konsoli RStudio zainstaluj pakiet kursu w wersji wydania i TinyTeX, czyli LaTeX potrzebny do PDF pracy:</p>',
-  sprintf('<pre><code>install.packages("remotes")\nremotes::install_github("MarekDejaUJ/projektowanie-badan-ZI@v%s",\n                        dependencies = TRUE, upgrade = "never")\ninstall.packages("tinytex")\ntinytex::install_tinytex()</code></pre>', esc(wydanie$pakiet)),
-  '<p>Po instalacji TinyTeX uruchom ponownie RStudio i doinstaluj pakiety LaTeX:</p>',
-  '<pre><code>tinytex::tlmgr_install(c("xetex", "fontspec", "unicode-math", "lm",\n  "lm-math", "amsmath", "amsfonts", "babel", "babel-polish", "hyphen-polish",\n  "latex", "tools", "graphics", "graphics-cfg", "graphics-def", "geometry",\n  "hyperref", "bookmark", "booktabs", "etoolbox", "fancyvrb", "float",\n  "footnotehyper", "framed", "iftex", "l3kernel", "l3packages", "microtype",\n  "parskip", "upquote", "url", "xcolor", "xurl", "bigintcalc", "bitset",\n  "gettitlestring", "hycolor", "infwarerr", "intcalc", "kvdefinekeys",\n  "kvoptions", "kvsetkeys", "ltxcmds", "pdfescape", "pdftexcmds", "refcount",\n  "rerunfilecheck", "stringenc", "uniquecounter"))</code></pre>',
-  '<p>Test komputera tworzy próbny PDF pracy bez logowania i bez wysyłania:</p>',
-  '<pre><code>library(badaniaZI)\nsprawdz_srodowisko()\nk &lt;- file.path(tempdir(), "test-sali")\nutworz_projekt("test001", katalog = k)\np &lt;- przygotuj_zadanie("Z02", k)\nt &lt;- readLines(p, encoding = "UTF-8")\nt[t %in% sprintf("[UZUPELNIJ_S%02d]", 1:5)] &lt;- "Akapit testowy."\nwriteLines(t, p, useBytes = TRUE)\nsprawdz_zadanie("Z02", k)$ok</code></pre>',
-  '<p>Komputer jest gotowy, gdy tabela <code>sprawdz_srodowisko()</code> ma <code>TRUE</code> w każdym wierszu, a ostatnie polecenie zwraca <code>TRUE</code>. Na własnym komputerze praca zostaje także w folderze <code>moje-badania</code>; kolejne zajęcia zaczynaj w tym samym folderze roboczym R, a funkcja <code>rozpocznij_zajecia()</code> odnajdzie istniejącą pracę. Wersja pakietu obowiązuje przez cały semestr; zmieniasz ją wyłącznie na polecenie prowadzącego.</p>',
-  '<h2>Dla prowadzącego i informatyka</h2>',
-  '<p><a href="README.md">README</a> opisuje przygotowanie komputerów w sali (programy, pakiety R i LaTeX, test stanowiska), komputer prowadzącego (repozytoria studentów, odbiór i ocena) oraz opcjonalną kontrolę oddań w kontenerze Docker. Studenci i komputery w sali pracują bez Dockera.</p>',
+  '<h2>Instalacja pakietu</h2>',
+  '<p>W projekcie Posit Cloud albo w RStudio na własnym komputerze (R w wersji 4.3 lub nowszej) zainstaluj pakiet kursu. Polecenie instaluje także wszystkie pakiety używane w ćwiczeniach. Drugie polecenie jednorazowo przygotowuje narzędzia PDF (TinyTeX) i składa próbny dokument; trwa kilka minut. W projekcie kursu udostępnionym przez prowadzącego oba kroki są już wykonane.</p>',
+  sprintf('<pre><code>install.packages("badaniaZI", repos = c(\n  "https://marekdejauj.github.io/projektowanie-badan-ZI/pakiet",\n  getOption("repos")\n))\nbadaniaZI::przygotuj_pdf()\npackageVersion("badaniaZI")   # %s</code></pre>', esc(wydanie$pakiet)),
+  '<p>Test tworzy próbny PDF pracy bez wysyłania:</p>',
+  '<pre><code>library(badaniaZI)\nsprawdz_srodowisko()\nk &lt;- file.path(tempdir(), "test-pracy")\nutworz_projekt("test001", katalog = k, student = "Test Kursu")\np &lt;- przygotuj_zadanie("Z02", k)\nt &lt;- readLines(p, encoding = "UTF-8")\nt[t %in% sprintf("[UZUPELNIJ_S%02d]", 1:5)] &lt;- "Akapit testowy."\nwriteLines(t, p, useBytes = TRUE)\nsprawdz_zadanie("Z02", k)$ok</code></pre>',
+  '<p>Stanowisko jest gotowe, gdy tabela <code>sprawdz_srodowisko()</code> ma <code>TRUE</code> w każdym wierszu, a ostatnie polecenie zwraca <code>TRUE</code>. Wersja pakietu obowiązuje przez cały semestr; zmieniasz ją wyłącznie na polecenie prowadzącego.</p>',
+  '<h2>Dla prowadzącego</h2>',
+  '<p><a href="README.md">README</a> opisuje przygotowanie projektu kursu w przestrzeni Posit Cloud, foldery oddania w Nextcloud, nazwy przyjmowanych plików, odbiór i ocenę według rubryk oraz test stanowiska.</p>',
   '</body></html>')
 writeLines(html, file.path(out, "index.html"), useBytes = TRUE)
 
 required <- unlist(lapply(manifest, function(x) {
   base <- file.path(out, "materialy", tolower(x$id))
-  if (x$typ == "cwiczenie") file.path(base, c("pelne.html", "pelne.pdf", "pelne.Rmd", "analiza.R"))
-  else file.path(base, c("pelne.html", "pelne.pdf", "pelne.Rmd", "handout.html", "handout.pdf", "handout.Rmd", "handout.tex"))
+  if (x$typ == "cwiczenie") file.path(base, c("pelne.html", "pelne.pdf", "pelne.Rmd"))
+  else file.path(base, c("pelne.html", "pelne.pdf", "pelne.Rmd", "handout.html", "handout.pdf", "handout.Rmd"))
 }))
-stopifnot(all(file.exists(required)), length(list.files(file.path(out, "scenariusze"), "^S[0-9]{2}[.]md$")) == 20L)
+stopifnot(all(file.exists(required)), length(list.files(file.path(out, "scenariusze"), "^S[0-9]{2}[.]md$")) == 20L,
+          !length(list.files(out, "[.](R|tex)$", recursive = TRUE)))
+
+# Repozytorium pakietu na stronie: install.packages() pobiera badaniaZI stąd,
+# a zależności z repozytorium CRAN (w Posit Cloud — z Posit Package Manager).
+repo <- file.path(out, "pakiet", "src", "contrib")
+stopifnot(dir.create(repo, recursive = TRUE))
+budowa <- system2(file.path(R.home("bin"), "R"), c("CMD", "build", "--no-build-vignettes", "--no-manual", shQuote(root)),
+                  stdout = TRUE, stderr = TRUE)
+paczka <- file.path(getwd(), paste0("badaniaZI_", wydanie$pakiet, ".tar.gz"))
+if (!file.exists(paczka)) stop("Nie zbudowano paczki pakietu:\n", paste(budowa, collapse = "\n"))
+stopifnot(file.rename(paczka, file.path(repo, basename(paczka))))
+tools::write_PACKAGES(repo, type = "source")
+# Puste indeksy binarne: Windows i macOS nie zgłaszają wtedy ostrzeżenia o brakującym indeksie.
+wersje_r <- sprintf("4.%d", 3:7)
+for (sciezka in c(file.path("bin", "windows", "contrib", wersje_r),
+                  file.path("bin", "macosx", rep(c("big-sur-arm64", "big-sur-x86_64", "sonoma-arm64"), each = length(wersje_r)),
+                            "contrib", wersje_r))) {
+  d <- file.path(out, "pakiet", sciezka)
+  dir.create(d, recursive = TRUE, showWarnings = FALSE)
+  file.create(file.path(d, "PACKAGES"))
+}
+indeks <- read.dcf(file.path(repo, "PACKAGES"))
+stopifnot(identical(unname(indeks[, "Package"]), "badaniaZI"), identical(unname(indeks[, "Version"]), wydanie$pakiet))
 href <- regmatches(html, gregexpr('href="[^"]+"', html))
 href <- sub('^href="(.*)"$', '\\1', unlist(href))
+href <- href[!grepl("^https?://", href)]
 stopifnot(all(file.exists(file.path(out, href))))
 target <- file.path(root, "_site")
 backup <- NULL

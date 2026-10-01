@@ -18,21 +18,16 @@ output:
 <!-- start-sesji -->
 # Początek pracy na ćwiczeniu C10
 
-Otwórz RStudio. Pakiet kursu `badaniaZI` jest zainstalowany na komputerach w sali. Cztery polecenia z następnego bloku wpisujesz w konsoli RStudio, czyli w dolnym panelu ze znakiem `>`; w miejsce `TWOJE_ID` wpisz swoje ID, a w miejsce adresu — adres prywatnego repozytorium otrzymany na początku kursu. Dokument PDF zawiera cztery polecenia jako tekst instrukcji.
+Otwórz swój projekt kursu w Posit Cloud albo RStudio na własnym komputerze; pakiet kursu `badaniaZI` jest w nim zainstalowany. Dwa polecenia z następnego bloku wpisujesz w konsoli RStudio, czyli w dolnym panelu ze znakiem `>`; w miejsce `TWOJE_ID` wpisz swoje ID, a w miejsce `Imię Nazwisko` — swoje imię i nazwisko. Dokument PDF zawiera dwa polecenia jako tekst instrukcji.
 
 ```r
 library(badaniaZI)
-ID <- "TWOJE_ID"
-zaloguj_github()
-rozpocznij_zajecia(
-  "C10", id_studenta = ID,
-  repo_url = "ADRES_TWOJEGO_PRYWATNEGO_REPOZYTORIUM"
-)
+rozpocznij_zajecia("C10", id_studenta = "TWOJE_ID", student = "Imię Nazwisko")
 ```
 
-Dokończ logowanie na stronie GitHub otwartej w przeglądarce. Hasło i drugi składnik podajesz wyłącznie na stronie GitHub. Sprawdź w komunikacie potwierdzony login i ID odtworzonej pracy. ID wpisujesz raz w sesji; pliki pracy zachowują je także po zamknięciu RStudio.
+Sprawdź w komunikacie ID oraz imię i nazwisko. Przy pierwszym starcie funkcja tworzy folder `moje-badania` i zapisuje w nim oba dane; pliki pracy zachowują je także po zamknięciu projektu, a imię i nazwisko trafiają do nazwy oddawanego pliku.
 
-Funkcja `rozpocznij_zajecia()` otwiera własny plik `zadanie.Rmd` i zapamiętuje katalog pracy. Pracuj w otwartym pliku `zadanie.Rmd` do końca zajęć; plik `.Rproj` pozostaje zamknięty, bo jego otwarcie uruchamia nową sesję R, która wymaga ponownego logowania. Najpierw uruchom blok `przygotowanie`, a potem kolejne części LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; plik pracy i własne ID pozostają bez zmian.
+Funkcja `rozpocznij_zajecia()` otwiera własny plik `zadanie.Rmd`, zapamiętuje katalog pracy i kopiuje do folderu `moje-badania/materialy` wersję HTML i PDF ćwiczenia oraz rubrykę zadania. Pracuj w otwartym pliku `zadanie.Rmd` do końca zajęć. Najpierw uruchom blok `przygotowanie`, a potem kolejne części LEARN i CHALLENGE. Przy problemie poproś prowadzącego o pomoc; plik pracy i własne ID pozostają bez zmian.
 <!-- /start-sesji -->
 
 Pierwszy chunk, `przygotowanie`, wczytuje gotowy skrypt `analiza.R`. Skrypt odczytuje wariant danych zapisany na C09, przygotowuje go po regułach ćwiczeń C02–C04 i liczy obie analizy projektu: porównanie indeksu w grupach (test Welcha, bootstrap osób, tasowanie etykiet) oraz tabelę 2 × 2 (test chi-kwadrat, tabele Monte Carlo, przedział różnicy odsetków) albo korelację rang Spearmana (test, tasowanie, bootstrap par). Skrypt zawiera też dwa przykłady LEARN dla ID demo001: scenariusz S02 ze ścieżką tabeli i scenariusz S05 ze ścieżką korelacji.
@@ -206,7 +201,7 @@ $$
 \text{wynik}=f\big(\text{dane surowe},\ \text{reguły},\ \text{ziarno},\ \text{wersje}\big).
 $$
 
-Cztery składniki wyznaczają wynik: dane surowe z manifestu, reguły przygotowania, ziarno losowania i wersje oprogramowania. Te same cztery składniki dają ten sam wynik. Hash danych identyfikuje zawartość danych, a zdalne SHA po oddaniu — wersję plików w repozytorium; trafność pomiaru i poprawność interpretacji ocenia się osobno.
+Cztery składniki wyznaczają wynik: dane surowe z manifestu, reguły przygotowania, ziarno losowania i wersje oprogramowania. Te same cztery składniki dają ten sam wynik. Hash danych identyfikuje zawartość danych, a suma SHA-256 w potwierdzeniu oddania — wysłaną wersję PDF; trafność pomiaru i poprawność interpretacji ocenia się osobno.
 
 ```{r learn-5-slad}
 karta_odtworzenia <- slad_analizy(analizy_demo)
@@ -217,7 +212,7 @@ Karta „Odtworzenie wyniku” podaje wariant demo001 / S02 / 2026-27, wersję g
 
 Dobre zakończenie raportu wskazuje kolejny sprawdzalny krok wynikający z mierzonego konstruktu. Przy danych o zrozumiałości katalogu zalecenie „zwiększyć kompetencje cyfrowe” wykracza poza pomiar, a zalecenie „usunąć filtr” wymaga porównania interfejsów; pilotaż pomocy dla nowych użytkowników jest hipotezą do oceny.
 
-Odtworzenie zaczyna się od zapisanych plików: Rmd z własnymi akapitami i poprawnymi metadanymi oraz `analiza.R` z procedurami tabel. Zdalne SHA powstaje po wysyłce i pozostaje w potwierdzeniu oddania; wpisanie SHA do pliku, który SHA identyfikuje, utworzyłoby nową wersję pliku.
+Odtworzenie zaczyna się od zapisanych plików: Rmd z własnymi akapitami i poprawnymi metadanymi oraz `analiza.R` z procedurami tabel. Suma SHA-256 wysłanego PDF powstaje przy oddaniu i pozostaje w potwierdzeniu oraz w pliku `oddania.csv`; wpisanie sumy do pliku, który ona identyfikuje, utworzyłoby nową wersję pliku.
 
 **Wzorzec zapisu rekomendacji (APA).**
 
@@ -400,15 +395,15 @@ Blok wyświetla kartę „Odtworzenie wyniku” i tabelę „Wersje środowiska 
 
 Sprawdź pięć własnych akapitów: wariant zgadza się z Z09, liczby pochodzą z wydruków własnego wariantu, a znak, jednostka i mianownik każdego efektu są zgodne z tabelą. Zapisz plik `zadanie.Rmd` w edytorze (Ctrl+S); funkcja oddania tworzy PDF z zapisanego pliku.
 
-W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy aktualny PDF, sprawdza kompletność i wysyła go razem z Rmd, `analiza.R` i danymi wariantu do Twojego prywatnego repozytorium z dostępem prowadzącego.
+W konsoli wykonaj jedno polecenie. Funkcja oddania tworzy aktualny PDF, sprawdza kompletność, otwiera PDF do obejrzenia i po potwierdzeniu literą `t` wysyła go do folderu zadania prowadzącego na serwerze UJ (nc.uj.edu.pl). Rmd, `analiza.R` i dane wariantu zostają w folderze `moje-badania` do raportu projektu.
 
 ```r
 oddaj_zadanie("Z10")
 ```
 
-Oddanie potwierdza komunikat z identyfikatorem SHA wysłanej wersji. Po komunikacie błędu popraw wskazany problem, zapisz plik i ponownie wywołaj `oddaj_zadanie("Z10")`; nowe potwierdzenie obejmuje nowe zmiany. Ocenę prowadzący zapisuje osobno w repozytorium.
+Oddanie potwierdza komunikat z nazwą wysłanego pliku, folderem i czasem; plik `oddania.csv` w folderze `moje-badania` zapisuje także sumę SHA-256 wysłanego PDF. Po komunikacie błędu popraw wskazany problem, zapisz plik i ponownie wywołaj `oddaj_zadanie("Z10")`; nowa wersja trafia do folderu obok poprzedniej. Ocenę prowadzący przekazuje osobno.
 
-Po potwierdzonym oddaniu wykonaj w konsoli `wyloguj_github()`. Na komputerze współdzielonym wyloguj również przeglądarkę i zamknij RStudio, wybierając „Don't Save” przy pytaniu o przestrzeń roboczą `.RData`. Ćwiczenie C10 zamyka cykl ćwiczeń; dalsza praca to redakcja raportu projektu.
+Po potwierdzonym oddaniu możesz zamknąć projekt: Posit Cloud zachowuje folder `moje-badania` do kolejnych zajęć. Na komputerze współdzielonym wyloguj się z Posit Cloud w przeglądarce. Ćwiczenie C10 zamyka cykl ćwiczeń; dalsza praca to redakcja raportu projektu.
 
 ## Co jest oceniane
 
@@ -417,7 +412,7 @@ Po potwierdzonym oddaniu wykonaj w konsoli `wyloguj_github()`. Na komputerze wsp
 | Z10.1 Ten sam wariant i odtworzenie obu analiz | Wariant zgodny z Z09; pomiar, reguły przygotowania i N obu analiz; analizy odtwarzają się w świeżej sesji | S01 | 3 |
 | Z10.2 Pięć własnych odpowiedzi i zgodny PDF | Pięć akapitów poza kodem; PDF z tego samego Rmd zawiera akapity, tabele i wykresy | S01–S05 | 2 |
 | Z10.3 Interpretacja dwóch relacji i obu torów | Efekty z jednostkami, CI i oba tory; synteza bez wniosku przyczynowego; proporcjonalna rekomendacja | S02–S05 | 3 |
-| Z10.4 Zdalne SHA i opis odtworzenia | Zapisane źródła, dane i manifest odtwarzają wyniki; potwierdzenie oddania ze zdalnym SHA | S01–S05 | 2 |
+| Z10.4 Potwierdzenie oddania i opis odtworzenia | Karta odtworzenia w PDF zgodna z zapisanymi źródłami, danymi i manifestem; potwierdzenie oddania z sumą SHA-256 | S01–S05 | 2 |
 
 Ocena dotyczy poprawności odczytu i proporcjonalności wniosku. Poziomy wykonania opisuje rubryka Z10: na stronie kursu w dokumencie `rubryki/Z10.html`, a w konsoli R po poleceniu `rubryka("Z10")`.
 
@@ -425,7 +420,7 @@ Ocena dotyczy poprawności odczytu i proporcjonalności wniosku. Poziomy wykonan
 
 Po oddaniu Z09 i Z10 projekt końcowy powstaje z tych samych akapitów. Raport ma dziewięć rozdziałów i jedenaście pól: dziesięć pól przejmuje akapity CHALLENGE, a pole P11 (bibliografia i zakres wsparcia narzędzi SI) wypełnia się w raporcie.
 
-```{r droga, fig.height=5, fig.cap="Droga od zadań do raportu w pięciu krokach, od góry do dołu: akapity Z09 i Z10, funkcja przygotowania raportu kopiująca je do pól P01–P10, redakcja pliku raportu z nowym polem P11 i oddanie projektu z potwierdzeniem zdalnego SHA."}
+```{r droga, fig.height=5, fig.cap="Droga od zadań do raportu w pięciu krokach, od góry do dołu: akapity Z09 i Z10, funkcja przygotowania raportu kopiująca je do pól P01–P10, redakcja pliku raportu z nowym polem P11 i oddanie projektu do folderu prowadzącego z potwierdzeniem i sumą SHA-256."}
 droga <- pokaz_wykres(droga_raportu())
 print(droga)
 ```

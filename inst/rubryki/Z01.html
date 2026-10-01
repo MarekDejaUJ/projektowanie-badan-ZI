@@ -234,7 +234,6 @@ span.underline{text-decoration: underline;}
 div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
-.display.math{display: block; text-align: center; margin: 0.5rem auto;}
 </style>
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -355,7 +354,7 @@ display: none;
 
 <div id="rubryka-z01" class="section level1">
 <h1>Rubryka Z01</h1>
-<p>Wersja 1.1.0 — rocznik 2026-27</p>
+<p>Wersja 1.2.0 — rocznik 2026-27</p>
 <p>Maksimum: 10 punktów. Wagi i terminy określa konfiguracja
 rocznika.</p>
 <p>Kontrola techniczna sprawdza pliki i odtworzenie; dobór,
@@ -513,10 +512,10 @@ diagnozowania ogólnych kompetencji.</td>
 <div id="z01.4-2-pkt" class="section level2">
 <h2>Z01.4 — 2 pkt</h2>
 <p>Własne ID, pliki i potwierdzona oddana wersja.</p>
-<p>Dowód: Metadane Rmd/PDF i prywatnego repozytorium odpowiadają
-własnemu ID. Pokwitowanie wysyłki wskazuje zdalne SHA oraz status
-odbioru. Nie trzeba dopisywać SHA do Rmd ani tworzyć szóstej odpowiedzi;
-ocenia się zapisane pliki i pokwitowanie.</p>
+<p>Dowód: Metadane Rmd/PDF i nazwa pliku w folderze oddania odpowiadają
+własnemu ID. Potwierdzenie oddania podaje nazwę pliku, czas i sumę
+SHA-256 PDF. Nie trzeba dopisywać sumy do Rmd ani tworzyć szóstej
+odpowiedzi; ocenia się oddany PDF i jego zapis w folderze oddania.</p>
 <p>Pola odpowiedzi: S01, S02, S03, S04, S05</p>
 <table>
 <colgroup>
@@ -537,24 +536,24 @@ ocenia się zapisane pliki i pokwitowanie.</p>
 <tr class="even">
 <td align="right">0.5</td>
 <td>Pliki istnieją, lecz nie można powiązać ich z właściwym ID i
-repozytorium.</td>
+osobą.</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
-<td>Własne ID i pliki są zgodne, ale dostępny jest tylko lokalny zapis
-lub commit, bez potwierdzenia odbioru.</td>
+<td>Własne ID i pliki są zgodne, ale PDF pozostał tylko w lokalnym
+zapisie, bez potwierdzonego oddania.</td>
 </tr>
 <tr class="even">
 <td align="right">1.5</td>
-<td>Odbiór i ID są potwierdzone; pozostała drobna niespójność oznaczenia
-wersji pliku.</td>
+<td>Oddanie i ID są potwierdzone; pozostała drobna niespójność
+oznaczenia wersji pliku.</td>
 </tr>
 <tr class="odd">
 <td align="right">2</td>
-<td>Metadane Rmd/PDF i prywatnego repozytorium odpowiadają własnemu ID.
-Pokwitowanie wysyłki wskazuje zdalne SHA oraz status odbioru. Nie trzeba
-dopisywać SHA do Rmd ani tworzyć szóstej odpowiedzi; ocenia się zapisane
-pliki i pokwitowanie.</td>
+<td>Metadane Rmd/PDF i nazwa pliku w folderze oddania odpowiadają
+własnemu ID. Potwierdzenie oddania podaje nazwę pliku, czas i sumę
+SHA-256 PDF. Nie trzeba dopisywać sumy do Rmd ani tworzyć szóstej
+odpowiedzi; ocenia się oddany PDF i jego zapis w folderze oddania.</td>
 </tr>
 </tbody>
 </table>

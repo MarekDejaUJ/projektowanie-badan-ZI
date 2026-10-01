@@ -16,12 +16,6 @@ test_that("puste pola Rmd blokują render bez wymogu liczby słów", {
   expect_match(tail(r$kontrole$opis, 1L), "Brak aktualnego PDF")
 })
 
-test_that("adresy z tokenem i ścieżki obcego serwera nie są przyjmowane", {
-  expect_equal(badaniaZI:::nazwa_repo("https://github.com/prowadzacy/badania-s017.git"), "prowadzacy/badania-s017")
-  expect_error(badaniaZI:::nazwa_repo("https://token@github.com/prowadzacy/badania-s017.git"), "repo_url")
-  expect_error(badaniaZI:::nazwa_repo("https://example.org/prowadzacy/badania-s017.git"), "repo_url")
-})
-
 test_that("zmieniony skrypt i sekret w odpowiedzi nie są wykonywane ani ujawniane", {
   k <- tempfile("własne R ")
   on.exit(unlink(k, recursive = TRUE), add = TRUE)

@@ -39,14 +39,17 @@ sprawdz_konfiguracje <- function(konfiguracja, publikacja = FALSE) {
   for (p in setdiff(unlist(schema$required), names(k))) dodaj(p, "Brak klucza wymaganego w schema.json")
   for (p in setdiff(names(k), names(schema$properties))) dodaj(p, "Nieznany klucz konfiguracji")
   if (is.null(k$daty_zajec)) dodaj("daty_zajec", "Pe\u0142ny kalendarz do ustalenia", "informacja")
-  for (p in c("rocznik", "tytul", "kierunek", "kod", "projekt", "wersja_pakietu", "wersja_generatora", "wersja_rubryk", "wlasciciel_repozytoriow"))
+  for (p in c("rocznik", "tytul", "kierunek", "kod", "projekt", "wersja_pakietu", "wersja_generatora", "wersja_rubryk"))
     if (!is.character(k[[p]]) || length(k[[p]]) != 1L || is.na(k[[p]]) || !nzchar(k[[p]]))
       dodaj(p, "Wymagany niepusty tekst")
-  if (!identical(k$adapter, "github")) dodaj("adapter", "Obs\u0142ugiwany adapter: github")
-  if (!is.character(k$logowanie) || length(k$logowanie) != 1L || is.na(k$logowanie) || !k$logowanie %in% c("auto", "gh", "device"))
-    dodaj("logowanie", "Wybierz auto, gh albo device")
-  if (identical(k$logowanie, "device") && (is.null(k$oauth_client_id) || !nzchar(k$oauth_client_id)))
-    dodaj("oauth_client_id", "Logowanie device wymaga client ID aplikacji")
+  if (!identical(k$adapter, "nextcloud")) dodaj("adapter", "Obs\u0142ugiwany adapter: nextcloud")
+  foldery <- k$foldery_oddania
+  oczekiwane <- c(sprintf("Z%02d", 1:10), "PROJEKT")
+  if (!is.list(foldery) || !setequal(names(foldery), oczekiwane) || anyDuplicated(names(foldery)) ||
+      !all(vapply(foldery, function(x) is.character(x) && length(x) == 1L &&
+        grepl("^https://[A-Za-z0-9.-]+/(index[.]php/)?s/[A-Za-z0-9]+$", x), logical(1))))
+    dodaj("foldery_oddania", "Podaj linki udost\u0119pnienia Nextcloud (https://serwer/s/TOKEN) dla Z01--Z10 i PROJEKT")
+  else if (anyDuplicated(unlist(foldery))) dodaj("foldery_oddania", "Ka\u017cde zadanie i projekt wymagaj\u0105 osobnego folderu")
   for (p in c("cwiczenia", "wyklady", "minuty_spotkania")) {
     oczekiwane <- c(cwiczenia = 10L, wyklady = 5L, minuty_spotkania = 90L)[[p]]
     v <- k[[p]]

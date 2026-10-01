@@ -61,8 +61,8 @@ przygotuj_zadanie <- function(id, katalog = NULL) {
 #'
 #' Sprawdza własne pola odpowiedzi oraz zgodność gotowego kodu, ID i danych.
 #' Nie ocenia sensu interpretacji ani długości akapitów. Domyślnie tworzy PDF
-#' od początku w świeżym procesie R, bez logowania i bez dostępu do tokenu
-#' sesji. Wymaga narzędzi PDF przygotowanych przez informatyka.
+#' od początku w świeżym procesie R, bez dostępu do zmiennych środowiska sesji.
+#' Wymaga narzędzi PDF; brakujący XeLaTeX instaluje przygotuj_pdf().
 #' Kontrola nie wysyła pracy. Brak sieci nie blokuje tworzenia PDF.
 #' @param id Z01--Z10 albo PROJEKT.
 #' @param katalog Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.

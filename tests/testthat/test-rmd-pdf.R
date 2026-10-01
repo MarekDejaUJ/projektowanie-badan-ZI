@@ -1,20 +1,3 @@
-praca_pdf_test <- function() {
-  k <- tempfile("pdf żółty ")
-  utworz_projekt("s017", katalog = k)
-  p <- przygotuj_zadanie("Z01", k)
-  tekst <- readLines(p, encoding = "UTF-8")
-  for (pole in sprintf("S%02d", 1:5)) tekst <- badaniaZI:::wstaw_odpowiedz(tekst, pole, "Własny krótki akapit.")
-  badaniaZI:::pisz_linie(tekst, p)
-  k
-}
-
-# Atrapa sprawdza tylko transakcję i hashe, nie poprawność składu PDF.
-render_pdf_test <- function(wejscie, katalog, timeout) {
-  pdf <- sub("[.]Rmd$", ".pdf", file.path(katalog, wejscie))
-  writeBin(charToRaw(paste0("%PDF-", paste(rep("TEST", 100), collapse = ""))), pdf)
-  list(status = 0L)
-}
-
 test_that("PDF i wejścia mają hashe, a dodatkowe pliki nie należą do oddania", {
   k <- praca_pdf_test()
   on.exit(unlink(k, recursive = TRUE), add = TRUE)
@@ -141,19 +124,21 @@ test_that("oddanie tworzy PDF przed połączeniem i zachowuje go offline", {
   on.exit(unlink(k, recursive = TRUE), add = TRUE)
   polaczenia <- 0L
   local_mocked_bindings(sprawdz_narzedzia_pdf = function() TRUE,
+    narzedzia_pdf_gotowe = function() TRUE,
     uruchom_render_pracy = render_pdf_test,
-    sprawdz_repo = function(katalog) {
+    nc_put = function(...) {
       polaczenia <<- polaczenia + 1L
-      expect_true(sprawdz_zadanie("Z01", katalog, uruchom = FALSE)$ok)
+      expect_true(sprawdz_zadanie("Z01", k, uruchom = FALSE)$ok)
       stop("Brak sieci")
     }, .package = "badaniaZI")
-  expect_error(oddaj_zadanie("Z01", k), "Brak sieci")
+  expect_error(oddaj_zadanie("Z01", k, potwierdz = FALSE), "brak połączenia")
   expect_equal(polaczenia, 1L)
   expect_true(sprawdz_zadanie("Z01", k, uruchom = FALSE)$ok)
+  expect_false(file.exists(file.path(k, "oddania.csv")))
   p <- file.path(k, "zadania/z01/zadanie.Rmd")
   tekst <- readLines(p, encoding = "UTF-8")
   badaniaZI:::pisz_linie(badaniaZI:::wstaw_odpowiedz(tekst, "S03", "[UZUPELNIJ]"), p)
-  expect_error(oddaj_zadanie("Z01", k), "S03")
+  expect_error(oddaj_zadanie("Z01", k, potwierdz = FALSE), "S03")
   expect_equal(polaczenia, 1L)
 })
 

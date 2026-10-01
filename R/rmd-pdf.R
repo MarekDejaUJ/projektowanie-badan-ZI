@@ -36,7 +36,7 @@ srodowisko_renderu <- function() {
              "OS", "NUMBER_OF_PROCESSORS", "PROCESSOR_ARCHITECTURE")
   env <- Sys.getenv(nazwy, unset = NA_character_)
   env <- env[!is.na(env)]
-  # Bez znacznika 'current': nie dziedziczymy GH_TOKEN, kluczy API ani R_TESTS.
+  # Bez znacznika 'current': nie dziedziczymy tokenów, kluczy API ani R_TESTS.
   # Stała techniczna data metadanych PDF, nie data wykonania ani oddania pracy.
   # Dzięki niej ponowny skład tych samych wejść nie zmienia PDF tylko przez zegar.
   c(env, R_LIBS = paste(.libPaths(), collapse = .Platform$path.sep),
@@ -100,9 +100,8 @@ zapisz_wynik_pdf <- function(kontrola, roboczy) {
 }
 
 sprawdz_narzedzia_pdf <- function() {
-  if (!requireNamespace("knitr", quietly = TRUE) || !requireNamespace("rmarkdown", quietly = TRUE) ||
-      !rmarkdown::pandoc_available() || !nzchar(Sys.which("xelatex")))
-    stop("Stanowisko nie ma kompletu narz\u0119dzi PDF (knitr, rmarkdown, Pandoc, XeLaTeX). Zachowaj Rmd i zg\u0142o\u015b to prowadz\u0105cemu lub informatykowi; nie instaluj ich podczas \u0107wiczenia.", call. = FALSE)
+  if (!narzedzia_pdf_gotowe())
+    stop("Brakuje narz\u0119dzi PDF (Pandoc lub XeLaTeX). Uruchom raz przygotuj_pdf() \u2014 instalacja trwa kilka minut \u2014 i powt\u00f3rz polecenie. Odpowiedzi w Rmd s\u0105 zapisane.", call. = FALSE)
   invisible(TRUE)
 }
 
@@ -124,7 +123,7 @@ renderuj_prace <- function(kontrola, timeout = 240) {
   wynik <- tryCatch(uruchom_render_pracy(file.path(folder_pracy(kontrola$id), kontrola$rmd), tmp, timeout),
                     error = function(e) NULL)
   if (is.null(wynik) || !identical(wynik$status, 0L))
-    stop("Nie uda\u0142o si\u0119 utworzy\u0107 PDF w \u015bwie\u017cej sesji R. Zachowano odpowiedzi i poprzedni PDF. Uruchom chunki od pocz\u0105tku i sprawd\u017a zapis akapit\u00f3w; je\u015bli b\u0142\u0105d pozostaje, popro\u015b prowadz\u0105cego o sprawdzenie narz\u0119dzi PDF. Niczego nie wys\u0142ano.", call. = FALSE)
+    stop("Nie uda\u0142o si\u0119 utworzy\u0107 PDF w \u015bwie\u017cej sesji R. Zachowano odpowiedzi i poprzedni PDF. Uruchom chunki od pocz\u0105tku i sprawd\u017a zapis akapit\u00f3w; je\u015bli b\u0142\u0105d pozostaje, uruchom przygotuj_pdf() i powt\u00f3rz polecenie albo popro\u015b prowadz\u0105cego o pomoc. Niczego nie wys\u0142ano.", call. = FALSE)
   pdf <- file.path(tmp, pliki_pdf_pracy(kontrola$id)[1L])
   if (!czy_pdf(pdf)) stop("Proces nie utworzy\u0142 poprawnego pliku PDF. Niczego nie wys\u0142ano.", call. = FALSE)
   if (!identical(hashe_plikow(tmp, kontrola$pliki), kontrola$hashe) ||

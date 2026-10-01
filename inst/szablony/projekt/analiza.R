@@ -526,7 +526,7 @@ slad_analizy <- function(analizy) {
     'Reguły przygotowania'='identyczne duplikaty usunięte; 99 w pozycjach jako brak; czas poza 0–120 min jako brak; pozycja 3 odwrócona; indeks przy co najmniej 5 z 6 pozycji',
     'Losowania'=paste0('B = ',analizy$B,'; ziarno = ',analizy$ziarno),
     'Źródła obliczeń'='zapisany plik Rmd i towarzyszący mu analiza.R',
-    'Wersja wysłana'='zdalne SHA z potwierdzenia oddania')
+    'Wersja wysłana'='suma SHA-256 z potwierdzenia oddania')
   wersje <- data.frame(Element=c('R','badaniaZI','knitr','rmarkdown'),
     Wersja=c(as.character(getRversion()),as.character(utils::packageVersion('badaniaZI')),
       as.character(utils::packageVersion('knitr')),as.character(utils::packageVersion('rmarkdown'))))

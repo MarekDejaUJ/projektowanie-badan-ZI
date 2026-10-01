@@ -2,23 +2,27 @@
 \alias{oddaj_zadanie}
 \title{Oddanie zadania z konsoli R}
 \usage{
-oddaj_zadanie(id, katalog = NULL)
+oddaj_zadanie(id, katalog = NULL, potwierdz = interactive())
 }
 \arguments{
 \item{id}{Z01--Z10.}
 
 \item{katalog}{Katalog własnej przestrzeni; NULL rozpoznaje bieżącą pracę.}
+
+\item{potwierdz}{Czy pokazać PDF i zapytać przed wysłaniem.}
 }
 \value{
-Lista z repo, SHA, ID odbioru i czasem serwera.
+Lista: stan, zadanie, nazwy wysłanych plików, czas i sumy SHA-256,
+  niewidocznie.
 }
 \description{
-Z zapisanego Rmd tworzy aktualny PDF i wysyła go razem ze źródłami.
-Sprawdza własne odpowiedzi, gotowy kod i dane; nie przyznaje punktów.
-Wysyła wyłącznie jawną listę plików. Potwierdzeniem jest zdalny SHA oraz
-rekord odbioru utworzony przez GitHub, z czasem serwera. Zielony stan
-odbioru nie jest oceną merytoryczną ani wynikiem kontroli kodu.
+Sprawdza zapisany Rmd (odpowiedzi, gotowy kod, ID i dane), tworzy od
+początku aktualny PDF w świeżej sesji R i wysyła go do folderu zadania
+prowadzącego na nc.uj.edu.pl. Nazwa pliku zawiera ID oraz nazwisko i imię,
+np. s017_kowalska_anna_Z03.pdf. W sesji interaktywnej najpierw otwiera PDF
+i pyta o potwierdzenie. Ponowne oddanie dodaje nową wersję obok poprzedniej.
+Funkcja nie przyznaje punktów.
 }
 \examples{
-\dontrun{ oddaj_zadanie("Z01", "moje-badania") }
+\dontrun{ oddaj_zadanie("Z01") }
 }

@@ -19,7 +19,7 @@ oblicz_ocene <- function(punkty_zadan, punkty_projektu, spozniony = FALSE,
       any(punkty_projektu < 0 | punkty_projektu > 100, na.rm = TRUE))
     stop("Podaj 10 punktacji zada\u0144 0--10 i jedn\u0105 punktacj\u0119 projektu 0--100.", call. = FALSE)
   if (!is.logical(spozniony) || length(spozniony) != 1L || is.na(spozniony))
-    stop("Ustal sp\u00f3\u017anienie na podstawie serwerowego pokwitowania.", call. = FALSE)
+    stop("Ustal sp\u00f3\u017anienie na podstawie czasu przyj\u0119cia pliku w folderze oddania.", call. = FALSE)
   problemy <- sprawdz_konfiguracje(konfiguracja)
   if (any(problemy$pole %in% c("wagi", "progi_ocen", "maksymalna_ocena_spozniona"))) stop("Nie ustalono poprawnych wag, prog\u00f3w lub limitu sp\u00f3\u017anienia.", call. = FALSE)
   if (anyNA(punkty_zadan) || is.na(punkty_projektu)) return(list(stan = "brak_oceny", procent = NA_real_, ocena = NA_real_))

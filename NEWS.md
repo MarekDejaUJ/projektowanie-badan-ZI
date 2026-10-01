@@ -1,3 +1,43 @@
+# badaniaZI 2.5.7 — praca w Posit Cloud i oddawanie przez Nextcloud
+
+Wersja 2.5.7 zastępuje 2.3.5 jako wydanie kursu na rok 2026/27. Treść
+wykładów, ćwiczeń i scenariuszy, generator danych oraz format pracy pozostają
+bez zmian; zmienia się sposób pracy i oddawania. Przepływ przez GitHub
+zachowuje gałąź `gh-workflow`.
+
+## Praca i oddawanie
+
+- Student pracuje w Posit Cloud (RStudio w przeglądarce) albo w RStudio na
+  własnym komputerze, bez konta GitHub i bez logowania w R.
+- `rozpocznij_zajecia("C01", id_studenta = "s017", student = "Anna Kowalska")`
+  przy pierwszym starcie tworzy lokalną przestrzeń `moje-badania` z ID oraz
+  imieniem i nazwiskiem, a przy każdym starcie kopiuje do
+  `moje-badania/materialy` HTML i PDF ćwiczenia oraz rubrykę (na C09 i C10
+  także karty scenariuszy).
+- `oddaj_zadanie("Z01")` po dotychczasowych kontrolach i świeżym PDF otwiera
+  PDF do obejrzenia, pyta o potwierdzenie i wysyła go do folderu zadania
+  prowadzącego w Nextcloud (nc.uj.edu.pl) jako `s017_kowalska_anna_Z01.pdf`.
+  `oddaj_projekt()` wysyła do folderu projektu PDF raportu i archiwum ZIP ze
+  źródłami i danymi. Ponowne oddanie dodaje nową wersję obok poprzedniej.
+- `status_oddania()` odczytuje lokalny rejestr `oddania.csv` z nazwą, czasem
+  i sumą SHA-256 każdego wysłanego pliku.
+- `przygotuj_pdf()` jednorazowo instaluje TinyTeX i pakiety LaTeX oraz składa
+  próbny dokument; brak XeLaTeX przy oddaniu kończy się propozycją instalacji.
+- PDF pracy korzysta z Quartz, gdy na macOS brakuje biblioteki cairo (XQuartz).
+
+## Pakiet i strona
+
+- Pakiet instaluje się poleceniem `install.packages()` z repozytorium na stronie
+  kursu razem ze wszystkimi pakietami używanymi w ćwiczeniach (m.in. `readxl`,
+  `rstudioapi`, `tinytex`, `curl`, `zip`).
+- Usunięto logowanie do GitHub, prywatne repozytoria studentów, odbiór i
+  oceny w repozytoriach oraz kontrolę oddań w kontenerze Docker. Foldery
+  oddania zapisuje konfiguracja rocznika (`foldery_oddania`).
+- Strona udostępnia materiały do czytania (HTML, PDF, Rmd) i rubryki, bez
+  plików R.
+- Rubryki Z01, Z10 i PROJEKT opisują dowód oddania przez potwierdzenie z sumą
+  SHA-256 zamiast zdalnego SHA (zestaw rubryk 2.1.0).
+
 # badaniaZI 2.3.5 — materiały przepisane i zadania z wzorcami zapisu
 
 Wersja 2.3.5 zastępuje 2.0.0 jako wydanie kursu na rok 2026/27. Format pracy,

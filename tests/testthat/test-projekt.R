@@ -1,19 +1,20 @@
 test_that("przestrzeń ćwiczeń nie rozpoczyna projektu badawczego", {
   katalog <- tempfile("moje badania ")
   on.exit(unlink(katalog, recursive = TRUE))
-  p <- utworz_projekt("s017", katalog = katalog, repo = "uczelnie/moje-badania-s017")
+  p <- utworz_projekt("s017", katalog = katalog, student = "Anna Kowalska")
   expect_true(file.exists(p))
   cfg <- badaniaZI:::czytaj_yaml(file.path(katalog, "kurs.yml"))
   expect_equal(cfg$id, "s017")
+  expect_identical(cfg$student, "Anna Kowalska")
   expect_identical(cfg$format_pracy, "rmd-1")
   expect_null(cfg$scenariusz)
   expect_null(cfg$proponowany_scenariusz)
-  expect_equal(cfg$repo, "uczelnie/moje-badania-s017")
+  expect_null(cfg$repo)
   expect_error(utworz_projekt("s017", katalog = katalog), "istnieje")
   expect_false(dir.exists(file.path(katalog, "dane")))
   expect_false(dir.exists(file.path(katalog, "projekty")))
-  expect_false(dir.exists(file.path(katalog, ".github")))
-  for (plik in c("kurs.yml", "moje-badania.Rproj", ".gitignore", ".gitattributes")) {
+  expect_false(file.exists(file.path(katalog, ".gitignore")))
+  for (plik in c("kurs.yml", "moje-badania.Rproj")) {
     bajty <- readBin(file.path(katalog, plik), "raw", n = 10000L)
     expect_false(as.raw(13) %in% bajty)
   }
@@ -28,4 +29,17 @@ test_that("propozycja scenariusza nie losuje danych przed C09", {
   expect_false(dir.exists(file.path(k, "dane")))
   expect_error(utworz_projekt("s017", "S21", tempfile()), "scenariusz")
   expect_error(utworz_projekt("", katalog = tempfile()), "id_studenta")
+  expect_error(utworz_projekt("s017", katalog = tempfile(), student = "Kowalska"), "imię i nazwisko")
+})
+
+test_that("nazwa oddania łączy ID, nazwisko, imię i zadanie bez polskich znaków", {
+  f <- badaniaZI:::nazwa_oddania
+  expect_identical(f("s017", "Anna Kowalska", "Z03"), "s017_kowalska_anna_Z03")
+  expect_identical(f("s017", "Anna Maria  Kowalska-Nowak", "PROJEKT"), "s017_kowalska-nowak_anna_maria_PROJEKT")
+  expect_identical(f("s017", "Łucja Źdźbło-Żółć", "Z01"), "s017_zdzblo-zolc_lucja_Z01")
+  expect_identical(f("s017", "Renée O'Brien", "Z10"), "s017_obrien_renee_Z10")
+  for (zle in c("Imię Nazwisko", "Kowalska", "", "Anna 123", "Anna <b>Kowalska</b>"))
+    expect_error(f("s017", zle, "Z01"), "imię i nazwisko", info = zle)
+  expect_error(f("s017", NA_character_, "Z01"), "imię i nazwisko")
+  expect_error(f("s017", c("Anna Kowalska", "Jan Nowak"), "Z01"), "imię i nazwisko")
 })

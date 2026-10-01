@@ -19,7 +19,7 @@ zapamietaj_prace <- function(katalog, cwiczenie) {
   cfg <- czytaj_yaml(file.path(root, "kurs.yml"))
   sprawdz_id(cfg$id, "ID pracy")
   sesja_pracy$katalog <- root
-  sesja_pracy$tozsamosc <- cfg[c("id", "rocznik", "repo")]
+  sesja_pracy$tozsamosc <- cfg[c("id", "rocznik")]
   sesja_pracy$cwiczenie <- cwiczenie
   invisible(root)
 }
@@ -32,8 +32,8 @@ katalog_kursu <- function(katalog = NULL) {
     if (!dir.exists(root) || !file.exists(file.path(root, "kurs.yml")))
       stop("Znikn\u0105\u0142 katalog zapami\u0119tanej pracy. Uruchom ponownie rozpocznij_zajecia() z w\u0142a\u015bciwym katalogiem.", call. = FALSE)
     cfg <- czytaj_yaml(file.path(root, "kurs.yml"))
-    if (!identical(cfg[c("id", "rocznik", "repo")], sesja_pracy$tozsamosc))
-      stop("Konfiguracja zapami\u0119tanej pracy zmieni\u0142a ID, rocznik lub repozytorium. Wska\u017c w\u0142asny katalog i rozpocznij zaj\u0119cia ponownie.", call. = FALSE)
+    if (!identical(cfg[c("id", "rocznik")], sesja_pracy$tozsamosc))
+      stop("Konfiguracja zapami\u0119tanej pracy zmieni\u0142a ID lub rocznik. Wska\u017c w\u0142asny katalog i rozpocznij zaj\u0119cia ponownie.", call. = FALSE)
     lokalny <- znajdz_katalog_kursu(getwd())
     if (!is.null(lokalny) && !identical(lokalny, root))
       stop("Bie\u017c\u0105cy katalog i zapami\u0119tana praca wskazuj\u0105 r\u00f3\u017cne przestrzenie. Podaj jawnie katalog w\u0142asnej pracy.", call. = FALSE)
@@ -93,7 +93,6 @@ otworz_plik_pracy <- function(plik) {
     otwarte <- tryCatch({ rstudioapi::navigateToFile(plik); TRUE }, error = function(e) FALSE)
     if (otwarte) return(invisible(TRUE))
   }
-  message("Otw\u00f3rz w bie\u017c\u0105cym edytorze plik: ", plik,
-    "\nNie otwieraj teraz Rproj: zmiana sesji R wymaga ponownego logowania.")
+  message("Otw\u00f3rz w bie\u017c\u0105cym edytorze plik: ", plik)
   invisible(FALSE)
 }
