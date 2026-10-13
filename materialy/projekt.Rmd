@@ -6,7 +6,10 @@ params:
   id: "TWOJE_ID"
   scenariusz: "S07"
 date: "`r format(Sys.Date(), '%d.%m.%Y')`"
-lang: pl
+lang: pl-PL
+bibliography: https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/bibliografia.json
+csl: https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/apa-pl.csl
+link-citations: true
 geometry: margin=2.2cm
 output:
   pdf_document:
@@ -89,7 +92,7 @@ ggplot(dane, aes(x = grupa, y = indeks)) +
 
 ## P6. Pierwsza analiza: indeks w dwóch grupach (2 pkt)
 
-**Polecenie:** Zapisz wynik porównania indeksu w grupach według wzorca z C05: różnica średnich, *t*, *df*, *p*, 95% CI, *g* oraz wyniki testu permutacyjnego i testu Manna–Whitneya.
+**Polecenie:** Zapisz wynik porównania indeksu w grupach według wzorca z C05: różnica średnich, *t*, *df*, *p*, 95% CI, *g* oraz wyniki testu permutacyjnego i testu Manna–Whitneya. Podaj źródło testu i miary efektu zapisem cytowania, np. `[@welch1947]` i `[@lakens2013]` (klucze: rozdział Bibliografia w książce kursu).
 
 ```{r p6, fig.height=2.8}
 t.test(indeks ~ grupa, data = dane)
@@ -112,7 +115,7 @@ effectsize::rank_biserial(indeks ~ grupa, data = dane)
 
 ## P7. Druga analiza (2 pkt)
 
-**Polecenie:** Zapisz wynik drugiej analizy według wzorca z C07 (tabela krzyżowa) albo C08 (korelacja Spearmana), z miarą siły związku i wnioskiem zgodnym z wartością *p*.
+**Polecenie:** Zapisz wynik drugiej analizy według wzorca z C07 (tabela krzyżowa) albo C08 (korelacja Spearmana), z miarą siły związku i wnioskiem zgodnym z wartością *p*. Podaj źródło metody, np. `[@pearson1900]` albo `[@spearman1904]`.
 
 ```{r p7-spearman, eval=spearman, include=spearman, fig.height=3}
 cor.test(dane$czestosc, dane$indeks, method = "spearman", exact = FALSE)
@@ -156,3 +159,5 @@ c(scenariusz = params$scenariusz, id = params$id, skrypt = .zi_wersja, R = as.ch
 ```
 
 **Odpowiedź:**
+
+# Bibliografia

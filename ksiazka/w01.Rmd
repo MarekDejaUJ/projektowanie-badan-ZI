@@ -1,0 +1,249 @@
+# (PART) Wykłady {-}
+
+# W01. Projekt badania i pomiar {#w01 .unnumbered}
+
+::: {.start}
+**Wykład 1, 06.10.2026.** Ćwiczenia: [C01](#c01) oraz część I projektu ([C09](#c09)). Dane przykładów: scenariusz S02 (katalog biblioteczny), ID `wzor`.
+:::
+
+::: {.lektura}
+**Lektura obowiązkowa:** @cisek2025; @stefaniak2016. **Lektura uzupełniająca:** @babbie2025 [rozdz. 4–5, 7]; @king2009 [rozdz. 14].
+:::
+
+Do biblioteki napływają wiadomości, że w nowym katalogu trudno znaleźć dokument, a jednocześnie liczba wizyt w katalogu rośnie. Zespół proponuje trzy rozwiązania: zmienić nazwy filtrów, nagrać instrukcję albo zorganizować szkolenie. Każda propozycja zakłada inną przyczynę trudności: nazwy filtrów są własnością interfejsu, znajomość procedury jest własnością użytkownika, a szkolenie ma zmienić sposób działania. Wzrost liczby wizyt zgadza się z każdą z trzech diagnoz, więc wybór rozwiązania wymaga pomiaru, który rozdziela własności interfejsu, wiedzę użytkownika i sposób działania. Wykład W01 prowadzi od problemu instytucji do planu badania: pytania, pomiaru, próby, projektu i wielkości, która odpowiada na pytanie. Część ilościowa przedmiotu jest fragmentem szerszej metodologii nauki o informacji, obejmującej także badania jakościowe i mieszane [@cisek2025; @stefaniak2016].
+
+```{r w01-dane, include=FALSE}
+w1_dane <- dane_zi("S02", id = "wzor")
+w1_surowe <- dane_zi("S02", id = "wzor", surowe = TRUE)
+w1_dz <- przygotuj_zi(w1_surowe)$dziennik
+w1_oc <- opis_grup(w1_dane, czas, grupa)
+w1_tw <- t.test(czas ~ grupa, data = w1_dane)
+w1_g <- effectsize::hedges_g(czas ~ grupa, data = w1_dane)
+w1_roznica <- unname(diff(rev(w1_tw$estimate)))
+w1_ps <- w1_dane[!is.na(w1_dane$czas) & !is.na(w1_dane$czas_po), ]
+w1_tp <- t.test(w1_ps$czas, w1_ps$czas_po, paired = TRUE)
+w1_sukces <- mean(w1_dane$powodzenie == "tak")
+w1_rs <- suppressWarnings(cor.test(w1_dane$indeks, w1_dane$czas, method = "spearman", exact = FALSE))
+w1_n64 <- ceiling(power.t.test(delta = 0.5, power = 0.8)$n)
+w1_n_obs <- ceiling(power.t.test(delta = abs(w1_g$Hedges_g), power = 0.8)$n)
+w1_moc_obs <- power.t.test(n = min(w1_oc$n), delta = abs(w1_g$Hedges_g))$power
+set.seed(2026)
+w1_mala <- w1_dane[sample(which(!is.na(w1_dane$czas)), 30), ]
+w1_tm <- t.test(czas ~ grupa, data = w1_mala)
+w1_czas_zero <- mean(ifelse(is.na(w1_dane$czas), 0, w1_dane$czas))
+```
+
+## 1. Od problemu instytucji do pytania badawczego {#w01-pytanie .unnumbered}
+
+Pierwszym krokiem jest przełożenie zdania „trudno znaleźć” na zdarzenia możliwe do zaobserwowania. Czy użytkownik odnajduje rekord? Czy na podstawie rekordu wskazuje lokalizację dokumentu? Czy ocenia przydatność publikacji według podanych kryteriów? Trzy zdarzenia wymagają trzech zadań, trzech definicji sukcesu i trzech różnych działań biblioteki. Statystyka zaczyna się od rozróżnienia rodzajów trudności, zanim pojawi się pierwszy wzór.
+
+Pytanie badawcze w części ilościowej ma cztery składniki: populację (kogo dotyczy wniosek), porównanie lub związek (grupy albo zmienne), wynik (co mierzymy) i wielkość, która odpowiada na pytanie (średnia, odsetek, różnica, korelacja). Statystyka opisowa podsumowuje zebrane dane, a wnioskowanie statystyczne przenosi wniosek z próby na populację i podaje niepewność uogólnienia [@babbie2025; @king2009, rozdz. 1]. Rysunek \@ref(fig:w01-etapy) układa sześć etapów rozumowania, od problemu instytucji do zakresu wniosku; przy każdym etapie stoi pytanie, na które badacz odpowiada przed przejściem dalej.
+
+```{r w01-etapy, echo=FALSE, fig.height=4.4, fig.cap="Sześć etapów rozumowania od problemu instytucji do wniosku. Etapy leżą od góry do dołu i łączą je strzałki; w każdym prostokącie stoi nazwa etapu i pytanie do zapisania: od decyzji wymagającej informacji po zakres wniosku dozwolony przez projekt."}
+w1_etapy <- data.frame(
+  y = 6:1,
+  etap = c("Problem instytucji", "Konstrukt", "Wskaźnik i pomiar", "Projekt i próba", "Estymanda", "Wniosek"),
+  pytanie = c("Jaką decyzję ma podjąć instytucja?", "O jakiej właściwości chcemy wnioskować?",
+              "Co obserwujemy i jak kodujemy?", "Kogo badamy i jak powstają grupy?",
+              "Jaka liczba odpowiada na pytanie?", "Na kogo i z jaką pewnością wolno uogólnić?"))
+ggplot(w1_etapy, aes(y = y)) +
+  geom_segment(data = w1_etapy[-6, ], aes(x = 0.5, xend = 0.5, y = y - 0.32, yend = y - 0.68),
+               arrow = arrow(length = grid::unit(0.15, "cm")), colour = "grey45") +
+  geom_label(aes(x = 0.5, label = paste0(etap, ": ", pytanie)), fill = "#eef5fb", label.size = 0.3, size = 3.4) +
+  scale_x_continuous(limits = c(0, 1)) +
+  theme_void()
+```
+
+## 2. Pojęcia nauki o informacji {#w01-lis .unnumbered}
+
+Nauka o informacji dostarcza pojęć porządkujących problem katalogu. Wilson opisuje zachowania informacyjne jako szeroki obszar, w którym mieści się poszukiwanie informacji, a w nim wyszukiwanie w systemach informacyjnych opartych na komputerze, takich jak katalog [@wilson1999]. Dla katalogu wynika z modelu Wilsona rozróżnienie dwóch pytań: o korzystanie z katalogu i o całą drogę zdobywania informacji. Zakończenie sesji w katalogu zgadza się z dwoma przebiegami, z niezaspokojoną potrzebą i z odpowiedzią uzyskaną od bibliotekarza, więc dziennik zdarzeń katalogu wymaga pytania o wynik całej drogi.
+
+Kuhlthau łączy proces wyszukiwania z działaniami, myślami i odczuciami użytkownika; niepewność towarzyszy początkowi procesu, często rośnie w fazie eksploracji i maleje, gdy użytkownik formułuje ukierunkowanie tematu [@kuhlthau1991]. Model Kuhlthau uzasadnia pytanie o moment pomiaru pewności: przed zadaniem, w trakcie albo po poznaniu wyniku. Hargittai łączy dane ankietowe z obserwacją korzystania z sieci i rozdziela deklarację „uważam, że potrafię” od obserwacji „wykonałem zadanie” [@hargittai2002]. Ramy kompetencji, na przykład DigComp 2.2, dzielą kompetencje cyfrowe na pięć obszarów i 21 kompetencji, a narzędzie samooceny DigCompSat, zbudowane na ramie DigComp, mierzy kompetencje na poziomie obszarów [@vuorikari2022].
+
+Literatura dostarcza pojęć i uzasadnień pytań badawczych, a dane S02 pochodzą z generatora kursu. Liczby z S02 opisują wymyślone osoby i służą ćwiczeniu analizy; wyniki cytowanych badań zawierają ich publikacje.
+
+## 3. Konstrukt, wskaźnik i operacjonalizacja {#w01-pomiar .unnumbered}
+
+Konstrukt jest pojęciem, o którym chcemy wnioskować: kompetencja informacyjna, pewność wyszukiwania, postrzegana użyteczność katalogu. Wskaźnik jest obserwowalną informacją powiązaną z konstruktem. Czas odnalezienia rekordu jest wskaźnikiem sprawności w konkretnym zadaniu i łączy kompetencję z innymi przyczynami tempa pracy, na przykład z dokładnym sprawdzaniem autorstwa i aktualności źródła.
+
+Operacjonalizacja określa przejście od pojęcia do danych. Dla czasu zapisujemy moment rozpoczęcia, moment zakończenia, jednostkę, warunek przerwania i sposób zapisu niepowodzenia. Dla samooceny zapisujemy brzmienie pytania, okres odniesienia i kategorie odpowiedzi. Zmiana któregokolwiek elementu operacjonalizacji zmienia znaczenie wyniku.
+
+| Pojęcie | Możliwy wskaźnik | Pytanie wymagające dodatkowego pomiaru |
+|:--|:--|:--|
+| sprawność wyszukiwania | czas wykonania określonego zadania | Czy znaleziono wiarygodne źródło? |
+| skuteczność | odnalezienie wskazanego dokumentu: tak/nie | Czy użytkownik powtórzy sukces w innym zadaniu? |
+| samoocena umiejętności | odpowiedź „potrafię znaleźć lokalizację dokumentu” | Czy deklarowana umiejętność występuje w działaniu? |
+| postrzegana użyteczność | ocena zrozumiałości filtrów i komunikatów | Jaki udział w trudności mają system i użytkownik? |
+
+W badaniu S02 każda osoba wykonuje jedno zadanie w katalogu (czas i powodzenie z obserwacji) i odpowiada na sześć twierdzeń o katalogu (deklaracja). Średnia sześciu odpowiedzi tworzy indeks oceny użyteczności katalogu; budowę indeksu, odwrócenie pozycji negatywnej i rzetelność omawiają wykład W02 i ćwiczenie [C03](#c03). Indeks łączy ocenę katalogu z oceną własnego radzenia sobie z katalogiem, więc jego trafność wymaga dowodu z treści pozycji i ze związku z wykonaniem zadania.
+
+Jednostką analizy w S02 jest osoba wykonująca jedno zadanie. W dzienniku zdarzeń systemu jednostką rekordu jest pojedyncze zdarzenie: zapytanie, kliknięcie filtra, otwarcie rekordu. Gdyby każda z `r nrow(w1_dane)` osób S02 wykonała cztery zadania, tabela miałaby `r 4 * nrow(w1_dane)` wierszy, ale informacja nadal pochodziłaby od `r nrow(w1_dane)` osób: pomiary jednej osoby dzielą jej doświadczenie, urządzenie i sposób pracy.
+
+::: {.wzor}
+$$SE(\bar{x}) = \frac{s}{\sqrt{n}} \qquad\qquad \frac{SE_{n=`r 4 * nrow(w1_dane)`}}{SE_{n=`r nrow(w1_dane)`}} = \sqrt{\frac{`r nrow(w1_dane)`}{`r 4 * nrow(w1_dane)`}} = 0{,}5$$
+$SE(\bar{x})$ — błąd standardowy średniej (miara precyzji średniej, wykład W03), $s$ — odchylenie standardowe wyników, $n$ — liczba niezależnych jednostek.
+:::
+
+Policzenie czterech zadań jednej osoby jako czterech osób zmniejsza błąd standardowy o połowę bez nowej informacji. Analiza w kursie używa jednego wyniku na osobę albo różnic w parach pomiarów jednej osoby ([C05](#c05)).
+
+## 4. Skale pomiaru i dozwolone działania {#w01-skale .unnumbered}
+
+Skala pomiaru opisuje relacje między wartościami zmiennej i wyznacza działania, które mają sens [@stevens1946]. Klasa danych w R opisuje zapis techniczny: `numeric`, `factor`, `character`; skala pomiaru opisuje znaczenie liczb.
+
+| Skala | Relacje | Przykład ZI | Sensowne pytanie |
+|:--|:--|:--|:--|
+| nominalna | równość | grupa użytkowników, kanał kontaktu | Ile osób wybrało każdy kanał? |
+| porządkowa | równość, porządek | częstość korzystania od „nigdy” do „bardzo często” | Która odpowiedź oznacza większą częstość? |
+| przedziałowa | równość, porządek, różnica | indeks oceny (umownie) | O ile różnią się średnie oceny? |
+| ilorazowa | równość, porządek, różnica, iloraz | czas zadania w minutach, wiek | Ile razy dłużej trwało zadanie? |
+
+Kody 1–5 pojedynczej pozycji ankiety ustalają porządek odpowiedzi, a odległości między kategoriami mogą być nierówne [@jamieson2004]. Średnia kilku pozycji przyjmuje wiele wartości i w praktyce analizy traktuje się ją jak zmienną przedziałową; metody parametryczne zastosowane do danych ze skal Likerta prowadzą do trafnych wniosków [@norman2010]. Zmienna 0/1 ma szczególną własność: jej średnia jest odsetkiem jedynek. Powodzenie zadania S02 ma średnią `r .zi_pl(w1_sukces, 3)`, czyli dokument znalazło `r .zi_pl(100 * w1_sukces, 1)`% osób.
+
+Wartość `NA` oznacza nieznaną odpowiedź i pozostaje osobną wartością. Czas zadania ma w S02 `r sum(is.na(w1_dane$czas))` braków; średni czas osób ze zmierzonym czasem wynosi `r .zi_pl(mean(w1_dane$czas, na.rm = TRUE))` min, a po wpisaniu zera w miejsce braków spadłby do `r .zi_pl(w1_czas_zero)` min. Zero oznacza zadanie wykonane natychmiast, więc zamiana braków na zero dopisuje do danych nieistniejące wyniki.
+
+## 5. Populacja, próba i przygotowanie danych {#w01-proba .unnumbered}
+
+Populacja jest zbiorem jednostek, o którym chcemy mówić, a rama doboru (w polskim wydaniu Babbiego: operat losowania) jest praktyczną listą lub procedurą dotarcia do jednostek. Ogłoszenie w katalogu dociera wyłącznie do osób odwiedzających katalog, więc osoby, które zrezygnowały po pierwszej trudności, pozostają poza ramą. Różnica między populacją a ramą to błąd pokrycia; większa liczba odpowiedzi z jednego kanału zwiększa precyzję oszacowania dla ramy i pozostawia błąd pokrycia bez zmian [@babbie2025]. Dobór losowy nadaje każdej jednostce ramy znane prawdopodobieństwo wyboru i daje podstawę wnioskowania o populacji objętej ramą; dobór wygodny ogranicza wniosek do opisanej grupy.
+
+Próba to osoby rzeczywiście objęte pomiarem, a każdy etap przygotowania danych zmienia jej liczebność. Rysunek \@ref(fig:w01-lejek) przedstawia przepływ danych S02 od eksportu do analizy: każda liczba w raporcie podaje mianownik swojego etapu ([C02](#c02)).
+
+```{r w01-lejek, echo=FALSE, fig.height=2.8, fig.cap="Przepływ danych S02 od eksportu do analizy. Oś pozioma: liczba wierszy (osób); oś pionowa: etapy przygotowania. Najdłuższy słupek odpowiada surowemu eksportowi; kolejne słupki pokazują liczbę osób po usunięciu powtórzeń oraz liczbę osób z ważnym czasem i z ważnym indeksem."}
+w1_etapy_n <- data.frame(
+  etap = factor(c("eksport", "bez powtórzeń", "z ważnym czasem", "z ważnym indeksem"),
+                levels = rev(c("eksport", "bez powtórzeń", "z ważnym czasem", "z ważnym indeksem"))),
+  n = c(w1_dz$wiersze[1], nrow(w1_dane), sum(!is.na(w1_dane$czas)), sum(!is.na(w1_dane$indeks))))
+ggplot(w1_etapy_n, aes(x = n, y = etap)) +
+  geom_col(fill = "#56B4E9", width = 0.6) +
+  geom_text(aes(label = n), hjust = -0.2, size = 3.4) +
+  scale_x_continuous(limits = c(0, max(w1_etapy_n$n) * 1.12)) +
+  labs(x = "Liczba osób", y = NULL)
+```
+
+Eksport ma `r w1_dz$wiersze[1]` wierszy; po usunięciu `r w1_dz$zmienione[3]` powtórzeń zostaje `r nrow(w1_dane)` osób, z których `r sum(!is.na(w1_dane$czas))` ma ważny czas, a `r sum(!is.na(w1_dane$indeks))` ważny indeks. Analiza czasu ma więc mianownik `r sum(!is.na(w1_dane$czas))`, a analiza indeksu `r sum(!is.na(w1_dane$indeks))`.
+
+## 6. Projekty badań i siła wniosku {#w01-projekty .unnumbered}
+
+Projekt opisowy szacuje stan: średni czas, odsetek powodzeń, etap, na którym pojawia się trudność. Odsetek niepowodzeń z przedziałem niepewności jest pełnoprawnym wynikiem i daje instytucji punkt wyjścia do dalszych decyzji.
+
+Porównanie grup obserwacyjnych zestawia osoby, które same trafiły do grup. W S02 nowi użytkownicy wykonywali zadanie średnio `r .zi_pl(w1_oc$M[1])` min, a doświadczeni `r .zi_pl(w1_oc$M[2])` min. Doświadczenie powstało poza kontrolą badacza, więc różnica `r .zi_pl(w1_roznica)` min łączy działanie doświadczenia z działaniem cech współwystępujących: znajomości dziedziny, częstości korzystania z katalogu i podobieństwa zadań. Wniosek przyczynowy z porównania grup obserwacyjnych wymaga jawnych założeń o pozostałych przyczynach różnicy [@rohrer2018; @hernan2020]. Poprawna rekomendacja brzmi: „warto sprawdzić w eksperymencie pomoc dla nowych użytkowników”.
+
+Eksperyment losowo przydziela warunek, na przykład krótką instrukcję albo standardowy start. Przy losowym przydziale grupy przed interwencją różnią się cechami mierzonymi i niemierzonymi wyłącznie przypadkowo, co daje podstawę do odczytu różnicy jako skutku warunku [@hernan2020]. Losowy dobór i losowy przydział pełnią różne role:
+
+| Własność | Losowy dobór osób | Losowy przydział warunku |
+|:--|:--|:--|
+| Co losujemy? | kto wejdzie do próby | kto otrzyma daną wersję pomocy |
+| Rola w rozumowaniu | podstawa uogólnienia na populację | podstawa porównania przyczynowego |
+| Połączenie | losowa próba, a w niej losowy przydział | jeden projekt może zawierać oba losowania |
+
+Dwukrotny pomiar każdej osoby, przed zmianą i po zmianie, wnosi jeszcze inny dowód. W S02 każdy uczestnik po pierwszej próbie przeczytał instrukcję i wykonał drugie zadanie, które trwało średnio o `r .zi_pl(w1_tp$estimate)` min krócej. Skrócenie czasu łączy działanie instrukcji z wprawą zdobytą w pierwszej próbie; rozdzielenie obu przyczyn wymaga grupy porównawczej bez instrukcji. Plan quasi-eksperymentalny korzysta z grupy porównawczej bez losowego przydziału, na przykład z filii, w której zmiana nastąpi później, i porównuje zmiany w obu grupach:
+
+::: {.wzor}
+$$\widehat{DiD} = (\bar{y}_{A,\text{po}} - \bar{y}_{A,\text{przed}}) - (\bar{y}_{B,\text{po}} - \bar{y}_{B,\text{przed}})$$
+$\bar{y}_{A,\text{przed}}$, $\bar{y}_{A,\text{po}}$ — średni wynik w grupie z interwencją przed i po zmianie; $\bar{y}_{B,\cdot}$ — średnie w grupie porównawczej. Odczyt przyczynowy różnicy zmian wymaga założenia, że bez interwencji obie grupy zmieniałyby się tak samo (trendy równoległe).
+:::
+
+Piramida dowodów porządkuje projekty według zdolności wykluczania wyjaśnień alternatywnych w pytaniach o skutek interwencji (rysunek \@ref(fig:w01-piramida)). @murad2016 proponują wersję, w której przegląd systematyczny jest soczewką do oceny badań, a granice poziomów są płynne: jakość konkretnego badania przesuwa je w górę lub w dół. Pytanie biblioteki „jaka część obecnych użytkowników napotyka barierę?” wymaga dobrego pomiaru lokalnego; pytanie o skutek instrukcji wymaga eksperymentu. Dobry dowód to wynik projektu dopasowanego do pytania, z rozpoznanymi ograniczeniami.
+
+```{r w01-piramida, echo=FALSE, fig.height=3.2, fig.cap="Tradycyjna piramida dowodów w pytaniach o skutek interwencji, w uproszczeniu. Pięć poziomów od podstawy do wierzchołka: opinia eksperta, opis przypadku, badanie porównawcze bez losowego przydziału, badanie z losowym przydziałem, przegląd systematyczny z metaanalizą; wyższy poziom lepiej wyklucza wyjaśnienia alternatywne."}
+w1_poziomy <- c("opinia eksperta", "opis przypadku", "porównanie bez losowego przydziału",
+                "badanie z losowym przydziałem", "przegląd systematyczny z metaanalizą")
+w1_pir <- do.call(rbind, lapply(1:5, function(i) {
+  szer <- 1 - (i - 1) * 0.18
+  data.frame(poziom = i, x = c(-szer, szer, szer - 0.18, -szer + 0.18), y = c(i - 1, i - 1, i, i))
+}))
+ggplot() +
+  geom_polygon(data = w1_pir, aes(x = x, y = y, group = poziom, fill = factor(poziom)), colour = "white") +
+  geom_text(data = data.frame(y = (1:5) - 0.5, etykieta = w1_poziomy), aes(x = 0, y = y, label = etykieta), size = 3.2) +
+  scale_fill_manual(values = c("#e6f1fa", "#cfe4f5", "#a9cfec", "#7fb8e0", "#56B4E9"), guide = "none") +
+  theme_void()
+```
+
+## 7. Estymanda, estymator i estymata {#w01-estymanda .unnumbered}
+
+Estymanda jest dokładnie określoną wielkością, którą chcemy poznać: na przykład różnica średniego czasu zadania między nowymi a doświadczonymi użytkownikami katalogu, dla wspólnego zadania i procedury. Jawnie nazwana estymanda łączy pytanie badawcze z analizą i z teorią, z której pytanie wyrasta [@lundberg2021]. Parametr jest liczbową cechą populacji lub modelu, estymator jest regułą obliczania wyniku z próby, a estymata jest otrzymaną liczbą.
+
+| Symbol | Czytamy | Znaczenie | Jednostka |
+|:--|:--|:--|:--|
+| $\mu_N$, $\mu_D$ | mi en, mi de | średni czas w populacji nowych (N) i doświadczonych (D) | minuty |
+| $\Delta = \mu_N - \mu_D$ | delta | różnica średnich w populacji (estymanda) | minuty |
+| $\bar{x}_N$, $\bar{x}_D$ | iks z kreską | średnie w próbie | minuty |
+| $\widehat{\Delta}$ | delta z daszkiem | estymata różnicy | minuty |
+| $\pi$, $\hat{\pi}$ | pi, pi z daszkiem | odsetek powodzeń w populacji i w próbie | ułamek |
+| $\rho_S$, $r_S$ | ro es, er es | korelacja rang w populacji i w próbie | od −1 do 1 |
+
+::: {.wzor}
+$$\widehat{\Delta} = \bar{x}_N - \bar{x}_D = \frac{1}{n_N}\sum_{i=1}^{n_N} x_{Ni} - \frac{1}{n_D}\sum_{i=1}^{n_D} x_{Di}$$
+Czytamy: „szacowana różnica to średni czas nowych użytkowników minus średni czas doświadczonych”. $x_{Ni}$ — czas $i$-tej osoby z grupy nowych, $n_N$ i $n_D$ — liczebności grup z ważnym czasem, $\sum$ — suma wskazanych wartości.
+:::
+
+| Pytanie | Estymanda | Estymator | Estymata w S02 |
+|:--|:--|:--|:--|
+| Jak długo trwa zadanie? | średni czas $\mu$ | średnia $\bar{x}$ | `r .zi_pl(mean(w1_dane$czas, na.rm = TRUE))` min |
+| Jaka część osób odnosi sukces? | odsetek $\pi$ | udział powodzeń $\hat{\pi}$ | `r .zi_pl(w1_sukces, 3)` |
+| O ile różnią się grupy? | $\Delta = \mu_N - \mu_D$ | $\bar{x}_N - \bar{x}_D$ | `r .zi_pl(w1_roznica)` min |
+| Czy ocena katalogu i czas zmieniają się razem? | korelacja rang $\rho_S$ | korelacja rang w próbie $r_S$ | `r .zi_pl(w1_rs$estimate)` |
+
+Dodatni znak różnicy oznacza, że nowi potrzebowali średnio więcej czasu; zamiana kolejności grup zmienia znak i opisuje to samo zjawisko, dlatego zdanie o różnicy nazywa kolejność grup. Statystyka testowa dzieli różnicę przez jej błąd standardowy, więc minuty w liczniku i mianowniku skracają się, a statystyka *t* jest liczbą bez jednostki ([C05](#c05)).
+
+Wybór estymandy zmienia odpowiedź. Rozkład czasu zadania S02 ma długi prawy ogon (rysunek \@ref(fig:w01-rozklad)): średnia `r .zi_pl(mean(w1_dane$czas, na.rm = TRUE))` min odpowiada na pytanie o przeciętny nakład czasu, a mediana `r .zi_pl(median(w1_dane$czas, na.rm = TRUE))` min na pytanie o czas osoby środkowej w uporządkowanej grupie. Ograniczenie analizy do udanych prób także zmienia estymandę: średni czas osób, które znalazły dokument, wynosi `r .zi_pl(mean(w1_dane$czas[w1_dane$powodzenie == "tak"], na.rm = TRUE))` min i odpowiada na inne pytanie niż średni czas wszystkich prób. Zmiana interfejsu, która pozwala znaleźć dokument osobom z trudnościami, może wydłużyć średni czas udanych prób, bo do grupy skutecznych dołączają osoby pracujące wolniej; czas czytamy więc zawsze razem z powodzeniem.
+
+```{r w01-rozklad, echo=FALSE, fig.height=3, fig.cap="Rozkład czasu zadania w S02. Oś pozioma: czas w minutach; oś pionowa: liczba osób. Większość osób kończy zadanie w kilka do kilkunastu minut, a pojedyncze próby trwają ponad 20 minut; linia ciągła oznacza medianę, a przerywana średnią, przesuniętą w stronę długiego ogona."}
+ggplot(w1_dane, aes(x = czas)) +
+  geom_histogram(binwidth = 2, boundary = 0, fill = "#0072B2", colour = "white", na.rm = TRUE) +
+  geom_vline(xintercept = median(w1_dane$czas, na.rm = TRUE), linewidth = 0.9) +
+  geom_vline(xintercept = mean(w1_dane$czas, na.rm = TRUE), linetype = "dashed", linewidth = 0.9) +
+  labs(x = "Czas zadania [min]", y = "Liczba osób")
+```
+
+## 8. Hipoteza, niepewność i liczebność próby {#w01-hipoteza .unnumbered}
+
+Hipoteza badawcza wynika z problemu i uzasadnienia: nowi użytkownicy potrzebują więcej czasu, bo słabiej znają strukturę rekordu. Hipoteza statystyczna przekłada przewidywanie na zdanie o parametrze: $H_0\colon \Delta = 0$ wobec $H_1\colon \Delta \neq 0$. Efekt w kursie oznacza wielkość różnicy lub związku; skutek interwencji wymaga projektu, który go uzasadnia (część 6).
+
+Przedział ufności opisuje zakres wartości parametru bardziej zgodnych z danymi niż wartości spoza przedziału, o ile model statystyczny jest poprawny [@greenland2016]. Ta sama estymanda daje bardzo różne przedziały przy różnej liczbie osób (rysunek \@ref(fig:w01-przedzialy)). Dla wszystkich osób S02 różnica czasu wynosi `r .zi_pl(w1_roznica)` min, 95% CI [`r .zi_pl(w1_tw$conf.int[1])`; `r .zi_pl(w1_tw$conf.int[2])`]; dla losowej próby 30 osób z pełnego zbioru S02 estymata wynosi `r .zi_pl(unname(diff(rev(w1_tm$estimate))))` min, a przedział [`r .zi_pl(w1_tm$conf.int[1])`; `r .zi_pl(w1_tm$conf.int[2])`] `r if (w1_tm$conf.int[1] < 0) "obejmuje zero i zgadza się zarówno z brakiem różnicy, jak i z bardzo dużą różnicą" else "jest kilkakrotnie szerszy"`. Siła sformułowania we wniosku odpowiada szerokości przedziału.
+
+```{r w01-przedzialy, echo=FALSE, fig.height=2.4, fig.cap="Różnica średniego czasu (nowi minus doświadczeni) z 95% przedziałem ufności dla wszystkich osób S02 i dla losowej próby 30 osób. Oś pozioma: różnica w minutach; linia przerywana oznacza zero. Przedział z pełnych danych jest wąski i leży po dodatniej stronie zera; przedział z 30 osób jest kilkakrotnie szerszy."}
+w1_ci <- data.frame(
+  proba = factor(c(sprintf("wszystkie osoby (n = %d)", sum(w1_oc$n)), "losowe 30 osób"),
+                 levels = c("losowe 30 osób", sprintf("wszystkie osoby (n = %d)", sum(w1_oc$n)))),
+  est = c(w1_roznica, unname(diff(rev(w1_tm$estimate)))),
+  dol = c(w1_tw$conf.int[1], w1_tm$conf.int[1]), gor = c(w1_tw$conf.int[2], w1_tm$conf.int[2]))
+ggplot(w1_ci, aes(x = est, y = proba)) +
+  geom_vline(xintercept = 0, linetype = "dashed", colour = "grey40") +
+  geom_errorbarh(aes(xmin = dol, xmax = gor), height = 0.15, colour = "#0072B2", linewidth = 0.9) +
+  geom_point(shape = 23, size = 3, fill = "#E69F00") +
+  labs(x = "Różnica średnich czasów [min]", y = NULL)
+```
+
+Wnioskowanie w kursie ma dwa tory. Tor klasyczny korzysta z rozkładów teoretycznych (rozkład *t*, $\chi^2$, *F*) i podaje wartość *p* oraz przedział ufności. Tor losowy buduje rozkład porównawczy z samych danych: test permutacyjny tasuje etykiety grup przy prawdziwej $H_0$ [@winkler2014], a bootstrap losuje ze zwracaniem nowe próby [@efron1979] i z ich rozkładu wyznacza przedział [@hesterberg2015]. Oba tory odpowiadają na to samo pytanie, a zgodność ich wyników wzmacnia wniosek (W03).
+
+Decyzja o odrzuceniu $H_0$ może być błędna na dwa sposoby. Błąd I rodzaju to odrzucenie prawdziwej $H_0$ (fałszywy alarm), z prawdopodobieństwem $\alpha$, zwykle 0,05. Błąd II rodzaju to pozostawienie fałszywej $H_0$ (przeoczenie efektu), z prawdopodobieństwem $\beta$; moc testu $1 - \beta$ jest prawdopodobieństwem wykrycia efektu, który istnieje. Wielkość próby, $\alpha$, moc i wielkość efektu wyznaczają się nawzajem: znając trzy, oblicza się czwartą [@cohen1992; @lakens2022].
+
+::: {.wzor}
+$$d = \frac{\mu_N - \mu_D}{\sigma} \qquad\qquad 1 - \beta = P(\text{odrzucenie } H_0 \mid \Delta \neq 0)$$
+$d$ — różnica średnich w odchyleniach standardowych $\sigma$ (umowne progi: 0,2 — mały, 0,5 — średni, 0,8 — duży efekt [@cohen1992]); $1 - \beta$ — moc testu.
+:::
+
+Funkcja `power.t.test()` z pakietu stats wyznacza liczebność grup dla testu *t* dwóch prób. Wykrycie efektu średniego (*d* = 0,5) z mocą 80% przy $\alpha$ = 0,05 wymaga `r w1_n64` osób w każdej grupie; efekt zaobserwowany w S02 (*g* = `r .zi_pl(w1_g$Hedges_g)`) wymaga `r w1_n_obs` osób w grupie, a liczebności S02 (`r w1_oc$n[1]` i `r w1_oc$n[2]` osób z ważnym czasem) dają moc około `r .zi_pl(100 * w1_moc_obs, 0)`%. Rysunek \@ref(fig:w01-moc) przedstawia zależność mocy od liczebności grupy. Uzasadnienie liczebności próby należy do planu badania; oprócz analizy mocy obejmuje dostępne zasoby i wielkość efektu ważną dla instytucji [@lakens2022].
+
+```{r w01-moc, echo=FALSE, fig.height=3, fig.cap="Moc testu t dwóch prób w zależności od liczby osób w grupie, przy alfa 0,05. Oś pozioma: liczba osób w grupie; oś pionowa: moc. Każda krzywa odpowiada jednej wielkości efektu d; linia przerywana oznacza moc 80%. Efekt mały wymaga kilkuset osób w grupie, efekt średni kilkudziesięciu."}
+w1_siatka <- expand.grid(n = seq(10, 400, by = 5), d = c(0.2, 0.38, 0.5, 0.8))
+w1_siatka$moc <- mapply(function(n, d) power.t.test(n = n, delta = d)$power, w1_siatka$n, w1_siatka$d)
+w1_siatka$efekt <- factor(sprintf("d = %s", sub("\\.", ",", format(w1_siatka$d))), levels = sprintf("d = %s", c("0,2", "0,38", "0,5", "0,8")))
+ggplot(w1_siatka, aes(x = n, y = moc, colour = efekt)) +
+  geom_hline(yintercept = 0.8, linetype = "dashed", colour = "grey40") +
+  geom_line(linewidth = 0.9) +
+  scale_y_continuous(labels = function(x) paste0(round(100 * x), "%")) +
+  labs(x = "Liczba osób w grupie", y = "Moc testu", colour = "Wielkość efektu")
+```
+
+Istotność statystyczna i znaczenie praktyczne są różnymi właściwościami wyniku: przy bardzo dużej próbie istotna bywa różnica bez znaczenia dla instytucji, dlatego raport podaje wielkość efektu obok *p* [@sullivan2012; @wasserstein2016].
+
+## 9. Generatywna SI w planie badania {#w01-si .unnumbered}
+
+Generatywna SI pomaga w rozumieniu pojęć i w poprawianiu kodu, a odpowiedzialność za operacjonalizację, interpretację i wnioski pozostaje po stronie badacza. Zasady użycia narzędzi SI w dydaktyce określa Zarządzenie nr 115 Rektora UJ [@uj2025]: prowadzący podaje zasady w sylabusie i na pierwszych zajęciach (§ 4 ust. 1 pkt 1), a student oznacza części pracy wygenerowane z użyciem SI (§ 6 pkt 3); zasady kursu opisuje [strona startowa](index.html). Modele językowe, na przykład ChatGPT, podają także nieistniejące publikacje i błędne opisy bibliograficzne [@walters2023], więc każde wskazane źródło sprawdza się w katalogu lub bazie.
+
+Rozważ propozycję operacjonalizacji wygenerowaną przez model: „kompetencję informacyjną mierzymy pytaniem, czy podoba się nowa strona biblioteki”. Zdanie brzmi płynnie i zmienia konstrukt: odpowiedź mierzy ocenę strony. Poprawka polega na uzasadnieniu wskaźnika, na przykład oceny wiarygodności dwóch źródeł według jawnych kryteriów, i na wskazaniu aspektów kompetencji, które wymagają osobnego pomiaru. Propozycja „zmierz czas od kliknięcia do sukcesu” obejmuje wyłącznie osoby, które odniosły sukces; pomiar czasu zaczyna się od ustalenia limitu, warunku przerwania i zapisu niepowodzenia.
+
+## Podsumowanie {#w01-podsumowanie .unnumbered}
+
+Plan badania prowadzi od decyzji instytucji przez konstrukt, wskaźnik, projekt i próbę do estymandy, czyli liczby, która odpowiada na pytanie. Skala pomiaru wyznacza działania dozwolone dla wartości zmiennej, a jednostka analizy decyduje o liczbie niezależnych obserwacji. Projekt wyznacza zakres wniosku: porównanie grup obserwacyjnych opisuje współwystępowanie, a wniosek o skutku wymaga losowego przydziału albo jawnych założeń. Przedział ufności opisuje niepewność estymaty, a liczebność próby planuje się przed zebraniem danych z wielkości efektu ważnej dla instytucji.

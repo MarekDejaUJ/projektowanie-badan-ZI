@@ -4,7 +4,11 @@
 **Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, potem `pobierz_szablon(6)`. **Oddanie:** `oddaj_zadanie(6)`. **Wykład:** W04.
 :::
 
-Użytkownicy katalogu należą do czterech grup statusu: studenci pierwszego i drugiego stopnia, doktoranci i pracownicy. Ćwiczenie C06 sprawdza, czy średni czas zadania różni się między tymi grupami. Seria testów *t* dla wszystkich par zwiększałaby ryzyko fałszywego alarmu, dlatego analiza zaczyna od jednego testu dla wszystkich grup (analiza wariancji), a dopiero potem wskazuje, które pary się różnią.
+::: {.lektura}
+**Lektura:** @king2009 [rozdz. 20]; @gosssampson2025 [s. 93–102].
+:::
+
+Użytkownicy katalogu należą do czterech grup statusu: studenci pierwszego i drugiego stopnia, doktoranci i pracownicy. Ćwiczenie C06 sprawdza, czy średni czas zadania różni się między tymi grupami. Seria testów *t* dla wszystkich par zwiększałaby ryzyko fałszywego alarmu [@lee2018], dlatego analiza zaczyna od jednego testu dla wszystkich grup (analiza wariancji), a dopiero potem wskazuje, które pary się różnią.
 
 ```{r c06-dane, include=FALSE}
 dane <- dane_zi("S02", id = "wzor")
@@ -70,13 +74,13 @@ visualize(f_permutacje) + shade_p_value(obs_stat = f_obserwowane, direction = "g
   labs(title = NULL, x = "F po losowym przetasowaniu grup", y = "Liczba losowań")
 ```
 
-Średni czas różni się między grupami statusu: *F*(`r tab$Df[1]`, `r tab$Df[2]`) = `r .zi_pl(tab$"F value"[1])`, *p* `r .zi_p(tab$"Pr(>F)"[1])`. Wynik testu Levene’a `r if (lev$"Pr(>F)"[1] < 0.05) "wskazuje różnice wariancji" else "jest zgodny z równością wariancji"` (*p* `r .zi_p(lev$"Pr(>F)"[1])`), a test Welcha, odporny na różne wariancje, daje ten sam wniosek: *F*(`r welch$parameter[1]`, `r .zi_pl(welch$parameter[2])`) = `r .zi_pl(welch$statistic)`, *p* `r .zi_p(welch$p.value)`. Test permutacyjny (*B* = 2000) daje *p*~perm~ = `r .zi_pl(pf$p_value, 3)`. Test *F* stwierdza, że co najmniej jedna średnia różni się od pozostałych, ale nie wskazuje, która.
+Średni czas różni się między grupami statusu: *F*(`r tab$Df[1]`, `r tab$Df[2]`) = `r .zi_pl(tab$"F value"[1])`, *p* `r .zi_p(tab$"Pr(>F)"[1])`. Wynik testu Levene’a `r if (lev$"Pr(>F)"[1] < 0.05) "wskazuje różnice wariancji" else "jest zgodny z równością wariancji"` (*p* `r .zi_p(lev$"Pr(>F)"[1])`); test zaproponował @levene1960, a funkcja `leveneTest()` z pakietu car liczy go domyślnie względem median grup, czyli w odpornej odmianie Browna–Forsythe’a [@brown1974; @fox2019; @delacre2017]. Test Welcha dla wielu grup, odporny na różne wariancje [@welch1951; @winkler2014], daje ten sam wniosek: *F*(`r welch$parameter[1]`, `r .zi_pl(welch$parameter[2])`) = `r .zi_pl(welch$statistic)`, *p* `r .zi_p(welch$p.value)`. Test permutacyjny (*B* = 2000) tasuje etykiety grup i za każdym razem liczy *F* [@winkler2014]; daje *p*~perm~ = `r .zi_pl(pf$p_value, 3)`. Test *F* stwierdza, że co najmniej jedna średnia różni się od pozostałych, ale nie wskazuje, która.
 
 ## LEARN 3. Wielkość efektu: η² i ω² {#c06-efekt .unnumbered}
 
 ::: {.wzor}
 $$\eta^2 = \frac{SS_B}{SS_B + SS_W} \qquad\qquad \omega^2 = \frac{SS_B - (k-1)\,MS_W}{SS_B + SS_W + MS_W}$$
-$\eta^2$ — odsetek zróżnicowania wyników w próbie związany z grupą, $\omega^2$ — mniej obciążone oszacowanie odsetka w populacji, $MS_W = SS_W/(N-k)$. Umowne progi: 0,01 — mały, 0,06 — średni, 0,14 — duży efekt.
+$\eta^2$ — odsetek zróżnicowania wyników w próbie związany z grupą, $\omega^2$ — mniej obciążone oszacowanie odsetka w populacji, $MS_W = SS_W/(N-k)$. Umowne progi Cohena: 0,01 — mały, 0,06 — średni, 0,14 — duży efekt [@lakens2013].
 :::
 
 ```{r c06-eta}
@@ -88,7 +92,7 @@ Status wyjaśnia `r .zi_pl(100 * eta$Eta2, 1)`% zróżnicowania czasu w próbie 
 
 ## LEARN 4. Porównania post hoc {#c06-posthoc .unnumbered}
 
-Porównania post hoc sprawdzają wszystkie pary grup i korygują wartości *p* tak, aby łączne ryzyko fałszywego alarmu w całej serii porównań wynosiło 5%. Test Tukeya zakłada równe wariancje; test Gamesa–Howella ich nie zakłada i jest bezpiecznym wyborem przy różnych liczebnościach i rozrzucie.
+Porównania post hoc sprawdzają wszystkie pary grup i korygują wartości *p* tak, aby łączne ryzyko fałszywego alarmu w całej serii porównań wynosiło najwyżej 5% [@lee2018]. Test Tukeya zakłada równe wariancje; test Gamesa–Howella dopuszcza różne wariancje i różne liczebności grup [@games1976], dlatego sprawdza się przy różnym rozrzucie w grupach [@lee2018].
 
 ```{r c06-posthoc}
 TukeyHSD(model)
@@ -99,7 +103,7 @@ Po korekcie istotna jest różnica `r if (nrow(istotne) == 1) "jednej pary" else
 
 ## LEARN 5. Test Kruskala–Wallisa {#c06-kruskal .unnumbered}
 
-Test Kruskala–Wallisa porównuje rangi wyników w wielu grupach i jest odporny na skośność oraz wartości odległe. Wielkością efektu jest $\varepsilon^2$ (progi jak dla $\eta^2$), a porównania par wykonuje test Dunna z korektą Holma.
+Test Kruskala–Wallisa porównuje rangi wyników w wielu grupach [@kruskal1952]. Rangi zależą wyłącznie od kolejności wyników, więc wielkość wartości odległych pozostaje bez wpływu na test. Funkcja `kruskal_effsize()` z pakietu rstatix podaje wielkość efektu $\eta^2_H = (H - k + 1)/(n - k)$, gdzie $H$ — statystyka testu, $k$ — liczba grup, $n$ — liczba osób; progi jak dla $\eta^2$ [@kassambara2025; @tomczak2014]. Porównania par wykonuje test Dunn [@dunn1964] z korektą Holma.
 
 ```{r c06-kw}
 kruskal.test(czas ~ kategoria, data = dane)
@@ -107,7 +111,7 @@ rstatix::kruskal_effsize(dane, czas ~ kategoria)
 rstatix::dunn_test(dane, czas ~ kategoria, p.adjust.method = "holm")
 ```
 
-Test rangowy potwierdza różnice: $\chi^2$(`r kw$parameter`) = `r .zi_pl(kw$statistic)`, *p* `r .zi_p(kw$p.value)`, $\varepsilon^2$ = `r .zi_pl(eps$effsize)`. Zgodność testu *F*, testu Welcha, permutacji i testu rangowego oznacza, że wniosek nie zależy od założeń o rozkładzie.
+Test rangowy potwierdza różnice: $\chi^2$(`r kw$parameter`) = `r .zi_pl(kw$statistic)`, *p* `r .zi_p(kw$p.value)`, $\eta^2_H$ = `r .zi_pl(eps$effsize)`. Zgodność testu *F*, testu Welcha, permutacji i testu rangowego oznacza, że wniosek jest odporny na odejście od rozkładu normalnego. Permutacja statystyki *F* zakłada wymienialność obserwacji, w praktyce równe wariancje grup [@winkler2014], dlatego przy różnym rozrzucie w grupach wniosek opiera się na teście Welcha.
 
 ## Wzorce zapisu {#c06-apa .unnumbered}
 
@@ -116,7 +120,7 @@ Test rangowy potwierdza różnice: $\chi^2$(`r kw$parameter`) = `r .zi_pl(kw$sta
 
 **Wynik nieistotny.** Średnia ocena katalogu była zbliżona w grupach statusu, a różnice były nieistotne statystycznie, *F*(3, 229) = 1,75, *p* = 0,157, *η*^2^ = 0,02; analiza kończy się bez porównań post hoc.
 
-**Zasada.** Porównania par raportujesz dopiero po istotnym teście dla wszystkich grup i zawsze z poprawionymi wartościami *p*.
+**Zasada kursu.** Porównania par raportujesz po istotnym teście dla wszystkich grup i zawsze z poprawionymi wartościami *p*.
 :::
 
 ## CHALLENGE {-}

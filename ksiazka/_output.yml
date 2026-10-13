@@ -1,5 +1,6 @@
 bookdown::bs4_book:
   css: style.css
+  split_bib: true
   theme:
     primary: "#0072B2"
   repo:

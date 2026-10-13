@@ -4,6 +4,10 @@
 **Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, potem `pobierz_szablon(4)`. **Oddanie:** `oddaj_zadanie(4)`. **Wykład:** W03.
 :::
 
+::: {.lektura}
+**Lektura:** @king2009 [rozdz. 12–14, 18]; @biecek2017 [s. 276–281]; @gosssampson2025 [s. 42–47].
+:::
+
 Średnia z próby jest oszacowaniem średniej w populacji użytkowników katalogu. Ćwiczenie C04 opisuje niepewność średniej z próby na dwa sposoby: wzorem (błąd standardowy i przedział *t*) oraz losowaniem (bootstrap). Następnie sprawdza, czy średnia ocena katalogu różni się od neutralnego środka skali 3: testem *t*, testem permutacyjnym zmiany znaków i wielkością efektu *d* Cohena.
 
 ```{r c04-dane, include=FALSE}
@@ -23,11 +27,11 @@ dn <- effectsize::cohens_d(nowi, mu = 3)
 
 ## LEARN 1. Błąd standardowy i przedział ufności {#c04-przedzial .unnumbered}
 
-Średnia z innej próby tej samej wielkości wypadłaby trochę inaczej. Błąd standardowy opisuje typowe odchylenie średniej z próby od średniej w populacji, a przedział ufności zamienia go na zakres wartości zgodnych z danymi.
+Średnia z innej próby tej samej wielkości wypadłaby trochę inaczej. Błąd standardowy jest odchyleniem standardowym rozkładu średnich z wielu prób i opisuje, jak bardzo średnia zmienia się z powodu losowania próby [@hesterberg2015]. Przedział ufności obejmuje wartości parametru najbardziej zgodne z danymi przy założeniach modelu [@greenland2016].
 
 ::: {.wzor}
 $$SE = \frac{s}{\sqrt{n}} \qquad\qquad 95\%\ CI = \bar{x} \pm t_{0{,}975;\,n-1} \cdot SE$$
-$s$ — odchylenie standardowe w próbie, $n$ — liczba osób, $t_{0{,}975;\,n-1}$ — wartość krytyczna rozkładu *t* (przy $n$ = 200 około 1,97). Procedura daje przedziały, które w 95% powtórzeń badania obejmują średnią populacji $\mu$.
+$s$ — odchylenie standardowe w próbie, $n$ — liczba osób, $t_{0{,}975;\,n-1}$ — wartość krytyczna rozkładu *t* [@student1908] (przy $n$ = 200 około 1,97). Procedura daje przedziały, które w 95% powtórzeń badania obejmują średnią populacji $\mu$; pojedynczy obliczony przedział albo obejmuje $\mu$, albo nie, a 95% opisuje procedurę [@hoekstra2014].
 :::
 
 ```{r c04-se}
@@ -43,7 +47,7 @@ Odchylenie standardowe `r .zi_pl(s)` opisuje różnice między osobami, a błąd
 
 ## LEARN 2. Bootstrap {#c04-bootstrap .unnumbered}
 
-Bootstrap zastępuje wzór losowaniem: z próby losuje się ze zwracaniem nową próbę tej samej wielkości i liczy jej średnią, a po 2000 powtórzeniach środkowe 95% średnich wyznacza przedział percentylowy. Pakiet infer zapisuje to w czterech krokach: `specify()` wskazuje zmienną, `generate()` losuje próby, `calculate()` liczy statystykę, a `get_ci()` wyznacza przedział. Polecenie `set.seed()` ustala punkt startowy losowania, dzięki czemu wynik da się powtórzyć.
+Bootstrap zastępuje wzór losowaniem: z próby losuje się ze zwracaniem nową próbę tej samej wielkości i liczy jej średnią, a po 2000 powtórzeniach środkowe 95% średnich wyznacza przedział percentylowy [@efron1979; @hesterberg2015]. Do rutynowych analiz @hesterberg2015 zaleca 10 000 losowań; ćwiczenia kursu używają 2000 losowań. Pakiet infer [@couch2021] zapisuje bootstrap w czterech krokach: `specify()` wskazuje zmienną, `generate()` losuje próby, `calculate()` liczy statystykę, a `get_ci()` wyznacza przedział. Polecenie `set.seed()` ustala punkt startowy losowania, dzięki czemu wynik da się powtórzyć.
 
 ```{r c04-boot, fig.height=2.8}
 set.seed(2026)
@@ -57,7 +61,7 @@ visualize(bootstrap) + shade_ci(endpoints = przedzial) +
   labs(title = NULL, x = "Średnia indeksu w próbie bootstrapowej", y = "Liczba prób")
 ```
 
-Przedział bootstrapowy [`r .zi_pl(ci_boot$lower_ci)`; `r .zi_pl(ci_boot$upper_ci)`] prawie pokrywa się z przedziałem *t*, ponieważ rozkład średnich bootstrapowych jest symetryczny. Bootstrap nie wymaga wzoru na błąd standardowy, dlatego daje przedziały także dla mediany, odsetka czy różnicy median.
+Przedział bootstrapowy [`r .zi_pl(ci_boot$lower_ci)`; `r .zi_pl(ci_boot$upper_ci)`] prawie pokrywa się z przedziałem *t*, ponieważ rozkład średnich bootstrapowych jest symetryczny. Bootstrap działa bez wzoru na błąd standardowy, dlatego daje przedziały także dla mediany, odsetka czy różnicy median [@hesterberg2015].
 
 ## LEARN 3. Test t jednej próby {#c04-test-t .unnumbered}
 
@@ -65,22 +69,22 @@ Przedział bootstrapowy [`r .zi_pl(ci_boot$lower_ci)`; `r .zi_pl(ci_boot$upper_c
 
 ::: {.wzor}
 $$t = \frac{\bar{x} - \mu_0}{SE} \qquad df = n - 1$$
-$\mu_0$ — wartość odniesienia z hipotezy zerowej, $t$ — odległość średniej od $\mu_0$ w błędach standardowych, $df$ — stopnie swobody. Wartość $p$ jest prawdopodobieństwem wyniku co najmniej tak odległego od $\mu_0$ przy prawdziwej $H_0$; przy $p < 0{,}05$ odrzucamy $H_0$.
+$\mu_0$ — wartość odniesienia z hipotezy zerowej, $t$ — odległość średniej od $\mu_0$ w błędach standardowych, $df$ — stopnie swobody. Wartość $p$ jest prawdopodobieństwem uzyskania, przy prawdziwej $H_0$ i spełnionych założeniach modelu, wyniku co najmniej tak odległego od $\mu_0$ jak wynik obserwowany [@wasserstein2016]. Kurs przyjmuje poziom istotności $0{,}05$: przy $p < 0{,}05$ odrzucamy $H_0$.
 :::
 
 ```{r c04-t}
 t.test(dane$indeks, mu = 3)
 ```
 
-Średnia ocena `r .zi_pl(m)` leży `r .zi_pl(tt$statistic)` błędu standardowego powyżej 3: *t*(`r tt$parameter`) = `r .zi_pl(tt$statistic)`, *p* `r .zi_p(tt$p.value)`. Przedział [`r .zi_pl(tt$conf.int[1])`; `r .zi_pl(tt$conf.int[2])`] nie obejmuje 3, co prowadzi do tego samego wniosku co test. Wartość *p* opisuje dane przy założeniu $H_0$: odpowiada na pytanie, jak rzadki byłby uzyskany wynik, gdyby średnia w populacji wynosiła dokładnie 3.
+Średnia ocena `r .zi_pl(m)` leży `r .zi_pl(tt$statistic)` błędu standardowego powyżej 3: *t*(`r tt$parameter`) = `r .zi_pl(tt$statistic)`, *p* `r .zi_p(tt$p.value)`. Przedział [`r .zi_pl(tt$conf.int[1])`; `r .zi_pl(tt$conf.int[2])`] nie obejmuje 3, co prowadzi do tego samego wniosku co test. Wartość *p* opisuje dane przy założeniu $H_0$: odpowiada na pytanie, jak rzadki byłby uzyskany wynik, gdyby średnia w populacji wynosiła dokładnie 3. Prawdopodobieństwa prawdziwości $H_0$ wartość *p* nie podaje [@wasserstein2016; @greenland2016].
 
 ## LEARN 4. Test permutacyjny zmiany znaków {#c04-permutacja .unnumbered}
 
-Test permutacyjny buduje rozkład wyników przy prawdziwej $H_0$ losowaniem, bez rozkładu *t*. Przy $H_0$: $\mu = 3$ i symetrycznym rozkładzie odchylenia od 3 dodatnie i ujemne są jednakowo prawdopodobne, więc losowa zmiana ich znaków daje możliwe wyniki badania przy braku różnicy. Wartość *p* to odsetek wylosowanych średnich co najmniej tak odległych od zera jak średnia obserwowana:
+Test permutacyjny buduje rozkład wyników przy prawdziwej $H_0$ losowaniem, bez rozkładu *t*. Przy $H_0$: $\mu = 3$ i symetrycznym rozkładzie odchylenia od 3 dodatnie i ujemne są jednakowo prawdopodobne, więc losowa zmiana ich znaków daje możliwe wyniki badania przy braku różnicy [@winkler2014]. Wartość *p* to odsetek wylosowanych średnich co najmniej tak odległych od zera jak średnia obserwowana:
 
 ::: {.wzor}
 $$p_{\text{perm}} = \frac{k + 1}{B + 1}$$
-$B$ — liczba losowań, $k$ — liczba losowań ze średnią odchyleń co najmniej tak odległą od zera jak obserwowana.
+$B$ — liczba losowań, $k$ — liczba losowań ze średnią odchyleń co najmniej tak odległą od zera jak obserwowana. Jedynka w liczniku i mianowniku liczy wynik obserwowany jako jedno z możliwych losowań, dlatego $p_{\text{perm}}$ jest zawsze większe od zera [@phipson2010].
 :::
 
 ```{r c04-znaki, fig.height=2.8}
@@ -92,15 +96,15 @@ ggplot(data.frame(roznica = attr(znaki, "rozklad")), aes(x = roznica)) +
   labs(x = "Średnia odchyleń od 3 po losowej zmianie znaków", y = "Liczba losowań")
 ```
 
-Rozkład losowań skupia się wokół zera i sięga najwyżej ±`r .zi_pl(max(abs(attr(zn, "rozklad"))))`, a obserwowana różnica `r .zi_pl(zn$roznica)` (pomarańczowa linia) leży poza nim: *p*~perm~ = `r .zi_pl(zn$p_perm, 4)`. Najmniejsza możliwa wartość przy *B* = `r zn$B` wynosi $1/5000 = 0{,}0002$. Test *t* i test permutacyjny prowadzą do tego samego wniosku.
+Rozkład losowań skupia się wokół zera i sięga najwyżej ±`r .zi_pl(max(abs(attr(zn, "rozklad"))))`, a obserwowana różnica `r .zi_pl(zn$roznica)` (pomarańczowa linia) leży poza nim: *p*~perm~ = `r .zi_pl(zn$p_perm, 4)`. Najmniejsza możliwa wartość przy *B* = `r zn$B` wynosi $1/(B + 1) = 1/`r zn$B + 1` \approx 0{,}0002$. Test *t* i test permutacyjny prowadzą do tego samego wniosku.
 
 ## LEARN 5. Wielkość efektu {#c04-efekt .unnumbered}
 
-Istotność odpowiada na pytanie, czy wynik da się wytłumaczyć losowością, a wielkość efektu na pytanie, jak duża jest różnica. Przy kilkuset osobach nawet mała różnica bywa istotna.
+Wartość *p* opisuje zgodność danych z hipotezą zerową, a wielkość efektu odpowiada na pytanie, jak duża jest różnica. Przy kilkuset osobach nawet mała różnica bywa istotna, dlatego raport podaje efekt obok *p* [@sullivan2012].
 
 ::: {.wzor}
 $$d = \frac{\bar{x} - \mu_0}{s}$$
-Umowne progi Cohena: $|d| \approx 0{,}2$ — efekt mały, $0{,}5$ — średni, $0{,}8$ — duży. Ocena praktyczna odwołuje się do jednostek zmiennej: w przypadku indeksu do punktów skali 1–5.
+Umowne progi Cohena: $|d| \approx 0{,}2$ — efekt mały, $0{,}5$ — średni, $0{,}8$ — duży [@cohen1988; @cohen1992]. Funkcja `cohens_d()` z pakietu effectsize podaje *d* z przedziałem ufności [@benshachar2020]. Cohen proponował progi $0{,}2$, $0{,}5$ i $0{,}8$ na sytuacje bez lepszej podstawy porównania [@cohen1988, s. 25–26; @lakens2013], dlatego ocena praktyczna odwołuje się do jednostek zmiennej: w przypadku indeksu do punktów skali 1–5.
 :::
 
 ```{r c04-d}
@@ -116,7 +120,7 @@ effectsize::cohens_d(dane$indeks, mu = 3)
 
 **Wynik nieistotny.** Średnia ocena katalogu wśród nowych użytkowników (*M* = `r .zi_pl(mean(nowi))`; *SD* = `r .zi_pl(sd(nowi))`; *n* = `r length(nowi)`) była zbliżona do środka skali 3, a różnica była nieistotna statystycznie, *t*(`r tn$parameter`) = `r .zi_pl(tn$statistic)`, *p* `r .zi_p(tn$p.value)`, *d* = `r .zi_pl(dn$Cohens_d)`, 95% CI [`r .zi_pl(tn$conf.int[1])`; `r .zi_pl(tn$conf.int[2])`]; przedział obejmuje 3, więc dane są zgodne zarówno z oceną neutralną, jak i nieco wyższą.
 
-**Zasada.** Wniosek wynika z *p*, przedziału i efektu łącznie. Przy *p* ≥ 0,05 piszesz o braku podstaw do odrzucenia *H*~0~ i podajesz przedział; sformułowanie „brak różnicy” wykracza poza dane.
+**Zasada.** Wniosek wynika z *p*, przedziału i efektu łącznie. Przy *p* ≥ 0,05 piszesz o braku podstaw do odrzucenia *H*~0~ i podajesz przedział; sformułowanie „brak różnicy” wykracza poza dane [@altman1995].
 :::
 
 ## CHALLENGE {-}

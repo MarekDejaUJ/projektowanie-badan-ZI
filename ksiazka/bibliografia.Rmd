@@ -1,0 +1,57 @@
+# Bibliografia {#bibliografia .unnumbered}
+
+Bibliografia obejmuje prace cytowane w wykładach i ćwiczeniach oraz lektury kursu, w zapisie APA 7 w polskiej adaptacji. Kliknięcie cytowania w tekście rozdziału otwiera dymek z pełnym opisem, a lista „Źródła rozdziału” na końcu każdego wykładu i ćwiczenia zbiera pozycje cytowane w danym rozdziale.
+
+Pliki bibliografii służą do własnej pracy: [bibliografia.bib](materialy/bibliografia.bib) importuje opisy do programu Zotero lub Mendeley, [bibliografia.json](materialy/bibliografia.json) zachowuje pełny opis w formacie CSL JSON, a [apa-pl.csl](materialy/apa-pl.csl) jest stylem cytowania kursu. Szablon projektu korzysta z obu plików: zapis `[@welch1947]` w tekście projektu daje w PDF cytowanie z nazwiskiem i rokiem oraz pełną pozycję bibliografii na końcu dokumentu.
+
+## Przewodnik po lekturach {#lektury .unnumbered}
+
+```{r lektury, echo=FALSE, results='asis'}
+lektury <- yaml::read_yaml("lektury.yml")
+# Rozdziały cytujące pozycję: klucze @… w tekście rozdziałów, poza blokami kodu i kodem w wierszu.
+cytujace <- list()
+for (plik in setdiff(yaml::read_yaml("_bookdown.yml")$rmd_files, "bibliografia.Rmd")) {
+  t <- readLines(plik, encoding = "UTF-8", warn = FALSE)
+  t <- gsub("`[^`]*`", "", t[cumsum(grepl("^\\s*```", t)) %% 2 == 0])
+  naglowek <- grep("^# [^(].*\\{#[A-Za-z0-9-]+", t, value = TRUE)[1]
+  id <- if (plik == "index.Rmd") "index" else sub("^.*\\{#([A-Za-z0-9-]+).*$", "\\1", naglowek)
+  if (is.na(id)) next
+  for (k in unique(sub("^-?@", "", unlist(regmatches(t, gregexpr("-?@[a-z][a-z0-9]*[0-9]{4}[a-z]?", t))))))
+    cytujace[[k]] <- c(cytujace[[k]], id)
+}
+etykieta <- function(id) {
+  if (id == "index") return("[Start](index.html)")
+  nazwy <- c(projekt = "Projekt", sciaga = "Ściąga", scenariusze = "Scenariusze", instalacja = "Instalacja")
+  sprintf("[%s](#%s)", if (grepl("^[cw][0-9]{2}$", id)) toupper(id) else nazwy[[id]], id)
+}
+grupy <- c(
+  "obowiązkowa" = "Lektury obowiązkowe (sylabus)",
+  "uzupełniająca" = "Podręczniki uzupełniające",
+  "metodyczna" = "Prace metodyczne",
+  "kontekst" = "Nauka o informacji: kontekst scenariuszy",
+  "dokument" = "Dokumenty i zasady",
+  "oprogramowanie" = "Oprogramowanie")
+dostep <- c(otwarty = "tekst otwarty", biblioteka = "katalog BJ", wydawca = "strona wydawcy",
+            druk = "wydanie drukowane", strona = "strona dokumentu")
+for (g in names(grupy)) {
+  klucze <- sort(names(lektury)[vapply(lektury, function(l) identical(l$poziom, g), TRUE)])
+  if (!length(klucze)) next
+  cat("\n### ", grupy[[g]], " {.unnumbered}\n\n| Pozycja | Miejsce w kursie | Dostęp |\n|:--|:--|:--|\n", sep = "")
+  for (k in klucze) {
+    l <- lektury[[k]]
+    opis <- if (is.null(l$adnotacja)) "" else paste0(". ", l$adnotacja)
+    # Rozdziały cytujące pozycję oraz karty scenariuszy, do których lektura jest przypisana w lektury.yml.
+    miejsca <- c(vapply(cytujace[[k]], etykieta, ""),
+                 vapply(unlist(l$scenariusze), function(s) sprintf("[%s](#%s)", s, tolower(s)), ""))
+    rozdzialy <- if (length(miejsca)) paste(miejsca, collapse = ", ") else "lektura ogólna"
+    link <- if (identical(l$dostep$typ, "druk")) l$dostep$adres else
+      sprintf("[%s](%s)", dostep[[l$dostep$typ]], l$dostep$adres)
+    cat(sprintf("| @%s%s | %s | %s |\n", k, opis, rozdzialy, link))
+  }
+}
+```
+
+## Wszystkie pozycje {#wszystkie-pozycje .unnumbered}
+
+::: {#refs}
+:::

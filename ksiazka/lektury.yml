@@ -1,0 +1,786 @@
+# Lektury i źródła kursu: poziom, dostęp i adnotacja dla studentów.
+# Klucze odpowiadają wpisom bibliografia.yaml. Rozdziały cytujące pozycję wylicza build.R z tekstu książki.
+# poziom: obowiązkowa | uzupełniająca | metodyczna | kontekst | dokument | oprogramowanie
+# dostep.typ: otwarty | biblioteka | wydawca | druk | strona
+acrl2016:
+  poziom: kontekst
+  dostep:
+    typ: otwarty
+    adres: https://www.ala.org/sites/default/files/acrl/content/issues/infolit/Framework_ILHE.pdf
+  adnotacja: Rama kompetencji informacyjnych w szkolnictwie wyższym w wersji z 2016
+    r.; wersję poprawioną z 2.09.2026 publikuje strona ala.org/acrl/standards/ilframework.
+  scenariusze: S03
+aera2014:
+  poziom: dokument
+  dostep:
+    typ: otwarty
+    adres: https://www.testingstandards.net/open-access-files.html
+  adnotacja: Standardy testowania; źródła dowodów trafności i rzetelność pomiaru.
+aguinis2013:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1177/1094428112470848
+  adnotacja: Definiowanie, wykrywanie i postępowanie z wartościami odstającymi.
+altman1995:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1136/bmj.311.7003.485
+altman2005:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1136/bmj.331.7521.903
+  adnotacja: Krótka nota o różnicy między odchyleniem standardowym a błędem standardowym.
+altman2015:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1038/nmeth.3627
+anscombe1973:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1080/00031305.1973.10478966
+apa2020:
+  poziom: dokument
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1037/0000165-000
+apa2024:
+  poziom: dokument
+  dostep:
+    typ: otwarty
+    adres: https://apastyle.apa.org/instructional-aids/numbers-statistics-guide.pdf
+  adnotacja: Dwustronicowy przewodnik APA po zapisie liczb i statystyk (sekcje 6.32–6.45
+    podręcznika).
+babbie2025:
+  poziom: uzupełniająca
+  dostep:
+    typ: biblioteka
+    adres: https://katalogi.uj.edu.pl/permalink/48OMNIS_UJA/1v550j0/alma991017123177805067
+  adnotacja: Podręcznik metodologii badań społecznych (projektowanie, pomiar, dobór
+    próby, sondaż, eksperyment); Lectorium BJ (Lect. N 1328) i czytelnia WZiKS.
+benshachar2020:
+  poziom: oprogramowanie
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.21105/joss.02815
+biecek2017:
+  poziom: uzupełniająca
+  dostep:
+    typ: otwarty
+    adres: http://biecek.pl/R/PrzewodnikPoPakiecieRWydanieIVinternet.pdf
+  adnotacja: Rozdziały 1–2 (podstawy pracy z R) bezpłatnie w PDF autora; całość w
+    BJ (B 702869 II).
+bland1986:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1016/S0140-6736(86)90837-8
+  adnotacja: Zgodność dwóch pomiarów - różnice wobec średniej i granice zgodności.
+bland1996:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1136/bmj.312.7033.770
+bogardus1925:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://archive.org/details/sim_sociology-and-social-research_march-april-1925_9_4
+  adnotacja: Skala dystansu społecznego (skan zeszytu czasopisma).
+box1987:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1214/ss/1177013437
+  adnotacja: Historia testu t i pracy Gosseta (Studenta) w browarze Guinness; początki
+    analizy małych prób.
+broman2018:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1080/00031305.2017.1375989
+brown1974:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1080/01621459.1974.10482955
+cetinkaya2024:
+  poziom: uzupełniająca
+  dostep:
+    typ: otwarty
+    adres: https://openintro-ims.netlify.app/
+  adnotacja: Bezpłatny podręcznik statystyki z bootstrapem i testami randomizacyjnymi.
+cisek2025:
+  poziom: obowiązkowa
+  dostep:
+    typ: biblioteka
+    adres: https://katalogi.uj.edu.pl/permalink/48OMNIS_UJA/1v550j0/alma991017098697605067
+  adnotacja: Rozdział 2.2.4 o metodologii informatologii; egzemplarze w BJ i w czytelni
+    WZiKS (BWZ 83448 BIN).
+cleveland1984:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1080/01621459.1984.10478080
+  adnotacja: Dokładność odczytu wykresów - położenie na wspólnej osi, długość, kąt,
+    pole.
+cochran1954:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.2307/3001616
+cohen1988:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.4324/9780203771587
+  adnotacja: Podręcznik analizy mocy i umownych progów wielkości efektu (e-wydanie
+    Routledge).
+cohen1992:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1037/0033-2909.112.1.155
+cohen1999:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1207/S15327906MBR3403_2
+  adnotacja: Procent zakresu skali (POMP) jako jednostka wyniku skali.
+cook1977:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1080/00401706.1977.10489493
+cook2001:
+  poziom: kontekst
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.5860/crl.62.2.147
+  adnotacja: Hierarchiczny pomiar jakości usług bibliotecznych (LibQUAL+).
+  scenariusze:
+  - S11
+  - S18
+couch2021:
+  poziom: oprogramowanie
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.21105/joss.03661
+cramer1946:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1515/9781400883868
+  adnotacja: Klasyczny podręcznik statystyki matematycznej; źródło współczynnika V.
+cronbach1951:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1007/BF02310555
+delacre2017:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.5334/irsp.82
+divine2018:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1080/00031305.2017.1305291
+  adnotacja: Test Manna–Whitneya porównuje przewagę w porządku wyników; odczyt jako
+    różnicy median wymaga dodatkowych założeń.
+dunn1964:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1080/00401706.1964.10490181
+efron1979:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1214/aos/1176344552
+ernst2004:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1214/088342304000000396
+  adnotacja: Przegląd metod permutacyjnych i ich historii od Fishera.
+fagerland2012:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1186/1471-2288-12-78
+fisher1922:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.2307/2340521
+fisher1925:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://psychclassics.yorku.ca/Fisher/Methods/
+  adnotacja: Pierwsze wydanie podręcznika Fishera (analiza wariancji, tablice rozkładów).
+fisher1935:
+  poziom: metodyczna
+  dostep:
+    typ: druk
+    adres: wydanie drukowane (Oliver and Boyd, 1935; późniejsze wydania)
+  adnotacja: Praca źródłowa planowania eksperymentów; przykład degustacji herbaty.
+fox2019:
+  poziom: oprogramowanie
+  dostep:
+    typ: strona
+    adres: https://www.john-fox.ca/Companion/
+francuz2007:
+  poziom: obowiązkowa
+  dostep:
+    typ: biblioteka
+    adres: https://katalogi.uj.edu.pl/permalink/48OMNIS_UJA/1v550j0/alma991007561269705067
+  adnotacja: Przewodnik po metodologii i statystyce od projektu badania po raport
+    (rozdziały 1–9). Wydanie 2 w bibliotece WZiKS (IPS 53030), wydanie 1 z 2005 r.
+    w Lectorium BJ (Lect. M 1194).
+freedman1981:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1007/BF01025868
+  adnotacja: Reguła szerokości przedziału histogramu oparta na rozstępie międzykwartylowym.
+games1976:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.3102/10769986001002113
+gelman2006:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1198/000313006X152649
+  adnotacja: Porównywanie wyników istotnych i nieistotnych statystycznie.
+ghasemi2012:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.5812/ijem.3505
+gosssampson2025:
+  poziom: obowiązkowa
+  dostep:
+    typ: otwarty
+    adres: https://jasp-stats.org/wp-content/uploads/2025/07/Statistical-Analysis-in-JASP-A-guide-for-students-2025.pdf
+  adnotacja: Bezpłatny przewodnik (licencja CC BY 4.0) po analizach w programie JASP,
+    wydanie 7 z 2025 r.; sylabus wskazuje wydanie 5 z 2022 r. o tym samym układzie
+    rozdziałów.
+greenland2016:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1007/s10654-016-0149-3
+guthrie2020:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.18434/M32189
+  adnotacja: Podręcznik metod statystycznych NIST; rozkłady prawdopodobieństwa w sekcji
+    1.3.6.
+guttman1944:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.2307/2086306
+hargittai2002:
+  poziom: kontekst
+  dostep:
+    typ: otwarty
+    adres: https://webuse.org/pdf/Hargittai-BeyondLogsSurveys2002.pdf
+  adnotacja: Pomiar umiejętności przez obserwację zadań obok ankiety i logów.
+  scenariusze:
+  - S02
+  - S09
+hedges1981:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.3102/10769986006002107
+heiberger2014:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.18637/jss.v057.i05
+hernan2020:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://miguelhernan.org/whatifbook
+  adnotacja: Bezpłatny podręcznik wnioskowania przyczynowego (eksperyment, dane obserwacyjne,
+    założenia).
+hesterberg2015:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1080/00031305.2015.1089789
+hintze1998:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1080/00031305.1998.10480559
+hoekstra2014:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://research.rug.nl/en/publications/f6bf397d-c103-44c5-bb9d-3dccb9b102b7
+holm1979:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://www.jstor.org/stable/4615733
+  adnotacja: Sekwencyjna korekta wielu porównań.
+hope1968:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1111/j.2517-6161.1968.tb00759.x
+hyndman1996:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1080/00031305.1996.10473566
+  adnotacja: Porównanie definicji kwantyli z próby stosowanych w programach statystycznych.
+ismay2025:
+  poziom: uzupełniająca
+  dostep:
+    typ: otwarty
+    adres: https://moderndive.com/v2/
+  adnotacja: Bezpłatny podręcznik wnioskowania w R z pakietem infer, używanym w ćwiczeniach.
+jamieson2004:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://eprints.gla.ac.uk/59552/
+  adnotacja: Pełny tekst w repozytorium University of Glasgow.
+jansen2006:
+  poziom: kontekst
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1016/j.lisr.2006.06.005
+  adnotacja: Analiza logów wyszukiwania jako metoda badania zachowań informacyjnych.
+  scenariusze: S14
+joanes1998:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1111/1467-9884.00122
+kassambara2025:
+  poziom: oprogramowanie
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.32614/CRAN.package.rstatix
+kerby2014:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.2466/11.IT.3.1
+kim2014:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.5395/rde.2014.39.1.74
+  adnotacja: Krótkie wprowadzenie do jednoczynnikowej analizy wariancji (sumy kwadratów,
+    F).
+kim2017:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.5395/rde.2017.42.2.152
+king2009:
+  poziom: uzupełniająca
+  dostep:
+    typ: biblioteka
+    adres: https://katalogi.uj.edu.pl/permalink/48OMNIS_UJA/1v550j0/alma991013573719705067
+  adnotacja: Podręcznik statystyki od rozkładów przez korelację, testy i przedziały
+    ufności po analizę wariancji; Lectorium BJ (Lect. F 1609 e) i biblioteka WZiKS.
+kruskal1952:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1080/01621459.1952.10483441
+krzywinski2014:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1038/nmeth.2813
+kuhlthau1991:
+  poziom: kontekst
+  dostep:
+    typ: otwarty
+    adres: https://wp.comminfo.rutgers.edu/ckuhlthau2/wp-content/uploads/sites/185/2016/01/InsidetheSearchProcess.pdf
+  adnotacja: Proces wyszukiwania i niepewność użytkownika na kolejnych etapach.
+  scenariusze: S01
+kurbanoglu2006:
+  poziom: kontekst
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1108/00220410610714949
+  adnotacja: Budowa skali samooceny kompetencji informacyjnych.
+  scenariusze: S01
+kwak2017:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.4097/kjae.2017.70.2.144
+  adnotacja: Centralne twierdzenie graniczne — rozkład średniej z próby i jego odchylenie
+    standardowe.
+lakens2013:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.3389/fpsyg.2013.00863
+lakens2017:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1177/1948550617697177
+  adnotacja: Test równoważności (TOST) i najmniejszy efekt istotny dla decyzji.
+lakens2022:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1525/collabra.33267
+larsen1972:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1080/00401706.1972.10488966
+lee2018:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.4097/kja.d.18.00242
+levene1960:
+  poziom: metodyczna
+  dostep:
+    typ: druk
+    adres: wydanie drukowane (Stanford University Press, 1960)
+  adnotacja: Praca źródłowa testu równości wariancji.
+likert1932:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://archive.org/details/likert-1932
+  adnotacja: Praca źródłowa skali Likerta (skan monografii).
+lundberg2021:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://osf.io/ba67n/
+  adnotacja: Pełny tekst w wersji preprintu (SocArXiv, 2020).
+mahmood2016:
+  poziom: kontekst
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.15760/comminfolit.2016.10.2.24
+  adnotacja: Przegląd 53 badań porównujących samoocenę kompetencji informacyjnych
+    z wynikiem testu.
+  scenariusze:
+  - S03
+  - S14
+mann1947:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1214/aoms/1177730491
+mcgraw1992:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1037/0033-2909.111.2.361
+mcnemar1947:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1007/BF02295996
+murad2016:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1136/ebmed-2016-110401
+neyman1933:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1098/rsta.1933.0009
+  adnotacja: Praca źródłowa teorii testowania hipotez jako reguły decyzji.
+neyman1937:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1098/rsta.1937.0005
+  adnotacja: Praca źródłowa teorii przedziałów ufności.
+norman2010:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1007/s10459-010-9222-y
+pearson1896:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1098/rsta.1896.0007
+pearson1900:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1080/14786440009463897
+pemburysmith2020:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1007/s00265-020-02916-y
+phipson2010:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://arxiv.org/pdf/1603.05766
+pitman1937:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.2307/2984124
+  adnotacja: Praca źródłowa testów permutacyjnych dla danych ilościowych.
+ranganathan2015:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.4103/2229-3485.167092
+rcoreteam2025:
+  poziom: oprogramowanie
+  dostep:
+    typ: strona
+    adres: https://www.R-project.org/
+revelle2026:
+  poziom: oprogramowanie
+  dostep:
+    typ: strona
+    adres: https://CRAN.R-project.org/package=psych
+rohrer2018:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1177/2515245917745629
+sandve2013:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1371/journal.pcbi.1003285
+satterthwaite1946:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.2307/3002019
+savolainen1995:
+  poziom: kontekst
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1016/0740-8188(95)90048-9
+  adnotacja: Codzienne poszukiwanie informacji w kontekście stylu życia.
+  scenariusze:
+  - S04
+  - S16
+schneider2010:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2992018/
+  adnotacja: Regresja liniowa w praktyce - współczynnik determinacji, kategoria odniesienia,
+    przyczynowość, ekstrapolacja.
+shapiro1965:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1093/biomet/52.3-4.591
+sharpe2015:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://scholarworks.umass.edu/pare/vol20/iss1/8
+sijtsma2009:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1007/s11336-008-9101-0
+simmons2011:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1177/0956797611417632
+spearman1904:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.2307/1412159
+stefaniak2016:
+  poziom: obowiązkowa
+  dostep:
+    typ: druk
+    adres: wydanie drukowane, ISBN tomu 978-83-64203-82-4
+  adnotacja: Metody badań w nauce o informacji w podręczniku pod redakcją W. Babika.
+stevens1946:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1126/science.103.2684.677
+student1908:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1093/biomet/6.1.1
+suarezalvarez2018:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.7334/psicothema2018.33
+  adnotacja: Skutki łączenia pozycji pozytywnych i odwróconych w jednej skali.
+sullivan2012:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.4300/JGME-D-12-00156.1
+taber2018:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1007/s11165-016-9602-2
+tavakol2011:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.5116/ijme.4dfb.8dfd
+thurstone1928:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1086/214483
+tomczak2014:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://tss.awf.poznan.pl/pdf-188960-110189?filename=The-need-to-report-effect.pdf
+  adnotacja: Przegląd miar wielkości efektu, także dla testów rangowych.
+tukey1977:
+  poziom: metodyczna
+  dostep:
+    typ: druk
+    adres: wydanie drukowane, ISBN 0-201-07616-0
+  adnotacja: Eksploracyjna analiza danych; źródło wykresu pudełkowego.
+uj2025:
+  poziom: dokument
+  dostep:
+    typ: strona
+    adres: https://bip.uj.edu.pl/documents/1384597/159749054/zarz_115_2025.pdf
+  adnotacja: Zasady korzystania z narzędzi SI w dydaktyce UJ, w tym oznaczanie treści
+    wygenerowanych (§ 6 pkt 3) i zakaz powoływania się na odpowiedzi modeli jako źródło
+    wiedzy naukowej (§ 7 ust. 2).
+vandeursen2016:
+  poziom: kontekst
+  dostep:
+    typ: otwarty
+    adres: https://research.utwente.nl/en/publications/7945dd08-8e06-41b2-85e9-a291ceda2bcb
+  adnotacja: Budowa i walidacja skali umiejętności internetowych; przykład rozkładu
+    konstruktu na wymiary.
+  scenariusze: S12
+vial2019:
+  poziom: kontekst
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1016/j.jsis.2019.01.003
+  adnotacja: Przegląd badań nad transformacją cyfrową organizacji.
+  scenariusze: S15
+vuorikari2022:
+  poziom: kontekst
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.2760/115376
+  adnotacja: 'Rama kompetencji cyfrowych: obszary i przykłady wiedzy, umiejętności
+    i postaw.'
+  scenariusze:
+  - S10
+  - S17
+walters2023:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1038/s41598-023-41032-5
+wasserstein2016:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1080/00031305.2016.1154108
+welch1947:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1093/biomet/34.1-2.28
+welch1951:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1093/biomet/38.3-4.330
+wickham2014:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.18637/jss.v059.i10
+wickham2016:
+  poziom: oprogramowanie
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1007/978-3-319-24277-4
+wickham2026:
+  poziom: oprogramowanie
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.32614/CRAN.package.dplyr
+wilcoxon1945:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.2307/3001968
+wilk1968:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1093/biomet/55.1.1
+wilkinson1999:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1037/0003-066X.54.8.594
+wilson1999:
+  poziom: kontekst
+  dostep:
+    typ: otwarty
+    adres: https://informationr.net/tdw/publ/papers/1999JDoc.html
+  adnotacja: 'Modele zachowań informacyjnych: osoba w kontekście, potrzeba, bariery,
+    poszukiwanie i użycie informacji.'
+  scenariusze:
+  - S05
+  - S19
+winkler2014:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.1016/j.neuroimage.2014.01.060
+yates1934:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://repository.rothamsted.ac.uk/id/eprint/23646/
+ziliak2008:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1257/jep.22.4.199
+  adnotacja: Historia testu t — William Sealy Gosset i browar Guinness.

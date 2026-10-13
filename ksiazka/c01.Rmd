@@ -6,6 +6,10 @@
 **Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, a przy pierwszym ćwiczeniu `pobierz_szablon(1, id = "TWOJE_ID", student = "Imię Nazwisko")`. **Oddanie:** `oddaj_zadanie(1)`. **Wykład:** W01.
 :::
 
+::: {.lektura}
+**Lektura:** @biecek2017 [rozdz. 2]; @king2009 [rozdz. 3–5].
+:::
+
 Biblioteka chce wiedzieć, czy katalog wymaga wsparcia dla nowych użytkowników. Badanie S02 łączy ankietę z obserwacją jednego zadania wyszukiwawczego. Ćwiczenie C01 prowadzi od zbioru danych do pierwszego porównania grup: liczebności, odsetków, średnich, median i wykresów.
 
 ```{r c01-karta, echo=FALSE, results='asis'}
@@ -14,7 +18,7 @@ karta_zi("S02")
 
 ## LEARN 1. Zbiór danych w R {#c01-dane .unnumbered}
 
-Skrypt startowy udostępnia funkcję `dane_zi()`, która zwraca ramkę danych: wiersz opisuje jedną osobę, a kolumna jedną zmienną. Zapis `dane <- dane_zi(...)` zapisuje wynik funkcji w obiekcie `dane`, a `dane$czas` wybiera z niego kolumnę czasu. Funkcja `glimpse()` z pakietu dplyr wypisuje liczbę wierszy i kolumn oraz typ i pierwsze wartości każdej zmiennej.
+Skrypt startowy udostępnia funkcję `dane_zi()`, która zwraca ramkę danych: wiersz opisuje jedną osobę, a kolumna jedną zmienną, zgodnie z zasadą danych uporządkowanych [@wickham2014]. Zapis `dane <- dane_zi(...)` zapisuje wynik funkcji w obiekcie `dane`, a `dane$czas` wybiera z niego kolumnę czasu. Funkcja `glimpse()` z pakietu dplyr [@wickham2026] wypisuje liczbę wierszy i kolumn oraz typ i pierwsze wartości każdej zmiennej.
 
 ```{r c01-glimpse}
 dane <- dane_zi("S02", id = "wzor")
@@ -33,7 +37,7 @@ Zbiór S02 ma `r nrow(dane)` osób i `r ncol(dane)` zmiennych. Typ `<fct>` oznac
 
 ## LEARN 2. Zmienne i skale pomiaru {#c01-skale .unnumbered}
 
-Skala pomiaru wyznacza działania, które mają sens dla wartości zmiennej. Słownik zbioru podaje opis i skalę każdej zmiennej scenariusza.
+Skala pomiaru wyznacza działania, które mają sens dla wartości zmiennej: dla skali nominalnej liczenie, dla porządkowej także porządkowanie, dla przedziałowej także różnice, a dla ilorazowej także ilorazy [@stevens1946]. Słownik zbioru podaje opis i skalę każdej zmiennej scenariusza.
 
 ```{r c01-slownik}
 slownik_zi("S02")
@@ -46,7 +50,7 @@ slownik_zi("S02")
 | przedziałowa | indeks (umownie) | średnia, odchylenie standardowe |
 | ilorazowa | czas, wiek | średnia, odchylenie standardowe, ilorazy |
 
-Pojedyncza pozycja skali Likerta ma pięć uporządkowanych kategorii o nieznanych odstępach, więc jest zmienną porządkową. Indeks jest średnią sześciu pozycji i przyjmuje wiele wartości od 1 do 5, dlatego w analizach traktujemy go umownie jako zmienną przedziałową. Czas ma naturalne zero, więc zdanie „zadanie trwało dwa razy dłużej” ma sens tylko dla czasu.
+Pojedyncza pozycja skali Likerta ma pięć uporządkowanych kategorii o nieznanych odstępach, więc jest zmienną porządkową [@jamieson2004]. Indeks jest średnią sześciu pozycji i przyjmuje wiele wartości od 1 do 5, dlatego w analizach traktujemy go umownie jako zmienną przedziałową; metody parametryczne zastosowane do danych ze skal Likerta prowadzą do trafnych wniosków [@norman2010]. Czas i wiek mają naturalne zero (skala ilorazowa), więc zdanie „zadanie trwało dwa razy dłużej” ma sens dla czasu, a iloraz dwóch wartości indeksu pozostaje bez interpretacji.
 
 ## LEARN 3. Liczebności i odsetki {#c01-odsetki .unnumbered}
 
@@ -62,7 +66,7 @@ czestosci(dane, kategoria)
 czestosci(dane, powodzenie, grupa)
 ```
 
-Wskazany dokument odnalazło `r tak$n[1]` z `r sum(pw$n[pw$grupa == "nowi"])` nowych użytkowników (`r .zi_pl(tak$procent[1], 1)`%) oraz `r tak$n[2]` z `r sum(pw$n[pw$grupa == "doświadczeni"])` doświadczonych (`r .zi_pl(tak$procent[2], 1)`%). Każdy procent ma własny mianownik: liczbę osób w grupie. Wykres słupkowy z opcją `position = "fill"` przedstawia odsetki obu grup jako części słupka o wysokości 100%.
+Wskazany dokument odnalazło `r tak$n[1]` z `r sum(pw$n[pw$grupa == "nowi"])` nowych użytkowników (`r .zi_pl(tak$procent[1], 1)`%) oraz `r tak$n[2]` z `r sum(pw$n[pw$grupa == "doświadczeni"])` doświadczonych (`r .zi_pl(tak$procent[2], 1)`%). Każdy procent ma własny mianownik: liczbę osób w grupie. Wykres słupkowy z opcją `position = "fill"` w pakiecie ggplot2 [@wickham2016] przedstawia odsetki obu grup jako części słupka o wysokości 100%.
 
 ```{r c01-wykres-odsetki, fig.height=3}
 ggplot(dane, aes(x = grupa, fill = powodzenie)) +
@@ -89,7 +93,7 @@ Nowi użytkownicy wykonywali zadanie średnio `r .zi_pl(oc$M[1])` min (*Mdn* = `
 
 ## LEARN 5. Histogram i wykres pudełkowy {#c01-wykresy .unnumbered}
 
-Histogram przedstawia kształt rozkładu jednej zmiennej: wysokość słupka to liczba osób w przedziale czasu. Wykres pudełkowy porównuje grupy: pudełko obejmuje środkowe 50% wyników (od *Q1* do *Q3*), linia w pudełku to mediana, wąsy sięgają do najdalszych wyników w odległości 1,5 rozstępu międzykwartylowego, a punkty poza wąsami to wyniki odległe od środka rozkładu.
+Histogram przedstawia kształt rozkładu jednej zmiennej: wysokość słupka to liczba osób w przedziale czasu. Wykres pudełkowy porównuje grupy: pudełko obejmuje środkowe 50% wyników (od *Q1* do *Q3*), linia w pudełku to mediana, wąsy sięgają do najdalszego wyniku leżącego najwyżej 1,5 rozstępu międzykwartylowego od krawędzi pudełka (konwencja Tukeya), a punkty poza wąsami to wyniki odległe [@krzywinski2014].
 
 ```{r c01-histogram, fig.height=3}
 ggplot(dane, aes(x = czas)) +
@@ -112,7 +116,7 @@ Histogram czasu ma długi prawy ogon: większość osób kończy zadanie w kilka
 
 **Opis zmiennej w grupach.** Nowi użytkownicy (*n* = `r oc$n[1]`) wykonywali zadanie średnio *M* = `r .zi_pl(oc$M[1])` min (*SD* = `r .zi_pl(oc$SD[1])`; *Mdn* = `r .zi_pl(oc$Mdn[1])`), a doświadczeni (*n* = `r oc$n[2]`) *M* = `r .zi_pl(oc$M[2])` min (*SD* = `r .zi_pl(oc$SD[2])`; *Mdn* = `r .zi_pl(oc$Mdn[2])`).
 
-**Zasady.** Symbole statystyk zapisujesz kursywą (*n*, *M*, *SD*, *Mdn*), liczby z przecinkiem dziesiętnym, średnie i odchylenia z dwoma miejscami po przecinku, procenty z jednym. Przy każdej grupie podajesz liczebność, a przy wartości jednostkę.
+**Zasady.** Symbole statystyk zapisujesz kursywą (*n*, *M*, *SD*, *Mdn*) [@apa2020; @apa2024]. APA zaleca jedno miejsce po przecinku dla średnich i odchyleń wyników na skalach liczb całkowitych, takich jak odpowiedzi ankiety, i dwa dla pozostałych [@apa2024]; w kursie średnie i odchylenia mają dwa miejsca, a procenty jedno. W tekście polskim liczby mają przecinek dziesiętny. Przy każdej grupie podajesz liczebność, a przy wartości jednostkę.
 :::
 
 ## CHALLENGE {-}

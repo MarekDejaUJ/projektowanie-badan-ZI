@@ -1,0 +1,317 @@
+# W02. Język danych, rozkład i pomiar {#w02 .unnumbered}
+
+::: {.start}
+**Wykład 2, 13.10.2026.** Ćwiczenia: [C02](#c02) (rozkład i przygotowanie danych), [C03](#c03) (skala Likerta i indeks). Dane przykładów: scenariusz S02 (katalog biblioteczny), ID `wzor`.
+:::
+
+::: {.lektura}
+**Lektura obowiązkowa:** @francuz2007 [rozdz. 4]; @gosssampson2025 [s. 15–41]. **Lektura uzupełniająca:** @king2009 [rozdz. 3–6]; @babbie2025 [rozdz. 6].
+:::
+
+```{r w02-dane, include=FALSE, echo=FALSE}
+w2_dane <- dane_zi("S02", id = "wzor")
+w2_surowe <- dane_zi("S02", id = "wzor", surowe = TRUE)
+w2_dz <- przygotuj_zi(w2_surowe)$dziennik
+w2_czas <- w2_dane$czas[!is.na(w2_dane$czas)]
+w2_n <- length(w2_czas)
+w2_m <- mean(w2_czas)
+w2_mdn <- median(w2_czas)
+w2_sd <- sd(w2_czas)
+w2_q <- quantile(w2_czas, c(0.25, 0.75, 0.9))
+w2_iqr <- unname(w2_q[2] - w2_q[1])
+w2_granica <- unname(w2_q[2] + 1.5 * w2_iqr)
+w2_poza <- sum(w2_czas > w2_granica)
+w2_opis <- psych::describe(w2_dane[c("czas", "wiek", "indeks")])
+w2_m_surowe <- mean(w2_surowe$czas, na.rm = TRUE)
+w2_m_bez_max <- mean(w2_czas[-which.max(w2_czas)])
+w2_gr_n <- tapply(!is.na(w2_dane$czas), w2_dane$grupa, sum)
+w2_gr_m <- tapply(w2_dane$czas, w2_dane$grupa, mean, na.rm = TRUE)
+w2_wazona <- sum(w2_gr_n * w2_gr_m) / sum(w2_gr_n)
+w2_cv_czas <- w2_sd / w2_m
+w2_cv_wiek <- sd(w2_dane$wiek, na.rm = TRUE) / mean(w2_dane$wiek, na.rm = TRUE)
+w2_fd <- 2 * w2_iqr / w2_n^(1 / 3)
+w2_F10 <- mean(w2_czas <= 10)
+w2_F10_gr <- tapply(w2_dane$czas, w2_dane$grupa, function(v) mean(v[!is.na(v)] <= 10))
+w2_p2 <- table(factor(w2_dane$p2, levels = 1:5))
+w2_p2_f <- prop.table(w2_p2)
+w2_p2_F <- cumsum(w2_p2_f)
+w2_p2_mdn <- which(w2_p2_F >= 0.5)[1]
+w2_pozycje <- w2_dane[paste0("p", 1:6)]
+w2_pozycje$p3 <- 6 - w2_pozycje$p3
+w2_wazne <- rowSums(!is.na(w2_pozycje))
+w2_alfa <- suppressWarnings(psych::alpha(w2_pozycje))
+w2_r <- w2_alfa$total$average_r
+w2_alfa12 <- 12 * w2_r / (1 + 11 * w2_r)
+w2_ind_m <- mean(w2_dane$indeks, na.rm = TRUE)
+w2_pomp <- 100 * (w2_ind_m - 1) / 4
+w2_z_p90 <- (w2_q[3] - w2_m) / w2_sd
+w2_sukces <- mean(w2_dane$powodzenie == "tak", na.rm = TRUE)
+w2_ind_pow <- tapply(w2_dane$indeks, w2_dane$powodzenie, mean, na.rm = TRUE)
+w2_ponad15 <- mean(w2_czas > w2_q[3])
+w2_kroki <- c(5, 10, 20, 40, 80, 160, w2_n)
+w2_sdse <- data.frame(n = w2_kroki,
+                      SD = vapply(w2_kroki, function(k) sd(w2_czas[1:k]), 1),
+                      SE = vapply(w2_kroki, function(k) sd(w2_czas[1:k]) / sqrt(k), 1))
+w2_osob <- function(k) paste(k, if (k == 1) "osoba" else if (k %% 10 %in% 2:4 && !(k %% 100 %in% 12:14)) "osoby" else "osób")
+w2_Fn <- stats::ecdf(w2_dane$czas[w2_dane$grupa == "nowi" & !is.na(w2_dane$czas)])
+w2_Fd <- stats::ecdf(w2_dane$czas[w2_dane$grupa == "doświadczeni" & !is.na(w2_dane$czas)])
+w2_siatka <- seq(min(w2_czas), max(w2_czas), by = 0.05)
+w2_roznica <- w2_Fd(w2_siatka) - w2_Fn(w2_siatka)
+```
+
+Zespół biblioteki otrzymuje zdanie: „średni czas zadania w katalogu wynosi `r .zi_pl(w2_m, 1)` min”. Jedna osoba odczytuje komunikat jako czas typowego użytkownika, druga jako granicę, poniżej której kończy połowa osób, trzecia jako nakład pracy w przeliczeniu na jedno zadanie. Każde odczytanie dotyczy innej wielkości: średnia opisuje łączny czas w przeliczeniu na zadanie, mediana środek uporządkowanych wyników, a miary rozproszenia i kształtu różnice między osobami. Wykład W02 buduje język opisu danych: od rozkładu i przygotowania danych przez miary położenia, rozproszenia i kształtu do pomiaru deklaracji w ankiecie i jego jakości. Liczby pochodzą ze zbioru S02 po przygotowaniu: `r nrow(w2_dane)` osób, z których `r w2_n` ma ważny czas zadania.
+
+## 1. Rozkład i tabela częstości {#w02-rozklad .unnumbered}
+
+Rozkład zmiennej podaje, jakie wartości występują i jak często. Opis rozkładu zaczyna się od jednostki analizy i mianownika: w S02 jednostką analizy jest osoba, a mianownikiem liczba osób z ważną wartością zmiennej. Szereg punktowy zestawia poszczególne wartości z liczebnościami i pasuje do kategorii odpowiedzi 1–5; szereg przedziałowy grupuje w przedziały wartości ciągłe, na przykład czas zadania.
+
+::: {.wzor}
+$$f_j = \frac{n_j}{n} \qquad\qquad F_j = \sum_{l \le j} f_l$$
+$n_j$ — liczebność kategorii $j$, $n$ — liczba ważnych odpowiedzi, $f_j$ — częstość względna kategorii $j$, $F_j$ — częstość skumulowana, czyli udział odpowiedzi w kategorii $j$ i w kategoriach niższych.
+:::
+
+```{r w02-czestosci, echo=FALSE}
+knitr::kable(data.frame(
+  `Odpowiedź` = c("1 zdecydowanie nie", "2 raczej nie", "3 ani tak, ani nie", "4 raczej tak", "5 zdecydowanie tak"),
+  `$n_j$` = as.integer(w2_p2), `$f_j$` = .zi_pl(as.numeric(w2_p2_f), 3), `$F_j$` = .zi_pl(as.numeric(w2_p2_F), 3),
+  check.names = FALSE), align = "lrrr",
+  caption = sprintf("Odpowiedzi na pozycję 2 („Nazwy filtrów są dla mnie zrozumiałe”) w S02; n = %d ważnych odpowiedzi.", sum(w2_p2)))
+```
+
+Najczęstsza odpowiedź, czyli dominanta, to `r names(which.max(w2_p2))` (`r w2_osob(max(w2_p2))`, `r .zi_pl(100 * max(w2_p2_f), 1)`%). Dominanta ma sens dla każdej skali pomiaru, także nominalnej, a mediana i częstość skumulowana wymagają co najmniej skali porządkowej [@stevens1946]. Częstość skumulowana pierwszy raz przekracza 0,5 w kategorii `r w2_p2_mdn`: w kategoriach 1–`r w2_p2_mdn` leży `r .zi_pl(100 * w2_p2_F[w2_p2_mdn], 1)`% odpowiedzi, więc mediana odpowiedzi wynosi `r w2_p2_mdn`. Kanały kontaktu (strona WWW, e-mail, media, kontakt osobisty) mają kolejność umowną, więc ich opis podaje odsetek każdej kategorii osobno. W pytaniu wielokrotnego wyboru jedna osoba wchodzi do kilku liczników, dlatego odsetki osób sumują się do ponad 100% ([C03](#c03-wielokrotne)).
+
+## 2. Przygotowanie danych: od eksportu do zbioru analizy {#w02-przygotowanie .unnumbered}
+
+Eksport z ankiety i rejestru zadania przechodzi przed analizą przez stałe reguły kontroli. Funkcja `przygotuj_zi()` stosuje jednakowe reguły do każdego scenariusza i zapisuje dziennik: krok, liczbę zmienionych wartości i liczbę wierszy po kroku.
+
+```{r w02-dziennik, echo=FALSE}
+knitr::kable(data.frame(Krok = w2_dz$krok, `Zmienione` = ifelse(is.na(w2_dz$zmienione), "—", w2_dz$zmienione),
+                        `Wiersze` = w2_dz$wiersze, check.names = FALSE),
+             align = "lrr", caption = "Dziennik przygotowania danych S02 (eksport surowy, ID wzor).")
+```
+
+Eksport S02 ma `r w2_dz$wiersze[1]` wierszy, a zbiór analizy `r nrow(w2_dane)` osób. Reguły ujednolicają `r w2_dz$zmienione[2]` etykiety grup, usuwają `r w2_dz$zmienione[3]` identyczne powtórzenia wierszy, zamieniają kod braku 99 w `r w2_dz$zmienione[4]` odpowiedziach na `NA` i oznaczają jako braki `r w2_dz$zmienione[5]` czasy spoza zakresu 0–120 min. Dwa czasy niemożliwe (−5 i 999 min) podnoszą średnią czasu z `r .zi_pl(w2_m)` do `r .zi_pl(w2_m_surowe)` min, dlatego kontrola zakresu wartości poprzedza każdą średnią.
+
+Arkusz z danymi do analizy stosuje kilka zasad: jedna wartość w komórce, jedna zmienna w kolumnie i jedna obserwacja w wierszu, spójny zapis wartości i braków, słownik zmiennych, surowe dane bez obliczeń oraz zapis w pliku tekstowym, na przykład CSV [@wickham2014; @broman2018]. Dziennik przygotowania pozwala prześledzić każdą liczbę raportu od eksportu do analizy i zastępuje ręczne poprawki w kopii roboczej, zgodnie z zasadami pracy odtwarzalnej [@sandve2013]. Wartość `NA` oznacza brak odpowiedzi i pozostaje osobną kategorią, różną od zera i od odpowiedzi środkowej 3.
+
+Wartość niemożliwa, na przykład czas ujemny, jest błędem zapisu i zamienia się w brak. Wartość odległa, ale możliwa, na przykład zadanie trwające 25 minut, opisuje rzeczywistą trudną próbę i zostaje w danych. Wytyczne postępowania z wartościami odstającymi rozróżniają wartości błędne, wartości interesujące i wartości wpływowe, a każda grupa wymaga innej decyzji [@aguinis2013].
+
+## 3. Miary położenia: średnia, mediana i kwantyle {#w02-polozenie .unnumbered}
+
+Miary położenia wskazują środek rozkładu, a każda odpowiada na inne pytanie [@king2009; @francuz2007]. Średnia odpowiada na pytanie o łączny nakład w przeliczeniu na osobę, mediana o środek uporządkowanych wyników, a kwantyl rzędu $p$ o wartość, poniżej której leży udział $p$ wyników.
+
+::: {.wzor}
+$$\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i \qquad Mdn = \begin{cases} x_{((n+1)/2)} & n \text{ nieparzyste}\\[2pt] \tfrac{1}{2}\left(x_{(n/2)} + x_{(n/2+1)}\right) & n \text{ parzyste}\end{cases} \qquad h = (n-1)\,p + 1$$
+$x_i$ — wynik osoby $i$, $x_{(r)}$ — wynik o numerze $r$ po uporządkowaniu rosnąco, $n$ — liczba wyników. Kwantyl rzędu $p$ funkcja `quantile()` liczy domyślnie metodą typu 7: interpoluje między wynikami $x_{(\lfloor h \rfloor)}$ i $x_{(\lfloor h \rfloor + 1)}$; programy statystyczne stosują różne metody, więc przy małych próbach raport podaje metodę razem z kwartylami [@hyndman1996].
+:::
+
+```{r w02-polozenie, echo=FALSE, fig.height=3.2, fig.cap=sprintf("Rozkład czasu zadania w S02 (n = %d, przedziały po 2 minuty). Oś pozioma: czas w minutach; oś pionowa: liczba osób. Linia ciągła oznacza medianę (%s min), linia przerywana średnią (%s min), a linia kropkowana percentyl 90. (%s min); prawy ogon rozkładu przesuwa średnią w prawo od mediany.", w2_n, .zi_pl(w2_mdn), .zi_pl(w2_m), .zi_pl(w2_q[3]))}
+ggplot(data.frame(czas = w2_czas), aes(x = czas)) +
+  geom_histogram(binwidth = 2, boundary = 0, fill = "#56B4E9", colour = "white") +
+  geom_vline(xintercept = w2_mdn, colour = "#0072B2", linewidth = 1) +
+  geom_vline(xintercept = w2_m, colour = "#D55E00", linetype = "dashed", linewidth = 1) +
+  geom_vline(xintercept = w2_q[3], colour = "#009E73", linetype = "dotted", linewidth = 1) +
+  labs(x = "Czas zadania [min]", y = "Liczba osób")
+```
+
+Mediana czasu wynosi `r .zi_pl(w2_mdn)` min, średnia `r .zi_pl(w2_m)` min, a kwartyle `r .zi_pl(w2_q[1])` i `r .zi_pl(w2_q[2])` min: połowa osób kończy zadanie w czasie od `r .zi_pl(w2_q[1])` do `r .zi_pl(w2_q[2])` min. Percentyl 90. równa się `r .zi_pl(w2_q[3])` min, więc `r .zi_pl(100 * w2_ponad15, 0)`% prób trwa dłużej. Średnia reaguje na każdy wynik: zmiana jednej wartości przesuwa ją o różnicę wartości podzieloną przez $n$. Najdłuższa próba S02 (`r .zi_pl(max(w2_czas), 1)` min) podnosi średnią o `r .zi_pl(w2_m - w2_m_bez_max)` min, ponieważ dzieli się na `r w2_n` pomiarów; w próbie pięciu osób czas `r .zi_pl(max(w2_czas), 1)` min przesunąłby średnią o kilka minut. Mediana zależy wyłącznie od kolejności wyników, więc opisuje typową osobę także przy kilku bardzo długich czasach.
+
+Średnia dwóch grup o różnej liczebności wymaga wag. Średnia ważona liczebnościami daje każdej osobie równy udział w wyniku:
+
+::: {.wzor}
+$$\bar{x}_{\text{ogółem}} = \frac{n_1\bar{x}_1 + n_2\bar{x}_2}{n_1 + n_2}$$
+$n_1, n_2$ — liczebności grup, $\bar{x}_1, \bar{x}_2$ — średnie grup.
+:::
+
+Nowi użytkownicy (*n* = `r w2_gr_n[["nowi"]]`) mają średni czas `r .zi_pl(w2_gr_m[["nowi"]])` min, a doświadczeni (*n* = `r w2_gr_n[["doświadczeni"]]`) `r .zi_pl(w2_gr_m[["doświadczeni"]])` min. Średnia ważona wynosi `r .zi_pl(w2_wazona)` min i równa się średniej wszystkich `r w2_n` czasów, a średnia dwóch średnich `r .zi_pl(mean(w2_gr_m))` min daje każdej grupie równą wagę. Opis wszystkich użytkowników katalogu wymaga wag; porównanie filii traktowanych jako równorzędne jednostki uzasadnia średnią średnich.
+
+## 4. Miary rozproszenia {#w02-rozproszenie .unnumbered}
+
+Dwa zbiory o jednakowej średniej mogą zawierać wyniki skupione przy średniej albo rozrzucone od bardzo krótkich do bardzo długich. Miary rozproszenia opisują typową odległość wyników od środka rozkładu.
+
+::: {.wzor}
+$$s^2 = \frac{1}{n-1}\sum_{i=1}^{n}(x_i - \bar{x})^2 \qquad s = \sqrt{s^2} \qquad IQR = Q_3 - Q_1 \qquad CV = \frac{s}{\bar{x}}$$
+$s^2$ — wariancja w próbie (jednostka do kwadratu), $s$ — odchylenie standardowe (*SD*, jednostka zmiennej), $Q_1$, $Q_3$ — kwartyle, $IQR$ — rozstęp międzykwartylowy, $CV$ — współczynnik zmienności, odchylenie standardowe jako ułamek średniej (dla zmiennych o naturalnym zerze). Dzielnik $n-1$ czyni $s^2$ nieobciążonym estymatorem wariancji populacji $\sigma^2$: średnia z $s^2$ w wielu powtórzeniach próby równa się $\sigma^2$.
+:::
+
+Odchylenie standardowe czasu wynosi `r .zi_pl(w2_sd)` min, a rozstęp międzykwartylowy `r .zi_pl(w2_iqr)` min; czasy leżą od `r .zi_pl(min(w2_czas), 1)` do `r .zi_pl(max(w2_czas), 1)` min. Odchylenie standardowe reaguje na wszystkie odległości od średniej, a $IQR$ wyłącznie na położenie kwartyli, dlatego przy długim ogonie raport podaje obie miary. Współczynnik zmienności czasu wynosi `r .zi_pl(w2_cv_czas)`, a wieku `r .zi_pl(w2_cv_wiek)`: odchylenie czasu stanowi około połowy średniej, a odchylenie wieku około jednej ósmej, więc względne zróżnicowanie czasu jest kilkakrotnie większe.
+
+### Odchylenie standardowe opisuje osoby, błąd standardowy opisuje średnią {#w02-sd-se .unnumbered}
+
+Odchylenie standardowe opisuje zmienność wyników między osobami, a błąd standardowy precyzję średniej z próby; obie wielkości łączy wzór $SE = SD/\sqrt{n}$ [@altman2005]. Rysunek \@ref(fig:w02-sd-se) liczy obie wielkości dla pierwszych $n$ osób zbioru S02 z ważnym czasem.
+
+```{r w02-sd-se, echo=FALSE, fig.height=3.2, fig.cap=sprintf("Odchylenie standardowe (SD) i błąd standardowy średniej (SE) czasu zadania dla pierwszych n osób S02. Oś pozioma: liczba osób n w skali logarytmicznej (od 5 do %d); oś pionowa: minuty. Linia ciągła SD waha się wokół %s min, a linia przerywana SE maleje od %s min przy n = 5 do %s min przy n = %d.", w2_n, .zi_pl(w2_sd, 1), .zi_pl(w2_sdse$SE[1]), .zi_pl(w2_sdse$SE[nrow(w2_sdse)]), w2_n)}
+w2_dl <- rbind(data.frame(n = w2_sdse$n, wartosc = w2_sdse$SD, miara = "SD osób"),
+               data.frame(n = w2_sdse$n, wartosc = w2_sdse$SE, miara = "SE średniej"))
+ggplot(w2_dl, aes(x = n, y = wartosc, colour = miara, linetype = miara)) +
+  geom_line(linewidth = 0.9) + geom_point(size = 2) +
+  scale_x_log10(breaks = w2_kroki) +
+  scale_colour_manual(values = c("SD osób" = "#0072B2", "SE średniej" = "#D55E00")) +
+  labs(x = "Liczba osób n (skala logarytmiczna)", y = "Minuty", colour = NULL, linetype = NULL)
+```
+
+Odchylenie standardowe pozostaje między `r .zi_pl(min(w2_sdse$SD), 1)` a `r .zi_pl(max(w2_sdse$SD), 1)` min, ponieważ osoby różnią się czasem niezależnie od liczby zbadanych osób; błąd standardowy maleje z pierwiastkiem z $n$. Opis próby podaje *SD* albo *IQR*, a kreski niepewności przy średnich na wykresie przedstawiają *SE* albo przedział ufności z nazwą w podpisie. Wykład [W03](#w03) rozwija rolę błędu standardowego w przedziałach ufności i testach.
+
+## 5. Kształt rozkładu: skośność i kurtoza {#w02-ksztalt .unnumbered}
+
+Czas przyjmuje wartości dodatnie, a nieliczne trudne próby trwają bardzo długo, więc rozkład czasu ma zwykle długi prawy ogon. Kształt opisują dwie miary: skośność (kierunek i siła asymetrii) i kurtoza (udział wyników skrajnych w porównaniu z rozkładem normalnym). Funkcja `describe()` z pakietu psych liczy obie miary wzorami typu 3 z zestawienia @joanes1998 [@revelle2026].
+
+::: {.wzor}
+$$b_1 = \frac{1}{n}\sum_{i=1}^{n}\left(\frac{x_i - \bar{x}}{s}\right)^3 \qquad\qquad b_2 = \frac{1}{n}\sum_{i=1}^{n}\left(\frac{x_i - \bar{x}}{s}\right)^4 - 3$$
+$s$ — odchylenie standardowe z mianownikiem $n - 1$; $b_1 \approx 0$ — rozkład symetryczny; $b_1 > 0$ — długi prawy ogon; $b_1 < 0$ — długi lewy ogon. $b_2 > 0$ — więcej wyników skrajnych niż w rozkładzie normalnym; $b_2 < 0$ — rozkład spłaszczony. Trzecia potęga zachowuje znak odchylenia, a czwarta wzmacnia największe odległości.
+:::
+
+Czas zadania ma skośność $b_1$ = `r .zi_pl(w2_opis["czas", "skew"])` i kurtozę $b_2$ = `r .zi_pl(w2_opis["czas", "kurtosis"])`: rozkład ma długi prawy ogon i więcej wyników skrajnych niż rozkład normalny. Indeks oceny katalogu ma skośność `r .zi_pl(w2_opis["indeks", "skew"])` i kurtozę `r .zi_pl(w2_opis["indeks", "kurtosis"])`, więc jego rozkład jest prawie symetryczny i nieco spłaszczony. Średnia większa od mediany często towarzyszy skośności dodatniej, ale rozkłady dwumodalne i dyskretne łamią regułę średniej i mediany, więc opis kształtu łączy miary z wykresem.
+
+## 6. Wykres odpowiada na pytanie {#w02-wykresy .unnumbered}
+
+Histogram dzieli oś wartości na przedziały równej szerokości $h$ i nad każdym przedziałem stawia słupek o wysokości równej liczbie wyników. Wąskie przedziały odsłaniają przypadkowe nierówności, a szerokie łączą sąsiednie skupienia. Punktem startowym jest reguła Freedmana–Diaconisa, którą R stosuje w funkcji `nclass.FD()` [@freedman1981; @rcoreteam2025]:
+
+::: {.wzor}
+$$h = \frac{2 \cdot IQR}{\sqrt[3]{n}} = \frac{2 \cdot `r .zi_pl(w2_iqr)`}{\sqrt[3]{`r w2_n`}} \approx `r .zi_pl(w2_fd)` \text{ min}$$
+$h$ — szerokość przedziału, $IQR$ — rozstęp międzykwartylowy, $n$ — liczba wyników.
+:::
+
+```{r w02-szerokosci, echo=FALSE, fig.height=5, fig.cap=sprintf("Ten sam czas zadania S02 (n = %d) przy trzech szerokościach przedziału: 1 minuta, %s min (reguła Freedmana–Diaconisa) i 5 minut. Oś pozioma: czas w minutach; oś pionowa: liczba osób. Przy przedziałach 1-minutowych sąsiednie słupki zmieniają się nieregularnie; przy szerszych przedziałach rozkład ma jeden wyraźny szczyt między 4 a 10 minutami i długi prawy ogon.", w2_n, .zi_pl(w2_fd, 1))}
+w2_panele <- c("h = 1 min", sprintf("h = %s min (Freedman–Diaconis)", .zi_pl(w2_fd, 1)), "h = 5 min")
+w2_h <- data.frame(czas = rep(w2_czas, 3), panel = factor(rep(w2_panele, each = w2_n), levels = w2_panele))
+ggplot(w2_h, aes(x = czas)) +
+  geom_histogram(data = w2_h[w2_h$panel == w2_panele[1], ], binwidth = 1, boundary = 0, fill = "#56B4E9", colour = "white") +
+  geom_histogram(data = w2_h[w2_h$panel == w2_panele[2], ], binwidth = w2_fd, boundary = 0, fill = "#0072B2", colour = "white") +
+  geom_histogram(data = w2_h[w2_h$panel == w2_panele[3], ], binwidth = 5, boundary = 0, fill = "#56B4E9", colour = "white") +
+  facet_wrap(~ panel, ncol = 1, scales = "free_y") +
+  labs(x = "Czas zadania [min]", y = "Liczba osób")
+```
+
+Histogram gęstości stawia słupki o wysokości $\hat{f} = n_h/(n\,h)$, gdzie $n_h$ to liczba wyników w przedziale: pole słupka równa się wtedy udziałowi wyników w przedziale, a suma pól wynosi 1. Gęstość ma jednostkę „na minutę” i przekracza 1, gdy przedział jest węższy od jednostki.
+
+Wykres pudełkowy streszcza rozkład pięcioma liczbami: końcami wąsów, kwartylami i medianą. Pudełko obejmuje wyniki od $Q_1$ do $Q_3$, kreska w pudełku oznacza medianę, a wąsy sięgają do najdalszych wyników w granicach $Q_1 - 1{,}5 \cdot IQR$ i $Q_3 + 1{,}5 \cdot IQR$; punkty poza wąsami to wyniki odległe od środkowej połowy danych [@tukey1977; @krzywinski2014].
+
+```{r w02-pudelko, echo=FALSE, fig.height=2.2, fig.cap=sprintf("Czas zadania S02 na wykresie pudełkowym (n = %d). Oś pozioma: czas w minutach. Pudełko obejmuje wyniki od %s do %s min, kreska mediany leży przy %s min, linia kropkowana oznacza granicę Q3 + 1,5 IQR = %s min, a %d punkty na prawo od granicy to najdłuższe próby.", w2_n, .zi_pl(w2_q[1]), .zi_pl(w2_q[2]), .zi_pl(w2_mdn), .zi_pl(w2_granica, 1), w2_poza)}
+ggplot(data.frame(czas = w2_czas), aes(x = czas, y = "")) +
+  geom_boxplot(width = 0.4, fill = "#56B4E9", outlier.colour = "#D55E00") +
+  geom_vline(xintercept = w2_granica, linetype = "dotted") +
+  labs(x = "Czas zadania [min]", y = NULL)
+```
+
+Dystrybuanta empiryczna odpowiada na pytanie, jaka część wyników leży na progu albo poniżej progu. Próg 10 minut może być normą obsługi: zadanie powinno kończyć się w ciągu dziesięciu minut.
+
+::: {.wzor}
+$$\widehat{F}(c) = \frac{1}{n}\sum_{i=1}^{n}\mathbf{1}(x_i \le c)$$
+$c$ — próg, $\mathbf{1}(\cdot)$ — wskaźnik przyjmujący 1, gdy warunek w nawiasie jest spełniony, i 0 w pozostałych przypadkach; suma liczy wyniki nieprzekraczające progu.
+:::
+
+```{r w02-dystrybuanta, echo=FALSE, fig.height=3.2, fig.cap=sprintf("Dystrybuanta empiryczna czasu zadania S02 w dwóch grupach. Oś pozioma: czas w minutach; oś pionowa: udział osób z czasem nie dłuższym niż wartość na osi poziomej. Linia przerywana oznacza próg 10 minut: w tym czasie kończy zadanie %s%% doświadczonych i %s%% nowych użytkowników. Krzywa nowych na całej długości leży poniżej krzywej doświadczonych albo na jej poziomie, a największa odległość między krzywymi, %s punktów procentowych, przypada przy %s min.", .zi_pl(100 * w2_F10_gr[["doświadczeni"]], 0), .zi_pl(100 * w2_F10_gr[["nowi"]], 0), .zi_pl(100 * max(w2_roznica), 0), .zi_pl(w2_siatka[which.max(w2_roznica)], 1))}
+ggplot(w2_dane[!is.na(w2_dane$czas), ], aes(x = czas, colour = grupa)) +
+  stat_ecdf(geom = "step", linewidth = 0.9) +
+  geom_vline(xintercept = 10, linetype = "dashed") +
+  scale_colour_manual(values = c("nowi" = "#D55E00", "doświadczeni" = "#0072B2")) +
+  labs(x = "Czas zadania [min]", y = "Udział osób z czasem ≤ c", colour = NULL)
+```
+
+Dystrybuanta wszystkich czasów przy progu 10 minut wynosi $\widehat{F}(10)$ = `r .zi_pl(w2_F10)`: `r .zi_pl(100 * w2_F10, 0)`% osób kończy zadanie w ciągu dziesięciu minut. Różnica `r .zi_pl(100 * (w2_F10_gr[["doświadczeni"]] - w2_F10_gr[["nowi"]]), 0)` punktów procentowych między grupami odpowiada wprost na pytanie o normę obsługi; średnie grup dają odpowiedź pośrednią.
+
+Słupki kategorii przedstawiają liczebności albo odsetki. Porównanie grup o różnej liczebności używa odsetków, a podpis wykresu podaje mianownik każdej grupy, tak jak wykres powodzenia w [C01](#c01-odsetki).
+
+| Wykres | Pytanie | Warunek poprawnego odczytu |
+|:--|:--|:--|
+| histogram | gdzie skupiają się wyniki i jaki mają kształt? | kształt stały przy sąsiednich szerokościach przedziału |
+| wykres pudełkowy | jak różnią się położenie i rozrzut grup? | sprawdzenie rekordów poza wąsami przed decyzją o błędzie |
+| dystrybuanta empiryczna | jaki odsetek wyników leży na progu albo poniżej? | próg ustalony przed spojrzeniem na dane |
+| słupki kategorii | ile osób albo jaki odsetek wybrał odpowiedź? | odsetki z nazwanym mianownikiem przy grupach różnej wielkości |
+| wykres punktowy | jak współwystępują dwie cechy jednej osoby? | opis współwystępowania; wniosek przyczynowy wymaga projektu ([C08](#c08)) |
+
+Table: Wykresy, pytania i warunki poprawnego odczytu.
+
+## 7. Przekształcenia i skalowanie wyników {#w02-przeksztalcenia .unnumbered}
+
+Przygotowanie danych obejmuje też przekształcenia, które zmieniają zapis wyników albo poziom opisu. Tabela zestawia operacje z sylabusa przedmiotu z przykładami ze zbioru S02.
+
+| Operacja | Przykład S02 | Co zachowuje, co zmienia |
+|:--|:--|:--|
+| agregacja | średni czas w czterech grupach statusu | zastępuje wyniki osób wynikiem grupy |
+| transpozycja | sześć kolumn p1–p6 → kolumny „pozycja” i „odpowiedź” (format długi do wykresu Likerta) | zachowuje wartości, zmienia układ tabeli |
+| standaryzacja | $z = (x - \bar{x})/s$ dla czasu | zachowuje kształt rozkładu, zmienia jednostkę na odchylenie standardowe |
+| normalizacja do zakresu | procent zakresu skali (POMP) dla indeksu 1–5 | zachowuje kolejność i odległości, zmienia jednostkę na procent zakresu |
+| rangowanie | ranga i ranga procentowa czasu | zachowuje kolejność, pomija odległości |
+| logarytm | $\ln(\text{czas})$ | zachowuje kolejność, skraca prawy ogon |
+| konwersja formatu | `write.csv2()`: plik CSV ze średnikiem i przecinkiem dziesiętnym | zachowuje dane, zmienia zapis dla arkusza |
+
+Table: Przekształcenia danych i ich skutki.
+
+::: {.wzor}
+$$z_i = \frac{x_i - \bar{x}}{s} \qquad\qquad \text{POMP}_i = \frac{x_i - \min}{\max - \min}\cdot 100\%$$
+$z_i$ — wynik osoby $i$ w odchyleniach standardowych od średniej; POMP — procent zakresu skali (*percent of maximum possible*), gdzie $\min$ i $\max$ to krańce skali odpowiedzi [@cohen1999].
+:::
+
+Czas równy percentylowi 90. (`r .zi_pl(w2_q[3])` min) leży `r .zi_pl(w2_z_p90)` odchylenia standardowego powyżej średniej. Średni indeks oceny katalogu `r .zi_pl(w2_ind_m)` odpowiada `r .zi_pl(w2_pomp, 1)`% zakresu skali 1–5: wynik opisuje położenie na skali odpowiedzi, a procent opanowanej umiejętności wymaga zadań z oceną poprawności. Logarytm skraca prawy ogon czasu i przybliża rozkład do symetrycznego [@bland1996]; ćwiczenie [C02](#c02-transformacje) zawiera histogram logarytmu czasu S02.
+
+## 8. Pomiar: od pozycji do indeksu {#w02-pomiar .unnumbered}
+
+Pozycja skali Likerta jest twierdzeniem z uporządkowanymi odpowiedziami od „zdecydowanie nie” do „zdecydowanie tak” [@likert1932]. Pojedyncza pozycja ma kategorie o nieznanych odstępach, więc jest zmienną porządkową [@jamieson2004]; średnia kilku pozycji przyjmuje wiele wartości i w analizach traktuje się ją umownie jako zmienną przedziałową [@norman2010]. Ocena użyteczności katalogu w S02 powstaje z sześciu pozycji: (1) „Szybko znajduję pole wyszukiwania w katalogu”, (2) „Nazwy filtrów są dla mnie zrozumiałe”, (3) „Odczytanie rekordu wymaga ode mnie zgadywania”, (4) „Potrafię znaleźć lokalizację dokumentu”, (5) „Komunikaty katalogu pomagają mi poprawić zapytanie”, (6) „Katalog wspiera wykonanie mojego zadania”.
+
+```{r w02-likert, echo=FALSE, fig.height=4.4, fig.cap="Odpowiedzi na sześć pozycji oceny katalogu w S02. Oś pozioma: odsetek odpowiedzi w pozycji; oś pionowa: pozycje p1–p6. Każdy słupek ma długość 100%: odpowiedzi negatywne (brązowe) leżą z lewej strony, neutralne (szare) pośrodku, pozytywne (zielononiebieskie) z prawej. Pozycja 3 jest sformułowana negatywnie, więc jej zgoda oznacza gorszą ocenę katalogu."}
+wykres_likert(w2_dane)
+```
+
+Wykres Likerta przedstawia każdą pozycję jako słupek 100% z odpowiedziami ułożonymi od negatywnych do pozytywnych; autorzy przeglądu wykresów skal ocen zalecają wersję rozbieżną, w której słupki rozchodzą się od środka skali [@heiberger2014]. Pozycja 3 mierzy ocenę w przeciwnym kierunku, dlatego przed obliczeniem indeksu jej odpowiedź zostaje odwrócona, tak aby wszystkie pozycje miały jednakowy kierunek. Pozycje odwrócone służą ograniczeniu skłonności do przytakiwania, a łączenie ich z pozycjami sformułowanymi pozytywnie może obniżać rzetelność i naruszać jednowymiarowość skali [@suarezalvarez2018].
+
+::: {.wzor}
+$$x^{*}_{i3} = 6 - x_{i3} \qquad\qquad I_i = \begin{cases} \dfrac{1}{m_i}\displaystyle\sum_{k \in O_i} x^{*}_{ik} & m_i \ge 5\\[6pt] \text{NA} & m_i < 5 \end{cases}$$
+$O_i$ — zbiór pozycji z ważną odpowiedzią osoby $i$, $m_i$ — liczba pozycji w zbiorze $O_i$, $x^{*}_{ik}$ — odpowiedź na pozycję $k$ po uzgodnieniu kierunku, $I_i$ — indeks osoby $i$ na skali 1–5. Odwrócenie zamienia 1 na 5 i 2 na 4, a środek skali 3 zostaje bez zmian.
+:::
+
+Komplet sześciu odpowiedzi ma `r w2_osob(sum(w2_wazne == 6))`, pięć odpowiedzi `r w2_osob(sum(w2_wazne == 5))`, a mniej niż pięć odpowiedzi `r w2_osob(sum(w2_wazne < 5))`; osoby z mniej niż pięcioma odpowiedziami mają indeks `NA`. Suma obejmuje wyłącznie ważne odpowiedzi osoby, a dzielnikiem jest ich liczba: odpowiedzi 4, 5, NA, 4, 3, 5 dają $I_i = 21/5 = 4{,}2$, a zero wstawione w miejsce braku dałoby $21/6 = 3{,}5$. Reguła pięciu z sześciu pozycji jest jawną decyzją indeksu kursu; zwalidowane narzędzia mają reguły braków wynikające z ich konstrukcji.
+
+Ramy pojęciowe pomagają zaplanować pozycje i zadania. DigComp 2.2 porządkuje kompetencje cyfrowe obywateli w obszarach i podaje przykłady wiedzy, umiejętności i postaw [@vuorikari2022]. Rama ACRL opisuje pracę z informacją w szkolnictwie wyższym, między innymi wyszukiwanie jako strategiczną eksplorację [@acrl2016]. Skala umiejętności internetowych ISS jest przykładem osobnej pracy nad konstrukcją i walidacją narzędzia z kilkoma wymiarami umiejętności [@vandeursen2016]. Status zwalidowanej skali daje własnemu zestawowi pytań dopiero badanie walidacyjne; sześć pozycji S02 tworzy dydaktyczny zestaw kursu.
+
+## 9. Trafność, rzetelność i błąd pomiaru {#w02-jakosc .unnumbered}
+
+Trafność dotyczy uzasadnienia interpretacji wyniku w określonym zastosowaniu: czy indeks oznacza ocenę katalogu, samoocenę umiejętności czy ogólne zadowolenie. Standardy testowania wymieniają pięć źródeł dowodów trafności: treść pozycji, procesy odpowiadania, strukturę wewnętrzną, związki z innymi zmiennymi i konsekwencje użycia wyniku [@aera2014].
+
+Rzetelność opisuje powtarzalność wyniku. Klasyczny model pomiaru zapisuje wynik obserwowany jako sumę wyniku prawdziwego i błędu losowego, a rzetelność jako udział wariancji wyniku prawdziwego w wariancji wyniku obserwowanego [@sijtsma2009]:
+
+::: {.wzor}
+$$X = T + E \qquad\qquad \rho_{XX'} = \frac{\sigma^2_T}{\sigma^2_X} \qquad\qquad \alpha = \frac{K}{K-1}\left(1 - \frac{\sum_{k=1}^{K} s_k^2}{s_X^2}\right) \qquad\qquad \alpha_{\text{st}} = \frac{K\bar{r}}{1 + (K-1)\bar{r}}$$
+$X$ — wynik obserwowany, $T$ — wynik prawdziwy, $E$ — błąd losowy o średniej zero, $\rho_{XX'}$ — rzetelność; $K$ — liczba pozycji, $s_k^2$ — wariancja pozycji $k$, $s_X^2$ — wariancja sumy pozycji, $\bar{r}$ — średnia korelacja między pozycjami, $\alpha_{\text{st}}$ — alfa standaryzowana [@cronbach1951; @revelle2026].
+:::
+
+Stoper uruchamiany zawsze dwie sekundy za późno daje powtarzalne i systematycznie zaniżone czasy: stałe przesunięcie jest obciążeniem i wchodzi w modelu do $T$, a rozrzut momentów startu jest błędem losowym $E$. Wysoka rzetelność współistnieje więc z obciążeniem, a pomiar rzetelny bywa nietrafny.
+
+Sześć pozycji S02 ma alfę `r .zi_pl(w2_alfa$total$raw_alpha)` przy średniej korelacji między pozycjami $\bar{r}$ = `r .zi_pl(w2_r)` ([C03](#c03-rzetelnosc)). Przy identycznej średniej korelacji zestaw dwunastu pozycji miałby $\alpha_{\text{st}}$ = `r .zi_pl(w2_alfa12)`: alfa rośnie z liczbą pozycji [@tavakol2011]. Spójność wewnętrzna jest warunkiem koniecznym jednowymiarowości skali, a jednowymiarowość wykazują dopiero analizy struktury wewnętrznej [@tavakol2011; @sijtsma2009]. Wysoka alfa sześciu pozycji S02 potwierdza spójność odpowiedzi; jednowymiarowość i trafność wymagają osobnych dowodów.
+
+Pomiar obserwacyjny ma własny błąd: dwie osoby oceniające mogą różnie rozumieć „znalezienie wskazanego dokumentu”. Kryterium powodzenia (właściwy tytuł, właściwe wydanie, lokalizacja egzemplarza albo dostęp elektroniczny) definiuje wynik przed zebraniem danych. Badania umiejętności internetowych łączą ankietę z obserwacją wykonania zadań, ponieważ dopiero oba źródła razem opisują różnice w sposobie wyszukiwania [@hargittai2002]. W S02 osoby z powodzeniem mają średni indeks `r .zi_pl(w2_ind_pow[["tak"]])`, a osoby bez powodzenia `r .zi_pl(w2_ind_pow[["nie"]])`; rozkłady obu grup w dużej części się nakładają.
+
+## 10. Cztery sposoby skalowania postaw {#w02-skalowanie .unnumbered}
+
+Projekt indywidualny kursu używa pozycji typu Likerta. Sylabus wymienia także trzy inne sposoby skalowania, a każdy przyjmuje inne założenie o związku odpowiedzi z mierzoną cechą.
+
+| Podejście | Idea | Pytanie krytyczne |
+|:--|:--|:--|
+| pozycje typu Likerta [@likert1932] | stopień zgody z kilkoma twierdzeniami; wynik złożony jako suma lub średnia | czy pozycje odnoszą się do wspólnego, uzasadnionego konstruktu? |
+| skala dystansu społecznego Bogardusa [@bogardus1925] | uporządkowane formy akceptacji relacji społecznych, od najbliższej do najdalszej | czy przyjęta kolejność relacji ma sens w badanym kontekście? |
+| skalowanie Thurstone'a [@thurstone1928] | położenie twierdzeń na kontinuum ustalone przez oceny sędziów; odstępy traktowane jako równe | jak uzasadniono położenie twierdzeń na kontinuum? |
+| skalowanie Guttmana [@guttman1944] | zgoda z twierdzeniem silniejszym implikuje zgodę z twierdzeniami słabszymi (wzór kumulacyjny) | czy wzór kumulacyjny występuje w danych? |
+
+Table: Cztery sposoby skalowania postaw.
+
+Wzór kumulacyjny Guttmana jest hipotezą do sprawdzenia w danych: skala kompetencji informacyjnych w postaci Guttmana wymaga, aby każda osoba z powodzeniem w zadaniu trudniejszym miała powodzenie w zadaniach łatwiejszych. Rzeczywiste strategie wyszukiwania bywają nierówne: jedna osoba trafnie ocenia wiarygodność źródła i słabo zna konkretny interfejs katalogu.
+
+## 11. Od opisu do decyzji instytucji {#w02-decyzja .unnumbered}
+
+Opis S02 prowadzi do kilku wniosków dla biblioteki. Średni czas `r .zi_pl(w2_m)` min przewyższa medianę `r .zi_pl(w2_mdn)` min, a `r .zi_pl(100 * w2_ponad15, 0)`% prób trwa dłużej niż `r .zi_pl(w2_q[3], 1)` min: większość zadań przebiega sprawnie, a część użytkowników napotyka duże trudności. W ciągu dziesięciu minut kończy zadanie `r .zi_pl(100 * w2_F10_gr[["nowi"]], 0)`% nowych i `r .zi_pl(100 * w2_F10_gr[["doświadczeni"]], 0)`% doświadczonych użytkowników, a dokument znajduje `r .zi_pl(100 * w2_sukces, 1)`% wszystkich osób. Rekomendacja dotyczy prawego ogona rozkładu: analizy zadań i użytkowników, którzy szukają najdłużej, oraz wsparcia przy pierwszych wyszukiwaniach.
+
+Zestawienie deklaracji z obserwacją daje wzorce o różnym znaczeniu. Wysoki odsetek powodzeń przy niskiej ocenie katalogu wskazuje zadanie wykonalne kosztem dużego wysiłku. Wysoka ocena przy niskim powodzeniu wskazuje ocenę innego aspektu usługi albo przyjęcie błędnego wyniku za poprawny. Każdy z dwóch wzorców wymaga dodatkowego rozpoznania, na przykład krótkiego wywiadu po zadaniu.
+
+| Zdanie błędne | Zdanie poprawne |
+|:--|:--|
+| „Średni czas wynosi `r .zi_pl(w2_m, 1)` min, więc większość osób potrzebuje około `r .zi_pl(w2_m, 0)` minut.” | „Średni czas wynosi `r .zi_pl(w2_m, 1)` min, a mediana `r .zi_pl(w2_mdn, 1)` min; połowa osób kończy zadanie w czasie od `r .zi_pl(w2_q[1], 1)` do `r .zi_pl(w2_q[2], 1)` min.” |
+| „*SD* wynosi `r .zi_pl(w2_sd, 1)` min, więc średni czas oszacowano z błędem `r .zi_pl(w2_sd, 1)` min.” | „*SD* czasu wynosi `r .zi_pl(w2_sd, 1)` min, a błąd standardowy średniej `r .zi_pl(w2_sd / sqrt(w2_n), 2)` min.” |
+| „Indeks wynosi `r .zi_pl(w2_ind_m, 1)`, więc kompetencja wynosi `r .zi_pl(100 * w2_ind_m / 5, 0)`%.” | „Średni indeks oceny katalogu wynosi `r .zi_pl(w2_ind_m, 2)` na skali 1–5 (`r .zi_pl(w2_pomp, 0)`% zakresu skali).” |
+| „Suma odsetków kanałów przekracza 100%, więc w danych jest błąd.” | „W pytaniu wielokrotnego wyboru osoba wskazuje kilka kanałów, więc odsetki osób sumują się do ponad 100%.” |
+
+Table: Redakcja zdań opisu danych.
+
+## Podsumowanie {#w02-podsumowanie .unnumbered}
+
+Opis danych zaczyna się od jednostki analizy, mianownika i dziennika przygotowania, ponieważ jeden niemożliwy czas zmienia średnią o kilka minut. Średnia, mediana i kwantyle odpowiadają na różne pytania: o łączny nakład, o typową osobę i o normę obsługi. Odchylenie standardowe opisuje różnice między osobami, a błąd standardowy precyzję średniej, która rośnie z liczbą osób. Kształt rozkładu opisują skośność, kurtoza i wykres, a wybór wykresu wynika z pytania. Indeks z pozycji ankiety wymaga uzgodnienia kierunku pozycji, jawnej reguły braków oraz dowodów rzetelności i trafności; wysoka alfa potwierdza spójność odpowiedzi, a znaczenie wyniku potwierdzają osobne dowody.

@@ -4,6 +4,10 @@
 **Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, potem otwórz swój plik `projekt.Rmd` (`pobierz_szablon("projekt")` otwiera istniejący plik bez nadpisywania). **Oddanie części I–II:** `oddaj_zadanie(10)`. **Wersja końcowa:** `oddaj_projekt()`. **Wykład:** W05.
 :::
 
+::: {.lektura}
+**Lektura:** @francuz2007 [rozdz. 9]; @babbie2025 [rozdz. 15].
+:::
+
 Część II projektu (P6–P10) odpowiada na pytania badawcze: dwie analizy, odpowiedź na pytania, ograniczenia i rekomendacje oraz informacja o użyciu generatywnej SI. Analizy powtarzają procedury z ćwiczeń C05, C07 i C08 na danych Twojego scenariusza. Rozdział C10 opisuje, jak z wyników powstaje argument: od liczb przez interpretację do decyzji instytucji.
 
 ```{r c10-dane, include=FALSE}
@@ -20,7 +24,7 @@ proc <- prop.table(tab, 1)
 
 ## LEARN 1. Pierwsza analiza: indeks w dwóch grupach {#c10-analiza1 .unnumbered}
 
-Pierwsza analiza odpowiada na pytanie o różnicę indeksu. Kolejność raportu jest stała: opis grup, test Welcha z przedziałem różnicy, wielkość efektu *g*, a następnie test permutacyjny i test Manna–Whitneya jako sprawdzenie, czy wniosek zależy od założeń (C05).
+Pierwsza analiza odpowiada na pytanie o różnicę indeksu. Kolejność raportu jest stała: opis grup, test Welcha z przedziałem różnicy, wielkość efektu *g*, a następnie test permutacyjny i test Manna–Whitneya jako sprawdzenie, czy wniosek zależy od założeń (C05). Przy pierwszym użyciu metody podajesz jej źródło zapisem cytowania, np. `[@welch1947]`; szablon tworzy z cytowań bibliografię na końcu PDF.
 
 ```{r c10-welch}
 t.test(indeks ~ grupa, data = dane)
@@ -43,7 +47,7 @@ Dokument znalazło `r .zi_pl(100 * proc[1, "tak"], 1)`% nowych i `r .zi_pl(100 *
 
 ## LEARN 3. Od wyników do odpowiedzi {#c10-interpretacja .unnumbered}
 
-Odpowiedź na pytanie badawcze łączy trzy informacje: kierunek i wielkość efektu (w jednostkach zmiennej i jako *g*, *V* lub $\rho$), niepewność (przedział ufności) oraz znaczenie praktyczne dla instytucji. Wartość *p* rozstrzyga tylko, czy wynik da się wytłumaczyć losowością. Obie analizy razem dają pełniejszy obraz niż każda osobno: deklaracja (indeks) i obserwacja (powodzenie) wskazują ten sam kierunek albo różne kierunki, a różny kierunek jest wynikiem wartym opisania.
+Odpowiedź na pytanie badawcze łączy trzy informacje: kierunek i wielkość efektu (w jednostkach zmiennej i jako *g*, *V* lub $\rho$), niepewność (przedział ufności) oraz znaczenie praktyczne dla instytucji [@wilkinson1999]. Wartość *p* opisuje zgodność danych z modelem hipotezy zerowej; wielkość efektu i jej niepewność opisują miara efektu z przedziałem ufności, a znaczenie efektu wymaga interpretacji w kontekście badania [@wasserstein2016]. Obie analizy razem dają pełniejszy obraz niż każda osobno: deklaracja (indeks) i obserwacja (powodzenie) wskazują ten sam kierunek albo różne kierunki, a różny kierunek jest wynikiem wartym opisania.
 
 ::: {.apa}
 **Wzorzec P8 (S02).** Doświadczeni użytkownicy oceniają katalog wyżej niż nowi, ale różnica jest mała (`r .zi_pl(-diff(rev(tw$estimate)))` punktu na skali 1–5; *g* = `r .zi_pl(abs(g$Hedges_g))`, 95% CI różnicy [`r .zi_pl(-tw$conf.int[2])`; `r .zi_pl(-tw$conf.int[1])`]). Wyraźniejsza jest różnica wykonania: nowi znajdują dokument o `r .zi_pl(-100 * mr$wartosc[3], 1)` punktu procentowego rzadziej. Dla biblioteki ważniejsza jest więc pomoc w samym wyszukiwaniu niż poprawa opinii o katalogu: wsparcie przy pierwszych wyszukiwaniach ma uzasadnienie w wynikach obu analiz.
@@ -51,7 +55,7 @@ Odpowiedź na pytanie badawcze łączy trzy informacje: kierunek i wielkość ef
 
 ## LEARN 4. Ograniczenia i rekomendacje {#c10-ograniczenia .unnumbered}
 
-Ograniczenie wskazuje źródło możliwego błędu i jego wpływ na wniosek. Trzy obszary są obowiązkowe: projekt badania (grupy bez losowego przydziału, więc różnice mogą wynikać z innych cech osób), pomiar (deklaracja, jedno zadanie, możliwa niepełna trafność indeksu) i próba (sposób rekrutacji, liczebność, dane syntetyczne). Rekomendacja wynika z wyników i uwzględnia ograniczenia: decyzja dla instytucji oraz badanie, które usunęłoby najważniejsze ograniczenie (np. eksperyment z losowym przydziałem formy wsparcia).
+Ograniczenie wskazuje źródło możliwego błędu i jego wpływ na wniosek. Trzy obszary są obowiązkowe: projekt badania (grupy bez losowego przydziału, więc różnice mogą wynikać z innych cech osób [@rohrer2018]), pomiar (deklaracja, jedno zadanie, możliwa niepełna trafność indeksu) i próba (sposób rekrutacji, liczebność, dane syntetyczne). Rekomendacja wynika z wyników i uwzględnia ograniczenia: decyzja dla instytucji oraz badanie, które usunęłoby najważniejsze ograniczenie (np. eksperyment z losowym przydziałem formy wsparcia).
 
 ::: {.apa}
 **Wzorzec P9 (S02).** Grupy powstały z wcześniejszego korzystania z katalogu, więc różnice mogą wynikać także z wieku, kierunku studiów albo motywacji. Indeks jest deklaracją, a powodzenie dotyczy jednego zadania, dlatego wynik obejmuje jedną sytuację wyszukiwania i jedną formę oceny. Rekrutacja przy stanowisku pomocy może zawyżać udział osób z trudnościami. Rekomendacja: krótki samouczek wyszukiwania dla nowych użytkowników, a następnie eksperyment z losowym przydziałem samouczka, który sprawdzi jego skutek.
@@ -59,13 +63,13 @@ Ograniczenie wskazuje źródło możliwego błędu i jego wpływ na wniosek. Trz
 
 ## LEARN 5. Generatywna SI w argumentacji i odtwarzalność {#c10-si .unnumbered}
 
-Generatywna SI wspiera argumentację, jeżeli pracuje na Twoim tekście i Twoich liczbach, a Ty sprawdzasz każdą jej odpowiedź. Przydatne zastosowania to wskazanie alternatywnych wyjaśnień wyniku, krytyka logiki wniosku i redakcja języka. Wyniki liczy R, a źródłem naukowym są publikacje; model językowy może podawać nieistniejące publikacje, dlatego każde jego wskazanie wymaga sprawdzenia. Do narzędzia nie przekazujesz danych osobowych.
+Generatywna SI wspiera argumentację, jeżeli pracuje na Twoim tekście i Twoich liczbach, a Ty sprawdzasz każdą jej odpowiedź. Przydatne zastosowania to wskazanie alternatywnych wyjaśnień wyniku, krytyka logiki wniosku i redakcja języka. Wyniki liczy R, a źródłem naukowym są publikacje; model językowy, na przykład ChatGPT, może podawać nieistniejące publikacje i błędne opisy bibliograficzne [@walters2023], dlatego każde jego wskazanie wymaga sprawdzenia w katalogu lub bazie. Do narzędzia nie przekazujesz danych osobowych.
 
 ::: {.wzor}
-**Przykład polecenia:** „Oto wynik badania obserwacyjnego: [Twój akapit P8]. Wskaż trzy alternatywne wyjaśnienia różnicy między grupami i dla każdego zaproponuj sposób jego sprawdzenia w przyszłym badaniu. Użyj wyłącznie liczb z akapitu i pomiń źródła.” Każdą propozycję oceniasz samodzielnie i włączasz do P9 tylko te, które wynikają z projektu badania.
+**Przykład polecenia:** „Oto wynik badania obserwacyjnego: [Twój akapit P8]. Wskaż trzy alternatywne wyjaśnienia różnicy między grupami i dla każdego zaproponuj sposób jego sprawdzenia w przyszłym badaniu. Użyj wyłącznie liczb z akapitu i pomiń źródła.” Każdą propozycję oceniasz samodzielnie i włączasz do P9 tylko propozycje zgodne z projektem badania.
 :::
 
-Odtwarzalność oznacza, że inna osoba otrzyma te same liczby: projekt podaje scenariusz, ID, datę i wersję skryptu startowego, a PDF powstaje z pliku Rmd w nowej sesji R.
+Odtwarzalność oznacza, że inna osoba otrzyma te same liczby: projekt podaje scenariusz, ID, datę i wersję skryptu startowego, a PDF powstaje z pliku Rmd w nowej sesji R [@sandve2013].
 
 ::: {.apa}
 **Wzorzec P10.** Generatywna SI (narzędzie, data) posłużyła do wskazania alternatywnych wyjaśnień różnicy między grupami; dwie z trzech propozycji włączono do ograniczeń po sprawdzeniu ich zgodności z projektem badania. Wyniki, liczby i interpretacja pochodzą z analiz w pliku projektu. Analizę odtwarza plik `projekt.Rmd` (scenariusz S02, ID wzor, skrypt startowy `r .zi_wersja`).

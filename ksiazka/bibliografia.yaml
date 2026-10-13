@@ -1,0 +1,1838 @@
+---
+references:
+- id: acrl2016
+  type: report
+  author:
+  - literal: Association of College and Research Libraries
+  title: Framework for information literacy for higher education
+  publisher: American Library Association
+  issued: '2016'
+  URL: https://www.ala.org/sites/default/files/acrl/content/issues/infolit/Framework_ILHE.pdf
+- id: aera2014
+  type: book
+  author:
+  - literal: American Educational Research Association
+  - literal: American Psychological Association
+  - literal: National Council on Measurement in Education
+  title: Standards for educational and psychological testing
+  publisher: American Educational Research Association
+  issued: '2014'
+  ISBN: 978-0-935302-35-6
+  URL: https://www.testingstandards.net/open-access-files.html
+- id: aguinis2013
+  type: article-journal
+  author:
+  - family: Aguinis
+    given: Herman
+  - family: Gottfredson
+    given: Ryan K.
+  - family: Joo
+    given: Harry
+  title: Best-practice recommendations for defining, identifying, and handling outliers
+  container-title: Organizational Research Methods
+  volume: '16'
+  issue: '2'
+  page: 270-301
+  issued: '2013'
+  DOI: 10.1177/1094428112470848
+- id: altman1995
+  type: article-journal
+  author:
+  - family: Altman
+    given: Douglas G
+  - family: Bland
+    given: J Martin
+  title: 'Statistics notes: Absence of evidence is not evidence of absence'
+  container-title: BMJ
+  volume: '311'
+  issue: '7003'
+  page: '485'
+  issued: '1995'
+  DOI: 10.1136/bmj.311.7003.485
+- id: altman2005
+  type: article-journal
+  author:
+  - family: Altman
+    given: Douglas G
+  - family: Bland
+    given: J Martin
+  title: Standard deviations and standard errors
+  container-title: BMJ
+  volume: '331'
+  issue: '7521'
+  page: '903'
+  issued: '2005'
+  DOI: 10.1136/bmj.331.7521.903
+- id: altman2015
+  type: article-journal
+  author:
+  - family: Altman
+    given: Naomi
+  - family: Krzywinski
+    given: Martin
+  title: Simple linear regression
+  container-title: Nature Methods
+  volume: '12'
+  issue: '11'
+  page: 999-1000
+  issued: '2015'
+  DOI: 10.1038/nmeth.3627
+- id: anscombe1973
+  type: article-journal
+  author:
+  - family: Anscombe
+    given: F. J.
+  title: Graphs in statistical analysis
+  container-title: The American Statistician
+  volume: '27'
+  issue: '1'
+  page: 17-21
+  issued: '1973'
+  DOI: 10.1080/00031305.1973.10478966
+- id: apa2020
+  type: book
+  title: Publication manual of the American Psychological Association
+  publisher: American Psychological Association
+  ISBN: '1433832178'
+  issued: '2020'
+  DOI: 10.1037/0000165-000
+  author:
+  - literal: American Psychological Association
+  edition: '7'
+- id: apa2024
+  type: report
+  author:
+  - literal: American Psychological Association
+  title: APA Style numbers and statistics guide
+  issued: '2024'
+  URL: https://apastyle.apa.org/instructional-aids/numbers-statistics-guide.pdf
+- id: babbie2025
+  type: book
+  author:
+  - family: Babbie
+    given: Earl
+  translator:
+  - family: Podmiotko
+    given: Olga
+  - family: Tomanek
+    given: Paweł
+  title: Podstawy badań społecznych
+  edition: '2'
+  publisher: Wydawnictwo Naukowe PWN
+  publisher-place: Warszawa
+  issued: '2025'
+  original-date: '2016'
+  ISBN: 978-83-01-24311-1
+  language: pl-PL
+- id: benshachar2020
+  type: article-journal
+  author:
+  - family: Ben-Shachar
+    given: Mattan
+  - family: Lüdecke
+    given: Daniel
+  - family: Makowski
+    given: Dominique
+  title: 'effectsize: Estimation of effect size indices and standardized parameters'
+  container-title: Journal of Open Source Software
+  volume: '5'
+  issue: '56'
+  page: '2815'
+  issued: '2020'
+  DOI: 10.21105/joss.02815
+- id: biecek2017
+  type: book
+  author:
+  - family: Biecek
+    given: Przemysław
+  title: Przewodnik po pakiecie R
+  edition: 4 rozsz.
+  publisher: Oficyna Wydawnicza GiS
+  publisher-place: Wrocław
+  issued: '2017'
+  ISBN: 978-83-62780-44-0
+  language: pl-PL
+- id: bland1986
+  type: article-journal
+  author:
+  - family: Bland
+    given: J. Martin
+  - family: Altman
+    given: Douglas G.
+  title: Statistical methods for assessing agreement between two methods of clinical
+    measurement
+  container-title: The Lancet
+  volume: '327'
+  issue: '8476'
+  page: 307-310
+  issued: '1986'
+  DOI: 10.1016/S0140-6736(86)90837-8
+- id: bland1996
+  type: article-journal
+  author:
+  - family: Bland
+    given: J Martin
+  - family: Altman
+    given: Douglas G
+  title: 'Statistics notes: Transforming data'
+  container-title: BMJ
+  volume: '312'
+  issue: '7033'
+  page: '770'
+  issued: '1996'
+  DOI: 10.1136/bmj.312.7033.770
+- id: bogardus1925
+  type: article-journal
+  author:
+  - family: Bogardus
+    given: Emory S.
+  title: Measuring social distances
+  container-title: Journal of Applied Sociology
+  volume: '9'
+  issue: '4'
+  page: 299-308
+  issued: '1925'
+  URL: https://archive.org/details/sim_sociology-and-social-research_march-april-1925_9_4
+- id: box1987
+  type: article-journal
+  author:
+  - family: Box
+    given: Joan Fisher
+  title: Guinness, Gosset, Fisher, and small samples
+  container-title: Statistical Science
+  volume: '2'
+  issue: '1'
+  page: 45-52
+  issued: '1987'
+  DOI: 10.1214/ss/1177013437
+- id: broman2018
+  type: article-journal
+  author:
+  - family: Broman
+    given: Karl W.
+  - family: Woo
+    given: Kara H.
+  title: Data organization in spreadsheets
+  container-title: The American Statistician
+  volume: '72'
+  issue: '1'
+  page: 2-10
+  issued: '2018'
+  DOI: 10.1080/00031305.2017.1375989
+- id: brown1974
+  type: article-journal
+  author:
+  - family: Brown
+    given: Morton B.
+  - family: Forsythe
+    given: Alan B.
+  title: Robust tests for the equality of variances
+  container-title: Journal of the American Statistical Association
+  volume: '69'
+  issue: '346'
+  page: 364-367
+  issued: '1974'
+  DOI: 10.1080/01621459.1974.10482955
+- id: cetinkaya2024
+  type: book
+  author:
+  - family: Çetinkaya-Rundel
+    given: Mine
+  - family: Hardin
+    given: Johanna
+  title: Introduction to modern statistics
+  edition: '2'
+  publisher: OpenIntro
+  issued: '2024'
+  URL: https://openintro-ims.netlify.app/
+- id: cisek2025
+  type: chapter
+  author:
+  - family: Cisek
+    given: Sabina
+  title: Metodologia informatologii
+  container-title: Podstawy nauk o komunikacji społecznej i mediach
+  editor:
+  - family: Woźniak-Kasperek
+    given: Jadwiga
+  - family: Adamowski
+    given: Janusz W.
+  page: 110-121
+  publisher: Wydawnictwo Naukowe i Edukacyjne SBP
+  publisher-place: Warszawa
+  issued: '2025'
+  ISBN: 978-83-67723-33-6
+  language: pl-PL
+- id: cleveland1984
+  type: article-journal
+  author:
+  - family: Cleveland
+    given: William S.
+  - family: McGill
+    given: Robert
+  title: 'Graphical perception: Theory, experimentation, and application to the development
+    of graphical methods'
+  container-title: Journal of the American Statistical Association
+  volume: '79'
+  issue: '387'
+  page: 531-554
+  issued: '1984'
+  DOI: 10.1080/01621459.1984.10478080
+- id: cochran1954
+  type: article-journal
+  author:
+  - family: Cochran
+    given: William G.
+  title: Some methods for strengthening the common χ² tests
+  container-title: Biometrics
+  volume: '10'
+  issue: '4'
+  page: '417'
+  issued: '1954'
+  DOI: 10.2307/3001616
+- id: cohen1988
+  type: book
+  author:
+  - family: Cohen
+    given: Jacob
+  title: Statistical power analysis for the behavioral sciences
+  edition: '2'
+  publisher: Lawrence Erlbaum Associates
+  issued: '1988'
+  ISBN: 0-8058-0283-5
+- id: cohen1992
+  type: article-journal
+  author:
+  - family: Cohen
+    given: Jacob
+  title: A power primer
+  container-title: Psychological Bulletin
+  volume: '112'
+  issue: '1'
+  page: 155-159
+  issued: '1992'
+  DOI: 10.1037/0033-2909.112.1.155
+- id: cohen1999
+  type: article-journal
+  author:
+  - family: Cohen
+    given: Patricia
+  - family: Cohen
+    given: Jacob
+  - family: Aiken
+    given: Leona S.
+  - family: West
+    given: Stephen G.
+  title: The problem of units and the circumstance for POMP
+  container-title: Multivariate Behavioral Research
+  volume: '34'
+  issue: '3'
+  page: 315-346
+  issued: '1999'
+  DOI: 10.1207/S15327906MBR3403_2
+- id: cook1977
+  type: article-journal
+  author:
+  - family: Cook
+    given: R. Dennis
+  title: Detection of influential observation in linear regression
+  container-title: Technometrics
+  volume: '19'
+  issue: '1'
+  page: 15-18
+  issued: '1977'
+  DOI: 10.1080/00401706.1977.10489493
+- id: cook2001
+  type: article-journal
+  author:
+  - family: Cook
+    given: Colleen
+  - family: Heath
+    given: Fred
+  - family: Thompson
+    given: Bruce
+  title: 'Users’ hierarchical perspectives on library service quality: A “LibQUAL+”
+    study'
+  container-title: College & Research Libraries
+  volume: '62'
+  issue: '2'
+  page: 147-153
+  issued: '2001'
+  DOI: 10.5860/crl.62.2.147
+- id: couch2021
+  type: article-journal
+  author:
+  - family: Couch
+    given: Simon
+  - family: Bray
+    given: Andrew
+  - family: Ismay
+    given: Chester
+  - family: Chasnovski
+    given: Evgeni
+  - family: Baumer
+    given: Benjamin
+  - family: Çetinkaya-Rundel
+    given: Mine
+  title: 'infer: An R package for tidyverse-friendly statistical inference'
+  container-title: Journal of Open Source Software
+  volume: '6'
+  issue: '65'
+  page: '3661'
+  issued: '2021'
+  DOI: 10.21105/joss.03661
+- id: cramer1946
+  type: book
+  author:
+  - family: Cramér
+    given: Harald
+  title: Mathematical methods of statistics
+  publisher: Princeton University Press
+  issued: '1946'
+- id: cronbach1951
+  type: article-journal
+  author:
+  - family: Cronbach
+    given: Lee J.
+  title: Coefficient alpha and the internal structure of tests
+  container-title: Psychometrika
+  volume: '16'
+  issue: '3'
+  page: 297-334
+  issued: '1951'
+  DOI: 10.1007/BF02310555
+- id: delacre2017
+  type: article-journal
+  author:
+  - family: Delacre
+    given: Marie
+  - family: Lakens
+    given: Daniël
+  - family: Leys
+    given: Christophe
+  title: Why psychologists should by default use Welch’s t-test instead of Student’s
+    t-test
+  container-title: International Review of Social Psychology
+  volume: '30'
+  issue: '1'
+  page: 92-101
+  issued: '2017'
+  DOI: 10.5334/irsp.82
+- id: divine2018
+  type: article-journal
+  author:
+  - family: Divine
+    given: George W.
+  - family: Norton
+    given: H. James
+  - family: Barón
+    given: Anna E.
+  - family: Juarez-Colunga
+    given: Elizabeth
+  title: The Wilcoxon–Mann–Whitney procedure fails as a test of medians
+  container-title: The American Statistician
+  volume: '72'
+  issue: '3'
+  page: 278-286
+  issued: '2018'
+  DOI: 10.1080/00031305.2017.1305291
+- id: dunn1964
+  type: article-journal
+  author:
+  - family: Dunn
+    given: Olive Jean
+  title: Multiple comparisons using rank sums
+  container-title: Technometrics
+  volume: '6'
+  issue: '3'
+  page: 241-252
+  issued: '1964'
+  DOI: 10.1080/00401706.1964.10490181
+- id: efron1979
+  type: article-journal
+  author:
+  - family: Efron
+    given: B.
+  title: 'Bootstrap methods: Another look at the jackknife'
+  container-title: The Annals of Statistics
+  volume: '7'
+  issue: '1'
+  issued: '1979'
+  DOI: 10.1214/aos/1176344552
+  page: 1-26
+- id: ernst2004
+  type: article-journal
+  author:
+  - family: Ernst
+    given: Michael D.
+  title: 'Permutation methods: A basis for exact inference'
+  container-title: Statistical Science
+  volume: '19'
+  issue: '4'
+  page: 676-685
+  issued: '2004'
+  DOI: 10.1214/088342304000000396
+- id: fagerland2012
+  type: article-journal
+  author:
+  - family: Fagerland
+    given: Morten W
+  title: t-tests, non-parametric tests, and large studies—a paradox of statistical
+    practice?
+  container-title: BMC Medical Research Methodology
+  volume: '12'
+  issue: '1'
+  number: '78'
+  issued: '2012'
+  DOI: 10.1186/1471-2288-12-78
+- id: fisher1922
+  type: article-journal
+  author:
+  - family: Fisher
+    given: R. A.
+  title: On the interpretation of χ² from contingency tables, and the calculation
+    of P
+  container-title: Journal of the Royal Statistical Society
+  volume: '85'
+  issue: '1'
+  page: '87'
+  issued: '1922'
+  DOI: 10.2307/2340521
+- id: fisher1925
+  type: book
+  author:
+  - family: Fisher
+    given: R. A.
+  title: Statistical methods for research workers
+  publisher: Oliver and Boyd
+  issued: '1925'
+  URL: https://psychclassics.yorku.ca/Fisher/Methods/
+- id: fisher1935
+  type: book
+  author:
+  - family: Fisher
+    given: R. A.
+  title: The design of experiments
+  publisher: Oliver and Boyd
+  publisher-place: Edinburgh
+  issued: '1935'
+- id: fox2019
+  type: book
+  author:
+  - family: Fox
+    given: John
+  - family: Weisberg
+    given: Sanford
+  title: An R companion to applied regression
+  edition: '3'
+  publisher: Sage
+  issued: '2019'
+  URL: https://www.john-fox.ca/Companion/
+- id: francuz2007
+  type: book
+  author:
+  - family: Francuz
+    given: Piotr
+  - family: Mackiewicz
+    given: Robert
+  title: 'Liczby nie wiedzą, skąd pochodzą: Przewodnik po metodologii i statystyce
+    nie tylko dla psychologów'
+  edition: 2 popr.
+  publisher: Wydawnictwo KUL
+  publisher-place: Lublin
+  issued: '2007'
+  ISBN: 978-83-7363-567-8
+  language: pl-PL
+- id: freedman1981
+  type: article-journal
+  author:
+  - family: Freedman
+    given: David
+  - family: Diaconis
+    given: Persi
+  title: 'On the histogram as a density estimator: L2 theory'
+  container-title: Zeitschrift für Wahrscheinlichkeitstheorie und Verwandte Gebiete
+  volume: '57'
+  issue: '4'
+  page: 453-476
+  issued: '1981'
+  DOI: 10.1007/BF01025868
+- id: games1976
+  type: article-journal
+  author:
+  - family: Games
+    given: Paul A.
+  - family: Howell
+    given: John F.
+  title: 'Pairwise multiple comparison procedures with unequal n’s and/or variances:
+    A Monte Carlo study'
+  container-title: Journal of Educational Statistics
+  volume: '1'
+  issue: '2'
+  page: 113-125
+  issued: '1976'
+  DOI: 10.3102/10769986001002113
+- id: gelman2006
+  type: article-journal
+  author:
+  - family: Gelman
+    given: Andrew
+  - family: Stern
+    given: Hal
+  title: The difference between “significant” and “not significant” is not itself
+    statistically significant
+  container-title: The American Statistician
+  volume: '60'
+  issue: '4'
+  page: 328-331
+  issued: '2006'
+  DOI: 10.1198/000313006X152649
+- id: ghasemi2012
+  type: article-journal
+  author:
+  - family: Ghasemi
+    given: Asghar
+  - family: Zahediasl
+    given: Saleh
+  title: 'Normality tests for statistical analysis: A guide for non-statisticians'
+  container-title: International Journal of Endocrinology and Metabolism
+  volume: '10'
+  issue: '2'
+  page: 486-489
+  issued: '2012'
+  DOI: 10.5812/ijem.3505
+- id: gosssampson2025
+  type: book
+  author:
+  - family: Goss-Sampson
+    given: Mark A.
+  title: 'Statistical analysis in JASP: A guide for students'
+  edition: '7'
+  publisher: JASP
+  issued: '2025'
+  URL: https://gala.gre.ac.uk/id/eprint/50811/
+  language: en-GB
+- id: greenland2016
+  type: article-journal
+  author:
+  - family: Greenland
+    given: Sander
+  - family: Senn
+    given: Stephen J.
+  - family: Rothman
+    given: Kenneth J.
+  - family: Carlin
+    given: John B.
+  - family: Poole
+    given: Charles
+  - family: Goodman
+    given: Steven N.
+  - family: Altman
+    given: Douglas G.
+  title: 'Statistical tests, P values, confidence intervals, and power: A guide to
+    misinterpretations'
+  container-title: European Journal of Epidemiology
+  volume: '31'
+  issue: '4'
+  page: 337-350
+  issued: '2016'
+  DOI: 10.1007/s10654-016-0149-3
+- id: guthrie2020
+  type: report
+  author:
+  - family: Guthrie
+    given: William F.
+  title: NIST/SEMATECH e-handbook of statistical methods
+  number: NIST Handbook 151
+  publisher: National Institute of Standards and Technology
+  issued: '2020'
+  DOI: 10.18434/M32189
+- id: guttman1944
+  type: article-journal
+  author:
+  - family: Guttman
+    given: Louis
+  title: A basis for scaling qualitative data
+  container-title: American Sociological Review
+  volume: '9'
+  issue: '2'
+  page: '139'
+  issued: '1944'
+  DOI: 10.2307/2086306
+- id: hargittai2002
+  type: article-journal
+  author:
+  - family: Hargittai
+    given: Eszter
+  title: 'Beyond logs and surveys: In-depth measures of people''s web use skills'
+  container-title: Journal of the American Society for Information Science and Technology
+  volume: '53'
+  issue: '14'
+  page: 1239-1244
+  issued: '2002'
+  DOI: 10.1002/asi.10166
+- id: hedges1981
+  type: article-journal
+  author:
+  - family: Hedges
+    given: Larry V.
+  title: Distribution theory for Glass’s estimator of effect size and related estimators
+  container-title: Journal of Educational Statistics
+  volume: '6'
+  issue: '2'
+  page: 107-128
+  issued: '1981'
+  DOI: 10.3102/10769986006002107
+- id: heiberger2014
+  type: article-journal
+  author:
+  - family: Heiberger
+    given: Richard M.
+  - family: Robbins
+    given: Naomi B.
+  title: Design of diverging stacked bar charts for Likert scales and other applications
+  container-title: Journal of Statistical Software
+  volume: '57'
+  issue: '5'
+  issued: '2014'
+  DOI: 10.18637/jss.v057.i05
+  page: 1-32
+- id: hernan2020
+  type: book
+  author:
+  - family: Hernán
+    given: Miguel A.
+  - family: Robins
+    given: James M.
+  title: 'Causal inference: What if'
+  publisher: Chapman & Hall/CRC
+  issued: '2020'
+  URL: https://miguelhernan.org/whatifbook
+- id: hesterberg2015
+  type: article-journal
+  author:
+  - family: Hesterberg
+    given: Tim C.
+  title: 'What teachers should know about the bootstrap: Resampling in the undergraduate
+    statistics curriculum'
+  container-title: The American Statistician
+  volume: '69'
+  issue: '4'
+  page: 371-386
+  issued: '2015'
+  DOI: 10.1080/00031305.2015.1089789
+- id: hintze1998
+  type: article-journal
+  author:
+  - family: Hintze
+    given: Jerry L.
+  - family: Nelson
+    given: Ray D.
+  title: 'Violin plots: A box plot-density trace synergism'
+  container-title: The American Statistician
+  volume: '52'
+  issue: '2'
+  page: 181-184
+  issued: '1998'
+  DOI: 10.1080/00031305.1998.10480559
+- id: hoekstra2014
+  type: article-journal
+  author:
+  - family: Hoekstra
+    given: Rink
+  - family: Morey
+    given: Richard D.
+  - family: Rouder
+    given: Jeffrey N.
+  - family: Wagenmakers
+    given: Eric-Jan
+  title: Robust misinterpretation of confidence intervals
+  container-title: Psychonomic Bulletin & Review
+  volume: '21'
+  issue: '5'
+  page: 1157-1164
+  issued: '2014'
+  DOI: 10.3758/s13423-013-0572-3
+- id: holm1979
+  type: article-journal
+  author:
+  - family: Holm
+    given: Sture
+  title: A simple sequentially rejective multiple test procedure
+  container-title: Scandinavian Journal of Statistics
+  volume: '6'
+  issue: '2'
+  page: 65-70
+  issued: '1979'
+  URL: https://www.jstor.org/stable/4615733
+- id: hope1968
+  type: article-journal
+  author:
+  - family: Hope
+    given: Adery C. A.
+  title: A simplified Monte Carlo significance test procedure
+  container-title: 'Journal of the Royal Statistical Society Series B: Statistical
+    Methodology'
+  volume: '30'
+  issue: '3'
+  page: 582-598
+  issued: '1968'
+  DOI: 10.1111/j.2517-6161.1968.tb00759.x
+- id: hyndman1996
+  type: article-journal
+  author:
+  - family: Hyndman
+    given: Rob J.
+  - family: Fan
+    given: Yanan
+  title: Sample quantiles in statistical packages
+  container-title: The American Statistician
+  volume: '50'
+  issue: '4'
+  page: 361-365
+  issued: '1996'
+  DOI: 10.1080/00031305.1996.10473566
+- id: ismay2025
+  type: book
+  author:
+  - family: Ismay
+    given: Chester
+  - family: Kim
+    given: Albert Y.
+  - family: Valdivia
+    given: Arturo
+  title: 'Statistical inference via data science: A ModernDive into R and the tidyverse'
+  edition: '2'
+  publisher: CRC Press
+  issued: '2025'
+  URL: https://moderndive.com/v2/
+- id: jamieson2004
+  type: article-journal
+  author:
+  - family: Jamieson
+    given: Susan
+  title: 'Likert scales: How to (ab)use them'
+  container-title: Medical Education
+  volume: '38'
+  issue: '12'
+  page: 1217-1218
+  issued: '2004'
+  DOI: 10.1111/j.1365-2929.2004.02012.x
+- id: jansen2006
+  type: article-journal
+  author:
+  - family: Jansen
+    given: Bernard J.
+  title: 'Search log analysis: What it is, what''s been done, how to do it'
+  container-title: Library & Information Science Research
+  volume: '28'
+  issue: '3'
+  page: 407-432
+  issued: '2006'
+  DOI: 10.1016/j.lisr.2006.06.005
+- id: joanes1998
+  type: article-journal
+  author:
+  - family: Joanes
+    given: D. N.
+  - family: Gill
+    given: C. A.
+  title: Comparing measures of sample skewness and kurtosis
+  container-title: 'Journal of the Royal Statistical Society: Series D (The Statistician)'
+  volume: '47'
+  issue: '1'
+  page: 183-189
+  issued: '1998'
+  DOI: 10.1111/1467-9884.00122
+- id: kassambara2025
+  type: software
+  author:
+  - family: Kassambara
+    given: Alboukadel
+  title: 'rstatix: Pipe-friendly framework for basic statistical tests'
+  version: 0.7.3
+  issued: '2025'
+  DOI: 10.32614/CRAN.package.rstatix
+- id: kerby2014
+  type: article-journal
+  author:
+  - family: Kerby
+    given: Dave S.
+  title: 'The simple difference formula: An approach to teaching nonparametric correlation'
+  container-title: Comprehensive Psychology
+  volume: '3'
+  issued: '2014'
+  DOI: 10.2466/11.IT.3.1
+  number: 11.IT.3.1
+- id: kim2014
+  type: article-journal
+  author:
+  - family: Kim
+    given: Hae-Young
+  title: Analysis of variance (ANOVA) comparing means of more than two groups
+  container-title: Restorative Dentistry & Endodontics
+  volume: '39'
+  issue: '1'
+  page: 74-77
+  issued: '2014'
+  DOI: 10.5395/rde.2014.39.1.74
+- id: kim2017
+  type: article-journal
+  author:
+  - family: Kim
+    given: Hae-Young
+  title: 'Statistical notes for clinical researchers: Chi-squared test and Fisher’s
+    exact test'
+  container-title: Restorative Dentistry & Endodontics
+  volume: '42'
+  issue: '2'
+  page: '152'
+  issued: '2017'
+  DOI: 10.5395/rde.2017.42.2.152
+- id: king2009
+  type: book
+  author:
+  - family: King
+    given: Bruce M.
+  - family: Minium
+    given: Edward W.
+  editor:
+  - family: Brzeziński
+    given: Jerzy
+  translator:
+  - family: Zakrzewska
+    given: Marzenna
+  title: Statystyka dla psychologów i pedagogów
+  publisher: Wydawnictwo Naukowe PWN
+  publisher-place: Warszawa
+  issued: '2009'
+  original-date: '2003'
+  ISBN: 978-83-01-15907-8
+  language: pl-PL
+- id: kruskal1952
+  type: article-journal
+  author:
+  - family: Kruskal
+    given: William H.
+  - family: Wallis
+    given: W. Allen
+  title: Use of ranks in one-criterion variance analysis
+  container-title: Journal of the American Statistical Association
+  volume: '47'
+  issue: '260'
+  page: 583-621
+  issued: '1952'
+  DOI: 10.1080/01621459.1952.10483441
+- id: krzywinski2014
+  type: article-journal
+  author:
+  - family: Krzywinski
+    given: Martin
+  - family: Altman
+    given: Naomi
+  title: Visualizing samples with box plots
+  container-title: Nature Methods
+  volume: '11'
+  issue: '2'
+  page: 119-120
+  issued: '2014'
+  DOI: 10.1038/nmeth.2813
+- id: kuhlthau1991
+  type: article-journal
+  author:
+  - family: Kuhlthau
+    given: Carol C.
+  title: 'Inside the search process: Information seeking from the user''s perspective'
+  container-title: Journal of the American Society for Information Science
+  volume: '42'
+  issue: '5'
+  page: 361-371
+  issued: '1991'
+  DOI: 10.1002/(SICI)1097-4571(199106)42:5<361::AID-ASI6>3.0.CO;2-#
+- id: kurbanoglu2006
+  type: article-journal
+  author:
+  - family: Kurbanoglu
+    given: S. Serap
+  - family: Akkoyunlu
+    given: Buket
+  - family: Umay
+    given: Aysun
+  title: Developing the information literacy self-efficacy scale
+  container-title: Journal of Documentation
+  volume: '62'
+  issue: '6'
+  page: 730-743
+  issued: '2006'
+  DOI: 10.1108/00220410610714949
+- id: kwak2017
+  type: article-journal
+  author:
+  - family: Kwak
+    given: Sang Gyu
+  - family: Kim
+    given: Jong Hae
+  title: 'Central limit theorem: The cornerstone of modern statistics'
+  container-title: Korean Journal of Anesthesiology
+  volume: '70'
+  issue: '2'
+  page: 144-156
+  issued: '2017'
+  DOI: 10.4097/kjae.2017.70.2.144
+- id: lakens2013
+  type: article-journal
+  author:
+  - family: Lakens
+    given: Daniël
+  title: 'Calculating and reporting effect sizes to facilitate cumulative science:
+    A practical primer for t-tests and ANOVAs'
+  container-title: Frontiers in Psychology
+  volume: '4'
+  issued: '2013'
+  DOI: 10.3389/fpsyg.2013.00863
+  number: '863'
+- id: lakens2017
+  type: article-journal
+  author:
+  - family: Lakens
+    given: Daniël
+  title: 'Equivalence tests: A practical primer for t tests, correlations, and meta-analyses'
+  container-title: Social Psychological and Personality Science
+  volume: '8'
+  issue: '4'
+  page: 355-362
+  issued: '2017'
+  DOI: 10.1177/1948550617697177
+- id: lakens2022
+  type: article-journal
+  author:
+  - family: Lakens
+    given: Daniël
+  title: Sample size justification
+  container-title: 'Collabra: Psychology'
+  volume: '8'
+  issue: '1'
+  number: '33267'
+  issued: '2022'
+  DOI: 10.1525/collabra.33267
+- id: larsen1972
+  type: article-journal
+  author:
+  - family: Larsen
+    given: Wayne A.
+  - family: McCleary
+    given: Susan J.
+  title: The use of partial residual plots in regression analysis
+  container-title: Technometrics
+  volume: '14'
+  issue: '3'
+  page: 781-790
+  issued: '1972'
+  DOI: 10.1080/00401706.1972.10488966
+- id: lee2018
+  type: article-journal
+  author:
+  - family: Lee
+    given: Sangseok
+  - family: Lee
+    given: Dong Kyu
+  title: What is the proper way to apply the multiple comparison test?
+  container-title: Korean Journal of Anesthesiology
+  volume: '71'
+  issue: '5'
+  page: 353-360
+  issued: '2018'
+  DOI: 10.4097/kja.d.18.00242
+- id: levene1960
+  type: chapter
+  author:
+  - family: Levene
+    given: Howard
+  title: Robust tests for equality of variances
+  container-title: 'Contributions to probability and statistics: Essays in honor of
+    Harold Hotelling'
+  editor:
+  - family: Olkin
+    given: Ingram
+  - family: Ghurye
+    given: Sudhish G.
+  - family: Hoeffding
+    given: Wassily
+  - family: Madow
+    given: William G.
+  - family: Mann
+    given: Henry B.
+  page: 278-292
+  publisher: Stanford University Press
+  issued: '1960'
+- id: likert1932
+  type: article-journal
+  author:
+  - family: Likert
+    given: Rensis
+  title: A technique for the measurement of attitudes
+  container-title: Archives of Psychology
+  volume: '22'
+  issue: '140'
+  page: 5-55
+  issued: '1932'
+  URL: https://archive.org/details/likert-1932
+- id: lundberg2021
+  type: article-journal
+  author:
+  - family: Lundberg
+    given: Ian
+  - family: Johnson
+    given: Rebecca
+  - family: Stewart
+    given: Brandon M.
+  title: What is your estimand? Defining the target quantity connects statistical
+    evidence to theory
+  container-title: American Sociological Review
+  volume: '86'
+  issue: '3'
+  page: 532-565
+  issued: '2021'
+  DOI: 10.1177/00031224211004187
+- id: mahmood2016
+  type: article-journal
+  author:
+  - family: Mahmood
+    given: Khalid
+  title: Do people overestimate their information literacy skills? A systematic review
+    of empirical evidence on the Dunning-Kruger effect
+  container-title: Communications in Information Literacy
+  volume: '10'
+  issue: '2'
+  page: 199-213
+  issued: '2016'
+  DOI: 10.15760/comminfolit.2016.10.2.24
+- id: mann1947
+  type: article-journal
+  author:
+  - family: Mann
+    given: H. B.
+  - family: Whitney
+    given: D. R.
+  title: On a test of whether one of two random variables is stochastically larger
+    than the other
+  container-title: The Annals of Mathematical Statistics
+  volume: '18'
+  issue: '1'
+  page: 50-60
+  issued: '1947'
+  DOI: 10.1214/aoms/1177730491
+- id: mcgraw1992
+  type: article-journal
+  author:
+  - family: McGraw
+    given: Kenneth O.
+  - family: Wong
+    given: S. P.
+  title: A common language effect size statistic
+  container-title: Psychological Bulletin
+  volume: '111'
+  issue: '2'
+  page: 361-365
+  issued: '1992'
+  DOI: 10.1037/0033-2909.111.2.361
+- id: mcnemar1947
+  type: article-journal
+  author:
+  - family: McNemar
+    given: Quinn
+  title: Note on the sampling error of the difference between correlated proportions
+    or percentages
+  container-title: Psychometrika
+  volume: '12'
+  issue: '2'
+  page: 153-157
+  issued: '1947'
+  DOI: 10.1007/BF02295996
+- id: murad2016
+  type: article-journal
+  author:
+  - family: Murad
+    given: M Hassan
+  - family: Asi
+    given: Noor
+  - family: Alsawas
+    given: Mouaz
+  - family: Alahdab
+    given: Fares
+  title: New evidence pyramid
+  container-title: Evidence Based Medicine
+  volume: '21'
+  issue: '4'
+  page: 125-127
+  issued: '2016'
+  DOI: 10.1136/ebmed-2016-110401
+- id: neyman1933
+  type: article-journal
+  author:
+  - family: Neyman
+    given: Jerzy
+  - family: Pearson
+    given: Egon Sharpe
+  title: On the problem of the most efficient tests of statistical hypotheses
+  container-title: Philosophical Transactions of the Royal Society of London. Series
+    A, Containing Papers of a Mathematical or Physical Character
+  volume: '231'
+  page: 289-337
+  issued: '1933'
+  DOI: 10.1098/rsta.1933.0009
+- id: neyman1937
+  type: article-journal
+  author:
+  - family: Neyman
+    given: J.
+  title: Outline of a theory of statistical estimation based on the classical theory
+    of probability
+  container-title: Philosophical Transactions of the Royal Society of London. Series
+    A, Mathematical and Physical Sciences
+  volume: '236'
+  issue: '767'
+  page: 333-380
+  issued: '1937'
+  DOI: 10.1098/rsta.1937.0005
+- id: norman2010
+  type: article-journal
+  author:
+  - family: Norman
+    given: Geoff
+  title: Likert scales, levels of measurement and the “laws” of statistics
+  container-title: Advances in Health Sciences Education
+  volume: '15'
+  issue: '5'
+  page: 625-632
+  issued: '2010'
+  DOI: 10.1007/s10459-010-9222-y
+- id: pearson1896
+  type: article-journal
+  author:
+  - family: Pearson
+    given: Karl
+  title: Mathematical contributions to the theory of evolution. III. Regression, heredity,
+    and panmixia
+  container-title: Philosophical Transactions of the Royal Society of London. Series
+    A, Containing Papers of a Mathematical or Physical Character
+  page: 253-318
+  issued: '1896'
+  DOI: 10.1098/rsta.1896.0007
+  volume: '187'
+- id: pearson1900
+  type: article-journal
+  author:
+  - family: Pearson
+    given: Karl
+  title: On the criterion that a given system of deviations from the probable in the
+    case of a correlated system of variables is such that it can be reasonably supposed
+    to have arisen from random sampling
+  container-title: The London, Edinburgh, and Dublin Philosophical Magazine and Journal
+    of Science
+  volume: '50'
+  issue: '302'
+  page: 157-175
+  issued: '1900'
+  DOI: 10.1080/14786440009463897
+- id: pemburysmith2020
+  type: article-journal
+  author:
+  - family: Pembury Smith
+    given: Matilda Q. R.
+  - family: Ruxton
+    given: Graeme D.
+  title: Effective use of the McNemar test
+  container-title: Behavioral Ecology and Sociobiology
+  volume: '74'
+  issue: '11'
+  number: '133'
+  issued: '2020'
+  DOI: 10.1007/s00265-020-02916-y
+- id: phipson2010
+  type: article-journal
+  author:
+  - family: Phipson
+    given: Belinda
+  - family: Smyth
+    given: Gordon K
+  title: 'Permutation p-values should never be zero: Calculating exact p-values when
+    permutations are randomly drawn'
+  container-title: Statistical Applications in Genetics and Molecular Biology
+  volume: '9'
+  issue: '1'
+  issued: '2010'
+  DOI: 10.2202/1544-6115.1585
+  number: '39'
+- id: pitman1937
+  type: article-journal
+  author:
+  - family: Pitman
+    given: E. J. G.
+  title: Significance tests which may be applied to samples from any populations
+  container-title: Supplement to the Journal of the Royal Statistical Society
+  volume: '4'
+  issue: '1'
+  page: 119-130
+  issued: '1937'
+  DOI: 10.2307/2984124
+- id: ranganathan2015
+  type: article-journal
+  author:
+  - family: Ranganathan
+    given: Priya
+  - family: Aggarwal
+    given: Rakesh
+  - family: Pramesh
+    given: CS
+  title: 'Common pitfalls in statistical analysis: Odds versus risk'
+  container-title: Perspectives in Clinical Research
+  volume: '6'
+  issue: '4'
+  page: '222'
+  issued: '2015'
+  DOI: 10.4103/2229-3485.167092
+- id: rcoreteam2025
+  type: software
+  author:
+  - literal: R Core Team
+  title: 'R: A language and environment for statistical computing'
+  version: 4.5.2
+  publisher: R Foundation for Statistical Computing
+  publisher-place: Vienna
+  issued: '2025'
+  URL: https://www.R-project.org/
+- id: revelle2026
+  type: software
+  author:
+  - family: Revelle
+    given: William
+  title: 'psych: Procedures for psychological, psychometric, and personality research'
+  version: 2.6.1
+  publisher: Northwestern University
+  publisher-place: Evanston, IL
+  issued: '2026'
+  URL: https://CRAN.R-project.org/package=psych
+- id: rohrer2018
+  type: article-journal
+  author:
+  - family: Rohrer
+    given: Julia M.
+  title: 'Thinking clearly about correlations and causation: Graphical causal models
+    for observational data'
+  container-title: Advances in Methods and Practices in Psychological Science
+  volume: '1'
+  issue: '1'
+  page: 27-42
+  issued: '2018'
+  DOI: 10.1177/2515245917745629
+- id: sandve2013
+  type: article-journal
+  author:
+  - family: Sandve
+    given: Geir Kjetil
+  - family: Nekrutenko
+    given: Anton
+  - family: Taylor
+    given: James
+  - family: Hovig
+    given: Eivind
+  title: Ten simple rules for reproducible computational research
+  container-title: PLoS Computational Biology
+  volume: '9'
+  issue: '10'
+  page: e1003285
+  issued: '2013'
+  DOI: 10.1371/journal.pcbi.1003285
+- id: satterthwaite1946
+  type: article-journal
+  author:
+  - family: Satterthwaite
+    given: F. E.
+  title: An approximate distribution of estimates of variance components
+  container-title: Biometrics Bulletin
+  volume: '2'
+  issue: '6'
+  page: 110-114
+  issued: '1946'
+  DOI: 10.2307/3002019
+- id: savolainen1995
+  type: article-journal
+  author:
+  - family: Savolainen
+    given: Reijo
+  title: 'Everyday life information seeking: Approaching information seeking in the
+    context of “way of life”'
+  container-title: Library & Information Science Research
+  volume: '17'
+  issue: '3'
+  page: 259-294
+  issued: '1995'
+  DOI: 10.1016/0740-8188(95)90048-9
+- id: schneider2010
+  type: article-journal
+  author:
+  - family: Schneider
+    given: Astrid
+  - family: Hommel
+    given: Gerhard
+  - family: Blettner
+    given: Maria
+  title: 'Linear regression analysis: Part 14 of a series on evaluation of scientific
+    publications'
+  container-title: Deutsches Ärzteblatt International
+  volume: '107'
+  issue: '44'
+  page: 776-782
+  issued: '2010'
+  DOI: 10.3238/arztebl.2010.0776
+- id: shapiro1965
+  type: article-journal
+  author:
+  - family: Shapiro
+    given: S. S.
+  - family: Wilk
+    given: M. B.
+  title: An analysis of variance test for normality (complete samples)
+  container-title: Biometrika
+  volume: '52'
+  issue: 3-4
+  page: 591-611
+  issued: '1965'
+  DOI: 10.1093/biomet/52.3-4.591
+- id: sharpe2015
+  type: article-journal
+  author:
+  - family: Sharpe
+    given: Donald
+  title: 'Your chi-square test is statistically significant: Now what?'
+  container-title: Practical Assessment, Research, and Evaluation
+  issued: '2015'
+  DOI: 10.7275/tbfa-x148
+  volume: '20'
+  number: '8'
+- id: sijtsma2009
+  type: article-journal
+  author:
+  - family: Sijtsma
+    given: Klaas
+  title: On the use, the misuse, and the very limited usefulness of Cronbach’s alpha
+  container-title: Psychometrika
+  volume: '74'
+  issue: '1'
+  page: 107-120
+  issued: '2009'
+  DOI: 10.1007/s11336-008-9101-0
+- id: simmons2011
+  type: article-journal
+  author:
+  - family: Simmons
+    given: Joseph P.
+  - family: Nelson
+    given: Leif D.
+  - family: Simonsohn
+    given: Uri
+  title: 'False-positive psychology: Undisclosed flexibility in data collection and
+    analysis allows presenting anything as significant'
+  container-title: Psychological Science
+  volume: '22'
+  issue: '11'
+  page: 1359-1366
+  issued: '2011'
+  DOI: 10.1177/0956797611417632
+- id: spearman1904
+  type: article-journal
+  author:
+  - family: Spearman
+    given: C.
+  title: The proof and measurement of association between two things
+  container-title: The American Journal of Psychology
+  volume: '15'
+  issue: '1'
+  page: '72'
+  issued: '1904'
+  DOI: 10.2307/1412159
+- id: stefaniak2016
+  type: chapter
+  author:
+  - family: Stefaniak
+    given: Barbara
+  - family: Skalska-Zlat
+    given: Marta
+  - family: Cisek
+    given: Sabina
+  title: Metody badań w nauce o informacji (informatologii)
+  container-title: Nauka o informacji
+  editor:
+  - family: Babik
+    given: Wiesław
+  page: 89-122
+  publisher: Stowarzyszenie Bibliotekarzy Polskich; Instytut Książki
+  publisher-place: Warszawa
+  issued: '2016'
+  ISBN: 978-83-64203-82-4
+  language: pl-PL
+- id: stevens1946
+  type: article-journal
+  author:
+  - family: Stevens
+    given: S. S.
+  title: On the theory of scales of measurement
+  container-title: Science
+  volume: '103'
+  issue: '2684'
+  page: 677-680
+  issued: '1946'
+  DOI: 10.1126/science.103.2684.677
+- id: student1908
+  type: article-journal
+  author:
+  - family: Student
+  title: The probable error of a mean
+  container-title: Biometrika
+  volume: '6'
+  issue: '1'
+  page: '1'
+  issued: '1908'
+  DOI: 10.1093/biomet/6.1.1
+- id: suarezalvarez2018
+  type: article-journal
+  author:
+  - family: Suárez-Álvarez
+    given: Javier
+  - family: Pedrosa
+    given: Ignacio
+  - family: Lozano
+    given: Luis
+  - family: García-Cueto
+    given: Eduardo
+  - family: Cuesta
+    given: Marcelino
+  - family: Muñiz
+    given: José
+  title: 'Using reversed items in Likert scales: A questionable practice'
+  container-title: Psicothema
+  volume: '30'
+  issue: '2'
+  page: 149-158
+  issued: '2018'
+  DOI: 10.7334/psicothema2018.33
+- id: sullivan2012
+  type: article-journal
+  author:
+  - family: Sullivan
+    given: Gail M.
+  - family: Feinn
+    given: Richard
+  title: Using effect size—or why the P value is not enough
+  container-title: Journal of Graduate Medical Education
+  volume: '4'
+  issue: '3'
+  page: 279-282
+  issued: '2012'
+  DOI: 10.4300/JGME-D-12-00156.1
+- id: taber2018
+  type: article-journal
+  author:
+  - family: Taber
+    given: Keith S.
+  title: The use of Cronbach’s alpha when developing and reporting research instruments
+    in science education
+  container-title: Research in Science Education
+  volume: '48'
+  issue: '6'
+  page: 1273-1296
+  issued: '2018'
+  DOI: 10.1007/s11165-016-9602-2
+- id: tavakol2011
+  type: article-journal
+  author:
+  - family: Tavakol
+    given: Mohsen
+  - family: Dennick
+    given: Reg
+  title: Making sense of Cronbach’s alpha
+  container-title: International Journal of Medical Education
+  volume: '2'
+  page: 53-55
+  issued: '2011'
+  DOI: 10.5116/ijme.4dfb.8dfd
+- id: thurstone1928
+  type: article-journal
+  author:
+  - family: Thurstone
+    given: L. L.
+  title: Attitudes can be measured
+  container-title: American Journal of Sociology
+  volume: '33'
+  issue: '4'
+  page: 529-554
+  issued: '1928'
+  DOI: 10.1086/214483
+- id: tomczak2014
+  type: article-journal
+  author:
+  - family: Tomczak
+    given: Maciej
+  - family: Tomczak
+    given: Ewa
+  title: The need to report effect size estimates revisited. An overview of some recommended
+    measures of effect size
+  container-title: Trends in Sport Sciences
+  volume: '21'
+  issue: '1'
+  page: 19-25
+  issued: '2014'
+  URL: https://tss.awf.poznan.pl/pdf-188960-110189?filename=The-need-to-report-effect.pdf
+- id: tukey1977
+  type: book
+  author:
+  - family: Tukey
+    given: John W.
+  title: Exploratory data analysis
+  publisher: Addison-Wesley
+  issued: '1977'
+  ISBN: 0-201-07616-0
+- id: uj2025
+  type: report
+  author:
+  - literal: Uniwersytet Jagielloński
+  title: Zarządzenie nr 115 Rektora Uniwersytetu Jagiellońskiego z dnia 27 listopada
+    2025 roku w sprawie wykorzystywania w dydaktyce narzędzi opartych na sztucznej
+    inteligencji
+  issued: '2025-11-27'
+  URL: https://bip.uj.edu.pl/documents/1384597/159749054/zarz_115_2025.pdf
+  language: pl-PL
+- id: vandeursen2016
+  type: article-journal
+  author:
+  - family: Deursen
+    given: Alexander J. A. M.
+    non-dropping-particle: van
+  - family: Helsper
+    given: Ellen J.
+  - family: Eynon
+    given: Rebecca
+  title: Development and validation of the Internet Skills Scale (ISS)
+  container-title: Information, Communication & Society
+  volume: '19'
+  issue: '6'
+  page: 804-823
+  issued: '2016'
+  DOI: 10.1080/1369118X.2015.1078834
+- id: vial2019
+  type: article-journal
+  author:
+  - family: Vial
+    given: Gregory
+  title: 'Understanding digital transformation: A review and a research agenda'
+  container-title: The Journal of Strategic Information Systems
+  volume: '28'
+  issue: '2'
+  page: 118-144
+  issued: '2019'
+  DOI: 10.1016/j.jsis.2019.01.003
+- id: vuorikari2022
+  type: report
+  author:
+  - family: Vuorikari
+    given: Riina
+  - family: Kluzer
+    given: Stefano
+  - family: Punie
+    given: Yves
+  title: 'DigComp 2.2: The Digital Competence Framework for Citizens: With new examples
+    of knowledge, skills and attitudes'
+  publisher: Publications Office of the European Union
+  issued: '2022'
+  DOI: 10.2760/115376
+  number: EUR 31006 EN
+- id: walters2023
+  type: article-journal
+  author:
+  - family: Walters
+    given: William H.
+  - family: Wilder
+    given: Esther Isabelle
+  title: Fabrication and errors in the bibliographic citations generated by ChatGPT
+  container-title: Scientific Reports
+  volume: '13'
+  issue: '1'
+  number: '14045'
+  issued: '2023'
+  DOI: 10.1038/s41598-023-41032-5
+- id: wasserstein2016
+  type: article-journal
+  author:
+  - family: Wasserstein
+    given: Ronald L.
+  - family: Lazar
+    given: Nicole A.
+  title: 'The ASA statement on p-values: Context, process, and purpose'
+  container-title: The American Statistician
+  volume: '70'
+  issue: '2'
+  page: 129-133
+  issued: '2016'
+  DOI: 10.1080/00031305.2016.1154108
+- id: welch1947
+  type: article-journal
+  author:
+  - family: Welch
+    given: B. L.
+  title: The generalization of ‘Student’s’ problem when several different population
+    variances are involved
+  container-title: Biometrika
+  volume: '34'
+  issue: 1-2
+  page: 28-35
+  issued: '1947'
+  DOI: 10.1093/biomet/34.1-2.28
+- id: welch1951
+  type: article-journal
+  author:
+  - family: Welch
+    given: B. L.
+  title: 'On the comparison of several mean values: An alternative approach'
+  container-title: Biometrika
+  volume: '38'
+  issue: 3-4
+  page: 330-336
+  issued: '1951'
+  DOI: 10.1093/biomet/38.3-4.330
+- id: wickham2014
+  type: article-journal
+  author:
+  - family: Wickham
+    given: Hadley
+  title: Tidy data
+  container-title: Journal of Statistical Software
+  volume: '59'
+  issue: '10'
+  issued: '2014'
+  DOI: 10.18637/jss.v059.i10
+  page: 1-23
+- id: wickham2016
+  type: book
+  author:
+  - family: Wickham
+    given: Hadley
+  title: 'ggplot2: Elegant graphics for data analysis'
+  edition: '2'
+  publisher: Springer
+  issued: '2016'
+  ISBN: 978-3-319-24277-4
+  DOI: 10.1007/978-3-319-24277-4
+- id: wickham2026
+  type: software
+  author:
+  - family: Wickham
+    given: Hadley
+  - family: François
+    given: Romain
+  - family: Henry
+    given: Lionel
+  - family: Müller
+    given: Kirill
+  - family: Vaughan
+    given: Davis
+  title: 'dplyr: A grammar of data manipulation'
+  version: 1.2.1
+  issued: '2026'
+  DOI: 10.32614/CRAN.package.dplyr
+- id: wilcoxon1945
+  type: article-journal
+  author:
+  - family: Wilcoxon
+    given: Frank
+  title: Individual comparisons by ranking methods
+  container-title: Biometrics Bulletin
+  volume: '1'
+  issue: '6'
+  page: '80'
+  issued: '1945'
+  DOI: 10.2307/3001968
+- id: wilk1968
+  type: article-journal
+  author:
+  - family: Wilk
+    given: M. B.
+  - family: Gnanadesikan
+    given: R.
+  title: Probability plotting methods for the analysis of data
+  container-title: Biometrika
+  volume: '55'
+  issue: '1'
+  page: 1-17
+  issued: '1968'
+  DOI: 10.1093/biomet/55.1.1
+- id: wilkinson1999
+  type: article-journal
+  author:
+  - family: Wilkinson
+    given: Leland
+  - literal: Task Force on Statistical Inference
+  title: 'Statistical methods in psychology journals: Guidelines and explanations'
+  container-title: American Psychologist
+  volume: '54'
+  issue: '8'
+  page: 594-604
+  issued: '1999'
+  DOI: 10.1037/0003-066X.54.8.594
+- id: wilson1999
+  type: article-journal
+  author:
+  - family: Wilson
+    given: T. D.
+  title: Models in information behaviour research
+  container-title: Journal of Documentation
+  volume: '55'
+  issue: '3'
+  page: 249-270
+  issued: '1999'
+  DOI: 10.1108/EUM0000000007145
+- id: winkler2014
+  type: article-journal
+  author:
+  - family: Winkler
+    given: Anderson M.
+  - family: Ridgway
+    given: Gerard R.
+  - family: Webster
+    given: Matthew A.
+  - family: Smith
+    given: Stephen M.
+  - family: Nichols
+    given: Thomas E.
+  title: Permutation inference for the general linear model
+  container-title: NeuroImage
+  volume: '92'
+  page: 381-397
+  issued: '2014'
+  DOI: 10.1016/j.neuroimage.2014.01.060
+- id: yates1934
+  type: article-journal
+  author:
+  - family: Yates
+    given: F.
+  title: Contingency tables involving small numbers and the χ² test
+  container-title: Supplement to the Journal of the Royal Statistical Society
+  volume: '1'
+  issue: '2'
+  page: 217-235
+  issued: '1934'
+  DOI: 10.2307/2983604
+- id: ziliak2008
+  type: article-journal
+  author:
+  - family: Ziliak
+    given: Stephen T.
+  title: 'Retrospectives: Guinnessometrics: The economic foundation of “Student’s”
+    t'
+  container-title: Journal of Economic Perspectives
+  volume: '22'
+  issue: '4'
+  page: 199-216
+  issued: '2008'
+  DOI: 10.1257/jep.22.4.199
+...

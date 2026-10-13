@@ -23,7 +23,7 @@ source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
 dane <- dane_zi("S09", id = params$id)
 ```
 
-Materiał LEARN i wzorce zapisu: <https://marekdejauj.github.io/projektowanie-badan-ZI/c04.html>. Uruchamiaj bloki kodu po kolei, a odpowiedź pisz pod każdym poleceniem. Oddanie w konsoli: `oddaj_zadanie(4)`.
+Materiał LEARN i wzorce zapisu: <https://marekdejauj.github.io/projektowanie-badan-ZI/c04.html>; źródła ćwiczenia: <https://marekdejauj.github.io/projektowanie-badan-ZI/c04.html#zrodla>. Uruchamiaj bloki kodu po kolei, a odpowiedź pisz pod każdym poleceniem. Oddanie w konsoli: `oddaj_zadanie(4)`.
 
 ```{r karta, echo=FALSE, results='asis'}
 karta_zi("S09")

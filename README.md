@@ -20,12 +20,12 @@ Skrypt doinstalowuje brakujące pakiety CRAN, ładuje pakiety używane w zadania
 
 | Ścieżka | Zawartość |
 |:--|:--|
-| `ksiazka/` | źródła książki (bookdown, `bs4_book`): strona startowa, instalacja, rozdziały C01–C10, projekt, wykłady, scenariusze, ściąga |
+| `ksiazka/` | źródła książki (bookdown, `bs4_book`): strona startowa, instalacja, wykłady W01–W05, ćwiczenia C01–C10, projekt, scenariusze, ściąga, bibliografia |
+| `ksiazka/bibliografia.yaml`, `lektury.yml`, `apa-pl.csl` | bibliografia kursu (CSL YAML), poziom i dostęp lektur, przypisanie lektur kontekstowych do kart scenariuszy oraz styl APA 7 z polskim zapisem |
 | `materialy/start.R` | skrypt startowy: pakiety, generator danych, funkcje opisu, pobieranie plików zadań i oddawanie do Nextcloud |
 | `materialy/scenariusze.yml` | karty scenariuszy S01–S20: problem, grupy, kategoria, pozycje skali, zadanie obserwowane, parametry generatora |
 | `materialy/zadanie-01.Rmd` … `zadanie-08.Rmd`, `projekt.Rmd` | pliki studenta (CHALLENGE i projekt) |
-| `materialy/wyklady/` | wykłady W01–W05 w PDF i HTML |
-| `build.R` | budowa książki do `_book/` i test plików zadań w nowych sesjach R |
+| `build.R` | kontrola bibliografii, budowa książki do `_book/` (z plikami `bibliografia.bib`, `bibliografia.json`, `apa-pl.csl` w `materialy/`) i test plików zadań w nowych sesjach R |
 | `.github/workflows/pages.yml` | publikacja strony po zmianie gałęzi `main` |
 
 ## Sala komputerowa (informatyk)
@@ -57,10 +57,10 @@ Rscript build.R --pdf      # dodatkowo PDF każdego pliku zadania
 Rscript build.R --oddaj    # dodatkowo oddaj_zadanie(..., wyslij = FALSE) dla każdego pliku
 ```
 
-Test podmienia w kopii pliku zadania adres skryptu startowego na lokalny `materialy/start.R`, więc sprawdza wersję z repozytorium przed publikacją. Zmiana gałęzi `main` uruchamia workflow, który buduje książkę, testuje pliki zadań i publikuje stronę.
+Test podmienia w kopii pliku zadania adres skryptu startowego na lokalny `materialy/start.R`, a w szablonie projektu adresy bibliografii i stylu na pliki z `_book/materialy/`, więc sprawdza wersję z repozytorium przed publikacją. Każdy klucz cytowania `@klucz` w rozdziałach musi mieć wpis w `ksiazka/bibliografia.yaml` i pozycję w `ksiazka/lektury.yml`; w przeciwnym razie budowa się zatrzymuje. `Rscript build.R --linki` sprawdza dodatkowo adresy DOI i adresy dostępu lektur. Zmiana gałęzi `main` uruchamia workflow, który buduje książkę, testuje pliki zadań i publikuje stronę.
 
 Dane studenta odtwarza `dane_zi("S11", id = "s017")`: ten sam scenariusz i ID dają zawsze te same liczby. Zmiana generatora w `start.R` zmienia dane wszystkich osób, dlatego w trakcie semestru zmiany generatora wymagają nowej wersji danych i informacji dla studentów. Linki folderów Nextcloud (Z01–Z10, PROJEKT) zawiera lista `.zi_foldery` w `materialy/start.R`.
 
 ## Archiwum
 
-Poprzednia wersja kursu, pakiet R `badaniaZI` 2.5.8 z materiałami C01–C10, W01–W05 i handoutami, jest zachowana w tagu `v2.5.8` i gałęzi `badaniaZI-2.5`.
+Poprzednia wersja kursu, pakiet R `badaniaZI` 2.5.8 z materiałami C01–C10, W01–W05 i handoutami, jest zachowana w tagu `v2.5.8` i gałęzi `badaniaZI-2.5`. Wykłady W01–W05 w postaci PDF i HTML z wydania 3.0.0 zawiera tag `v3.0.0`.

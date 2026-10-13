@@ -1,0 +1,464 @@
+# W03. Losowość, estymacja i dwa tory wnioskowania {#w03 .unnumbered}
+
+::: {.start}
+**Wykład 3, 20.10.2026.** Ćwiczenia: [C04](#c04). Dane przykładów: scenariusz S02 (katalog biblioteczny), ID `wzor`.
+:::
+
+::: {.lektura}
+**Lektura obowiązkowa:** @francuz2007 [rozdz. 3, 5]; @gosssampson2025 [s. 42–47, 175–178]. **Lektura uzupełniająca:** @king2009 [rozdz. 11–14, 18].
+:::
+
+```{r w03-dane, include=FALSE}
+w3_dane <- dane_zi("S02", id = "wzor")
+# Liczba z przecinkiem dziesiętnym do wzorów LaTeX: {,} bez odstępu po przecinku.
+w3_tex <- function(x, cyfry = 2) gsub(",", "{,}", .zi_pl(x, cyfry), fixed = TRUE)
+w3_czas <- w3_dane$czas[!is.na(w3_dane$czas)]
+w3_n_cz <- length(w3_czas)
+w3_mu <- mean(w3_czas)
+w3_sigma <- sqrt(mean((w3_czas - w3_mu)^2))
+w3_s_cz <- sd(w3_czas)
+w3_skos <- psych::skew(w3_czas)
+w3_ix <- w3_dane$indeks[!is.na(w3_dane$indeks)]
+w3_n <- length(w3_ix)
+w3_m <- mean(w3_ix)
+w3_s <- sd(w3_ix)
+w3_se <- w3_s / sqrt(w3_n)
+w3_tt <- t.test(w3_ix, mu = 3)
+w3_t <- unname(w3_tt$statistic)
+w3_kryt <- qt(0.975, w3_n - 1)
+w3_d <- (w3_m - 3) / w3_s
+w3_pi <- mean(w3_dane$powodzenie == "tak", na.rm = TRUE)
+w3_dosw <- w3_dane$czas[w3_dane$grupa == "doświadczeni" & !is.na(w3_dane$czas)]
+
+# Model dwumianowy: 10 osób, prawdopodobieństwo sukcesu równe odsetkowi powodzeń w S02.
+w3_k <- 0:10
+w3_pk <- dbinom(w3_k, 10, w3_pi)
+
+# Modele czasu: normalny i log-normalny z parametrami z próby.
+w3_p_ujemne <- pnorm(0, w3_mu, w3_s_cz)
+w3_ln_m <- mean(log(w3_czas))
+w3_ln_s <- sd(log(w3_czas))
+
+# Populacja umowna: czasy S02. Średnie prób losowanych ze zwracaniem dla n = 2, 5 i 40.
+set.seed(2026)
+w3_srednie <- sapply(c(2, 5, 40), function(n) replicate(2000, mean(sample(w3_czas, n, replace = TRUE))))
+colnames(w3_srednie) <- c("2", "5", "40")
+w3_sd_sr <- apply(w3_srednie, 2, sd)
+w3_skos_sr <- apply(w3_srednie, 2, psych::skew)
+w3_zakres_sr <- apply(w3_srednie, 2, range)
+
+# Przedziały t 95% z 2000 prób po 40 osób.
+set.seed(2027)
+w3_przedzialy <- t(replicate(2000, {
+  s <- sample(w3_czas, 40, replace = TRUE)
+  c(mean(s), t.test(s)$conf.int)
+}))
+colnames(w3_przedzialy) <- c("srednia", "dolna", "gorna")
+w3_obejmuje <- w3_przedzialy[, "dolna"] <= w3_mu & w3_mu <= w3_przedzialy[, "gorna"]
+w3_pokrycie <- mean(w3_obejmuje)
+w3_pomija40 <- sum(!w3_obejmuje[1:40])
+w3_tci <- t.test(w3_czas)$conf.int
+w3_q <- unname(quantile(w3_czas, c(0.025, 0.975)))
+
+# Bootstrap średniej i mediany czasu.
+set.seed(2028)
+w3_boot_m <- replicate(2000, mean(sample(w3_czas, replace = TRUE)))
+w3_boot_md <- replicate(2000, median(sample(w3_czas, replace = TRUE)))
+w3_ci_m <- unname(quantile(w3_boot_m, c(0.025, 0.975)))
+w3_ci_md <- unname(quantile(w3_boot_md, c(0.025, 0.975)))
+
+# Test zmiany znaków dla indeksu względem 3.
+w3_zn <- test_znakow(w3_dane$indeks, mu0 = 3)
+w3_rozklad <- attr(w3_zn, "rozklad")
+
+# Moc i liczebność próby.
+w3_moc <- function(d, n) power.t.test(n = n, delta = d, sd = 1, type = "one.sample")$power
+w3_efekty <- c(0.2, w3_d, 0.5)
+w3_n80 <- sapply(w3_efekty, function(d) ceiling(power.t.test(delta = d, sd = 1, power = 0.8, type = "one.sample")$n))
+w3_moc02 <- w3_moc(0.2, 100)
+w3_k99 <- qt(0.975, 99)
+w3_nE <- ceiling((qnorm(0.975) * w3_s / 0.1)^2)
+w3_fwer <- 1 - 0.95^c(5, 10, 20)
+w3_mc_se <- sqrt(0.05 * 0.95 / 4999)
+
+# Podpisy rysunków z liczbami z danych.
+w3_cap_dwumian <- paste0(
+  "Rozkład dwumianowy liczby osób, które znajdą dokument, wśród 10 osób przy π = ", .zi_pl(w3_pi),
+  ". Oś pozioma: liczba sukcesów k; oś pionowa: prawdopodobieństwo P(K = k). Najwyższe słupki stoją przy k = 6 i k = 7 (",
+  .zi_pl(w3_pk[7], 3), " i ", .zi_pl(w3_pk[8], 3), "); ciemniejsze słupki dla k od 8 do 10 mają łączne prawdopodobieństwo ",
+  .zi_pl(sum(w3_pk[9:11]), 3), ".")
+w3_cap_modele <- paste0(
+  "Rozkład empiryczny czasu zadania w S02 (n = ", w3_n_cz, ") i dwa modele dopasowane do danych. Oś pozioma: czas w minutach; ",
+  "oś pionowa: gęstość; szare słupki obejmują przedziały po 2 minuty. Krzywa modelu normalnego (pomarańczowa, przerywana) ",
+  "jest symetryczna wokół ", .zi_pl(w3_mu), " min i obejmuje wartości ujemne. Krzywa modelu log-normalnego (zielona, ciągła) ",
+  "zaczyna się przy zerze, ma szczyt przy ", .zi_pl(exp(w3_ln_m - w3_ln_s^2), 1), " min i długi prawy ogon, zgodny ze słupkami danych.")
+w3_cap_osoby <- paste0(
+  "Rozrzut osób i rozrzut średnich. Oś pozioma: minuty; linia kropkowana przy średniej populacji umownej μ = ",
+  .zi_pl(w3_mu), " min. Górny panel: czasy ", w3_n_cz, " osób z S02 leżą od ", .zi_pl(min(w3_czas), 1), " do ",
+  .zi_pl(max(w3_czas), 1), " min. Dolny panel: średnie 2000 prób po 40 osób leżą od ", .zi_pl(w3_zakres_sr[1, "40"], 1),
+  " do ", .zi_pl(w3_zakres_sr[2, "40"], 1), " min i skupiają się symetrycznie wokół μ.")
+w3_cap_ctg <- paste0(
+  "Rozkład średniej przy rosnącym n: histogramy 2000 średnich z populacji umownej (czasy S02), linia kropkowana przy μ = ",
+  .zi_pl(w3_mu), " min. Przy n = 2 średnie mają odchylenie standardowe ", .zi_pl(w3_sd_sr["2"]), " min i skośność ",
+  .zi_pl(w3_skos_sr["2"]), "; przy n = 5 — ", .zi_pl(w3_sd_sr["5"]), " min i ", .zi_pl(w3_skos_sr["5"]),
+  "; przy n = 40 — ", .zi_pl(w3_sd_sr["40"]), " min i ", .zi_pl(w3_skos_sr["40"]),
+  ", a histogram jest niemal symetryczny.")
+w3_cap_przedzialy <- paste0(
+  "Czterdzieści przedziałów 95% z powtarzanych prób po 40 osób. Oś pozioma: średni czas i przedział w minutach; ",
+  "oś pionowa: numer próby; linia kropkowana przy μ = ", .zi_pl(w3_mu), " min. Niebieskie odcinki przecinają linię parametru; ",
+  "pomarańczowe (", w3_pomija40, " z 40) leżą w całości po jednej jej stronie.")
+w3_cap_t <- paste0(
+  "Rozkład statystyki t przy H0: μ = 3 (df = ", w3_n - 1, "). Oś pozioma: wartość t; oś pionowa: gęstość. ",
+  "Pomarańczowe pola za wartościami krytycznymi ±", .zi_pl(w3_kryt), " mają łącznie 5% pola. Czerwona linia przy t = ",
+  .zi_pl(w3_t), " oznacza wynik S02 daleko za wartością krytyczną; pole za ±", .zi_pl(w3_t), " wynosi mniej niż 0,001.")
+w3_cap_bledy <- paste0(
+  "Błędy decyzji testu t jednej próby przy n = 100 i efekcie d = 0,2. Oś pozioma: statystyka t; oś pionowa: gęstość. ",
+  "Czarna krzywa (H0) ma środek w zerze, niebieska krzywa (H1) przy 2. Linie kropkowane przy ±", .zi_pl(w3_k99),
+  " to wartości krytyczne. Pomarańczowe ogony krzywej H0 mają łącznie pole α = 0,05; jasnoniebieskie pole pod krzywą H1 ",
+  "między wartościami krytycznymi to β = ", .zi_pl(1 - w3_moc02), ", więc moc wynosi ", .zi_pl(w3_moc02), ".")
+w3_cap_moc <- paste0(
+  "Moc testu t jednej próby (α = 0,05, dwustronnie) w zależności od liczby osób. Oś pozioma: n od 5 do 300; oś pionowa: moc. ",
+  "Linia kropkowana oznacza moc 0,8, którą efekt d = 0,2 osiąga przy n = ", w3_n80[1], ", efekt z S02 (d = ",
+  .zi_pl(w3_d), ") przy n = ", w3_n80[2], ", a efekt d = 0,5 przy n = ", w3_n80[3], ".")
+w3_cap_wiele <- paste0(
+  "Seria niezależnych testów przy prawdziwych hipotezach zerowych i α = 0,05. Oś pozioma: liczba testów m od 1 do 20; ",
+  "oś pionowa: prawdopodobieństwo co najmniej jednego odrzucenia. Krzywa rośnie od 0,05 przy jednym teście do ",
+  .zi_pl(w3_fwer[1]), " przy pięciu, ", .zi_pl(w3_fwer[2]), " przy dziesięciu i ", .zi_pl(w3_fwer[3]), " przy dwudziestu.")
+w3_cap_bootstrap <- paste0(
+  "Rozkłady bootstrapowe średniej i mediany czasu w S02 (B = 2000). Oś pozioma: statystyka próby bootstrapowej w minutach; ",
+  "oś pionowa: liczba prób. Linie przerywane to granice 2,5% i 97,5%: dla średniej ", .zi_pl(w3_ci_m[1]), " i ",
+  .zi_pl(w3_ci_m[2]), " min, dla mediany ", .zi_pl(w3_ci_md[1]), " i ", .zi_pl(w3_ci_md[2]),
+  " min. Rozkład średnich jest gładki i symetryczny, a rozkład median skokowy, bo mediana przyjmuje wartości obecne w próbie.")
+w3_cap_znaki <- paste0(
+  "Rozkład zerowy testu zmiany znaków dla indeksu S02 względem 3 (B = ", w3_zn$B, "). Oś pozioma: średnia odchyleń od 3 ",
+  "po losowej zmianie znaków; oś pionowa: liczba losowań. Histogram jest symetryczny wokół zera i leży między ",
+  .zi_pl(min(w3_rozklad), 3), " a ", .zi_pl(max(w3_rozklad), 3), ". Czerwone linie przy ", .zi_pl(w3_zn$roznica, 3),
+  " (obserwowana średnia odchyleń) i jej odbiciu leżą poza całym histogramem.")
+```
+
+Badanie S02 obejmuje jedną próbę: `r nrow(w3_dane)` osób oceniło katalog biblioteki i wykonało zadanie wyszukiwawcze. Na podstawie jednej próby biblioteka pyta o wszystkich użytkowników katalogu: ile przeciętnie trwa zadanie, czy średnia ocena katalogu przewyższa neutralny środek skali i jak dokładnie da się oba wyniki oszacować. Wykład W03 opisuje niepewność wyniku jednej próby dwoma torami: klasycznym, opartym na wzorach i rozkładzie *t*, oraz obliczeniowym, opartym na losowaniu z danych (bootstrap i test permutacyjny). Ćwiczenie [C04](#c04) wykonuje analizy obu torów w R.
+
+## 1. Populacja, próba i estymanda {#w03-estymanda .unnumbered}
+
+Populacja jest zbiorem osób, których dotyczy pytanie badawcze, a próba częścią populacji obserwowaną w badaniu. Określenie „wszyscy użytkownicy informacji” obejmuje zbyt wiele sytuacji dla jednego zadania w katalogu, dlatego badanie S02 opisuje populację węziej: użytkownicy katalogu biblioteki w semestrze zimowym, wyszukujący wskazany dokument. Estymanda jest wielkością w populacji, o którą pyta badanie; jej jawne określenie łączy pytanie badawcze z analizą [@lundberg2021].
+
+| Pojęcie | Znaczenie | Przykład z S02 |
+|:--|:--|:--|
+| Estymanda | wielkość w populacji, o którą pyta badanie | średni czas zadania wszystkich użytkowników katalogu |
+| Parametr | liczba opisująca populację | $\mu$, średni czas w populacji |
+| Estymator | reguła obliczenia z danych próby | średnia arytmetyczna próby $\bar{x}$ |
+| Estymata | wartość estymatora w jednej próbie | $\bar{x}$ = `r .zi_pl(w3_mu)` min (*n* = `r w3_n_cz`) |
+
+Statystyka jest funkcją danych z próby. Średnia szacuje parametr, odchylenie standardowe opisuje rozrzut osób, a statystyka *t* odnosi różnicę do jej błędu standardowego. Losowy dobór próby daje zmienność losową, którą opisują błąd standardowy i przedział ufności. Sposób dotarcia do osób może dodać błąd systematyczny: badanie ograniczone do doświadczonych użytkowników dałoby średni czas `r .zi_pl(mean(w3_dosw))` min wobec `r .zi_pl(w3_mu)` min w całej próbie S02, a większa liczba zaproszonych doświadczonych użytkowników zachowałaby różnicę `r .zi_pl(mean(w3_dosw) - w3_mu)` min. Wartość *p* i przedział ufności zakładają poprawność całego modelu, łącznie z losowym doborem i sposobem powstania braków danych [@greenland2016].
+
+| Symbol | Znaczenie |
+|:--|:--|
+| $\mu$, $\sigma$ | średnia i odchylenie standardowe w populacji |
+| $\bar{x}$, $s$, $n$ | średnia, odchylenie standardowe i liczebność próby |
+| $SE$ | błąd standardowy: odchylenie standardowe estymatora |
+| $\pi$, $K$, $k$ | prawdopodobieństwo sukcesu; liczba sukcesów jako zmienna losowa i jej wartość |
+| $Z$, $z_p$ | zmienna standaryzowana; kwantyl rzędu $p$ rozkładu normalnego standardowego |
+| $t$, $df$ | statystyka *t*; stopnie swobody |
+| $H_0$, $H_1$, $\mu_0$ | hipoteza zerowa i alternatywna; wartość parametru w hipotezie zerowej |
+| $\Delta$, $d$ | różnica w populacji; różnica wyrażona w odchyleniach standardowych osób |
+| $p$, $\alpha$, $\beta$ | wartość *p*; poziom istotności; prawdopodobieństwo błędu II rodzaju |
+| $B$ | liczba losowań w bootstrapie lub teście permutacyjnym |
+
+## 2. Prawdopodobieństwo: model dwumianowy i rozkład normalny {#w03-prawdopodobienstwo .unnumbered}
+
+Rozkład prawdopodobieństwa opisuje, jak często zmienna przyjmuje poszczególne wartości. Zmienna dyskretna, np. liczba osób, które znalazły dokument, przyjmuje wartości dające się policzyć; zmienna ciągła, np. czas, przyjmuje wartości z przedziału. Całe prawdopodobieństwo rozkładu wynosi 1: dla zmiennej dyskretnej jako suma prawdopodobieństw wszystkich wartości, dla ciągłej jako pole pod krzywą gęstości.
+
+W S02 dokument znalazło `r .zi_pl(100 * w3_pi, 1)`% osób. Model dwumianowy opisuje liczbę sukcesów $K$ w $n$ próbach o dwóch możliwych wynikach i stałym prawdopodobieństwie sukcesu $\pi$ [@guthrie2020, sekcja 1.3.6.6.18]. Przykład przyjmuje dla każdej z 10 losowo wybranych osób $\pi$ = `r .zi_pl(w3_pi)`, równe odsetkowi powodzeń w S02.
+
+::: {.wzor}
+$$P(K = k) = \binom{n}{k}\pi^k(1-\pi)^{n-k} \qquad\qquad \binom{n}{k} = \frac{n!}{k!\,(n-k)!}$$
+$K$ — liczba sukcesów, $k$ — jej wartość (0, 1, …, $n$), $n$ — liczba prób, $\pi$ — prawdopodobieństwo sukcesu w jednej próbie, $\binom{n}{k}$ — liczba układów $k$ sukcesów wśród $n$ prób. Średnia rozkładu wynosi $n\pi$, a odchylenie standardowe $\sqrt{n\pi(1-\pi)}$ [@guthrie2020, sekcja 1.3.6.6.18].
+:::
+
+```{r w03-dwumian, echo=FALSE, fig.height=3, fig.cap=w3_cap_dwumian}
+ggplot(data.frame(k = w3_k, p = w3_pk, ogon = w3_k >= 8), aes(x = k, y = p, fill = ogon)) +
+  geom_col(width = 0.7) +
+  scale_fill_manual(values = c(`FALSE` = "#56B4E9", `TRUE` = "#0072B2"), guide = "none") +
+  scale_x_continuous(breaks = 0:10) +
+  labs(x = "Liczba osób, które znalazły dokument (k)", y = "P(K = k)")
+```
+
+Dokładnie 7 sukcesów ma prawdopodobieństwo `r .zi_pl(w3_pk[8], 3)`, a co najmniej 8 sukcesów `r .zi_pl(sum(w3_pk[9:11]), 3)` (Rysunek \@ref(fig:w03-dwumian)). Model wymaga niezależnych prób o jednakowym $\pi$; zadania powtarzane przez jedną osobę łamią niezależność, bo osoba uczy się na pierwszej próbie.
+
+Dla zmiennej ciągłej prawdopodobieństwo przypisuje się przedziałom: prawdopodobieństwo, że czas leży między $a$ i $b$ minut, równa się polu pod krzywą gęstości między $a$ i $b$. Gęstość rozkładu normalnego i standaryzacja mają postać [@guthrie2020, sekcja 1.3.6.6.1]:
+
+::: {.wzor}
+$$f(x) = \frac{1}{\sigma\sqrt{2\pi}}\exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right) \qquad\qquad Z = \frac{X - \mu}{\sigma} \sim N(0, 1)$$
+$\mu$ — średnia, czyli położenie krzywej; $\sigma$ — odchylenie standardowe, czyli jej skala; $\pi \approx 3{,}14$ — stała matematyczna. $Z$ — zmienna standaryzowana: odległość wartości od średniej w odchyleniach standardowych. Rozkład standardowy $N(0, 1)$ ma średnią 0 i odchylenie standardowe 1, a każdą zmienną o rozkładzie normalnym sprowadza do niego standaryzacja [@guthrie2020, sekcja 1.3.6.4].
+:::
+
+W rozkładzie normalnym przedział $\mu \pm \sigma$ obejmuje `r .zi_pl(100 * (pnorm(1) - pnorm(-1)), 1)`% pola, $\mu \pm 2\sigma$ — `r .zi_pl(100 * (pnorm(2) - pnorm(-2)), 1)`%, a $\mu \pm 3\sigma$ — `r .zi_pl(100 * (pnorm(3) - pnorm(-3)), 1)`%. Kwantyl $z_{0{,}975}$ = `r .zi_pl(qnorm(0.975))` wyznacza środkowe 95% pola (Rysunek \@ref(fig:w03-normalny)); wartość 1,96 wraca w przedziałach ufności i w planowaniu liczebności próby.
+
+```{r w03-normalny, echo=FALSE, fig.height=2.8, fig.cap="Rozkład normalny standardowy N(0, 1). Oś pozioma: wartość z od −4 do 4; oś pionowa: gęstość. Krzywa jest symetryczna wokół zera; wyróżnione pole między liniami przerywanymi przy −1,96 i 1,96 wynosi 0,95."}
+w3_z <- data.frame(z = seq(-4, 4, by = 0.01))
+w3_z$f <- dnorm(w3_z$z)
+ggplot(w3_z, aes(z, f)) +
+  geom_area(data = subset(w3_z, abs(z) <= qnorm(0.975)), fill = "#56B4E9", alpha = 0.6) +
+  geom_line(linewidth = 0.8) +
+  geom_vline(xintercept = c(-1, 1) * qnorm(0.975), linetype = "dashed") +
+  labs(x = "Wartość standaryzowana z", y = "Gęstość")
+```
+
+Rozkład empiryczny opisuje wartości zaobserwowane w próbie, a model — rozkład teoretyczny z parametrami oszacowanymi z próby. Czas zadania w S02 ma rozkład prawoskośny (skośność `r .zi_pl(w3_skos)`). Model normalny o średniej `r .zi_pl(w3_mu)` i odchyleniu standardowym `r .zi_pl(w3_s_cz)` min przypisuje czasom ujemnym prawdopodobieństwo `r .zi_pl(w3_p_ujemne, 3)`, choć czas zadania jest dodatni. Model log-normalny, w którym logarytm czasu ma rozkład normalny, zaczyna się przy zerze i ma prawy ogon zgodny z danymi (Rysunek \@ref(fig:w03-modele)). Wybór modelu rozkładu opiera się więc na porównaniu z danymi i na sposobie powstawania danych: czas jest dodatni i ma rzadkie, bardzo długie próby.
+
+```{r w03-modele, echo=FALSE, fig.height=3.2, fig.cap=w3_cap_modele}
+w3_x <- seq(0.05, 30, by = 0.05)
+w3_krzywe <- rbind(
+  data.frame(x = seq(-5, 30, by = 0.05), model = "normalny"),
+  data.frame(x = w3_x, model = "log-normalny"))
+w3_krzywe$f <- ifelse(w3_krzywe$model == "normalny",
+                      dnorm(w3_krzywe$x, w3_mu, w3_s_cz),
+                      dlnorm(pmax(w3_krzywe$x, 1e-9), w3_ln_m, w3_ln_s))
+ggplot(data.frame(czas = w3_czas), aes(x = czas)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 2, boundary = 0, fill = "grey80", colour = "white") +
+  geom_line(data = w3_krzywe, aes(x = x, y = f, colour = model, linetype = model), linewidth = 0.9) +
+  geom_vline(xintercept = 0, colour = "grey40") +
+  scale_colour_manual(values = c("log-normalny" = "#009E73", "normalny" = "#D55E00")) +
+  scale_linetype_manual(values = c("log-normalny" = "solid", "normalny" = "dashed")) +
+  labs(x = "Czas zadania [min]", y = "Gęstość", colour = "Model", linetype = "Model")
+```
+
+## 3. Rozkład osób i rozkład średniej {#w03-rozklad-sredniej .unnumbered}
+
+Czasy osób w jednej próbie różnią się między sobą, a średnie kolejnych prób pobranych według identycznej procedury różnią się między próbami. Symulacja odsłania zmienność średniej: populację umowną stanowią czasy `r w3_n_cz` osób z S02 (średnia $\mu$ = `r .zi_pl(w3_mu)` min, odchylenie standardowe $\sigma$ = `r .zi_pl(w3_sigma)` min), a komputer losuje z niej 2000 prób po 40 osób i dla każdej liczy średnią. W rzeczywistym badaniu populacja i jej średnia pozostają nieznane; symulacja ma znaną populację, dlatego pozwala policzyć rozkład średnich i porównać go z parametrem.
+
+```{r w03-osoby-srednie, echo=FALSE, fig.height=4.2, fig.cap=w3_cap_osoby}
+w3_dwa <- rbind(
+  data.frame(wartosc = w3_czas, panel = "Czasy osób w populacji umownej (S02)"),
+  data.frame(wartosc = w3_srednie[, "40"], panel = "Średnie 2000 prób po 40 osób"))
+ggplot(w3_dwa, aes(x = wartosc)) +
+  geom_histogram(binwidth = 0.5, boundary = 0, fill = "#0072B2", colour = "white") +
+  geom_vline(xintercept = w3_mu, linetype = "dotted", linewidth = 0.8) +
+  facet_wrap(~ panel, ncol = 1, scales = "free_y") +
+  labs(x = "Czas [min]", y = "Liczba")
+```
+
+Odchylenie standardowe 2000 średnich wynosi `r .zi_pl(w3_sd_sr["40"])` min, a odchylenie standardowe czasów osób `r .zi_pl(w3_sigma)` min; iloraz `r .zi_pl(w3_sigma / w3_sd_sr["40"])` jest bliski $\sqrt{40} \approx 6{,}32$ (Rysunek \@ref(fig:w03-osoby-srednie)). Średnia wielu niezależnych obserwacji waha się mniej niż pojedyncza obserwacja.
+
+### Centralne twierdzenie graniczne {#w03-ctg .unnumbered}
+
+::: {.wzor}
+$$\bar{X} \approx N\!\left(\mu, \frac{\sigma^2}{n}\right) \qquad\qquad Z = \frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \approx N(0, 1)$$
+$\bar{X}$ — średnia z próby losowej o liczebności $n$, $\mu$ i $\sigma^2$ — średnia i wariancja populacji. Przy dużym $n$ średnie z prób mają rozkład zbliżony do normalnego niezależnie od kształtu rozkładu w populacji, ze średnią $\mu$ i odchyleniem standardowym $\sigma/\sqrt{n}$ [@kwak2017].
+:::
+
+```{r w03-ctg, echo=FALSE, fig.height=4.4, fig.cap=w3_cap_ctg}
+w3_ctg <- data.frame(srednia = c(w3_srednie),
+                     n = factor(rep(paste("n =", c(2, 5, 40)), each = 2000), levels = paste("n =", c(2, 5, 40))))
+ggplot(w3_ctg, aes(x = srednia)) +
+  geom_histogram(binwidth = 0.5, boundary = 0, fill = "#009E73", colour = "white") +
+  geom_vline(xintercept = w3_mu, linetype = "dotted") +
+  facet_wrap(~ n, ncol = 1, scales = "free_y") +
+  labs(x = "Średni czas próby [min]", y = "Liczba prób")
+```
+
+Twierdzenie dotyczy rozkładu średniej: czasy osób zachowują prawoskośny kształt przy każdym $n$. Wraz ze wzrostem $n$ skośność średnich maleje od `r .zi_pl(w3_skos_sr["2"])` przy $n$ = 2 do `r .zi_pl(w3_skos_sr["40"])` przy $n$ = 40, a odchylenie standardowe średnich spada zgodnie ze wzorem $\sigma/\sqrt{n}$: przy $n$ = 40 wartość z symulacji wynosi `r .zi_pl(w3_sd_sr["40"])` min, a ze wzoru `r .zi_pl(w3_sigma / sqrt(40))` min (Rysunek \@ref(fig:w03-ctg)). Liczebność potrzebna do dobrego przybliżenia normalnego rośnie ze skośnością danych.
+
+### Błąd standardowy {#w03-se .unnumbered}
+
+Błąd standardowy jest odchyleniem standardowym rozkładu estymatora. Dla średniej wynosi $\sigma/\sqrt{n}$ [@kwak2017], a w praktyce szacuje się go z odchylenia standardowego próby:
+
+::: {.wzor}
+$$SE(\bar{x}) = \frac{s}{\sqrt{n}}$$
+$s$ — odchylenie standardowe w próbie (rozrzut osób), $n$ — liczba niezależnych obserwacji. $SE$ ma jednostkę zmiennej i opisuje niepewność średniej.
+:::
+
+Odchylenie standardowe czasu w S02 wynosi `r .zi_pl(w3_s_cz)` min. Przy rozrzucie czasów z S02 błąd standardowy średniej wynosi `r .zi_pl(w3_s_cz / sqrt(25))` min dla 25 osób, `r .zi_pl(w3_s_cz / sqrt(100))` min dla 100 osób i `r .zi_pl(w3_s_cz / sqrt(400))` min dla 400 osób: czterokrotnie większa próba daje dwukrotnie mniejszy błąd standardowy. Odchylenie standardowe opisuje różnice między osobami i pozostaje podobne przy każdej liczebności; błąd standardowy opisuje niepewność średniej i maleje wraz z $n$.
+
+### Nieobciążoność, precyzja i zgodność {#w03-wlasnosci .unnumbered}
+
+Estymator nieobciążony ma średnią z wielu prób równą parametrowi, precyzyjny ma mały rozrzut estymat, a zgodny zbliża się do parametru wraz ze wzrostem liczebności próby [@francuz2007]. Średnia 2000 średnich z symulacji wynosi `r .zi_pl(mean(w3_srednie[, "40"]))` min wobec $\mu$ = `r .zi_pl(w3_mu)` min, więc średnia z próby losowej trafia przeciętnie w parametr. Próba złożona wyłącznie z doświadczonych użytkowników przesuwa każdą estymatę o około `r .zi_pl(mean(w3_dosw) - w3_mu)` min: większa liczebność zmniejsza rozrzut estymat z obciążonej próby, a obciążenie pozostaje, dlatego ocena wyniku obejmuje zarówno błąd standardowy, jak i sposób doboru próby.
+
+## 4. Przedział ufności jako procedura {#w03-przedzial .unnumbered}
+
+Przedział ufności średniej korzysta z rozkładu *t* [@student1908]. Rozkład *t* ma grubsze ogony od rozkładu normalnego i zbliża się do niego wraz ze wzrostem liczby stopni swobody [@guthrie2020, sekcja 1.3.6.6.4]: kwantyl rzędu 0,975 wynosi `r .zi_pl(qt(0.975, 3), 3)` dla $df$ = 3, `r .zi_pl(qt(0.975, 15), 3)` dla 15, `r .zi_pl(qt(0.975, 39), 3)` dla 39 i `r .zi_pl(qt(0.975, w3_n_cz - 1), 3)` dla `r w3_n_cz - 1`, a w rozkładzie normalnym `r .zi_pl(qnorm(0.975), 3)`.
+
+::: {.wzor}
+$$95\%\ CI = \bar{x} \pm t_{0{,}975;\,n-1} \cdot \frac{s}{\sqrt{n}}$$
+$\bar{x}$ — średnia próby (środek przedziału), $t_{0{,}975;\,n-1}$ — kwantyl rozkładu *t* o $n - 1$ stopniach swobody, $s/\sqrt{n}$ — błąd standardowy. Iloczyn kwantyla i błędu standardowego to połowa szerokości przedziału.
+:::
+
+Dla czasu zadania w S02 (*n* = `r w3_n_cz`) przedział 95% wynosi [`r .zi_pl(w3_tci[1])`; `r .zi_pl(w3_tci[2])`] min. Poziom ufności opisuje procedurę: przy spełnionych założeniach 95% tak konstruowanych przedziałów obejmuje parametr, a pojedynczy obliczony przedział obejmuje go albo pomija [@neyman1937; @greenland2016]. Symulacja sprawdza procedurę na populacji umownej: każda z 2000 prób po 40 osób daje własny przedział, a Rysunek \@ref(fig:w03-przedzialy) przedstawia pierwsze 40 z nich.
+
+```{r w03-przedzialy, echo=FALSE, fig.height=4.4, fig.cap=w3_cap_przedzialy}
+w3_40 <- data.frame(proba = 1:40, w3_przedzialy[1:40, ], obejmuje = w3_obejmuje[1:40])
+ggplot(w3_40, aes(y = proba, x = srednia, colour = obejmuje)) +
+  geom_linerange(aes(xmin = dolna, xmax = gorna), linewidth = 0.7) +
+  geom_point(size = 1.6) +
+  geom_vline(xintercept = w3_mu, linetype = "dotted") +
+  scale_colour_manual(values = c(`TRUE` = "#0072B2", `FALSE` = "#E69F00"),
+                      labels = c(`TRUE` = "obejmuje μ", `FALSE` = "pomija μ")) +
+  labs(x = "Średni czas i przedział 95% [min]", y = "Numer próby", colour = NULL)
+```
+
+We wszystkich 2000 próbach przedziały objęły $\mu$ w `r .zi_pl(100 * w3_pokrycie, 1)`% przypadków, nieco mniej niż nominalne 95%: populacja czasu jest prawoskośna, a przybliżenie rozkładu średniej rozkładem normalnym poprawia się wraz ze wzrostem $n$ [@kwak2017]. Liczba przedziałów pomijających parametr w serii 40 prób jest losowa i przy pokryciu 95% wynosi przeciętnie 2.
+
+Przedział ufności dotyczy średniej populacji. Środkowe 95% czasów osób w S02 leży od `r .zi_pl(w3_q[1])` do `r .zi_pl(w3_q[2])` min: zakres opisuje różnice między osobami, a jego szerokość zależy przede wszystkim od zróżnicowania osób. Przedział ufności średniej zwęża się proporcjonalnie do $1/\sqrt{n}$; w dużej próbie średnia jest oszacowana dokładnie, a ludzie nadal różnią się czasem.
+
+## 5. Test *t* jednej próby i wartość *p* {#w03-test-t .unnumbered}
+
+Biblioteka pyta, czy średnia ocena katalogu przewyższa neutralny środek skali 3. Estymandą jest różnica $\Delta = \mu - 3$, a estymatą $\hat{\Delta}$ = `r .zi_pl(w3_m - 3)` punktu (*n* = `r w3_n`, *M* = `r .zi_pl(w3_m)`, *SD* = `r .zi_pl(w3_s)`). Hipoteza zerowa $H_0$: $\mu$ = 3 opisuje populację, w której średnia ocena jest neutralna, a dwustronna alternatywa $H_1$: $\mu \neq 3$ — różnicę w dowolnym kierunku.
+
+::: {.wzor}
+$$t = \frac{\bar{x} - \mu_0}{s/\sqrt{n}} = \frac{`r w3_tex(w3_m, 3)` - 3}{`r w3_tex(w3_se, 4)`} = `r w3_tex(w3_t)` \qquad df = n - 1 = `r w3_n - 1`$$
+Licznik to efekt w punktach skali, mianownik — błąd standardowy w punktach, więc jednostki się skracają. $t$ podaje odległość estymaty od $\mu_0$ w błędach standardowych.
+:::
+
+Wartość *p* jest prawdopodobieństwem otrzymania statystyki co najmniej tak skrajnej jak obserwowana, obliczonym przy założeniu prawdziwości $H_0$ i pozostałych założeń modelu [@greenland2016; @wasserstein2016]:
+
+::: {.wzor}
+$$p = P\left(|T| \geq |t_{\text{obs}}| \;\middle|\; H_0\right)$$
+$T$ — statystyka testu jako zmienna losowa przy $H_0$, $t_{\text{obs}}$ — wartość obliczona z danych; w teście dwustronnym liczy się oba ogony rozkładu.
+:::
+
+```{r w03-t, echo=FALSE, fig.height=3, fig.cap=w3_cap_t}
+w3_tt_df <- data.frame(t = seq(-6.5, 6.5, by = 0.01))
+w3_tt_df$f <- dt(w3_tt_df$t, w3_n - 1)
+ggplot(w3_tt_df, aes(t, f)) +
+  geom_area(data = subset(w3_tt_df, t >= w3_kryt), fill = "#E69F00", alpha = 0.7) +
+  geom_area(data = subset(w3_tt_df, t <= -w3_kryt), fill = "#E69F00", alpha = 0.7) +
+  geom_line(linewidth = 0.8) +
+  geom_vline(xintercept = w3_t, colour = "#D55E00", linewidth = 1) +
+  annotate("text", x = w3_t, y = 0.3, label = paste("t =", .zi_pl(w3_t)), hjust = 1.1) +
+  labs(x = paste0("Statystyka t przy H0 (df = ", w3_n - 1, ")"), y = "Gęstość")
+```
+
+W S02 *t*(`r w3_n - 1`) = `r .zi_pl(w3_t)`, *p* `r .zi_p(w3_tt$p.value)` (Rysunek \@ref(fig:w03-t)). Odczyt pełnym zdaniem brzmi: przy średniej populacji równej 3 i spełnionych założeniach testu wynik co najmniej tak skrajny zdarzałby się w mniej niż 0,1% prób. Obliczenie *p* zakłada prawdziwość $H_0$, więc wartość *p* mierzy zgodność danych z $H_0$, a prawdopodobieństwem prawdziwości $H_0$ być nie może [@greenland2016]. Wielkość różnicy opisuje efekt (część 6), a precyzję oszacowania — przedział ufności.
+
+## 6. Efekt naturalny i standaryzowany {#w03-efekt .unnumbered}
+
+Efekt naturalny wynosi `r .zi_pl(w3_m - 3)` punktu skali 1–5: tyle przeciętna ocena przewyższa środek skali. Efekt standaryzowany jednej próby dzieli różnicę przez odchylenie standardowe osób, a statystyka *t* wynika z niego i z liczebności próby [@lakens2013]:
+
+::: {.wzor}
+$$d = \frac{\bar{x} - \mu_0}{s} = \frac{`r w3_tex(w3_m - 3, 3)`}{`r w3_tex(w3_s, 3)`} = `r w3_tex(w3_d)` \qquad\qquad t = d\sqrt{n} = `r w3_tex(w3_d)` \cdot \sqrt{`r w3_n`} = `r w3_tex(w3_d * sqrt(w3_n))`$$
+Mianownikiem $d$ jest odchylenie standardowe osób, mianownikiem $t$ — błąd standardowy; jednakowa różnica daje przy dużej próbie duże $t$ i niezmienione $d$.
+:::
+
+Umowne progi Cohena wynoszą 0,2 dla efektu małego, 0,5 dla średniego i 0,8 dla dużego; progi są arbitralne, a ich użycie ma sens wtedy, gdy brakuje wyników porównywalnych badań [@lakens2013]. Ocena praktyczna odwołuje się do decyzji instytucji: najmniejszy efekt istotny dla decyzji, np. zmiana oceny o 0,3 punktu uzasadniająca przebudowę katalogu, wyznacza granice testu równoważności [@lakens2017]. Najmniejszy efekt istotny ustala się przy planowaniu badania, razem z liczebnością próby [@lakens2022].
+
+## 7. Błędy decyzji, moc i liczebność próby {#w03-moc .unnumbered}
+
+Test kończy się decyzją: odrzucenie $H_0$ albo pozostawienie $H_0$. Ujęcie testu jako reguły decyzji wprowadzili @neyman1933. Poziom $\alpha$ ustala się przed zebraniem danych jako część projektu badania i opisuje, jak często test odrzuca prawdziwą $H_0$ w wielu zastosowaniach przy spełnionych założeniach testu; moc jest prawdopodobieństwem odrzucenia $H_0$, gdy prawdziwa jest określona alternatywa, a $\beta$ = 1 − moc [@greenland2016].
+
+::: {.wzor}
+$$\alpha = P(\text{odrzucenie } H_0 \mid H_0) \qquad \beta = P(\text{pozostawienie } H_0 \mid H_1) \qquad \text{moc} = 1 - \beta$$
+:::
+
+| Stan w populacji | Pozostawienie $H_0$ | Odrzucenie $H_0$ |
+|:--|:--|:--|
+| $H_0$ prawdziwa | decyzja trafna, prawdopodobieństwo $1 - \alpha$ | błąd I rodzaju, prawdopodobieństwo $\alpha$ |
+| określona $H_1$ prawdziwa | błąd II rodzaju, prawdopodobieństwo $\beta$ | wykrycie efektu, moc $1 - \beta$ |
+
+```{r w03-bledy, echo=FALSE, fig.height=3.2, fig.cap=w3_cap_bledy}
+w3_x8 <- seq(-4, 6, by = 0.01)
+w3_bl <- rbind(data.frame(t = w3_x8, f = dt(w3_x8, 99), rozklad = "H0: d = 0"),
+               data.frame(t = w3_x8, f = dt(w3_x8, 99, ncp = 0.2 * sqrt(100)), rozklad = "H1: d = 0,2"))
+ggplot(w3_bl, aes(t, f)) +
+  geom_area(data = subset(w3_bl, rozklad == "H1: d = 0,2" & abs(t) < w3_k99), fill = "#56B4E9", alpha = 0.5) +
+  geom_area(data = subset(w3_bl, rozklad == "H0: d = 0" & t > w3_k99), fill = "#E69F00", alpha = 0.8) +
+  geom_area(data = subset(w3_bl, rozklad == "H0: d = 0" & t < -w3_k99), fill = "#E69F00", alpha = 0.8) +
+  geom_line(aes(colour = rozklad, linetype = rozklad), linewidth = 0.8) +
+  geom_vline(xintercept = c(-1, 1) * w3_k99, linetype = "dotted") +
+  scale_colour_manual(values = c("H0: d = 0" = "black", "H1: d = 0,2" = "#0072B2")) +
+  labs(x = "Statystyka t (n = 100)", y = "Gęstość", colour = NULL, linetype = NULL)
+```
+
+Badanie 100 osób wykrywa efekt $d$ = 0,2 z mocą zaledwie `r .zi_pl(w3_moc02)` (Rysunek \@ref(fig:w03-bledy)). Moc rośnie z wielkością efektu i liczebnością próby: moc 0,8 wymaga `r w3_n80[1]` osób przy $d$ = 0,2, `r w3_n80[2]` osób przy efekcie z S02 ($d$ = `r .zi_pl(w3_d)`) i `r w3_n80[3]` osób przy $d$ = 0,5 (Rysunek \@ref(fig:w03-moc)).
+
+```{r w03-moc, echo=FALSE, fig.height=3, fig.cap=w3_cap_moc}
+w3_nn <- 5:300
+w3_krzywe_mocy <- do.call(rbind, lapply(w3_efekty, function(dd)
+  data.frame(n = w3_nn, moc = sapply(w3_nn, function(n) w3_moc(dd, n)), efekt = paste("d =", .zi_pl(dd)))))
+ggplot(w3_krzywe_mocy, aes(n, moc, colour = efekt, linetype = efekt)) +
+  geom_line(linewidth = 0.9) +
+  geom_hline(yintercept = 0.8, linetype = "dotted") +
+  scale_colour_manual(values = c("#0072B2", "#009E73", "#D55E00")) +
+  labs(x = "Liczba osób n", y = "Moc", colour = "Efekt", linetype = "Efekt")
+```
+
+Liczebność próby uzasadnia się między innymi analizą mocy albo wymaganą dokładnością oszacowania; @lakens2022 opisuje sześć sposobów uzasadnienia, wśród nich ograniczenia zasobów. Z wzoru na przedział ufności wynika, że połowa szerokości przedziału 95% równa $E$ przy odchyleniu standardowym $s$ wymaga około $n = (1{,}96\,s/E)^2$ osób; dla indeksu S02 ($s$ = `r .zi_pl(w3_s)`) i $E$ = 0,1 punktu wzór daje `r w3_nE` osób.
+
+### Wiele testów i elastyczność analizy {#w03-wiele .unnumbered}
+
+Seria $m$ niezależnych testów przy prawdziwych hipotezach zerowych daje prawdopodobieństwo co najmniej jednego fałszywego odrzucenia $1 - (1 - \alpha)^m$ [@lee2018]: `r .zi_pl(w3_fwer[1])` dla 5 testów, `r .zi_pl(w3_fwer[2])` dla 10 i `r .zi_pl(w3_fwer[3])` dla 20 (Rysunek \@ref(fig:w03-wiele)).
+
+```{r w03-wiele, echo=FALSE, fig.height=2.8, fig.cap=w3_cap_wiele}
+ggplot(data.frame(m = 1:20, p = 1 - 0.95^(1:20)), aes(m, p)) +
+  geom_line(colour = "#0072B2", linewidth = 0.9) +
+  geom_point(colour = "#0072B2") +
+  labs(x = "Liczba testów m", y = "P(co najmniej jedno odrzucenie)")
+```
+
+Elastyczność analizy, czyli wybór podziałów grup, progów czasu i reguł braków po obejrzeniu danych oraz raportowanie najkorzystniejszego wariantu, podnosi rzeczywisty odsetek wyników fałszywie pozytywnych wysoko ponad nominalne $\alpha$ [@simmons2011]. Raport opisuje więc wszystkie wykonane warianty analizy i oddziela pytania zaplanowane od eksploracji. Wyniki *p* = 0,049 i *p* = 0,051 niosą prawie identyczną informację, a różnica między wynikiem istotnym i nieistotnym bywa sama nieistotna statystycznie [@gelman2006]. Dwa badania z wartościami *p* po przeciwnych stronach 0,05 mogą w pełni zgadzać się co do wielkości efektu [@greenland2016].
+
+## 8. Drugi tor: bootstrap i test permutacyjny {#w03-losowanie .unnumbered}
+
+| Pytanie | Procedura | Wynik |
+|:--|:--|:--|
+| Jak zmieniałaby się estymata w kolejnych próbach? | bootstrap: losowanie obserwacji ze zwracaniem | przybliżenie rozkładu estymatora, błąd standardowy, przedział |
+| Jak skrajna jest statystyka przy modelu zerowym? | test permutacyjny: przestawienia etykiet albo zmiany znaków | rozkład odniesienia testu i wartość *p* |
+
+Rozumowanie permutacyjne pochodzi od Fishera, który w 1935 roku opisał eksperyment z rozpoznawaniem kolejności nalewania mleka i herbaty w 8 filiżankach, z których w 4 najpierw nalano mleko [@fisher1935; @ernst2004]. Losowe zgadywanie wskazuje wszystkie 4 filiżanki z mlekiem z prawdopodobieństwem $1/\binom{8}{4}$ = 1/70 ≈ `r .zi_pl(1 / 70, 3)`: wartość *p* powstaje z wyliczenia wszystkich możliwych przyporządkowań, bez rozkładu teoretycznego. @pitman1937 zastosował rozumowanie permutacyjne do danych ilościowych. Test *t* ma podobnie praktyczne pochodzenie: William Sealy Gosset, piwowar browaru Guinness w Dublinie, opublikował go w 1908 roku pod pseudonimem „Student”, bo pracodawca wymagał ukrycia tożsamości autora [@student1908; @ziliak2008].
+
+### Bootstrap: próba jako przybliżenie populacji {#w03-bootstrap .unnumbered}
+
+Bootstrap losuje z $n$ obserwacji próbę $n$ elementów ze zwracaniem i liczy statystykę dla każdej wylosowanej próby; po $B$ losowaniach odchylenie standardowe statystyk przybliża błąd standardowy, a kwantyle 2,5% i 97,5% wyznaczają przedział percentylowy [@efron1979; @hesterberg2015].
+
+::: {.wzor}
+$$x^{*}_1, \dots, x^{*}_n \ \text{losowane ze zwracaniem z} \ \{x_1, \dots, x_n\} \qquad SE_{\text{boot}} = \text{SD}\left(\bar{x}^{*}_1, \dots, \bar{x}^{*}_B\right) \qquad 95\%\ CI = \left[Q^{*}_{0{,}025};\ Q^{*}_{0{,}975}\right]$$
+$x^{*}$ — obserwacje próby bootstrapowej (jedna osoba może pojawić się kilka razy, inna wcale), $\bar{x}^{*}_b$ — średnia próby bootstrapowej $b$, $Q^{*}$ — kwantyle rozkładu bootstrapowego, $B$ — liczba losowań.
+:::
+
+Dla czasu w S02 bootstrapowy błąd standardowy średniej wynosi `r .zi_pl(sd(w3_boot_m), 3)` min wobec `r .zi_pl(w3_s_cz / sqrt(w3_n_cz), 3)` min ze wzoru, a przedział percentylowy [`r .zi_pl(w3_ci_m[1])`; `r .zi_pl(w3_ci_m[2])`] min leży blisko przedziału *t* [`r .zi_pl(w3_tci[1])`; `r .zi_pl(w3_tci[2])`] min. Bootstrap daje także przedział dla mediany, [`r .zi_pl(w3_ci_md[1])`; `r .zi_pl(w3_ci_md[2])`] min, dla której prosty wzór na błąd standardowy jest niedostępny (Rysunek \@ref(fig:w03-bootstrap)). Liczba $B$ wyznacza dokładność obliczenia komputerowego, a ilość informacji wyznacza $n$. Przy małych próbach przedział percentylowy obejmuje parametr rzadziej niż przedział *t*, a przy większych bywa od niego dokładniejszy [@hesterberg2015].
+
+```{r w03-bootstrap, echo=FALSE, fig.height=3.8, fig.cap=w3_cap_bootstrap}
+w3_bt <- rbind(data.frame(wartosc = w3_boot_m, statystyka = "Średnia"),
+               data.frame(wartosc = w3_boot_md, statystyka = "Mediana"))
+w3_bt$statystyka <- factor(w3_bt$statystyka, levels = c("Średnia", "Mediana"))
+w3_gr <- data.frame(statystyka = factor(rep(c("Średnia", "Mediana"), each = 2), levels = c("Średnia", "Mediana")),
+                    granica = c(w3_ci_m, w3_ci_md))
+ggplot(w3_bt, aes(x = wartosc)) +
+  geom_histogram(bins = 40, fill = "#56B4E9", colour = "white") +
+  geom_vline(data = w3_gr, aes(xintercept = granica), linetype = "dashed") +
+  facet_wrap(~ statystyka, ncol = 1, scales = "free_y") +
+  labs(x = "Statystyka próby bootstrapowej [min]", y = "Liczba prób")
+```
+
+### Test zmiany znaków: konkretny model zerowy {#w03-znaki .unnumbered}
+
+Test zmiany znaków dla jednej próby analizuje odchylenia od wartości odniesienia, $d_i = x_i - \mu_0$. Przy $H_0$ oraz niezależnych i symetrycznych odchyleniach znak każdego odchylenia jest równie prawdopodobny, więc losowe zmiany znaków dają rozkład statystyki przy $H_0$ [@winkler2014]. Wartość *p* liczy się z wylosowanego rozkładu z poprawką, dzięki której jest zawsze dodatnia [@phipson2010]:
+
+::: {.wzor}
+$$T^{*}_b = \frac{1}{n}\sum_{i=1}^{n} \varepsilon_i d_i \qquad\qquad p_{\text{perm}} = \frac{1 + \#\{b : |T^{*}_b| \geq |T_{\text{obs}}|\}}{B + 1}$$
+$\varepsilon_i$ — losowy znak $+1$ albo $-1$ przypisany osobie $i$, $T^{*}_b$ — średnia odchyleń w losowaniu $b$, $T_{\text{obs}}$ — średnia odchyleń w danych, $\#$ — liczba losowań spełniających warunek, $B$ — liczba losowań.
+:::
+
+```{r w03-znaki, echo=FALSE, fig.height=2.8, fig.cap=w3_cap_znaki}
+ggplot(data.frame(t = w3_rozklad), aes(x = t)) +
+  geom_histogram(bins = 50, fill = "grey70", colour = "white") +
+  geom_vline(xintercept = c(1, -1) * w3_zn$roznica, colour = "#D55E00", linewidth = 1, linetype = c("solid", "dashed")) +
+  labs(x = "Średnia odchyleń od 3 po losowej zmianie znaków", y = "Liczba losowań")
+```
+
+Dla indeksu S02 średnia odchyleń od 3 wynosi `r .zi_pl(w3_zn$roznica, 3)` punktu, a żadne z `r w3_zn$B` losowań jej nie osiąga, więc $p_{\text{perm}}$ = 1/`r w3_zn$B + 1` = `r .zi_pl(w3_zn$p_perm, 4)`: najmniejsza wartość możliwa przy `r w3_zn$B` losowaniach (Rysunek \@ref(fig:w03-znaki)). Wartość $p_{\text{perm}}$ pochodzi z losowania, więc ma błąd Monte Carlo równy w przybliżeniu $\sqrt{p(1-p)/B}$ [@hesterberg2015]: liczba losowań co najmniej tak skrajnych jak wynik obserwowany ma rozkład dwumianowy o odchyleniu standardowym $\sqrt{Bp(1-p)}$ [@guthrie2020, sekcja 1.3.6.6.18]. Przy $p$ = 0,05 i $B$ = `r w3_zn$B` błąd Monte Carlo wynosi `r .zi_pl(w3_mc_se, 4)`. Ziarno generatora liczb losowych zapisuje się w kodzie i podaje w raporcie, dzięki czemu obliczenie da się powtórzyć [@sandve2013].
+
+## 9. Zgodność testu i przedziału. Czytanie raportu {#w03-raport .unnumbered}
+
+Dwustronny przedział 95% obejmuje wartości parametru, dla których dwustronny test daje *p* > 0,05 [@greenland2016]. Przedział dla średniej oceny katalogu, [`r .zi_pl(w3_tt$conf.int[1])`; `r .zi_pl(w3_tt$conf.int[2])`], wyklucza 3, a test daje *p* `r .zi_p(w3_tt$p.value)`: oba wyniki prowadzą do odrzucenia $H_0$. Przedział mówi więcej niż test, bo podaje zakres wartości zgodnych z danymi, w jednostkach skali.
+
+Czytanie raportu polega na odszukaniu kolejno estymandy, liczebności, efektu z jednostką, przedziału, statystyki testu ze stopniami swobody i wartości *p*. Wzorce zapisu wyników testu jednej próby podaje ćwiczenie [C04](#c04-apa). Trzy częste błędy odczytu i ich poprawne brzmienie:
+
+| Zdanie z błędem | Poprawne brzmienie |
+|:--|:--|
+| „Szansa, że $H_0$ jest prawdziwa, wynosi mniej niż 0,1%.” | „Przy prawdziwej $H_0$ i spełnionych założeniach testu wynik co najmniej tak skrajny zdarzałby się w mniej niż 0,1% prób.” |
+| „Przedział 95% [`r .zi_pl(w3_tci[1])`; `r .zi_pl(w3_tci[2])`] min obejmuje czasy 95% użytkowników.” | „Przedział 95% dotyczy średniego czasu; środkowe 95% czasów osób leży od `r .zi_pl(w3_q[1])` do `r .zi_pl(w3_q[2])` min.” |
+| „Wynik jest wysoce istotny, więc efekt jest duży.” | „Ocena przewyższa środek skali o `r .zi_pl(w3_m - 3)` punktu (*d* = `r .zi_pl(w3_d)`), czyli o efekt mały do średniego; o istotności decyduje także duża liczebność próby.” |
+
+## Podsumowanie {#w03-podsumowanie .unnumbered}
+
+Jedna próba daje estymatę, a jej niepewność opisuje rozkład estymatora: błąd standardowy maleje proporcjonalnie do $1/\sqrt{n}$, a centralne twierdzenie graniczne przybliża rozkład średniej rozkładem normalnym nawet przy skośnych danych, np. przy czasie zadania. Przedział ufności jest procedurą, która przy spełnionych założeniach w 95% powtórzeń obejmuje parametr, a wartość *p* mierzy zgodność danych z hipotezą zerową przy założeniach modelu. Efekt i przedział odpowiadają na pytanie, jak duża jest różnica i jak dokładnie ją znamy; o znaczeniu praktycznym decyduje próg ustalony przy planowaniu badania. Bootstrap i test permutacyjny odpowiadają na identyczne pytania drogą losowania z danych i sprawdzają, czy wniosek zależy od założeń klasycznego toru. Błąd systematyczny doboru próby pozostaje poza błędem standardowym, dlatego raport opisuje zawsze także sposób zebrania danych.

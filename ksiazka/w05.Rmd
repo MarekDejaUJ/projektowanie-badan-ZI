@@ -1,0 +1,458 @@
+# W05. Korelacja, regresja i raport ilościowy {#w05 .unnumbered}
+
+::: {.start}
+**Wykład 5, 03.11.2026.** Ćwiczenia: [C08](#c08) (korelacja i regresja w R), [C10](#c10) (analizy i interpretacja w projekcie). Dane przykładów: scenariusz S02 (katalog biblioteczny), ID `wzor`.
+:::
+
+::: {.lektura}
+**Lektura obowiązkowa:** @francuz2007 [rozdz. 8–9]; @gosssampson2025 [s. 69–87]. **Lektura uzupełniająca:** @king2009 [rozdz. 8–10, 17].
+:::
+
+Biblioteka pyta, czy osoby, które lepiej oceniają katalog, szybciej wykonują w nim zadanie wyszukiwawcze. Odpowiedź łączy dwa wyniki jednej osoby: deklarowaną ocenę z ankiety i czas zadania z obserwacji. Wykład W05 prowadzi od wykresu punktowego przez współczynniki korelacji i model regresji prostej do akapitu raportu; ćwiczenie C08 przeprowadza analizę danych S02 w R, a ćwiczenie C10 przenosi analizę do projektu.
+
+```{r w05-dane, include=FALSE}
+w5_dane <- dane_zi("S02", id = "wzor")
+w5_pary <- w5_dane[!is.na(w5_dane$indeks) & !is.na(w5_dane$czas), ]
+w5_n <- nrow(w5_pary)
+w5_sxy <- cov(w5_pary$indeks, w5_pary$czas)
+w5_sx <- sd(w5_pary$indeks)
+w5_sy <- sd(w5_pary$czas)
+w5_kt <- cor.test(w5_pary$indeks, w5_pary$czas)
+w5_r <- unname(w5_kt$estimate)
+w5_z <- atanh(w5_r)
+w5_sez <- 1 / sqrt(w5_n - 3)
+w5_ks <- cor.test(w5_pary$indeks, w5_pary$czas, method = "spearman", exact = FALSE)
+w5_q <- w5_dane[!is.na(w5_dane$czestosc) & !is.na(w5_dane$indeks), ]
+w5_ks2 <- cor.test(w5_q$czestosc, w5_q$indeks, method = "spearman", exact = FALSE)
+w5_maks_niski <- max(w5_pary$czas[w5_pary$indeks < 2])
+w5_mdn_wysoki <- median(w5_pary$czas[w5_pary$indeks >= 4])
+w5_n_wysoki <- sum(w5_pary$indeks >= 4)
+# Kwartet Anscombe'a (dane wbudowane w R).
+w5_a <- datasets::anscombe
+w5_ans <- do.call(rbind, lapply(1:4, function(j)
+  data.frame(zbior = paste("Zbiór", j), x = w5_a[[paste0("x", j)]], y = w5_a[[paste0("y", j)]])))
+w5_r_ans <- cor(w5_a$x1, w5_a$y1)
+# Galeria współczynników: symulowane chmury po 100 par.
+set.seed(2026)
+w5_gal <- do.call(rbind, lapply(c(0, -0.3, -0.6, -0.9), function(rho) {
+  x <- rnorm(100)
+  y <- rho * x + sqrt(1 - rho^2) * rnorm(100)
+  data.frame(cel = rho, x = x, y = y)
+}))
+w5_gal_r <- tapply(seq_len(nrow(w5_gal)), w5_gal$cel, function(i) cor(w5_gal$x[i], w5_gal$y[i]))
+w5_gal$panel <- factor(paste0("r = ", .zi_pl(w5_gal_r[as.character(w5_gal$cel)])),
+                       levels = paste0("r = ", .zi_pl(w5_gal_r[as.character(c(0, -0.3, -0.6, -0.9))])))
+# Kształty związku: monotoniczny i w kształcie U.
+w5_kx <- 1:9
+w5_ksz <- data.frame(panel = rep(c("Związek monotoniczny", "Związek w kształcie U"), each = 9),
+                     x = rep(w5_kx, 2), y = c(30 / w5_kx, 2 + (w5_kx - 5)^2))
+w5_r_mono <- cor(w5_kx, 30 / w5_kx)
+w5_rs_mono <- cor(w5_kx, 30 / w5_kx, method = "spearman")
+w5_r_u <- cor(w5_kx, 2 + (w5_kx - 5)^2)
+w5_rs_u <- cor(w5_kx, 2 + (w5_kx - 5)^2, method = "spearman")
+# Permutacja (zmiana parowania) i bootstrap par.
+set.seed(2026)
+w5_perm <- replicate(2000, cor(w5_pary$indeks, sample(w5_pary$czas)))
+w5_k <- sum(abs(w5_perm) >= abs(w5_r))
+w5_pperm <- (w5_k + 1) / (2000 + 1)
+set.seed(2026)
+w5_boot <- replicate(2000, {
+  i <- sample(w5_n, replace = TRUE)
+  cor(w5_pary$indeks[i], w5_pary$czas[i])
+})
+w5_ciboot <- unname(quantile(w5_boot, c(0.025, 0.975)))
+# Regresja prosta, reszty i wpływ.
+w5_m <- lm(czas ~ indeks, data = w5_pary)
+w5_sm <- summary(w5_m)
+w5_b <- coef(w5_m)
+w5_cib <- confint(w5_m)
+w5_b0c <- coef(lm(czas ~ I(indeks - 3), data = w5_pary))[1]
+w5_sse <- sum(residuals(w5_m)^2)
+w5_sst <- sum((w5_pary$czas - mean(w5_pary$czas))^2)
+w5_e <- residuals(w5_m)
+w5_skos <- psych::skew(w5_e)
+w5_h <- hatvalues(w5_m)
+w5_cd <- cooks.distance(w5_m)
+w5_nowe <- data.frame(indeks = c(2, 4))
+w5_pu <- predict(w5_m, w5_nowe, interval = "confidence")
+w5_pp <- predict(w5_m, w5_nowe, interval = "prediction")
+w5_siatka <- data.frame(indeks = seq(1, 5, by = 0.05))
+w5_pasma <- data.frame(w5_siatka,
+                       setNames(as.data.frame(predict(w5_m, w5_siatka, interval = "confidence")), c("fit", "lc", "uc")),
+                       setNames(as.data.frame(predict(w5_m, w5_siatka, interval = "prediction"))[, 2:3], c("lp", "up")))
+# Model dla logarytmu czasu.
+w5_ml <- lm(log(czas) ~ indeks, data = w5_pary)
+w5_bl <- coef(w5_ml)
+w5_cil <- confint(w5_ml)
+w5_ppl <- exp(predict(w5_ml, w5_nowe, interval = "prediction"))
+w5_skos_log <- psych::skew(residuals(w5_ml))
+w5_pasma_log <- data.frame(w5_siatka,
+                           setNames(as.data.frame(exp(predict(w5_ml, w5_siatka, interval = "prediction"))), c("fit", "lp", "up")))
+# Zgodność poziomów: pierwsza i druga próba tych samych osób.
+w5_zg <- w5_dane[!is.na(w5_dane$czas) & !is.na(w5_dane$czas_po), ]
+w5_zg$roznica <- w5_zg$czas - w5_zg$czas_po
+w5_zg$srednia <- (w5_zg$czas + w5_zg$czas_po) / 2
+w5_bias <- mean(w5_zg$roznica)
+w5_sdr <- sd(w5_zg$roznica)
+w5_r_zg <- cor(w5_zg$czas, w5_zg$czas_po)
+# Deklaracja a wykonanie: odsetek powodzeń w trzech przedziałach indeksu.
+w5_dek <- w5_dane[!is.na(w5_dane$indeks), ]
+w5_dek$poziom <- cut(w5_dek$indeks, c(0, 2.5, 3.5, 5), labels = c("do 2,5", "2,5–3,5", "ponad 3,5"))
+w5_sukces <- aggregate(cbind(tak = powodzenie == "tak") ~ poziom, data = w5_dek, FUN = function(v) c(k = sum(v), n = length(v)))
+w5_sukces <- data.frame(poziom = w5_sukces$poziom, k = w5_sukces$tak[, "k"], n = w5_sukces$tak[, "n"])
+w5_sukces$procent <- 100 * w5_sukces$k / w5_sukces$n
+# Regresja wieloraka z grupą.
+w5_mm <- lm(czas ~ indeks + grupa, data = w5_pary)
+w5_smm <- summary(w5_mm)
+w5_bm <- coef(w5_mm)
+w5_vif <- car::vif(w5_mm)
+# Rozszerzenia: kanały, status, mapa powodzeń, krzywa ukończenia, reszty cząstkowe.
+w5_kan <- kanaly_zi(w5_dane)
+w5_kan <- w5_kan[order(-w5_kan$wskazania), ]
+w5_kan$skum <- 100 * cumsum(w5_kan$wskazania) / sum(w5_kan$wskazania)
+w5_kat <- as.data.frame(table(status = w5_dane$kategoria))
+w5_kat$procent <- 100 * w5_kat$Freq / sum(w5_kat$Freq)
+w5_mapa <- as.data.frame(table(grupa = w5_dane$grupa, status = w5_dane$kategoria, powodzenie = w5_dane$powodzenie))
+w5_mapa <- merge(w5_mapa[w5_mapa$powodzenie == "tak", c("grupa", "status", "Freq")],
+                 aggregate(Freq ~ grupa + status, data = w5_mapa, FUN = sum), by = c("grupa", "status"))
+names(w5_mapa) <- c("grupa", "status", "k", "n")
+w5_mapa$procent <- 100 * w5_mapa$k / w5_mapa$n
+w5_ogd <- opis_grup(w5_dane, czas, grupa)
+w5_czas <- w5_dane[!is.na(w5_dane$czas), ]
+w5_krzywa <- do.call(rbind, lapply(levels(w5_czas$grupa), function(g) {
+  d <- w5_czas[w5_czas$grupa == g, ]
+  t <- seq(0, 30, by = 0.25)
+  data.frame(grupa = g, czas = t, procent = 100 * sapply(t, function(u) mean(d$powodzenie == "tak" & d$czas <= u)))
+}))
+w5_ukonczenie <- function(g, u) {
+  d <- w5_czas[w5_czas$grupa == g, ]
+  100 * mean(d$powodzenie == "tak" & d$czas <= u)
+}
+w5_czastkowe <- data.frame(indeks = w5_pary$indeks, reszta = residuals(w5_mm) + w5_bm["indeks"] * w5_pary$indeks)
+```
+
+## 1. Dwa rodzaje dowodów: deklaracja i wykonanie {#w05-dowody .unnumbered}
+
+Badania zachowań informacyjnych korzystają z trzech źródeł danych: logu systemu, ankiety i obserwacji. Log zapisuje zdarzenia w systemie, na przykład zapytania i kliknięcia [@jansen2006]; ankieta zbiera deklaracje uczestników; obserwacja rejestruje działanie osoby w określonym zadaniu. Pomiar umiejętności wyszukiwania łączy ankietę z obserwacją wykonania zadań, ponieważ każde źródło obejmuje inny wycinek zachowania informacyjnego [@hargittai2002].
+
+Ramy kompetencji porządkują treść pytań ankiety: skala umiejętności internetowych dzieli szeroki konstrukt na wymiary [@vandeursen2016], a rama DigComp 2.2 opisuje obszary kompetencji cyfrowych z przykładami wiedzy, umiejętności i postaw [@vuorikari2022]. Odwołanie do ramy uzasadnia dobór pytań; trafność własnego zestawu pytań wymaga osobnego badania.
+
+Zbiór S02 łączy oba rodzaje dowodów: indeks deklarowanej użyteczności katalogu (średnia sześciu pozycji na skali 1–5) oraz czas i powodzenie zadania wyszukiwawczego. Pytanie wykładu brzmi: czy wyższa deklarowana ocena katalogu współwystępuje z krótszym czasem zadania? Krótszy czas oznacza sprawniejsze wykonanie przy powodzeniu, a szybkie porzucenie zadania również skraca czas, dlatego raport czyta czas razem z powodzeniem.
+
+## 2. Pary, populacja i estymanda {#w05-estymanda .unnumbered}
+
+Obserwacją jest osoba z parą wyników $(x_i, y_i)$: $x$ oznacza indeks użyteczności, a $y$ czas zadania w minutach. Para łączy dwa wyniki jednej osoby w jednym wierszu danych, dlatego braki usuwa się całymi wierszami: w S02 indeks ma `r sum(!is.na(w5_dane$indeks))` ważne wartości, czas `r sum(!is.na(w5_dane$czas))`, a kompletne pary tworzy `r w5_n` osób.
+
+Estymandą korelacji Pearsona jest korelacja liniowa w populacji $\rho_P$, a estymatą współczynnik z próby $r$. Estymandą korelacji Spearmana jest korelacja rang $\rho_S$, estymowana przez $r_S$; wydruk R i ćwiczenie C08 oznaczają współczynnik Spearmana z próby literą $\rho$. Estymandą regresji jest nachylenie $\beta_1$ prostej średniego czasu, wyrażone w minutach na punkt indeksu, a korelacja pozostaje liczbą bez jednostki.
+
+| Symbol | Znaczenie |
+|:--|:--|
+| $x_i$, $y_i$ | wyniki osoby $i$: indeks i czas |
+| $\bar{x}$, $\bar{y}$, $s_x$, $s_y$ | średnie i odchylenia standardowe obu zmiennych |
+| $s_{xy}$ | kowariancja z próby |
+| $r$, $\rho_P$ | korelacja Pearsona w próbie i w populacji |
+| $r_S$, $\rho_S$ | korelacja Spearmana w próbie i w populacji |
+| $b_0$, $b_1$; $\beta_0$, $\beta_1$ | wyraz wolny i nachylenie: estymaty i parametry populacji |
+| $\hat{y}_i$, $e_i$, $s_e$ | wartość przewidywana, reszta $y_i - \hat{y}_i$, odchylenie standardowe reszt |
+| $R^2$ | współczynnik determinacji |
+| $B$ | liczba losowań w permutacji lub bootstrapie |
+
+## 3. Wykres przed współczynnikiem {#w05-wykres .unnumbered}
+
+Wykres punktowy przedstawia każdą osobę jako punkt o dwóch współrzędnych. Odczyt obejmuje kierunek związku, jego kształt, rozrzut punktów wokół trendu, skupienia i punkty nietypowe. Kwartet Anscombe’a uzasadnia zasadę „wykres przed współczynnikiem”: cztery zbiory po 11 par mają prawie identyczne średnie, wariancje, prostą regresji i korelację $r$ = `r .zi_pl(w5_r_ans)`, a wykresy czterech zbiorów przedstawiają cztery różne układy punktów [@anscombe1973].
+
+```{r w05-anscombe, echo=FALSE, fig.height=2.6, fig.width=7.5, fig.cap=paste0("Kwartet Anscombe’a. Cztery panele po 11 punktów (oś pozioma: x, oś pionowa: y) z tą samą prostą regresji i korelacją r = ", .zi_pl(w5_r_ans), ". Zbiór 1: chmura wokół prostej; zbiór 2: punkty na łuku; zbiór 3: punkty na prostej i jeden punkt wysoko nad nią; zbiór 4: dziesięć punktów w pionowej kolumnie przy x = 8 i jeden punkt przy x = 19.")}
+ggplot(w5_ans, aes(x, y)) +
+  geom_point(colour = "#0072B2", size = 1.8) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, colour = "#D55E00", linewidth = 0.7) +
+  facet_wrap(~ zbior, nrow = 1) +
+  labs(x = "x", y = "y")
+```
+
+Wykres danych S02 (rysunek \@ref(fig:w05-rozrzut)) przedstawia `r w5_n` par oceny i czasu. Punkty opadają od lewej do prawej, a wygładzona krzywa maleje w całym zakresie indeksu. Rozrzut czasu jest duży na każdym poziomie oceny: wśród osób z indeksem niższym niż 2 najdłuższy czas wynosi `r .zi_pl(w5_maks_niski, 1)` minuty, a mediana czasu osób z indeksem co najmniej 4 (*n* = `r w5_n_wysoki`) wynosi `r .zi_pl(w5_mdn_wysoki, 1)` minuty.
+
+```{r w05-rozrzut, echo=FALSE, fig.height=3.4, fig.cap=paste0("Ocena katalogu a czas zadania w S02, N = ", w5_n, " par. Oś pozioma: indeks użyteczności 1–5 (punkty lekko rozsunięte w poziomie); oś pionowa: czas zadania w minutach; pomarańczowa krzywa wygładza średni czas. Punkty opadają od lewej do prawej, a rozrzut czasu pozostaje szeroki na każdym poziomie oceny.")}
+set.seed(2026)
+ggplot(w5_pary, aes(indeks, czas)) +
+  geom_jitter(width = 0.03, height = 0, alpha = 0.45, colour = "#0072B2") +
+  geom_smooth(method = "loess", formula = y ~ x, se = FALSE, colour = "#E69F00", linewidth = 1) +
+  labs(x = "Ocena użyteczności katalogu (indeks 1–5)", y = "Czas zadania [min]")
+```
+
+## 4. Kowariancja i współczynnik r {#w05-r .unnumbered}
+
+::: {.wzor}
+$$s_{xy} = \frac{1}{n-1}\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y}) \qquad\qquad r = \frac{s_{xy}}{s_x\, s_y}$$
+$n$ — liczba par, $x_i - \bar{x}$ i $y_i - \bar{y}$ — odchylenia wyników osoby $i$ od średnich, $s_{xy}$ — kowariancja (średni iloczyn odchyleń), $s_x$ i $s_y$ — odchylenia standardowe, $r$ — współczynnik korelacji Pearsona.
+:::
+
+Iloczyn odchyleń jest dodatni, gdy oba wyniki osoby leżą po jednej stronie swoich średnich, i ujemny, gdy leżą po przeciwnych stronach; średnia iloczynów opisuje kierunek współzmienności [@pearson1896]. W S02 kowariancja wynosi $s_{xy}$ = `r .zi_pl(w5_sxy, 3)` punktu · minutę. Jednostka kowariancji zależy od jednostek obu zmiennych: zapis czasu w sekundach zwiększyłby kowariancję 60 razy. Podzielenie przez iloczyn odchyleń standardowych usuwa jednostki: $r$ = `r .zi_pl(w5_sxy, 3)` / (`r .zi_pl(w5_sx, 3)` · `r .zi_pl(w5_sy, 3)`) = `r .zi_pl(w5_r, 3)`.
+
+Współczynnik przyjmuje wartości od −1 do 1. Znak podaje kierunek, a wartość bezwzględna siłę związku prostoliniowego; umowne progi wynoszą 0,1 dla słabego, 0,3 dla umiarkowanego i 0,5 dla silnego związku [@cohen1992; @gosssampson2025, s. 71]. Wynik S02, $r$ = `r .zi_pl(w5_r)`, opisuje umiarkowany związek ujemny: wyższej ocenie katalogu towarzyszy przeciętnie krótszy czas. Znak zależy od kierunku skali: miara sprawności, w której wyższa liczba oznacza szybsze działanie, dałaby przy niezmienionym zachowaniu współczynnik dodatni. Rysunek \@ref(fig:w05-galeria) kalibruje odczyt współczynnika: korelacja około −0,3, bliska wynikowi S02, odpowiada szerokiej chmurze z lekkim spadkiem.
+
+```{r w05-galeria, echo=FALSE, fig.height=2.6, fig.width=7.5, fig.cap="Cztery wartości r na danych symulowanych: po 100 par w każdym panelu z prostą regresji. Przy r bliskim 0 chmura jest okrągła, a prosta prawie pozioma; przy r około −0,3 szeroka chmura ma lekki spadek; przy r około −0,6 chmura jest wyraźnie wydłużona; przy r około −0,9 punkty tworzą wąskie pasmo wzdłuż malejącej prostej."}
+ggplot(w5_gal, aes(x, y)) +
+  geom_point(colour = "#0072B2", alpha = 0.5, size = 1) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, colour = "#D55E00", linewidth = 0.7) +
+  facet_wrap(~ panel, nrow = 1) +
+  labs(x = "x", y = "y")
+```
+
+## 5. Rangi i związek monotoniczny {#w05-rangi .unnumbered}
+
+Współczynnik Spearmana jest korelacją Pearsona obliczoną na rangach [@spearman1904]. Ranga podaje pozycję wyniku w uporządkowanym zbiorze, a osoby z równymi wynikami otrzymują średnią rangę. Współczynnik opisuje związek monotoniczny, czyli zgodność kolejności osób na obu zmiennych, niezależnie od odstępów między wartościami. Rangi nadają się do zmiennych porządkowych i ograniczają wpływ wartości odległych [@gosssampson2025, s. 73].
+
+::: {.wzor}
+$$r_S = 1 - \frac{6\sum_{i=1}^{n} D_i^2}{n(n^2 - 1)}$$
+$D_i$ — różnica rang osoby $i$ na obu zmiennych, $n$ — liczba par. Wzór obowiązuje bez remisów; przy remisach R liczy korelację Pearsona na średnich rangach.
+:::
+
+W S02 korelacja rang indeksu i czasu wynosi $r_S$ = `r .zi_pl(w5_ks$estimate)`, blisko korelacji Pearsona `r .zi_pl(w5_r)`. Częstość korzystania z biblioteki (1–5) jest zmienną porządkową, więc jej związek z indeksem opisuje współczynnik Spearmana: $r_S$ = `r .zi_pl(w5_ks2$estimate)`, *p* `r .zi_p(w5_ks2$p.value)` dla `r nrow(w5_q)` osób; ćwiczenie C08 omawia oba wyniki.
+
+Kształt związku decyduje o wyborze współczynnika (rysunek \@ref(fig:w05-ksztalty)). Krzywa monotoniczna daje $r_S$ = `r .zi_pl(w5_rs_mono)` przy $r$ = `r .zi_pl(w5_r_mono)`, a zależność w kształcie U daje $r$ = `r .zi_pl(abs(w5_r_u))` i $r_S$ = `r .zi_pl(abs(w5_rs_u))` mimo regularnego związku. Wybór miary wynika więc z pytania, skali zmiennych i kształtu związku na wykresie.
+
+```{r w05-ksztalty, echo=FALSE, fig.height=2.8, fig.cap=paste0("Związek monotoniczny i związek w kształcie U, po 9 punktów. Oś pozioma: x od 1 do 9; oś pionowa: y. Lewy panel: y maleje od 30 do 3,3 wzdłuż krzywej 30/x; r = ", .zi_pl(w5_r_mono), ", rS = ", .zi_pl(w5_rs_mono), ". Prawy panel: y spada od 18 do 2 przy x = 5 i rośnie do 18 przy x = 9; r = 0,00 i rS = 0,00.")}
+ggplot(w5_ksz, aes(x, y)) +
+  geom_line(colour = "#999999") +
+  geom_point(colour = "#0072B2", size = 2) +
+  facet_wrap(~ panel, nrow = 1) +
+  scale_x_continuous(breaks = 1:9) +
+  labs(x = "x", y = "y")
+```
+
+## 6. Test, przedział, permutacja i bootstrap {#w05-wnioskowanie .unnumbered}
+
+::: {.wzor}
+$$t = r\sqrt{\frac{n-2}{1-r^2}} \qquad df = n - 2 \qquad\qquad z_r = \frac{1}{2}\ln\frac{1+r}{1-r} \qquad SE(z_r) = \frac{1}{\sqrt{n-3}}$$
+$t$ — statystyka testu $H_0$: $\rho_P = 0$, $z_r$ — transformacja Fishera współczynnika $r$, $SE(z_r)$ — jej błąd standardowy. Granice $z_r \pm 1{,}96\,SE(z_r)$ przelicza się z powrotem na skalę $r$ funkcją tangens hiperboliczny.
+:::
+
+Funkcja `cor.test()` testuje $H_0$: $\rho_P = 0$ statystyką *t* z $n - 2$ stopniami swobody i podaje przedział ufności z transformacji Fishera; rozkład *t* statystyki zakłada niezależne pary z rozkładu normalnego [@rcoreteam2025]. W S02 $t$(`r w5_kt$parameter`) = `r .zi_pl(w5_kt$statistic)`, *p* `r .zi_p(w5_kt$p.value)`; transformacja daje $z_r$ = `r .zi_pl(w5_z, 3)` i $SE$ = `r .zi_pl(w5_sez, 3)`, a po przeliczeniu granic 95% przedział dla $\rho_P$ wynosi [`r .zi_pl(w5_kt$conf.int[1])`; `r .zi_pl(w5_kt$conf.int[2])`]. Niezależność dotyczy par różnych osób; kilka sesji jednej osoby wymaga modelu, w którym jednostką jest osoba.
+
+Test permutacyjny zachowuje oba zbiory wyników i niszczy wyłącznie powiązanie w parach: oceny zostają na miejscu, a czasy losowo przechodzą między osobami. Przy hipotezie niezależności każde przetasowanie jest równie prawdopodobne jak obserwowane parowanie [@winkler2014], a współczynnik obliczony po każdym przetasowaniu tworzy rozkład odniesienia [@hesterberg2015]. Po 2000 przetasowaniach środkowe 95% współczynników leży między `r .zi_pl(quantile(w5_perm, 0.025))` a `r .zi_pl(quantile(w5_perm, 0.975))`, a największa wartość bezwzględna wynosi `r .zi_pl(max(abs(w5_perm)))`. Obserwowane $r$ = `r .zi_pl(w5_r)` wykracza poza wszystkie losowania, więc *p*~perm~ = 1/2001 ≈ `r .zi_pl(w5_pperm, 4)`, najmniejsza wartość możliwa przy *B* = 2000 [@phipson2010].
+
+```{r w05-permutacja, echo=FALSE, fig.height=2.8, fig.cap=paste0("Rozkład r po 2000 losowych zmianach parowania oceny i czasu w S02. Oś pozioma: r po przetasowaniu czasów; oś pionowa: liczba losowań. Histogram skupia się wokół zera między około ", .zi_pl(min(w5_perm)), " a ", .zi_pl(max(w5_perm)), "; pomarańczowa linia przy r = ", .zi_pl(w5_r), " oznacza obserwowany współczynnik, leżący poza wszystkimi losowaniami.")}
+ggplot(data.frame(r = w5_perm), aes(r)) +
+  geom_histogram(bins = 40, fill = "grey70", colour = "white") +
+  geom_vline(xintercept = w5_r, colour = "#D55E00", linewidth = 1) +
+  labs(x = "r po losowej zmianie parowania", y = "Liczba losowań")
+```
+
+Bootstrap losuje ze zwracaniem całe wiersze, więc ocena osoby pozostaje połączona z jej czasem: permutacja celowo zmienia parowanie, a bootstrap zachowuje parowanie. Przedział percentylowy z 2000 prób bootstrapowych wynosi [`r .zi_pl(w5_ciboot[1])`; `r .zi_pl(w5_ciboot[2])`] i jest bliski przedziałowi z transformacji Fishera (rysunek \@ref(fig:w05-bootstrap)). Dla średniej przedział percentylowy w małych próbach jest zbyt wąski i ustępuje przedziałowi *t*, a przy skośnej populacji i większych próbach bywa od niego dokładniejszy [@hesterberg2015].
+
+```{r w05-bootstrap, echo=FALSE, fig.height=2.8, fig.cap=paste0("Bootstrap par: rozkład r w 2000 próbach bootstrapowych danych S02. Oś pozioma: r w próbie bootstrapowej; oś pionowa: liczba prób. Rozkład jest jednomodalny i skupiony wokół ", .zi_pl(w5_r), "; przerywane linie oznaczają granice 2,5% i 97,5%: ", .zi_pl(w5_ciboot[1]), " i ", .zi_pl(w5_ciboot[2]), ".")}
+ggplot(data.frame(r = w5_boot), aes(r)) +
+  geom_histogram(bins = 40, fill = "#56B4E9", colour = "white") +
+  geom_vline(xintercept = w5_ciboot, linetype = "dashed") +
+  labs(x = "r w próbie bootstrapowej", y = "Liczba prób")
+```
+
+## 7. Regresja prosta {#w05-regresja .unnumbered}
+
+::: {.wzor}
+$$Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i \qquad\qquad b_1 = \frac{s_{xy}}{s_x^2} = r\,\frac{s_y}{s_x} \qquad b_0 = \bar{y} - b_1\bar{x}$$
+$\beta_0 + \beta_1 x$ — średni czas osób z oceną $x$ w populacji, $\varepsilon_i$ — odchylenie osoby $i$ od średniej warunkowej, $b_0$ i $b_1$ — estymaty z próby, $\hat{y} = b_0 + b_1 x$ — prosta regresji.
+:::
+
+Regresja prosta opisuje średni czas osób o danej ocenie. Metoda najmniejszych kwadratów, stosowana przez funkcję `lm()`, wybiera prostą o najmniejszej sumie kwadratów reszt $e_i = y_i - \hat{y}_i$; suma kwadratów reszt mierzy błąd modelu [@rcoreteam2025; @gosssampson2025, s. 76]. W S02 nachylenie wynosi $b_1$ = $r\,s_y/s_x$ = `r .zi_pl(w5_r, 3)` · `r .zi_pl(w5_sy, 3)` / `r .zi_pl(w5_sx, 3)` = `r .zi_pl(w5_b[2])` minuty na punkt indeksu, 95% CI [`r .zi_pl(w5_cib[2, 1])`; `r .zi_pl(w5_cib[2, 2])`], a wyraz wolny $b_0$ = `r .zi_pl(w5_b[1])` minuty. Osoby różniące się o jeden punkt oceny mają w modelu średni czas krótszy o `r .zi_pl(-w5_b[2])` minuty.
+
+Wyraz wolny opisuje ocenę 0, leżącą poza skalą 1–5. Przesunięcie skali o 3 punkty ($x - 3$) zmienia wyraz wolny na `r .zi_pl(w5_b0c)` minuty, czyli przewidywany czas przy ocenie środkowej, a nachylenie pozostaje bez zmian. Prognozy dotyczą obserwowanego zakresu ocen; przenoszenie prostej poza zakres danych wymaga ostrożności [@schneider2010, s. 778].
+
+Statystyka testu nachylenia, $t$(`r w5_sm$df[2]`) = `r .zi_pl(w5_sm$coefficients[2, 3])`, równa się statystyce testu korelacji z części 6: w regresji prostej oba testy sprawdzają jedną hipotezę: zerowy związek liniowy. Nachylenie porównuje osoby o różnych ocenach i opisuje związek w danych; skutek zmiany oceny u jednej osoby wymaga eksperymentu, a istotny predyktor w badaniu obserwacyjnym pozostawia pytanie o przyczynowość otwarte [@schneider2010, s. 781].
+
+## 8. R², reszty i punkty wpływowe {#w05-reszty .unnumbered}
+
+::: {.wzor}
+$$R^2 = 1 - \frac{SSE}{SST} = 1 - \frac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2}$$
+$SSE$ — suma kwadratów reszt (błąd modelu), $SST$ — suma kwadratów odchyleń od średniej (błąd przewidywania wszystkich osób jedną średnią), $R^2$ — odsetek zmienności $y$ przypisany modelowi.
+:::
+
+$R^2$ porównuje błąd modelu z błędem przewidywania wszystkich osób jedną średnią. W S02 $SSE$ = `r .zi_pl(w5_sse, 1)`, a $SST$ = `r .zi_pl(w5_sst, 1)`, więc $R^2$ = `r .zi_pl(w5_sm$r.squared)`: model przypisuje ocenie `r .zi_pl(100 * w5_sm$r.squared, 0)`% zmienności czasu. W regresji prostej $R^2 = r^2$ [@schneider2010, s. 778; @gosssampson2025, s. 72], a odchylenie standardowe reszt $s_e$ = `r .zi_pl(w5_sm$sigma)` minuty opisuje typową odległość punktu od prostej.
+
+Wykres reszt wobec wartości przewidywanych sprawdza dwa założenia modelu: liniową średnią (reszty bez łuku) i stały rozrzut (reszty bez lejka). W S02 reszty są prawoskośne (skośność `r .zi_pl(w5_skos)`): `r sum(w5_e > 10)` osób ma czas dłuższy od przewidywanego o ponad 10 minut, a najniższa reszta wynosi `r .zi_pl(min(w5_e), 1)` minuty (rysunek \@ref(fig:w05-reszty)). Wykres kwantylowy reszt (rysunek \@ref(fig:w05-qq)) potwierdza długi prawy ogon.
+
+```{r w05-reszty, echo=FALSE, fig.height=2.8, fig.cap="Reszty wobec wartości przewidywanych w modelu czasu względem oceny (S02). Oś pozioma: przewidywany czas w minutach; oś pionowa: reszta w minutach; linia przerywana oznacza zero, a pomarańczowa krzywa wygładza reszty. Duże reszty dodatnie, do około 19 minut, występują częściej niż ujemne, a wygładzona krzywa leży blisko zera."}
+ggplot(data.frame(przewidywany = fitted(w5_m), reszta = w5_e), aes(przewidywany, reszta)) +
+  geom_point(alpha = 0.45, colour = "#0072B2") +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_smooth(method = "loess", formula = y ~ x, se = FALSE, colour = "#E69F00") +
+  labs(x = "Przewidywany czas [min]", y = "Reszta [min]")
+```
+
+```{r w05-qq, echo=FALSE, fig.height=2.8, fig.cap="Wykres kwantylowy reszt modelu czasu względem oceny (S02). Oś pozioma: kwantyle standardowego rozkładu normalnego; oś pionowa: reszty w minutach; prosta przechodzi przez kwartyle. Środkowe punkty leżą blisko prostej, a najwyższe reszty wznoszą się wyraźnie nad nią: rozkład reszt ma długi prawy ogon."}
+ggplot(data.frame(reszta = w5_e), aes(sample = reszta)) +
+  stat_qq(alpha = 0.5, colour = "#0072B2") +
+  stat_qq_line(colour = "#D55E00") +
+  labs(x = "Kwantyle rozkładu normalnego", y = "Reszta [min]")
+```
+
+Dźwignia opisuje nietypowe położenie osoby na osi *x*, reszta nietypowy czas względem prostej, a odległość Cooka łączy obie wielkości w miarę wpływu osoby na dopasowanie prostej [@cook1977]. W S02 największa dźwignia wynosi `r .zi_pl(max(w5_h), 3)` (osoba z indeksem `r .zi_pl(w5_pary$indeks[which.max(w5_h)], 1)`), a największa odległość Cooka `r .zi_pl(max(w5_cd), 3)` (indeks `r .zi_pl(w5_pary$indeks[which.max(w5_cd)], 1)`, czas `r .zi_pl(w5_pary$czas[which.max(w5_cd)], 1)` minuty): przy `r w5_n` parach każda osoba ma niewielki wpływ na położenie prostej.
+
+## 9. Przedział średniej a przedział predykcji {#w05-predykcja .unnumbered}
+
+::: {.wzor}
+$$\hat{y}_0 \pm t_{0{,}975;\,n-2}\, s_e\sqrt{\frac{1}{n} + \frac{(x_0 - \bar{x})^2}{\sum (x_i - \bar{x})^2}} \qquad\qquad \hat{y}_0 \pm t_{0{,}975;\,n-2}\, s_e\sqrt{1 + \frac{1}{n} + \frac{(x_0 - \bar{x})^2}{\sum (x_i - \bar{x})^2}}$$
+Lewy wzór — przedział ufności średniej warunkowej przy $x_0$; prawy — przedział predykcji czasu jednej nowej osoby z oceną $x_0$; $\hat{y}_0$ — wartość przewidywana, $s_e$ — odchylenie standardowe reszt.
+:::
+
+Dla oceny 4 model odpowiada na dwa pytania. Średni czas osób z oceną 4 wynosi `r .zi_pl(w5_pu[2, 1])` minuty, 95% CI [`r .zi_pl(w5_pu[2, 2])`; `r .zi_pl(w5_pu[2, 3])`], a czas jednej nowej osoby z oceną 4 mieści się w przedziale predykcji [`r .zi_pl(w5_pp[2, 2])`; `r .zi_pl(w5_pp[2, 3])`] minuty. Składnik 1 pod pierwiastkiem prawego wzoru opisuje zmienność osób, dlatego przedział predykcji jest wielokrotnie szerszy od przedziału średniej [@altman2015]. Ujemna dolna granica wynika z modelu z normalnym rozkładem błędów dla prawoskośnego czasu: model dobrze opisuje średni czas grupy osób, a czas pojedynczej osoby słabo (rysunek \@ref(fig:w05-pasma)).
+
+```{r w05-pasma, echo=FALSE, fig.height=3.4, fig.cap="Prosta regresji czasu względem oceny z dwoma pasmami (S02). Oś pozioma: indeks 1–5; oś pionowa: czas w minutach. Ciemne, wąskie pasmo wokół pomarańczowej prostej to 95% przedział średniego czasu; jasne, szerokie pasmo to 95% przedział predykcji czasu jednej osoby, którego dolna granica schodzi poniżej zera (linia kropkowana) przy wysokich ocenach."}
+ggplot() +
+  geom_ribbon(data = w5_pasma, aes(indeks, ymin = lp, ymax = up), fill = "#56B4E9", alpha = 0.25) +
+  geom_ribbon(data = w5_pasma, aes(indeks, ymin = lc, ymax = uc), fill = "#0072B2", alpha = 0.45) +
+  geom_point(data = w5_pary, aes(indeks, czas), alpha = 0.3) +
+  geom_line(data = w5_pasma, aes(indeks, fit), colour = "#D55E00", linewidth = 0.9) +
+  geom_hline(yintercept = 0, linetype = "dotted") +
+  labs(x = "Ocena użyteczności katalogu (indeks 1–5)", y = "Czas zadania [min]")
+```
+
+Model dla logarytmu czasu opisuje zmianę względną: każdy punkt oceny wiąże się z czasem krótszym o `r .zi_pl(-100 * (exp(w5_bl[2]) - 1), 1)`%, 95% CI [`r .zi_pl(-100 * (exp(w5_cil[2, 2]) - 1), 1)`%; `r .zi_pl(-100 * (exp(w5_cil[2, 1]) - 1), 1)`%], a przedział predykcji dla oceny 4 po przeliczeniu na minuty wynosi [`r .zi_pl(w5_ppl[2, 2])`; `r .zi_pl(w5_ppl[2, 3])`] i leży w całości nad zerem (rysunek \@ref(fig:w05-log)). Logarytm skraca prawy ogon czasu i przybliża reszty do rozkładu normalnego [@bland1996]: skośność reszt spada z `r .zi_pl(w5_skos)` do `r .zi_pl(w5_skos_log)`.
+
+```{r w05-log, echo=FALSE, fig.height=3.2, fig.cap="Przedziały predykcji czasu jednej osoby w dwóch modelach (S02). Oś pozioma: indeks 1–5; oś pionowa: czas w minutach. Jasne pasmo: model liniowy dla czasu, z dolną granicą schodzącą poniżej zera; pomarańczowe pasmo: model dla logarytmu czasu przeliczony na minuty, z granicami powyżej zera i szerszym zakresem przy niskich ocenach."}
+ggplot() +
+  geom_ribbon(data = w5_pasma, aes(indeks, ymin = lp, ymax = up), fill = "#56B4E9", alpha = 0.3) +
+  geom_ribbon(data = w5_pasma_log, aes(indeks, ymin = lp, ymax = up), fill = "#E69F00", alpha = 0.35) +
+  geom_point(data = w5_pary, aes(indeks, czas), alpha = 0.25) +
+  geom_line(data = w5_pasma_log, aes(indeks, fit), colour = "#D55E00", linewidth = 0.9) +
+  geom_hline(yintercept = 0, linetype = "dotted") +
+  labs(x = "Ocena użyteczności katalogu (indeks 1–5)", y = "Czas zadania [min]")
+```
+
+## 10. Zgodność poziomów i kalibracja samooceny {#w05-kalibracja .unnumbered}
+
+Korelacja opisuje zgodność kolejności osób, a zgodność poziomów wymaga innego rachunku: dwa pomiary mogą korelować prawie idealnie i różnić się o stałą wartość. Ocena zgodności dwóch pomiarów współczynnikiem korelacji wprowadza w błąd; podejście Blanda i Altmana analizuje różnice obu pomiarów wobec ich średniej [@bland1986].
+
+::: {.wzor}
+$$\bar{d} = \frac{1}{n}\sum_{i=1}^{n}(y_{1i} - y_{2i}) \qquad\qquad \text{granice zgodności: } \bar{d} \pm 1{,}96\, s_d$$
+$y_{1i}$ i $y_{2i}$ — dwa pomiary osoby $i$, $\bar{d}$ — średnia różnica (stałe przesunięcie), $s_d$ — odchylenie standardowe różnic. Granice obejmują różnice około 95% osób.
+:::
+
+Czas pierwszej i drugiej próby u osób z obiema próbami koreluje silnie: $r$ = `r .zi_pl(w5_r_zg)` dla `r nrow(w5_zg)` osób. Druga próba trwa jednak przeciętnie o `r .zi_pl(w5_bias)` minuty krócej, a granice zgodności wynoszą [`r .zi_pl(w5_bias - 1.96 * w5_sdr)`; `r .zi_pl(w5_bias + 1.96 * w5_sdr)`] minuty: różnica obu czasów u typowej osoby mieści się w przedziale szerokości ponad 10 minut (rysunek \@ref(fig:w05-zgodnosc)).
+
+```{r w05-zgodnosc, echo=FALSE, fig.height=3, fig.cap=paste0("Wykres Blanda–Altmana dla czasu pierwszej i drugiej próby, ", nrow(w5_zg), " osób z S02. Oś pozioma: średnia obu czasów w minutach; oś pionowa: różnica pierwsza minus druga próba. Linia ciągła przy ", .zi_pl(w5_bias), " minuty oznacza średnią różnicę, a linie przerywane granice zgodności ", .zi_pl(w5_bias - 1.96 * w5_sdr), " i ", .zi_pl(w5_bias + 1.96 * w5_sdr), "; rozrzut różnic rośnie wraz ze średnim czasem.")}
+ggplot(w5_zg, aes(srednia, roznica)) +
+  geom_point(alpha = 0.45, colour = "#0072B2") +
+  geom_hline(yintercept = w5_bias, colour = "#D55E00", linewidth = 0.8) +
+  geom_hline(yintercept = w5_bias + c(-1.96, 1.96) * w5_sdr, linetype = "dashed") +
+  labs(x = "Średnia czasu obu prób [min]", y = "Różnica: pierwsza − druga [min]")
+```
+
+Kalibracja samooceny stosuje rachunek różnic do deklaracji i wyniku zadania mierzonych we wspólnej jednostce, na przykład przewidywanego i uzyskanego odsetka poprawnych odpowiedzi. Przegląd 53 badań kompetencji informacyjnych opisuje słabą kalibrację: osoby o niskich wynikach przeceniają swoje umiejętności w samoocenie [@mahmood2016].
+
+Indeks S02 i powodzenie zadania mają różne jednostki, więc dane S02 opisują związek deklaracji z wykonaniem, a kalibrację w sensie zgodności poziomów zostawiają poza zasięgiem. Odsetek osób, które znalazły dokument, rośnie z oceną katalogu: `r .zi_pl(w5_sukces$procent[1], 1)`% przy indeksie do 2,5 (*n* = `r w5_sukces$n[1]`), `r .zi_pl(w5_sukces$procent[2], 1)`% przy indeksie od 2,5 do 3,5 (*n* = `r w5_sukces$n[2]`) i `r .zi_pl(w5_sukces$procent[3], 1)`% przy indeksie wyższym niż 3,5 (*n* = `r w5_sukces$n[3]`; rysunek \@ref(fig:w05-deklaracja)).
+
+```{r w05-deklaracja, echo=FALSE, fig.height=2.8, fig.cap=paste0("Odsetek osób, które znalazły dokument, w trzech przedziałach indeksu (S02). Oś pozioma: przedział oceny katalogu; oś pionowa: odsetek powodzeń; nad słupkami liczba powodzeń i liczebność przedziału. Odsetek rośnie z ", .zi_pl(w5_sukces$procent[1], 1), "% do ", .zi_pl(w5_sukces$procent[3], 1), "%.")}
+ggplot(w5_sukces, aes(poziom, procent)) +
+  geom_col(fill = "#009E73", width = 0.6) +
+  geom_text(aes(label = paste0(k, " z ", n)), vjust = -0.4, size = 3.4) +
+  scale_y_continuous(limits = c(0, 100), expand = expansion(mult = c(0, 0.05))) +
+  labs(x = "Indeks użyteczności katalogu", y = "Odsetek powodzeń [%]")
+```
+
+## 11. Korelacja a przyczynowość {#w05-przyczynowosc .unnumbered}
+
+Korelacja i regresja w badaniu obserwacyjnym opisują współwystępowanie. Związek oceny z czasem zgadza się z kilkoma wyjaśnieniami: łatwy katalog skraca czas, sprawne wyszukiwanie podnosi ocenę katalogu, a wspólna przyczyna, na przykład doświadczenie użytkownika, wpływa na obie zmienne [@rohrer2018; @gosssampson2025, s. 74]. Kontrola statystyczna trzeciej zmiennej wymaga założeń o strukturze przyczynowej: kontrola mediatora albo zmiennej będącej wspólnym skutkiem obu zmiennych może oddalić oszacowanie od efektu przyczynowego [@rohrer2018].
+
+::: {.wzor}
+$$Y_i = \beta_0 + \beta_1 x_i + \beta_2 g_i + \varepsilon_i$$
+$g_i$ — zmienna zero-jedynkowa: 1 dla doświadczonych, 0 dla nowych użytkowników (kategoria odniesienia), $\beta_1$ — różnica średniego czasu przy ocenie wyższej o 1 punkt w obrębie jednej grupy, $\beta_2$ — różnica średniego czasu między grupami przy równej ocenie.
+:::
+
+Regresja wieloraka uwzględnia kilka predyktorów naraz, a zmienną kategorialną koduje względem kategorii odniesienia [@schneider2010, s. 778]. Dodanie grupy zmienia nachylenie oceny z `r .zi_pl(w5_b[2])` do `r .zi_pl(w5_bm[2])` minuty na punkt; doświadczeni użytkownicy pracują przy równej ocenie przeciętnie o `r .zi_pl(-w5_bm[3])` minuty krócej (*p* `r .zi_p(w5_smm$coefficients[3, 4])`), a model wyjaśnia `r .zi_pl(100 * w5_smm$r.squared, 1)`% zmienności czasu. Predyktory słabo się pokrywają: współczynnik inflacji wariancji VIF wynosi `r .zi_pl(w5_vif[1])` [@fox2019]. Niewielka zmiana nachylenia oznacza, że doświadczenie wyjaśnia małą część związku oceny z czasem; model z grupą pozostaje modelem obserwacyjnym.
+
+## 12. Od tabeli do argumentu {#w05-argument .unnumbered}
+
+Akapit wyników podaje pytanie, liczbę par, wybraną miarę związku z przedziałem i nazwą metody, wynik testu oraz wynik permutacji z liczbą losowań; część regresyjna podaje nachylenie z jednostką i przedziałem, $R^2$ oraz ograniczenie wykryte w diagnostyce. Wielkość efektu i przedział należą do raportu obok wartości *p* [@wilkinson1999]. Brzmienie akapitów dla danych S02 podają wzorce zapisu w ćwiczeniu C08, a ćwiczenie C10 łączy wyniki w odpowiedź na pytanie badawcze projektu.
+
+Czasownik odpowiada projektowi badania. Zdanie „wyższa ocena współwystępowała z krótszym czasem” opisuje związek, a zdanie „wyższa ocena skracała czas” opisuje skutek i wymaga eksperymentu.
+
+Wybór najmniejszej wartości *p* spośród wielu sprawdzonych korelacji zwiększa ryzyko wyniku fałszywie dodatniego: swoboda w gromadzeniu, analizie i raportowaniu danych podnosi rzeczywisty odsetek wyników fałszywie dodatnich daleko ponad nominalne 5% [@simmons2011]. Pytania, reguły braków i metody zapisuje się przed analizą, a wynik eksploracyjny sprawdza się na nowych danych.
+
+## 13. Generatywna SI: kontrola argumentu {#w05-si .unnumbered}
+
+Generatywna SI wspiera kontrolę argumentu, jeżeli pracuje na tekście i liczbach autora, a autor sprawdza każdą odpowiedź. Sylabus przedmiotu odsyła do Zarządzenia nr 115 Rektora UJ z 27 listopada 2025 r. [@uj2025]: student oznacza części pracy wygenerowane z użyciem SI, na przykład przypisem, komentarzem albo treścią polecenia (§ 6 pkt 3), a zarządzenie wyklucza powoływanie się na odpowiedzi modeli językowych jako źródło wiedzy naukowej (§ 7 ust. 2). Odpowiedzialność za treść, liczby i źródła ponosi autor pracy (strona startowa książki i część P10 projektu).
+
+Przykład wadliwej interpretacji brzmi: „Ponieważ r = −0,32 i p < 0,001, prawdopodobieństwo braku efektu wynosi mniej niż 0,1%. Ocena katalogu skraca czas zadania o 32%, a większa próba wzmocni efekt”. Zdanie zawiera cztery błędy. Wartość *p* opisuje dane przy założeniu $H_0$ i pozostaje bez związku z prawdopodobieństwem hipotezy [@wasserstein2016]. Korelacja mierzy siłę związku na skali od −1 do 1, a zmianę czasu w minutach opisuje nachylenie. Projekt obserwacyjny opisuje współwystępowanie. Większa próba zwęża przedział, a wielkość efektu pozostaje cechą populacji.
+
+Poprawione brzmienie: „Ocena katalogu i czas zadania korelowały ujemnie, r(224) = −0,32, 95% CI [−0,43; −0,20]; w badaniu obserwacyjnym wynik opisuje współwystępowanie wyższej oceny z krótszym czasem”. Model językowy podaje także nieistniejące publikacje: w badaniu 636 opisów bibliograficznych z krótkich przeglądów literatury zmyślonych było 55% cytowań GPT-3.5 i 18% cytowań GPT-4 [@walters2023]. Każde źródło wskazane przez model sprawdza się w katalogu lub bazie przed użyciem.
+
+## 14. Rozszerzenia: wykresy wymienione w sylabusie {#w05-rozszerzenia .unnumbered}
+
+Przykłady rozszerzeń należą do materiału nieocenianego i odpowiadają na wykresy wymienione w sylabusie przedmiotu: wiolinowy, Pareto, kołowy, mapę cieplną, wykres wydajności i wykres reszt cząstkowych. Każdy przykład korzysta z danych S02. Odczyt każdego wykresu zaczyna się od jednostki obserwacji, licznika i mianownika, potem przechodzi do wielkości zakodowanej położeniem, polem lub kolorem, a kończy na wzorcu i jego ograniczeniu.
+
+### Wykres wiolinowy {#w05-wiolina .unnumbered}
+
+Wykres wiolinowy łączy wykres pudełkowy z oszacowaniem gęstości rozkładu [@hintze1998]: szerokie miejsce oznacza skupienie obserwacji, a pudełko w środku medianę i kwartyle. Czas nowych użytkowników ma medianę `r .zi_pl(w5_ogd$Mdn[1], 1)` minuty i długi górny ogon do `r .zi_pl(w5_ogd$max[1], 1)` minuty; czas doświadczonych ma medianę `r .zi_pl(w5_ogd$Mdn[2], 1)` minuty i maksimum `r .zi_pl(w5_ogd$max[2], 1)` minuty. Kształt wioliny zależy od szerokości wygładzania, dlatego wypukłości w małej grupie wymagają potwierdzenia w większych danych.
+
+```{r w05-wiolina, echo=FALSE, fig.height=3, fig.cap=paste0("Wykres wiolinowy czasu zadania w dwóch grupach S02 (nowi: n = ", w5_ogd$n[1], ", doświadczeni: n = ", w5_ogd$n[2], "). Oś pozioma: grupa; oś pionowa: czas w minutach. Wiolina nowych użytkowników jest wyższa i ma długi górny ogon; wiolina doświadczonych jest skupiona niżej; wąskie pudełka w środku podają medianę i kwartyle.")}
+ggplot(w5_czas, aes(grupa, czas)) +
+  geom_violin(fill = "#56B4E9", alpha = 0.5) +
+  geom_boxplot(width = 0.12, outlier.shape = NA) +
+  labs(x = NULL, y = "Czas zadania [min]")
+```
+
+### Wykres Pareto {#w05-pareto .unnumbered}
+
+Wykres Pareto porządkuje kategorie od najczęstszej i dodaje udział skumulowany. Kanały informacji w S02 zebrały `r sum(w5_kan$wskazania)` wskazań: `r w5_kan$kanal[1]` `r .zi_pl(w5_kan$proc_wskazan[1], 1)`%, `r w5_kan$kanal[2]` `r .zi_pl(w5_kan$proc_wskazan[2], 1)`%, `r w5_kan$kanal[3]` `r .zi_pl(w5_kan$proc_wskazan[3], 1)`% i `r w5_kan$kanal[4]` `r .zi_pl(w5_kan$proc_wskazan[4], 1)`%; dwa pierwsze kanały obejmują `r .zi_pl(w5_kan$skum[2], 1)`% wskazań. Mianownikiem są wskazania, a odsetki osób korzystających z każdego kanału podaje ćwiczenie C03.
+
+```{r w05-pareto, echo=FALSE, fig.height=3, fig.cap=paste0("Wykres Pareto kanałów informacji w S02, ", sum(w5_kan$wskazania), " wskazań. Oś pozioma: kanał od najczęstszego; oś pionowa: odsetek wskazań. Słupki maleją od ", .zi_pl(w5_kan$proc_wskazan[1], 1), "% do ", .zi_pl(w5_kan$proc_wskazan[4], 1), "%; punkty połączone linią przerywaną podają udział skumulowany: ", paste(.zi_pl(w5_kan$skum, 1), collapse = "; "), "%.")}
+w5_kan$kanal <- factor(w5_kan$kanal, levels = w5_kan$kanal)
+ggplot(w5_kan, aes(kanal)) +
+  geom_col(aes(y = proc_wskazan), fill = "#0072B2", width = 0.6) +
+  geom_line(aes(y = skum, group = 1), linetype = "dashed", colour = "#D55E00") +
+  geom_point(aes(y = skum), colour = "#D55E00", size = 2) +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = NULL, y = "Odsetek wskazań [%]")
+```
+
+### Wykres kołowy {#w05-kolo .unnumbered}
+
+Wykres kołowy przedstawia podział całości na rozłączne części. Status `r sum(w5_kat$Freq)` uczestników S02 tworzy cztery wycinki: `r paste0(w5_kat$status, " ", .zi_pl(w5_kat$procent, 1), "%", collapse = ", ")`. Porównanie kątów i pól jest mniej dokładne od porównania położenia na wspólnej osi, dlatego podobne udziały łatwiej odczytać z wykresu słupkowego albo punktowego [@cleveland1984].
+
+```{r w05-kolo, echo=FALSE, fig.height=3, out.width="60%", fig.cap=paste0("Status uczestników S02, ", sum(w5_kat$Freq), " osób. Koło podzielone na cztery wycinki z odsetkami: ", paste0(w5_kat$status, " ", .zi_pl(w5_kat$procent, 1), "%", collapse = "; "), ".")}
+ggplot(w5_kat, aes(x = "", y = Freq, fill = status)) +
+  geom_col(width = 1, colour = "white") +
+  coord_polar(theta = "y") +
+  geom_text(aes(label = paste0(.zi_pl(procent, 1), "%")), position = position_stack(vjust = 0.5), size = 3.4) +
+  labs(fill = NULL) +
+  theme_void()
+```
+
+### Mapa cieplna {#w05-mapa .unnumbered}
+
+Mapa cieplna koduje odsetek kolorem, dlatego każda komórka potrzebuje mianownika. Odsetek powodzeń w ośmiu komórkach grupy i statusu waha się od `r .zi_pl(min(w5_mapa$procent), 1)`% do `r .zi_pl(max(w5_mapa$procent), 1)`%; komórki o podobnym kolorze mają różne liczebności, a więc różną precyzję odsetka (rysunek \@ref(fig:w05-mapa)).
+
+```{r w05-mapa, echo=FALSE, fig.height=2.8, fig.cap=paste0("Mapa cieplna odsetka powodzeń w grupach i statusach S02. Kolumny: status; wiersze: nowi i doświadczeni; kolor odpowiada odsetkowi na skali 0–100%, a napis podaje liczbę powodzeń i liczebność komórki. Najjaśniejsza komórka ma ", .zi_pl(min(w5_mapa$procent), 1), "%, najciemniejsza ", .zi_pl(max(w5_mapa$procent), 1), "%.")}
+ggplot(w5_mapa, aes(status, grupa, fill = procent)) +
+  geom_tile(colour = "white") +
+  geom_text(aes(label = paste0(k, "/", n)), size = 3.4, colour = ifelse(w5_mapa$procent > 70, "white", "black")) +
+  scale_fill_gradient(low = "#eef5fb", high = "#0072B2", limits = c(0, 100), name = "% powodzeń") +
+  labs(x = NULL, y = NULL)
+```
+
+### Wykres wydajności usługi {#w05-wydajnosc .unnumbered}
+
+Wykres wydajności usługi łączy czas i powodzenie: krzywa podaje odsetek osób z zapisanym czasem, które znalazły dokument do danej minuty. Do 5 minut zadanie z powodzeniem kończy `r .zi_pl(w5_ukonczenie("nowi", 5), 1)`% nowych i `r .zi_pl(w5_ukonczenie("doświadczeni", 5), 1)`% doświadczonych użytkowników, a do 10 minut `r .zi_pl(w5_ukonczenie("nowi", 10), 1)`% i `r .zi_pl(w5_ukonczenie("doświadczeni", 10), 1)`%; po 30 minutach krzywe osiągają `r .zi_pl(w5_ukonczenie("nowi", 30), 1)`% i `r .zi_pl(w5_ukonczenie("doświadczeni", 30), 1)`%. Krzywa łączy oba wskaźniki wykonania, więc różnica grup wynika zarówno z czasu, jak i z odsetka powodzeń.
+
+```{r w05-wydajnosc, echo=FALSE, fig.height=3, fig.cap="Krzywa ukończenia zadania z powodzeniem w dwóch grupach S02. Oś pozioma: czas od początku zadania w minutach; oś pionowa: odsetek osób grupy, które znalazły dokument do danej chwili. Krzywa doświadczonych rośnie szybciej i kończy wyżej niż krzywa nowych użytkowników."}
+ggplot(w5_krzywa, aes(czas, procent, colour = grupa)) +
+  geom_step(linewidth = 0.9) +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = "Czas od początku zadania [min]", y = "Ukończone z powodzeniem [%]", colour = NULL)
+```
+
+### Wykres reszt cząstkowych {#w05-czastkowe .unnumbered}
+
+Wykres reszt cząstkowych przedstawia składnik jednego predyktora w modelu wielorakim: oś pionowa podaje resztę powiększoną o składnik oceny, $e_i + b_1 x_i$, a prosta ma nachylenie $b_1$ [@larsen1972]. W modelu czasu z oceną i grupą punkty układają się wokół prostej o nachyleniu `r .zi_pl(w5_bm[2])` minuty na punkt, a długi ogon dodatnich reszt z części 8 pozostaje w modelu wielorakim (rysunek \@ref(fig:w05-czastkowe)).
+
+```{r w05-czastkowe, echo=FALSE, fig.height=3, fig.cap=paste0("Reszty cząstkowe dla oceny w modelu czasu z oceną i grupą (S02). Oś pozioma: indeks 1–5; oś pionowa: reszta z dodanym składnikiem oceny w minutach. Pomarańczowa prosta ma nachylenie ", .zi_pl(w5_bm[2]), " minuty na punkt; punkty rozkładają się wokół prostej z długim ogonem dodatnich wartości.")}
+ggplot(w5_czastkowe, aes(indeks, reszta)) +
+  geom_point(alpha = 0.4, colour = "#0072B2") +
+  geom_abline(intercept = 0, slope = w5_bm[2], colour = "#D55E00", linewidth = 0.9) +
+  labs(x = "Ocena użyteczności katalogu (indeks 1–5)", y = "Reszta cząstkowa [min]")
+```
+
+## Podsumowanie {#w05-podsumowanie .unnumbered}
+
+Wykres punktowy poprzedza każdy współczynnik, ponieważ jedna wartość współczynnika opisuje różne układy punktów. W S02 wyższa ocena katalogu współwystępuje z krótszym czasem zadania: $r$ = `r .zi_pl(w5_r)`, a każdy punkt oceny wiąże się z czasem krótszym przeciętnie o `r .zi_pl(-w5_b[2])` minuty; test klasyczny, permutacja i bootstrap prowadzą do zgodnego wniosku. Model wyjaśnia `r .zi_pl(100 * w5_sm$r.squared, 0)`% zmienności czasu, dobrze opisuje średni czas grupy osób i przewiduje czas pojedynczej osoby z szerokim przedziałem, dlatego prawoskośny czas lepiej opisuje model dla logarytmu. Korelacja mierzy zgodność kolejności osób, a zgodność poziomów opisuje analiza różnic. Wniosek przyczynowy z danych obserwacyjnych wymaga jawnych założeń, a raport podaje efekt, przedział i ograniczenia.

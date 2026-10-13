@@ -1,12 +1,28 @@
+# (PART) Materiały {-}
+
 # Scenariusze {#scenariusze .unnumbered}
 
 Dwadzieścia scenariuszy opisuje problemy instytucji informacyjnych. Każdy zbiór ma ten sam układ zmiennych: dwie grupy, kategorię o trzech lub czterech poziomach, wiek, częstość korzystania, sześć pozycji skali Likerta z indeksem, czas zadania, czas drugiej próby po krótkiej instrukcji, powodzenie zadania i cztery kanały informacji. Dane powstają w skrypcie startowym z karty scenariusza i ID osoby: `dane_zi("S07", id = "s017")`. Dane są syntetyczne, a grupy wynikają z wyboru lub doświadczenia uczestników, więc różnice między grupami mają odczyt opisowy.
 
+Karty scenariuszy związanych z badaniami nauki o informacji podają lekturę kontekstową: badanie albo ramę kompetencji, która dotyczy problemu instytucji. Opis i dostęp każdej lektury zawiera [przewodnik po lekturach](#lektury).
+
 ```{r scenariusze-karty, echo=FALSE, results='asis'}
+lektury <- yaml::read_yaml("lektury.yml")
+# Opis lektury na karcie: pierwsze zdanie adnotacji z lektury.yml, z małej litery.
+opis_lektury <- function(x) {
+  a <- sub(";.*$", "", lektury[[x]]$adnotacja)
+  if (!grepl("\\b(r|s|w|in)\\.$", a)) a <- sub("\\.$", "", a)
+  paste0("@", x, " — ", tolower(substr(a, 1, 1)), substr(a, 2, nchar(a)))
+}
 for (s in names(.zi_katalog())) {
   k <- .zi_karta(s)
   cat("\n## ", k$id, ". ", k$tytul, " {- #", tolower(k$id), "}\n\n", sep = "")
   karta_zi(s, markdown = TRUE)
   cat("**Druga analiza w projekcie:** ", k$druga_analiza, ".\n\n", sep = "")
+  kontekst <- names(lektury)[vapply(lektury, function(l) k$id %in% unlist(l$scenariusze), TRUE)]
+  if (length(kontekst)) {
+    wiersz <- paste(vapply(kontekst, opis_lektury, ""), collapse = "; ")
+    cat("**Lektura kontekstowa:** ", wiersz, if (!grepl("\\.$", wiersz)) ".", "\n\n", sep = "")
+  }
 }
 ```

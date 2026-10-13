@@ -4,7 +4,11 @@ subtitle: "Zarządzanie informacją, studia II stopnia, UJ, 2026/27"
 author: "dr Marek Deja"
 date: "`r format(Sys.Date(), '%d.%m.%Y')`"
 site: bookdown::bookdown_site
-lang: pl
+lang: pl-PL
+bibliography: bibliografia.yaml
+csl: apa-pl.csl
+link-citations: true
+nocite: '@*'
 description: "Ćwiczenia, projekt i wykłady części ilościowej przedmiotu Projektowanie badań naukowych i analiz instytucjonalnych dla zarządzania informacją."
 ---
 
@@ -41,20 +45,32 @@ oddaj_zadanie(1)
 
 Funkcja `oddaj_zadanie()` zapisuje otwarte pliki, tworzy PDF w nowej sesji R, otwiera go do sprawdzenia i po potwierdzeniu wysyła do folderu ćwiczenia w Nextcloud UJ. Poprawioną wersję oddajesz tym samym poleceniem; nowy plik trafia obok poprzedniego. Instalację w sali, w Posit Cloud i na własnym komputerze opisuje rozdział [Instalacja](#instalacja).
 
+## Wykłady i źródła {-}
+
+Wykłady są rozdziałami książki: każdy prowadzi przez pojęcia, wzory i wykresy na danych scenariusza S02, a procedurę w R zawierają rozdziały ćwiczeń. Twierdzenia metodyczne w wykładach i ćwiczeniach mają źródła: kliknięcie cytowania otwiera dymek z pełnym opisem, lista „Źródła rozdziału” zamyka każdy rozdział, a rozdział [Bibliografia](#bibliografia) zawiera przewodnik po lekturach z informacją o dostępie oraz pliki do importu w programie Zotero.
+
+| Wykład | Termin | Treść | Ćwiczenia |
+|:--|:--|:--|:--|
+| [W01](#w01) Projekt badania i pomiar | 06.10.2026 | pytanie badawcze, konstrukt i wskaźnik, skale, próba, projekty badań, estymanda, moc i liczebność próby | C01, C09 |
+| [W02](#w02) Język danych, rozkład i pomiar | 13.10.2026 | rozkład, miary położenia i rozproszenia, wykresy, przygotowanie danych, skale postaw, trafność i rzetelność | C02, C03 |
+| [W03](#w03) Losowość, estymacja i dwa tory wnioskowania | 20.10.2026 | rozkład estymatora, błąd standardowy, przedział ufności, test *t*, wartość *p*, bootstrap i permutacje | C04 |
+| [W04](#w04) Porównania grup i tabele krzyżowe | 27.10.2026 | test Welcha, efekty, rangi, analiza wariancji, test $\chi^2$, miary związku i ryzyka | C05–C07 |
+| [W05](#w05) Korelacja, regresja i raport ilościowy | 03.11.2026 | korelacja, regresja, reszty i predykcja, od wyniku do argumentu, generatywna SI | C08, C10 |
+
 ## Plan zajęć {-}
 
 | Ćwiczenie | Treść | Wykład |
 |:--|:--|:--|
-| [C01](#c01) Dane badania i pierwszy opis | zmienne i skale, liczebności i odsetki, średnia, mediana i odchylenie standardowe w grupach, pierwsze wykresy | W01 |
-| [C02](#c02) Rozkład i przygotowanie danych | braki, wartości odstające i dziennik przygotowania, miary rozkładu, histogram, wykres pudełkowy, normalność | W02 |
-| [C03](#c03) Pomiar: skala Likerta i indeks | rozkład pozycji, odwrócenie pozycji, indeks, rzetelność, samoocena a wykonanie, pytanie wielokrotnego wyboru | W02 |
-| [C04](#c04) Estymacja i test jednej próby | błąd standardowy, przedział ufności, bootstrap, test *t* i test permutacyjny jednej średniej, *d* Cohena | W03 |
-| [C05](#c05) Dwie grupy i pomiar powtórzony | test Welcha, *g* Hedgesa, permutacja, test Manna–Whitneya, test *t* i Wilcoxona dla par | W04 |
-| [C06](#c06) Wiele grup | analiza wariancji, test Welcha dla wielu grup, porównania post hoc, test Kruskala–Wallisa, $\eta^2$ i $\omega^2$ | W04 |
-| [C07](#c07) Tabele krzyżowe | procenty warunkowe, test $\chi^2$, test Fishera i Monte Carlo, reszty, *V* Craméra, różnica i iloraz ryzyka, test McNemara | W04 |
-| [C08](#c08) Korelacja i regresja | wykres punktowy, *r* Pearsona i $\rho$ Spearmana, permutacja i bootstrap, regresja liniowa, reszty i predykcja | W05 |
-| [C09](#c09) Projekt: plan i opis danych | wybór scenariusza, pytania i hipotezy, plan badania, przygotowanie i opis własnych danych | W01, W05 |
-| [C10](#c10) Projekt: analizy i interpretacja | dwie analizy, interpretacja, ograniczenia, generatywna SI w argumentacji | W05 |
+| [C01](#c01) Dane badania i pierwszy opis | zmienne i skale, liczebności i odsetki, średnia, mediana i odchylenie standardowe w grupach, pierwsze wykresy | [W01](#w01) |
+| [C02](#c02) Rozkład i przygotowanie danych | braki, wartości odstające i dziennik przygotowania, miary rozkładu, histogram, wykres pudełkowy, normalność | [W02](#w02) |
+| [C03](#c03) Pomiar: skala Likerta i indeks | rozkład pozycji, odwrócenie pozycji, indeks, rzetelność, samoocena a wykonanie, pytanie wielokrotnego wyboru | [W02](#w02) |
+| [C04](#c04) Estymacja i test jednej próby | błąd standardowy, przedział ufności, bootstrap, test *t* i test permutacyjny jednej średniej, *d* Cohena | [W03](#w03) |
+| [C05](#c05) Dwie grupy i pomiar powtórzony | test Welcha, *g* Hedgesa, permutacja, test Manna–Whitneya, test *t* i Wilcoxona dla par | [W04](#w04) |
+| [C06](#c06) Wiele grup | analiza wariancji, test Welcha dla wielu grup, porównania post hoc, test Kruskala–Wallisa, $\eta^2$ i $\omega^2$ | [W04](#w04) |
+| [C07](#c07) Tabele krzyżowe | procenty warunkowe, test $\chi^2$, test Fishera i Monte Carlo, reszty, *V* Craméra, różnica i iloraz ryzyka, test McNemara | [W04](#w04) |
+| [C08](#c08) Korelacja i regresja | wykres punktowy, *r* Pearsona i $\rho$ Spearmana, permutacja i bootstrap, regresja liniowa, reszty i predykcja | [W05](#w05) |
+| [C09](#c09) Projekt: plan i opis danych | wybór scenariusza, pytania i hipotezy, plan badania, przygotowanie i opis własnych danych | [W01](#w01), [W05](#w05) |
+| [C10](#c10) Projekt: analizy i interpretacja | dwie analizy, interpretacja, ograniczenia, generatywna SI w argumentacji | [W05](#w05) |
 
 ## Ocena i terminy {-}
 
@@ -62,7 +78,7 @@ Każde z zadań Z01–Z10 ma 10 punktów. Zadania stanowią 50% oceny, projekt i
 
 ## Generatywna SI {-}
 
-Generatywna SI może pomagać w zrozumieniu i poprawianiu kodu. Interpretację wyników i wnioski piszesz samodzielnie. Fragmenty kodu powstałe z pomocą SI oznaczasz i opisujesz zakres wsparcia, a działanie kodu sprawdzasz w R. Źródłem naukowym są rzeczywiste publikacje, a odpowiedź modelu wymaga sprawdzenia. Do narzędzi SI nie przekazujesz danych osobowych ani haseł. Obowiązuje [Zarządzenie nr 115 Rektora UJ z 27 listopada 2025 r.](https://bip.uj.edu.pl/documents/1384597/159749054/zarz_115_2025.pdf)
+Zasady korzystania z narzędzi SI w dydaktyce określa Zarządzenie nr 115 Rektora UJ z 27 listopada 2025 r. [@uj2025]. W kursie generatywna SI może pomagać w zrozumieniu pojęć i poprawianiu kodu; interpretację wyników i wnioski piszesz samodzielnie, a działanie kodu sprawdzasz w R. Części pracy powstałe z pomocą SI oznaczasz, na przykład komentarzem, przypisem albo treścią polecenia (§ 6 pkt 3); kurs wymaga też opisu zakresu wsparcia. Źródłem naukowym są rzeczywiste publikacje: zarządzenie wyklucza powoływanie się na odpowiedzi modeli językowych jako źródło wiedzy naukowej (§ 7 ust. 2). Dane wprowadzane do narzędzi SI podlegają zasadom poufności i ochrony danych osobowych (§ 3 ust. 2 pkt 3), dlatego do narzędzi trafiają wyłącznie dane syntetyczne kursu, bez danych osobowych i haseł.
 
 ## Dane {-}
 

@@ -1,16 +1,21 @@
-/* Ramki książki kursu: start zajęć, wzór, wzorzec zapisu i przejście do zadań. */
-.start, .wzor, .apa, .challenge, .uwaga {
+/* Ramki książki kursu: start zajęć, lektura, wzór, wzorzec zapisu i przejście do zadań. */
+.start, .lektura, .wzor, .apa, .challenge, .uwaga {
   border-left: 4px solid;
   border-radius: 4px;
   padding: 0.7rem 1rem;
   margin: 1.2rem 0;
 }
 .start { border-color: #0072B2; background: #eef5fb; }
+.lektura { border-color: #56B4E9; background: #f0f8fd; }
 .wzor { border-color: #6c757d; background: #f5f6f7; }
 .apa { border-color: #009E73; background: #ecf7f2; }
 .challenge { border-color: #E69F00; background: #fdf5e6; }
 .uwaga { border-color: #CC79A7; background: #fbf0f6; }
-.start > :last-child, .wzor > :last-child, .apa > :last-child,
+.start > :last-child, .lektura > :last-child, .wzor > :last-child, .apa > :last-child,
 .challenge > :last-child, .uwaga > :last-child { margin-bottom: 0; }
 .apa blockquote { border-left: none; margin: 0.4rem 0; padding: 0 0 0 0.6rem; font-style: normal; }
 table { font-size: 0.92rem; }
+/* Cytowanie z dymkiem pełnego opisu: kursor wskazuje element do kliknięcia. */
+.citation a[data-toggle="popover"] { cursor: pointer; }
+.popover { max-width: 32rem; }
+h2#zrodla { font-size: 1.3rem; margin-top: 2rem; }

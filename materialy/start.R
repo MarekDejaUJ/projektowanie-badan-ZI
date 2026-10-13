@@ -14,7 +14,7 @@ if (getRversion() < "4.2.0") {
   stop("Kurs wymaga R w wersji 4.2 lub nowszej. Zainstaluj aktualne R z https://cran.r-project.org.")
 }
 
-.zi_wersja <- "3.0.0"
+.zi_wersja <- "3.1.0"
 .zi_adres <- getOption("zi.adres", "https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/")
 .zi_rocznik <- "2026-27"
 

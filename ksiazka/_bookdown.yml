@@ -12,6 +12,11 @@ language:
 rmd_files:
   - index.Rmd
   - instalacja.Rmd
+  - w01.Rmd
+  - w02.Rmd
+  - w03.Rmd
+  - w04.Rmd
+  - w05.Rmd
   - c01.Rmd
   - c02.Rmd
   - c03.Rmd
@@ -23,6 +28,6 @@ rmd_files:
   - c09.Rmd
   - c10.Rmd
   - projekt.Rmd
-  - wyklady.Rmd
   - scenariusze.Rmd
   - sciaga.Rmd
+  - bibliografia.Rmd

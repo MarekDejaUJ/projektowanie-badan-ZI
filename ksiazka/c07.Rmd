@@ -4,6 +4,10 @@
 **Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, potem `pobierz_szablon(7)`. **Oddanie:** `oddaj_zadanie(7)`. **Wykład:** W04.
 :::
 
+::: {.lektura}
+**Lektura:** @king2009 [rozdz. 19]; @gosssampson2025 [s. 145–152].
+:::
+
 Powodzenie zadania jest zmienną kategorialną: dokument znaleziono albo nie. Ćwiczenie C07 sprawdza, czy odsetek powodzeń zależy od doświadczenia użytkownika i od jego statusu, oraz czy zmienia się w drugiej próbie po instrukcji. Narzędziem jest tabela krzyżowa: procenty warunkowe, test $\chi^2$, miary siły i kierunku związku oraz test McNemara dla par.
 
 ```{r c07-dane, include=FALSE}
@@ -18,7 +22,7 @@ ch2 <- chisq.test(tab2)
 set.seed(2026)
 mc2 <- chisq.test(tab2, simulate.p.value = TRUE, B = 4999)
 tab3 <- table(przed = dane$powodzenie, po = dane$powodzenie_po)
-mn <- mcnemar.test(tab3)
+mn <- mcnemar.test(tab3, correct = FALSE)
 ```
 
 ## LEARN 1. Tabela krzyżowa i procenty warunkowe {#c07-tabela .unnumbered}
@@ -39,11 +43,11 @@ Dokument znalazło `r .zi_pl(100 * proc[1, "tak"], 1)`% nowych i `r .zi_pl(100 *
 
 ## LEARN 2. Test χ² niezależności i V Craméra {#c07-chi .unnumbered}
 
-Test $\chi^2$ porównuje liczebności obserwowane z liczebnościami oczekiwanymi przy niezależności zmiennych, czyli przy tym samym odsetku powodzeń w obu grupach. Hipoteza zerowa $H_0$ mówi, że powodzenie nie zależy od grupy.
+Test $\chi^2$ porównuje liczebności obserwowane z liczebnościami oczekiwanymi [@pearson1900]; w tabeli krzyżowej liczebności oczekiwane wynikają z niezależności zmiennych, czyli z tego samego odsetka powodzeń w obu grupach [@kim2017]. Hipoteza zerowa $H_0$ mówi, że powodzenie nie zależy od grupy. Liczbę stopni swobody tabeli $r \times c$, $(r-1)(c-1)$, ustalił @fisher1922.
 
 ::: {.wzor}
 $$E_{ij} = \frac{R_i \cdot C_j}{N} \qquad \chi^2 = \sum_{i,j}\frac{(O_{ij} - E_{ij})^2}{E_{ij}} \qquad df = (r-1)(c-1) \qquad V = \sqrt{\frac{\chi^2}{N(\min(r,c)-1)}}$$
-$O_{ij}$ i $E_{ij}$ — liczebność obserwowana i oczekiwana w komórce, $R_i$ i $C_j$ — sumy wiersza i kolumny, $N$ — liczba osób, $r$ i $c$ — liczba wierszy i kolumn. *V* Craméra przyjmuje wartości od 0 do 1; dla tabeli 2 × 2 progi wynoszą 0,1 — mały, 0,3 — średni, 0,5 — duży związek. Test jest wiarygodny, gdy wszystkie $E_{ij} \geq 5$.
+$O_{ij}$ i $E_{ij}$ — liczebność obserwowana i oczekiwana w komórce, $R_i$ i $C_j$ — sumy wiersza i kolumny, $N$ — liczba osób, $r$ i $c$ — liczba wierszy i kolumn. *V* Craméra przyjmuje wartości od 0 do 1 [@cramer1946]; dla tabeli 2 × 2 równa się współczynnikowi *w* Cohena, a progi wynoszą 0,1 — mały, 0,3 — średni, 0,5 — duży związek [@cohen1992; @kim2017]. Przybliżenie rozkładem $\chi^2$ jest dobre, gdy liczebności oczekiwane są dostatecznie duże: w tabelach większych niż 2 × 2 częsta reguła wymaga $E_{ij} \geq 5$ w co najmniej 80% komórek i $E_{ij} \geq 1$ we wszystkich [@cochran1954; @kim2017].
 :::
 
 ```{r c07-chi}
@@ -57,7 +61,7 @@ Wszystkie liczebności oczekiwane przekraczają 5 (najmniejsza: `r .zi_pl(min(ch
 
 ## LEARN 3. Różnica proporcji, iloraz ryzyka i iloraz szans {#c07-ryzyko .unnumbered}
 
-*V* Craméra opisuje siłę związku bez kierunku. Kierunek i wielkość praktyczną opisują trzy miary porównujące odsetek powodzeń $p_1$ w pierwszej grupie z odsetkiem $p_2$ w drugiej:
+*V* Craméra opisuje siłę związku bez kierunku. Kierunek i wielkość praktyczną opisują trzy miary: różnica proporcji $RD = p_1 - p_2$ oraz dwa ilorazy porównujące odsetek powodzeń $p_1$ w pierwszej grupie z odsetkiem $p_2$ w drugiej, iloraz ryzyka *RR* i iloraz szans *OR* [@ranganathan2015]:
 
 ::: {.wzor}
 $$RD = p_1 - p_2 \qquad\qquad RR = \frac{p_1}{p_2} \qquad\qquad OR = \frac{p_1/(1-p_1)}{p_2/(1-p_2)}$$
@@ -69,11 +73,11 @@ miary_ryzyka(tabela)
 prop.test(tabela[, c("tak", "nie")], correct = FALSE)
 ```
 
-Nowi użytkownicy znajdowali dokument o `r .zi_pl(-100 * mr$wartosc[3], 1)` punktu procentowego rzadziej niż doświadczeni (*RD* = `r .zi_pl(mr$wartosc[3])`, 95% CI [`r .zi_pl(mr$dolna_95[3])`; `r .zi_pl(mr$gorna_95[3])`]). Odsetek powodzeń nowych stanowił `r .zi_pl(100 * mr$wartosc[4], 0)`% odsetka doświadczonych (*RR* = `r .zi_pl(mr$wartosc[4])`), a iloraz szans wyniósł *OR* = `r .zi_pl(mr$wartosc[5])`: szansa powodzenia nowego użytkownika była `r .zi_pl(1 / mr$wartosc[5], 1)` razy mniejsza. Iloraz szans oddala się od 1 bardziej niż iloraz ryzyka, dlatego dla decyzji biblioteki najczytelniejsza jest różnica w punktach procentowych.
+Nowi użytkownicy znajdowali dokument o `r .zi_pl(-100 * mr$wartosc[3], 1)` punktu procentowego rzadziej niż doświadczeni (*RD* = `r .zi_pl(mr$wartosc[3])`, 95% CI [`r .zi_pl(mr$dolna_95[3])`; `r .zi_pl(mr$gorna_95[3])`]). Odsetek powodzeń nowych stanowił `r .zi_pl(100 * mr$wartosc[4], 0)`% odsetka doświadczonych (*RR* = `r .zi_pl(mr$wartosc[4])`), a iloraz szans wyniósł *OR* = `r .zi_pl(mr$wartosc[5])`: szansa powodzenia nowego użytkownika była `r .zi_pl(1 / mr$wartosc[5], 1)` razy mniejsza. Przy częstym zdarzeniu, takim jak powodzenie zadania, iloraz szans oddala się od 1 bardziej niż iloraz ryzyka [@ranganathan2015], dlatego dla decyzji biblioteki najczytelniejsza jest różnica w punktach procentowych.
 
 ## LEARN 4. Tabela r × c, reszty i test Monte Carlo {#c07-reszty .unnumbered}
 
-Tabela status × powodzenie ma cztery wiersze. Reszty standaryzowane wskazują komórki, w których liczebność obserwowana odbiega od oczekiwanej: wartości powyżej 2 lub poniżej −2 oznaczają wyraźne odchylenie. Przy małych liczebnościach oczekiwanych test Monte Carlo losuje tabele o tych samych sumach wierszy i kolumn i liczy *p* z rozkładu wylosowanych wartości $\chi^2$; dla tabeli 2 × 2 tę samą rolę pełni dokładny test Fishera (`fisher.test()`).
+Tabela status × powodzenie ma cztery wiersze. Reszty standaryzowane (`stdres`) wskazują komórki, w których liczebność obserwowana odbiega od oczekiwanej: w tabeli o niewielu komórkach wyraźne odchylenie oznacza moduł reszty powyżej około 2, a w tabeli o wielu komórkach powyżej około 3 albo powyżej progu z poprawką Bonferroniego [@sharpe2015]. Przy małych liczebnościach oczekiwanych wartość *p* daje test Monte Carlo [@hope1968]: funkcja `chisq.test(simulate.p.value = TRUE)` losuje tabele o tych samych sumach wierszy i kolumn i liczy *p* z rozkładu wylosowanych wartości $\chi^2$ [@rcoreteam2025]; dla tabeli 2 × 2 tę samą rolę pełni dokładny test Fishera (`fisher.test()`) [@kim2017].
 
 ```{r c07-rc}
 tabela_status <- table(dane$kategoria, dane$powodzenie)
@@ -89,16 +93,16 @@ Odsetek powodzeń w grupach statusu waha się od `r .zi_pl(100 * min(prop.table(
 
 ## LEARN 5. Test McNemara: ta sama osoba dwa razy {#c07-mcnemar .unnumbered}
 
-Powodzenie w pierwszej i drugiej próbie dotyczy tych samych osób, dlatego porównanie wymaga testu dla par pomiarów. Test McNemara porównuje osoby, które zmieniły wynik: $b$ — powodzenie tylko w pierwszej próbie, $c$ — powodzenie tylko w drugiej.
+Powodzenie w pierwszej i drugiej próbie dotyczy tych samych osób, dlatego porównanie wymaga testu dla par pomiarów. Test McNemara porównuje osoby, które zmieniły wynik: $b$ — powodzenie tylko w pierwszej próbie, $c$ — powodzenie tylko w drugiej [@mcnemar1947; @pemburysmith2020]. Funkcja `mcnemar.test()` domyślnie odejmuje 1 od $|b - c|$, czyli stosuje poprawkę na ciągłość [@rcoreteam2025]. Kurs stosuje wersję klasyczną (`correct = FALSE`), którą @pemburysmith2020 dopuszczają do rutynowego użycia: przy małych próbach jej błąd I rodzaju nieznacznie przekracza poziom nominalny (w symulacjach najwyżej 5,37% przy 5%), a wersja z poprawką ma błąd I rodzaju wyraźnie poniżej nominalnego i mniejszą moc. Jako wersję preferowaną @pemburysmith2020 zalecają test mid-P.
 
 ::: {.wzor}
-$$\chi^2 = \frac{(|b - c| - 1)^2}{b + c} \qquad df = 1$$
+$$\chi^2 = \frac{(b - c)^2}{b + c} \qquad df = 1$$
 :::
 
 ```{r c07-mcnemar}
 pary <- table(przed = dane$powodzenie, po = dane$powodzenie_po)
 pary
-mcnemar.test(pary)
+mcnemar.test(pary, correct = FALSE)
 ```
 
 W parach pomiarów zmiana z „nie” na „tak” wystąpiła `r tab3["nie", "tak"]` razy (*c*), a zmiana z „tak” na „nie” `r tab3["tak", "nie"]` razy (*b*). Przewaga zmian na lepsze jest istotna: $\chi^2$(1) = `r .zi_pl(mn$statistic)`, *p* `r .zi_p(mn$p.value)`. Odsetek powodzeń wzrósł z `r .zi_pl(100 * mean(dane$powodzenie == "tak"), 1)`% do `r .zi_pl(100 * mean(dane$powodzenie_po == "tak"), 1)`%.

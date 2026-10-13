@@ -4,6 +4,10 @@
 **Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, potem `pobierz_szablon(8)`. **Oddanie:** `oddaj_zadanie(8)`. **Wykład:** W05.
 :::
 
+::: {.lektura}
+**Lektura:** @king2009 [rozdz. 8–10, 17]; @gosssampson2025 [s. 69–87].
+:::
+
 Czy osoby, które wyżej oceniają katalog, krócej wykonują zadanie? Czy częstsze korzystanie z biblioteki idzie w parze z wyższą oceną? Ćwiczenie C08 opisuje związek dwóch zmiennych liczbowych wykresem punktowym i współczynnikiem korelacji, sprawdza go testem klasycznym i permutacyjnym, a następnie buduje prosty model regresji, który przewiduje czas zadania na podstawie oceny katalogu.
 
 ```{r c08-dane, include=FALSE}
@@ -29,7 +33,7 @@ kw <- cor.test(dane$wiek, dane$czas)
 
 ## LEARN 1. Wykres punktowy {#c08-wykres .unnumbered}
 
-Wykres punktowy przedstawia każdą osobę jako punkt o dwóch współrzędnych. Odczyt obejmuje kierunek związku (rosnący, malejący), jego kształt (prostoliniowy albo zakrzywiony), rozrzut punktów wokół trendu i punkty odległe.
+Wykres punktowy przedstawia każdą osobę jako punkt o dwóch współrzędnych. Odczyt obejmuje kierunek związku (rosnący, malejący), jego kształt (prostoliniowy albo zakrzywiony), rozrzut punktów wokół trendu i punkty odległe. Wykres poprzedza współczynnik korelacji, ponieważ zbiory o tym samym *r* mogą mieć zupełnie różny kształt związku [@anscombe1973].
 
 ```{r c08-wykres, fig.height=3.2}
 ggplot(dane, aes(x = indeks, y = czas)) +
@@ -42,11 +46,11 @@ Punkty opadają od lewej do prawej: osoby z wyższą oceną katalogu częściej 
 
 ## LEARN 2. Korelacja Pearsona i Spearmana {#c08-korelacja .unnumbered}
 
-Współczynnik Pearsona mierzy siłę związku prostoliniowego dwóch zmiennych ilościowych. Współczynnik Spearmana jest korelacją Pearsona obliczoną na rangach; mierzy związek monotoniczny i nadaje się do zmiennych porządkowych, takich jak częstość korzystania 1–5.
+Współczynnik Pearsona mierzy siłę związku prostoliniowego dwóch zmiennych ilościowych [@pearson1896]. Współczynnik Spearmana jest korelacją Pearsona obliczoną na rangach [@spearman1904]; mierzy związek monotoniczny i nadaje się do zmiennych porządkowych, takich jak częstość korzystania 1–5.
 
 ::: {.wzor}
 $$r = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{(n-1)\,s_x s_y} \qquad\qquad t = \frac{r\sqrt{n-2}}{\sqrt{1-r^2}} \quad df = n - 2$$
-$r$ od −1 do 1: znak podaje kierunek, wartość bezwzględna siłę (0,1 — słaby, 0,3 — umiarkowany, 0,5 — silny związek). $\rho$ (rho) Spearmana ma tę samą skalę. $r^2$ to odsetek wspólnej zmienności.
+$r$ od −1 do 1: znak podaje kierunek, wartość bezwzględna siłę (umowne progi: 0,1 — mały, 0,3 — średni, 0,5 — duży związek [@cohen1992]). $\rho$ (rho) Spearmana ma tę samą skalę. $r^2$ to odsetek wspólnej zmienności.
 :::
 
 ```{r c08-cor}
@@ -54,11 +58,11 @@ cor.test(dane$indeks, dane$czas)
 cor.test(dane$czestosc, dane$indeks, method = "spearman", exact = FALSE)
 ```
 
-Ocena katalogu i czas zadania są umiarkowanie, ujemnie skorelowane: *r*(`r kp$parameter`) = `r .zi_pl(kp$estimate)`, *p* `r .zi_p(kp$p.value)`, 95% CI [`r .zi_pl(kp$conf.int[1])`; `r .zi_pl(kp$conf.int[2])`]; ocena i czas mają `r .zi_pl(100 * kp$estimate^2, 0)`% wspólnej zmienności. Częstość korzystania wiąże się z oceną słabo i dodatnio: $\rho$ = `r .zi_pl(ks$estimate)`, *p* `r .zi_p(ks$p.value)`. Korelacja opisuje współwystępowanie: wynik zgadza się zarówno z wpływem oceny na czas, jak i z wpływem trudności zadania na ocenę.
+Ocena katalogu i czas zadania są umiarkowanie, ujemnie skorelowane: *r*(`r kp$parameter`) = `r .zi_pl(kp$estimate)`, *p* `r .zi_p(kp$p.value)`, 95% CI [`r .zi_pl(kp$conf.int[1])`; `r .zi_pl(kp$conf.int[2])`]; ocena i czas mają `r .zi_pl(100 * kp$estimate^2, 0)`% wspólnej zmienności. Częstość korzystania wiąże się z oceną słabo i dodatnio: $\rho$ = `r .zi_pl(ks$estimate)`, *p* `r .zi_p(ks$p.value)`. Korelacja opisuje współwystępowanie: wynik zgadza się zarówno z wpływem oceny na czas, jak i z wpływem trudności zadania na ocenę oraz ze wspólną przyczyną obu zmiennych [@rohrer2018].
 
 ## LEARN 3. Permutacja i bootstrap dla korelacji {#c08-losowanie .unnumbered}
 
-Test permutacyjny tasuje wartości czasu względem ocen, co niszczy związek, i sprawdza, jak często losowe *r* jest co najmniej tak odległe od zera jak obserwowane. Bootstrap losuje ze zwracaniem całe pary (ocena, czas) i daje przedział dla *r* bez założenia normalności.
+Test permutacyjny tasuje wartości czasu względem ocen, co niszczy związek, i sprawdza, jak często losowe *r* jest co najmniej tak odległe od zera jak obserwowane [@winkler2014]. Bootstrap losuje ze zwracaniem całe pary (ocena, czas) i daje przedział dla *r* bez założenia normalności [@hesterberg2015].
 
 ```{r c08-perm, fig.height=2.8}
 set.seed(2026)
@@ -82,7 +86,7 @@ Po przetasowaniu korelacje leżą między około `r .zi_pl(quantile(r_perm$stat,
 
 ## LEARN 4. Regresja liniowa {#c08-regresja .unnumbered}
 
-Regresja opisuje, jak zmienia się przeciętna wartość zmiennej zależnej przy zmianie zmiennej objaśniającej o jedną jednostkę. W odróżnieniu od korelacji ma kierunek (czas wyjaśniany oceną) i jednostki.
+Regresja opisuje, jak zmienia się przeciętna wartość zmiennej zależnej przy zmianie zmiennej objaśniającej o jedną jednostkę [@altman2015]. W odróżnieniu od korelacji ma kierunek (czas wyjaśniany oceną) i jednostki.
 
 ::: {.wzor}
 $$\hat{y} = b_0 + b_1 x \qquad\qquad R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}$$
@@ -99,7 +103,7 @@ Każdy punkt oceny więcej wiąże się z czasem krótszym przeciętnie o `r .zi
 
 ## LEARN 5. Reszty i przewidywanie {#c08-reszty .unnumbered}
 
-Reszta $e_i = y_i - \hat{y}_i$ jest różnicą między czasem osoby a przewidywaniem modelu. Wykres reszt względem wartości przewidywanych sprawdza, czy model nie pomija zakrzywienia i czy rozrzut reszt jest podobny w całym zakresie. Przedział ufności dotyczy średniego czasu osób o danej ocenie, a przedział predykcji czasu jednej nowej osoby.
+Reszta $e_i = y_i - \hat{y}_i$ jest różnicą między czasem osoby a przewidywaniem modelu. Wykres reszt względem wartości przewidywanych sprawdza, czy model uwzględnia kształt związku (reszty bez zakrzywienia) i czy rozrzut reszt jest podobny w całym zakresie. Przedział ufności dotyczy średniego czasu osób o danej ocenie, a przedział predykcji czasu jednej nowej osoby, dlatego jest szerszy [@altman2015].
 
 ```{r c08-reszty, fig.height=2.8}
 dane_modelu <- data.frame(przewidywany = fitted(model), reszta = residuals(model))
@@ -112,7 +116,7 @@ predict(model, nowe, interval = "confidence")
 predict(model, nowe, interval = "prediction")
 ```
 
-Reszty są rozłożone nierówno: duże dodatnie reszty (czasy dłuższe niż przewidywane o 10–20 minut) występują częściej niż ujemne, co odzwierciedla prawoskośny rozkład czasu (C02). Średni czas osób z oceną 4 model szacuje na `r .zi_pl(pu[2, 1])` min [`r .zi_pl(pu[2, 2])`; `r .zi_pl(pu[2, 3])`], ale czas jednej nowej osoby z tą oceną mieści się w przedziale od `r .zi_pl(pp[2, 2])` do `r .zi_pl(pp[2, 3])` min; dolna granica poniżej zera świadczy o słabym opisie skośnego czasu pojedynczych osób przez model liniowy. Ocena katalogu pozwala więc przewidzieć średni czas grupy osób, a czas konkretnego użytkownika pozostaje w szerokim przedziale predykcji.
+Reszty są rozłożone nierówno: duże dodatnie reszty (czasy dłuższe niż przewidywane o 10–20 minut) występują częściej niż ujemne, co odzwierciedla prawoskośny rozkład czasu (C02). Średni czas osób z oceną 4 model szacuje na `r .zi_pl(pu[2, 1])` min [`r .zi_pl(pu[2, 2])`; `r .zi_pl(pu[2, 3])`], ale czas jednej nowej osoby z oceną 4 mieści się w przedziale od `r .zi_pl(pp[2, 2])` do `r .zi_pl(pp[2, 3])` min; dolna granica poniżej zera świadczy o słabym opisie skośnego czasu pojedynczych osób przez model liniowy. Ocena katalogu pozwala więc przewidzieć średni czas grupy osób, a czas konkretnego użytkownika pozostaje w szerokim przedziale predykcji.
 
 ## Wzorce zapisu {#c08-apa .unnumbered}
 
@@ -123,7 +127,7 @@ Reszty są rozłożone nierówno: duże dodatnie reszty (czasy dłuższe niż pr
 
 **Wynik nieistotny.** Wiek nie był istotnie związany z czasem zadania, *r*(`r kw$parameter`) = `r .zi_pl(kw$estimate)`, *p* `r .zi_p(kw$p.value)`, 95% CI [`r .zi_pl(kw$conf.int[1])`; `r .zi_pl(kw$conf.int[2])`]; przedział obejmuje zarówno słaby związek dodatni, jak i słaby ujemny.
 
-**Zasada.** Korelacja i regresja w badaniu obserwacyjnym opisują współwystępowanie; zdanie „wyższa ocena skraca czas” wymaga eksperymentu.
+**Zasada.** Korelacja i regresja w badaniu obserwacyjnym opisują współwystępowanie; zdanie „wyższa ocena skraca czas” wymaga eksperymentu albo jawnego modelu przyczynowego z założeniami [@rohrer2018].
 :::
 
 ## CHALLENGE {-}

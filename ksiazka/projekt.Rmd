@@ -36,9 +36,11 @@ Oddania Z09 i Z10 są zadaniami ćwiczeń (po 10 punktów, po 2 punkty za każd�
 | Plan i pomiar: problem, pytania, estymandy i hipotezy, projekt badania, dobór, pomiar | P1–P4 | 30 |
 | Przygotowanie danych: dziennik, reguły braków i wartości niemożliwych | P5 | 15 |
 | Opis danych: liczebności, miary położenia i rozproszenia, wykres | P5 | 10 |
-| Dwie analizy: poprawny odczyt testów, efektów i przedziałów, zapis według wzorców | P6–P7 | 20 |
+| Dwie analizy: poprawny odczyt testów, efektów i przedziałów, zapis według wzorców, źródło metody | P6–P7 | 20 |
 | Wnioski: odpowiedź na pytania, znaczenie praktyczne, ograniczenia, rekomendacje | P8–P9 | 15 |
 | Odtwarzalność i przejrzystość: dane do odtworzenia, opis użycia SI | P10 | 10 |
 | **Razem** | | **100** |
+
+Źródła metod cytujesz w tekście projektu zapisem `[@klucz]`, np. `[@welch1947]`; klucze i opisy zawiera rozdział [Bibliografia](#bibliografia). Szablon projektu pobiera bibliografię i styl APA ze strony kursu, więc PDF projektu kończy się listą cytowanych prac bez dodatkowej konfiguracji.
 
 Wynik nieistotny statystycznie pozwala uzyskać pełną liczbę punktów: ocena dotyczy poprawności odczytu i rozumowania, niezależnie od wielkości efektu. Interpretację wyników i wnioski piszesz samodzielnie; zasady użycia generatywnej SI opisuje [strona startowa](index.html).

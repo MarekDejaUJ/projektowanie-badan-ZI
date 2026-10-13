@@ -23,7 +23,7 @@ source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
 dane <- dane_zi("S12", id = params$id)
 ```
 
-Materiał LEARN i wzorce zapisu: <https://marekdejauj.github.io/projektowanie-badan-ZI/c06.html>. Uruchamiaj bloki kodu po kolei, a odpowiedź pisz pod każdym poleceniem. Oddanie w konsoli: `oddaj_zadanie(6)`.
+Materiał LEARN i wzorce zapisu: <https://marekdejauj.github.io/projektowanie-badan-ZI/c06.html>; źródła ćwiczenia: <https://marekdejauj.github.io/projektowanie-badan-ZI/c06.html#zrodla>. Uruchamiaj bloki kodu po kolei, a odpowiedź pisz pod każdym poleceniem. Oddanie w konsoli: `oddaj_zadanie(6)`.
 
 ```{r karta, echo=FALSE, results='asis'}
 karta_zi("S12")
@@ -93,7 +93,7 @@ rstatix::games_howell_test(dane, czas ~ kategoria)
 
 ## Zadanie 6.5. Test Kruskala–Wallisa i akapit (2 pkt)
 
-**Polecenie:** Odczytaj test Kruskala–Wallisa z $\varepsilon^2$ i porównaj wniosek z analizą wariancji. Napisz akapit (3–4 zdania) dla zespołu platformy według wzorca zapisu.
+**Polecenie:** Odczytaj test Kruskala–Wallisa z wielkością efektu $\eta^2_H$ (kolumna `effsize`) i porównaj wniosek z analizą wariancji. Napisz akapit (3–4 zdania) dla zespołu platformy według wzorca zapisu.
 
 ```{r z6-5}
 kruskal.test(czas ~ kategoria, data = dane)
