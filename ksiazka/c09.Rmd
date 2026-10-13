@@ -1,0 +1,68 @@
+# (PART) Projekt {-}
+
+# C09. Projekt: plan i opis danych {#c09 .unnumbered}
+
+::: {.start}
+**Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, potem `pobierz_szablon("projekt")`. W nagłówku pliku `projekt.Rmd` wpisz kod wybranego scenariusza (S01–S20 oprócz S02). **Oddanie części I:** `oddaj_zadanie(9)`. **Wykłady:** W01, W05.
+:::
+
+Projekt indywidualny jest małym badaniem ilościowym na danych wybranego scenariusza: od problemu instytucji przez plan badania i pomiar do dwóch analiz i wniosków. Ćwiczenie C09 obejmuje część I projektu (P1–P5): pytania, estymandy, hipotezy, projekt badania, pomiar oraz opis danych. Przykłady w rozdziale dotyczą scenariusza S02; Twój projekt korzysta z innego scenariusza i Twojego ID.
+
+```{r c09-dane, include=FALSE}
+dane <- dane_zi("S02", id = "wzor")
+rz <- suppressWarnings(psych::alpha(data.frame(dane[c("p1", "p2", "p4", "p5", "p6")], p3 = 6 - dane$p3)))
+dz <- przygotuj_zi(dane_zi("S02", id = "wzor", surowe = TRUE))$dziennik
+oi <- opis_grup(dane, indeks, grupa)
+pw <- czestosci(dane, powodzenie, grupa)
+tak <- pw[pw$powodzenie == "tak", ]
+```
+
+## LEARN 1. Od problemu do pytań badawczych {#c09-pytania .unnumbered}
+
+Problem instytucji opisuje sytuację, która wymaga decyzji: „biblioteka nie wie, czy katalog wymaga wsparcia dla nowych użytkowników”. Pytanie badawcze zamienia problem na porównanie lub związek zmiennych, które da się zmierzyć: kogo dotyczy (populacja), co porównuje (grupy, zmienne) i jaką wielkością odpowiada. Każdy scenariusz ma w projekcie dwa pytania: pierwsze o różnicę indeksu między grupami, drugie o relację wskazaną w karcie (korelacja Spearmana częstości korzystania z indeksem albo tabela krzyżowa grupy i powodzenia).
+
+::: {.apa}
+**Wzorzec P1 (S02).** Biblioteka rozważa wsparcie dla użytkowników katalogu i potrzebuje wiedzy, czy nowi użytkownicy oceniają katalog i wykonują w nim zadania inaczej niż doświadczeni. Pytanie 1: czy średnia ocena użyteczności katalogu różni się między nowymi a doświadczonymi użytkownikami? Pytanie 2: czy odsetek osób, które znajdują wskazany dokument, różni się między nowymi a doświadczonymi użytkownikami?
+:::
+
+## LEARN 2. Estymanda i hipotezy {#c09-hipotezy .unnumbered}
+
+Estymanda jest wielkością w populacji, na którą odpowiada pytanie, np. różnica średnich indeksu $\mu_{\text{dośw}} - \mu_{\text{nowi}}$. Estymata jest jej oszacowaniem z próby (różnica średnich w danych), a hipotezy formułuje się o estymandzie. W projekcie obie hipotezy są dwustronne: badanie nie przesądza kierunku różnicy.
+
+::: {.wzor}
+Pytanie 1: $H_0$: $\mu_B - \mu_A = 0$; $H_1$: $\mu_B - \mu_A \neq 0$. Pytanie 2 (tabela): $H_0$: $\pi_B - \pi_A = 0$, gdzie $\pi$ — odsetek powodzeń w populacji; pytanie 2 (Spearman): $H_0$: $\rho_S = 0$.
+:::
+
+::: {.apa}
+**Wzorzec P2 (S02).** Estymandą pierwszego pytania jest różnica średnich indeksu użyteczności między doświadczonymi a nowymi użytkownikami katalogu ($H_0$: różnica równa zero; $H_1$: różnica różna od zera). Estymandą drugiego pytania jest różnica odsetków osób znajdujących dokument w obu grupach ($H_0$: równe odsetki; $H_1$: różne odsetki).
+:::
+
+## LEARN 3. Projekt badania i dobór uczestników {#c09-projekt .unnumbered}
+
+Rodzaj projektu wyznacza siłę wniosku (W01). Eksperyment z losowym przydziałem pozwala na wniosek przyczynowy, quasi-eksperyment częściowo, a badanie obserwacyjne przekrojowe opisuje współwystępowanie. W scenariuszach kursu grupy powstały z wyboru lub doświadczenia uczestników, więc każdy projekt jest obserwacyjny. Populacja to osoby, których dotyczy decyzja (np. użytkownicy katalogu w roku akademickim), a rama doboru to sposób dotarcia do nich (np. zaproszenie przy stanowisku pomocy). Rama doboru tworzy źródła selekcji: zaproszenie przy stanowisku pomocy nadreprezentuje osoby z trudnościami.
+
+::: {.apa}
+**Wzorzec P3 (S02).** Badanie jest obserwacyjne i przekrojowe: grupy wyznacza wcześniejsze korzystanie z katalogu, bez losowego przydziału. Populację stanowią użytkownicy katalogu biblioteki w semestrze zimowym; uczestników rekrutuje komunikat w katalogu i przy stanowisku pomocy, co może nadreprezentować osoby szukające wsparcia. Ankieta nie zbiera danych identyfikujących, a wyniki zadania zapisuje się pod losowym identyfikatorem.
+:::
+
+## LEARN 4. Pomiar {#c09-pomiar .unnumbered}
+
+Każdy scenariusz mierzy konstrukt dwiema drogami: deklaracją (indeks z sześciu pozycji) i obserwacją (czas i powodzenie zadania). Rzetelność indeksu opisuje alfa Cronbacha (C03), a trafność — związek indeksu z obserwacją oraz treść pozycji. Deklaracja może odbiegać od wykonania: osoby pewne siebie nie zawsze wykonują zadanie poprawnie.
+
+::: {.apa}
+**Wzorzec P4 (S02).** Ocena użyteczności katalogu jest średnią sześciu pozycji (skala 1–5, pozycja 3 odwrócona, co najmniej pięć odpowiedzi); spójność pozycji jest dobra (*α* = `r .zi_pl(rz$total$raw_alpha)`). Obserwację stanowi jedno zadanie wyszukiwawcze z czasem w minutach i powodzeniem ocenianym przez obserwatora. Indeks mierzy opinię, a jedno zadanie nie obejmuje całej użyteczności katalogu, dlatego oba wskaźniki raportuje się osobno.
+:::
+
+## LEARN 5. Przygotowanie i opis danych {#c09-opis .unnumbered}
+
+Opis danych w projekcie łączy dziennik przygotowania (C02) z opisem grup (C01–C03): liczebności, średnie, odchylenia standardowe i mediany indeksu oraz czasu, odsetki powodzeń i jeden wykres. Opis poprzedza testy i pozwala czytelnikowi ocenić skalę różnic przed odczytem wartości *p*.
+
+::: {.apa}
+**Wzorzec P5 (S02).** Z `r dz$wiersze[1]` rekordów usunięto `r dz$zmienione[3]` identyczne powtórzenia, a kody braku i niemożliwe czasy oznaczono jako braki; analiza obejmuje `r nrow(dane)` osób. Nowi użytkownicy (*n* = `r oi$n[1]`) ocenili katalog średnio na *M* = `r .zi_pl(oi$M[1])` (*SD* = `r .zi_pl(oi$SD[1])`), a doświadczeni (*n* = `r oi$n[2]`) na *M* = `r .zi_pl(oi$M[2])` (*SD* = `r .zi_pl(oi$SD[2])`); dokument znalazło `r .zi_pl(tak$procent[1], 1)`% nowych i `r .zi_pl(tak$procent[2], 1)`% doświadczonych użytkowników.
+:::
+
+## CHALLENGE {-}
+
+::: {.challenge}
+**Plik `projekt.Rmd`, część I (P1–P5)**, Twój scenariusz i Twoje ID. Polecenia: problem i pytania, estymandy i hipotezy, projekt badania, pomiar, przygotowanie i opis danych. Oddanie części I: `oddaj_zadanie(9)`. Zasady projektu i rubryka: rozdział [Projekt](#projekt).
+:::

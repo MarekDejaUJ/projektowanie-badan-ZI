@@ -1,0 +1,158 @@
+---
+title: "Projekt badania ilościowego"
+subtitle: "Projektowanie badań, Zarządzanie informacją UJ, 2026/27"
+author: "Imię Nazwisko"
+params:
+  id: "TWOJE_ID"
+  scenariusz: "S07"
+date: "`r format(Sys.Date(), '%d.%m.%Y')`"
+lang: pl
+geometry: margin=2.2cm
+output:
+  pdf_document:
+    latex_engine: xelatex
+    dev: png
+    fig_crop: false
+  html_document: default
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+```{r start, include=FALSE}
+source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
+dane <- dane_zi(params$scenariusz, id = params$id)
+karta <- karta_zi(params$scenariusz)
+spearman <- identical(karta$druga_analiza, "Spearman")
+```
+
+Projekt powstaje w jednym pliku na ćwiczeniach C09 i C10. W nagłówku wpisz swoje ID oraz kod wybranego scenariusza (S01–S20 oprócz S02, na którym opierają się przykłady LEARN). Instrukcje i wzorce: <https://marekdejauj.github.io/projektowanie-badan-ZI/projekt.html>. Po C09 oddajesz część I poleceniem `oddaj_zadanie(9)`, po C10 części I–II poleceniem `oddaj_zadanie(10)`, a wersję końcową poleceniem `oddaj_projekt()`.
+
+```{r karta, echo=FALSE, results='asis'}
+karta_zi(params$scenariusz)
+```
+
+Dane: scenariusz `r params$scenariusz`, ID `r params$id`, `r nrow(dane)` osób.
+
+# Część I. Plan badania i opis danych (C09)
+
+## P1. Problem i pytania badawcze (2 pkt)
+
+**Polecenie:** Opisz problem instytucji w 2–3 zdaniach. Sformułuj dwa pytania badawcze: pierwsze o różnicę indeksu między grupami, drugie o relację wskazaną w karcie scenariusza (druga analiza: `r karta$druga_analiza`).
+
+**Odpowiedź:**
+
+## P2. Estymandy i hipotezy (2 pkt)
+
+**Polecenie:** Dla każdego pytania nazwij estymandę (wielkość w populacji, np. różnicę średnich indeksu) i zapisz hipotezę zerową oraz alternatywną.
+
+**Odpowiedź:**
+
+## P3. Projekt badania i dobór uczestników (2 pkt)
+
+**Polecenie:** Określ rodzaj projektu badania, populację, sposób dotarcia do uczestników i jedno źródło selekcji, które może zniekształcić wyniki. Opisz, jak badanie chroni anonimowość uczestników.
+
+**Odpowiedź:**
+
+## P4. Pomiar (2 pkt)
+
+**Polecenie:** Opisz konstrukt mierzony indeksem i obserwację zadania. Oceń rzetelność indeksu (alfa) i wskaż jedno zagrożenie trafności pomiaru deklaratywnego.
+
+```{r p4}
+slownik_zi(params$scenariusz)
+pozycje <- dane[c("p1", "p2", "p3", "p4", "p5", "p6")]
+pozycje$p3 <- 6 - pozycje$p3
+rzetelnosc <- psych::alpha(pozycje)
+round(rzetelnosc$total[c("raw_alpha", "average_r")], 3)
+```
+
+**Odpowiedź:**
+
+## P5. Przygotowanie i opis danych (2 pkt)
+
+**Polecenie:** Opisz przygotowanie danych (dziennik) oraz indeks, czas i powodzenie w obu grupach według wzorców zapisu z C01–C03.
+
+```{r p5, fig.height=3}
+przygotuj_zi(dane_zi(params$scenariusz, id = params$id, surowe = TRUE))$dziennik
+opis_grup(dane, indeks, grupa)
+opis_grup(dane, czas, grupa)
+czestosci(dane, powodzenie, grupa)
+ggplot(dane, aes(x = grupa, y = indeks)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, height = 0.05, alpha = 0.35) +
+  labs(x = NULL, y = "Indeks (1–5)")
+```
+
+**Odpowiedź:**
+
+# Część II. Analizy i wnioski (C10)
+
+## P6. Pierwsza analiza: indeks w dwóch grupach (2 pkt)
+
+**Polecenie:** Zapisz wynik porównania indeksu w grupach według wzorca z C05: różnica średnich, *t*, *df*, *p*, 95% CI, *g* oraz wyniki testu permutacyjnego i testu Manna–Whitneya.
+
+```{r p6, fig.height=2.8}
+t.test(indeks ~ grupa, data = dane)
+effectsize::hedges_g(indeks ~ grupa, data = dane)
+set.seed(2026)
+obserwowana <- dane |>
+  specify(indeks ~ grupa) |>
+  calculate(stat = "diff in means", order = levels(dane$grupa))
+permutacje <- dane |>
+  specify(indeks ~ grupa) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 2000, type = "permute") |>
+  calculate(stat = "diff in means", order = levels(dane$grupa))
+get_p_value(permutacje, obs_stat = obserwowana, direction = "two-sided")
+wilcox.test(indeks ~ grupa, data = dane)
+effectsize::rank_biserial(indeks ~ grupa, data = dane)
+```
+
+**Odpowiedź:**
+
+## P7. Druga analiza (2 pkt)
+
+**Polecenie:** Zapisz wynik drugiej analizy według wzorca z C07 (tabela krzyżowa) albo C08 (korelacja Spearmana), z miarą siły związku i wnioskiem zgodnym z wartością *p*.
+
+```{r p7-spearman, eval=spearman, include=spearman, fig.height=3}
+cor.test(dane$czestosc, dane$indeks, method = "spearman", exact = FALSE)
+ggplot(filter(dane, !is.na(czestosc)), aes(x = factor(czestosc), y = indeks)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, height = 0.05, alpha = 0.3) +
+  labs(x = "Częstość korzystania (1 nigdy ... 5 bardzo często)", y = "Indeks (1–5)")
+```
+
+```{r p7-tabela, eval=!spearman, include=!spearman, fig.height=2.8}
+tabela <- table(dane$grupa, dane$powodzenie)
+addmargins(tabela)
+round(100 * prop.table(tabela, 1), 1)
+test <- chisq.test(tabela, correct = FALSE)
+test
+round(test$expected, 1)
+effectsize::cramers_v(tabela, adjust = FALSE, alternative = "two.sided")
+miary_ryzyka(tabela)
+```
+
+**Odpowiedź:**
+
+## P8. Odpowiedź na pytania badawcze (2 pkt)
+
+**Polecenie:** Odpowiedz na oba pytania z P1 w jednym akapicie: kierunek i wielkość efektu, niepewność (przedziały) i znaczenie praktyczne dla instytucji.
+
+**Odpowiedź:**
+
+## P9. Ograniczenia i rekomendacje (2 pkt)
+
+**Polecenie:** Opisz trzy ograniczenia (projekt badania, pomiar, próba) i ich wpływ na wnioski. Zaproponuj jedną decyzję dla instytucji i jedno dalsze badanie.
+
+**Odpowiedź:**
+
+## P10. Generatywna SI i odtwarzalność (2 pkt)
+
+**Polecenie:** Opisz, czy i do czego używasz generatywnej SI w projekcie oraz jak sprawdzasz jej odpowiedzi. Podaj dane potrzebne do odtworzenia analizy: scenariusz, ID, datę i wersję skryptu startowego.
+
+```{r p10}
+c(scenariusz = params$scenariusz, id = params$id, skrypt = .zi_wersja, R = as.character(getRversion()))
+```
+
+**Odpowiedź:**

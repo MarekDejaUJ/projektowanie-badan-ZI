@@ -1,0 +1,96 @@
+---
+title: "C04. Estymacja i test jednej próby"
+subtitle: "Zadanie Z04, scenariusz S09: Biuletyn Informacji Publicznej"
+author: "Imię Nazwisko"
+params:
+  id: "TWOJE_ID"
+date: "`r format(Sys.Date(), '%d.%m.%Y')`"
+lang: pl
+geometry: margin=2.2cm
+output:
+  pdf_document:
+    latex_engine: xelatex
+    dev: png
+    fig_crop: false
+  html_document: default
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+```{r start, include=FALSE}
+source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
+dane <- dane_zi("S09", id = params$id)
+```
+
+Materiał LEARN i wzorce zapisu: <https://marekdejauj.github.io/projektowanie-badan-ZI/c04.html>. Uruchamiaj bloki kodu po kolei, a odpowiedź pisz pod każdym poleceniem. Oddanie w konsoli: `oddaj_zadanie(4)`.
+
+```{r karta, echo=FALSE, results='asis'}
+karta_zi("S09")
+```
+
+Dane: ID `r params$id`, `r nrow(dane)` osób.
+
+## Zadanie 4.1. Przedział dla średniej oceny nawigacji (2 pkt)
+
+**Polecenie:** Podaj średnią oceny łatwości nawigacji, jej błąd standardowy i 95% przedział ufności. Wyjaśnij różnicę między odchyleniem standardowym a błędem standardowym.
+
+```{r z4-1}
+opis_grup(dane, indeks)
+n <- sum(!is.na(dane$indeks))
+c(n = n, SE = sd(dane$indeks, na.rm = TRUE) / sqrt(n))
+t.test(dane$indeks)$conf.int
+```
+
+**Odpowiedź:**
+
+## Zadanie 4.2. Test t względem środka skali (2 pkt)
+
+**Polecenie:** Sformułuj *H*~0~ i *H*~1~ dla porównania średniej oceny z wartością 3. Zapisz wynik testu *t* i *d* Cohena według wzorca, z wnioskiem zgodnym z wartością *p*.
+
+```{r z4-2}
+t.test(dane$indeks, mu = 3)
+effectsize::cohens_d(dane$indeks, mu = 3)
+```
+
+**Odpowiedź:**
+
+## Zadanie 4.3. Test permutacyjny (2 pkt)
+
+**Polecenie:** Odczytaj wynik testu permutacyjnego zmiany znaków i wykres losowań. Porównaj *p*~perm~ z wartością *p* testu *t*.
+
+```{r z4-3, fig.height=2.8}
+znaki <- test_znakow(dane$indeks, mu0 = 3)
+znaki
+ggplot(data.frame(roznica = attr(znaki, "rozklad")), aes(x = roznica)) +
+  geom_histogram(bins = 40, fill = "grey70", colour = "white") +
+  geom_vline(xintercept = znaki$roznica, colour = "#D55E00", linewidth = 1) +
+  labs(x = "Średnia odchyleń od 3 po losowej zmianie znaków", y = "Liczba losowań")
+```
+
+**Odpowiedź:**
+
+## Zadanie 4.4. Czas wobec standardu 8 minut (2 pkt)
+
+**Polecenie:** Zespół BIP przyjął, że odnalezienie dokumentu powinno trwać średnio 8 minut. Sprawdź testem *t*, czy średni czas różni się od 8 minut, i porównaj przedział *t* z przedziałem bootstrapowym. Wyjaśnij, dlaczego przy skośnym czasie warto podać oba przedziały.
+
+```{r z4-4, fig.height=2.8}
+t.test(dane$czas, mu = 8)
+set.seed(2026)
+bootstrap <- dane |>
+  specify(response = czas) |>
+  generate(reps = 2000, type = "bootstrap") |>
+  calculate(stat = "mean")
+przedzial <- get_ci(bootstrap, level = 0.95, type = "percentile")
+przedzial
+visualize(bootstrap) + shade_ci(endpoints = przedzial) +
+  labs(title = NULL, x = "Średni czas w próbie bootstrapowej [min]", y = "Liczba prób")
+```
+
+**Odpowiedź:**
+
+## Zadanie 4.5. Akapit dla zespołu BIP (2 pkt)
+
+**Polecenie:** Napisz akapit (3–4 zdania) według wzorca zapisu: ocena nawigacji wobec środka skali oraz czas wobec standardu 8 minut, z *t*, *df*, *p*, *d* i przedziałami. Wniosek musi odpowiadać Twoim wartościom *p*.
+
+**Odpowiedź:**

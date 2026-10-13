@@ -1,0 +1,44 @@
+# Projekt indywidualny {#projekt .unnumbered}
+
+Projekt jest indywidualnym badaniem ilościowym na danych jednego scenariusza: plan badania, pomiar, przygotowanie i opis danych, dwie analizy oraz wnioski. Powstaje w jednym pliku `projekt.Rmd` na ćwiczeniach C09 i C10 i stanowi 50% oceny części ilościowej.
+
+## Wybór scenariusza i plik projektu {-}
+
+Wybierz jeden scenariusz z rozdziału [Scenariusze](#scenariusze), inny niż S02, na którym opierają się przykłady LEARN. Pobierz plik projektu i wpisz w nagłówku swoje ID i kod scenariusza:
+
+```r
+source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
+pobierz_szablon("projekt")
+```
+
+```yaml
+params:
+  id: "s017"
+  scenariusz: "S07"
+```
+
+Dane powstają z kodu scenariusza i ID, więc każdy projekt ma własne liczby, a każde uruchomienie pliku daje te same wyniki. Zmiana scenariusza po C09 wymaga zgody prowadzącego.
+
+## Etapy i oddania {-}
+
+| Etap | Części pliku | Polecenie | Termin |
+|:--|:--|:--|:--|
+| C09 | P1–P5: pytania, hipotezy, projekt badania, pomiar, opis danych | `oddaj_zadanie(9)` | przed ćwiczeniem C10 |
+| C10 | P6–P10: dwie analizy, odpowiedź na pytania, ograniczenia, SI i odtwarzalność | `oddaj_zadanie(10)` | 26 stycznia 2027, 10:30 |
+| Wersja końcowa | P1–P10 po poprawkach | `oddaj_projekt()` | 27 stycznia 2027, 23:59 |
+
+Oddania Z09 i Z10 są zadaniami ćwiczeń (po 10 punktów, po 2 punkty za każdą część). Wersja końcowa trafia do folderu projektu jako PDF i plik `.Rmd`. Spóźniony projekt przyjmuje folder do 10 lutego 2027 z oceną najwyżej 4,5; oceniony projekt można poprawiać do 24 lutego 2027.
+
+## Rubryka projektu {-}
+
+| Kryterium | Części | Punkty |
+|:--|:--|--:|
+| Plan i pomiar: problem, pytania, estymandy i hipotezy, projekt badania, dobór, pomiar | P1–P4 | 30 |
+| Przygotowanie danych: dziennik, reguły braków i wartości niemożliwych | P5 | 15 |
+| Opis danych: liczebności, miary położenia i rozproszenia, wykres | P5 | 10 |
+| Dwie analizy: poprawny odczyt testów, efektów i przedziałów, zapis według wzorców | P6–P7 | 20 |
+| Wnioski: odpowiedź na pytania, znaczenie praktyczne, ograniczenia, rekomendacje | P8–P9 | 15 |
+| Odtwarzalność i przejrzystość: dane do odtworzenia, opis użycia SI | P10 | 10 |
+| **Razem** | | **100** |
+
+Wynik nieistotny statystycznie pozwala uzyskać pełną liczbę punktów: ocena dotyczy poprawności odczytu i rozumowania, niezależnie od wielkości efektu. Interpretację wyników i wnioski piszesz samodzielnie; zasady użycia generatywnej SI opisuje [strona startowa](index.html).

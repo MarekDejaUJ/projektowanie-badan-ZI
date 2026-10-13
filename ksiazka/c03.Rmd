@@ -1,0 +1,118 @@
+# C03. Pomiar: skala Likerta i indeks {#c03 .unnumbered}
+
+::: {.start}
+**Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, potem `pobierz_szablon(3)`. **Oddanie:** `oddaj_zadanie(3)`. **Wykład:** W02.
+:::
+
+Ocena użyteczności katalogu w badaniu S02 powstaje z sześciu twierdzeń ankiety. Ćwiczenie C03 sprawdza, jak z pozycji skali Likerta powstaje indeks, czy pozycje mierzą wspólną właściwość i jak deklarowana ocena ma się do obserwowanego wykonania zadania. Ostatnia część opisuje pytanie wielokrotnego wyboru i jego dwa mianowniki.
+
+```{r c03-dane, include=FALSE}
+dane <- dane_zi("S02", id = "wzor")
+pozycje <- dane[c("p1", "p2", "p3", "p4", "p5", "p6")]
+pozycje$p3 <- 6 - pozycje$p3
+wazne <- rowSums(!is.na(pozycje))
+rz <- suppressWarnings(psych::alpha(pozycje))
+staty <- rz$item.stats
+ip <- opis_grup(dane, indeks, powodzenie)
+kan <- kanaly_zi(dane)
+slaba <- rownames(staty)[which.min(staty$r.drop)]
+nr_slaba <- sub("p", "", slaba)
+```
+
+## LEARN 1. Rozkład odpowiedzi na pozycje {#c03-pozycje .unnumbered}
+
+Pozycja skali Likerta jest twierdzeniem z pięcioma uporządkowanymi odpowiedziami od „zdecydowanie nie” do „zdecydowanie tak”. Wykres Likerta przedstawia odsetki pięciu odpowiedzi w każdej pozycji: odpowiedzi negatywne leżą z lewej strony, neutralne pośrodku, pozytywne z prawej.
+
+```{r c03-likert, fig.height=4.2}
+wykres_likert(dane)
+```
+
+Pozycje 1, 2, 4, 5 i 6 są sformułowane pozytywnie, więc zgoda oznacza lepszą ocenę katalogu. Pozycja 3 („Odczytanie rekordu wymaga ode mnie zgadywania”) jest sformułowana negatywnie: zgoda oznacza gorszą ocenę, dlatego przed obliczeniem indeksu odpowiedź na pozycję 3 zostaje odwrócona.
+
+## LEARN 2. Odwrócenie pozycji i indeks {#c03-indeks .unnumbered}
+
+Indeks jest średnią odpowiedzi osoby na sześć pozycji po odwróceniu pozycji negatywnej. Reguła minimum ważnych odpowiedzi chroni przed indeksem obliczonym z jednej czy dwóch odpowiedzi.
+
+::: {.wzor}
+$$p_3^{*} = 6 - p_3 \qquad\qquad I_i = \frac{1}{k_i}\sum_{j=1}^{6} p_{ij} \quad \text{dla } k_i \geq 5$$
+$p_{ij}$ — odpowiedź osoby $i$ na pozycję $j$ (po odwróceniu pozycji 3), $k_i$ — liczba ważnych odpowiedzi osoby $i$, $I_i$ — indeks osoby $i$ na skali 1–5. Przy $k_i < 5$ indeks ma wartość `NA`.
+:::
+
+```{r c03-indeks}
+pozycje <- dane[c("p1", "p2", "p3", "p4", "p5", "p6")]
+pozycje$p3 <- 6 - pozycje$p3
+wazne <- rowSums(!is.na(pozycje))
+table(wazne)
+indeks_wlasny <- ifelse(wazne >= 5, rowMeans(pozycje, na.rm = TRUE), NA)
+all.equal(round(indeks_wlasny, 3), dane$indeks)
+opis_grup(dane, indeks)
+```
+
+Liczba osób z kompletem sześciu odpowiedzi wynosi `r sum(wazne == 6)`, z pięcioma odpowiedziami `r sum(wazne == 5)`, a z mniej niż pięcioma `r sum(wazne < 5)`; osoby z mniej niż pięcioma odpowiedziami mają indeks `NA`. Indeks obliczony od nowa zgadza się z kolumną `indeks` w danych (`TRUE`). Pominięcie odwrócenia pozycji 3 dodałoby do sumy odpowiedź o przeciwnym kierunku i zaniżyłoby zgodność pozycji.
+
+## LEARN 3. Rzetelność: alfa Cronbacha {#c03-rzetelnosc .unnumbered}
+
+Alfa Cronbacha opisuje spójność pozycji: jaka część zróżnicowania sumy pozycji pochodzi ze wspólnej właściwości mierzonej przez wszystkie pozycje.
+
+::: {.wzor}
+$$\alpha = \frac{k}{k-1}\left(1 - \frac{\sum_{j=1}^{k} s_j^2}{s_X^2}\right)$$
+$k$ — liczba pozycji, $s_j^2$ — wariancja pozycji $j$, $s_X^2$ — wariancja sumy pozycji. Wartości od 0,70 wskazują zadowalającą spójność do porównań grup, od 0,80 dobrą. Korelacja pozycji z sumą pozostałych pozycji (*r.drop*) wskazuje pozycje słabiej związane z resztą skali.
+:::
+
+```{r c03-alfa}
+rzetelnosc <- psych::alpha(pozycje)
+round(rzetelnosc$total[c("raw_alpha", "average_r")], 3)
+round(cbind(rzetelnosc$item.stats[c("r.drop", "mean", "sd")],
+            alfa_bez_pozycji = rzetelnosc$alpha.drop$raw_alpha), 2)
+```
+
+Alfa wynosi `r .zi_pl(rz$total$raw_alpha)`, a średnia korelacja między pozycjami `r .zi_pl(rz$total$average_r)`. Najsłabiej z resztą skali wiąże się pozycja `r nr_slaba` (*r.drop* = `r .zi_pl(staty[slaba, "r.drop"])`), a jej usunięcie zmienia alfę tylko do `r .zi_pl(rz$alpha.drop[slaba, "raw_alpha"])`. Wysoka alfa potwierdza spójność odpowiedzi; trafność wymaga osobnych dowodów, ponieważ sześć pozycji może zgodnie mierzyć ogólne zadowolenie z katalogu, czyli inną właściwość niż użyteczność.
+
+## LEARN 4. Deklaracja a wykonanie zadania {#c03-wykonanie .unnumbered}
+
+Indeks jest deklaracją użytkownika, a powodzenie zadania obserwacją. Porównanie indeksu u osób, które znalazły i nie znalazły dokumentu, odpowiada na pytanie, na ile deklaracja zgadza się z wykonaniem.
+
+```{r c03-deklaracja, fig.height=3}
+opis_grup(dane, indeks, powodzenie)
+ggplot(dane, aes(x = powodzenie, y = indeks)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, height = 0.05, alpha = 0.35) +
+  labs(x = "Znaleziono dokument", y = "Indeks użyteczności (1–5)")
+```
+
+Osoby, które znalazły dokument, oceniają katalog wyżej (*M* = `r .zi_pl(ip$M[2])`) niż osoby bez powodzenia (*M* = `r .zi_pl(ip$M[1])`). Rozkłady obu grup w dużej części się nakładają: część osób z wysoką oceną nie znalazła dokumentu, a część z niską oceną znalazła. Deklaracja i obserwacja mierzą więc różne właściwości i w raporcie występują jako osobne wskaźniki.
+
+## LEARN 5. Pytanie wielokrotnego wyboru {#c03-wielokrotne .unnumbered}
+
+Pytanie o kanały informacji pozwala zaznaczyć kilka odpowiedzi. Odsetek osób odpowiada na pytanie „jaka część badanych korzysta z kanału”, a odsetek wskazań na pytanie „jaką część wszystkich zaznaczeń stanowi kanał”.
+
+::: {.wzor}
+$$\%_{\text{osób}, j} = \frac{w_j}{n} \cdot 100\% \qquad\qquad \%_{\text{wskazań}, j} = \frac{w_j}{\sum_{m} w_m} \cdot 100\%$$
+$w_j$ — liczba wskazań kanału $j$, $n$ — liczba osób z odpowiedzią na pytanie. Odsetki osób sumują się do ponad 100%, odsetki wskazań do 100%.
+:::
+
+```{r c03-kanaly, fig.height=2.8}
+kanaly <- kanaly_zi(dane)
+kanaly
+ggplot(kanaly, aes(x = reorder(kanal, -proc_osob), y = proc_osob)) +
+  geom_col(fill = "#0072B2") +
+  labs(x = NULL, y = "% osób")
+```
+
+Kanał „`r kan$kanal[1]`” wskazało `r .zi_pl(kan$proc_osob[1], 1)`% osób, ale tylko `r .zi_pl(kan$proc_wskazan[1], 1)`% wszystkich wskazań, ponieważ osoby korzystające z tego kanału zaznaczały też inne kanały. Do decyzji o kanale komunikacji służy odsetek osób; odsetek wskazań opisuje strukturę wszystkich kontaktów.
+
+## Wzorce zapisu {#c03-apa .unnumbered}
+
+::: {.apa}
+**Indeks i rzetelność.** Indeks oceny użyteczności katalogu (sześć pozycji, pozycja 3 odwrócona, co najmniej pięć ważnych odpowiedzi) obliczono dla `r sum(!is.na(dane$indeks))` osób: *M* = `r .zi_pl(mean(dane$indeks, na.rm = TRUE))` (*SD* = `r .zi_pl(sd(dane$indeks, na.rm = TRUE))`) na skali 1–5. Spójność pozycji była dobra (*α* = `r .zi_pl(rz$total$raw_alpha)`); najsłabiej z resztą skali wiązała się pozycja `r nr_slaba` (*r* = `r .zi_pl(staty[slaba, "r.drop"])`).
+
+**Deklaracja a wykonanie.** Osoby, które znalazły dokument (*n* = `r ip$n[2]`), oceniały katalog wyżej (*M* = `r .zi_pl(ip$M[2])`; *SD* = `r .zi_pl(ip$SD[2])`) niż osoby bez powodzenia (*n* = `r ip$n[1]`; *M* = `r .zi_pl(ip$M[1])`; *SD* = `r .zi_pl(ip$SD[1])`), a rozkłady ocen obu grup w dużej części się nakładały.
+
+**Pytanie wielokrotnego wyboru.** Kanał „`r kan$kanal[1]`” wskazało `r .zi_pl(kan$proc_osob[1], 1)`% osób (`r kan$wskazania[1]` z `r kan$osoby[1]`), a kanał „`r kan$kanal[2]`” `r .zi_pl(kan$proc_osob[2], 1)`%; odsetki dotyczą osób, które odpowiedziały na pytanie, i sumują się do ponad 100%.
+:::
+
+## CHALLENGE {-}
+
+::: {.challenge}
+**Plik `zadanie-03.Rmd`**, scenariusz S03: repozytorium uczelni i znajomość zasad otwartego dostępu, dane według Twojego ID. Pięć poleceń: rozkład pozycji, indeks, rzetelność, deklaracja a wykonanie, kanały informacji. Oddanie: `oddaj_zadanie(3)`.
+:::

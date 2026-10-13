@@ -1,0 +1,446 @@
+# Karty scenariuszy kursu. Czyta je skrypt startowy (dane_zi) i rozdział Scenariusze.
+# grupy: druga grupa ma w generatorze wyższy oczekiwany indeks i krótszy czas zadania.
+# poziomy: kategoria o 3-4 poziomach do analizy wielu grup.
+# wiek: [średnia, minimum]. efekt: różnica grup na zmiennej utajonej (w SD).
+wersja: "2026-10"
+scenariusze:
+  - id: S01
+    tytul: "Biblioteka akademicka: dostępność wsparcia w wyszukiwaniu"
+    problem: "Biblioteka rozważa zmianę sposobu prowadzenia konsultacji wyszukiwawczych. Sprawdza deklarowaną pewność użytkowników i jej związek z korzystaniem z biblioteki."
+    grupy: ["bez konsultacji", "konsultacje"]
+    opis_grup: "Konsultacje oznaczają co najmniej jedną konsultację wyszukiwawczą w ostatnim semestrze; uczestnicy wybierali je sami."
+    kategoria: "status"
+    poziomy: ["student I stopnia", "student II stopnia", "doktorant", "pracownik"]
+    indeks: "Deklarowana pewność wyszukiwania"
+    pozycje:
+      - "Wiem, jak rozpocząć wyszukiwanie dokumentów."
+      - "Potrafię wybrać właściwe źródło informacji."
+      - "Czuję się zagubiony podczas wyszukiwania."
+      - "Umiem zawęzić zapytanie, gdy wyników jest zbyt wiele."
+      - "Potrafię ocenić przydatność znalezionego dokumentu."
+      - "Wiem, gdzie szukać pomocy w wyszukiwaniu."
+    zadanie: "W katalogu znajdź dokument o podanym tytule i autorze oraz wskaż jego lokalizację."
+    pytanie: "Czy udało się znaleźć potrzebny dokument?"
+    rodzaj: "obserwacja"
+    czas_typowy: 6
+    efekt: 0.2
+    wiek: [24, 19]
+    druga_analiza: "Spearman"
+  - id: S02
+    tytul: "Katalog biblioteczny: użyteczność wyszukiwania"
+    problem: "Biblioteka sprawdza, czy katalog wymaga wsparcia przy pierwszych kontaktach. Zestawia ocenę katalogu z wykonaniem zadania wyszukiwawczego."
+    grupy: ["nowi", "doświadczeni"]
+    opis_grup: "Nowi korzystają z katalogu po raz pierwszy, doświadczeni korzystali z niego wcześniej."
+    kategoria: "status"
+    poziomy: ["student I stopnia", "student II stopnia", "doktorant", "pracownik"]
+    indeks: "Ocena użyteczności katalogu"
+    pozycje:
+      - "Szybko znajduję pole wyszukiwania w katalogu."
+      - "Nazwy filtrów są dla mnie zrozumiałe."
+      - "Odczytanie rekordu wymaga ode mnie zgadywania."
+      - "Potrafię znaleźć lokalizację dokumentu."
+      - "Komunikaty katalogu pomagają mi poprawić zapytanie."
+      - "Katalog wspiera wykonanie mojego zadania."
+    zadanie: "Znajdź wskazaną publikację i podaj lokalizację egzemplarza lub dostęp elektroniczny."
+    pytanie: "Czy udało się znaleźć wskazany dokument?"
+    rodzaj: "obserwacja"
+    czas_typowy: 8
+    efekt: 0.35
+    wiek: [24, 19]
+    druga_analiza: "tabela krzyżowa"
+  - id: S03
+    tytul: "Repozytorium uczelni: znajomość zasad otwartego dostępu"
+    problem: "Repozytorium uczelni poprawia instrukcje udostępniania tekstów. Porównuje deklarowaną znajomość zasad otwartego dostępu z odnalezieniem legalnej otwartej wersji tekstu."
+    grupy: ["nieprzeszkoleni", "przeszkoleni"]
+    opis_grup: "Przeszkoleni uczestniczyli w szkoleniu repozytorium w ostatnim roku; udział był dobrowolny."
+    kategoria: "stanowisko"
+    poziomy: ["doktorant", "asystent lub adiunkt", "profesor"]
+    indeks: "Deklarowana znajomość zasad otwartego dostępu"
+    pozycje:
+      - "Rozumiem różnicę między wersją wydawcy a preprintem."
+      - "Wiem, gdzie sprawdzić warunki udostępnienia tekstu."
+      - "Zasady otwartego dostępu są dla mnie niejasne."
+      - "Rozumiem, co określa licencja publikacji."
+      - "Potrafię rozpoznać legalne źródło otwartego tekstu."
+      - "Wiem, jak uzyskać pomoc w zdeponowaniu publikacji."
+    zadanie: "W zestawie źródeł znajdź otwartą wersję wskazanego tekstu i podstawę jej udostępnienia."
+    pytanie: "Czy udało się odnaleźć legalną otwartą wersję tekstu?"
+    rodzaj: "obserwacja"
+    czas_typowy: 12
+    efekt: 0.5
+    wiek: [38, 24]
+    druga_analiza: "Spearman"
+  - id: S04
+    tytul: "Biblioteka publiczna: dopasowanie kanału informacji o wydarzeniach"
+    problem: "Biblioteka publiczna porównuje odbiorców szukających informacji o wydarzeniach na stronie WWW i w mediach społecznościowych. Oddziela łatwość znalezienia komunikatu od udziału w wydarzeniu."
+    grupy: ["WWW", "media społecznościowe"]
+    opis_grup: "Grupa oznacza deklarowany główny kanał szukania informacji o wydarzeniach."
+    kategoria: "rodzaj wydarzenia"
+    poziomy: ["spotkanie autorskie", "warsztaty", "zajęcia dla dzieci", "klub książki"]
+    indeks: "Ocena łatwości dotarcia do informacji o wydarzeniach"
+    pozycje:
+      - "Bez trudności znajduję datę wydarzenia."
+      - "Informacja wskazuje miejsce wydarzenia."
+      - "Muszę długo szukać warunków uczestnictwa."
+      - "Komunikat pozwala sprawdzić aktualność terminu."
+      - "Wybrany kanał pozwala mi wrócić do informacji."
+      - "Dowiaduję się o zmianach programu na czas."
+    zadanie: "Znajdź datę, miejsce i warunki udziału we wskazanym wydarzeniu."
+    pytanie: "Czy w ostatnich czterech tygodniach uczestniczyłeś w wydarzeniu biblioteki?"
+    rodzaj: "deklaracja"
+    czas_typowy: 4
+    efekt: 0.2
+    wiek: [42, 18]
+    druga_analiza: "tabela krzyżowa"
+  - id: S05
+    tytul: "Portal studencki: odnajdywanie procedur administracyjnych"
+    problem: "Zespół portalu studenckiego ułatwia odnajdywanie formularzy. Porównuje ocenę przejrzystości procedur między studentami pierwszego i kolejnych lat."
+    grupy: ["pierwszy rok", "kolejny rok"]
+    opis_grup: "Grupa oznacza rok studiowania w tej uczelni."
+    kategoria: "wydział"
+    poziomy: ["humanistyczny", "nauk społecznych", "nauk ścisłych"]
+    indeks: "Ocena przejrzystości procedur"
+    pozycje:
+      - "Nazwy procedur odpowiadają moim sprawom."
+      - "Widzę, od którego kroku rozpocząć sprawę."
+      - "Nie wiem, które formularze dotyczą mojej sprawy."
+      - "Portal jasno podaje wymagane dokumenty."
+      - "Potrafię znaleźć termin realizacji sprawy."
+      - "Wiem, do kogo skierować pytanie o procedurę."
+    zadanie: "W portalu odszukaj formularz i wymagane załączniki dla opisanej sprawy administracyjnej."
+    pytanie: "Czy udało się odnaleźć właściwy formularz?"
+    rodzaj: "obserwacja"
+    czas_typowy: 7
+    efekt: 0.35
+    wiek: [23, 19]
+    druga_analiza: "Spearman"
+  - id: S06
+    tytul: "Newsletter instytucji: informacyjne dopasowanie treści"
+    problem: "Instytucja rozważa zmianę układu newslettera. Oddziela ocenę jego przydatności od deklaracji wykorzystania informacji."
+    grupy: ["okazjonalni", "regularni"]
+    opis_grup: "Grupa oznacza deklarowany zwyczaj czytania newslettera w ostatnim semestrze."
+    kategoria: "odbiorcy"
+    poziomy: ["studenci", "pracownicy", "absolwenci", "osoby spoza uczelni"]
+    indeks: "Ocena przydatności newslettera"
+    pozycje:
+      - "Newsletter odpowiada na moje potrzeby informacyjne."
+      - "Tytuły wiadomości pomagają wybrać treść."
+      - "Większość treści jest dla mnie nieprzydatna."
+      - "Linki prowadzą do szczegółowych informacji."
+      - "Potrafię wykorzystać informacje z newslettera."
+      - "Częstotliwość newslettera pasuje do moich potrzeb."
+    zadanie: "W jednym wydaniu newslettera odszukaj wskazaną informację i link do jej szczegółów."
+    pytanie: "Czy w ostatnich czterech tygodniach wykorzystałeś informację z newslettera?"
+    rodzaj: "deklaracja"
+    czas_typowy: 4
+    efekt: 0.5
+    wiek: [36, 19]
+    druga_analiza: "tabela krzyżowa"
+  - id: S07
+    tytul: "Archiwum cyfrowe: zrozumiałość opisów zbiorów"
+    problem: "Archiwum cyfrowe sprawdza, czy opisy zbiorów pozwalają rozpoznać przydatne jednostki. Interesuje je związek zrozumiałości opisów z odnalezieniem jednostki."
+    grupy: ["bez doświadczenia", "z doświadczeniem"]
+    opis_grup: "Doświadczenie oznacza wcześniejszą samodzielną pracę z opisami archiwalnymi."
+    kategoria: "cel wizyty"
+    poziomy: ["badania naukowe", "genealogia", "edukacja", "zainteresowania"]
+    indeks: "Ocena zrozumiałości opisów archiwalnych"
+    pozycje:
+      - "Tytuły opisów wskazują zawartość zbiorów."
+      - "Datowanie dokumentów jest dla mnie czytelne."
+      - "Nie rozumiem terminów użytych w opisach."
+      - "Opis pozwala ocenić znaczenie dokumentu dla mojego zadania."
+      - "Rozumiem powiązania między jednostkami archiwalnymi."
+      - "Opis jasno wskazuje warunki dostępu."
+    zadanie: "Znajdź opis jednostki dla wskazanego tematu i okresu oraz podaj jej sygnaturę."
+    pytanie: "Czy udało się znaleźć opis potrzebnej jednostki?"
+    rodzaj: "obserwacja"
+    czas_typowy: 10
+    efekt: 0.2
+    wiek: [45, 18]
+    druga_analiza: "Spearman"
+  - id: S08
+    tytul: "Kolekcja muzealna online: jakość metadanych dla odbiorcy"
+    problem: "Muzeum rozpoznaje, jak odbiorcy o różnych celach korzystają z opisów kolekcji online. Ocena kompletności opisów pochodzi z perspektywy potrzeb odbiorcy."
+    grupy: ["hobbystyczni", "edukacyjni"]
+    opis_grup: "Grupa oznacza deklarowany główny cel bieżącej wizyty w kolekcji."
+    kategoria: "urządzenie"
+    poziomy: ["telefon", "tablet", "komputer"]
+    indeks: "Postrzegana kompletność metadanych"
+    pozycje:
+      - "Metadane podają autora lub twórcę obiektu."
+      - "Metadane pozwalają rozpoznać czas powstania."
+      - "Brakuje mi informacji potrzebnych do zrozumienia obiektu."
+      - "Opis wyjaśnia kontekst pochodzenia obiektu."
+      - "Dane o prawach do wykorzystania są widoczne."
+      - "Metadane pomagają znaleźć podobne obiekty."
+    zadanie: "Znajdź obiekt o podanym twórcy, okresie i typie oraz wskaż jego rekord."
+    pytanie: "Czy udało się znaleźć potrzebny obiekt?"
+    rodzaj: "obserwacja"
+    czas_typowy: 9
+    efekt: 0.35
+    wiek: [40, 18]
+    druga_analiza: "tabela krzyżowa"
+  - id: S09
+    tytul: "Biuletyn Informacji Publicznej: dostępność informacji urzędowej"
+    problem: "Zespół Biuletynu Informacji Publicznej sprawdza, gdzie odbiorcy tracą czas przy szukaniu dokumentów. Ocenia nawigację i czas konkretnej próby."
+    grupy: ["rzadko", "często"]
+    opis_grup: "Grupa oznacza deklarowany zwyczaj korzystania z BIP w ostatnim roku."
+    kategoria: "rodzaj sprawy"
+    poziomy: ["zamówienia publiczne", "uchwały", "budżet", "nabory"]
+    indeks: "Ocena łatwości nawigacji w BIP"
+    pozycje:
+      - "Potrafię odnaleźć właściwą kategorię informacji."
+      - "Nazwy działów BIP są dla mnie zrozumiałe."
+      - "Łatwo gubię się w strukturze strony."
+      - "Wyszukiwarka prowadzi do potrzebnego dokumentu."
+      - "Wiem, jak wrócić do poprzedniej kategorii."
+      - "Widzę, gdzie znaleźć aktualną wersję dokumentu."
+    zadanie: "Odnajdź wskazany dokument urzędowy i podaj datę oraz miejsce jego publikacji."
+    pytanie: "Czy udało się odnaleźć dokument urzędowy?"
+    rodzaj: "obserwacja"
+    czas_typowy: 8
+    efekt: 0.5
+    wiek: [44, 18]
+    druga_analiza: "Spearman"
+  - id: S10
+    tytul: "Baza danych badawczych: gotowość do ponownego użycia danych"
+    problem: "Repozytorium danych badawczych poprawia opisy zmiennych i warunki użycia zbiorów. Porównuje ocenę dokumentacji z deklarowaną gotowością ponownego użycia danych."
+    grupy: ["bez doświadczenia", "z doświadczeniem"]
+    opis_grup: "Doświadczenie oznacza wcześniejsze samodzielne wykorzystanie cudzego zbioru danych w analizie."
+    kategoria: "dziedzina"
+    poziomy: ["humanistyka", "nauki społeczne", "nauki ścisłe", "nauki o życiu"]
+    indeks: "Ocena użyteczności dokumentacji danych"
+    pozycje:
+      - "Dokumentacja opisuje znaczenie zmiennych."
+      - "Wiem, jakie jednostki zastosowano w zbiorze."
+      - "Nie potrafię odczytać kodów brakujących danych."
+      - "Dokumentacja wyjaśnia sposób zbierania danych."
+      - "Warunki ponownego użycia są zrozumiałe."
+      - "Dokumentacja wystarcza do rozpoczęcia analizy."
+    zadanie: "W dokumentacji zbioru znajdź znaczenie zmiennej, jej jednostkę i warunki użycia."
+    pytanie: "Czy deklarujesz ponowne użycie zbioru danych?"
+    rodzaj: "deklaracja"
+    czas_typowy: 12
+    efekt: 0.2
+    wiek: [35, 23]
+    druga_analiza: "tabela krzyżowa"
+  - id: S11
+    tytul: "Biblioteka: przekazywanie instrukcji korzystania z e-zasobów"
+    problem: "Biblioteka porównuje osoby wybierające instrukcję tekstową lub wideo dostępu do e-zasobów. Ocenia zrozumiałość instrukcji i czas zapoznania się z nią."
+    grupy: ["tekst", "wideo"]
+    opis_grup: "Grupa oznacza format instrukcji wybrany samodzielnie przez uczestnika."
+    kategoria: "status"
+    poziomy: ["student I stopnia", "student II stopnia", "doktorant", "pracownik"]
+    indeks: "Ocena zrozumiałości instrukcji"
+    pozycje:
+      - "Instrukcja jasno wskazuje pierwszy krok."
+      - "Rozumiem sposób uzyskania dostępu do e-zasobu."
+      - "Instrukcja zawiera dla mnie niejasne kroki."
+      - "Przykład pomaga wykonać wyszukiwanie."
+      - "Wiem, co zrobić w razie błędu dostępu."
+      - "Potrafię powtórzyć czynności po zapoznaniu się z instrukcją."
+    zadanie: "Zapoznaj się z instrukcją dostępu do e-zasobu i wykonaj wskazane czynności."
+    pytanie: "Czy udało się wykonać czynności z instrukcji?"
+    rodzaj: "obserwacja"
+    czas_typowy: 6
+    efekt: 0.35
+    wiek: [24, 19]
+    druga_analiza: "Spearman"
+  - id: S12
+    tytul: "Platforma e-learningowa: organizacja materiałów kursu"
+    problem: "Zespół platformy e-learningowej sprawdza, czy materiały kursów są odnajdywalne na urządzeniach studentów. Oddziela ocenę organizacji materiałów od znalezienia konkretnego pliku."
+    grupy: ["telefon", "komputer"]
+    opis_grup: "Grupa oznacza urządzenie wybrane przez uczestnika do wykonania zadania."
+    kategoria: "typ kursu"
+    poziomy: ["obowiązkowy", "do wyboru", "językowy", "seminarium"]
+    indeks: "Ocena odnajdywalności materiałów"
+    pozycje:
+      - "Widzę, gdzie umieszczono materiały bieżących zajęć."
+      - "Nazwy plików pomagają rozpoznać ich treść."
+      - "Trudno mi znaleźć materiał po poprzednich zajęciach."
+      - "Układ materiałów odpowiada kolejności tematów."
+      - "Potrafię odróżnić materiał obowiązkowy od rozszerzenia."
+      - "Wiem, gdzie znaleźć instrukcję zadania."
+    zadanie: "Odszukaj wskazany materiał z określonych zajęć i otwórz właściwy plik."
+    pytanie: "Czy udało się znaleźć wskazany materiał?"
+    rodzaj: "obserwacja"
+    czas_typowy: 5
+    efekt: 0.5
+    wiek: [23, 19]
+    druga_analiza: "tabela krzyżowa"
+  - id: S13
+    tytul: "Instytucjonalne FAQ: adekwatność odpowiedzi"
+    problem: "Instytucja poprawia FAQ tak, aby odpowiadało na sprawy odbiorców. Porównuje ocenę adekwatności odpowiedzi z deklaracją rozwiązania sprawy."
+    grupy: ["pierwszy raz", "powracający"]
+    opis_grup: "Grupa oznacza pierwszy albo kolejny kontakt z tym FAQ."
+    kategoria: "temat sprawy"
+    poziomy: ["rekrutacja", "opłaty", "egzaminy", "akademiki"]
+    indeks: "Ocena adekwatności odpowiedzi FAQ"
+    pozycje:
+      - "FAQ zawiera pytanie odpowiadające mojej sprawie."
+      - "Odpowiedź podaje potrzebne kroki działania."
+      - "Odpowiedzi FAQ są zbyt ogólne, aby mi pomóc."
+      - "Odpowiedź wskazuje, kiedy zasada nie ma zastosowania."
+      - "Linki w odpowiedzi pozwalają sprawdzić szczegóły."
+      - "FAQ wyjaśnia, gdzie uzyskać dodatkową pomoc."
+    zadanie: "Odszukaj w FAQ odpowiedź na opisaną sprawę i zapisz proponowany sposób rozwiązania."
+    pytanie: "Czy FAQ pozwoliło rozwiązać sprawę?"
+    rodzaj: "deklaracja"
+    czas_typowy: 5
+    efekt: 0.2
+    wiek: [24, 18]
+    druga_analiza: "tabela krzyżowa"
+  - id: S14
+    tytul: "Wyszukiwarka instytucji: wsparcie filtrowania wyników"
+    problem: "Instytucja sprawdza, czy filtry wyszukiwarki są zrozumiałym wsparciem. Porównuje deklarowaną kontrolę nad wyszukiwaniem z wykonaniem zadania."
+    grupy: ["bez filtrów", "filtry"]
+    opis_grup: "Grupa oznacza użycie co najmniej jednego filtra w zadaniu, wybrane przez uczestnika."
+    kategoria: "typ zapytania"
+    poziomy: ["znany tytuł", "temat", "autor"]
+    indeks: "Deklarowana kontrola nad wyszukiwaniem"
+    pozycje:
+      - "Filtry pozwalają mi ograniczyć wynik do potrzebnego typu."
+      - "Rozumiem, jakie wyniki wyklucza wybrany filtr."
+      - "Nie wiem, dlaczego filtr zmienił liczbę wyników."
+      - "Widzę, które filtry są aktywne."
+      - "Potrafię cofnąć nieprzydatny filtr."
+      - "Filtry ułatwiają mi znalezienie właściwego dokumentu."
+    zadanie: "Odnajdź dokument o wskazanym typie i okresie, samodzielnie zawężając wyniki."
+    pytanie: "Czy udało się znaleźć właściwy dokument?"
+    rodzaj: "obserwacja"
+    czas_typowy: 7
+    efekt: 0.35
+    wiek: [30, 19]
+    druga_analiza: "Spearman"
+  - id: S15
+    tytul: "Baza wiedzy organizacji: znajdowanie aktualnych instrukcji"
+    problem: "Organizacja ogranicza korzystanie z nieaktualnych procedur. Zestawia deklarowane zaufanie do bazy wiedzy z odnalezieniem aktualnej instrukcji."
+    grupy: ["krótki staż", "długi staż"]
+    opis_grup: "Krótki staż oznacza mniej niż rok pracy w organizacji, długi staż co najmniej rok."
+    kategoria: "dział"
+    poziomy: ["administracja", "IT", "obsługa klienta", "kadry"]
+    indeks: "Deklarowane zaufanie do aktualności instrukcji"
+    pozycje:
+      - "Instrukcje pokazują datę ostatniej aktualizacji."
+      - "Wiem, która wersja instrukcji obowiązuje."
+      - "Podejrzewam, że instrukcje opisują nieaktualne procedury."
+      - "Zmiany w instrukcjach są jasno wskazane."
+      - "Potrafię ustalić osobę odpowiedzialną za treść."
+      - "Ufam aktualności instrukcji przy wykonywaniu zadania."
+    zadanie: "Znajdź instrukcję dla opisanej czynności i sprawdź oznaczenie aktualnej wersji."
+    pytanie: "Czy udało się znaleźć aktualną instrukcję?"
+    rodzaj: "obserwacja"
+    czas_typowy: 6
+    efekt: 0.5
+    wiek: [38, 21]
+    druga_analiza: "Spearman"
+  - id: S16
+    tytul: "Informacja miejska: spójność kanałów komunikacji"
+    problem: "Zespół informacji miejskiej rozpoznaje niespójności komunikatów dostrzegane przez mieszkańców. Porównuje postrzeganą spójność kanałów z rozpoznaniem aktualnej informacji."
+    grupy: ["wiele kanałów", "jeden kanał"]
+    opis_grup: "Grupa oznacza zwyczaj szukania informacji w jednym kanale albo porównywania kilku."
+    kategoria: "kanał główny"
+    poziomy: ["strona WWW", "media społecznościowe", "infolinia", "punkt informacyjny"]
+    indeks: "Postrzegana spójność komunikacji"
+    pozycje:
+      - "Różne kanały podają tę samą datę wydarzenia."
+      - "Nazwy usług są zgodne między kanałami."
+      - "Komunikaty z różnych kanałów sobie przeczą."
+      - "Zmiany informacji są widoczne we wszystkich kanałach."
+      - "Potrafię rozpoznać aktualny komunikat."
+      - "Informacje między kanałami tworzą spójny opis sprawy."
+    zadanie: "Porównaj dwa komunikaty o tej samej usłudze i wskaż aktualną informację."
+    pytanie: "Czy poprawnie wskazano aktualną informację?"
+    rodzaj: "obserwacja"
+    czas_typowy: 5
+    efekt: 0.2
+    wiek: [43, 18]
+    druga_analiza: "tabela krzyżowa"
+  - id: S17
+    tytul: "Opisy danych w katalogu otwartych danych: czytelność dla odbiorcy"
+    problem: "Zespół katalogu otwartych danych ułatwia rozpoznanie zakresu zbiorów. Porównuje czytelność opisów z poprawnym rozpoznaniem zakresu zbioru."
+    grupy: ["niezawodowi", "zawodowi"]
+    opis_grup: "Grupa oznacza cel wizyty: praca zawodowa albo inny cel."
+    kategoria: "format danych"
+    poziomy: ["CSV", "XLSX", "JSON", "PDF"]
+    indeks: "Ocena czytelności opisów danych"
+    pozycje:
+      - "Tytuł zbioru wskazuje, czego dotyczą dane."
+      - "Opis jasno podaje zasięg terytorialny."
+      - "Nie rozumiem jednostek użytych w opisie zbioru."
+      - "Opis pozwala ustalić okres objęty danymi."
+      - "Definicje zmiennych są zrozumiałe."
+      - "Potrafię rozpoznać ograniczenia zastosowania zbioru."
+    zadanie: "Na podstawie opisu wskaż zakres tematyczny, terytorialny i czasowy zbioru."
+    pytanie: "Czy poprawnie rozpoznano zakres zbioru?"
+    rodzaj: "obserwacja"
+    czas_typowy: 8
+    efekt: 0.35
+    wiek: [37, 20]
+    druga_analiza: "tabela krzyżowa"
+  - id: S18
+    tytul: "Informacja biblioteczna: komunikowanie ograniczeń dostępu"
+    problem: "Biblioteka odróżnia niejasny komunikat od ograniczenia wynikającego z uprawnień lub połączenia. Porównuje ocenę jasności zasad dostępu z wynikiem próby dostępu."
+    grupy: ["zdalni", "lokalni"]
+    opis_grup: "Grupa oznacza tryb połączenia podczas próby dostępu: w sieci biblioteki albo zdalnie."
+    kategoria: "rodzaj zasobu"
+    poziomy: ["e-książka", "czasopismo", "baza danych", "zbiory specjalne"]
+    indeks: "Ocena jasności zasad dostępu"
+    pozycje:
+      - "Rozumiem, kto może korzystać z zasobu."
+      - "Informacja podaje wymagany sposób logowania."
+      - "Nie wiem, dlaczego dostęp może zostać odrzucony."
+      - "Rozumiem różnicę między dostępem lokalnym a zdalnym."
+      - "Komunikat wskazuje, jak rozwiązać problem dostępu."
+      - "Zasady jasno opisują ograniczenia wykorzystania zasobu."
+    zadanie: "Wykonaj jedną wskazaną próbę dostępu do zasobu."
+    pytanie: "Czy uzyskano dostęp do zasobu?"
+    rodzaj: "obserwacja"
+    czas_typowy: 4
+    efekt: 0.5
+    wiek: [27, 19]
+    druga_analiza: "tabela krzyżowa"
+  - id: S19
+    tytul: "System rekomendacji lektur: dopasowanie informacji do potrzeb"
+    problem: "Zespół usługi rekomendacji lektur rozpoznaje dopasowanie propozycji do potrzeb odbiorców. Oddziela postrzeganą trafność od wyboru lektury."
+    grupy: ["nowe zainteresowania", "stałe zainteresowania"]
+    opis_grup: "Grupa oznacza deklarowany etap poszukiwań w temacie bieżącej wizyty."
+    kategoria: "gatunek"
+    poziomy: ["literatura piękna", "popularnonaukowa", "naukowa"]
+    indeks: "Ocena trafności rekomendacji"
+    pozycje:
+      - "Rekomendowane lektury odpowiadają mojemu tematowi."
+      - "Opis rekomendacji wyjaśnia jej związek z moimi potrzebami."
+      - "Rekomendacje pomijają istotne dla mnie potrzeby."
+      - "Zestaw rekomendacji obejmuje różne przydatne źródła."
+      - "Potrafię wybrać lekturę na podstawie rekomendacji."
+      - "Rekomendacje pomagają mi poszerzyć poszukiwania."
+    zadanie: "Przejrzyj zestaw rekomendacji dla opisanego celu i wskaż lekturę albo zrezygnuj z wyboru."
+    pytanie: "Czy wybrano lekturę z rekomendacji?"
+    rodzaj: "obserwacja"
+    czas_typowy: 6
+    efekt: 0.2
+    wiek: [33, 18]
+    druga_analiza: "Spearman"
+  - id: S20
+    tytul: "Portal konferencji naukowej: przejrzystość informacji organizacyjnej"
+    problem: "Organizator konferencji ułatwia odnalezienie aktualnych warunków udziału. Porównuje ocenę portalu z odnalezieniem właściwego terminu zgłoszenia."
+    grupy: ["pierwszy raz", "kolejny raz"]
+    opis_grup: "Grupa oznacza pierwszy albo kolejny planowany udział w tym cyklu konferencji."
+    kategoria: "rola uczestnika"
+    poziomy: ["prelegent", "słuchacz", "wolontariusz"]
+    indeks: "Ocena przejrzystości informacji organizacyjnej"
+    pozycje:
+      - "Łatwo znajduję termin zgłoszenia na konferencję."
+      - "Portal jasno podaje warunki uczestnictwa."
+      - "Trudno mi ustalić, która informacja jest aktualna."
+      - "Program pozwala zaplanować udział."
+      - "Informacja o opłatach jest zrozumiała."
+      - "Wiem, gdzie skierować pytanie organizacyjne."
+    zadanie: "Odnajdź termin zgłoszenia dla wskazanej kategorii udziału i edycji konferencji."
+    pytanie: "Czy poprawnie odnaleziono termin zgłoszenia?"
+    rodzaj: "obserwacja"
+    czas_typowy: 5
+    efekt: 0.35
+    wiek: [34, 21]
+    druga_analiza: "tabela krzyżowa"

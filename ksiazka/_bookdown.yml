@@ -1,0 +1,28 @@
+book_filename: "projektowanie-zi"
+output_dir: "../_book"
+delete_merged_file: true
+new_session: false
+language:
+  label:
+    fig: "Rysunek "
+    tab: "Tabela "
+    eq: "Wzór "
+  ui:
+    chapter_name: ""
+rmd_files:
+  - index.Rmd
+  - instalacja.Rmd
+  - c01.Rmd
+  - c02.Rmd
+  - c03.Rmd
+  - c04.Rmd
+  - c05.Rmd
+  - c06.Rmd
+  - c07.Rmd
+  - c08.Rmd
+  - c09.Rmd
+  - c10.Rmd
+  - projekt.Rmd
+  - wyklady.Rmd
+  - scenariusze.Rmd
+  - sciaga.Rmd

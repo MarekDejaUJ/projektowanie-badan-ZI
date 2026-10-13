@@ -1,0 +1,13 @@
+# (PART) Materiały {-}
+
+# Wykłady {#wyklady .unnumbered}
+
+Pięć wykładów po 90 minut prowadzi przez projekt badania, opis danych, wnioskowanie, porównania grup oraz związki zmiennych. Każdy wykład ma wersję PDF do druku i wersję HTML do czytania na ekranie.
+
+| Wykład | Treść | Pliki |
+|:--|:--|:--|
+| W01. Od potrzeby informacyjnej do projektu badania | konstrukt, wskaźnik, skala pomiaru, populacja i próba, rodzaje projektów, estymanda i hipoteza | [PDF](materialy/wyklady/W01.pdf), [HTML](materialy/wyklady/W01.html) |
+| W02. Język danych, pomiar i opis | rozkład, miary położenia i rozproszenia, wykresy rozkładu, indeks z pozycji ankiety, trafność i rzetelność | [PDF](materialy/wyklady/W02.pdf), [HTML](materialy/wyklady/W02.html) |
+| W03. Losowość, estymacja i dwa tory wnioskowania | rozkłady prawdopodobieństwa, błąd standardowy, przedział ufności, test *t*, wartość *p*, bootstrap i permutacje | [PDF](materialy/wyklady/W03.pdf), [HTML](materialy/wyklady/W03.html) |
+| W04. Porównania grup i zależności kategorii | porównanie dwóch średnich, pary pomiarów, rangi, wiele grup, tabela krzyżowa i test $\chi^2$ | [PDF](materialy/wyklady/W04.pdf), [HTML](materialy/wyklady/W04.html) |
+| W05. Korelacja, regresja i raport ilościowy | wykres punktowy, korelacja Pearsona i Spearmana, permutacja i bootstrap par, regresja liniowa, raport | [PDF](materialy/wyklady/W05.pdf), [HTML](materialy/wyklady/W05.html) |

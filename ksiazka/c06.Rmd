@@ -1,0 +1,126 @@
+# C06. Wiele grup: analiza wariancji {#c06 .unnumbered}
+
+::: {.start}
+**Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, potem `pobierz_szablon(6)`. **Oddanie:** `oddaj_zadanie(6)`. **Wykład:** W04.
+:::
+
+Użytkownicy katalogu należą do czterech grup statusu: studenci pierwszego i drugiego stopnia, doktoranci i pracownicy. Ćwiczenie C06 sprawdza, czy średni czas zadania różni się między tymi grupami. Seria testów *t* dla wszystkich par zwiększałaby ryzyko fałszywego alarmu, dlatego analiza zaczyna od jednego testu dla wszystkich grup (analiza wariancji), a dopiero potem wskazuje, które pary się różnią.
+
+```{r c06-dane, include=FALSE}
+dane <- dane_zi("S02", id = "wzor")
+ok <- opis_grup(dane, czas, kategoria)
+model <- aov(czas ~ kategoria, data = dane)
+tab <- summary(model)[[1]]
+lev <- car::leveneTest(czas ~ kategoria, data = dane)
+welch <- oneway.test(czas ~ kategoria, data = dane)
+eta <- effectsize::eta_squared(model, alternative = "two.sided")
+omega <- effectsize::omega_squared(model, alternative = "two.sided")
+tk <- TukeyHSD(model)$kategoria
+kw <- kruskal.test(czas ~ kategoria, data = dane)
+eps <- rstatix::kruskal_effsize(dane, czas ~ kategoria)
+set.seed(2026)
+f_obs <- dane |> specify(czas ~ kategoria) |> calculate(stat = "F")
+f_perm <- dane |> specify(czas ~ kategoria) |> hypothesize(null = "independence") |>
+  generate(reps = 2000, type = "permute") |> calculate(stat = "F")
+pf <- get_p_value(f_perm, obs_stat = f_obs, direction = "greater")
+istotne <- tk[tk[, "p adj"] < 0.05, , drop = FALSE]
+para <- strsplit(rownames(istotne)[1], "-", fixed = TRUE)[[1]]
+if (istotne[1, "diff"] < 0) para <- rev(para)
+najk <- as.character(ok$kategoria[which.min(ok$M)])
+najd <- as.character(ok$kategoria[which.max(ok$M)])
+mk <- function(g) ok$M[ok$kategoria == g]
+```
+
+## LEARN 1. Opis grup {#c06-opis .unnumbered}
+
+```{r c06-opis, fig.height=3}
+opis_grup(dane, czas, kategoria)
+ggplot(dane, aes(x = kategoria, y = czas)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, alpha = 0.3) +
+  stat_summary(fun = mean, geom = "point", shape = 23, size = 3, fill = "#E69F00") +
+  labs(x = NULL, y = "Czas zadania [min]", caption = "Romb: średnia grupy")
+```
+
+Najkrócej pracowała grupa „`r najk`” (*M* = `r .zi_pl(mk(najk))` min), najdłużej grupa „`r najd`” (*M* = `r .zi_pl(mk(najd))` min). Grupy różnią się liczebnością (od `r min(ok$n)` do `r max(ok$n)` osób) i rozrzutem (*SD* od `r .zi_pl(min(ok$SD))` do `r .zi_pl(max(ok$SD))` min).
+
+## LEARN 2. Analiza wariancji i test F {#c06-anova .unnumbered}
+
+Analiza wariancji dzieli zróżnicowanie wszystkich wyników na część między grupami (różnice średnich grup) i część wewnątrz grup (różnice osób w tej samej grupie). Statystyka *F* porównuje obie części po podzieleniu przez stopnie swobody. Hipoteza zerowa $H_0$: $\mu_1 = \mu_2 = \dots = \mu_k$ mówi, że wszystkie średnie w populacji są równe.
+
+::: {.wzor}
+$$SS_B = \sum_{j=1}^{k} n_j(\bar{x}_j - \bar{x})^2 \qquad SS_W = \sum_{j=1}^{k}\sum_{i=1}^{n_j}(x_{ij} - \bar{x}_j)^2 \qquad F = \frac{SS_B/(k-1)}{SS_W/(N-k)}$$
+$k$ — liczba grup, $n_j$ i $\bar{x}_j$ — liczebność i średnia grupy $j$, $\bar{x}$ — średnia ogólna, $N$ — liczba wszystkich osób. W wydruku R: *Sum Sq* to sumy kwadratów, *Mean Sq* — sumy podzielone przez *Df*, *F value* — iloraz średnich kwadratów.
+:::
+
+```{r c06-anova, fig.height=2.8}
+model <- aov(czas ~ kategoria, data = dane)
+summary(model)
+car::leveneTest(czas ~ kategoria, data = dane)
+oneway.test(czas ~ kategoria, data = dane)
+set.seed(2026)
+f_obserwowane <- dane |> specify(czas ~ kategoria) |> calculate(stat = "F")
+f_permutacje <- dane |>
+  specify(czas ~ kategoria) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 2000, type = "permute") |>
+  calculate(stat = "F")
+get_p_value(f_permutacje, obs_stat = f_obserwowane, direction = "greater")
+visualize(f_permutacje) + shade_p_value(obs_stat = f_obserwowane, direction = "greater") +
+  labs(title = NULL, x = "F po losowym przetasowaniu grup", y = "Liczba losowań")
+```
+
+Średni czas różni się między grupami statusu: *F*(`r tab$Df[1]`, `r tab$Df[2]`) = `r .zi_pl(tab$"F value"[1])`, *p* `r .zi_p(tab$"Pr(>F)"[1])`. Wynik testu Levene’a `r if (lev$"Pr(>F)"[1] < 0.05) "wskazuje różnice wariancji" else "jest zgodny z równością wariancji"` (*p* `r .zi_p(lev$"Pr(>F)"[1])`), a test Welcha, odporny na różne wariancje, daje ten sam wniosek: *F*(`r welch$parameter[1]`, `r .zi_pl(welch$parameter[2])`) = `r .zi_pl(welch$statistic)`, *p* `r .zi_p(welch$p.value)`. Test permutacyjny (*B* = 2000) daje *p*~perm~ = `r .zi_pl(pf$p_value, 3)`. Test *F* stwierdza, że co najmniej jedna średnia różni się od pozostałych, ale nie wskazuje, która.
+
+## LEARN 3. Wielkość efektu: η² i ω² {#c06-efekt .unnumbered}
+
+::: {.wzor}
+$$\eta^2 = \frac{SS_B}{SS_B + SS_W} \qquad\qquad \omega^2 = \frac{SS_B - (k-1)\,MS_W}{SS_B + SS_W + MS_W}$$
+$\eta^2$ — odsetek zróżnicowania wyników w próbie związany z grupą, $\omega^2$ — mniej obciążone oszacowanie odsetka w populacji, $MS_W = SS_W/(N-k)$. Umowne progi: 0,01 — mały, 0,06 — średni, 0,14 — duży efekt.
+:::
+
+```{r c06-eta}
+effectsize::eta_squared(model, alternative = "two.sided")
+effectsize::omega_squared(model, alternative = "two.sided")
+```
+
+Status wyjaśnia `r .zi_pl(100 * eta$Eta2, 1)`% zróżnicowania czasu w próbie (*η*^2^ = `r .zi_pl(eta$Eta2)`), a oszacowanie dla populacji wynosi *ω*^2^ = `r .zi_pl(omega$Omega2)`. Pozostałe `r .zi_pl(100 * (1 - eta$Eta2), 0)`% zróżnicowania to różnice między osobami tej samej grupy: status jest jednym z wielu źródeł różnic czasu.
+
+## LEARN 4. Porównania post hoc {#c06-posthoc .unnumbered}
+
+Porównania post hoc sprawdzają wszystkie pary grup i korygują wartości *p* tak, aby łączne ryzyko fałszywego alarmu w całej serii porównań wynosiło 5%. Test Tukeya zakłada równe wariancje; test Gamesa–Howella ich nie zakłada i jest bezpiecznym wyborem przy różnych liczebnościach i rozrzucie.
+
+```{r c06-posthoc}
+TukeyHSD(model)
+rstatix::games_howell_test(dane, czas ~ kategoria)
+```
+
+Po korekcie istotna jest różnica `r if (nrow(istotne) == 1) "jednej pary" else paste(nrow(istotne), "par")`: grupa „`r para[1]`” pracowała dłużej niż grupa „`r para[2]`” o `r .zi_pl(abs(istotne[1, "diff"]))` min (*p*~adj~ = `r .zi_pl(istotne[1, "p adj"], 3)`). Pozostałe pary mają przedziały różnicy obejmujące zero. Istotny test *F* przy tylko jednej istotnej parze to częsty wynik: test dla wszystkich grup łączy niewielkie różnice wielu par.
+
+## LEARN 5. Test Kruskala–Wallisa {#c06-kruskal .unnumbered}
+
+Test Kruskala–Wallisa porównuje rangi wyników w wielu grupach i jest odporny na skośność oraz wartości odległe. Wielkością efektu jest $\varepsilon^2$ (progi jak dla $\eta^2$), a porównania par wykonuje test Dunna z korektą Holma.
+
+```{r c06-kw}
+kruskal.test(czas ~ kategoria, data = dane)
+rstatix::kruskal_effsize(dane, czas ~ kategoria)
+rstatix::dunn_test(dane, czas ~ kategoria, p.adjust.method = "holm")
+```
+
+Test rangowy potwierdza różnice: $\chi^2$(`r kw$parameter`) = `r .zi_pl(kw$statistic)`, *p* `r .zi_p(kw$p.value)`, $\varepsilon^2$ = `r .zi_pl(eps$effsize)`. Zgodność testu *F*, testu Welcha, permutacji i testu rangowego oznacza, że wniosek nie zależy od założeń o rozkładzie.
+
+## Wzorce zapisu {#c06-apa .unnumbered}
+
+::: {.apa}
+**Wynik istotny.** Średni czas zadania różnił się między grupami statusu, *F*(`r tab$Df[1]`, `r tab$Df[2]`) = `r .zi_pl(tab$"F value"[1])`, *p* `r .zi_p(tab$"Pr(>F)"[1])`, *η*^2^ = `r .zi_pl(eta$Eta2)`; test Welcha dał *F*(`r welch$parameter[1]`, `r .zi_pl(welch$parameter[2])`) = `r .zi_pl(welch$statistic)`, *p* `r .zi_p(welch$p.value)`. Porównania post hoc (test Tukeya) wykazały dłuższy czas w grupie „`r para[1]`” (*M* = `r .zi_pl(mk(para[1]))` min) niż w grupie „`r para[2]`” (*M* = `r .zi_pl(mk(para[2]))` min), *p*~adj~ = `r .zi_pl(istotne[1, "p adj"], 3)`; pozostałe różnice nie były istotne.
+
+**Wynik nieistotny.** Średnia ocena katalogu była zbliżona w grupach statusu, a różnice były nieistotne statystycznie, *F*(3, 229) = 1,75, *p* = 0,157, *η*^2^ = 0,02; analiza kończy się bez porównań post hoc.
+
+**Zasada.** Porównania par raportujesz dopiero po istotnym teście dla wszystkich grup i zawsze z poprawionymi wartościami *p*.
+:::
+
+## CHALLENGE {-}
+
+::: {.challenge}
+**Plik `zadanie-06.Rmd`**, scenariusz S12: platforma e-learningowa i cztery typy kursów, dane według Twojego ID. Pięć poleceń: opis grup, analiza wariancji z testem Welcha i permutacją, wielkość efektu, porównania post hoc, test Kruskala–Wallisa i akapit dla zespołu platformy. Oddanie: `oddaj_zadanie(6)`.
+:::

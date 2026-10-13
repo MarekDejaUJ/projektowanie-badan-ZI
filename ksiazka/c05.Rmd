@@ -1,0 +1,136 @@
+# C05. Dwie grupy i pomiar powtórzony {#c05 .unnumbered}
+
+::: {.start}
+**Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, potem `pobierz_szablon(5)`. **Oddanie:** `oddaj_zadanie(5)`. **Wykład:** W04.
+:::
+
+Biblioteka pyta, czy nowi użytkownicy wykonują zadanie w katalogu dłużej niż doświadczeni, i czy krótka instrukcja skraca czas drugiej próby. Ćwiczenie C05 odpowiada na pierwsze pytanie testem Welcha, wielkością efektu, testem permutacyjnym i testem Manna–Whitneya, a na drugie testami dla par pomiarów tych samych osób.
+
+```{r c05-dane, include=FALSE}
+dane <- dane_zi("S02", id = "wzor")
+og <- opis_grup(dane, czas, grupa)
+tw <- t.test(czas ~ grupa, data = dane)
+g <- effectsize::hedges_g(czas ~ grupa, data = dane)
+mw <- wilcox.test(czas ~ grupa, data = dane)
+rb <- effectsize::rank_biserial(czas ~ grupa, data = dane)
+set.seed(2026)
+obs <- dane |> specify(czas ~ grupa) |> calculate(stat = "diff in means", order = c("nowi", "doświadczeni"))
+perm <- dane |> specify(czas ~ grupa) |> hypothesize(null = "independence") |>
+  generate(reps = 2000, type = "permute") |> calculate(stat = "diff in means", order = c("nowi", "doświadczeni"))
+pp <- get_p_value(perm, obs_stat = obs, direction = "two-sided")
+pary <- dane[!is.na(dane$czas) & !is.na(dane$czas_po), ]
+tp <- t.test(pary$czas, pary$czas_po, paired = TRUE)
+dz <- effectsize::cohens_d(pary$czas, pary$czas_po, paired = TRUE)
+wp <- wilcox.test(pary$czas, pary$czas_po, paired = TRUE)
+ow <- opis_grup(dane, wiek, grupa)
+tw_wiek <- t.test(wiek ~ grupa, data = dane)
+g_wiek <- effectsize::hedges_g(wiek ~ grupa, data = dane)
+```
+
+## LEARN 1. Opis dwóch grup {#c05-opis .unnumbered}
+
+Porównanie zaczyna się od opisu: liczebności, średniej, odchylenia standardowego i mediany w każdej grupie oraz wykresu całych rozkładów.
+
+```{r c05-opis, fig.height=3}
+opis_grup(dane, czas, grupa)
+ggplot(dane, aes(x = grupa, y = czas)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, alpha = 0.35) +
+  stat_summary(fun = mean, geom = "point", shape = 23, size = 3, fill = "#E69F00") +
+  labs(x = NULL, y = "Czas zadania [min]", caption = "Romb: średnia grupy")
+```
+
+Nowi użytkownicy wykonywali zadanie średnio `r .zi_pl(og$M[1])` min, a doświadczeni `r .zi_pl(og$M[2])` min; mediany wynoszą `r .zi_pl(og$Mdn[1])` i `r .zi_pl(og$Mdn[2])` min. Rozkłady obu grup są prawoskośne i w dużej części się nakładają.
+
+## LEARN 2. Test Welcha {#c05-welch .unnumbered}
+
+Test *t* Welcha porównuje średnie dwóch niezależnych grup bez założenia równych wariancji, dlatego jest domyślnym wyborem dla dwóch grup. Hipoteza zerowa $H_0$: $\mu_1 = \mu_2$ mówi, że w populacji obie grupy mają tę samą średnią.
+
+::: {.wzor}
+$$t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}} \qquad\qquad df = \frac{\left(\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}\right)^2}{\dfrac{(s_1^2/n_1)^2}{n_1 - 1} + \dfrac{(s_2^2/n_2)^2}{n_2 - 1}}$$
+$\bar{x}_1, \bar{x}_2$ — średnie grup, $s_1, s_2$ — odchylenia standardowe, $n_1, n_2$ — liczebności. Stopnie swobody Welcha są zwykle liczbą ułamkową.
+:::
+
+```{r c05-welch}
+t.test(czas ~ grupa, data = dane)
+```
+
+R odejmuje średnie w kolejności poziomów zmiennej `grupa`: nowi minus doświadczeni. Różnica `r .zi_pl(diff(rev(tw$estimate)))` min jest istotna statystycznie: *t*(`r .zi_pl(tw$parameter)`) = `r .zi_pl(tw$statistic)`, *p* `r .zi_p(tw$p.value)`, a 95% przedział różnicy [`r .zi_pl(tw$conf.int[1])`; `r .zi_pl(tw$conf.int[2])`] min nie obejmuje zera.
+
+## LEARN 3. Wielkość efektu: g Hedgesa {#c05-efekt .unnumbered}
+
+Wielkość efektu wyraża różnicę średnich w odchyleniach standardowych, więc pozwala porównać wyniki mierzone w różnych jednostkach.
+
+::: {.wzor}
+$$s_p = \sqrt{\frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}} \qquad\qquad g = \frac{\bar{x}_1 - \bar{x}_2}{s_p}\left(1 - \frac{3}{4(n_1 + n_2) - 9}\right)$$
+$s_p$ — wspólne odchylenie standardowe, nawias — poprawka na wielkość próby. Progi jak dla *d*: 0,2 — mały, 0,5 — średni, 0,8 — duży efekt.
+:::
+
+```{r c05-g}
+effectsize::hedges_g(czas ~ grupa, data = dane)
+```
+
+Różnica czasu wynosi *g* = `r .zi_pl(g$Hedges_g)` [`r .zi_pl(g$CI_low)`; `r .zi_pl(g$CI_high)`]: efekt mały do średniego. Przedział efektu jest szeroki, więc dane zgadzają się zarówno z efektem bardzo małym, jak i średnim.
+
+## LEARN 4. Test permutacyjny i test Manna–Whitneya {#c05-permutacja .unnumbered}
+
+Przy prawdziwej $H_0$ przynależność do grupy jest niezależna od czasu, więc etykiety „nowi” i „doświadczeni” można losowo zamienić bez zmiany rozkładu wyników. Test permutacyjny tasuje etykiety 2000 razy, za każdym razem liczy różnicę średnich i sprawdza, jak często losowa różnica jest co najmniej tak duża jak obserwowana. Test Manna–Whitneya porównuje rangi wyników i jest odporny na długie ogony; jego miarą efektu jest korelacja rangowo-dwuseryjna *r*~rb~ (0,1 — mały, 0,3 — średni, 0,5 — duży efekt).
+
+```{r c05-perm, fig.height=2.8}
+set.seed(2026)
+obserwowana <- dane |>
+  specify(czas ~ grupa) |>
+  calculate(stat = "diff in means", order = c("nowi", "doświadczeni"))
+permutacje <- dane |>
+  specify(czas ~ grupa) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 2000, type = "permute") |>
+  calculate(stat = "diff in means", order = c("nowi", "doświadczeni"))
+get_p_value(permutacje, obs_stat = obserwowana, direction = "two-sided")
+visualize(permutacje) + shade_p_value(obs_stat = obserwowana, direction = "two-sided") +
+  labs(title = NULL, x = "Różnica średnich po losowym przetasowaniu grup [min]", y = "Liczba losowań")
+wilcox.test(czas ~ grupa, data = dane)
+effectsize::rank_biserial(czas ~ grupa, data = dane)
+```
+
+Środkowe 95% różnic po przetasowaniu grup leży między `r .zi_pl(quantile(perm$stat, 0.025))` a `r .zi_pl(quantile(perm$stat, 0.975))` min, a obserwowana różnica `r .zi_pl(obs$stat)` min (czerwona linia) wypada w ogonie rozkładu: *p*~perm~ = `r .zi_pl(pp$p_value, 3)`. Test Manna–Whitneya daje *W* = `r format(mw$statistic, big.mark = " ")`, *p* `r .zi_p(mw$p.value)`, *r*~rb~ = `r .zi_pl(rb$r_rank_biserial)`. Trzy testy prowadzą do tego samego wniosku, więc wniosek jest odporny na odstępstwa od normalności.
+
+## LEARN 5. Pomiar powtórzony: te same osoby dwa razy {#c05-pary .unnumbered}
+
+Po pierwszej próbie każdy uczestnik przeczytał krótką instrukcję i wykonał drugie, podobne zadanie. Dwa pomiary tej samej osoby są zależne, dlatego analiza dotyczy różnicy $d_i$ = czas przed − czas po u każdej osoby.
+
+::: {.wzor}
+$$t = \frac{\bar{d}}{s_d / \sqrt{n}} \qquad df = n - 1 \qquad\qquad d_z = \frac{\bar{d}}{s_d}$$
+$\bar{d}$ — średnia różnica, $s_d$ — odchylenie standardowe różnic, $n$ — liczba osób z oboma pomiarami.
+:::
+
+```{r c05-pary, fig.height=2.8}
+pary <- filter(dane, !is.na(czas), !is.na(czas_po))
+t.test(pary$czas, pary$czas_po, paired = TRUE)
+effectsize::cohens_d(pary$czas, pary$czas_po, paired = TRUE)
+wilcox.test(pary$czas, pary$czas_po, paired = TRUE)
+ggplot(pary, aes(x = czas - czas_po)) +
+  geom_histogram(binwidth = 1, fill = "#009E73", colour = "white") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs(x = "Różnica: czas pierwszej minus czas drugiej próby [min]", y = "Liczba osób")
+```
+
+Druga próba trwała średnio o `r .zi_pl(tp$estimate)` min krócej: *t*(`r tp$parameter`) = `r .zi_pl(tp$statistic)`, *p* `r .zi_p(tp$p.value)`, *d*~z~ = `r .zi_pl(dz$Cohens_d)`, 95% CI [`r .zi_pl(tp$conf.int[1])`; `r .zi_pl(tp$conf.int[2])`]; test Wilcoxona dla par potwierdza wynik (*p* `r .zi_p(wp$p.value)`). Skrócenie czasu ma dwa możliwe źródła: instrukcję i wprawę z pierwszej próby. Rozdzielenie obu źródeł wymaga grupy porównawczej, która wykonuje drugą próbę bez instrukcji.
+
+## Wzorce zapisu {#c05-apa .unnumbered}
+
+::: {.apa}
+**Wynik istotny.** Nowi użytkownicy (*n* = `r og$n[1]`) wykonywali zadanie dłużej (*M* = `r .zi_pl(og$M[1])` min; *SD* = `r .zi_pl(og$SD[1])`) niż doświadczeni (*n* = `r og$n[2]`; *M* = `r .zi_pl(og$M[2])` min; *SD* = `r .zi_pl(og$SD[2])`). Różnica `r .zi_pl(diff(rev(tw$estimate)))` min była istotna, *t*(`r .zi_pl(tw$parameter)`) = `r .zi_pl(tw$statistic)`, *p* `r .zi_p(tw$p.value)`, 95% CI [`r .zi_pl(tw$conf.int[1])`; `r .zi_pl(tw$conf.int[2])`], *g* = `r .zi_pl(g$Hedges_g)`; test permutacyjny (*B* = 2000, *p* = `r .zi_pl(pp$p_value, 3)`) i test Manna–Whitneya (*p* `r .zi_p(mw$p.value)`, *r*~rb~ = `r .zi_pl(rb$r_rank_biserial)`) prowadzą do tego samego wniosku.
+
+**Wynik nieistotny.** Średni wiek nowych (*M* = `r .zi_pl(ow$M[1])` lat; *SD* = `r .zi_pl(ow$SD[1])`) i doświadczonych użytkowników (*M* = `r .zi_pl(ow$M[2])` lat; *SD* = `r .zi_pl(ow$SD[2])`) był zbliżony, a różnica była nieistotna statystycznie, *t*(`r .zi_pl(tw_wiek$parameter)`) = `r .zi_pl(tw_wiek$statistic)`, *p* `r .zi_p(tw_wiek$p.value)`, 95% CI [`r .zi_pl(tw_wiek$conf.int[1])`; `r .zi_pl(tw_wiek$conf.int[2])`], *g* = `r .zi_pl(g_wiek$Hedges_g)`. Przedział obejmuje zero, więc dane nie wskazują, która grupa jest starsza.
+
+**Pomiar powtórzony.** Druga próba po instrukcji trwała średnio o `r .zi_pl(tp$estimate)` min krócej niż pierwsza, *t*(`r tp$parameter`) = `r .zi_pl(tp$statistic)`, *p* `r .zi_p(tp$p.value)`, *d*~z~ = `r .zi_pl(dz$Cohens_d)`.
+
+**Zasada.** Przy *p* ≥ 0,05 podajesz kierunek różnicy w próbie, przedział i brak podstaw do odrzucenia *H*~0~; sformułowania „grupy są takie same” i „wykazano różnicę” wykraczają poza dane. Grupy powstały bez losowego przydziału, więc różnica opisuje grupy; wniosek o skutku doświadczenia wymaga eksperymentu.
+:::
+
+## CHALLENGE {-}
+
+::: {.challenge}
+**Plik `zadanie-05.Rmd`**, scenariusz S11: instrukcja dostępu do e-zasobów w formie tekstu albo wideo, dane według Twojego ID. Pięć poleceń: opis grup, test Welcha i *g*, test permutacyjny i test Manna–Whitneya, pomiar powtórzony, akapit dla biblioteki. Oddanie: `oddaj_zadanie(5)`.
+:::

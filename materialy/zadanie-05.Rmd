@@ -1,0 +1,104 @@
+---
+title: "C05. Dwie grupy i pomiar powtórzony"
+subtitle: "Zadanie Z05, scenariusz S11: instrukcja tekstowa i wideo"
+author: "Imię Nazwisko"
+params:
+  id: "TWOJE_ID"
+date: "`r format(Sys.Date(), '%d.%m.%Y')`"
+lang: pl
+geometry: margin=2.2cm
+output:
+  pdf_document:
+    latex_engine: xelatex
+    dev: png
+    fig_crop: false
+  html_document: default
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+```{r start, include=FALSE}
+source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
+dane <- dane_zi("S11", id = params$id)
+```
+
+Materiał LEARN i wzorce zapisu: <https://marekdejauj.github.io/projektowanie-badan-ZI/c05.html>. Uruchamiaj bloki kodu po kolei, a odpowiedź pisz pod każdym poleceniem. Oddanie w konsoli: `oddaj_zadanie(5)`.
+
+```{r karta, echo=FALSE, results='asis'}
+karta_zi("S11")
+```
+
+Dane: ID `r params$id`, `r nrow(dane)` osób.
+
+## Zadanie 5.1. Opis dwóch grup (2 pkt)
+
+**Polecenie:** Opisz ocenę zrozumiałości instrukcji w grupach „tekst” i „wideo”: *n*, *M*, *SD*, *Mdn*. Na podstawie wykresu oceń, na ile rozkłady się nakładają.
+
+```{r z5-1, fig.height=3}
+opis_grup(dane, indeks, grupa)
+ggplot(dane, aes(x = grupa, y = indeks)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, height = 0.05, alpha = 0.35) +
+  stat_summary(fun = mean, geom = "point", shape = 23, size = 3, fill = "#E69F00") +
+  labs(x = NULL, y = "Ocena zrozumiałości (1–5)", caption = "Romb: średnia grupy")
+```
+
+**Odpowiedź:**
+
+## Zadanie 5.2. Test Welcha i wielkość efektu (2 pkt)
+
+**Polecenie:** Zapisz *H*~0~. Podaj różnicę średnich (tekst minus wideo), *t*, *df*, *p*, 95% CI różnicy i *g* Hedgesa. Wniosek musi odpowiadać Twojej wartości *p*.
+
+```{r z5-2}
+t.test(indeks ~ grupa, data = dane)
+effectsize::hedges_g(indeks ~ grupa, data = dane)
+```
+
+**Odpowiedź:**
+
+## Zadanie 5.3. Test permutacyjny i test Manna–Whitneya (2 pkt)
+
+**Polecenie:** Odczytaj *p* testu permutacyjnego, położenie obserwowanej różnicy na wykresie oraz wynik testu Manna–Whitneya z *r*~rb~. Oceń, czy trzy testy prowadzą do tego samego wniosku.
+
+```{r z5-3, fig.height=2.8}
+set.seed(2026)
+obserwowana <- dane |>
+  specify(indeks ~ grupa) |>
+  calculate(stat = "diff in means", order = c("tekst", "wideo"))
+permutacje <- dane |>
+  specify(indeks ~ grupa) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 2000, type = "permute") |>
+  calculate(stat = "diff in means", order = c("tekst", "wideo"))
+get_p_value(permutacje, obs_stat = obserwowana, direction = "two-sided")
+visualize(permutacje) + shade_p_value(obs_stat = obserwowana, direction = "two-sided") +
+  labs(title = NULL, x = "Różnica średnich po losowym przetasowaniu grup", y = "Liczba losowań")
+wilcox.test(indeks ~ grupa, data = dane)
+effectsize::rank_biserial(indeks ~ grupa, data = dane)
+```
+
+**Odpowiedź:**
+
+## Zadanie 5.4. Pomiar powtórzony (2 pkt)
+
+**Polecenie:** Porównaj czas zapoznania się z instrukcją w pierwszej i drugiej próbie tych samych osób: średnia różnica, *t*, *df*, *p*, *d*~z~ i wynik testu Wilcoxona. Wskaż dwa możliwe źródła różnicy.
+
+```{r z5-4, fig.height=2.8}
+pary <- filter(dane, !is.na(czas), !is.na(czas_po))
+t.test(pary$czas, pary$czas_po, paired = TRUE)
+effectsize::cohens_d(pary$czas, pary$czas_po, paired = TRUE)
+wilcox.test(pary$czas, pary$czas_po, paired = TRUE)
+ggplot(pary, aes(x = czas - czas_po)) +
+  geom_histogram(binwidth = 1, fill = "#009E73", colour = "white") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs(x = "Różnica: czas pierwszej minus czas drugiej próby [min]", y = "Liczba osób")
+```
+
+**Odpowiedź:**
+
+## Zadanie 5.5. Akapit dla biblioteki (2 pkt)
+
+**Polecenie:** Napisz akapit (3–4 zdania) według wzorca zapisu: porównanie ocen instrukcji tekstowej i wideo oraz zmiana czasu w drugiej próbie. Uwzględnij, że uczestnicy sami wybierali format instrukcji.
+
+**Odpowiedź:**

@@ -1,0 +1,78 @@
+# C10. Projekt: analizy i interpretacja {#c10 .unnumbered}
+
+::: {.start}
+**Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, potem otwórz swój plik `projekt.Rmd` (`pobierz_szablon("projekt")` otwiera istniejący plik bez nadpisywania). **Oddanie części I–II:** `oddaj_zadanie(10)`. **Wersja końcowa:** `oddaj_projekt()`. **Wykład:** W05.
+:::
+
+Część II projektu (P6–P10) odpowiada na pytania badawcze: dwie analizy, odpowiedź na pytania, ograniczenia i rekomendacje oraz informacja o użyciu generatywnej SI. Analizy powtarzają procedury z ćwiczeń C05, C07 i C08 na danych Twojego scenariusza. Rozdział C10 opisuje, jak z wyników powstaje argument: od liczb przez interpretację do decyzji instytucji.
+
+```{r c10-dane, include=FALSE}
+dane <- dane_zi("S02", id = "wzor")
+oi <- opis_grup(dane, indeks, grupa)
+tw <- t.test(indeks ~ grupa, data = dane)
+g <- effectsize::hedges_g(indeks ~ grupa, data = dane)
+tab <- table(dane$grupa, dane$powodzenie)
+ch <- chisq.test(tab, correct = FALSE)
+v <- effectsize::cramers_v(tab, adjust = FALSE, alternative = "two.sided")
+mr <- miary_ryzyka(tab)
+proc <- prop.table(tab, 1)
+```
+
+## LEARN 1. Pierwsza analiza: indeks w dwóch grupach {#c10-analiza1 .unnumbered}
+
+Pierwsza analiza odpowiada na pytanie o różnicę indeksu. Kolejność raportu jest stała: opis grup, test Welcha z przedziałem różnicy, wielkość efektu *g*, a następnie test permutacyjny i test Manna–Whitneya jako sprawdzenie, czy wniosek zależy od założeń (C05).
+
+```{r c10-welch}
+t.test(indeks ~ grupa, data = dane)
+effectsize::hedges_g(indeks ~ grupa, data = dane)
+```
+
+W S02 doświadczeni użytkownicy oceniają katalog wyżej o `r .zi_pl(-diff(rev(tw$estimate)))` punktu: *t*(`r .zi_pl(tw$parameter)`) = `r .zi_pl(tw$statistic)`, *p* `r .zi_p(tw$p.value)`, *g* = `r .zi_pl(g$Hedges_g)`. Ujemny znak *t* i *g* wynika z kolejności grup (nowi minus doświadczeni); w tekście podajesz różnicę słowami, z kierunkiem.
+
+## LEARN 2. Druga analiza {#c10-analiza2 .unnumbered}
+
+Druga analiza zależy od karty scenariusza. Scenariusze z tabelą krzyżową porównują odsetek powodzeń w grupach (C07): procenty w wierszach, test $\chi^2$, *V* Craméra i różnica proporcji. Scenariusze z korelacją Spearmana opisują związek częstości korzystania z indeksem (C08): $\rho$, *p* i wykres. W S02 druga analiza jest tabelą krzyżową:
+
+```{r c10-tabela}
+tabela <- table(dane$grupa, dane$powodzenie)
+chisq.test(tabela, correct = FALSE)
+miary_ryzyka(tabela)
+```
+
+Dokument znalazło `r .zi_pl(100 * proc[1, "tak"], 1)`% nowych i `r .zi_pl(100 * proc[2, "tak"], 1)`% doświadczonych użytkowników: $\chi^2$(1, *N* = `r sum(tab)`) = `r .zi_pl(ch$statistic)`, *p* `r .zi_p(ch$p.value)`, *V* = `r .zi_pl(v$Cramers_v)`, różnica `r .zi_pl(-100 * mr$wartosc[3], 1)` punktu procentowego.
+
+## LEARN 3. Od wyników do odpowiedzi {#c10-interpretacja .unnumbered}
+
+Odpowiedź na pytanie badawcze łączy trzy informacje: kierunek i wielkość efektu (w jednostkach zmiennej i jako *g*, *V* lub $\rho$), niepewność (przedział ufności) oraz znaczenie praktyczne dla instytucji. Wartość *p* rozstrzyga tylko, czy wynik da się wytłumaczyć losowością. Obie analizy razem dają pełniejszy obraz niż każda osobno: deklaracja (indeks) i obserwacja (powodzenie) wskazują ten sam kierunek albo różne kierunki, a różny kierunek jest wynikiem wartym opisania.
+
+::: {.apa}
+**Wzorzec P8 (S02).** Doświadczeni użytkownicy oceniają katalog wyżej niż nowi, ale różnica jest mała (`r .zi_pl(-diff(rev(tw$estimate)))` punktu na skali 1–5; *g* = `r .zi_pl(abs(g$Hedges_g))`, 95% CI różnicy [`r .zi_pl(-tw$conf.int[2])`; `r .zi_pl(-tw$conf.int[1])`]). Wyraźniejsza jest różnica wykonania: nowi znajdują dokument o `r .zi_pl(-100 * mr$wartosc[3], 1)` punktu procentowego rzadziej. Dla biblioteki ważniejsza jest więc pomoc w samym wyszukiwaniu niż poprawa opinii o katalogu: wsparcie przy pierwszych wyszukiwaniach ma uzasadnienie w wynikach obu analiz.
+:::
+
+## LEARN 4. Ograniczenia i rekomendacje {#c10-ograniczenia .unnumbered}
+
+Ograniczenie wskazuje źródło możliwego błędu i jego wpływ na wniosek. Trzy obszary są obowiązkowe: projekt badania (grupy bez losowego przydziału, więc różnice mogą wynikać z innych cech osób), pomiar (deklaracja, jedno zadanie, możliwa niepełna trafność indeksu) i próba (sposób rekrutacji, liczebność, dane syntetyczne). Rekomendacja wynika z wyników i uwzględnia ograniczenia: decyzja dla instytucji oraz badanie, które usunęłoby najważniejsze ograniczenie (np. eksperyment z losowym przydziałem formy wsparcia).
+
+::: {.apa}
+**Wzorzec P9 (S02).** Grupy powstały z wcześniejszego korzystania z katalogu, więc różnice mogą wynikać także z wieku, kierunku studiów albo motywacji. Indeks jest deklaracją, a powodzenie dotyczy jednego zadania, dlatego wynik obejmuje jedną sytuację wyszukiwania i jedną formę oceny. Rekrutacja przy stanowisku pomocy może zawyżać udział osób z trudnościami. Rekomendacja: krótki samouczek wyszukiwania dla nowych użytkowników, a następnie eksperyment z losowym przydziałem samouczka, który sprawdzi jego skutek.
+:::
+
+## LEARN 5. Generatywna SI w argumentacji i odtwarzalność {#c10-si .unnumbered}
+
+Generatywna SI wspiera argumentację, jeżeli pracuje na Twoim tekście i Twoich liczbach, a Ty sprawdzasz każdą jej odpowiedź. Przydatne zastosowania to wskazanie alternatywnych wyjaśnień wyniku, krytyka logiki wniosku i redakcja języka. Wyniki liczy R, a źródłem naukowym są publikacje; model językowy może podawać nieistniejące publikacje, dlatego każde jego wskazanie wymaga sprawdzenia. Do narzędzia nie przekazujesz danych osobowych.
+
+::: {.wzor}
+**Przykład polecenia:** „Oto wynik badania obserwacyjnego: [Twój akapit P8]. Wskaż trzy alternatywne wyjaśnienia różnicy między grupami i dla każdego zaproponuj sposób jego sprawdzenia w przyszłym badaniu. Użyj wyłącznie liczb z akapitu i pomiń źródła.” Każdą propozycję oceniasz samodzielnie i włączasz do P9 tylko te, które wynikają z projektu badania.
+:::
+
+Odtwarzalność oznacza, że inna osoba otrzyma te same liczby: projekt podaje scenariusz, ID, datę i wersję skryptu startowego, a PDF powstaje z pliku Rmd w nowej sesji R.
+
+::: {.apa}
+**Wzorzec P10.** Generatywna SI (narzędzie, data) posłużyła do wskazania alternatywnych wyjaśnień różnicy między grupami; dwie z trzech propozycji włączono do ograniczeń po sprawdzeniu ich zgodności z projektem badania. Wyniki, liczby i interpretacja pochodzą z analiz w pliku projektu. Analizę odtwarza plik `projekt.Rmd` (scenariusz S02, ID wzor, skrypt startowy `r .zi_wersja`).
+:::
+
+## CHALLENGE {-}
+
+::: {.challenge}
+**Plik `projekt.Rmd`, część II (P6–P10)**, Twój scenariusz i Twoje ID. Polecenia: pierwsza analiza, druga analiza, odpowiedź na pytania, ograniczenia i rekomendacje, generatywna SI i odtwarzalność. Oddanie części I–II: `oddaj_zadanie(10)`; wersja końcowa projektu: `oddaj_projekt()` do 27 stycznia 2027.
+:::

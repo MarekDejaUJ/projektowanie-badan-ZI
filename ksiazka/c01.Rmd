@@ -1,0 +1,122 @@
+# (PART) Ćwiczenia {-}
+
+# C01. Dane badania i pierwszy opis {#c01 .unnumbered}
+
+::: {.start}
+**Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, a przy pierwszym ćwiczeniu `pobierz_szablon(1, id = "TWOJE_ID", student = "Imię Nazwisko")`. **Oddanie:** `oddaj_zadanie(1)`. **Wykład:** W01.
+:::
+
+Biblioteka chce wiedzieć, czy katalog wymaga wsparcia dla nowych użytkowników. Badanie S02 łączy ankietę z obserwacją jednego zadania wyszukiwawczego. Ćwiczenie C01 prowadzi od zbioru danych do pierwszego porównania grup: liczebności, odsetków, średnich, median i wykresów.
+
+```{r c01-karta, echo=FALSE, results='asis'}
+karta_zi("S02")
+```
+
+## LEARN 1. Zbiór danych w R {#c01-dane .unnumbered}
+
+Skrypt startowy udostępnia funkcję `dane_zi()`, która zwraca ramkę danych: wiersz opisuje jedną osobę, a kolumna jedną zmienną. Zapis `dane <- dane_zi(...)` zapisuje wynik funkcji w obiekcie `dane`, a `dane$czas` wybiera z niego kolumnę czasu. Funkcja `glimpse()` z pakietu dplyr wypisuje liczbę wierszy i kolumn oraz typ i pierwsze wartości każdej zmiennej.
+
+```{r c01-glimpse}
+dane <- dane_zi("S02", id = "wzor")
+glimpse(dane)
+```
+
+```{r c01-liczby, include=FALSE}
+oc <- opis_grup(dane, czas, grupa)
+oi <- opis_grup(dane, indeks, grupa)
+pw <- czestosci(dane, powodzenie, grupa)
+pk <- czestosci(dane, kategoria)
+tak <- pw[pw$powodzenie == "tak", ]
+```
+
+Zbiór S02 ma `r nrow(dane)` osób i `r ncol(dane)` zmiennych. Typ `<fct>` oznacza zmienną kategorialną o ustalonych poziomach (grupa, kategoria, powodzenie), `<int>` liczbę całkowitą (wiek, częstość, pozycje skali), a `<dbl>` liczbę rzeczywistą (indeks, czas). Wartość `NA` oznacza brak odpowiedzi albo brak pomiaru; funkcje opisu pomijają ją i podają liczbę braków osobno.
+
+## LEARN 2. Zmienne i skale pomiaru {#c01-skale .unnumbered}
+
+Skala pomiaru wyznacza działania, które mają sens dla wartości zmiennej. Słownik zbioru podaje opis i skalę każdej zmiennej scenariusza.
+
+```{r c01-slownik}
+slownik_zi("S02")
+```
+
+| Skala | Zmienne S02 | Miary opisu |
+|:--|:--|:--|
+| nominalna | grupa, kategoria, powodzenie, kanały | liczebność, odsetek, dominanta |
+| porządkowa | częstość korzystania, pozycje p1–p6 | mediana, kwartyle, odsetki kategorii |
+| przedziałowa | indeks (umownie) | średnia, odchylenie standardowe |
+| ilorazowa | czas, wiek | średnia, odchylenie standardowe, ilorazy |
+
+Pojedyncza pozycja skali Likerta ma pięć uporządkowanych kategorii o nieznanych odstępach, więc jest zmienną porządkową. Indeks jest średnią sześciu pozycji i przyjmuje wiele wartości od 1 do 5, dlatego w analizach traktujemy go umownie jako zmienną przedziałową. Czas ma naturalne zero, więc zdanie „zadanie trwało dwa razy dłużej” ma sens tylko dla czasu.
+
+## LEARN 3. Liczebności i odsetki {#c01-odsetki .unnumbered}
+
+Odsetek odpowiada na pytanie „jaka część osób”, a jego mianownikiem jest liczba ważnych odpowiedzi w grupie:
+
+::: {.wzor}
+$$p = \frac{k}{n} \cdot 100\%$$
+$k$ — liczba osób w kategorii, $n$ — liczba osób z ważną odpowiedzią (bez braków), $p$ — odsetek.
+:::
+
+```{r c01-odsetki}
+czestosci(dane, kategoria)
+czestosci(dane, powodzenie, grupa)
+```
+
+Wskazany dokument odnalazło `r tak$n[1]` z `r sum(pw$n[pw$grupa == "nowi"])` nowych użytkowników (`r .zi_pl(tak$procent[1], 1)`%) oraz `r tak$n[2]` z `r sum(pw$n[pw$grupa == "doświadczeni"])` doświadczonych (`r .zi_pl(tak$procent[2], 1)`%). Każdy procent ma własny mianownik: liczbę osób w grupie. Wykres słupkowy z opcją `position = "fill"` przedstawia odsetki obu grup jako części słupka o wysokości 100%.
+
+```{r c01-wykres-odsetki, fig.height=3}
+ggplot(dane, aes(x = grupa, fill = powodzenie)) +
+  geom_bar(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = NULL, y = "Odsetek osób", fill = "Znaleziono dokument")
+```
+
+## LEARN 4. Średnia, mediana i odchylenie standardowe {#c01-srednie .unnumbered}
+
+Średnia wykorzystuje wszystkie wartości i reaguje na wartości skrajne. Mediana dzieli uporządkowane wyniki na dwie równe części i opisuje typową osobę także przy kilku bardzo długich czasach. Odchylenie standardowe podaje typową odległość wyniku od średniej, w jednostkach zmiennej.
+
+::: {.wzor}
+$$\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i \qquad\qquad s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i - \bar{x})^2}$$
+$x_i$ — wynik osoby $i$, $n$ — liczba wyników, $\bar{x}$ (*M*) — średnia, $s$ (*SD*) — odchylenie standardowe. Mediana (*Mdn*) jest środkową wartością uporządkowanych wyników; kwartyle *Q1* i *Q3* odcinają 25% najniższych i 25% najwyższych wyników.
+:::
+
+```{r c01-opis}
+opis_grup(dane, czas, grupa)
+opis_grup(dane, indeks, grupa)
+```
+
+Nowi użytkownicy wykonywali zadanie średnio `r .zi_pl(oc$M[1])` min (*Mdn* = `r .zi_pl(oc$Mdn[1])`), a doświadczeni `r .zi_pl(oc$M[2])` min (*Mdn* = `r .zi_pl(oc$Mdn[2])`). W obu grupach średnia przewyższa medianę: kilka bardzo długich prób podnosi średnią, a mediana pozostaje przy typowej osobie. Ocena użyteczności katalogu wynosi średnio `r .zi_pl(oi$M[1])` u nowych i `r .zi_pl(oi$M[2])` u doświadczonych użytkowników, przy odchyleniu standardowym około `r .zi_pl(mean(oi$SD), 1)` punktu w obu grupach.
+
+## LEARN 5. Histogram i wykres pudełkowy {#c01-wykresy .unnumbered}
+
+Histogram przedstawia kształt rozkładu jednej zmiennej: wysokość słupka to liczba osób w przedziale czasu. Wykres pudełkowy porównuje grupy: pudełko obejmuje środkowe 50% wyników (od *Q1* do *Q3*), linia w pudełku to mediana, wąsy sięgają do najdalszych wyników w odległości 1,5 rozstępu międzykwartylowego, a punkty poza wąsami to wyniki odległe od środka rozkładu.
+
+```{r c01-histogram, fig.height=3}
+ggplot(dane, aes(x = czas)) +
+  geom_histogram(binwidth = 2, boundary = 0, fill = "#0072B2", colour = "white") +
+  labs(x = "Czas zadania [min]", y = "Liczba osób")
+```
+
+```{r c01-pudelko, fig.height=3}
+ggplot(dane, aes(x = grupa, y = czas)) +
+  geom_boxplot() +
+  labs(x = NULL, y = "Czas zadania [min]")
+```
+
+Histogram czasu ma długi prawy ogon: większość osób kończy zadanie w kilka minut, a pojedyncze próby trwają ponad 20 minut. Pudełko nowych użytkowników leży wyżej i jest wyższe niż pudełko doświadczonych, więc nowi pracowali dłużej i bardziej różnorodnie.
+
+## Wzorce zapisu {#c01-apa .unnumbered}
+
+::: {.apa}
+**Liczebność i odsetek.** Dokument odnalazło `r .zi_pl(tak$procent[1], 1)`% nowych (`r tak$n[1]` z `r sum(pw$n[pw$grupa == "nowi"])`) i `r .zi_pl(tak$procent[2], 1)`% doświadczonych użytkowników (`r tak$n[2]` z `r sum(pw$n[pw$grupa == "doświadczeni"])`).
+
+**Opis zmiennej w grupach.** Nowi użytkownicy (*n* = `r oc$n[1]`) wykonywali zadanie średnio *M* = `r .zi_pl(oc$M[1])` min (*SD* = `r .zi_pl(oc$SD[1])`; *Mdn* = `r .zi_pl(oc$Mdn[1])`), a doświadczeni (*n* = `r oc$n[2]`) *M* = `r .zi_pl(oc$M[2])` min (*SD* = `r .zi_pl(oc$SD[2])`; *Mdn* = `r .zi_pl(oc$Mdn[2])`).
+
+**Zasady.** Symbole statystyk zapisujesz kursywą (*n*, *M*, *SD*, *Mdn*), liczby z przecinkiem dziesiętnym, średnie i odchylenia z dwoma miejscami po przecinku, procenty z jednym. Przy każdej grupie podajesz liczebność, a przy wartości jednostkę.
+:::
+
+## CHALLENGE {-}
+
+::: {.challenge}
+**Plik `zadanie-01.Rmd`**, scenariusz S05: portal studencki i odnajdywanie formularzy, dane według Twojego ID. Pięć poleceń: zbiór i skale zmiennych, powodzenie w grupach, czas w grupach, wykres pudełkowy, akapit dla zespołu portalu. Oddanie: `oddaj_zadanie(1)`.
+:::

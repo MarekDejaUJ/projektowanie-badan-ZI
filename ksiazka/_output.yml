@@ -1,0 +1,8 @@
+bookdown::bs4_book:
+  css: style.css
+  theme:
+    primary: "#0072B2"
+  repo:
+    base: https://github.com/MarekDejaUJ/projektowanie-badan-ZI
+    branch: main
+    subdir: ksiazka

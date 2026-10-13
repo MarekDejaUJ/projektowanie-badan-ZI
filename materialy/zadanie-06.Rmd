@@ -1,0 +1,104 @@
+---
+title: "C06. Wiele grup: analiza wariancji"
+subtitle: "Zadanie Z06, scenariusz S12: platforma e-learningowa"
+author: "Imię Nazwisko"
+params:
+  id: "TWOJE_ID"
+date: "`r format(Sys.Date(), '%d.%m.%Y')`"
+lang: pl
+geometry: margin=2.2cm
+output:
+  pdf_document:
+    latex_engine: xelatex
+    dev: png
+    fig_crop: false
+  html_document: default
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+```{r start, include=FALSE}
+source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
+dane <- dane_zi("S12", id = params$id)
+```
+
+Materiał LEARN i wzorce zapisu: <https://marekdejauj.github.io/projektowanie-badan-ZI/c06.html>. Uruchamiaj bloki kodu po kolei, a odpowiedź pisz pod każdym poleceniem. Oddanie w konsoli: `oddaj_zadanie(6)`.
+
+```{r karta, echo=FALSE, results='asis'}
+karta_zi("S12")
+```
+
+Dane: ID `r params$id`, `r nrow(dane)` osób.
+
+## Zadanie 6.1. Opis grup (2 pkt)
+
+**Polecenie:** Opisz czas odszukania materiału w czterech typach kursów: *n*, *M*, *SD*, *Mdn*. Wskaż typ kursu z najkrótszym i najdłuższym średnim czasem oraz grupy o największym rozrzucie.
+
+```{r z6-1, fig.height=3}
+opis_grup(dane, czas, kategoria)
+ggplot(dane, aes(x = kategoria, y = czas)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, alpha = 0.3) +
+  stat_summary(fun = mean, geom = "point", shape = 23, size = 3, fill = "#E69F00") +
+  labs(x = NULL, y = "Czas zadania [min]", caption = "Romb: średnia grupy")
+```
+
+**Odpowiedź:**
+
+## Zadanie 6.2. Analiza wariancji, test Welcha i permutacja (2 pkt)
+
+**Polecenie:** Zapisz *H*~0~. Podaj *F*, oba *df* i *p* analizy wariancji, wynik testu Levene’a, testu Welcha oraz *p*~perm~. Wybierz wynik, który raportujesz jako główny, i uzasadnij wybór.
+
+```{r z6-2, fig.height=2.8}
+model <- aov(czas ~ kategoria, data = dane)
+summary(model)
+car::leveneTest(czas ~ kategoria, data = dane)
+oneway.test(czas ~ kategoria, data = dane)
+set.seed(2026)
+f_obserwowane <- dane |> specify(czas ~ kategoria) |> calculate(stat = "F")
+f_permutacje <- dane |>
+  specify(czas ~ kategoria) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 2000, type = "permute") |>
+  calculate(stat = "F")
+get_p_value(f_permutacje, obs_stat = f_obserwowane, direction = "greater")
+visualize(f_permutacje) + shade_p_value(obs_stat = f_obserwowane, direction = "greater") +
+  labs(title = NULL, x = "F po losowym przetasowaniu grup", y = "Liczba losowań")
+```
+
+**Odpowiedź:**
+
+## Zadanie 6.3. Wielkość efektu (2 pkt)
+
+**Polecenie:** Podaj $\eta^2$ i $\omega^2$ i wyjaśnij je słowami: jaka część zróżnicowania czasu wiąże się z typem kursu. Oceń wielkość efektu według progów z rozdziału C06.
+
+```{r z6-3}
+effectsize::eta_squared(model, alternative = "two.sided")
+effectsize::omega_squared(model, alternative = "two.sided")
+```
+
+**Odpowiedź:**
+
+## Zadanie 6.4. Porównania post hoc (2 pkt)
+
+**Polecenie:** Wskaż pary typów kursów, które różnią się istotnie po korekcie (*p*~adj~ < 0,05), z różnicą w minutach. Przy nieistotnym teście z zadania 6.2 wyjaśnij, dlaczego raport kończy się bez porównań par.
+
+```{r z6-4}
+TukeyHSD(model)
+rstatix::games_howell_test(dane, czas ~ kategoria)
+```
+
+**Odpowiedź:**
+
+## Zadanie 6.5. Test Kruskala–Wallisa i akapit (2 pkt)
+
+**Polecenie:** Odczytaj test Kruskala–Wallisa z $\varepsilon^2$ i porównaj wniosek z analizą wariancji. Napisz akapit (3–4 zdania) dla zespołu platformy według wzorca zapisu.
+
+```{r z6-5}
+kruskal.test(czas ~ kategoria, data = dane)
+rstatix::kruskal_effsize(dane, czas ~ kategoria)
+rstatix::dunn_test(dane, czas ~ kategoria, p.adjust.method = "holm")
+```
+
+**Odpowiedź:**

@@ -1,0 +1,48 @@
+# Ściąga: symbole, wybór analizy i zapis wyników {#sciaga .unnumbered}
+
+## Symbole {-}
+
+| Symbol | Czytamy | Znaczenie |
+|:--|:--|:--|
+| $n$, $N$ | en | liczba osób w grupie, w całej próbie |
+| $\bar{x}$, *M* | średnia | suma wyników podzielona przez ich liczbę |
+| $s$, *SD* | odchylenie standardowe | typowa odległość wyniku od średniej |
+| *Mdn*, $Q_1$, $Q_3$, *IQR* | mediana, kwartyle | wartość środkowa; granice środkowych 50% wyników; $IQR = Q_3 - Q_1$ |
+| *SE* | błąd standardowy | niepewność średniej z próby: $s/\sqrt{n}$ |
+| 95% CI | przedział ufności | zakres wartości parametru zgodnych z danymi |
+| $\mu$, $\mu_0$ | mi, mi zero | średnia w populacji; wartość z hipotezy zerowej |
+| $H_0$, $H_1$ | hipoteza zerowa, alternatywna | brak różnicy lub związku; różnica lub związek |
+| $\alpha$ | alfa | próg istotności (0,05); także alfa Cronbacha — rzetelność skali |
+| *p* | wartość *p* | prawdopodobieństwo wyniku co najmniej tak skrajnego przy prawdziwej $H_0$ |
+| *t*, *df* | statystyka *t*, stopnie swobody | odległość od $H_0$ w błędach standardowych |
+| *d*, *g*, *d*~z~ | *d* Cohena, *g* Hedgesa | różnica średnich w odchyleniach standardowych |
+| *r*~rb~ | korelacja rangowo-dwuseryjna | efekt testu Manna–Whitneya |
+| *F*, $\eta^2$, $\omega^2$, $\varepsilon^2$ | *F*, eta, omega, epsilon kwadrat | test wielu grup; odsetek zróżnicowania związany z grupą |
+| $\chi^2$, *V* | chi-kwadrat, *V* Craméra | test tabeli krzyżowej; siła związku kategorii |
+| *RD*, *RR*, *OR* | różnica, iloraz ryzyka, iloraz szans | kierunek i wielkość różnicy odsetków |
+| *r*, $\rho$ | *r* Pearsona, rho Spearmana | siła związku prostoliniowego; monotonicznego (rangi) |
+| $b_0$, $b_1$, $R^2$ | wyraz wolny, nachylenie, R-kwadrat | parametry regresji; odsetek wyjaśnionego zróżnicowania |
+| *B* | liczba losowań | powtórzenia bootstrapu lub permutacji |
+
+## Wybór analizy {-}
+
+| Pytanie | Zmienne | Procedura klasyczna | Procedura rangowa albo losowa | Efekt | Ćwiczenie |
+|:--|:--|:--|:--|:--|:--|
+| Czy średnia różni się od wartości odniesienia? | jedna ilościowa | test *t* jednej próby | test zmiany znaków, bootstrap | *d* | C04 |
+| Czy dwie niezależne grupy się różnią? | ilościowa i grupa | test Welcha | permutacja, test Manna–Whitneya | *g*, *r*~rb~ | C05 |
+| Czy zmienił się wynik tych samych osób? | dwa pomiary ilościowe | test *t* dla par | test Wilcoxona dla par | *d*~z~ | C05 |
+| Czy wiele grup się różni? | ilościowa i grupa (3+) | analiza wariancji, test Welcha | permutacja *F*, test Kruskala–Wallisa | $\eta^2$, $\omega^2$, $\varepsilon^2$ | C06 |
+| Czy odsetki zależą od grupy? | dwie kategorialne | test $\chi^2$ | test Fishera, Monte Carlo | *V*, *RD*, *RR*, *OR* | C07 |
+| Czy odsetek zmienił się u tych samych osób? | dwa pomiary 0/1 | test McNemara | — | różnica odsetków | C07 |
+| Czy dwie zmienne współwystępują? | dwie ilościowe lub porządkowe | *r* Pearsona, regresja | $\rho$ Spearmana, permutacja, bootstrap | *r*, $R^2$ | C08 |
+
+Wybór procedury wynika z pytania, skali zmiennych i projektu badania (niezależne grupy czy te same osoby); test normalności pełni rolę pomocniczą. Przy kilkuset osobach test *t* jest odporny na umiarkowaną skośność; procedura rangowa lub permutacyjna podana obok sprawdza, czy wniosek zależy od założeń.
+
+## Zapis wyników {-}
+
+- Symbole statystyk kursywą: *n*, *M*, *SD*, *Mdn*, *t*, *F*, *p*, *r*, *d*; litery greckie bez kursywy: $\chi^2$, $\eta^2$, $\rho$.
+- Przecinek dziesiętny i zero przed przecinkiem: *p* = 0,034, *d* = 0,42; wydruk *p* = 0,000 zapisujesz jako *p* < 0,001.
+- Dwa miejsca po przecinku dla średnich, odchyleń i statystyk testu, trzy dla *p*, jedno dla procentów.
+- Przedział ufności w nawiasie kwadratowym ze średnikiem: 95% CI [0,17; 0,41].
+- Po statystyce testu stopnie swobody w nawiasie: *t*(193,89) = 2,81; *F*(3, 226) = 4,49; $\chi^2$(1, *N* = 237) = 13,29.
+- Wniosek wynika z *p*, przedziału i efektu łącznie. Przy *p* ≥ 0,05 piszesz o braku podstaw do odrzucenia $H_0$ i podajesz przedział; przy badaniu obserwacyjnym opisujesz współwystępowanie; wniosek przyczynowy wymaga eksperymentu.

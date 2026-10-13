@@ -1,0 +1,120 @@
+# C07. Tabele krzyżowe {#c07 .unnumbered}
+
+::: {.start}
+**Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, potem `pobierz_szablon(7)`. **Oddanie:** `oddaj_zadanie(7)`. **Wykład:** W04.
+:::
+
+Powodzenie zadania jest zmienną kategorialną: dokument znaleziono albo nie. Ćwiczenie C07 sprawdza, czy odsetek powodzeń zależy od doświadczenia użytkownika i od jego statusu, oraz czy zmienia się w drugiej próbie po instrukcji. Narzędziem jest tabela krzyżowa: procenty warunkowe, test $\chi^2$, miary siły i kierunku związku oraz test McNemara dla par.
+
+```{r c07-dane, include=FALSE}
+dane <- dane_zi("S02", id = "wzor")
+tab <- table(dane$grupa, dane$powodzenie)
+proc <- prop.table(tab, 1)
+ch <- chisq.test(tab, correct = FALSE)
+v <- effectsize::cramers_v(tab, adjust = FALSE, alternative = "two.sided")
+mr <- miary_ryzyka(tab)
+tab2 <- table(dane$kategoria, dane$powodzenie)
+ch2 <- chisq.test(tab2)
+set.seed(2026)
+mc2 <- chisq.test(tab2, simulate.p.value = TRUE, B = 4999)
+tab3 <- table(przed = dane$powodzenie, po = dane$powodzenie_po)
+mn <- mcnemar.test(tab3)
+```
+
+## LEARN 1. Tabela krzyżowa i procenty warunkowe {#c07-tabela .unnumbered}
+
+Tabela krzyżowa zlicza osoby w każdym połączeniu kategorii dwóch zmiennych. Procenty w wierszach odpowiadają na pytanie „jaki odsetek nowych, a jaki doświadczonych użytkowników znalazł dokument”: mianownikiem jest liczba osób w wierszu.
+
+```{r c07-tabela, fig.height=2.8}
+tabela <- table(dane$grupa, dane$powodzenie)
+addmargins(tabela)
+round(100 * prop.table(tabela, 1), 1)
+ggplot(dane, aes(x = grupa, fill = powodzenie)) +
+  geom_bar(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = NULL, y = "Odsetek osób", fill = "Znaleziono dokument")
+```
+
+Dokument znalazło `r .zi_pl(100 * proc[1, "tak"], 1)`% nowych i `r .zi_pl(100 * proc[2, "tak"], 1)`% doświadczonych użytkowników. Procenty w kolumnach odpowiadałyby na inne pytanie: jaką część osób z powodzeniem stanowią nowi użytkownicy.
+
+## LEARN 2. Test χ² niezależności i V Craméra {#c07-chi .unnumbered}
+
+Test $\chi^2$ porównuje liczebności obserwowane z liczebnościami oczekiwanymi przy niezależności zmiennych, czyli przy tym samym odsetku powodzeń w obu grupach. Hipoteza zerowa $H_0$ mówi, że powodzenie nie zależy od grupy.
+
+::: {.wzor}
+$$E_{ij} = \frac{R_i \cdot C_j}{N} \qquad \chi^2 = \sum_{i,j}\frac{(O_{ij} - E_{ij})^2}{E_{ij}} \qquad df = (r-1)(c-1) \qquad V = \sqrt{\frac{\chi^2}{N(\min(r,c)-1)}}$$
+$O_{ij}$ i $E_{ij}$ — liczebność obserwowana i oczekiwana w komórce, $R_i$ i $C_j$ — sumy wiersza i kolumny, $N$ — liczba osób, $r$ i $c$ — liczba wierszy i kolumn. *V* Craméra przyjmuje wartości od 0 do 1; dla tabeli 2 × 2 progi wynoszą 0,1 — mały, 0,3 — średni, 0,5 — duży związek. Test jest wiarygodny, gdy wszystkie $E_{ij} \geq 5$.
+:::
+
+```{r c07-chi}
+test <- chisq.test(tabela, correct = FALSE)
+test
+round(test$expected, 1)
+effectsize::cramers_v(tabela, adjust = FALSE, alternative = "two.sided")
+```
+
+Wszystkie liczebności oczekiwane przekraczają 5 (najmniejsza: `r .zi_pl(min(ch$expected), 1)`). Odsetek powodzeń zależy od doświadczenia: $\chi^2$(`r ch$parameter`, *N* = `r sum(tab)`) = `r .zi_pl(ch$statistic)`, *p* `r .zi_p(ch$p.value)`, *V* = `r .zi_pl(v$Cramers_v)`: związek mały do średniego.
+
+## LEARN 3. Różnica proporcji, iloraz ryzyka i iloraz szans {#c07-ryzyko .unnumbered}
+
+*V* Craméra opisuje siłę związku bez kierunku. Kierunek i wielkość praktyczną opisują trzy miary porównujące odsetek powodzeń $p_1$ w pierwszej grupie z odsetkiem $p_2$ w drugiej:
+
+::: {.wzor}
+$$RD = p_1 - p_2 \qquad\qquad RR = \frac{p_1}{p_2} \qquad\qquad OR = \frac{p_1/(1-p_1)}{p_2/(1-p_2)}$$
+*RD* — różnica w punktach procentowych (0 = brak różnicy), *RR* — ile razy częstsze jest powodzenie w pierwszej grupie (1 = brak różnicy), *OR* — iloraz szans powodzenia (1 = brak różnicy).
+:::
+
+```{r c07-ryzyko}
+miary_ryzyka(tabela)
+prop.test(tabela[, c("tak", "nie")], correct = FALSE)
+```
+
+Nowi użytkownicy znajdowali dokument o `r .zi_pl(-100 * mr$wartosc[3], 1)` punktu procentowego rzadziej niż doświadczeni (*RD* = `r .zi_pl(mr$wartosc[3])`, 95% CI [`r .zi_pl(mr$dolna_95[3])`; `r .zi_pl(mr$gorna_95[3])`]). Odsetek powodzeń nowych stanowił `r .zi_pl(100 * mr$wartosc[4], 0)`% odsetka doświadczonych (*RR* = `r .zi_pl(mr$wartosc[4])`), a iloraz szans wyniósł *OR* = `r .zi_pl(mr$wartosc[5])`: szansa powodzenia nowego użytkownika była `r .zi_pl(1 / mr$wartosc[5], 1)` razy mniejsza. Iloraz szans oddala się od 1 bardziej niż iloraz ryzyka, dlatego dla decyzji biblioteki najczytelniejsza jest różnica w punktach procentowych.
+
+## LEARN 4. Tabela r × c, reszty i test Monte Carlo {#c07-reszty .unnumbered}
+
+Tabela status × powodzenie ma cztery wiersze. Reszty standaryzowane wskazują komórki, w których liczebność obserwowana odbiega od oczekiwanej: wartości powyżej 2 lub poniżej −2 oznaczają wyraźne odchylenie. Przy małych liczebnościach oczekiwanych test Monte Carlo losuje tabele o tych samych sumach wierszy i kolumn i liczy *p* z rozkładu wylosowanych wartości $\chi^2$; dla tabeli 2 × 2 tę samą rolę pełni dokładny test Fishera (`fisher.test()`).
+
+```{r c07-rc}
+tabela_status <- table(dane$kategoria, dane$powodzenie)
+round(100 * prop.table(tabela_status, 1), 1)
+test_status <- chisq.test(tabela_status)
+test_status
+round(test_status$stdres, 2)
+set.seed(2026)
+chisq.test(tabela_status, simulate.p.value = TRUE, B = 4999)
+```
+
+Odsetek powodzeń w grupach statusu waha się od `r .zi_pl(100 * min(prop.table(tab2, 1)[, "tak"]), 1)`% do `r .zi_pl(100 * max(prop.table(tab2, 1)[, "tak"]), 1)`%, a różnice są nieistotne statystycznie: $\chi^2$(`r ch2$parameter`) = `r .zi_pl(ch2$statistic)`, *p* `r .zi_p(ch2$p.value)`; test Monte Carlo daje *p* `r .zi_p(mc2$p.value)`. Wszystkie reszty standaryzowane mieszczą się w przedziale ±2 (największa co do modułu: `r .zi_pl(max(abs(ch2$stdres)))`), więc grupy statusu mają podobne odsetki powodzeń.
+
+## LEARN 5. Test McNemara: ta sama osoba dwa razy {#c07-mcnemar .unnumbered}
+
+Powodzenie w pierwszej i drugiej próbie dotyczy tych samych osób, dlatego porównanie wymaga testu dla par pomiarów. Test McNemara porównuje osoby, które zmieniły wynik: $b$ — powodzenie tylko w pierwszej próbie, $c$ — powodzenie tylko w drugiej.
+
+::: {.wzor}
+$$\chi^2 = \frac{(|b - c| - 1)^2}{b + c} \qquad df = 1$$
+:::
+
+```{r c07-mcnemar}
+pary <- table(przed = dane$powodzenie, po = dane$powodzenie_po)
+pary
+mcnemar.test(pary)
+```
+
+W parach pomiarów zmiana z „nie” na „tak” wystąpiła `r tab3["nie", "tak"]` razy (*c*), a zmiana z „tak” na „nie” `r tab3["tak", "nie"]` razy (*b*). Przewaga zmian na lepsze jest istotna: $\chi^2$(1) = `r .zi_pl(mn$statistic)`, *p* `r .zi_p(mn$p.value)`. Odsetek powodzeń wzrósł z `r .zi_pl(100 * mean(dane$powodzenie == "tak"), 1)`% do `r .zi_pl(100 * mean(dane$powodzenie_po == "tak"), 1)`%.
+
+## Wzorce zapisu {#c07-apa .unnumbered}
+
+::: {.apa}
+**Związek dwóch zmiennych.** Dokument znalazło `r .zi_pl(100 * proc[1, "tak"], 1)`% nowych (`r tab[1, "tak"]` z `r sum(tab[1, ])`) i `r .zi_pl(100 * proc[2, "tak"], 1)`% doświadczonych użytkowników (`r tab[2, "tak"]` z `r sum(tab[2, ])`); różnica była istotna, $\chi^2$(`r ch$parameter`, *N* = `r sum(tab)`) = `r .zi_pl(ch$statistic)`, *p* `r .zi_p(ch$p.value)`, *V* = `r .zi_pl(v$Cramers_v)`. Odsetek powodzeń nowych był niższy o `r .zi_pl(-100 * mr$wartosc[3], 1)` punktu procentowego, 95% CI [`r .zi_pl(-100 * mr$gorna_95[3], 1)`; `r .zi_pl(-100 * mr$dolna_95[3], 1)`], *RR* = `r .zi_pl(mr$wartosc[4])`.
+
+**Wynik nieistotny.** Odsetek powodzeń był zbliżony w grupach statusu, a różnice były nieistotne statystycznie, $\chi^2$(`r ch2$parameter`, *N* = `r sum(tab2)`) = `r .zi_pl(ch2$statistic)`, *p* `r .zi_p(ch2$p.value)` (Monte Carlo: *p* `r .zi_p(mc2$p.value)`).
+
+**Pary pomiarów.** Odsetek powodzeń wzrósł po instrukcji z `r .zi_pl(100 * mean(dane$powodzenie == "tak"), 1)`% do `r .zi_pl(100 * mean(dane$powodzenie_po == "tak"), 1)`% (test McNemara: $\chi^2$(1) = `r .zi_pl(mn$statistic)`, *p* `r .zi_p(mn$p.value)`).
+:::
+
+## CHALLENGE {-}
+
+::: {.challenge}
+**Plik `zadanie-07.Rmd`**, scenariusz S18: dostęp do zasobów biblioteki z sieci lokalnej i zdalnie, dane według Twojego ID. Pięć poleceń: tabela i procenty, test $\chi^2$ z *V*, miary ryzyka, rodzaj zasobu z resztami i testem Monte Carlo, test McNemara i akapit dla biblioteki. Oddanie: `oddaj_zadanie(7)`.
+:::

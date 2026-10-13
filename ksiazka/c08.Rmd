@@ -1,0 +1,133 @@
+# C08. Korelacja i regresja {#c08 .unnumbered}
+
+::: {.start}
+**Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, potem `pobierz_szablon(8)`. **Oddanie:** `oddaj_zadanie(8)`. **Wykład:** W05.
+:::
+
+Czy osoby, które wyżej oceniają katalog, krócej wykonują zadanie? Czy częstsze korzystanie z biblioteki idzie w parze z wyższą oceną? Ćwiczenie C08 opisuje związek dwóch zmiennych liczbowych wykresem punktowym i współczynnikiem korelacji, sprawdza go testem klasycznym i permutacyjnym, a następnie buduje prosty model regresji, który przewiduje czas zadania na podstawie oceny katalogu.
+
+```{r c08-dane, include=FALSE}
+dane <- dane_zi("S02", id = "wzor")
+kp <- cor.test(dane$indeks, dane$czas)
+ks <- cor.test(dane$czestosc, dane$indeks, method = "spearman", exact = FALSE)
+set.seed(2026)
+r_obs <- dane |> specify(czas ~ indeks) |> calculate(stat = "correlation")
+r_perm <- dane |> specify(czas ~ indeks) |> hypothesize(null = "independence") |>
+  generate(reps = 2000, type = "permute") |> calculate(stat = "correlation")
+pr <- get_p_value(r_perm, obs_stat = r_obs, direction = "two-sided")
+r_boot <- dane |> specify(czas ~ indeks) |> generate(reps = 2000, type = "bootstrap") |> calculate(stat = "correlation")
+ci_r <- get_ci(r_boot, level = 0.95, type = "percentile")
+model <- lm(czas ~ indeks, data = dane)
+sm <- summary(model)
+b <- coef(model)
+ci_b <- confint(model)
+nowe <- data.frame(indeks = c(2, 4))
+pu <- predict(model, nowe, interval = "confidence")
+pp <- predict(model, nowe, interval = "prediction")
+kw <- cor.test(dane$wiek, dane$czas)
+```
+
+## LEARN 1. Wykres punktowy {#c08-wykres .unnumbered}
+
+Wykres punktowy przedstawia każdą osobę jako punkt o dwóch współrzędnych. Odczyt obejmuje kierunek związku (rosnący, malejący), jego kształt (prostoliniowy albo zakrzywiony), rozrzut punktów wokół trendu i punkty odległe.
+
+```{r c08-wykres, fig.height=3.2}
+ggplot(dane, aes(x = indeks, y = czas)) +
+  geom_point(alpha = 0.45) +
+  geom_smooth(method = "lm", formula = y ~ x, colour = "#D55E00") +
+  labs(x = "Ocena użyteczności katalogu (1–5)", y = "Czas zadania [min]")
+```
+
+Punkty opadają od lewej do prawej: osoby z wyższą oceną katalogu częściej kończą zadanie szybko. Rozrzut wokół linii trendu jest duży, a przy niskich ocenach pojawiają się czasy powyżej 20 minut.
+
+## LEARN 2. Korelacja Pearsona i Spearmana {#c08-korelacja .unnumbered}
+
+Współczynnik Pearsona mierzy siłę związku prostoliniowego dwóch zmiennych ilościowych. Współczynnik Spearmana jest korelacją Pearsona obliczoną na rangach; mierzy związek monotoniczny i nadaje się do zmiennych porządkowych, takich jak częstość korzystania 1–5.
+
+::: {.wzor}
+$$r = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{(n-1)\,s_x s_y} \qquad\qquad t = \frac{r\sqrt{n-2}}{\sqrt{1-r^2}} \quad df = n - 2$$
+$r$ od −1 do 1: znak podaje kierunek, wartość bezwzględna siłę (0,1 — słaby, 0,3 — umiarkowany, 0,5 — silny związek). $\rho$ (rho) Spearmana ma tę samą skalę. $r^2$ to odsetek wspólnej zmienności.
+:::
+
+```{r c08-cor}
+cor.test(dane$indeks, dane$czas)
+cor.test(dane$czestosc, dane$indeks, method = "spearman", exact = FALSE)
+```
+
+Ocena katalogu i czas zadania są umiarkowanie, ujemnie skorelowane: *r*(`r kp$parameter`) = `r .zi_pl(kp$estimate)`, *p* `r .zi_p(kp$p.value)`, 95% CI [`r .zi_pl(kp$conf.int[1])`; `r .zi_pl(kp$conf.int[2])`]; ocena i czas mają `r .zi_pl(100 * kp$estimate^2, 0)`% wspólnej zmienności. Częstość korzystania wiąże się z oceną słabo i dodatnio: $\rho$ = `r .zi_pl(ks$estimate)`, *p* `r .zi_p(ks$p.value)`. Korelacja opisuje współwystępowanie: wynik zgadza się zarówno z wpływem oceny na czas, jak i z wpływem trudności zadania na ocenę.
+
+## LEARN 3. Permutacja i bootstrap dla korelacji {#c08-losowanie .unnumbered}
+
+Test permutacyjny tasuje wartości czasu względem ocen, co niszczy związek, i sprawdza, jak często losowe *r* jest co najmniej tak odległe od zera jak obserwowane. Bootstrap losuje ze zwracaniem całe pary (ocena, czas) i daje przedział dla *r* bez założenia normalności.
+
+```{r c08-perm, fig.height=2.8}
+set.seed(2026)
+r_obserwowane <- dane |> specify(czas ~ indeks) |> calculate(stat = "correlation")
+r_permutacje <- dane |>
+  specify(czas ~ indeks) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 2000, type = "permute") |>
+  calculate(stat = "correlation")
+get_p_value(r_permutacje, obs_stat = r_obserwowane, direction = "two-sided")
+r_bootstrap <- dane |>
+  specify(czas ~ indeks) |>
+  generate(reps = 2000, type = "bootstrap") |>
+  calculate(stat = "correlation")
+get_ci(r_bootstrap, level = 0.95, type = "percentile")
+visualize(r_permutacje) + shade_p_value(obs_stat = r_obserwowane, direction = "two-sided") +
+  labs(title = NULL, x = "r po losowym przetasowaniu czasu", y = "Liczba losowań")
+```
+
+Po przetasowaniu korelacje leżą między około `r .zi_pl(quantile(r_perm$stat, 0.025))` a `r .zi_pl(quantile(r_perm$stat, 0.975))`, a obserwowane *r* = `r .zi_pl(r_obs$stat)` wypada daleko poza nimi (*p*~perm~ `r .zi_p(max(pr$p_value, 1/2001))`). Przedział bootstrapowy [`r .zi_pl(ci_r$lower_ci)`; `r .zi_pl(ci_r$upper_ci)`] jest bliski przedziałowi klasycznemu.
+
+## LEARN 4. Regresja liniowa {#c08-regresja .unnumbered}
+
+Regresja opisuje, jak zmienia się przeciętna wartość zmiennej zależnej przy zmianie zmiennej objaśniającej o jedną jednostkę. W odróżnieniu od korelacji ma kierunek (czas wyjaśniany oceną) i jednostki.
+
+::: {.wzor}
+$$\hat{y} = b_0 + b_1 x \qquad\qquad R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}$$
+$\hat{y}$ — przewidywany średni czas, $b_0$ — wyraz wolny (przewidywanie dla $x = 0$), $b_1$ — nachylenie: zmiana przewidywanego czasu przy ocenie wyższej o 1 punkt, $R^2$ — odsetek zróżnicowania czasu wyjaśniony przez model. W prostej regresji $R^2 = r^2$.
+:::
+
+```{r c08-lm}
+model <- lm(czas ~ indeks, data = dane)
+summary(model)
+confint(model)
+```
+
+Każdy punkt oceny więcej wiąże się z czasem krótszym przeciętnie o `r .zi_pl(-b[2])` min (95% CI [`r .zi_pl(-ci_b[2, 2])`; `r .zi_pl(-ci_b[2, 1])`]): *b*~1~ = `r .zi_pl(b[2])`, *t*(`r sm$df[2]`) = `r .zi_pl(sm$coefficients[2, 3])`, *p* `r .zi_p(sm$coefficients[2, 4])`. Model wyjaśnia `r .zi_pl(100 * sm$r.squared, 0)`% zróżnicowania czasu (*R*^2^ = `r .zi_pl(sm$r.squared)`), a typowy błąd przewidywania wynosi `r .zi_pl(sm$sigma)` min. Wyraz wolny `r .zi_pl(b[1])` dotyczy oceny 0, leżącej poza skalą 1–5, więc pełni wyłącznie rolę rachunkową.
+
+## LEARN 5. Reszty i przewidywanie {#c08-reszty .unnumbered}
+
+Reszta $e_i = y_i - \hat{y}_i$ jest różnicą między czasem osoby a przewidywaniem modelu. Wykres reszt względem wartości przewidywanych sprawdza, czy model nie pomija zakrzywienia i czy rozrzut reszt jest podobny w całym zakresie. Przedział ufności dotyczy średniego czasu osób o danej ocenie, a przedział predykcji czasu jednej nowej osoby.
+
+```{r c08-reszty, fig.height=2.8}
+dane_modelu <- data.frame(przewidywany = fitted(model), reszta = residuals(model))
+ggplot(dane_modelu, aes(x = przewidywany, y = reszta)) +
+  geom_point(alpha = 0.45) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(x = "Przewidywany czas [min]", y = "Reszta [min]")
+nowe <- data.frame(indeks = c(2, 4))
+predict(model, nowe, interval = "confidence")
+predict(model, nowe, interval = "prediction")
+```
+
+Reszty są rozłożone nierówno: duże dodatnie reszty (czasy dłuższe niż przewidywane o 10–20 minut) występują częściej niż ujemne, co odzwierciedla prawoskośny rozkład czasu (C02). Średni czas osób z oceną 4 model szacuje na `r .zi_pl(pu[2, 1])` min [`r .zi_pl(pu[2, 2])`; `r .zi_pl(pu[2, 3])`], ale czas jednej nowej osoby z tą oceną mieści się w przedziale od `r .zi_pl(pp[2, 2])` do `r .zi_pl(pp[2, 3])` min; dolna granica poniżej zera świadczy o słabym opisie skośnego czasu pojedynczych osób przez model liniowy. Ocena katalogu pozwala więc przewidzieć średni czas grupy osób, a czas konkretnego użytkownika pozostaje w szerokim przedziale predykcji.
+
+## Wzorce zapisu {#c08-apa .unnumbered}
+
+::: {.apa}
+**Korelacja.** Ocena użyteczności katalogu była umiarkowanie, ujemnie skorelowana z czasem zadania, *r*(`r kp$parameter`) = `r .zi_pl(kp$estimate)`, *p* `r .zi_p(kp$p.value)`, 95% CI [`r .zi_pl(kp$conf.int[1])`; `r .zi_pl(kp$conf.int[2])`]; test permutacyjny (*B* = 2000) i przedział bootstrapowy [`r .zi_pl(ci_r$lower_ci)`; `r .zi_pl(ci_r$upper_ci)`] potwierdziły wynik. Częstość korzystania słabo wiązała się z oceną, $\rho$ = `r .zi_pl(ks$estimate)`, *p* `r .zi_p(ks$p.value)`.
+
+**Regresja.** Ocena katalogu przewidywała czas zadania, *b* = `r .zi_pl(b[2])` min na punkt oceny, 95% CI [`r .zi_pl(ci_b[2, 1])`; `r .zi_pl(ci_b[2, 2])`], *t*(`r sm$df[2]`) = `r .zi_pl(sm$coefficients[2, 3])`, *p* `r .zi_p(sm$coefficients[2, 4])`, *R*^2^ = `r .zi_pl(sm$r.squared)`.
+
+**Wynik nieistotny.** Wiek nie był istotnie związany z czasem zadania, *r*(`r kw$parameter`) = `r .zi_pl(kw$estimate)`, *p* `r .zi_p(kw$p.value)`, 95% CI [`r .zi_pl(kw$conf.int[1])`; `r .zi_pl(kw$conf.int[2])`]; przedział obejmuje zarówno słaby związek dodatni, jak i słaby ujemny.
+
+**Zasada.** Korelacja i regresja w badaniu obserwacyjnym opisują współwystępowanie; zdanie „wyższa ocena skraca czas” wymaga eksperymentu.
+:::
+
+## CHALLENGE {-}
+
+::: {.challenge}
+**Plik `zadanie-08.Rmd`**, scenariusz S01: biblioteka akademicka i pewność wyszukiwania, dane według Twojego ID. Pięć poleceń: wykres i korelacja Pearsona, korelacja Spearmana częstości korzystania i pewności, permutacja i bootstrap, regresja czasu względem pewności, przewidywanie i akapit dla biblioteki. Oddanie: `oddaj_zadanie(8)`.
+:::

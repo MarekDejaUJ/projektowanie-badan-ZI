@@ -1,0 +1,136 @@
+# C02. Rozkład i przygotowanie danych {#c02 .unnumbered}
+
+::: {.start}
+**Start:** `source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")`, potem `pobierz_szablon(2)`. **Oddanie:** `oddaj_zadanie(2)`. **Wykład:** W02.
+:::
+
+Porównanie grup ma sens dopiero wtedy, gdy wiadomo, jak powstały dane do analizy i jak rozkładają się ich wartości. Ćwiczenie C02 zaczyna od surowego eksportu badania S02 i dziennika przygotowania danych, a potem opisuje kształt rozkładów: miary położenia i rozproszenia, skośność, wykresy, przekształcenia i normalność.
+
+```{r c02-dane, include=FALSE}
+dane <- dane_zi("S02", id = "wzor")
+surowe <- dane_zi("S02", id = "wzor", surowe = TRUE)
+przygotowanie <- przygotuj_zi(surowe)
+dz <- przygotowanie$dziennik
+opis <- psych::describe(dane[c("czas", "wiek", "indeks")])
+q <- stats::quantile(dane$czas, c(0.25, 0.75), na.rm = TRUE)
+granica <- q[2] + 1.5 * diff(q)
+odlegle <- sum(dane$czas > granica, na.rm = TRUE)
+sw <- by(dane$czas, dane$grupa, shapiro.test)
+sw_log <- shapiro.test(log(dane$czas))
+```
+
+## LEARN 1. Dane surowe i dziennik przygotowania {#c02-przygotowanie .unnumbered}
+
+Eksport ankiety i rejestru zadania zawiera typowe usterki: różny zapis tej samej etykiety grupy, powtórzone wiersze, umowny kod braku 99 i czasy niemożliwe do zmierzenia. Funkcja `przygotuj_zi()` stosuje stałe reguły i zapisuje dziennik: krok, liczbę zmienionych wartości i liczbę wierszy po kroku. Ten sam dziennik powstaje dla każdego scenariusza, więc każdą liczbę w raporcie da się prześledzić od eksportu do analizy.
+
+```{r c02-dziennik}
+surowe <- dane_zi("S02", id = "wzor", surowe = TRUE)
+przygotowanie <- przygotuj_zi(surowe)
+przygotowanie$dziennik
+c(surowe = mean(surowe$czas, na.rm = TRUE), po_przygotowaniu = mean(dane$czas, na.rm = TRUE))
+```
+
+Eksport ma `r dz$wiersze[1]` wierszy, a po usunięciu `r dz$zmienione[3]` identycznych powtórzeń zostaje `r dz$wiersze[3]` osób. Kod 99 w `r dz$zmienione[4]` odpowiedziach i `r dz$zmienione[5]` niemożliwe czasy (−5 i 999 min) zamieniają się w braki `NA`; brak pozostaje osobną wartością, różną od zera i od odpowiedzi środkowej 3. Dwa niemożliwe czasy podnoszą średnią z `r .zi_pl(mean(dane$czas, na.rm = TRUE))` do `r .zi_pl(mean(surowe$czas, na.rm = TRUE))` min, więc kontrola zakresu wartości poprzedza każdą średnią. Długi, ale możliwy czas zostaje w danych: opisuje rzeczywistą, trudną próbę.
+
+Ramkę danych zapisuje się do arkusza poleceniem `write.csv2(dane, "s02.csv", row.names = FALSE)`: format CSV ze średnikiem i przecinkiem dziesiętnym otwiera polski Excel, a `read.csv2("s02.csv")` wczytuje plik z powrotem do R.
+
+## LEARN 2. Miary rozkładu {#c02-miary .unnumbered}
+
+Funkcja `describe()` z pakietu psych podaje w jednym wierszu liczebność, średnią, odchylenie standardowe, medianę, średnią obciętą, zakres, skośność i kurtozę. Średnia obcięta pomija 10% najniższych i 10% najwyższych wyników, więc leży między średnią a medianą, gdy rozkład ma długi ogon. Skośność mierzy asymetrię:
+
+::: {.wzor}
+$$g_1 = \frac{1}{n}\sum_{i=1}^{n}\left(\frac{x_i - \bar{x}}{s}\right)^3$$
+$g_1 \approx 0$ — rozkład symetryczny; $g_1 > 0$ — długi prawy ogon (kilka bardzo dużych wartości); $g_1 < 0$ — długi lewy ogon. Kurtoza (w psych liczona względem rozkładu normalnego) jest dodatnia, gdy rozkład ma więcej wartości skrajnych niż rozkład normalny.
+:::
+
+```{r c02-describe}
+psych::describe(dane[c("czas", "wiek", "indeks")])[, c("n", "mean", "sd", "median", "trimmed", "min", "max", "skew", "kurtosis")]
+```
+
+Czas zadania ma skośność `r .zi_pl(opis["czas", "skew"])`: średnia `r .zi_pl(opis["czas", "mean"])` min przewyższa średnią obciętą `r .zi_pl(opis["czas", "trimmed"])` i medianę `r .zi_pl(opis["czas", "median"])` min. Indeks ma skośność bliską zera (`r .zi_pl(opis["indeks", "skew"])`), a jego średnia i mediana prawie się pokrywają. Przy rozkładzie skośnym opis podaje medianę i rozstęp międzykwartylowy obok średniej i odchylenia standardowego.
+
+## LEARN 3. Histogram, gęstość i wykres pudełkowy {#c02-wykresy .unnumbered}
+
+Histogram z liniami średniej i mediany wskazuje położenie typowej osoby i długość ogona rozkładu. Wykres pudełkowy oznacza punktem wynik odległy według reguły rozstępu międzykwartylowego:
+
+::: {.wzor}
+$$IQR = Q_3 - Q_1 \qquad \text{wynik odległy: } x > Q_3 + 1{,}5 \cdot IQR \ \text{ albo } \ x < Q_1 - 1{,}5 \cdot IQR$$
+:::
+
+```{r c02-histogram, fig.height=3}
+ggplot(dane, aes(x = czas)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 2, boundary = 0, fill = "#0072B2", colour = "white") +
+  geom_density(linewidth = 0.8) +
+  geom_vline(xintercept = mean(dane$czas, na.rm = TRUE), linetype = "dashed") +
+  geom_vline(xintercept = median(dane$czas, na.rm = TRUE)) +
+  labs(x = "Czas zadania [min]", y = "Gęstość", caption = "Linia przerywana: średnia; ciągła: mediana")
+```
+
+```{r c02-pudelko, fig.height=3}
+ggplot(dane, aes(x = grupa, y = czas)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, alpha = 0.35) +
+  labs(x = NULL, y = "Czas zadania [min]")
+```
+
+Krzywa gęstości wygładza histogram: najwyższa jest przy 5–7 minutach i opada powoli w prawo. Granica wyników odległych wynosi $Q_3 + 1{,}5 \cdot IQR$ = `r .zi_pl(granica, 1)` min; liczba czasów powyżej granicy wynosi `r odlegle`. Wyniki odległe pozostają w analizie, ponieważ są możliwe i poprawnie zmierzone; zmieniają jedynie wybór miar opisu.
+
+## LEARN 4. Logarytm, standaryzacja i rangi {#c02-transformacje .unnumbered}
+
+Przekształcenie zmienia skalę zapisu wyników, a zachowuje ich kolejność. Logarytm skraca prawy ogon czasu i przybliża rozkład do symetrycznego. Standaryzacja wyraża wynik w odchyleniach standardowych od średniej, a ranga procentowa podaje, jaka część osób ma wynik niższy:
+
+::: {.wzor}
+$$z_i = \frac{x_i - \bar{x}}{s} \qquad\qquad \text{ranga procentowa}_i = \frac{\text{ranga}_i - 1}{n - 1}$$
+$z_i = 2$ oznacza wynik o dwa odchylenia standardowe wyższy od średniej; ranga procentowa 0,90 oznacza czas dłuższy niż u 90% osób.
+:::
+
+```{r c02-przeksztalcenia}
+przeksztalcone <- transmute(dane, czas,
+                            log_czas = log(czas),
+                            z_czas = as.numeric(scale(czas)),
+                            ranga_proc = percent_rank(czas))
+head(przeksztalcone, 4)
+```
+
+```{r c02-log, fig.height=2.8}
+ggplot(przeksztalcone, aes(x = log_czas)) +
+  geom_histogram(bins = 20, fill = "#009E73", colour = "white") +
+  labs(x = "Logarytm czasu zadania", y = "Liczba osób")
+```
+
+Histogram logarytmu czasu jest prawie symetryczny. Standaryzacja zachowuje kształt rozkładu: przesuwa średnią do zera i zmienia jednostkę na odchylenie standardowe, dzięki czemu wyniki różnych zmiennych dają się porównać.
+
+## LEARN 5. Normalność rozkładu {#c02-normalnosc .unnumbered}
+
+Test *t* i analiza wariancji zakładają, że średnia z próby ma rozkład zbliżony do normalnego. Wykres kwantyl–kwantyl (Q–Q) porównuje uporządkowane wyniki z kwantylami rozkładu normalnego: punkty na prostej oznaczają zgodność, a łuk na końcach oznacza ogon dłuższy niż w rozkładzie normalnym. Test Shapiro–Wilka sprawdza hipotezę $H_0$: rozkład w populacji jest normalny.
+
+```{r c02-qq, fig.height=3}
+ggplot(dane, aes(sample = czas)) +
+  stat_qq(alpha = 0.5) +
+  stat_qq_line() +
+  facet_wrap(~ grupa) +
+  labs(x = "Kwantyle rozkładu normalnego", y = "Czas zadania [min]")
+```
+
+```{r c02-shapiro}
+dane |> group_by(grupa) |> rstatix::shapiro_test(czas)
+shapiro.test(log(dane$czas))
+```
+
+W obu grupach punkty układają się w łuk: na obu końcach leżą nad prostą, ponieważ najkrótsze czasy nie spadają poniżej około 2 minut, a najdłuższe sięgają ponad 20 minut. Test Shapiro–Wilka odrzuca normalność (*W* = `r .zi_pl(sw[[1]]$statistic)` i `r .zi_pl(sw[[2]]$statistic)`, *p* < 0,001). Wynik dla logarytmu czasu jest zgodny z hipotezą normalności (*W* = `r .zi_pl(sw_log$statistic)`, *p* `r .zi_p(sw_log$p.value)`). Przy kilkuset obserwacjach test wykrywa nawet niewielkie odchylenia, więc o wyborze metody decyduje przede wszystkim wielkość odchylenia na wykresie Q–Q, a wartość *p* pełni rolę pomocniczą: długi ogon czasu przemawia za podaniem mediany obok średniej oraz za testem rangowym albo permutacyjnym obok testu *t* (C05).
+
+## Wzorce zapisu {#c02-apa .unnumbered}
+
+::: {.apa}
+**Przygotowanie danych.** Z `r dz$wiersze[1]` rekordów usunięto `r dz$zmienione[3]` identyczne powtórzenia; kod braku 99 (`r dz$zmienione[4]` odpowiedzi) oraz `r dz$zmienione[5]` niemożliwe czasy oznaczono jako braki. Analiza obejmuje `r nrow(dane)` osób; czas zadania ma `r sum(!is.na(dane$czas))` ważnych pomiarów.
+
+**Rozkład.** Czas zadania miał rozkład prawoskośny (skośność = `r .zi_pl(opis["czas", "skew"])`): mediana wyniosła `r .zi_pl(opis["czas", "median"])` min (*IQR* = `r .zi_pl(diff(q))`), a średnia `r .zi_pl(opis["czas", "mean"])` min (*SD* = `r .zi_pl(opis["czas", "sd"])`).
+
+**Normalność.** Rozkład czasu odbiegał od normalnego w obu grupach (test Shapiro–Wilka, *p* < 0,001), a rozkład logarytmu czasu był zbliżony do normalnego (*W* = `r .zi_pl(sw_log$statistic)`, *p* `r .zi_p(sw_log$p.value)`).
+:::
+
+## CHALLENGE {-}
+
+::: {.challenge}
+**Plik `zadanie-02.Rmd`**, scenariusz S07: archiwum cyfrowe i zrozumiałość opisów zbiorów, dane według Twojego ID. Pięć poleceń: dziennik przygotowania, miary rozkładu, wykresy rozkładu, normalność, akapit o rozkładzie czasu. Oddanie: `oddaj_zadanie(2)`.
+:::

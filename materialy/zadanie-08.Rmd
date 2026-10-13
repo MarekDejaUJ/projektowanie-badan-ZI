@@ -1,0 +1,109 @@
+---
+title: "C08. Korelacja i regresja"
+subtitle: "Zadanie Z08, scenariusz S01: biblioteka akademicka"
+author: "Imię Nazwisko"
+params:
+  id: "TWOJE_ID"
+date: "`r format(Sys.Date(), '%d.%m.%Y')`"
+lang: pl
+geometry: margin=2.2cm
+output:
+  pdf_document:
+    latex_engine: xelatex
+    dev: png
+    fig_crop: false
+  html_document: default
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+```{r start, include=FALSE}
+source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
+dane <- dane_zi("S01", id = params$id)
+```
+
+Materiał LEARN i wzorce zapisu: <https://marekdejauj.github.io/projektowanie-badan-ZI/c08.html>. Uruchamiaj bloki kodu po kolei, a odpowiedź pisz pod każdym poleceniem. Oddanie w konsoli: `oddaj_zadanie(8)`.
+
+```{r karta, echo=FALSE, results='asis'}
+karta_zi("S01")
+```
+
+Dane: ID `r params$id`, `r nrow(dane)` osób.
+
+## Zadanie 8.1. Wykres i korelacja Pearsona (2 pkt)
+
+**Polecenie:** Opisz wykres punktowy pewności wyszukiwania i czasu zadania: kierunek, kształt i rozrzut. Podaj *r*, *df*, *p*, 95% CI i odsetek wspólnej zmienności *r*^2^.
+
+```{r z8-1, fig.height=3.2}
+ggplot(dane, aes(x = indeks, y = czas)) +
+  geom_point(alpha = 0.45) +
+  geom_smooth(method = "lm", formula = y ~ x, colour = "#D55E00") +
+  labs(x = "Deklarowana pewność wyszukiwania (1–5)", y = "Czas zadania [min]")
+cor.test(dane$indeks, dane$czas)
+```
+
+**Odpowiedź:**
+
+## Zadanie 8.2. Korelacja Spearmana (2 pkt)
+
+**Polecenie:** Wyjaśnij, dlaczego do częstości korzystania (1–5) stosujesz korelację Spearmana. Podaj $\rho$ i *p* oraz oceń siłę i kierunek związku częstości z pewnością wyszukiwania.
+
+```{r z8-2}
+cor.test(dane$czestosc, dane$indeks, method = "spearman", exact = FALSE)
+```
+
+**Odpowiedź:**
+
+## Zadanie 8.3. Permutacja i bootstrap dla korelacji (2 pkt)
+
+**Polecenie:** Odczytaj *p*~perm~ i przedział bootstrapowy dla *r* pewności i czasu. Porównaj je z wynikami testu klasycznego z zadania 8.1.
+
+```{r z8-3, fig.height=2.8}
+set.seed(2026)
+r_obserwowane <- dane |> specify(czas ~ indeks) |> calculate(stat = "correlation")
+r_permutacje <- dane |>
+  specify(czas ~ indeks) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 2000, type = "permute") |>
+  calculate(stat = "correlation")
+get_p_value(r_permutacje, obs_stat = r_obserwowane, direction = "two-sided")
+r_bootstrap <- dane |>
+  specify(czas ~ indeks) |>
+  generate(reps = 2000, type = "bootstrap") |>
+  calculate(stat = "correlation")
+get_ci(r_bootstrap, level = 0.95, type = "percentile")
+visualize(r_permutacje) + shade_p_value(obs_stat = r_obserwowane, direction = "two-sided") +
+  labs(title = NULL, x = "r po losowym przetasowaniu czasu", y = "Liczba losowań")
+```
+
+**Odpowiedź:**
+
+## Zadanie 8.4. Regresja czasu względem pewności (2 pkt)
+
+**Polecenie:** Zapisz równanie modelu z oszacowanymi współczynnikami. Zinterpretuj nachylenie w minutach na punkt pewności, z 95% przedziałem i *p*, oraz *R*^2^.
+
+```{r z8-4}
+model <- lm(czas ~ indeks, data = dane)
+summary(model)
+confint(model)
+```
+
+**Odpowiedź:**
+
+## Zadanie 8.5. Reszty, przewidywanie i akapit dla biblioteki (2 pkt)
+
+**Polecenie:** Odczytaj wykres reszt i porównaj przedział ufności z przedziałem predykcji dla pewności 2 i 4. Napisz akapit (3–4 zdania) dla biblioteki według wzorca zapisu, z zastrzeżeniem dotyczącym interpretacji przyczynowej.
+
+```{r z8-5, fig.height=2.8}
+dane_modelu <- data.frame(przewidywany = fitted(model), reszta = residuals(model))
+ggplot(dane_modelu, aes(x = przewidywany, y = reszta)) +
+  geom_point(alpha = 0.45) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(x = "Przewidywany czas [min]", y = "Reszta [min]")
+nowe <- data.frame(indeks = c(2, 4))
+predict(model, nowe, interval = "confidence")
+predict(model, nowe, interval = "prediction")
+```
+
+**Odpowiedź:**

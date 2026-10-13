@@ -1,0 +1,98 @@
+---
+title: "C02. Rozkład i przygotowanie danych"
+subtitle: "Zadanie Z02, scenariusz S07: archiwum cyfrowe"
+author: "Imię Nazwisko"
+params:
+  id: "TWOJE_ID"
+date: "`r format(Sys.Date(), '%d.%m.%Y')`"
+lang: pl
+geometry: margin=2.2cm
+output:
+  pdf_document:
+    latex_engine: xelatex
+    dev: png
+    fig_crop: false
+  html_document: default
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+```{r start, include=FALSE}
+source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
+dane <- dane_zi("S07", id = params$id)
+```
+
+Materiał LEARN i wzorce zapisu: <https://marekdejauj.github.io/projektowanie-badan-ZI/c02.html>. Uruchamiaj bloki kodu po kolei, a odpowiedź pisz pod każdym poleceniem. Oddanie w konsoli: `oddaj_zadanie(2)`.
+
+```{r karta, echo=FALSE, results='asis'}
+karta_zi("S07")
+```
+
+Dane: ID `r params$id`, `r nrow(dane)` osób.
+
+## Zadanie 2.1. Dziennik przygotowania danych (2 pkt)
+
+**Polecenie:** Opisz przygotowanie danych: liczbę rekordów w eksporcie i osób w analizie, usunięte powtórzenia oraz wartości zamienione na braki. Wyjaśnij, jak niemożliwe czasy zmieniłyby średnią czasu.
+
+```{r z2-1}
+surowe <- dane_zi("S07", id = params$id, surowe = TRUE)
+przygotuj_zi(surowe)$dziennik
+c(surowe = mean(surowe$czas, na.rm = TRUE), po_przygotowaniu = mean(dane$czas, na.rm = TRUE))
+```
+
+**Odpowiedź:**
+
+## Zadanie 2.2. Miary rozkładu (2 pkt)
+
+**Polecenie:** Porównaj średnią, średnią obciętą i medianę czasu oraz indeksu. Na podstawie skośności wskaż zmienną o rozkładzie asymetrycznym i miary, które należy podać w jej opisie.
+
+```{r z2-2}
+psych::describe(dane[c("czas", "wiek", "indeks")])[, c("n", "mean", "sd", "median", "trimmed", "min", "max", "skew", "kurtosis")]
+```
+
+**Odpowiedź:**
+
+## Zadanie 2.3. Wykresy rozkładu (2 pkt)
+
+**Polecenie:** Opisz kształt rozkładu czasu na histogramie oraz położenie i rozrzut czasu w grupach na wykresie pudełkowym. Podaj, ile czasów przekracza granicę wyników odległych, i oceń, czy należy je usunąć.
+
+```{r z2-3, fig.height=3}
+ggplot(dane, aes(x = czas)) +
+  geom_histogram(binwidth = 2, boundary = 0, fill = "#0072B2", colour = "white") +
+  geom_vline(xintercept = median(dane$czas, na.rm = TRUE)) +
+  labs(x = "Czas zadania [min]", y = "Liczba osób", caption = "Linia: mediana")
+ggplot(dane, aes(x = grupa, y = czas)) +
+  geom_boxplot() +
+  labs(x = NULL, y = "Czas zadania [min]")
+q <- quantile(dane$czas, c(0.25, 0.75), na.rm = TRUE)
+c(granica = unname(q[2] + 1.5 * diff(q)), odlegle = sum(dane$czas > q[2] + 1.5 * diff(q), na.rm = TRUE))
+```
+
+**Odpowiedź:**
+
+## Zadanie 2.4. Normalność (2 pkt)
+
+**Polecenie:** Oceń normalność rozkładu czasu w obu grupach na podstawie wykresu Q–Q i testu Shapiro–Wilka, a potem rozkładu logarytmu czasu. Wskaż konsekwencję dla wyboru testu porównującego grupy.
+
+```{r z2-4, fig.height=3}
+ggplot(dane, aes(sample = czas)) +
+  stat_qq(alpha = 0.5) +
+  stat_qq_line() +
+  facet_wrap(~ grupa) +
+  labs(x = "Kwantyle rozkładu normalnego", y = "Czas zadania [min]")
+dane |> group_by(grupa) |> rstatix::shapiro_test(czas)
+shapiro.test(log(dane$czas))
+```
+
+**Odpowiedź:**
+
+## Zadanie 2.5. Akapit o rozkładzie czasu (2 pkt)
+
+**Polecenie:** Napisz akapit dla zespołu archiwum według wzorców zapisu: przygotowanie danych, rozkład czasu (mediana, IQR, średnia, SD, skośność) i normalność.
+
+```{r z2-5}
+opis_grup(dane, czas)
+```
+
+**Odpowiedź:**

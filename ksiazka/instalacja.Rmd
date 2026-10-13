@@ -1,0 +1,61 @@
+# Instalacja i środowisko pracy {#instalacja .unnumbered}
+
+Kurs działa w sali komputerowej, w Posit Cloud i na własnym komputerze. W każdym środowisku potrzebne są R (wersja 4.3 lub nowsza), RStudio z programem Pandoc oraz TinyTeX do składania PDF. Pakiety R doinstalowuje skrypt startowy przy pierwszym uruchomieniu; kolejne uruchomienia tylko je ładują. Skrypt pobiera się z adresu kursu przy każdym starcie, więc poprawki trafiają do studentów bez osobnej aktualizacji.
+
+## Własny komputer {-}
+
+1. Zainstaluj R z <https://cran.r-project.org> i RStudio Desktop z <https://posit.co/download/rstudio-desktop/>.
+2. W RStudio utwórz projekt na pliki kursu: *File → New Project → New Directory → New Project*, np. `projektowanie-zi`. Pliki zadań i PDF powstają w folderze projektu.
+3. W konsoli uruchom skrypt startowy; pierwsze uruchomienie instaluje pakiety (kilka minut):
+
+```r
+source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
+```
+
+4. Zainstaluj narzędzia PDF (jednorazowo, kilka minut) i sprawdź środowisko:
+
+```r
+przygotuj_pdf()
+```
+
+Funkcja `przygotuj_pdf()` instaluje TinyTeX, doinstalowuje pakiety LaTeX z polskim dzieleniem wyrazów i składa próbny PDF. Wynik „Próbny PDF: OK” oznacza gotowe środowisko.
+
+## Posit Cloud {-}
+
+1. Zaloguj się w <https://posit.cloud> i utwórz projekt: *New Project → New RStudio Project*.
+2. W konsoli projektu uruchom skrypt startowy, a potem `przygotuj_pdf()` (jednorazowo w projekcie).
+3. Wszystkie pliki zadań i projekt trzymaj w tym samym projekcie Posit Cloud; pliki zostają między zajęciami.
+
+## Sala komputerowa {-}
+
+Komputery w sali mają R, RStudio, pakiety i TinyTeX zainstalowane na stałe, a stan pracy jest usuwany po zajęciach. Pracę oddajesz przed wyjściem z sali poleceniem `oddaj_zadanie()`. Plik zadania do dalszej pracy zapisz poza komputerem sali (OneDrive UJ, pendrive albo Posit Cloud).
+
+## Informatyk: przygotowanie sali {-}
+
+Na każdym stanowisku: R 4.3 lub nowszy, RStudio, pakiety R oraz TinyTeX z pakietami LaTeX dostępny dla wszystkich użytkowników. Instalacja pakietów R w bibliotece systemowej:
+
+```r
+install.packages(c("dplyr", "ggplot2", "infer", "psych", "rstatix", "effectsize", "car",
+                   "rmarkdown", "knitr", "yaml", "curl", "tinytex", "rstudioapi"),
+                 repos = "https://cloud.r-project.org")
+```
+
+Pakiety LaTeX (TinyTeX lub TeX Live): `fontspec`, `unicode-math`, `lm`, `lm-math`, `babel-polish`, `hyphen-polish`, `geometry`, `hyperref`, `bookmark`, `booktabs`, `fancyvrb`, `fvextra`, `float`, `framed`, `xcolor`, `upquote`, `microtype`, `parskip`, `xurl`, `lineno`, `etoolbox`. Test stanowiska z konta studenta:
+
+```r
+source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
+sprawdz_srodowisko(pdf = TRUE)
+```
+
+Test wypisuje wersję R, Pandoc, ścieżkę XeLaTeX i wersje pakietów oraz składa próbny PDF. Stanowisko potrzebuje dostępu do internetu: skrypt startowy pobiera się z `marekdejauj.github.io`, a oddanie wysyła plik do `nc.uj.edu.pl`.
+
+## Gdy coś nie działa {-}
+
+| Komunikat | Przyczyna i rozwiązanie |
+|:--|:--|
+| „Nie można wczytać kart scenariuszy” | brak połączenia z internetem; sprawdź sieć i uruchom skrypt ponownie |
+| „Nie udało się zainstalować pakietów” | przerwana instalacja; *Session → Restart R* i ponowne uruchomienie skryptu |
+| „Wpisz swoje imię i nazwisko” albo „Wpisz swoje ID” | uzupełnij nagłówek pliku (`author`, `params: id`) i zapisz plik |
+| „PDF nie powstał … Tworzę wersję HTML” | brak TinyTeX; praca zostaje oddana jako HTML, a `przygotuj_pdf()` przygotowuje PDF na kolejne zajęcia |
+| „Plik nie tworzy dokumentu w nowej sesji R” | błąd w bloku kodu; przycisk *Knit* wskazuje ten sam blok; przywróć kod z nowego pliku: `pobierz_szablon(n, plik = "wzor.Rmd")` |
+| „folder nie przyjmuje już plików” | minął termin albo link wygasł; skontaktuj się z prowadzącym |

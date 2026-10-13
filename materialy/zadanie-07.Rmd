@@ -1,0 +1,99 @@
+---
+title: "C07. Tabele krzyżowe"
+subtitle: "Zadanie Z07, scenariusz S18: dostęp do zasobów biblioteki"
+author: "Imię Nazwisko"
+params:
+  id: "TWOJE_ID"
+date: "`r format(Sys.Date(), '%d.%m.%Y')`"
+lang: pl
+geometry: margin=2.2cm
+output:
+  pdf_document:
+    latex_engine: xelatex
+    dev: png
+    fig_crop: false
+  html_document: default
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+```{r start, include=FALSE}
+source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
+dane <- dane_zi("S18", id = params$id)
+```
+
+Materiał LEARN i wzorce zapisu: <https://marekdejauj.github.io/projektowanie-badan-ZI/c07.html>. Uruchamiaj bloki kodu po kolei, a odpowiedź pisz pod każdym poleceniem. Oddanie w konsoli: `oddaj_zadanie(7)`.
+
+```{r karta, echo=FALSE, results='asis'}
+karta_zi("S18")
+```
+
+Dane: ID `r params$id`, `r nrow(dane)` osób.
+
+## Zadanie 7.1. Tabela i procenty warunkowe (2 pkt)
+
+**Polecenie:** Podaj liczbę i odsetek osób, które uzyskały dostęp do zasobu, w grupach „zdalni” i „lokalni”. Wyjaśnij, dlaczego mianownikiem procentu jest liczba osób w wierszu.
+
+```{r z7-1, fig.height=2.8}
+tabela <- table(dane$grupa, dane$powodzenie)
+addmargins(tabela)
+round(100 * prop.table(tabela, 1), 1)
+ggplot(dane, aes(x = grupa, fill = powodzenie)) +
+  geom_bar(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = NULL, y = "Odsetek osób", fill = "Uzyskano dostęp")
+```
+
+**Odpowiedź:**
+
+## Zadanie 7.2. Test chi-kwadrat i V Craméra (2 pkt)
+
+**Polecenie:** Zapisz *H*~0~. Sprawdź liczebności oczekiwane i podaj wynik testu: $\chi^2$, *df*, *N*, *p* oraz *V* Craméra z oceną siły związku.
+
+```{r z7-2}
+test <- chisq.test(tabela, correct = FALSE)
+test
+round(test$expected, 1)
+effectsize::cramers_v(tabela, adjust = FALSE, alternative = "two.sided")
+```
+
+**Odpowiedź:**
+
+## Zadanie 7.3. Różnica proporcji, iloraz ryzyka i iloraz szans (2 pkt)
+
+**Polecenie:** Podaj *RD* w punktach procentowych z 95% przedziałem, *RR* i *OR*. Wyjaśnij słowami, co oznacza *RR* dla grup zdalnych i lokalnych, i wskaż miarę najbardziej czytelną dla biblioteki.
+
+```{r z7-3}
+miary_ryzyka(tabela)
+```
+
+**Odpowiedź:**
+
+## Zadanie 7.4. Rodzaj zasobu, reszty i test Monte Carlo (2 pkt)
+
+**Polecenie:** Porównaj odsetek udanych prób dostępu dla czterech rodzajów zasobu. Podaj wynik testu $\chi^2$ i testu Monte Carlo oraz wskaż komórki z resztą standaryzowaną poza ±2 (jeżeli występują).
+
+```{r z7-4}
+tabela_zasob <- table(dane$kategoria, dane$powodzenie)
+round(100 * prop.table(tabela_zasob, 1), 1)
+test_zasob <- chisq.test(tabela_zasob)
+test_zasob
+round(test_zasob$stdres, 2)
+set.seed(2026)
+chisq.test(tabela_zasob, simulate.p.value = TRUE, B = 4999)
+```
+
+**Odpowiedź:**
+
+## Zadanie 7.5. Druga próba i akapit dla biblioteki (2 pkt)
+
+**Polecenie:** Odczytaj tabelę par i test McNemara: liczby zmian wyniku w obu kierunkach i *p*. Napisz akapit (3–4 zdania) dla biblioteki według wzorca zapisu, obejmujący porównanie grup i zmianę po drugiej próbie.
+
+```{r z7-5}
+pary <- table(przed = dane$powodzenie, po = dane$powodzenie_po)
+pary
+mcnemar.test(pary)
+```
+
+**Odpowiedź:**

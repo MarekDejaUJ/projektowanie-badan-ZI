@@ -1,0 +1,96 @@
+---
+title: "C03. Pomiar: skala Likerta i indeks"
+subtitle: "Zadanie Z03, scenariusz S03: repozytorium uczelni"
+author: "Imię Nazwisko"
+params:
+  id: "TWOJE_ID"
+date: "`r format(Sys.Date(), '%d.%m.%Y')`"
+lang: pl
+geometry: margin=2.2cm
+output:
+  pdf_document:
+    latex_engine: xelatex
+    dev: png
+    fig_crop: false
+  html_document: default
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+```{r start, include=FALSE}
+source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
+dane <- dane_zi("S03", id = params$id)
+```
+
+Materiał LEARN i wzorce zapisu: <https://marekdejauj.github.io/projektowanie-badan-ZI/c03.html>. Uruchamiaj bloki kodu po kolei, a odpowiedź pisz pod każdym poleceniem. Oddanie w konsoli: `oddaj_zadanie(3)`.
+
+```{r karta, echo=FALSE, results='asis'}
+karta_zi("S03")
+```
+
+Dane: ID `r params$id`, `r nrow(dane)` osób.
+
+## Zadanie 3.1. Rozkład odpowiedzi na pozycje (2 pkt)
+
+**Polecenie:** Wskaż pozycję z największym i z najmniejszym odsetkiem odpowiedzi „raczej tak” i „zdecydowanie tak”. Wyjaśnij, co oznacza zgoda z pozycją 3 i dlaczego pozycja 3 zostaje odwrócona.
+
+```{r z3-1, fig.height=4.2}
+wykres_likert(dane)
+```
+
+**Odpowiedź:**
+
+## Zadanie 3.2. Indeks znajomości zasad (2 pkt)
+
+**Polecenie:** Podaj, ile osób ma 6, 5 i mniej niż 5 ważnych odpowiedzi, oraz opisz indeks: *n*, *M*, *SD* i *Mdn*. Wyjaśnij regułę minimum pięciu odpowiedzi.
+
+```{r z3-2}
+pozycje <- dane[c("p1", "p2", "p3", "p4", "p5", "p6")]
+pozycje$p3 <- 6 - pozycje$p3
+table(rowSums(!is.na(pozycje)))
+opis_grup(dane, indeks)
+```
+
+**Odpowiedź:**
+
+## Zadanie 3.3. Rzetelność (2 pkt)
+
+**Polecenie:** Podaj alfę Cronbacha i oceń spójność pozycji. Wskaż pozycję najsłabiej związaną z resztą skali i podaj alfę po jej usunięciu. Wyjaśnij, jakich dowodów poza alfą wymaga trafność indeksu.
+
+```{r z3-3}
+rzetelnosc <- psych::alpha(pozycje)
+round(rzetelnosc$total[c("raw_alpha", "average_r")], 3)
+round(cbind(rzetelnosc$item.stats[c("r.drop", "mean", "sd")],
+            alfa_bez_pozycji = rzetelnosc$alpha.drop$raw_alpha), 2)
+```
+
+**Odpowiedź:**
+
+## Zadanie 3.4. Deklaracja a wykonanie (2 pkt)
+
+**Polecenie:** Porównaj deklarowaną znajomość zasad u osób, które odnalazły i nie odnalazły legalnej otwartej wersji tekstu. Oceń, na ile deklaracja zgadza się z wykonaniem zadania.
+
+```{r z3-4, fig.height=3}
+opis_grup(dane, indeks, powodzenie)
+ggplot(dane, aes(x = powodzenie, y = indeks)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, height = 0.05, alpha = 0.35) +
+  labs(x = "Odnaleziono otwartą wersję", y = "Indeks znajomości zasad (1–5)")
+```
+
+**Odpowiedź:**
+
+## Zadanie 3.5. Kanały informacji (2 pkt)
+
+**Polecenie:** Podaj odsetek osób i odsetek wskazań dla dwóch najczęstszych kanałów. Wyjaśnij, który odsetek wybierzesz, rekomendując repozytorium kanał komunikacji, i dlaczego.
+
+```{r z3-5, fig.height=2.8}
+kanaly <- kanaly_zi(dane)
+kanaly
+ggplot(kanaly, aes(x = reorder(kanal, -proc_osob), y = proc_osob)) +
+  geom_col(fill = "#0072B2") +
+  labs(x = NULL, y = "% osób")
+```
+
+**Odpowiedź:**

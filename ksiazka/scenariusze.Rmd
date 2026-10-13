@@ -1,0 +1,12 @@
+# Scenariusze {#scenariusze .unnumbered}
+
+Dwadzieścia scenariuszy opisuje problemy instytucji informacyjnych. Każdy zbiór ma ten sam układ zmiennych: dwie grupy, kategorię o trzech lub czterech poziomach, wiek, częstość korzystania, sześć pozycji skali Likerta z indeksem, czas zadania, czas drugiej próby po krótkiej instrukcji, powodzenie zadania i cztery kanały informacji. Dane powstają w skrypcie startowym z karty scenariusza i ID osoby: `dane_zi("S07", id = "s017")`. Dane są syntetyczne, a grupy wynikają z wyboru lub doświadczenia uczestników, więc różnice między grupami mają odczyt opisowy.
+
+```{r scenariusze-karty, echo=FALSE, results='asis'}
+for (s in names(.zi_katalog())) {
+  k <- .zi_karta(s)
+  cat("\n## ", k$id, ". ", k$tytul, " {- #", tolower(k$id), "}\n\n", sep = "")
+  karta_zi(s, markdown = TRUE)
+  cat("**Druga analiza w projekcie:** ", k$druga_analiza, ".\n\n", sep = "")
+}
+```
