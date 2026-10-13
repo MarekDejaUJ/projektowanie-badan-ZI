@@ -38,7 +38,8 @@ przygotuj_raport <- function(katalog = NULL) {
   mapa <- czytaj_yaml(zasob("szablony", "projekt", "przeniesienie.yml"))
   teksty <- lapply(poprzednie, function(f)
     readLines(file.path(f, "zadanie.Rmd"), encoding = "UTF-8", warn = FALSE))
-  odpowiedzi <- lapply(teksty, odczytaj_odpowiedzi, pola = sprintf("S%02d", 1:5))
+  odpowiedzi <- lapply(teksty, function(t) tryCatch(odczytaj_odpowiedzi(t, sprintf("S%02d", 1:5)),
+    error = function(e) list()))
   tekst <- readLines(zasob("szablony", "projekt", "raport.Rmd"), encoding = "UTF-8", warn = FALSE)
   m <- x10$manifest
   wartosci <- c(ID = cfg$id, SCENARIUSZ = m$scenariusz, ROCZNIK = m$rocznik,
@@ -48,6 +49,7 @@ przygotuj_raport <- function(katalog = NULL) {
   przeniesione <- character()
   for (w in mapa$odpowiedzi) {
     akapit <- odpowiedzi[[w$zadanie]][[w$odpowiedz]]
+    if (is.null(akapit)) next
     if (any(nzchar(trimws(akapit))) && !any(grepl("UZUPELNIJ", akapit, fixed = TRUE))) {
       tekst <- wstaw_odpowiedz(tekst, w$pole, akapit)
       przeniesione <- c(przeniesione, w$pole)

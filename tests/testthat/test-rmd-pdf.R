@@ -137,8 +137,8 @@ test_that("oddanie tworzy PDF przed połączeniem i zachowuje go offline", {
   expect_false(file.exists(file.path(k, "oddania.csv")))
   p <- file.path(k, "zadania/z01/zadanie.Rmd")
   tekst <- readLines(p, encoding = "UTF-8")
-  badaniaZI:::pisz_linie(badaniaZI:::wstaw_odpowiedz(tekst, "S03", "[UZUPELNIJ]"), p)
-  expect_error(oddaj_zadanie("Z01", k, potwierdz = FALSE), "S03")
+  badaniaZI:::pisz_linie(badaniaZI:::wstaw_odpowiedz(tekst, "S03", "Wynik `r 1+1`."), p)
+  expect_error(oddaj_zadanie("Z01", k, potwierdz = FALSE), "kod wykonywalny")
   expect_equal(polaczenia, 2L)
 })
 

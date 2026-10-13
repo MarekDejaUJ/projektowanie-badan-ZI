@@ -1,3 +1,14 @@
+# badaniaZI 2.5.8 — oddawanie bez kontroli treści odpowiedzi
+
+- `sprawdz_zadanie()`, `oddaj_zadanie()` i `oddaj_projekt()` przyjmują Rmd
+  z pozostawionym znacznikiem `[UZUPELNIJ_...]`, z pustym polem, ze
+  zmienionym opisem polecenia lub z usuniętymi znacznikami pól odpowiedzi.
+- Kontrola przed renderem obejmuje nagłówek YAML, gotowe bloki R oraz tekst
+  dopisany przez studenta pod kątem kodu wykonywalnego, poleceń LaTeX spoza
+  zapisu matematycznego, znaczników HTML i obrazów z zewnątrz.
+- `przygotuj_raport()` pomija zadania, w których student usunął znaczniki pól.
+- Materiały pozostają w wersji 2.5.7.
+
 # badaniaZI 2.5.7 — praca w Posit Cloud i oddawanie przez Nextcloud
 
 Wersja 2.5.7 zastępuje 2.3.5 jako wydanie kursu na rok 2026/27. Treść

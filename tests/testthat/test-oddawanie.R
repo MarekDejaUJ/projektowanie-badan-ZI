@@ -70,7 +70,7 @@ test_that("odmowa serwera i brak sieci zostawiają pracę i podają drogę ręcz
   expect_true(sprawdz_zadanie("Z01", k, uruchom = FALSE)$ok)
 })
 
-test_that("bez nazwiska, w trakcie renderu i z niepełną pracą nic nie jest wysyłane", {
+test_that("bez nazwiska, w trakcie renderu i z kodem w akapicie nic nie jest wysyłane", {
   k <- praca_pdf_test()
   on.exit(unlink(k, recursive = TRUE), add = TRUE)
   nc <- atrapa_nc(201L)
@@ -87,7 +87,7 @@ test_that("bez nazwiska, w trakcie renderu i z niepełną pracą nic nie jest wy
   expect_error(oddaj_zadanie("Z01", k, potwierdz = NA), "TRUE albo FALSE")
   p <- file.path(k, "zadania/z01/zadanie.Rmd")
   t <- readLines(p, encoding = "UTF-8")
-  badaniaZI:::pisz_linie(badaniaZI:::wstaw_odpowiedz(t, "S02", "[UZUPELNIJ_S02]"), p)
+  badaniaZI:::pisz_linie(badaniaZI:::wstaw_odpowiedz(t, "S02", "Wynik `r 1+1`."), p)
   expect_error(oddaj_zadanie("Z01", k, potwierdz = FALSE), "Niczego nie wysłano")
   expect_length(nc$wywolania, 0L)
 })

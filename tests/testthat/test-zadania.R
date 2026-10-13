@@ -1,12 +1,10 @@
-test_that("puste pola Rmd blokują render bez wymogu liczby słów", {
+test_that("puste pola Rmd nie blokują kontroli treści", {
   k <- tempfile("moje badania ")
   on.exit(unlink(k, recursive = TRUE), add = TRUE)
   utworz_projekt("s017", katalog = k)
   p <- przygotuj_zadanie("Z01", k)
-  local_mocked_bindings(renderuj_prace = function(...) stop("NIE URUCHAMIAJ"), .package = "badaniaZI")
-  r <- sprawdz_zadanie("Z01", k)
-  expect_false(r$ok)
-  expect_match(r$kontrole$opis[1L], "S01")
+  r <- sprawdz_zadanie("Z01", k, uruchom = FALSE)
+  expect_true(r$kontrole$ok[1L])
   t <- readLines(p, encoding = "UTF-8")
   for (s in sprintf("S%02d", 1:5)) t <- badaniaZI:::wstaw_odpowiedz(t, s, "Krótki akapit.")
   badaniaZI:::pisz_linie(t, p)

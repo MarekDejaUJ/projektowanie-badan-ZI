@@ -9,11 +9,11 @@ uzupelniony_wzorzec <- function(id) {
   list(tekst = tekst, wzorzec = baza)
 }
 
-test_that("pełne 10 Rmd i raport zachowują akapity bez limitu słów", {
+test_that("10 Rmd i raport przechodzą wypełnione i niewypełnione", {
   for (id in c(sprintf("Z%02d", 1:10), "PROJEKT")) {
     x <- uzupelniony_wzorzec(id)
     expect_true(badaniaZI:::sprawdz_kontrakt_rmd(x$tekst, x$wzorzec, id))
-    expect_error(badaniaZI:::sprawdz_kontrakt_rmd(x$wzorzec, x$wzorzec, id), "Uzupełnij")
+    expect_true(badaniaZI:::sprawdz_kontrakt_rmd(x$wzorzec, x$wzorzec, id))
   }
   expect_true(badaniaZI:::czy_odpowiedz("Minimum wynosi 2 minuty."))
   expect_false(badaniaZI:::czy_odpowiedz(c("<!--", "Ukryta odpowiedź", "-->")))
@@ -65,10 +65,22 @@ test_that("zmiana kodu, YAML, opcji lub ukrycie odpowiedzi blokuje render", {
   }
 })
 
-test_that("brak tekstu nie niszczy granic pola podczas porównania", {
+test_that("puste pole nie blokuje renderu", {
   x <- uzupelniony_wzorzec("Z01")
   t <- badaniaZI:::wstaw_odpowiedz(x$tekst, "S01", character())
-  expect_identical(badaniaZI:::podziel_rmd(t, badaniaZI:::pola_pracy("Z01"))$tresc,
-    badaniaZI:::podziel_rmd(x$wzorzec, badaniaZI:::pola_pracy("Z01"))$tresc)
-  expect_error(badaniaZI:::sprawdz_kontrakt_rmd(t, x$wzorzec, "Z01"), "Uzupełnij")
+  expect_true(badaniaZI:::sprawdz_kontrakt_rmd(t, x$wzorzec, "Z01"))
+})
+
+test_that("znacznik, usunięte znaczniki pól i zmieniony opis nie blokują renderu", {
+  for (id in c("Z01", "Z02", "Z03")) {
+    x <- uzupelniony_wzorzec(id)
+    t <- x$wzorzec
+    t <- sub("[UZUPELNIJ_S01]", "UZUPELNIJ_S01] mój akapit", t, fixed = TRUE)
+    t <- t[!grepl("^<!-- /?odpowiedz:S02 -->$", t)]
+    i <- grep("Twój akapit S03", t, fixed = TRUE)
+    if (length(i)) t[i] <- "Moja wersja polecenia (zadanie), z [nawiasami]."
+    expect_true(badaniaZI:::sprawdz_kontrakt_rmd(t, x$wzorzec, id))
+    t2 <- sub("[UZUPELNIJ_S04]", '`r system("echo x")`', x$wzorzec, fixed = TRUE)
+    expect_error(badaniaZI:::sprawdz_kontrakt_rmd(t2, x$wzorzec, id))
+  }
 })

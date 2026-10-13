@@ -7,7 +7,7 @@ rubryki oraz oddawanie prac z konsoli R do folderów prowadzącego w Nextcloud
 nie pisze.
 
 Materiały online: <https://MarekDejaUJ.github.io/projektowanie-badan-ZI/>
-Wydanie: **2.5.7**; zmiany opisuje [NEWS.md](NEWS.md). Wcześniejszy przepływ
+Wydanie: **2.5.8**; zmiany opisuje [NEWS.md](NEWS.md). Wcześniejszy przepływ
 z prywatnymi repozytoriami GitHub zachowuje gałąź `gh-workflow`.
 
 Przewodnik ma trzech odbiorców: prowadzącego przygotowującego przestrzeń kursu
@@ -17,8 +17,8 @@ stanowiska.
 
 | Stanowisko | Kto przygotowuje | Co jest potrzebne | Gdzie zostaje praca |
 |---|---|---|---|
-| Projekt w Posit Cloud (sala i dom) | prowadzący (projekt bazowy) albo student (własny projekt) | przeglądarka i konto Posit Cloud; w projekcie pakiet `badaniaZI` 2.5.7 i TinyTeX | w projekcie Posit Cloud studenta, folder `moje-badania` |
-| Własny komputer | student | R 4.3 lub nowszy, RStudio, pakiet `badaniaZI` 2.5.7, TinyTeX | w folderze `moje-badania` |
+| Projekt w Posit Cloud (sala i dom) | prowadzący (projekt bazowy) albo student (własny projekt) | przeglądarka i konto Posit Cloud; w projekcie pakiet `badaniaZI` 2.5.8 i TinyTeX | w projekcie Posit Cloud studenta, folder `moje-badania` |
+| Własny komputer | student | R 4.3 lub nowszy, RStudio, pakiet `badaniaZI` 2.5.8, TinyTeX | w folderze `moje-badania` |
 | Odbiór prac | prowadzący | foldery „File drop” w Nextcloud, opcjonalnie R z pakietem do kontroli projektu | w folderach Nextcloud prowadzącego |
 
 ## 1. Posit Cloud — przestrzeń kursu
@@ -49,7 +49,7 @@ wyczyszczeniu komputera.
    Cloud na to pozwala: każdy student otrzyma własną kopię z gotowym pakietem
    i TinyTeX. Bez tej funkcji student tworzy własny projekt według części 2.
 
-Wersja 2.5.7 obowiązuje przez cały semestr; zmianę wersji wykonuje się na
+Wersja 2.5.8 obowiązuje przez cały semestr; zmianę wersji wykonuje się na
 prośbę prowadzącego, poza zajęciami.
 
 ## 2. Student
