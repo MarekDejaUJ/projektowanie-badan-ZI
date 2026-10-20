@@ -21,6 +21,10 @@ ip <- opis_grup(dane, indeks, powodzenie)
 kan <- kanaly_zi(dane)
 slaba <- rownames(staty)[which.min(staty$r.drop)]
 nr_slaba <- sub("p", "", slaba)
+# Przykład działania alfy: wariancja sumy pozycji wobec sumy wariancji pozycji (osoby z kompletem odpowiedzi).
+pz <- pozycje[stats::complete.cases(pozycje), ]
+war_sumy <- var(rowSums(pz))
+war_pozycji <- sum(sapply(pz, var))
 ```
 
 ## LEARN 1. Rozkład odpowiedzi na pozycje {#c03-pozycje .unnumbered}
@@ -38,8 +42,8 @@ Pozycje 1, 2, 4, 5 i 6 są sformułowane pozytywnie, więc zgoda oznacza lepszą
 Indeks jest średnią odpowiedzi osoby na sześć pozycji po odwróceniu pozycji negatywnej. Reguła minimum ważnych odpowiedzi chroni przed indeksem obliczonym z jednej czy dwóch odpowiedzi.
 
 ::: {.wzor}
-$$p_3^{*} = 6 - p_3 \qquad\qquad I_i = \frac{1}{k_i}\sum_{j=1}^{6} p_{ij} \quad \text{dla } k_i \geq 5$$
-$p_3^{*}$ — odpowiedź odwrócona: suma końców skali (1 + 5) minus odpowiedź [@revelle2026], $p_{ij}$ — odpowiedź osoby $i$ na pozycję $j$ (po odwróceniu pozycji 3), $k_i$ — liczba ważnych odpowiedzi osoby $i$, $I_i$ — indeks osoby $i$ na skali 1–5. Przy $k_i < 5$ indeks ma wartość `NA`.
+$$x^{*}_{i3} = 6 - x_{i3} \qquad\qquad I_i = \frac{1}{m_i}\sum_{k \in O_i} x^{*}_{ik} \quad \text{dla } m_i \geq 5$$
+$x^{*}_{i3}$ — odpowiedź osoby $i$ na pozycję 3 po odwróceniu: suma końców skali (1 + 5) minus odpowiedź [@revelle2026], $x^{*}_{ik}$ — odpowiedź osoby $i$ na pozycję $k$ (po odwróceniu pozycji 3), $O_i$ — zbiór pozycji z ważną odpowiedzią osoby $i$, $m_i$ — liczba ważnych odpowiedzi osoby $i$, $I_i$ — indeks osoby $i$ na skali 1–5. Suma obejmuje wyłącznie ważne odpowiedzi, a dzielnikiem jest ich liczba; przy $m_i < 5$ indeks ma wartość `NA`. Symbole są zgodne z wykładem W02 (część 8).
 :::
 
 ```{r c03-indeks}
@@ -59,8 +63,8 @@ Liczba osób z kompletem sześciu odpowiedzi wynosi `r sum(wazne == 6)`, z pięc
 Alfa Cronbacha jest miarą spójności wewnętrznej [@tavakol2011]: szacuje, jaka część zróżnicowania sumy pozycji pochodzi z właściwości wspólnych pozycjom, wszystkim albo części z nich, a jaka z właściwości swoistych dla pojedynczych pozycji [@cronbach1951].
 
 ::: {.wzor}
-$$\alpha = \frac{k}{k-1}\left(1 - \frac{\sum_{j=1}^{k} s_j^2}{s_X^2}\right)$$
-$k$ — liczba pozycji, $s_j^2$ — wariancja pozycji $j$, $s_X^2$ — wariancja sumy pozycji. Umowna reguła uznaje alfę od 0,70 za akceptowalną; progi są konwencją, a autorzy podają różne granice i różne nazwy przedziałów [@taber2018]. Za dopuszczalne podaje się też wartości od 0,70 do 0,95 [@tavakol2011]. Korelacja pozycji z sumą pozostałych pozycji (*r.drop*) wskazuje pozycje słabiej związane z resztą skali [@revelle2026].
+$$\alpha = \frac{K}{K-1}\left(1 - \frac{\sum_{k=1}^{K} s_k^2}{s_X^2}\right)$$
+$K$ — liczba pozycji, $s_k^2$ — wariancja pozycji $k$, $s_X^2$ — wariancja sumy pozycji (symbole jak w wykładzie W02, część 9). Umowna reguła uznaje alfę od 0,70 za akceptowalną; progi są konwencją, a autorzy podają różne granice i różne nazwy przedziałów [@taber2018]. Za dopuszczalne podaje się też wartości od 0,70 do 0,95 [@tavakol2011]. Korelacja pozycji z sumą pozostałych pozycji (*r.drop*) wskazuje pozycje słabiej związane z resztą skali [@revelle2026].
 :::
 
 ```{r c03-alfa}
@@ -71,6 +75,10 @@ round(cbind(rzetelnosc$item.stats[c("r.drop", "mean", "sd")],
 ```
 
 Alfa wynosi `r .zi_pl(rz$total$raw_alpha)`, a średnia korelacja między pozycjami `r .zi_pl(rz$total$average_r)`. Najsłabiej z resztą skali wiąże się pozycja `r nr_slaba` (*r.drop* = `r .zi_pl(staty[slaba, "r.drop"])`), a jej usunięcie zmienia alfę tylko do `r .zi_pl(rz$alpha.drop[slaba, "raw_alpha"])`. Przy danej liczbie pozycji wysoka alfa oznacza wysoką przeciętną współzależność pozycji, a jednowymiarowość skali wymaga osobnych dowodów [@sijtsma2009]. Trafność również wymaga osobnych dowodów [@aera2014], ponieważ sześć pozycji może zgodnie mierzyć ogólne zadowolenie z katalogu, czyli inną właściwość niż użyteczność.
+
+::: {.przyklad}
+**Przykład S02.** Osoba, która wysoko ocenia pozycję 1, zwykle wysoko ocenia też pozycję 2, więc odchylenia obu odpowiedzi od średnich mają jednakowy znak i dodają się w sumie pozycji. Wariancja sumy rośnie wtedy ponad sumę wariancji pojedynczych pozycji: u `r nrow(pz)` osób z kompletem odpowiedzi wariancja sumy wynosi `r .zi_pl(war_sumy)`, a suma wariancji sześciu pozycji `r .zi_pl(war_pozycji)`. Ułamek we wzorze alfy maleje i alfa rośnie. Gdyby odpowiedzi na pozycje były od siebie niezależne, wariancja sumy równałaby się sumie wariancji pozycji, ułamek wynosiłby 1, a alfa 0.
+:::
 
 ## LEARN 4. Deklaracja a wykonanie zadania {#c03-wykonanie .unnumbered}
 

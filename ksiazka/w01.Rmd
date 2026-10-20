@@ -81,7 +81,7 @@ Jednostką analizy w S02 jest osoba wykonująca jedno zadanie. W dzienniku zdarz
 
 ::: {.wzor}
 $$SE(\bar{x}) = \frac{s}{\sqrt{n}} \qquad\qquad \frac{SE_{n=`r 4 * nrow(w1_dane)`}}{SE_{n=`r nrow(w1_dane)`}} = \sqrt{\frac{`r nrow(w1_dane)`}{`r 4 * nrow(w1_dane)`}} = 0{,}5$$
-$SE(\bar{x})$ — błąd standardowy średniej (miara precyzji średniej, wykład W03), $s$ — odchylenie standardowe wyników, $n$ — liczba niezależnych jednostek.
+$SE(\bar{x})$ — błąd standardowy średniej (miara precyzji średniej, wykład W03), $s$ — odchylenie standardowe wyników, czyli typowa odległość wyniku osoby od średniej (wzór w ćwiczeniu [C01](#c01) i wykładzie W02), $n$ — liczba niezależnych jednostek.
 :::
 
 Policzenie czterech zadań jednej osoby jako czterech osób zmniejsza błąd standardowy o połowę bez nowej informacji. Analiza w kursie używa jednego wyniku na osobę albo różnic w parach pomiarów jednej osoby ([C05](#c05)).
@@ -97,7 +97,7 @@ Skala pomiaru opisuje relacje między wartościami zmiennej i wyznacza działani
 | przedziałowa | równość, porządek, różnica | indeks oceny (umownie) | O ile różnią się średnie oceny? |
 | ilorazowa | równość, porządek, różnica, iloraz | czas zadania w minutach, wiek | Ile razy dłużej trwało zadanie? |
 
-Kody 1–5 pojedynczej pozycji ankiety ustalają porządek odpowiedzi, a odległości między kategoriami mogą być nierówne [@jamieson2004]. Średnia kilku pozycji przyjmuje wiele wartości i w praktyce analizy traktuje się ją jak zmienną przedziałową; metody parametryczne zastosowane do danych ze skal Likerta prowadzą do trafnych wniosków [@norman2010]. Zmienna 0/1 ma szczególną własność: jej średnia jest odsetkiem jedynek. Powodzenie zadania S02 ma średnią `r .zi_pl(w1_sukces, 3)`, czyli dokument znalazło `r .zi_pl(100 * w1_sukces, 1)`% osób.
+Kody 1–5 pojedynczej pozycji ankiety ustalają porządek odpowiedzi, a odległości między kategoriami mogą być nierówne [@jamieson2004]. Średnia kilku pozycji przyjmuje wiele wartości i w praktyce analizy traktuje się ją jak zmienną przedziałową; metody parametryczne, czyli metody zakładające określony rozkład wyników w populacji (na przykład test *t*), zastosowane do danych ze skal Likerta prowadzą do trafnych wniosków [@norman2010]. Zmienna 0/1 ma szczególną własność: jej średnia jest odsetkiem jedynek. Powodzenie zadania S02 ma średnią `r .zi_pl(w1_sukces, 3)`, czyli dokument znalazło `r .zi_pl(100 * w1_sukces, 1)`% osób.
 
 Wartość `NA` oznacza nieznaną odpowiedź i pozostaje osobną wartością. Czas zadania ma w S02 `r sum(is.na(w1_dane$czas))` braków; średni czas osób ze zmierzonym czasem wynosi `r .zi_pl(mean(w1_dane$czas, na.rm = TRUE))` min, a po wpisaniu zera w miejsce braków spadłby do `r .zi_pl(w1_czas_zero)` min. Zero oznacza zadanie wykonane natychmiast, więc zamiana braków na zero dopisuje do danych nieistniejące wyniki.
 
@@ -123,7 +123,7 @@ Eksport ma `r w1_dz$wiersze[1]` wierszy; po usunięciu `r w1_dz$zmienione[3]` po
 
 ## 6. Projekty badań i siła wniosku {#w01-projekty .unnumbered}
 
-Projekt opisowy szacuje stan: średni czas, odsetek powodzeń, etap, na którym pojawia się trudność. Odsetek niepowodzeń z przedziałem niepewności jest pełnoprawnym wynikiem i daje instytucji punkt wyjścia do dalszych decyzji.
+Projekt opisowy szacuje stan: średni czas, odsetek powodzeń, etap, na którym pojawia się trudność. Odsetek niepowodzeń z przedziałem niepewności (przedział ufności, część 8) jest pełnoprawnym wynikiem i daje instytucji punkt wyjścia do dalszych decyzji.
 
 Porównanie grup obserwacyjnych zestawia osoby, które same trafiły do grup. W S02 nowi użytkownicy wykonywali zadanie średnio `r .zi_pl(w1_oc$M[1])` min, a doświadczeni `r .zi_pl(w1_oc$M[2])` min. Doświadczenie powstało poza kontrolą badacza, więc różnica `r .zi_pl(w1_roznica)` min łączy działanie doświadczenia z działaniem cech współwystępujących: znajomości dziedziny, częstości korzystania z katalogu i podobieństwa zadań. Wniosek przyczynowy z porównania grup obserwacyjnych wymaga jawnych założeń o pozostałych przyczynach różnicy [@rohrer2018; @hernan2020]. Poprawna rekomendacja brzmi: „warto sprawdzić w eksperymencie pomoc dla nowych użytkowników”.
 
@@ -183,7 +183,7 @@ Czytamy: „szacowana różnica to średni czas nowych użytkowników minus śre
 | O ile różnią się grupy? | $\Delta = \mu_N - \mu_D$ | $\bar{x}_N - \bar{x}_D$ | `r .zi_pl(w1_roznica)` min |
 | Czy ocena katalogu i czas zmieniają się razem? | korelacja rang $\rho_S$ | korelacja rang w próbie $r_S$ | `r .zi_pl(w1_rs$estimate)` |
 
-Dodatni znak różnicy oznacza, że nowi potrzebowali średnio więcej czasu; zamiana kolejności grup zmienia znak i opisuje to samo zjawisko, dlatego zdanie o różnicy nazywa kolejność grup. Statystyka testowa dzieli różnicę przez jej błąd standardowy, więc minuty w liczniku i mianowniku skracają się, a statystyka *t* jest liczbą bez jednostki ([C05](#c05)).
+Dodatni znak różnicy oznacza, że nowi potrzebowali średnio więcej czasu; zamiana kolejności grup zmienia znak i opisuje to samo zjawisko, dlatego zdanie o różnicy nazywa kolejność grup. Korelacja rang $r_S$ przyjmuje wartości od −1 do 1: znak podaje kierunek związku, a wartość bezwzględna jego siłę (wykład W05). Wartość `r .zi_pl(w1_rs$estimate)` w S02 oznacza, że `r if (w1_rs$estimate < 0) "wyższej ocenie katalogu towarzyszy krótszy czas zadania" else "wyższej ocenie katalogu towarzyszy dłuższy czas zadania"`.
 
 Wybór estymandy zmienia odpowiedź. Rozkład czasu zadania S02 ma długi prawy ogon (rysunek \@ref(fig:w01-rozklad)): średnia `r .zi_pl(mean(w1_dane$czas, na.rm = TRUE))` min odpowiada na pytanie o przeciętny nakład czasu, a mediana `r .zi_pl(median(w1_dane$czas, na.rm = TRUE))` min na pytanie o czas osoby środkowej w uporządkowanej grupie. Ograniczenie analizy do udanych prób także zmienia estymandę: średni czas osób, które znalazły dokument, wynosi `r .zi_pl(mean(w1_dane$czas[w1_dane$powodzenie == "tak"], na.rm = TRUE))` min i odpowiada na inne pytanie niż średni czas wszystkich prób. Zmiana interfejsu, która pozwala znaleźć dokument osobom z trudnościami, może wydłużyć średni czas udanych prób, bo do grupy skutecznych dołączają osoby pracujące wolniej; czas czytamy więc zawsze razem z powodzeniem.
 
@@ -197,7 +197,7 @@ ggplot(w1_dane, aes(x = czas)) +
 
 ## 8. Hipoteza, niepewność i liczebność próby {#w01-hipoteza .unnumbered}
 
-Hipoteza badawcza wynika z problemu i uzasadnienia: nowi użytkownicy potrzebują więcej czasu, bo słabiej znają strukturę rekordu. Hipoteza statystyczna przekłada przewidywanie na zdanie o parametrze: $H_0\colon \Delta = 0$ wobec $H_1\colon \Delta \neq 0$. Efekt w kursie oznacza wielkość różnicy lub związku; skutek interwencji wymaga projektu, który go uzasadnia (część 6).
+Hipoteza badawcza wynika z problemu i uzasadnienia: nowi użytkownicy potrzebują więcej czasu, bo słabiej znają strukturę rekordu. Hipoteza statystyczna przekłada przewidywanie na zdanie o parametrze: $H_0\colon \Delta = 0$ wobec $H_1\colon \Delta \neq 0$. Test statystyczny odnosi estymatę do jej niepewności: statystyka testowa dzieli różnicę przez jej błąd standardowy, więc minuty w liczniku i mianowniku skracają się, a statystyka *t* jest liczbą bez jednostki. Wartość *p* jest prawdopodobieństwem wyniku co najmniej tak skrajnego jak obserwowany, obliczonym przy założeniu prawdziwej $H_0$; definicję, wzór i odczyt podaje wykład [W03](#w03-test-t). Efekt w kursie oznacza wielkość różnicy lub związku; skutek interwencji wymaga projektu, który go uzasadnia (część 6).
 
 Przedział ufności opisuje zakres wartości parametru bardziej zgodnych z danymi niż wartości spoza przedziału, o ile model statystyczny jest poprawny [@greenland2016]. Ta sama estymanda daje bardzo różne przedziały przy różnej liczbie osób (rysunek \@ref(fig:w01-przedzialy)). Dla wszystkich osób S02 różnica czasu wynosi `r .zi_pl(w1_roznica)` min, 95% CI [`r .zi_pl(w1_tw$conf.int[1])`; `r .zi_pl(w1_tw$conf.int[2])`]; dla losowej próby 30 osób z pełnego zbioru S02 estymata wynosi `r .zi_pl(unname(diff(rev(w1_tm$estimate))))` min, a przedział [`r .zi_pl(w1_tm$conf.int[1])`; `r .zi_pl(w1_tm$conf.int[2])`] `r if (w1_tm$conf.int[1] < 0) "obejmuje zero i zgadza się zarówno z brakiem różnicy, jak i z bardzo dużą różnicą" else "jest kilkakrotnie szerszy"`. Siła sformułowania we wniosku odpowiada szerokości przedziału.
 
@@ -214,7 +214,7 @@ ggplot(w1_ci, aes(x = est, y = proba)) +
   labs(x = "Różnica średnich czasów [min]", y = NULL)
 ```
 
-Wnioskowanie w kursie ma dwa tory. Tor klasyczny korzysta z rozkładów teoretycznych (rozkład *t*, $\chi^2$, *F*) i podaje wartość *p* oraz przedział ufności. Tor losowy buduje rozkład porównawczy z samych danych: test permutacyjny tasuje etykiety grup przy prawdziwej $H_0$ [@winkler2014], a bootstrap losuje ze zwracaniem nowe próby [@efron1979] i z ich rozkładu wyznacza przedział [@hesterberg2015]. Oba tory odpowiadają na to samo pytanie, a zgodność ich wyników wzmacnia wniosek (W03).
+Wnioskowanie w kursie ma dwa tory. Tor klasyczny korzysta z rozkładów teoretycznych (rozkład *t*, $\chi^2$, *F*) i podaje wartość *p* oraz przedział ufności. Tor losowy buduje rozkład porównawczy z samych danych: test permutacyjny tasuje etykiety grup przy prawdziwej $H_0$ [@winkler2014], a bootstrap losuje ze zwracaniem nowe próby [@efron1979] i z ich rozkładu wyznacza przedział [@hesterberg2015]. Oba tory odpowiadają na to samo pytanie, a zgodność ich wyników wzmacnia wniosek (wykłady [W03](#w03-losowanie) i [W04](#w04-permutacja)).
 
 Decyzja o odrzuceniu $H_0$ może być błędna na dwa sposoby. Błąd I rodzaju to odrzucenie prawdziwej $H_0$ (fałszywy alarm), z prawdopodobieństwem $\alpha$, zwykle 0,05. Błąd II rodzaju to pozostawienie fałszywej $H_0$ (przeoczenie efektu), z prawdopodobieństwem $\beta$; moc testu $1 - \beta$ jest prawdopodobieństwem wykrycia efektu, który istnieje. Wielkość próby, $\alpha$, moc i wielkość efektu wyznaczają się nawzajem: znając trzy, oblicza się czwartą [@cohen1992; @lakens2022].
 
@@ -223,7 +223,7 @@ $$d = \frac{\mu_N - \mu_D}{\sigma} \qquad\qquad 1 - \beta = P(\text{odrzucenie }
 $d$ — różnica średnich w odchyleniach standardowych $\sigma$ (umowne progi: 0,2 — mały, 0,5 — średni, 0,8 — duży efekt [@cohen1992]); $1 - \beta$ — moc testu.
 :::
 
-Funkcja `power.t.test()` z pakietu stats wyznacza liczebność grup dla testu *t* dwóch prób. Wykrycie efektu średniego (*d* = 0,5) z mocą 80% przy $\alpha$ = 0,05 wymaga `r w1_n64` osób w każdej grupie; efekt zaobserwowany w S02 (*g* = `r .zi_pl(w1_g$Hedges_g)`) wymaga `r w1_n_obs` osób w grupie, a liczebności S02 (`r w1_oc$n[1]` i `r w1_oc$n[2]` osób z ważnym czasem) dają moc około `r .zi_pl(100 * w1_moc_obs, 0)`%. Rysunek \@ref(fig:w01-moc) przedstawia zależność mocy od liczebności grupy. Uzasadnienie liczebności próby należy do planu badania; oprócz analizy mocy obejmuje dostępne zasoby i wielkość efektu ważną dla instytucji [@lakens2022].
+Funkcja `power.t.test()` z pakietu stats wyznacza liczebność grup dla testu *t* dwóch prób. Wykrycie efektu średniego (*d* = 0,5) z mocą 80% przy $\alpha$ = 0,05 wymaga `r w1_n64` osób w każdej grupie; efekt zaobserwowany w S02 (*g* = `r .zi_pl(w1_g$Hedges_g)`, czyli *d* z poprawką na małą próbę, wykład [W04](#w04)) wymaga `r w1_n_obs` osób w grupie, a liczebności S02 (`r w1_oc$n[1]` i `r w1_oc$n[2]` osób z ważnym czasem) dają moc około `r .zi_pl(100 * w1_moc_obs, 0)`%. Rysunek \@ref(fig:w01-moc) przedstawia zależność mocy od liczebności grupy. Uzasadnienie liczebności próby należy do planu badania; oprócz analizy mocy obejmuje dostępne zasoby i wielkość efektu ważną dla instytucji [@lakens2022].
 
 ```{r w01-moc, echo=FALSE, fig.height=3, fig.cap="Moc testu t dwóch prób w zależności od liczby osób w grupie, przy alfa 0,05. Oś pozioma: liczba osób w grupie; oś pionowa: moc. Każda krzywa odpowiada jednej wielkości efektu d; linia przerywana oznacza moc 80%. Efekt mały wymaga kilkuset osób w grupie, efekt średni kilkudziesięciu."}
 w1_siatka <- expand.grid(n = seq(10, 400, by = 5), d = c(0.2, 0.38, 0.5, 0.8))

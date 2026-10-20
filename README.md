@@ -45,7 +45,7 @@ source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
 sprawdz_srodowisko(pdf = TRUE)
 ```
 
-Komputery w sali usuwają stan pracy po zajęciach, więc studenci oddają pracę przed wyjściem albo zapisują plik zadania poza komputerem. Instrukcję dla studentów (własny komputer, Posit Cloud) zawiera rozdział „Instalacja i środowisko pracy” na stronie kursu.
+Komputery w pracowni usuwają stan pracy po zajęciach, więc studenci oddają pracę przed wyjściem albo zapisują plik zadania poza komputerem. Pracownia ma czystą instalację R i RStudio: skrypt startowy instaluje pakiety i TinyTeX przy pierwszym uruchomieniu na stanowisku. Instrukcję dla studentów (pracownia, własny komputer) zawiera rozdział „Instalacja i środowisko pracy” na stronie kursu.
 
 ## Prowadzący
 

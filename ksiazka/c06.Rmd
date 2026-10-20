@@ -33,6 +33,10 @@ if (istotne[1, "diff"] < 0) para <- rev(para)
 najk <- as.character(ok$kategoria[which.min(ok$M)])
 najd <- as.character(ok$kategoria[which.max(ok$M)])
 mk <- function(g) ok$M[ok$kategoria == g]
+# Wzorzec wyniku nieistotnego: ocena katalogu (indeks) w grupach statusu.
+model_ind <- aov(indeks ~ kategoria, data = dane)
+tab_ind <- summary(model_ind)[[1]]
+eta_ind <- effectsize::eta_squared(model_ind, alternative = "two.sided")
 ```
 
 ## LEARN 1. Opis grup {#c06-opis .unnumbered}
@@ -103,7 +107,7 @@ Po korekcie istotna jest różnica `r if (nrow(istotne) == 1) "jednej pary" else
 
 ## LEARN 5. Test Kruskala–Wallisa {#c06-kruskal .unnumbered}
 
-Test Kruskala–Wallisa porównuje rangi wyników w wielu grupach [@kruskal1952]. Rangi zależą wyłącznie od kolejności wyników, więc wielkość wartości odległych pozostaje bez wpływu na test. Funkcja `kruskal_effsize()` z pakietu rstatix podaje wielkość efektu $\eta^2_H = (H - k + 1)/(n - k)$, gdzie $H$ — statystyka testu, $k$ — liczba grup, $n$ — liczba osób; progi jak dla $\eta^2$ [@kassambara2025; @tomczak2014]. Porównania par wykonuje test Dunn [@dunn1964] z korektą Holma.
+Test Kruskala–Wallisa porównuje rangi wyników w wielu grupach [@kruskal1952]. Rangi zależą wyłącznie od kolejności wyników, więc wielkość wartości odległych pozostaje bez wpływu na test. Funkcja `kruskal_effsize()` z pakietu rstatix podaje wielkość efektu $\eta^2_H = (H - k + 1)/(n - k)$, gdzie $H$ — statystyka testu, $k$ — liczba grup, $n$ — liczba osób; progi jak dla $\eta^2$ [@kassambara2025; @tomczak2014]. Porównania par wykonuje test Dunn [@dunn1964] z korektą Holma: korekta porządkuje wartości *p* wszystkich par od najmniejszej, mnoży najmniejszą przez liczbę porównań, następną przez liczbę porównań pomniejszoną o 1 i tak dalej, dzięki czemu łączne ryzyko fałszywego alarmu w serii porównań pozostaje na poziomie 0,05 (W04, część 7).
 
 ```{r c06-kw}
 kruskal.test(czas ~ kategoria, data = dane)
@@ -118,7 +122,7 @@ Test rangowy potwierdza różnice: $\chi^2$(`r kw$parameter`) = `r .zi_pl(kw$sta
 ::: {.apa}
 **Wynik istotny.** Średni czas zadania różnił się między grupami statusu, *F*(`r tab$Df[1]`, `r tab$Df[2]`) = `r .zi_pl(tab$"F value"[1])`, *p* `r .zi_p(tab$"Pr(>F)"[1])`, *η*^2^ = `r .zi_pl(eta$Eta2)`; test Welcha dał *F*(`r welch$parameter[1]`, `r .zi_pl(welch$parameter[2])`) = `r .zi_pl(welch$statistic)`, *p* `r .zi_p(welch$p.value)`. Porównania post hoc (test Tukeya) wykazały dłuższy czas w grupie „`r para[1]`” (*M* = `r .zi_pl(mk(para[1]))` min) niż w grupie „`r para[2]`” (*M* = `r .zi_pl(mk(para[2]))` min), *p*~adj~ = `r .zi_pl(istotne[1, "p adj"], 3)`; pozostałe różnice nie były istotne.
 
-**Wynik nieistotny.** Średnia ocena katalogu była zbliżona w grupach statusu, a różnice były nieistotne statystycznie, *F*(3, 229) = 1,75, *p* = 0,157, *η*^2^ = 0,02; analiza kończy się bez porównań post hoc.
+**Wynik nieistotny.** Średnia ocena katalogu była zbliżona w grupach statusu, a różnice były nieistotne statystycznie, *F*(`r tab_ind$Df[1]`, `r tab_ind$Df[2]`) = `r .zi_pl(tab_ind$"F value"[1])`, *p* `r .zi_p(tab_ind$"Pr(>F)"[1])`, *η*^2^ = `r .zi_pl(eta_ind$Eta2)`; analiza kończy się bez porównań post hoc.
 
 **Zasada kursu.** Porównania par raportujesz po istotnym teście dla wszystkich grup i zawsze z poprawionymi wartościami *p*.
 :::

@@ -93,7 +93,7 @@ Nowi użytkownicy wykonywali zadanie średnio `r .zi_pl(oc$M[1])` min (*Mdn* = `
 
 ## LEARN 5. Histogram i wykres pudełkowy {#c01-wykresy .unnumbered}
 
-Histogram przedstawia kształt rozkładu jednej zmiennej: wysokość słupka to liczba osób w przedziale czasu. Wykres pudełkowy porównuje grupy: pudełko obejmuje środkowe 50% wyników (od *Q1* do *Q3*), linia w pudełku to mediana, wąsy sięgają do najdalszego wyniku leżącego najwyżej 1,5 rozstępu międzykwartylowego od krawędzi pudełka (konwencja Tukeya), a punkty poza wąsami to wyniki odległe [@krzywinski2014].
+Histogram przedstawia kształt rozkładu jednej zmiennej: wysokość słupka to liczba osób w przedziale czasu. Wykres pudełkowy porównuje grupy: pudełko obejmuje środkowe 50% wyników (od *Q1* do *Q3*), więc jego wysokość równa się rozstępowi międzykwartylowemu *IQR* = *Q3* − *Q1*; linia w pudełku to mediana, wąsy sięgają do najdalszego wyniku leżącego najwyżej 1,5 rozstępu międzykwartylowego (1,5 *IQR*) od krawędzi pudełka (konwencja Tukeya), a punkty poza wąsami to wyniki odległe [@krzywinski2014].
 
 ```{r c01-histogram, fig.height=3}
 ggplot(dane, aes(x = czas)) +

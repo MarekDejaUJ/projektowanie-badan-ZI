@@ -7,14 +7,15 @@
 # 2. ustawia wygląd wykresów i wydruków,
 # 3. tworzy syntetyczne dane scenariuszy: dane_zi("S02", id = "s017"),
 # 4. udostępnia funkcje opisu: karta_zi(), slownik_zi(), opis_grup(), czestosci(), test_znakow(),
-# 5. udostępnia pobierz_szablon(), oddaj_zadanie(), oddaj_projekt(), sprawdz_srodowisko(), przygotuj_pdf().
+# 5. udostępnia pobierz_szablon(), oddaj_zadanie(), oddaj_projekt(), sprawdz_srodowisko(), przygotuj_pdf(),
+# 6. instaluje TinyTeX przy pierwszym uruchomieniu na stanowisku (pracownia ma czystą instalację R i RStudio).
 # Dane zależą tylko od scenariusza i ID, więc każde uruchomienie na każdym komputerze daje te same liczby.
 
 if (getRversion() < "4.2.0") {
   stop("Kurs wymaga R w wersji 4.2 lub nowszej. Zainstaluj aktualne R z https://cran.r-project.org.")
 }
 
-.zi_wersja <- "3.1.1"
+.zi_wersja <- "3.1.2"
 .zi_adres <- getOption("zi.adres", "https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/")
 .zi_rocznik <- "2026-27"
 
@@ -23,7 +24,7 @@ if (getRversion() < "4.2.0") {
 # ---------------------------------------------------------------------------------------------
 
 .zi_pakiety <- c("dplyr", "ggplot2", "infer", "psych", "rstatix", "effectsize", "car",
-                 "rmarkdown", "knitr", "yaml", "curl")
+                 "rmarkdown", "knitr", "yaml", "curl", "tinytex")
 .zi_dolaczone <- c("dplyr", "ggplot2", "infer")
 
 .zi_instaluj <- function(nazwy) {
@@ -486,17 +487,64 @@ sprawdz_srodowisko <- function(pdf = FALSE) {
   invisible(wynik)
 }
 
-#' Instalacja TinyTeX i pakietów LaTeX potrzebnych do PDF (jednorazowo, kilka minut)
-przygotuj_pdf <- function() {
-  if (!nzchar(Sys.which("xelatex"))) {
-    message("Instaluję TinyTeX (jednorazowo, kilka minut). Nie zamykaj sesji R.")
-    tinytex::install_tinytex()
+# ---------------------------------------------------------------------------------------------
+# TinyTeX (XeLaTeX do PDF). Pracownia ma czystą instalację R i RStudio, więc skrypt instaluje TinyTeX
+# przy pierwszym uruchomieniu na stanowisku, a oddaj_zadanie() ponawia instalację, gdy PDF nie powstaje.
+# ---------------------------------------------------------------------------------------------
+
+.zi_latex_pakiety <- c("fontspec", "unicode-math", "lm", "lm-math", "babel-polish", "hyphen-polish", "geometry",
+                       "hyperref", "bookmark", "booktabs", "fancyvrb", "float", "framed", "xcolor", "upquote",
+                       "microtype", "parskip", "xurl", "fvextra", "lineno", "etoolbox")
+
+# Katalog instalacji TinyTeX: domyślny (%APPDATA%\TinyTeX). Gdy ścieżka profilu zawiera spację albo znak spoza
+# ASCII (np. polskie litery w nazwie konta), TeX Live nie działa, więc instalacja trafia do C:\Users\Public\TinyTeX.
+.zi_katalog_tinytex <- function() {
+  if (.Platform$OS.type != "windows") return("auto")
+  profil <- normalizePath(Sys.getenv("APPDATA"), winslash = "/", mustWork = FALSE)
+  if (grepl("[^!-~]", profil)) file.path(Sys.getenv("SystemDrive", "C:"), "Users/Public/TinyTeX") else "auto"
+}
+
+# TinyTeX zainstalowany w trakcie sesji R nie jest jeszcze na PATH tej sesji; dopisujemy jego katalog bin.
+.zi_sciezka_tinytex <- function() {
+  if (nzchar(Sys.which("xelatex"))) return(TRUE)
+  kandydaci <- tryCatch(tinytex::tinytex_root(error = FALSE), error = function(e) "")
+  if (.Platform$OS.type == "windows") {
+    kandydaci <- c(kandydaci, file.path(Sys.getenv("APPDATA"), "TinyTeX"),
+                   file.path(Sys.getenv("SystemDrive", "C:"), "Users/Public/TinyTeX"))
   }
+  for (korzen in kandydaci[nzchar(kandydaci)]) {
+    bin <- list.dirs(file.path(korzen, "bin"), recursive = FALSE)
+    if (length(bin) == 0L) next
+    Sys.setenv(PATH = paste(bin[1], Sys.getenv("PATH"), sep = .Platform$path.sep))
+    if (nzchar(Sys.which("xelatex"))) return(TRUE)
+  }
+  FALSE
+}
+
+# Instaluje TinyTeX z pakietami LaTeX kursu; TRUE, gdy XeLaTeX jest dostępny po zakończeniu.
+.zi_zapewnij_latex <- function() {
+  if (.zi_sciezka_tinytex()) return(invisible(TRUE))
+  katalog <- .zi_katalog_tinytex()
+  # Niepełna instalacja (katalog bez xelatex) wymaga nadpisania.
+  cel <- if (katalog == "auto") file.path(Sys.getenv("APPDATA"), "TinyTeX") else katalog
+  message("Instaluję TinyTeX do składania PDF (jednorazowo na stanowisku, kilka minut). Nie zamykaj sesji R.")
+  argumenty <- list(force = .Platform$OS.type == "windows" && dir.exists(cel), extra_packages = .zi_latex_pakiety)
+  if (katalog != "auto") argumenty$dir <- katalog
+  zainstalowano <- tryCatch({
+    do.call(tinytex::install_tinytex, argumenty)
+    TRUE
+  }, error = function(e) {
+    message("Instalacja TinyTeX nie powiodła się: ", conditionMessage(e))
+    FALSE
+  })
+  invisible(zainstalowano && .zi_sciezka_tinytex())
+}
+
+#' Instalacja TinyTeX i pakietów LaTeX potrzebnych do PDF oraz próbny PDF
+przygotuj_pdf <- function() {
+  .zi_zapewnij_latex()
   if (isTRUE(tryCatch(tinytex::is_tinytex(), error = function(e) FALSE))) {
-    potrzebne <- c("fontspec", "unicode-math", "lm", "lm-math", "babel-polish", "hyphen-polish", "geometry",
-                   "hyperref", "bookmark", "booktabs", "fancyvrb", "float", "framed", "xcolor", "upquote",
-                   "microtype", "parskip", "xurl", "fvextra", "lineno", "etoolbox")
-    brak <- setdiff(potrzebne, tinytex::tl_pkgs())
+    brak <- setdiff(.zi_latex_pakiety, tinytex::tl_pkgs())
     if (length(brak) > 0L) tinytex::tlmgr_install(brak)
   }
   invisible(sprawdz_srodowisko(pdf = TRUE))
@@ -628,6 +676,13 @@ przygotuj_pdf <- function() {
   nazwa <- paste(.zi_do_nazwy(osoba$id), .zi_do_nazwy(osoba$nazwisko), .zi_do_nazwy(osoba$imie), klucz, sep = "_")
   message("Tworzę PDF z pliku ", basename(plik), " w nowej sesji R. Może to potrwać około minuty...")
   wynik <- .zi_renderuj(plik, paste0(nazwa, ".pdf"), "pdf_document")
+  if (!wynik$ok && !wynik$blad_kodu && !.zi_sciezka_tinytex()) {
+    message("PDF nie powstał, bo na stanowisku brakuje XeLaTeX.")
+    if (.zi_zapewnij_latex()) {
+      message("Tworzę PDF ponownie...")
+      wynik <- .zi_renderuj(plik, paste0(nazwa, ".pdf"), "pdf_document")
+    }
+  }
   if (!wynik$ok && wynik$blad_kodu) {
     stop("Plik nie tworzy dokumentu w nowej sesji R:\n\n", .zi_fragment_logu(wynik$log), "\n\n",
          "Popraw wskazany blok (Knit pokaże ten sam błąd) i uruchom polecenie ponownie.", call. = FALSE)
@@ -688,6 +743,7 @@ oddaj_projekt <- function(plik = "projekt.Rmd", wyslij = TRUE) {
 }
 
 if (!isTRUE(getOption("knitr.in.progress"))) {
+  if (interactive()) .zi_zapewnij_latex()
   message("Kurs ZI (skrypt ", .zi_wersja, "): pakiety gotowe. Dane: dane_zi(\"S02\", id = \"s017\"). ",
           "Plik zajęć: pobierz_szablon(1). Oddanie: oddaj_zadanie(1).")
 }

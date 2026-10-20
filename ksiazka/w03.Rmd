@@ -149,7 +149,7 @@ Populacja jest zbiorem osób, których dotyczy pytanie badawcze, a próba częś
 | Estymator | reguła obliczenia z danych próby | średnia arytmetyczna próby $\bar{x}$ |
 | Estymata | wartość estymatora w jednej próbie | $\bar{x}$ = `r .zi_pl(w3_mu)` min (*n* = `r w3_n_cz`) |
 
-Statystyka jest funkcją danych z próby. Średnia szacuje parametr, odchylenie standardowe opisuje rozrzut osób, a statystyka *t* odnosi różnicę do jej błędu standardowego. Losowy dobór próby daje zmienność losową, którą opisują błąd standardowy i przedział ufności. Sposób dotarcia do osób może dodać błąd systematyczny: badanie ograniczone do doświadczonych użytkowników dałoby średni czas `r .zi_pl(mean(w3_dosw))` min wobec `r .zi_pl(w3_mu)` min w całej próbie S02, a większa liczba zaproszonych doświadczonych użytkowników zachowałaby różnicę `r .zi_pl(mean(w3_dosw) - w3_mu)` min. Wartość *p* i przedział ufności zakładają poprawność całego modelu, łącznie z losowym doborem i sposobem powstania braków danych [@greenland2016].
+Statystyka jest funkcją danych z próby. Średnia szacuje parametr, odchylenie standardowe opisuje rozrzut osób, a statystyka *t* odnosi różnicę do jej błędu standardowego. Losowy dobór próby daje zmienność losową, którą opisują błąd standardowy i przedział ufności; definicje błędu standardowego, przedziału ufności, statystyki *t* i wartości *p* podają części 3–5. Sposób dotarcia do osób może dodać błąd systematyczny: badanie ograniczone do doświadczonych użytkowników dałoby średni czas `r .zi_pl(mean(w3_dosw))` min wobec `r .zi_pl(w3_mu)` min w całej próbie S02, a większa liczba zaproszonych doświadczonych użytkowników zachowałaby różnicę `r .zi_pl(mean(w3_dosw) - w3_mu)` min. Wartość *p* i przedział ufności zakładają poprawność całego modelu, łącznie z losowym doborem i sposobem powstania braków danych [@greenland2016].
 
 | Symbol | Znaczenie |
 |:--|:--|
@@ -276,7 +276,13 @@ Estymator nieobciążony ma średnią z wielu prób równą parametrowi, precyzy
 
 ## 4. Przedział ufności jako procedura {#w03-przedzial .unnumbered}
 
-Przedział ufności średniej korzysta z rozkładu *t* [@student1908]. Rozkład *t* ma grubsze ogony od rozkładu normalnego i zbliża się do niego wraz ze wzrostem liczby stopni swobody [@guthrie2020, sekcja 1.3.6.6.4]: kwantyl rzędu 0,975 wynosi `r .zi_pl(qt(0.975, 3), 3)` dla $df$ = 3, `r .zi_pl(qt(0.975, 15), 3)` dla 15, `r .zi_pl(qt(0.975, 39), 3)` dla 39 i `r .zi_pl(qt(0.975, w3_n_cz - 1), 3)` dla `r w3_n_cz - 1`, a w rozkładzie normalnym `r .zi_pl(qnorm(0.975), 3)`.
+Przedział ufności średniej korzysta z rozkładu *t* [@student1908]. Rozkład *t* ma praktyczne pochodzenie: William Sealy Gosset, piwowar browaru Guinness w Dublinie, opublikował go w 1908 roku pod pseudonimem „Student”, bo pracodawca wymagał ukrycia tożsamości autora [@student1908; @ziliak2008]. Stopnie swobody $df = n - 1$ liczą wyniki, które mogą zmieniać się niezależnie przy ustalonej średniej.
+
+::: {.przyklad}
+**Przykład S02.** Przy znanej średniej ocenie katalogu i znanych ocenach `r w3_n - 1` osób ocena ostatniej osoby jest wyznaczona przez pozostałe, więc swobodnych wyników jest `r w3_n - 1`, a rozkład *t* dla oceny katalogu ma $df$ = `r w3_n - 1`.
+:::
+
+Rozkład *t* ma grubsze ogony od rozkładu normalnego i zbliża się do niego wraz ze wzrostem liczby stopni swobody [@guthrie2020, sekcja 1.3.6.6.4]: kwantyl rzędu 0,975 wynosi `r .zi_pl(qt(0.975, 3), 3)` dla $df$ = 3, `r .zi_pl(qt(0.975, 15), 3)` dla 15, `r .zi_pl(qt(0.975, 39), 3)` dla 39 i `r .zi_pl(qt(0.975, w3_n_cz - 1), 3)` dla `r w3_n_cz - 1`, a w rozkładzie normalnym `r .zi_pl(qnorm(0.975), 3)`.
 
 ::: {.wzor}
 $$95\%\ CI = \bar{x} \pm t_{0{,}975;\,n-1} \cdot \frac{s}{\sqrt{n}}$$
@@ -339,7 +345,7 @@ $$d = \frac{\bar{x} - \mu_0}{s} = \frac{`r w3_tex(w3_m - 3, 3)`}{`r w3_tex(w3_s,
 Mianownikiem $d$ jest odchylenie standardowe osób, mianownikiem $t$ — błąd standardowy; jednakowa różnica daje przy dużej próbie duże $t$ i niezmienione $d$.
 :::
 
-Umowne progi Cohena wynoszą 0,2 dla efektu małego, 0,5 dla średniego i 0,8 dla dużego; progi są arbitralne, a ich użycie ma sens wtedy, gdy brakuje wyników porównywalnych badań [@lakens2013]. Ocena praktyczna odwołuje się do decyzji instytucji: najmniejszy efekt istotny dla decyzji, np. zmiana oceny o 0,3 punktu uzasadniająca przebudowę katalogu, wyznacza granice testu równoważności [@lakens2017]. Najmniejszy efekt istotny ustala się przy planowaniu badania, razem z liczebnością próby [@lakens2022].
+Umowne progi Cohena wynoszą 0,2 dla efektu małego, 0,5 dla średniego i 0,8 dla dużego; progi są arbitralne, a ich użycie ma sens wtedy, gdy brakuje wyników porównywalnych badań [@lakens2013]. Ocena praktyczna odwołuje się do decyzji instytucji: najmniejszy efekt istotny dla decyzji, np. zmiana oceny o 0,3 punktu uzasadniająca przebudowę katalogu, wyznacza granice testu równoważności, czyli testu sprawdzającego, czy efekt mieści się w przedziale wartości bez znaczenia praktycznego [@lakens2017]. Najmniejszy efekt istotny ustala się przy planowaniu badania, razem z liczebnością próby [@lakens2022].
 
 ## 7. Błędy decyzji, moc i liczebność próby {#w03-moc .unnumbered}
 
@@ -353,6 +359,10 @@ $$\alpha = P(\text{odrzucenie } H_0 \mid H_0) \qquad \beta = P(\text{pozostawien
 |:--|:--|:--|
 | $H_0$ prawdziwa | decyzja trafna, prawdopodobieństwo $1 - \alpha$ | błąd I rodzaju, prawdopodobieństwo $\alpha$ |
 | określona $H_1$ prawdziwa | błąd II rodzaju, prawdopodobieństwo $\beta$ | wykrycie efektu, moc $1 - \beta$ |
+
+::: {.przyklad}
+**Przykład S02.** Błąd I rodzaju: biblioteka ogłasza, że ocena katalogu przewyższa neutralny środek skali, choć w populacji średnia ocena wynosi dokładnie 3. Błąd II rodzaju: biblioteka pozostaje przy wniosku o ocenie neutralnej, choć w populacji średnia ocena jest wyższa. Moc jest prawdopodobieństwem, że badanie wykryje wyższą ocenę, gdy wyższa ocena w populacji istnieje.
+:::
 
 ```{r w03-bledy, echo=FALSE, fig.height=3.2, fig.cap=w3_cap_bledy}
 w3_x8 <- seq(-4, 6, by = 0.01)
@@ -398,14 +408,18 @@ Elastyczność analizy, czyli wybór podziałów grup, progów czasu i reguł br
 
 ## 8. Drugi tor: bootstrap i test permutacyjny {#w03-losowanie .unnumbered}
 
+Tor klasyczny opiera niepewność średniej na wzorach i rozkładzie *t*. Tor obliczeniowy zastępuje wzory losowaniem z danych: komputer tysiące razy tworzy nowe próby, liczy w każdej statystykę, a rozrzut wyników zastępuje tablicę rozkładu. Dwa pytania biblioteki o katalog prowadzą do dwóch procedur: bootstrap odpowiada na pytanie o dokładność oszacowania, test permutacyjny na pytanie o zgodność danych z hipotezą zerową.
+
 | Pytanie | Procedura | Wynik |
 |:--|:--|:--|
 | Jak zmieniałaby się estymata w kolejnych próbach? | bootstrap: losowanie obserwacji ze zwracaniem | przybliżenie rozkładu estymatora, błąd standardowy, przedział |
 | Jak skrajna jest statystyka przy modelu zerowym? | test permutacyjny: przestawienia etykiet albo zmiany znaków | rozkład odniesienia testu i wartość *p* |
 
-Rozumowanie permutacyjne pochodzi od Fishera, który w 1935 roku opisał eksperyment z rozpoznawaniem kolejności nalewania mleka i herbaty w 8 filiżankach, z których w 4 najpierw nalano mleko [@fisher1935; @ernst2004]. Losowe zgadywanie wskazuje wszystkie 4 filiżanki z mlekiem z prawdopodobieństwem $1/\binom{8}{4}$ = 1/70 ≈ `r .zi_pl(1 / 70, 3)`: wartość *p* powstaje z wyliczenia wszystkich możliwych przyporządkowań, bez rozkładu teoretycznego. @pitman1937 zastosował rozumowanie permutacyjne do danych ilościowych. Test *t* ma podobnie praktyczne pochodzenie: William Sealy Gosset, piwowar browaru Guinness w Dublinie, opublikował go w 1908 roku pod pseudonimem „Student”, bo pracodawca wymagał ukrycia tożsamości autora [@student1908; @ziliak2008].
-
 ### Bootstrap: próba jako przybliżenie populacji {#w03-bootstrap .unnumbered}
+
+::: {.przyklad}
+**Przykład S02.** Lista `r w3_n_cz` czasów z S02 jest całą informacją biblioteki o użytkownikach katalogu, więc bootstrap traktuje próbę jak populację. Komputer losuje z listy `r w3_n_cz` osób ze zwracaniem: wylosowana osoba wraca na listę i może trafić do nowej próby po raz drugi, a inna osoba może do niej nie trafić wcale. Dla każdej nowej próby komputer liczy średni czas, a rozrzut 2000 średnich z nowych prób opisuje, jak bardzo wynik zależy od składu próby. Z czasów pięciu osób 3, 5, 6, 8 i 20 min jedna próba bootstrapowa może wyglądać tak: 5, 5, 8, 20, 3 — osoba z czasem 5 min trafiła do niej dwa razy, a osoba z czasem 6 min wcale.
+:::
 
 Bootstrap losuje z $n$ obserwacji próbę $n$ elementów ze zwracaniem i liczy statystykę dla każdej wylosowanej próby; po $B$ losowaniach odchylenie standardowe statystyk przybliża błąd standardowy, a kwantyle 2,5% i 97,5% wyznaczają przedział percentylowy [@efron1979; @hesterberg2015].
 
@@ -429,12 +443,26 @@ ggplot(w3_bt, aes(x = wartosc)) +
   labs(x = "Statystyka próby bootstrapowej [min]", y = "Liczba prób")
 ```
 
-### Test zmiany znaków: konkretny model zerowy {#w03-znaki .unnumbered}
+### Test permutacyjny: losowanie przy prawdziwej hipotezie zerowej {#w03-permutacja .unnumbered}
 
-Test zmiany znaków dla jednej próby analizuje odchylenia od wartości odniesienia, $d_i = x_i - \mu_0$. Przy $H_0$ oraz niezależnych i symetrycznych odchyleniach znak każdego odchylenia jest równie prawdopodobny, więc losowe zmiany znaków dają rozkład statystyki przy $H_0$ [@winkler2014]. Wartość *p* liczy się z wylosowanego rozkładu z poprawką, dzięki której jest zawsze dodatnia [@phipson2010]:
+Bootstrap odpowiada na pytanie, jak zmieniałby się wynik w kolejnych próbach. Test permutacyjny odpowiada na inne pytanie: jakie wyniki powstawałyby z samego przypadku, gdyby hipoteza zerowa była prawdziwa.
+
+::: {.przyklad}
+**Przykład S02.** W porównaniu czasu zadania doświadczonych i początkujących użytkowników hipoteza zerowa mówi, że doświadczenie nie zmienia czasu. Przy prawdziwej $H_0$ etykieta grupy przy każdej osobie jest przypadkowym dopiskiem, więc komputer może przestawiać etykiety między osobami bez zmiany rozkładu czasów. Po każdym przestawieniu komputer liczy różnicę średnich obu grup, a 2000 przestawień daje rozkład różnic powstających z samego przypadku. Wartość *p* jest udziałem przestawień, które dały różnicę co najmniej tak dużą jak różnica obserwowana. Przy czterech osobach, dwóch nowych i dwóch doświadczonych, możliwych podziałów na grupy jest sześć; przy `r w3_n_cz` osobach S02 liczba podziałów przekracza możliwości wyliczenia wszystkich, więc komputer losuje 2000 z nich.
+:::
+
+Wykład [W04](#w04-permutacja) opisuje porównanie grup, a ćwiczenie [C05](#c05-permutacja) wykonuje je w R.
+
+### Test zmiany znaków: wersja dla jednej próby {#w03-znaki .unnumbered}
+
+::: {.przyklad}
+**Przykład S02.** Pytanie o ocenę katalogu dotyczy jednej próby, więc zamiast etykiet grup komputer przestawia znaki. Przy prawdziwej $H_0$: $\mu$ = 3 odchylenie oceny każdej osoby od 3 jest równie często dodatnie jak ujemne, więc losowa zmiana znaku odchylenia tworzy próbę, jaka mogłaby powstać przy neutralnej ocenie katalogu. Osoba z indeksem 4,2 ma odchylenie +1,2 od środka skali; po losowaniu znaku liczy się jako +1,2 albo −1,2, a osoba z indeksem 2,5 jako −0,5 albo +0,5.
+:::
+
+Test zmiany znaków dla jednej próby analizuje odchylenia od wartości odniesienia, $o_i = x_i - \mu_0$ (litera $d$ pozostaje zarezerwowana dla efektu standaryzowanego z części 6). Przy $H_0$ oraz niezależnych i symetrycznych odchyleniach znak każdego odchylenia jest równie prawdopodobny, więc losowe zmiany znaków dają rozkład statystyki przy $H_0$ [@winkler2014]. Wartość *p* liczy się z wylosowanego rozkładu z poprawką, dzięki której jest zawsze dodatnia [@phipson2010]:
 
 ::: {.wzor}
-$$T^{*}_b = \frac{1}{n}\sum_{i=1}^{n} \varepsilon_i d_i \qquad\qquad p_{\text{perm}} = \frac{1 + \#\{b : |T^{*}_b| \geq |T_{\text{obs}}|\}}{B + 1}$$
+$$T^{*}_b = \frac{1}{n}\sum_{i=1}^{n} \varepsilon_i o_i \qquad\qquad p_{\text{perm}} = \frac{1 + \#\{b : |T^{*}_b| \geq |T_{\text{obs}}|\}}{B + 1}$$
 $\varepsilon_i$ — losowy znak $+1$ albo $-1$ przypisany osobie $i$, $T^{*}_b$ — średnia odchyleń w losowaniu $b$, $T_{\text{obs}}$ — średnia odchyleń w danych, $\#$ — liczba losowań spełniających warunek, $B$ — liczba losowań.
 :::
 
@@ -445,7 +473,7 @@ ggplot(data.frame(t = w3_rozklad), aes(x = t)) +
   labs(x = "Średnia odchyleń od 3 po losowej zmianie znaków", y = "Liczba losowań")
 ```
 
-Dla indeksu S02 średnia odchyleń od 3 wynosi `r .zi_pl(w3_zn$roznica, 3)` punktu, a żadne z `r w3_zn$B` losowań jej nie osiąga, więc $p_{\text{perm}}$ = 1/`r w3_zn$B + 1` = `r .zi_pl(w3_zn$p_perm, 4)`: najmniejsza wartość możliwa przy `r w3_zn$B` losowaniach (Rysunek \@ref(fig:w03-znaki)). Wartość $p_{\text{perm}}$ pochodzi z losowania, więc ma błąd Monte Carlo równy w przybliżeniu $\sqrt{p(1-p)/B}$ [@hesterberg2015]: liczba losowań co najmniej tak skrajnych jak wynik obserwowany ma rozkład dwumianowy o odchyleniu standardowym $\sqrt{Bp(1-p)}$ [@guthrie2020, sekcja 1.3.6.6.18]. Przy $p$ = 0,05 i $B$ = `r w3_zn$B` błąd Monte Carlo wynosi `r .zi_pl(w3_mc_se, 4)`. Ziarno generatora liczb losowych zapisuje się w kodzie i podaje w raporcie, dzięki czemu obliczenie da się powtórzyć [@sandve2013].
+Dla indeksu S02 średnia odchyleń od 3 wynosi `r .zi_pl(w3_zn$roznica, 3)` punktu, a żadne z `r w3_zn$B` losowań jej nie osiąga, więc $p_{\text{perm}}$ = 1/`r w3_zn$B + 1` = `r .zi_pl(w3_zn$p_perm, 4)`: najmniejsza wartość możliwa przy `r w3_zn$B` losowaniach (Rysunek \@ref(fig:w03-znaki)). Wartość $p_{\text{perm}}$ pochodzi z losowania, więc ma błąd Monte Carlo równy w przybliżeniu $\sqrt{p(1-p)/B}$ [@hesterberg2015]: liczba losowań co najmniej tak skrajnych jak wynik obserwowany ma rozkład dwumianowy o odchyleniu standardowym $\sqrt{Bp(1-p)}$ [@guthrie2020, sekcja 1.3.6.6.18]. Przy $p$ = 0,05 i $B$ = `r w3_zn$B` błąd Monte Carlo wynosi `r .zi_pl(w3_mc_se, 4)`. Ziarno generatora liczb losowych zapisuje się w kodzie i podaje w raporcie, dzięki czemu obliczenie da się powtórzyć [@sandve2013]. Rozumowanie permutacyjne pochodzi od Fishera, który opisał je w 1935 roku [@fisher1935; @ernst2004]; @pitman1937 zastosował rozumowanie permutacyjne do danych ilościowych.
 
 ## 9. Zgodność testu i przedziału. Czytanie raportu {#w03-raport .unnumbered}
 

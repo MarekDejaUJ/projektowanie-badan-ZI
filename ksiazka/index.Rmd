@@ -30,7 +30,7 @@ Dane w pliku zadania zależą od Twojego ID, więc każda osoba otrzymuje własn
 
 ## Start każdych zajęć {-}
 
-Otwórz RStudio (w sali, w Posit Cloud albo na własnym komputerze) i wpisz w konsoli dwa polecenia. Przy pierwszym ćwiczeniu podaj ID otrzymane od prowadzącego oraz imię i nazwisko; skrypt zapisuje oba w folderze pracy.
+Otwórz RStudio w pracowni (albo na własnym komputerze) i wpisz w konsoli dwa polecenia. Przy pierwszym ćwiczeniu podaj ID otrzymane od prowadzącego oraz imię i nazwisko; skrypt zapisuje oba w folderze pracy.
 
 ```r
 source("https://marekdejauj.github.io/projektowanie-badan-ZI/materialy/start.R")
@@ -43,7 +43,7 @@ Przy kolejnych ćwiczeniach wystarcza numer, np. `pobierz_szablon(2)`. Plik zada
 oddaj_zadanie(1)
 ```
 
-Funkcja `oddaj_zadanie()` zapisuje otwarte pliki, tworzy PDF w nowej sesji R, otwiera go do sprawdzenia i po potwierdzeniu wysyła do folderu ćwiczenia w Nextcloud UJ. Poprawioną wersję oddajesz tym samym poleceniem; nowy plik trafia obok poprzedniego. Instalację w sali, w Posit Cloud i na własnym komputerze opisuje rozdział [Instalacja](#instalacja).
+Funkcja `oddaj_zadanie()` zapisuje otwarte pliki, tworzy PDF w nowej sesji R, otwiera go do sprawdzenia i po potwierdzeniu wysyła do folderu ćwiczenia w Nextcloud UJ. Poprawioną wersję oddajesz tym samym poleceniem; nowy plik trafia obok poprzedniego. Pracę w pracowni i instalację na własnym komputerze opisuje rozdział [Instalacja](#instalacja).
 
 ## Wykłady i źródła {-}
 

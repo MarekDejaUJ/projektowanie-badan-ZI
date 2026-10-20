@@ -47,7 +47,7 @@ Test $\chi^2$ porównuje liczebności obserwowane z liczebnościami oczekiwanymi
 
 ::: {.wzor}
 $$E_{ij} = \frac{R_i \cdot C_j}{N} \qquad \chi^2 = \sum_{i,j}\frac{(O_{ij} - E_{ij})^2}{E_{ij}} \qquad df = (r-1)(c-1) \qquad V = \sqrt{\frac{\chi^2}{N(\min(r,c)-1)}}$$
-$O_{ij}$ i $E_{ij}$ — liczebność obserwowana i oczekiwana w komórce, $R_i$ i $C_j$ — sumy wiersza i kolumny, $N$ — liczba osób, $r$ i $c$ — liczba wierszy i kolumn. *V* Craméra przyjmuje wartości od 0 do 1 [@cramer1946]; dla tabeli 2 × 2 równa się współczynnikowi *w* Cohena, a progi wynoszą 0,1 — mały, 0,3 — średni, 0,5 — duży związek [@cohen1992; @kim2017]. Przybliżenie rozkładem $\chi^2$ jest dobre, gdy liczebności oczekiwane są dostatecznie duże: w tabelach większych niż 2 × 2 częsta reguła wymaga $E_{ij} \geq 5$ w co najmniej 80% komórek i $E_{ij} \geq 1$ we wszystkich [@cochran1954; @kim2017].
+$O_{ij}$ i $E_{ij}$ — liczebność obserwowana i oczekiwana w komórce, $R_i$ i $C_j$ — sumy wiersza i kolumny, $N$ — liczba osób, $r$ i $c$ — liczba wierszy i kolumn. *V* Craméra przyjmuje wartości od 0 do 1 [@cramer1946]; dla tabeli 2 × 2 równa się modułowi współczynnika $\phi$ i współczynnikowi *w* Cohena ($|\phi| = w$), a progi wynoszą 0,1 — mały, 0,3 — średni, 0,5 — duży związek [@cohen1992; @kim2017]. Przybliżenie rozkładem $\chi^2$ jest dobre, gdy liczebności oczekiwane są dostatecznie duże: w tabelach większych niż 2 × 2 częsta reguła wymaga $E_{ij} \geq 5$ w co najmniej 80% komórek i $E_{ij} \geq 1$ we wszystkich [@cochran1954; @kim2017].
 :::
 
 ```{r c07-chi}
@@ -61,7 +61,7 @@ Wszystkie liczebności oczekiwane przekraczają 5 (najmniejsza: `r .zi_pl(min(ch
 
 ## LEARN 3. Różnica proporcji, iloraz ryzyka i iloraz szans {#c07-ryzyko .unnumbered}
 
-*V* Craméra opisuje siłę związku bez kierunku. Kierunek i wielkość praktyczną opisują trzy miary: różnica proporcji $RD = p_1 - p_2$ oraz dwa ilorazy porównujące odsetek powodzeń $p_1$ w pierwszej grupie z odsetkiem $p_2$ w drugiej, iloraz ryzyka *RR* i iloraz szans *OR* [@ranganathan2015]:
+*V* Craméra opisuje siłę związku bez kierunku. Szansa (ang. *odds*) jest ilorazem liczby powodzeń i liczby porażek: 70 powodzeń na 100 osób daje odsetek 0,70 i szansę 70 : 30 ≈ 2,33. Kierunek i wielkość praktyczną opisują trzy miary: różnica proporcji $RD = p_1 - p_2$ oraz dwa ilorazy porównujące odsetek powodzeń $p_1$ w pierwszej grupie z odsetkiem $p_2$ w drugiej, iloraz ryzyka *RR* i iloraz szans *OR* [@ranganathan2015]:
 
 ::: {.wzor}
 $$RD = p_1 - p_2 \qquad\qquad RR = \frac{p_1}{p_2} \qquad\qquad OR = \frac{p_1/(1-p_1)}{p_2/(1-p_2)}$$
@@ -77,7 +77,7 @@ Nowi użytkownicy znajdowali dokument o `r .zi_pl(-100 * mr$wartosc[3], 1)` punk
 
 ## LEARN 4. Tabela r × c, reszty i test Monte Carlo {#c07-reszty .unnumbered}
 
-Tabela status × powodzenie ma cztery wiersze. Reszty standaryzowane (`stdres`) wskazują komórki, w których liczebność obserwowana odbiega od oczekiwanej: w tabeli o niewielu komórkach wyraźne odchylenie oznacza moduł reszty powyżej około 2, a w tabeli o wielu komórkach powyżej około 3 albo powyżej progu z poprawką Bonferroniego [@sharpe2015]. Przy małych liczebnościach oczekiwanych wartość *p* daje test Monte Carlo [@hope1968]: funkcja `chisq.test(simulate.p.value = TRUE)` losuje tabele o tych samych sumach wierszy i kolumn i liczy *p* z rozkładu wylosowanych wartości $\chi^2$ [@rcoreteam2025]; dla tabeli 2 × 2 tę samą rolę pełni dokładny test Fishera (`fisher.test()`) [@kim2017].
+Tabela status × powodzenie ma cztery wiersze. Reszty standaryzowane (`stdres`), czyli różnice między liczebnością obserwowaną a oczekiwaną podzielone przez ich błąd standardowy, wskazują komórki, w których liczebność obserwowana odbiega od oczekiwanej: w tabeli o niewielu komórkach wyraźne odchylenie oznacza moduł reszty powyżej około 2, a w tabeli o wielu komórkach powyżej około 3 albo powyżej progu z poprawką Bonferroniego, która dzieli poziom 0,05 przez liczbę komórek [@sharpe2015]. Przy małych liczebnościach oczekiwanych wartość *p* daje test Monte Carlo [@hope1968]: funkcja `chisq.test(simulate.p.value = TRUE)` losuje tabele o tych samych sumach wierszy i kolumn i liczy *p* z rozkładu wylosowanych wartości $\chi^2$ [@rcoreteam2025]; dla tabeli 2 × 2 tę samą rolę pełni dokładny test Fishera (`fisher.test()`) [@kim2017].
 
 ```{r c07-rc}
 tabela_status <- table(dane$kategoria, dane$powodzenie)
@@ -93,7 +93,7 @@ Odsetek powodzeń w grupach statusu waha się od `r .zi_pl(100 * min(prop.table(
 
 ## LEARN 5. Test McNemara: ta sama osoba dwa razy {#c07-mcnemar .unnumbered}
 
-Powodzenie w pierwszej i drugiej próbie dotyczy tych samych osób, dlatego porównanie wymaga testu dla par pomiarów. Test McNemara porównuje osoby, które zmieniły wynik: $b$ — powodzenie tylko w pierwszej próbie, $c$ — powodzenie tylko w drugiej [@mcnemar1947; @pemburysmith2020]. Funkcja `mcnemar.test()` domyślnie odejmuje 1 od $|b - c|$, czyli stosuje poprawkę na ciągłość [@rcoreteam2025]. Kurs stosuje wersję klasyczną (`correct = FALSE`), którą @pemburysmith2020 dopuszczają do rutynowego użycia: przy małych próbach jej błąd I rodzaju nieznacznie przekracza poziom nominalny (w symulacjach najwyżej 5,37% przy 5%), a wersja z poprawką ma błąd I rodzaju wyraźnie poniżej nominalnego i mniejszą moc. Jako wersję preferowaną @pemburysmith2020 zalecają test mid-P.
+Powodzenie w pierwszej i drugiej próbie dotyczy tych samych osób, dlatego porównanie wymaga testu dla par pomiarów. Test McNemara porównuje osoby, które zmieniły wynik: $b$ — powodzenie tylko w pierwszej próbie, $c$ — powodzenie tylko w drugiej [@mcnemar1947; @pemburysmith2020]. Funkcja `mcnemar.test()` domyślnie odejmuje 1 od $|b - c|$, czyli stosuje poprawkę na ciągłość [@rcoreteam2025]. Kurs stosuje wersję klasyczną (`correct = FALSE`), którą @pemburysmith2020 dopuszczają do rutynowego użycia: przy małych próbach jej błąd I rodzaju nieznacznie przekracza poziom nominalny (w symulacjach najwyżej 5,37% przy 5%), a wersja z poprawką ma błąd I rodzaju wyraźnie poniżej nominalnego i mniejszą moc. Jako wersję preferowaną @pemburysmith2020 zalecają test mid-P, który do wartości *p* wlicza połowę prawdopodobieństwa wyniku obserwowanego zamiast całego.
 
 ::: {.wzor}
 $$\chi^2 = \frac{(b - c)^2}{b + c} \qquad df = 1$$

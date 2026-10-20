@@ -1,7 +1,7 @@
 # W05. Korelacja, regresja i raport ilościowy {#w05 .unnumbered}
 
 ::: {.start}
-**Wykład 5, 03.11.2026.** Ćwiczenia: [C08](#c08) (korelacja i regresja w R), [C10](#c10) (analizy i interpretacja w projekcie). Dane przykładów: scenariusz S02 (katalog biblioteczny), ID `wzor`.
+**Wykład 5, 03.11.2026.** Ćwiczenia: [C08](#c08) (korelacja i regresja w R), [C10](#c10) (analizy i interpretacja w projekcie, po części I projektu z [C09](#c09)). Dane przykładów: scenariusz S02 (katalog biblioteczny), ID `wzor`.
 :::
 
 ::: {.lektura}
@@ -17,6 +17,11 @@ w5_n <- nrow(w5_pary)
 w5_sxy <- cov(w5_pary$indeks, w5_pary$czas)
 w5_sx <- sd(w5_pary$indeks)
 w5_sy <- sd(w5_pary$czas)
+# Przykład iloczynu odchyleń: osoba z indeksem 4,5 i czasem 3 min; udział osób z ujemnym iloczynem.
+w5_mx <- mean(w5_pary$indeks)
+w5_my <- mean(w5_pary$czas)
+w5_il <- (4.5 - w5_mx) * (3 - w5_my)
+w5_ujemne <- mean((w5_pary$indeks - w5_mx) * (w5_pary$czas - w5_my) < 0)
 w5_kt <- cor.test(w5_pary$indeks, w5_pary$czas)
 w5_r <- unname(w5_kt$estimate)
 w5_z <- atanh(w5_r)
@@ -143,7 +148,7 @@ Zbiór S02 łączy oba rodzaje dowodów: indeks deklarowanej użyteczności kata
 
 Obserwacją jest osoba z parą wyników $(x_i, y_i)$: $x$ oznacza indeks użyteczności, a $y$ czas zadania w minutach. Para łączy dwa wyniki jednej osoby w jednym wierszu danych, dlatego braki usuwa się całymi wierszami: w S02 indeks ma `r sum(!is.na(w5_dane$indeks))` ważne wartości, czas `r sum(!is.na(w5_dane$czas))`, a kompletne pary tworzy `r w5_n` osób.
 
-Estymandą korelacji Pearsona jest korelacja liniowa w populacji $\rho_P$, a estymatą współczynnik z próby $r$. Estymandą korelacji Spearmana jest korelacja rang $\rho_S$, estymowana przez $r_S$; wydruk R i ćwiczenie C08 oznaczają współczynnik Spearmana z próby literą $\rho$. Estymandą regresji jest nachylenie $\beta_1$ prostej średniego czasu, wyrażone w minutach na punkt indeksu, a korelacja pozostaje liczbą bez jednostki.
+Estymandą korelacji Pearsona jest korelacja liniowa w populacji $\rho_P$, a estymatą współczynnik z próby $r$. Estymandą korelacji Spearmana jest korelacja rang $\rho_S$, estymowana przez $r_S$; wydruk R oznacza współczynnik Spearmana z próby literą $\rho$ (`rho`), a ćwiczenie C08 zapisuje go jako $r_S$. Estymandą regresji jest nachylenie $\beta_1$ prostej średniego czasu, wyrażone w minutach na punkt indeksu, a korelacja pozostaje liczbą bez jednostki. Litery $b_1$ i $\beta$ mają w W05 znaczenie regresyjne: $b_1$ oznacza nachylenie prostej z próby (w W02 $b_1$ oznacza skośność rozkładu), a $\beta_0$ i $\beta_1$ parametry prostej w populacji (w W03 $\beta$ oznacza prawdopodobieństwo błędu II rodzaju).
 
 | Symbol | Znaczenie |
 |:--|:--|
@@ -159,7 +164,7 @@ Estymandą korelacji Pearsona jest korelacja liniowa w populacji $\rho_P$, a est
 
 ## 3. Wykres przed współczynnikiem {#w05-wykres .unnumbered}
 
-Wykres punktowy przedstawia każdą osobę jako punkt o dwóch współrzędnych. Odczyt obejmuje kierunek związku, jego kształt, rozrzut punktów wokół trendu, skupienia i punkty nietypowe. Kwartet Anscombe’a uzasadnia zasadę „wykres przed współczynnikiem”: cztery zbiory po 11 par mają prawie identyczne średnie, wariancje, prostą regresji i korelację $r$ = `r .zi_pl(w5_r_ans)`, a wykresy czterech zbiorów przedstawiają cztery różne układy punktów [@anscombe1973].
+Wykres punktowy przedstawia każdą osobę jako punkt o dwóch współrzędnych. Odczyt obejmuje kierunek związku, jego kształt, rozrzut punktów wokół trendu, skupienia i punkty nietypowe. Kwartet Anscombe’a uzasadnia zasadę „wykres przed współczynnikiem”: cztery zbiory po 11 par mają prawie identyczne średnie, wariancje, prostą regresji (prosta regresji: część 7) i korelację $r$ = `r .zi_pl(w5_r_ans)`, a wykresy czterech zbiorów przedstawiają cztery różne układy punktów [@anscombe1973].
 
 ```{r w05-anscombe, echo=FALSE, fig.height=2.6, fig.width=7.5, fig.cap=paste0("Kwartet Anscombe’a. Cztery panele po 11 punktów (oś pozioma: x, oś pionowa: y) z tą samą prostą regresji i korelacją r = ", .zi_pl(w5_r_ans), ". Zbiór 1: chmura wokół prostej; zbiór 2: punkty na łuku; zbiór 3: punkty na prostej i jeden punkt wysoko nad nią; zbiór 4: dziesięć punktów w pionowej kolumnie przy x = 8 i jeden punkt przy x = 19.")}
 ggplot(w5_ans, aes(x, y)) +
@@ -187,6 +192,10 @@ $n$ — liczba par, $x_i - \bar{x}$ i $y_i - \bar{y}$ — odchylenia wyników os
 :::
 
 Iloczyn odchyleń jest dodatni, gdy oba wyniki osoby leżą po jednej stronie swoich średnich, i ujemny, gdy leżą po przeciwnych stronach; średnia iloczynów opisuje kierunek współzmienności [@pearson1896]. W S02 kowariancja wynosi $s_{xy}$ = `r .zi_pl(w5_sxy, 3)` punktu · minutę. Jednostka kowariancji zależy od jednostek obu zmiennych: zapis czasu w sekundach zwiększyłby kowariancję 60 razy. Podzielenie przez iloczyn odchyleń standardowych usuwa jednostki: $r$ = `r .zi_pl(w5_sxy, 3)` / (`r .zi_pl(w5_sx, 3)` · `r .zi_pl(w5_sy, 3)`) = `r .zi_pl(w5_r, 3)`.
+
+::: {.przyklad}
+**Przykład S02.** Osoba z indeksem 4,5 i czasem 3 minut ma ocenę wyższą od średniej (`r .zi_pl(w5_mx)`) i czas krótszy od średniego (`r .zi_pl(w5_my)` min): odchylenie oceny wynosi `r .zi_pl(4.5 - w5_mx)` punktu, odchylenie czasu `r .zi_pl(3 - w5_my)` minuty, a ich iloczyn `r .zi_pl(w5_il)` jest ujemny. Osoba z niską oceną i długim czasem leży po przeciwnych stronach obu średnich i również daje iloczyn ujemny; iloczyn dodatni dają osoby z wysoką oceną i długim czasem albo z niską oceną i krótkim czasem. W S02 iloczyn jest ujemny u `r .zi_pl(100 * w5_ujemne, 0)`% osób, dlatego kowariancja i $r$ są ujemne.
+:::
 
 Współczynnik przyjmuje wartości od −1 do 1. Znak podaje kierunek, a wartość bezwzględna siłę związku prostoliniowego; umowne progi wynoszą 0,1 dla małego, 0,3 dla średniego i 0,5 dla dużego związku [@cohen1992; @gosssampson2025, s. 71]. Wynik S02, $r$ = `r .zi_pl(w5_r)`, opisuje średni związek ujemny: wyższej ocenie katalogu towarzyszy przeciętnie krótszy czas. Znak zależy od kierunku skali: miara sprawności, w której wyższa liczba oznacza szybsze działanie, dałaby przy niezmienionym zachowaniu współczynnik dodatni. Rysunek \@ref(fig:w05-galeria) kalibruje odczyt współczynnika: korelacja około −0,3, bliska wynikowi S02, odpowiada szerokiej chmurze z lekkim spadkiem.
 
@@ -269,7 +278,7 @@ $SSE$ — suma kwadratów reszt (błąd modelu), $SST$ — suma kwadratów odchy
 
 $R^2$ porównuje błąd modelu z błędem przewidywania wszystkich osób jedną średnią. W S02 $SSE$ = `r .zi_pl(w5_sse, 1)`, a $SST$ = `r .zi_pl(w5_sst, 1)`, więc $R^2$ = `r .zi_pl(w5_sm$r.squared)`: model przypisuje ocenie `r .zi_pl(100 * w5_sm$r.squared, 0)`% zmienności czasu. W regresji prostej $R^2 = r^2$ [@schneider2010, s. 778; @gosssampson2025, s. 72], a odchylenie standardowe reszt $s_e$ = `r .zi_pl(w5_sm$sigma)` minuty opisuje typową odległość punktu od prostej.
 
-Wykres reszt wobec wartości przewidywanych sprawdza dwa założenia modelu: liniową średnią (reszty bez łuku) i stały rozrzut (reszty bez lejka). W S02 reszty są prawoskośne (skośność `r .zi_pl(w5_skos)`): `r sum(w5_e > 10)` osób ma czas dłuższy od przewidywanego o ponad 10 minut, a najniższa reszta wynosi `r .zi_pl(min(w5_e), 1)` minuty (rysunek \@ref(fig:w05-reszty)). Wykres kwantylowy reszt (rysunek \@ref(fig:w05-qq)) potwierdza długi prawy ogon.
+Wykres reszt wobec wartości przewidywanych sprawdza dwa założenia modelu: liniową średnią (reszty bez łuku) i stały rozrzut (reszty bez lejka). W S02 reszty są prawoskośne (skośność `r .zi_pl(w5_skos)`): `r sum(w5_e > 10)` osób ma czas dłuższy od przewidywanego o ponad 10 minut, a najniższa reszta wynosi `r .zi_pl(min(w5_e), 1)` minuty (rysunek \@ref(fig:w05-reszty)). Wykres kwantyl–kwantyl (Q–Q) reszt (rysunek \@ref(fig:w05-qq)) potwierdza długi prawy ogon.
 
 ```{r w05-reszty, echo=FALSE, fig.height=2.8, fig.cap="Reszty wobec wartości przewidywanych w modelu czasu względem oceny (S02). Oś pozioma: przewidywany czas w minutach; oś pionowa: reszta w minutach; linia przerywana oznacza zero, a pomarańczowa krzywa wygładza reszty. Duże reszty dodatnie, do około 19 minut, występują częściej niż ujemne, a wygładzona krzywa leży blisko zera."}
 ggplot(data.frame(przewidywany = fitted(w5_m), reszta = w5_e), aes(przewidywany, reszta)) +
@@ -279,7 +288,7 @@ ggplot(data.frame(przewidywany = fitted(w5_m), reszta = w5_e), aes(przewidywany,
   labs(x = "Przewidywany czas [min]", y = "Reszta [min]")
 ```
 
-```{r w05-qq, echo=FALSE, fig.height=2.8, fig.cap="Wykres kwantylowy reszt modelu czasu względem oceny (S02). Oś pozioma: kwantyle standardowego rozkładu normalnego; oś pionowa: reszty w minutach; prosta przechodzi przez kwartyle. Środkowe punkty leżą blisko prostej, a najwyższe reszty wznoszą się wyraźnie nad nią: rozkład reszt ma długi prawy ogon."}
+```{r w05-qq, echo=FALSE, fig.height=2.8, fig.cap="Wykres kwantyl–kwantyl (Q–Q) reszt modelu czasu względem oceny (S02). Oś pozioma: kwantyle standardowego rozkładu normalnego; oś pionowa: reszty w minutach; prosta przechodzi przez kwartyle. Środkowe punkty leżą blisko prostej, a najwyższe reszty wznoszą się wyraźnie nad nią: rozkład reszt ma długi prawy ogon."}
 ggplot(data.frame(reszta = w5_e), aes(sample = reszta)) +
   stat_qq(alpha = 0.5, colour = "#0072B2") +
   stat_qq_line(colour = "#D55E00") +
@@ -359,7 +368,7 @@ $$Y_i = \beta_0 + \beta_1 x_i + \beta_2 g_i + \varepsilon_i$$
 $g_i$ — zmienna zero-jedynkowa: 1 dla doświadczonych, 0 dla nowych użytkowników (kategoria odniesienia), $\beta_1$ — różnica średniego czasu przy ocenie wyższej o 1 punkt w obrębie jednej grupy, $\beta_2$ — różnica średniego czasu między grupami przy równej ocenie.
 :::
 
-Regresja wieloraka uwzględnia kilka predyktorów naraz, a zmienną kategorialną koduje względem kategorii odniesienia [@schneider2010, s. 778]. Dodanie grupy zmienia nachylenie oceny z `r .zi_pl(w5_b[2])` do `r .zi_pl(w5_bm[2])` minuty na punkt; doświadczeni użytkownicy pracują przy równej ocenie przeciętnie o `r .zi_pl(-w5_bm[3])` minuty krócej (*p* `r .zi_p(w5_smm$coefficients[3, 4])`), a model wyjaśnia `r .zi_pl(100 * w5_smm$r.squared, 1)`% zmienności czasu. Predyktory słabo się pokrywają: współczynnik inflacji wariancji VIF wynosi `r .zi_pl(w5_vif[1])` [@fox2019]. Niewielka zmiana nachylenia oznacza, że doświadczenie wyjaśnia małą część związku oceny z czasem; model z grupą pozostaje modelem obserwacyjnym.
+Regresja wieloraka uwzględnia kilka predyktorów (zmiennych objaśniających) naraz, a zmienną kategorialną koduje względem kategorii odniesienia [@schneider2010, s. 778]. Dodanie grupy zmienia nachylenie oceny z `r .zi_pl(w5_b[2])` do `r .zi_pl(w5_bm[2])` minuty na punkt; doświadczeni użytkownicy pracują przy równej ocenie przeciętnie o `r .zi_pl(-w5_bm[3])` minuty krócej (*p* `r .zi_p(w5_smm$coefficients[3, 4])`), a model wyjaśnia `r .zi_pl(100 * w5_smm$r.squared, 1)`% zmienności czasu. Predyktory słabo się pokrywają: współczynnik inflacji wariancji VIF, który podaje, ile razy wariancja estymaty nachylenia rośnie wskutek korelacji predyktora z pozostałymi predyktorami (wartość 1 oznacza brak korelacji), wynosi `r .zi_pl(w5_vif[1])` [@fox2019]. Niewielka zmiana nachylenia oznacza, że doświadczenie wyjaśnia małą część związku oceny z czasem; model z grupą pozostaje modelem obserwacyjnym.
 
 ## 12. Od tabeli do argumentu {#w05-argument .unnumbered}
 
@@ -373,9 +382,9 @@ Wybór najmniejszej wartości *p* spośród wielu sprawdzonych korelacji zwięks
 
 Generatywna SI wspiera kontrolę argumentu, jeżeli pracuje na tekście i liczbach autora, a autor sprawdza każdą odpowiedź. Sylabus przedmiotu odsyła do Zarządzenia nr 115 Rektora UJ z 27 listopada 2025 r. [@uj2025]: student oznacza części pracy wygenerowane z użyciem SI, na przykład przypisem, komentarzem albo treścią polecenia (§ 6 pkt 3), a zarządzenie wyklucza powoływanie się na odpowiedzi modeli językowych jako źródło wiedzy naukowej (§ 7 ust. 2). Odpowiedzialność za treść, liczby i źródła ponosi autor pracy (strona startowa książki i część P10 projektu).
 
-Przykład wadliwej interpretacji brzmi: „Ponieważ r = −0,32 i p < 0,001, prawdopodobieństwo braku efektu wynosi mniej niż 0,1%. Ocena katalogu skraca czas zadania o 32%, a większa próba wzmocni efekt”. Zdanie zawiera cztery błędy. Wartość *p* opisuje dane przy założeniu $H_0$ i pozostaje bez związku z prawdopodobieństwem hipotezy [@wasserstein2016]. Korelacja mierzy siłę związku na skali od −1 do 1, a zmianę czasu w minutach opisuje nachylenie. Projekt obserwacyjny opisuje współwystępowanie. Większa próba zwęża przedział, a wielkość efektu pozostaje cechą populacji.
+Przykład wadliwej interpretacji brzmi: „Ponieważ r = `r .zi_pl(w5_r)` i p `r .zi_p(w5_kt$p.value)`, prawdopodobieństwo braku efektu wynosi mniej niż 0,1%. Ocena katalogu skraca czas zadania o `r .zi_pl(abs(100 * w5_r), 0)`%, a większa próba wzmocni efekt”. Zdanie zawiera cztery błędy. Wartość *p* opisuje dane przy założeniu $H_0$ i pozostaje bez związku z prawdopodobieństwem hipotezy [@wasserstein2016]. Korelacja mierzy siłę związku na skali od −1 do 1, a zmianę czasu w minutach opisuje nachylenie. Projekt obserwacyjny opisuje współwystępowanie. Większa próba zwęża przedział, a wielkość efektu pozostaje cechą populacji.
 
-Poprawione brzmienie: „Ocena katalogu i czas zadania korelowały ujemnie, r(224) = −0,32, 95% CI [−0,43; −0,20]; w badaniu obserwacyjnym wynik opisuje współwystępowanie wyższej oceny z krótszym czasem”. Model językowy podaje także nieistniejące publikacje: w badaniu 636 opisów bibliograficznych z krótkich przeglądów literatury zmyślonych było 55% cytowań GPT-3.5 i 18% cytowań GPT-4 [@walters2023]. Każde źródło wskazane przez model sprawdza się w katalogu lub bazie przed użyciem.
+Poprawione brzmienie: „Ocena katalogu i czas zadania korelowały ujemnie, r(`r w5_kt$parameter`) = `r .zi_pl(w5_r)`, 95% CI [`r .zi_pl(w5_kt$conf.int[1])`; `r .zi_pl(w5_kt$conf.int[2])`]; w badaniu obserwacyjnym wynik opisuje współwystępowanie wyższej oceny z krótszym czasem”. Model językowy podaje także nieistniejące publikacje: w badaniu 636 opisów bibliograficznych z krótkich przeglądów literatury zmyślonych było 55% cytowań GPT-3.5 i 18% cytowań GPT-4 [@walters2023]. Każde źródło wskazane przez model sprawdza się w katalogu lub bazie przed użyciem.
 
 ## 14. Rozszerzenia: wykresy wymienione w sylabusie {#w05-rozszerzenia .unnumbered}
 

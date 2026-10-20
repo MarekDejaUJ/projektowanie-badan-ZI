@@ -20,6 +20,13 @@ ch <- chisq.test(tab, correct = FALSE)
 v <- effectsize::cramers_v(tab, adjust = FALSE, alternative = "two.sided")
 mr <- miary_ryzyka(tab)
 proc <- prop.table(tab, 1)
+# Sprawdzenie wniosku pierwszej analizy: test permutacyjny i test Manna–Whitneya (jak w C05).
+set.seed(2026)
+obs10 <- dane |> specify(indeks ~ grupa) |> calculate(stat = "diff in means", order = c("nowi", "doświadczeni"))
+perm10 <- dane |> specify(indeks ~ grupa) |> hypothesize(null = "independence") |>
+  generate(reps = 2000, type = "permute") |> calculate(stat = "diff in means", order = c("nowi", "doświadczeni"))
+pp10 <- get_p_value(perm10, obs_stat = obs10, direction = "two-sided")
+mw10 <- wilcox.test(indeks ~ grupa, data = dane)
 ```
 
 ## LEARN 1. Pierwsza analiza: indeks w dwóch grupach {#c10-analiza1 .unnumbered}
@@ -29,13 +36,24 @@ Pierwsza analiza odpowiada na pytanie o różnicę indeksu. Kolejność raportu 
 ```{r c10-welch}
 t.test(indeks ~ grupa, data = dane)
 effectsize::hedges_g(indeks ~ grupa, data = dane)
+set.seed(2026)
+obserwowana <- dane |>
+  specify(indeks ~ grupa) |>
+  calculate(stat = "diff in means", order = c("nowi", "doświadczeni"))
+permutacje <- dane |>
+  specify(indeks ~ grupa) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 2000, type = "permute") |>
+  calculate(stat = "diff in means", order = c("nowi", "doświadczeni"))
+get_p_value(permutacje, obs_stat = obserwowana, direction = "two-sided")
+wilcox.test(indeks ~ grupa, data = dane)
 ```
 
-W S02 doświadczeni użytkownicy oceniają katalog wyżej o `r .zi_pl(-diff(rev(tw$estimate)))` punktu: *t*(`r .zi_pl(tw$parameter)`) = `r .zi_pl(tw$statistic)`, *p* `r .zi_p(tw$p.value)`, *g* = `r .zi_pl(g$Hedges_g)`. Ujemny znak *t* i *g* wynika z kolejności grup (nowi minus doświadczeni); w tekście podajesz różnicę słowami, z kierunkiem.
+W S02 doświadczeni użytkownicy oceniają katalog wyżej o `r .zi_pl(-diff(rev(tw$estimate)))` punktu: *t*(`r .zi_pl(tw$parameter)`) = `r .zi_pl(tw$statistic)`, *p* `r .zi_p(tw$p.value)`, *g* = `r .zi_pl(g$Hedges_g)`. Ujemny znak *t* i *g* wynika z kolejności grup: estymanda z C09 ma kierunek nowi minus doświadczeni ($\Delta = \mu_N - \mu_D$), więc ujemna estymata `r .zi_pl(diff(rev(tw$estimate)))` punktu oznacza niższą ocenę nowych użytkowników; w tekście podajesz różnicę słowami, z kierunkiem. Sprawdzenie wniosku: test permutacyjny (*B* = 2000) daje *p*~perm~ `r .zi_p(max(pp10$p_value, 1 / 2001))`, a test Manna–Whitneya *W* = `r format(mw10$statistic, big.mark = " ", decimal.mark = ",")`, *p* `r .zi_p(mw10$p.value)`; oba wyniki trafiają do akapitu P6 obok testu Welcha.
 
 ## LEARN 2. Druga analiza {#c10-analiza2 .unnumbered}
 
-Druga analiza zależy od karty scenariusza. Scenariusze z tabelą krzyżową porównują odsetek powodzeń w grupach (C07): procenty w wierszach, test $\chi^2$, *V* Craméra i różnica proporcji. Scenariusze z korelacją Spearmana opisują związek częstości korzystania z indeksem (C08): $\rho$, *p* i wykres. W S02 druga analiza jest tabelą krzyżową:
+Druga analiza zależy od karty scenariusza. Scenariusze z tabelą krzyżową porównują odsetek powodzeń w grupach (C07): procenty w wierszach, test $\chi^2$, *V* Craméra i różnica proporcji. Scenariusze z korelacją Spearmana opisują związek częstości korzystania z indeksem (C08): $r_S$ (w wydruku R: `rho`), *p* i wykres. W S02 druga analiza jest tabelą krzyżową:
 
 ```{r c10-tabela}
 tabela <- table(dane$grupa, dane$powodzenie)
@@ -43,11 +61,11 @@ chisq.test(tabela, correct = FALSE)
 miary_ryzyka(tabela)
 ```
 
-Dokument znalazło `r .zi_pl(100 * proc[1, "tak"], 1)`% nowych i `r .zi_pl(100 * proc[2, "tak"], 1)`% doświadczonych użytkowników: $\chi^2$(1, *N* = `r sum(tab)`) = `r .zi_pl(ch$statistic)`, *p* `r .zi_p(ch$p.value)`, *V* = `r .zi_pl(v$Cramers_v)`, różnica `r .zi_pl(-100 * mr$wartosc[3], 1)` punktu procentowego.
+Dokument znalazło `r .zi_pl(100 * proc[1, "tak"], 1)`% nowych i `r .zi_pl(100 * proc[2, "tak"], 1)`% doświadczonych użytkowników: $\chi^2$(1, *N* = `r sum(tab)`) = `r .zi_pl(ch$statistic)`, *p* `r .zi_p(ch$p.value)`, *V* = `r .zi_pl(v$Cramers_v)`, różnica `r .zi_pl(-100 * mr$wartosc[3], 1)` punktu procentowego na korzyść doświadczonych. W kolejności grup z C09 różnica proporcji wynosi *RD* = $\hat{\pi}_N - \hat{\pi}_D$ = `r .zi_pl(100 * mr$wartosc[3], 1)` punktu procentowego (nowi minus doświadczeni), a zdanie raportu podaje kierunek słowami: nowi znajdują dokument rzadziej.
 
 ## LEARN 3. Od wyników do odpowiedzi {#c10-interpretacja .unnumbered}
 
-Odpowiedź na pytanie badawcze łączy trzy informacje: kierunek i wielkość efektu (w jednostkach zmiennej i jako *g*, *V* lub $\rho$), niepewność (przedział ufności) oraz znaczenie praktyczne dla instytucji [@wilkinson1999]. Wartość *p* opisuje zgodność danych z modelem hipotezy zerowej; wielkość efektu i jej niepewność opisują miara efektu z przedziałem ufności, a znaczenie efektu wymaga interpretacji w kontekście badania [@wasserstein2016]. Obie analizy razem dają pełniejszy obraz niż każda osobno: deklaracja (indeks) i obserwacja (powodzenie) wskazują ten sam kierunek albo różne kierunki, a różny kierunek jest wynikiem wartym opisania.
+Odpowiedź na pytanie badawcze łączy trzy informacje: kierunek i wielkość efektu (w jednostkach zmiennej i jako *g*, *V* lub $r_S$), niepewność (przedział ufności) oraz znaczenie praktyczne dla instytucji [@wilkinson1999]. Wartość *p* opisuje zgodność danych z modelem hipotezy zerowej; wielkość efektu i jej niepewność opisują miara efektu z przedziałem ufności, a znaczenie efektu wymaga interpretacji w kontekście badania [@wasserstein2016]. Obie analizy razem dają pełniejszy obraz niż każda osobno: deklaracja (indeks) i obserwacja (powodzenie) wskazują ten sam kierunek albo różne kierunki, a różny kierunek jest wynikiem wartym opisania.
 
 ::: {.apa}
 **Wzorzec P8 (S02).** Doświadczeni użytkownicy oceniają katalog wyżej niż nowi, ale różnica jest mała (`r .zi_pl(-diff(rev(tw$estimate)))` punktu na skali 1–5; *g* = `r .zi_pl(abs(g$Hedges_g))`, 95% CI różnicy [`r .zi_pl(-tw$conf.int[2])`; `r .zi_pl(-tw$conf.int[1])`]). Wyraźniejsza jest różnica wykonania: nowi znajdują dokument o `r .zi_pl(-100 * mr$wartosc[3], 1)` punktu procentowego rzadziej. Dla biblioteki ważniejsza jest więc pomoc w samym wyszukiwaniu niż poprawa opinii o katalogu: wsparcie przy pierwszych wyszukiwaniach ma uzasadnienie w wynikach obu analiz.

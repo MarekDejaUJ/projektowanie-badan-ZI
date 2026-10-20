@@ -17,6 +17,8 @@ tw <- t.test(czas ~ grupa, data = dane)
 g <- effectsize::hedges_g(czas ~ grupa, data = dane)
 mw <- wilcox.test(czas ~ grupa, data = dane)
 rb <- effectsize::rank_biserial(czas ~ grupa, data = dane)
+n_gr <- table(dane$grupa[!is.na(dane$czas)])
+theta <- unname(mw$statistic) / (n_gr[["nowi"]] * n_gr[["doświadczeni"]])
 set.seed(2026)
 obs <- dane |> specify(czas ~ grupa) |> calculate(stat = "diff in means", order = c("nowi", "doświadczeni"))
 perm <- dane |> specify(czas ~ grupa) |> hypothesize(null = "independence") |>
@@ -48,11 +50,11 @@ Nowi użytkownicy wykonywali zadanie średnio `r .zi_pl(og$M[1])` min, a doświa
 
 ## LEARN 2. Test Welcha {#c05-welch .unnumbered}
 
-Test *t* Welcha porównuje średnie dwóch niezależnych grup bez założenia równych wariancji [@welch1947], dlatego jest domyślnym wyborem dla dwóch grup [@delacre2017]. Hipoteza zerowa $H_0$: $\mu_1 = \mu_2$ mówi, że w populacji obie grupy mają tę samą średnią.
+Test *t* Welcha porównuje średnie dwóch niezależnych grup bez założenia równych wariancji [@welch1947], dlatego jest domyślnym wyborem dla dwóch grup [@delacre2017]. Hipoteza zerowa $H_0$: $\mu_N = \mu_D$ mówi, że w populacji nowi (N) i doświadczeni (D) użytkownicy mają tę samą średnią.
 
 ::: {.wzor}
-$$t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}} \qquad\qquad df = \frac{\left(\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}\right)^2}{\dfrac{(s_1^2/n_1)^2}{n_1 - 1} + \dfrac{(s_2^2/n_2)^2}{n_2 - 1}}$$
-$\bar{x}_1, \bar{x}_2$ — średnie grup, $s_1, s_2$ — odchylenia standardowe, $n_1, n_2$ — liczebności. Stopnie swobody Welcha są zwykle liczbą ułamkową [@delacre2017].
+$$t_W = \frac{\bar{x}_N - \bar{x}_D}{\sqrt{\dfrac{s_N^2}{n_N} + \dfrac{s_D^2}{n_D}}} \qquad\qquad \nu = \frac{\left(\dfrac{s_N^2}{n_N} + \dfrac{s_D^2}{n_D}\right)^2}{\dfrac{(s_N^2/n_N)^2}{n_N - 1} + \dfrac{(s_D^2/n_D)^2}{n_D - 1}}$$
+$\bar{x}_N, \bar{x}_D$ — średnie grup, $s_N, s_D$ — odchylenia standardowe, $n_N, n_D$ — liczebności, $\nu$ — stopnie swobody Welcha (w wydruku R: `df`), zwykle liczba ułamkowa [@delacre2017]. Oznaczenia są zgodne z wykładem W04 (część 2).
 :::
 
 ```{r c05-welch}
@@ -66,7 +68,7 @@ R odejmuje średnie w kolejności poziomów zmiennej `grupa`: nowi minus doświa
 Wielkość efektu wyraża różnicę średnich w odchyleniach standardowych, więc pozwala porównać wyniki mierzone w różnych jednostkach; *g* Hedgesa poprawia *d* Cohena o obciążenie w małych próbach [@hedges1981; @lakens2013].
 
 ::: {.wzor}
-$$s_p = \sqrt{\frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}} \qquad\qquad g = \frac{\bar{x}_1 - \bar{x}_2}{s_p}\left(1 - \frac{3}{4(n_1 + n_2) - 9}\right)$$
+$$s_p = \sqrt{\frac{(n_N - 1)s_N^2 + (n_D - 1)s_D^2}{n_N + n_D - 2}} \qquad\qquad g = \frac{\bar{x}_N - \bar{x}_D}{s_p}\left(1 - \frac{3}{4(n_N + n_D) - 9}\right)$$
 $s_p$ — wspólne odchylenie standardowe, nawias — poprawka na wielkość próby [@lakens2013]. Progi jak dla *d*: 0,2 — mały, 0,5 — średni, 0,8 — duży efekt [@cohen1992].
 :::
 
@@ -78,7 +80,7 @@ Różnica czasu wynosi *g* = `r .zi_pl(g$Hedges_g)` [`r .zi_pl(g$CI_low)`; `r .z
 
 ## LEARN 4. Test permutacyjny i test Manna–Whitneya {#c05-permutacja .unnumbered}
 
-Przy prawdziwej $H_0$ przynależność do grupy jest niezależna od czasu, więc etykiety „nowi” i „doświadczeni” można losowo zamienić bez zmiany rozkładu wyników. Test permutacyjny tasuje etykiety 2000 razy, za każdym razem liczy różnicę średnich i sprawdza, jak często losowa różnica jest co najmniej tak duża jak obserwowana [@winkler2014]. Test Manna–Whitneya porównuje rangi wyników dwóch grup [@mann1947] i sprawdza, czy wynik losowej osoby z jednej grupy jest równie często wyższy, jak niższy od wyniku losowej osoby z drugiej grupy [@fagerland2012]. Rangi zależą wyłącznie od kolejności wyników, więc wielkość wartości odległej pozostaje bez wpływu na test. Miarą efektu testu Manna–Whitneya jest korelacja rangowo-dwuseryjna *r*~rb~: różnica odsetka par, w których wynik pierwszej grupy jest wyższy, i odsetka par, w których jest niższy [@kerby2014]. Umowne progi jak dla korelacji: 0,1 — mały, 0,3 — średni, 0,5 — duży efekt [@cohen1992].
+Przy prawdziwej $H_0$ przynależność do grupy jest niezależna od czasu, więc etykiety „nowi” i „doświadczeni” można losowo zamienić bez zmiany rozkładu wyników. Test permutacyjny tasuje etykiety 2000 razy, za każdym razem liczy różnicę średnich i sprawdza, jak często losowa różnica jest co najmniej tak duża jak obserwowana [@winkler2014]. Funkcja `get_p_value()` z pakietu infer podaje udział losowań co najmniej tak skrajnych jak wynik obserwowany bez poprawki $+1$ ze wzoru $(k + 1)/(B + 1)$ z C04 i W04; wynik 0 oznacza, że żadne z 2000 losowań nie dało różnicy co najmniej tak dużej jak obserwowana, i odczytuje się go jako *p* < 1/(*B* + 1), czyli *p* < 0,001. Tasowanie surowej różnicy średnich zakłada podobny rozrzut w obu grupach; przy wyraźnie różnych wariancjach grup permutuje się statystykę Welcha $t_W$, która zachowuje poziom testu w przybliżeniu [@winkler2014] (W04, część 4). Test Manna–Whitneya porównuje rangi wyników dwóch grup [@mann1947] i sprawdza, czy wynik losowej osoby z jednej grupy jest równie często wyższy, jak niższy od wyniku losowej osoby z drugiej grupy [@fagerland2012]. Rangi zależą wyłącznie od kolejności wyników, więc wielkość wartości odległej pozostaje bez wpływu na test. Miarą efektu testu Manna–Whitneya jest korelacja rangowo-dwuseryjna *r*~rb~: różnica odsetka par, w których wynik pierwszej grupy jest wyższy, i odsetka par, w których jest niższy [@kerby2014]. Umowne progi jak dla korelacji: 0,1 — mały, 0,3 — średni, 0,5 — duży efekt [@cohen1992]. Statystyka *W* z wydruku R jest statystyką $U$ Manna–Whitneya; podzielona przez liczbę par nowy–doświadczony daje $\hat\theta = W/(n_N n_D)$, odsetek par, w których nowy użytkownik pracował dłużej (remis liczony w połowie), a $r_{rb} = 2\hat\theta - 1$ (W04, część 6).
 
 ```{r c05-perm, fig.height=2.8}
 set.seed(2026)
@@ -97,11 +99,11 @@ wilcox.test(czas ~ grupa, data = dane)
 effectsize::rank_biserial(czas ~ grupa, data = dane)
 ```
 
-Środkowe 95% różnic po przetasowaniu grup leży między `r .zi_pl(quantile(perm$stat, 0.025))` a `r .zi_pl(quantile(perm$stat, 0.975))` min, a obserwowana różnica `r .zi_pl(obs$stat)` min (czerwona linia) wypada w ogonie rozkładu: *p*~perm~ = `r .zi_pl(pp$p_value, 3)`. Test Manna–Whitneya daje *W* = `r format(mw$statistic, big.mark = " ")`, *p* `r .zi_p(mw$p.value)`, *r*~rb~ = `r .zi_pl(rb$r_rank_biserial)`. Trzy testy prowadzą do tego samego wniosku, więc wniosek jest odporny na odstępstwa od normalności.
+Środkowe 95% różnic po przetasowaniu grup leży między `r .zi_pl(quantile(perm$stat, 0.025))` a `r .zi_pl(quantile(perm$stat, 0.975))` min, a obserwowana różnica `r .zi_pl(obs$stat)` min (czerwona linia) wypada w ogonie rozkładu: *p*~perm~ = `r .zi_pl(pp$p_value, 3)`. Test Manna–Whitneya daje *W* = `r format(mw$statistic, big.mark = " ", decimal.mark = ",")`, *p* `r .zi_p(mw$p.value)`; $\hat\theta$ = `r .zi_pl(theta)`, czyli w `r .zi_pl(100 * theta, 0)`% par nowy użytkownik pracował dłużej, a *r*~rb~ = `r .zi_pl(rb$r_rank_biserial)`. Trzy testy prowadzą do tego samego wniosku, więc wniosek jest odporny na odstępstwa od normalności.
 
 ## LEARN 5. Pomiar powtórzony: te same osoby dwa razy {#c05-pary .unnumbered}
 
-Po pierwszej próbie każdy uczestnik przeczytał krótką instrukcję i wykonał drugie, podobne zadanie. Dwa pomiary tej samej osoby są zależne, dlatego analiza dotyczy różnicy $d_i$ = czas przed − czas po u każdej osoby; wielkością efektu jest *d*~z~, średnia różnica w odchyleniach standardowych różnic [@lakens2013]. Rangowym odpowiednikiem testu *t* dla par jest test Wilcoxona [@wilcoxon1945].
+Po pierwszej próbie każdy uczestnik przeczytał krótką instrukcję i wykonał drugie, podobne zadanie. Dwa pomiary tej samej osoby są zależne, dlatego analiza dotyczy różnicy $d_i$ = czas przed − czas po u każdej osoby; wielkością efektu jest *d*~z~, średnia różnica w odchyleniach standardowych różnic [@lakens2013]. Rangowym odpowiednikiem testu *t* dla par jest test rang znakowanych Wilcoxona, nazywany też testem Wilcoxona dla par [@wilcoxon1945].
 
 ::: {.wzor}
 $$t = \frac{\bar{d}}{s_d / \sqrt{n}} \qquad df = n - 1 \qquad\qquad d_z = \frac{\bar{d}}{s_d}$$
@@ -119,7 +121,7 @@ ggplot(pary, aes(x = czas - czas_po)) +
   labs(x = "Różnica: czas pierwszej minus czas drugiej próby [min]", y = "Liczba osób")
 ```
 
-Druga próba trwała średnio o `r .zi_pl(tp$estimate)` min krócej: *t*(`r tp$parameter`) = `r .zi_pl(tp$statistic)`, *p* `r .zi_p(tp$p.value)`, *d*~z~ = `r .zi_pl(dz$Cohens_d)`, 95% CI [`r .zi_pl(tp$conf.int[1])`; `r .zi_pl(tp$conf.int[2])`]; test Wilcoxona dla par potwierdza wynik (*p* `r .zi_p(wp$p.value)`). Skrócenie czasu ma dwa możliwe źródła: instrukcję i wprawę z pierwszej próby. Rozdzielenie obu źródeł wymaga grupy porównawczej, która wykonuje drugą próbę bez instrukcji.
+Druga próba trwała średnio o `r .zi_pl(tp$estimate)` min krócej: *t*(`r tp$parameter`) = `r .zi_pl(tp$statistic)`, *p* `r .zi_p(tp$p.value)`, *d*~z~ = `r .zi_pl(dz$Cohens_d)`, 95% CI [`r .zi_pl(tp$conf.int[1])`; `r .zi_pl(tp$conf.int[2])`]; test rang znakowanych Wilcoxona potwierdza wynik (*p* `r .zi_p(wp$p.value)`). Skrócenie czasu ma dwa możliwe źródła: instrukcję i wprawę z pierwszej próby. Rozdzielenie obu źródeł wymaga grupy porównawczej, która wykonuje drugą próbę bez instrukcji.
 
 ## Wzorce zapisu {#c05-apa .unnumbered}
 

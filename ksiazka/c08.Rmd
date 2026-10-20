@@ -50,7 +50,7 @@ Współczynnik Pearsona mierzy siłę związku prostoliniowego dwóch zmiennych 
 
 ::: {.wzor}
 $$r = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{(n-1)\,s_x s_y} \qquad\qquad t = \frac{r\sqrt{n-2}}{\sqrt{1-r^2}} \quad df = n - 2$$
-$r$ od −1 do 1: znak podaje kierunek, wartość bezwzględna siłę (umowne progi: 0,1 — mały, 0,3 — średni, 0,5 — duży związek [@cohen1992]). $\rho$ (rho) Spearmana ma tę samą skalę. $r^2$ to odsetek wspólnej zmienności.
+$r$ od −1 do 1: znak podaje kierunek, wartość bezwzględna siłę (umowne progi: 0,1 — mały, 0,3 — średni, 0,5 — duży związek [@cohen1992]). $r_S$ Spearmana z próby (w wydruku R: `rho`) ma skalę od −1 do 1 jak $r$, a $\rho_S$ oznacza korelację rang w populacji. $r^2$ to odsetek wspólnej zmienności.
 :::
 
 ```{r c08-cor}
@@ -58,7 +58,7 @@ cor.test(dane$indeks, dane$czas)
 cor.test(dane$czestosc, dane$indeks, method = "spearman", exact = FALSE)
 ```
 
-Ocena katalogu i czas zadania są umiarkowanie, ujemnie skorelowane: *r*(`r kp$parameter`) = `r .zi_pl(kp$estimate)`, *p* `r .zi_p(kp$p.value)`, 95% CI [`r .zi_pl(kp$conf.int[1])`; `r .zi_pl(kp$conf.int[2])`]; ocena i czas mają `r .zi_pl(100 * kp$estimate^2, 0)`% wspólnej zmienności. Częstość korzystania wiąże się z oceną słabo i dodatnio: $\rho$ = `r .zi_pl(ks$estimate)`, *p* `r .zi_p(ks$p.value)`. Korelacja opisuje współwystępowanie: wynik zgadza się zarówno z wpływem oceny na czas, jak i z wpływem trudności zadania na ocenę oraz ze wspólną przyczyną obu zmiennych [@rohrer2018].
+Ocena katalogu i czas zadania są skorelowane ujemnie, a siła związku jest średnia (umiarkowana): *r*(`r kp$parameter`) = `r .zi_pl(kp$estimate)`, *p* `r .zi_p(kp$p.value)`, 95% CI [`r .zi_pl(kp$conf.int[1])`; `r .zi_pl(kp$conf.int[2])`]; ocena i czas mają `r .zi_pl(100 * kp$estimate^2, 0)`% wspólnej zmienności. Częstość korzystania wiąże się z oceną słabo i dodatnio: $r_S$ = `r .zi_pl(ks$estimate)` (w wydruku R: `rho`), *p* `r .zi_p(ks$p.value)`. Korelacja opisuje współwystępowanie: wynik zgadza się zarówno z wpływem oceny na czas, jak i z wpływem trudności zadania na ocenę oraz ze wspólną przyczyną obu zmiennych [@rohrer2018].
 
 ## LEARN 3. Permutacja i bootstrap dla korelacji {#c08-losowanie .unnumbered}
 
@@ -86,7 +86,7 @@ Po przetasowaniu korelacje leżą między około `r .zi_pl(quantile(r_perm$stat,
 
 ## LEARN 4. Regresja liniowa {#c08-regresja .unnumbered}
 
-Regresja opisuje, jak zmienia się przeciętna wartość zmiennej zależnej przy zmianie zmiennej objaśniającej o jedną jednostkę [@altman2015]. W odróżnieniu od korelacji ma kierunek (czas wyjaśniany oceną) i jednostki.
+Regresja opisuje, jak zmienia się przeciętna wartość zmiennej zależnej przy zmianie zmiennej objaśniającej (predyktora) o jedną jednostkę [@altman2015]. W odróżnieniu od korelacji ma kierunek (czas wyjaśniany oceną) i jednostki.
 
 ::: {.wzor}
 $$\hat{y} = b_0 + b_1 x \qquad\qquad R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}$$
@@ -121,7 +121,7 @@ Reszty są rozłożone nierówno: duże dodatnie reszty (czasy dłuższe niż pr
 ## Wzorce zapisu {#c08-apa .unnumbered}
 
 ::: {.apa}
-**Korelacja.** Ocena użyteczności katalogu była umiarkowanie, ujemnie skorelowana z czasem zadania, *r*(`r kp$parameter`) = `r .zi_pl(kp$estimate)`, *p* `r .zi_p(kp$p.value)`, 95% CI [`r .zi_pl(kp$conf.int[1])`; `r .zi_pl(kp$conf.int[2])`]; test permutacyjny (*B* = 2000) i przedział bootstrapowy [`r .zi_pl(ci_r$lower_ci)`; `r .zi_pl(ci_r$upper_ci)`] potwierdziły wynik. Częstość korzystania słabo wiązała się z oceną, $\rho$ = `r .zi_pl(ks$estimate)`, *p* `r .zi_p(ks$p.value)`.
+**Korelacja.** Ocena użyteczności katalogu była ujemnie skorelowana z czasem zadania ze średnią siłą (umiarkowanie), *r*(`r kp$parameter`) = `r .zi_pl(kp$estimate)`, *p* `r .zi_p(kp$p.value)`, 95% CI [`r .zi_pl(kp$conf.int[1])`; `r .zi_pl(kp$conf.int[2])`]; test permutacyjny (*B* = 2000) i przedział bootstrapowy [`r .zi_pl(ci_r$lower_ci)`; `r .zi_pl(ci_r$upper_ci)`] potwierdziły wynik. Częstość korzystania słabo wiązała się z oceną, *r*~S~ = `r .zi_pl(ks$estimate)`, *p* `r .zi_p(ks$p.value)`.
 
 **Regresja.** Ocena katalogu przewidywała czas zadania, *b* = `r .zi_pl(b[2])` min na punkt oceny, 95% CI [`r .zi_pl(ci_b[2, 1])`; `r .zi_pl(ci_b[2, 2])`], *t*(`r sm$df[2]`) = `r .zi_pl(sm$coefficients[2, 3])`, *p* `r .zi_p(sm$coefficients[2, 4])`, *R*^2^ = `r .zi_pl(sm$r.squared)`.
 

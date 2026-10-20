@@ -140,7 +140,7 @@ Odchylenie standardowe czasu wynosi `r .zi_pl(w2_sd)` min, a rozstęp międzykwa
 
 ### Odchylenie standardowe opisuje osoby, błąd standardowy opisuje średnią {#w02-sd-se .unnumbered}
 
-Odchylenie standardowe opisuje zmienność wyników między osobami, a błąd standardowy precyzję średniej z próby; obie wielkości łączy wzór $SE = SD/\sqrt{n}$ [@altman2005]. Rysunek \@ref(fig:w02-sd-se) liczy obie wielkości dla pierwszych $n$ osób zbioru S02 z ważnym czasem.
+Odchylenie standardowe opisuje zmienność wyników między osobami, a błąd standardowy precyzję średniej z próby; obie wielkości łączy wzór $SE = s/\sqrt{n}$ [@altman2005]. Rysunek \@ref(fig:w02-sd-se) liczy obie wielkości dla pierwszych $n$ osób zbioru S02 z ważnym czasem.
 
 ```{r w02-sd-se, echo=FALSE, fig.height=3.2, fig.cap=sprintf("Odchylenie standardowe (SD) i błąd standardowy średniej (SE) czasu zadania dla pierwszych n osób S02. Oś pozioma: liczba osób n w skali logarytmicznej (od 5 do %d); oś pionowa: minuty. Linia ciągła SD waha się wokół %s min, a linia przerywana SE maleje od %s min przy n = 5 do %s min przy n = %d.", w2_n, .zi_pl(w2_sd, 1), .zi_pl(w2_sdse$SE[1]), .zi_pl(w2_sdse$SE[nrow(w2_sdse)]), w2_n)}
 w2_dl <- rbind(data.frame(n = w2_sdse$n, wartosc = w2_sdse$SD, miara = "SD osób"),
@@ -156,7 +156,13 @@ Odchylenie standardowe pozostaje między `r .zi_pl(min(w2_sdse$SD), 1)` a `r .zi
 
 ## 5. Kształt rozkładu: skośność i kurtoza {#w02-ksztalt .unnumbered}
 
-Czas przyjmuje wartości dodatnie, a nieliczne trudne próby trwają bardzo długo, więc rozkład czasu ma zwykle długi prawy ogon. Kształt opisują dwie miary: skośność (kierunek i siła asymetrii) i kurtoza (udział wyników skrajnych w porównaniu z rozkładem normalnym). Funkcja `describe()` z pakietu psych liczy obie miary wzorami typu 3 z zestawienia @joanes1998 [@revelle2026].
+Czas przyjmuje wartości dodatnie, a nieliczne trudne próby trwają bardzo długo, więc rozkład czasu ma zwykle długi prawy ogon. Punktem odniesienia dla kształtu jest rozkład normalny: symetryczna krzywa dzwonowa, w której około `r .zi_pl(100 * (pnorm(1) - pnorm(-1)), 0)`% wyników leży w odległości jednego odchylenia standardowego od średniej, a około `r .zi_pl(100 * (pnorm(2) - pnorm(-2)), 0)`% w odległości dwóch odchyleń; wzór gęstości i standaryzację podaje wykład [W03](#w03-prawdopodobienstwo).
+
+::: {.przyklad}
+**Przykład S02.** Gdyby czas zadania miał rozkład normalny ze średnią `r .zi_pl(w2_m)` min i odchyleniem standardowym `r .zi_pl(w2_sd)` min, około 95% osób kończyłoby zadanie między `r .zi_pl(w2_m - 2 * w2_sd)` a `r .zi_pl(w2_m + 2 * w2_sd)` min. Dolna granica wypada `r if (w2_m - 2 * w2_sd < 0) "poniżej zera, a czas ujemny jest niemożliwy, więc sama rachuba sygnalizuje inny kształt rozkładu: wyniki skupiają się przy dolnym końcu, a prawy ogon jest długi" else "blisko zera, co sygnalizuje skupienie wyników przy dolnym końcu i długi prawy ogon"`.
+:::
+
+Kształt opisują dwie miary: skośność (kierunek i siła asymetrii) i kurtoza (udział wyników skrajnych w porównaniu z rozkładem normalnym). Funkcja `describe()` z pakietu psych liczy obie miary wzorami typu 3 z zestawienia @joanes1998 [@revelle2026].
 
 ::: {.wzor}
 $$b_1 = \frac{1}{n}\sum_{i=1}^{n}\left(\frac{x_i - \bar{x}}{s}\right)^3 \qquad\qquad b_2 = \frac{1}{n}\sum_{i=1}^{n}\left(\frac{x_i - \bar{x}}{s}\right)^4 - 3$$
@@ -171,12 +177,12 @@ Test *t* i analiza wariancji zakładają normalny rozkład wyników w populacji,
 
 ::: {.wzor}
 $$W = \frac{\left(\sum_{i=1}^{n} a_i\, x_{(i)}\right)^2}{\sum_{i=1}^{n}(x_i - \bar{x})^2}$$
-$x_{(i)}$ — $i$-ty wynik po uporządkowaniu od najmniejszego $x_{(1)}$ do największego $x_{(n)}$; $a_i$ — waga $i$-tego miejsca, wyznaczona z wartości oczekiwanej na miejscu $i$ w uporządkowanej próbie z rozkładu normalnego (ujemna dla najmniejszych wyników, dodatnia dla największych); $\bar{x}$ — średnia. $W$ ma wartość najwyżej 1; $W$ bliskie 1 — uporządkowane wyniki rosną tak jak w rozkładzie normalnym; mniejsze $W$ — silniejsze odchylenie od rozkładu normalnego.
+$x_{(i)}$ — $i$-ty wynik po uporządkowaniu od najmniejszego $x_{(1)}$ do największego $x_{(n)}$; $a_i$ — waga $i$-tego miejsca, wyznaczona z przeciętnej wartości, jaka przypada na miejsce $i$ w uporządkowanej próbie z rozkładu normalnego (ujemna dla najmniejszych wyników, dodatnia dla największych); $\bar{x}$ — średnia. $W$ ma wartość najwyżej 1; $W$ bliskie 1 — uporządkowane wyniki rosną tak jak w rozkładzie normalnym; mniejsze $W$ — silniejsze odchylenie od rozkładu normalnego.
 :::
 
-Prostym językiem: licznik mierzy rozrzut wyników tak, jakby pochodziły z rozkładu normalnego, a mianownik mierzy rozrzut bez żadnego założenia o kształcie. Przy rozkładzie normalnym oba pomiary dają prawie równe liczby i iloraz $W$ zbliża się do 1; długi ogon albo skupienie wyników przy jednym końcu skali rozsuwa oba pomiary i obniża $W$. Mała wartość *p* oznacza, że tak niskie $W$ rzadko pojawia się w próbach z rozkładu normalnego, więc test odrzuca hipotezę normalności. Wagi $a_i$ i wartość *p* liczy funkcja `shapiro.test()` dla prób od 3 do 5000 obserwacji [@rcoreteam2025].
+Licznik mierzy rozrzut wyników tak, jakby pochodziły z rozkładu normalnego, a mianownik mierzy rozrzut bez żadnego założenia o kształcie. Przy rozkładzie normalnym oba pomiary dają prawie równe liczby i iloraz $W$ zbliża się do 1; długi ogon albo skupienie wyników przy jednym końcu skali rozsuwa oba pomiary i obniża $W$. Mała wartość *p* oznacza, że tak niskie $W$ rzadko pojawia się w próbach z rozkładu normalnego, więc test odrzuca hipotezę normalności. Wagi $a_i$ i wartość *p* liczy funkcja `shapiro.test()` dla prób od 3 do 5000 obserwacji [@rcoreteam2025].
 
-Czas zadania ma $W$ = `r .zi_pl(w2_sw$statistic, 3)` (*p* `r .zi_p(w2_sw$p.value)`), więc test odrzuca normalność rozkładu czasu, zgodnie ze skośnością $b_1$ = `r .zi_pl(w2_opis["czas", "skew"])`. Logarytm czasu ma $W$ = `r .zi_pl(w2_sw_log$statistic, 3)` (*p* `r .zi_p(w2_sw_log$p.value)`), więc wynik dla logarytmu jest zgodny z hipotezą normalności. Przy kilkuset obserwacjach test wykrywa nawet niewielkie odchylenia od normalności [@ghasemi2012], więc wynik testu czyta się razem z wykresem kwantyl–kwantyl z ćwiczenia [C02](#c02-normalnosc).
+Czas zadania ma $W$ = `r .zi_pl(w2_sw$statistic, 3)` (*p* `r .zi_p(w2_sw$p.value)`), więc test odrzuca normalność rozkładu czasu, zgodnie ze skośnością $b_1$ = `r .zi_pl(w2_opis["czas", "skew"])`. Logarytm czasu ma $W$ = `r .zi_pl(w2_sw_log$statistic, 3)` (*p* `r .zi_p(w2_sw_log$p.value)`), więc wynik dla logarytmu jest zgodny z hipotezą normalności. Przy kilkuset obserwacjach test wykrywa nawet niewielkie odchylenia od normalności [@ghasemi2012], więc wynik testu czyta się razem z wykresem kwantyl–kwantyl: punkty blisko prostej oznaczają zgodność z rozkładem normalnym, a punkty nad prostą na prawym końcu dłuższy prawy ogon. Ćwiczenie [C02](#c02-normalnosc) rysuje wykres i liczy test osobno w każdej grupie, bo porównanie grup w [C05](#c05) dotyczy rozkładu czasu w każdej grupie.
 
 ## 6. Wykres odpowiada na pytanie {#w02-wykresy .unnumbered}
 

@@ -35,6 +35,10 @@ w4_perm <- replicate(w4_B, w4_stat(w4_x$czas, sample(w4_x$grupa)))
 w4_p_perm <- (rowSums(abs(w4_perm) >= abs(w4_obs)) + 1) / (w4_B + 1)
 w4_n <- table(w4_x$grupa)
 w4_cyfry <- floor(lchoose(sum(w4_n), w4_n[["nowi"]]) / log(10)) + 1
+# Przykład czterech osób: dwie pierwsze nowe i dwie pierwsze doświadczone z czasem; wszystkie 6 podziałów na pary.
+w4_cztery <- c(head(w4_x$czas[w4_x$grupa == "nowi"], 2), head(w4_x$czas[w4_x$grupa == "doświadczeni"], 2))
+w4_podzialy <- combn(4, 2, function(i) mean(w4_cztery[i]) - mean(w4_cztery[-i]))
+w4_skrajne4 <- sum(abs(w4_podzialy) >= abs(w4_podzialy[1]))
 
 # Pary pomiarów: pierwsza i druga próba tych samych osób.
 w4_pary <- w4_dane[!is.na(w4_dane$czas) & !is.na(w4_dane$czas_po), ]
@@ -86,6 +90,9 @@ w4_v <- sqrt(unname(w4_ch$statistic) / sum(w4_t2))
 w4_mr <- miary_ryzyka(w4_t2)
 w4_proc <- 100 * prop.table(w4_t2, 1)
 w4_razem_tak <- sum(w4_t2[, "tak"])
+# Szansa powodzenia w każdej grupie: liczba powodzeń do liczby porażek; iloraz obu szans to OR.
+w4_sz_n <- w4_t2["nowi", "tak"] / w4_t2["nowi", "nie"]
+w4_sz_d <- w4_t2["doświadczeni", "tak"] / w4_t2["doświadczeni", "nie"]
 
 # Tabela 4 × 2 (status i powodzenie) oraz pary wyników 0/1 (test McNemara).
 w4_t3 <- table(w4_dane$kategoria, w4_dane$powodzenie)
@@ -106,7 +113,7 @@ Table: (\#tab:w04-projekty) Struktura danych i porównywana wielkość w pięciu
 
 | Pytanie biblioteki | Jednostka i powiązanie pomiarów | Porównywana wielkość (estymanda) | Ćwiczenie |
 |:--|:--|:--|:--|
-| Czy nowi pracują dłużej niż doświadczeni? | różne osoby w dwóch grupach | różnica średnich czasu $\mu_N - \mu_D$ albo przewaga w porządku wyników $\theta$ | C05 |
+| Czy nowi pracują dłużej niż doświadczeni? | różne osoby w dwóch grupach | różnica średnich czasu $\mu_N - \mu_D$ albo przewaga w porządku wyników $\theta$ (część 6) | C05 |
 | Czy druga próba po instrukcji trwa krócej? | jedna osoba zmierzona dwa razy | średnia różnica par | C05 |
 | Czy czas różni się między czterema grupami statusu? | różne osoby w czterech grupach | zróżnicowanie średnich grup | C06 |
 | Czy powodzenie zależy od doświadczenia? | jeden wynik kategorialny na osobę | różnica odsetków powodzeń $\pi_N - \pi_D$ | C07 |
@@ -170,9 +177,13 @@ Umowne progi Cohena (0,2 — efekt mały, 0,5 — średni, 0,8 — duży) są ar
 
 ## 4. Test permutacyjny: wymienialność etykiet {#w04-permutacja .unnumbered}
 
-Test permutacyjny buduje rozkład odniesienia z samych danych. Przy prawdziwej $H_0$ obserwacje są wymienialne: przestawienie etykiet grup zachowuje ich łączny rozkład, więc każdy podział `r sum(w4_n)` czasów na grupy liczące `r w4_n[["nowi"]]` i `r w4_n[["doświadczeni"]]` osób jest równie prawdopodobny [@winkler2014]. Liczba możliwych podziałów, $\binom{`r sum(w4_n)`}{`r w4_n[["nowi"]]`}$, ma `r w4_cyfry` cyfr, dlatego R losuje *B* podziałów i liczy wartość *p* wzorem $(k + 1)/(B + 1)$ z ćwiczenia C04 [@phipson2010].
+Test permutacyjny buduje rozkład odniesienia z samych danych. Przy prawdziwej $H_0$ obserwacje są wymienialne: przestawienie etykiet grup zachowuje ich łączny rozkład, więc każdy podział `r sum(w4_n)` czasów na grupy liczące `r w4_n[["nowi"]]` i `r w4_n[["doświadczeni"]]` osób jest równie prawdopodobny [@winkler2014]. Liczba możliwych podziałów, $\binom{`r sum(w4_n)`}{`r w4_n[["nowi"]]`}$, ma `r w4_cyfry` cyfr, dlatego R losuje *B* podziałów i liczy wartość *p* wzorem $(k + 1)/(B + 1)$ z ćwiczenia C04, w którym $k$ jest liczbą wylosowanych podziałów ze statystyką co najmniej tak skrajną jak obserwowana (w części 7 litera $k$ oznacza liczbę grup) [@phipson2010]. Wykład losuje *B* = `r w4_B` podziałów, ponieważ razem z podziałem obserwowanym mianownik wzoru obejmuje `r w4_B + 1` równie prawdopodobnych układów; ćwiczenia C05 i C06 używają *B* = 2000 losowań.
 
-W S02 *B* = `r w4_B` losowych podziałów daje dla różnicy średnich *p*~perm~ = `r .zi_pl(w4_p_perm[["roznica"]], 3)`, a dla statystyki Welcha *p*~perm~ = `r .zi_pl(w4_p_perm[["t"]], 3)`; oba wyniki zgadzają się z testem Welcha. Wybór statystyki ma znaczenie przy różnych wariancjach grup: tasowanie surowej różnicy średnich zmienia wtedy poziom testu, a statystyka studentyzowana, np. $t_W$, zachowuje go w przybliżeniu [@winkler2014].
+::: {.przyklad}
+**Przykład S02.** Cztery pierwsze osoby z czasem w S02, dwie nowe (`r .zi_pl(w4_cztery[1], 1)` i `r .zi_pl(w4_cztery[2], 1)` min) i dwie doświadczone (`r .zi_pl(w4_cztery[3], 1)` i `r .zi_pl(w4_cztery[4], 1)` min), dają obserwowaną różnicę średnich `r .zi_pl(w4_podzialy[1])` min. Dwie etykiety „nowy” da się rozdzielić między cztery osoby na $\binom{4}{2}$ = 6 sposobów, a podział obserwowany jest jednym z nich. Różnice średnich nowi − doświadczeni w sześciu podziałach wynoszą `r paste(.zi_pl(w4_podzialy), collapse = "; ")` min; różnica co najmniej tak duża co do modułu jak obserwowana występuje w `r w4_skrajne4` z 6 podziałów, więc *p* = `r w4_skrajne4`/6 ≈ `r .zi_pl(w4_skrajne4 / 6)`. Dla `r sum(w4_n)` osób S02 liczba podziałów ma `r w4_cyfry` cyfr, dlatego R losuje *B* podziałów zamiast wypisywać wszystkie.
+:::
+
+W S02 *B* = `r w4_B` losowych podziałów daje dla różnicy średnich *p*~perm~ = `r .zi_pl(w4_p_perm[["roznica"]], 3)`, a dla statystyki Welcha *p*~perm~ = `r .zi_pl(w4_p_perm[["t"]], 3)`; oba wyniki zgadzają się z testem Welcha. Wybór statystyki ma znaczenie przy różnych wariancjach grup: tasowanie surowej różnicy średnich zmienia wtedy poziom testu, a statystyka studentyzowana, czyli różnica podzielona przez własny błąd standardowy, np. $t_W$, zachowuje go w przybliżeniu [@winkler2014].
 
 W grupach obserwacyjnych test permutacyjny sprawdza zgodność danych z wymienialnością etykiet. Różnice wieku, kierunku studiów i wcześniejszych doświadczeń pozostają wyjaśnieniami alternatywnymi, dlatego wniosek o skutku doświadczenia wymaga projektu z losowym przydziałem albo jawnych założeń o pozostałych przyczynach [@rohrer2018]. Rozkład permutacyjny różnicy średnich S02 przedstawia ćwiczenie C05.
 
@@ -181,11 +192,11 @@ W grupach obserwacyjnych test permutacyjny sprawdza zgodność danych z wymienia
 Po pierwszym zadaniu każdy uczestnik przeczytał krótką instrukcję i wykonał drugie, podobne zadanie. Jednostką analizy jest osoba, a danymi różnica $d_i$ = czas pierwszej próby − czas drugiej próby. Test *t* dla par jest testem jednej średniej różnic, a wielkością efektu jest *d*~z~, średnia różnica w odchyleniach standardowych różnic [@lakens2013].
 
 ::: {.wzor}
-$$t = \frac{\bar{d}}{s_d/\sqrt{n}} \qquad d_z = \frac{\bar{d}}{s_d} \qquad s_d = \sqrt{s_1^2 + s_2^2 - 2\,r\,s_1 s_2}$$
-$\bar{d}$ i $s_d$ — średnia i odchylenie standardowe różnic, $n$ — liczba par, $s_1$, $s_2$ — odchylenia standardowe pierwszej i drugiej próby, $r$ — korelacja obu prób [@lakens2013].
+$$t = \frac{\bar{d}}{s_d/\sqrt{n}} \qquad d_z = \frac{\bar{d}}{s_d} \qquad s_d = \sqrt{s_1^2 + s_2^2 - 2\,r_{12}\,s_1 s_2}$$
+$\bar{d}$ i $s_d$ — średnia i odchylenie standardowe różnic, $n$ — liczba par, $s_1$, $s_2$ — odchylenia standardowe pierwszej i drugiej próby, $r_{12}$ — korelacja czasów pierwszej i drugiej próby [@lakens2013].
 :::
 
-Trzeci wzór wyjaśnia przewagę projektu par. Dwa czasy jednej osoby są silnie skorelowane (*r* = `r .zi_pl(w4_r)`): osoby szybkie w pierwszej próbie są szybkie także w drugiej. Odchylenie standardowe różnic wynosi `r .zi_pl(w4_sdr)` min przy odchyleniach prób `r .zi_pl(w4_s1)` i `r .zi_pl(w4_s2)` min, więc błąd standardowy średniej różnicy wynosi `r .zi_pl(w4_se_par)` min. Wzór dla grup niezależnych dałby dla danych S02 `r .zi_pl(w4_se_niez)` min, czyli przedział `r .zi_pl(w4_se_niez / w4_se_par, 1)` razy szerszy. Porównanie każdej osoby z nią samą usuwa z błędu różnice między osobami.
+Trzeci wzór wyjaśnia przewagę projektu par. Dwa czasy jednej osoby są silnie skorelowane (*r*~12~ = `r .zi_pl(w4_r)`): osoby szybkie w pierwszej próbie są szybkie także w drugiej. Odchylenie standardowe różnic wynosi `r .zi_pl(w4_sdr)` min przy odchyleniach prób `r .zi_pl(w4_s1)` i `r .zi_pl(w4_s2)` min, więc błąd standardowy średniej różnicy wynosi `r .zi_pl(w4_se_par)` min. Wzór dla grup niezależnych dałby dla danych S02 `r .zi_pl(w4_se_niez)` min, czyli przedział `r .zi_pl(w4_se_niez / w4_se_par, 1)` razy szerszy. Porównanie każdej osoby z nią samą usuwa z błędu różnice między osobami.
 
 W S02 druga próba trwała krócej u `r .zi_pl(100 * w4_krocej, 0)`% spośród `r w4_npar` osób, średnio o `r .zi_pl(w4_tp$estimate)` min: *t*(`r w4_tp$parameter`) = `r .zi_pl(w4_tp$statistic)`, *p* `r .zi_p(w4_tp$p.value)`, *d*~z~ = `r .zi_pl(w4_dz)`. Rysunek \@ref(fig:w04-pary) zestawia oba czasy każdej osoby. Skrócenie czasu łączy dwa mechanizmy: działanie instrukcji i wprawę z pierwszej próby; rozdzielenie obu wymaga grupy porównawczej, która wykonuje drugą próbę bez instrukcji. Rangowym odpowiednikiem testu *t* dla par jest test rang znakowanych Wilcoxona [@wilcoxon1945].
 
@@ -241,9 +252,9 @@ Umowne progi Cohena: 0,01 — efekt mały, 0,06 — średni, 0,14 — duży [@la
 
 W S02 status wiąże się z `r .zi_pl(100 * w4_eta, 1)`% zróżnicowania czasu w próbie ($\eta^2$ = `r .zi_pl(w4_eta)`), a oszacowanie dla populacji wynosi $\omega^2$ = `r .zi_pl(w4_omega)`. Klasyczna analiza wariancji zakłada wspólną wariancję w grupach; test Welcha dla wielu grup uogólnia test Welcha na dowolną liczbę grup i dopuszcza różne wariancje [@welch1951; @winkler2014; @rcoreteam2025]. W S02 daje *F*(`r w4_welch$parameter[1]`; `r .zi_pl(w4_welch$parameter[2], 1)`) = `r .zi_pl(w4_welch$statistic)`, *p* `r .zi_p(w4_welch$p.value)`.
 
-Porównania post hoc sprawdzają wszystkie pary grup i kontrolują łączne ryzyko fałszywego alarmu. Test Tukeya korzysta z rozkładu rozstępu studentyzowanego i przy nierównych liczebnościach z poprawki Kramera; test Gamesa–Howella stosuje stopnie swobody Welcha i dopuszcza różne wariancje grup [@lee2018; @games1976]. W S02 test Tukeya wskazuje dłuższy czas studentów drugiego stopnia niż studentów pierwszego stopnia o `r .zi_pl(w4_tk["student II stopnia-student I stopnia", "diff"])` min (*p*~adj~ = `r .zi_pl(w4_tk["student II stopnia-student I stopnia", "p adj"], 3)`); różnica doktorantów i studentów drugiego stopnia (`r .zi_pl(w4_tk["doktorant-student II stopnia", "diff"])` min) ma *p*~adj~ = `r .zi_pl(w4_tk["doktorant-student II stopnia", "p adj"], 3)`.
+Porównania post hoc sprawdzają wszystkie pary grup i kontrolują łączne ryzyko fałszywego alarmu. Test Tukeya korzysta z rozkładu rozstępu studentyzowanego, czyli rozkładu różnicy między największą a najmniejszą średnią grup, podzielonej przez błąd standardowy średniej, przy prawdziwej $H_0$; przy nierównych liczebnościach korzysta z poprawki Kramera; test Gamesa–Howella stosuje stopnie swobody Welcha i dopuszcza różne wariancje grup [@lee2018; @games1976]. W S02 test Tukeya wskazuje dłuższy czas studentów drugiego stopnia niż studentów pierwszego stopnia o `r .zi_pl(w4_tk["student II stopnia-student I stopnia", "diff"])` min (*p*~adj~ = `r .zi_pl(w4_tk["student II stopnia-student I stopnia", "p adj"], 3)`); różnica doktorantów i studentów drugiego stopnia (`r .zi_pl(w4_tk["doktorant-student II stopnia", "diff"])` min) ma *p*~adj~ = `r .zi_pl(w4_tk["doktorant-student II stopnia", "p adj"], 3)`.
 
-Test Kruskala–Wallisa zastępuje wyniki rangami; statystyka *H* ma przy $H_0$ w przybliżeniu rozkład $\chi^2$ z $k - 1$ stopniami swobody [@kruskal1952]. W S02: $\chi^2$(`r w4_kw$parameter`) = `r .zi_pl(w4_kw$statistic)`, *p* `r .zi_p(w4_kw$p.value)`. Funkcja `kruskal_effsize()` z pakietu rstatix podaje wielkość efektu $\eta^2_H = (H - k + 1)/(n - k)$ [@kassambara2025], w S02 równą `r .zi_pl(w4_eh)`. Pary grup porównuje test Dunn [@dunn1964] z korektą Holma [@holm1979]. Zgodność testu *F*, testu Welcha i testu rangowego oznacza, że wniosek o różnicach czasu między grupami statusu jest odporny na założenia o rozkładzie.
+Test Kruskala–Wallisa zastępuje wyniki rangami; statystyka *H* ma przy $H_0$ w przybliżeniu rozkład $\chi^2$ (część 9) z $k - 1$ stopniami swobody [@kruskal1952]. W S02: $\chi^2$(`r w4_kw$parameter`) = `r .zi_pl(w4_kw$statistic)`, *p* `r .zi_p(w4_kw$p.value)`. Funkcja `kruskal_effsize()` z pakietu rstatix podaje wielkość efektu $\eta^2_H = (H - k + 1)/(n - k)$ [@kassambara2025], w S02 równą `r .zi_pl(w4_eh)`. Pary grup porównuje test Dunn [@dunn1964] z korektą Holma [@holm1979]: korekta porządkuje wartości *p* par od najmniejszej, mnoży najmniejszą przez liczbę porównań, następną przez liczbę porównań pomniejszoną o 1 i tak dalej, dzięki czemu łączne ryzyko fałszywego alarmu w całej serii porównań pozostaje na poziomie 0,05 [@holm1979]. Zgodność testu *F*, testu Welcha i testu rangowego oznacza, że wniosek o różnicach czasu między grupami statusu jest odporny na założenia o rozkładzie.
 
 ## 8. Tabela krzyżowa: liczebności i odsetki {#w04-tabela .unnumbered}
 
@@ -268,7 +279,7 @@ $$E_{ij} = \frac{R_i \cdot C_j}{N} \qquad \chi^2 = \sum_{i,j}\frac{(O_{ij} - E_{
 $O_{ij}$ i $E_{ij}$ — liczebność obserwowana i oczekiwana w komórce, $R_i$ i $C_j$ — sumy wiersza i kolumny, $N$ — liczba osób, $r$ i $c$ — liczba wierszy i kolumn [@kim2017]. Liczbę stopni swobody tabeli $r \times c$ ustalił @fisher1922.
 :::
 
-W S02 oczekiwana liczba nowych z powodzeniem wynosi $109 \cdot 151 / 237$ = `r .zi_pl(w4_E["nowi", "tak"])`, a obserwowana `r w4_t2["nowi", "tak"]`; wśród doświadczonych oczekiwano `r .zi_pl(w4_E["doświadczeni", "tak"])` powodzeń, a zaobserwowano `r w4_t2["doświadczeni", "tak"]` (rysunek \@ref(fig:w04-oe)). Wkłady czterech komórek do statystyki wynoszą `r .zi_pl(w4_wklad["nowi", "nie"])` i `r .zi_pl(w4_wklad["nowi", "tak"])` u nowych oraz `r .zi_pl(w4_wklad["doświadczeni", "nie"])` i `r .zi_pl(w4_wklad["doświadczeni", "tak"])` u doświadczonych; suma daje $\chi^2$(`r w4_ch$parameter`) = `r .zi_pl(w4_ch$statistic)`, *p* `r .zi_p(w4_ch$p.value)`. Największe wkłady mają komórki „nie znalazł”, bo ich liczebności oczekiwane są mniejsze, a kwadrat odchylenia dzieli się przez $E_{ij}$.
+W S02 oczekiwana liczba nowych z powodzeniem wynosi $`r sum(w4_t2["nowi", ])` \cdot `r w4_razem_tak` / `r sum(w4_t2)`$ =`r .zi_pl(w4_E["nowi", "tak"])`, a obserwowana `r w4_t2["nowi", "tak"]`; wśród doświadczonych oczekiwano `r .zi_pl(w4_E["doświadczeni", "tak"])` powodzeń, a zaobserwowano `r w4_t2["doświadczeni", "tak"]` (rysunek \@ref(fig:w04-oe)). Wkłady czterech komórek do statystyki wynoszą `r .zi_pl(w4_wklad["nowi", "nie"])` i `r .zi_pl(w4_wklad["nowi", "tak"])` u nowych oraz `r .zi_pl(w4_wklad["doświadczeni", "nie"])` i `r .zi_pl(w4_wklad["doświadczeni", "tak"])` u doświadczonych; suma daje $\chi^2$(`r w4_ch$parameter`) = `r .zi_pl(w4_ch$statistic)`, *p* `r .zi_p(w4_ch$p.value)`. Największe wkłady mają komórki „nie znalazł”, bo ich liczebności oczekiwane są mniejsze, a kwadrat odchylenia dzieli się przez $E_{ij}$.
 
 ```{r w04-oe, echo=FALSE, fig.height=3.2, fig.cap="Liczebności obserwowane (O) i oczekiwane przy niezależności (E) w tabeli grupa × powodzenie S02. Dwa panele: nowi i doświadczeni; oś pozioma: wynik zadania; oś pionowa: liczba osób. Nowi mają więcej porażek i mniej powodzeń, niż przewiduje model niezależności, a doświadczeni odwrotnie."}
 w4_oe <- rbind(
@@ -303,13 +314,17 @@ Funkcja `chisq.test()` w tabeli 2 × 2 domyślnie stosuje poprawkę na ciągło�
 
 ## 10. Test Fishera i test Monte Carlo {#w04-fisher .unnumbered}
 
-Test dokładny Fishera liczy wartość *p* z rozkładu hipergeometrycznego: przy ustalonych sumach wierszy i kolumn wyznacza prawdopodobieństwo każdej możliwej tabeli i sumuje prawdopodobieństwa tabel o prawdopodobieństwie mniejszym lub równym prawdopodobieństwu tabeli obserwowanej [@kim2017; @rcoreteam2025]. Procedura nadaje się do każdej liczebności i jest szczególnie potrzebna przy małych liczebnościach oczekiwanych [@kim2017]. W S02 test Fishera daje *p* `r .zi_p(w4_fi$p.value)`, zgodnie z testem $\chi^2$.
+Test dokładny Fishera liczy wartość *p* z rozkładu hipergeometrycznego: przy ustalonych sumach wierszy i kolumn wyznacza prawdopodobieństwo każdej możliwej tabeli i sumuje prawdopodobieństwa tabel o prawdopodobieństwie mniejszym lub równym prawdopodobieństwu tabeli obserwowanej [@kim2017; @rcoreteam2025]. Rozkład hipergeometryczny opisuje liczbę powodzeń, które trafiłyby do grupy nowych, gdyby `r w4_razem_tak` powodzeń z S02 rozdzielono losowo między `r sum(w4_t2["nowi", ])` nowych i `r sum(w4_t2["doświadczeni", ])` doświadczonych użytkowników. Procedura nadaje się do każdej liczebności i jest szczególnie potrzebna przy małych liczebnościach oczekiwanych [@kim2017]. W S02 test Fishera daje *p* `r .zi_p(w4_fi$p.value)`, zgodnie z testem $\chi^2$.
 
 Test Monte Carlo losuje tabele o sumach wierszy i kolumn równych sumom tabeli obserwowanej i porównuje ich statystykę $\chi^2$ z obserwowaną [@hope1968; @rcoreteam2025]. Tabela status × powodzenie ma osiem komórek; odsetek powodzeń waha się w niej od `r .zi_pl(min(100 * prop.table(w4_t3, 1)[, "tak"]), 1)`% do `r .zi_pl(max(100 * prop.table(w4_t3, 1)[, "tak"]), 1)`%, a test daje $\chi^2$(`r w4_ch3$parameter`) = `r .zi_pl(w4_ch3$statistic)`, *p* `r .zi_p(w4_ch3$p.value)`; wersja Monte Carlo z *B* = 4999 losowaniami daje *p* `r .zi_p(w4_mc3$p.value)`. Dane są więc zgodne z niezależnością powodzenia od statusu, a odczyt wyniku nieistotnego omawia ćwiczenie C07.
 
 ## 11. Siła i kierunek związku: V, RD, RR i OR {#w04-miary .unnumbered}
 
-Statystyka $\chi^2$ rośnie z liczbą osób przy stałych odsetkach, dlatego siłę związku opisuje miara niezależna od *N*. *V* Craméra [@cramer1946] przyjmuje wartości od 0 (niezależność) do 1 (pełna zależność); w tabeli 2 × 2 równa się modułowi współczynnika $\phi$. Kierunek i wielkość praktyczną opisują trzy miary: różnica proporcji $RD = p_1 - p_2$ oraz dwa ilorazy porównujące odsetek powodzeń $p_1$ w pierwszej grupie z odsetkiem $p_2$ w drugiej, iloraz ryzyka *RR* i iloraz szans *OR* [@ranganathan2015].
+Statystyka $\chi^2$ rośnie z liczbą osób przy stałych odsetkach, dlatego siłę związku opisuje miara niezależna od *N*. *V* Craméra [@cramer1946] przyjmuje wartości od 0 (niezależność) do 1 (pełna zależność); w tabeli 2 × 2 równa się modułowi współczynnika $\phi$ i współczynnikowi *w* Cohena z ćwiczenia C07 ($|\phi| = w$). Kierunek i wielkość praktyczną opisują trzy miary: różnica proporcji $RD = p_1 - p_2$ oraz dwa ilorazy porównujące odsetek powodzeń $p_1$ w pierwszej grupie z odsetkiem $p_2$ w drugiej, iloraz ryzyka *RR* i iloraz szans *OR* [@ranganathan2015].
+
+::: {.przyklad}
+**Przykład S02.** Szansa (ang. *odds*) jest ilorazem liczby powodzeń i liczby porażek: gdy dokument znajduje 70 ze 100 osób, odsetek powodzeń wynosi 0,70, a szansa 70 : 30 ≈ 2,33, czyli na jedną porażkę przypadają 2,33 powodzenia. W S02 szansa powodzenia nowych wynosi `r w4_t2["nowi", "tak"]` : `r w4_t2["nowi", "nie"]` = `r .zi_pl(w4_sz_n)`, a doświadczonych `r w4_t2["doświadczeni", "tak"]` : `r w4_t2["doświadczeni", "nie"]` = `r .zi_pl(w4_sz_d)`; iloraz obu szans, `r .zi_pl(w4_sz_n)` / `r .zi_pl(w4_sz_d)` = `r .zi_pl(w4_sz_n / w4_sz_d)`, jest ilorazem szans *OR*.
+:::
 
 ::: {.wzor}
 $$V = \sqrt{\frac{\chi^2}{N(\min(r, c) - 1)}} \qquad RD = p_1 - p_2 \qquad RR = \frac{p_1}{p_2} \qquad OR = \frac{p_1/(1 - p_1)}{p_2/(1 - p_2)}$$
@@ -337,7 +352,7 @@ Powodzenie mierzy się u każdej osoby dwa razy, w pierwszej i drugiej próbie, 
 
 ::: {.wzor}
 $$\chi^2 = \frac{(b - c)^2}{b + c} \qquad df = 1$$
-$b$ — liczba osób z sukcesem tylko w pierwszej próbie, $c$ — tylko w drugiej. Funkcja `mcnemar.test()` domyślnie odejmuje 1 od $|b - c|$, czyli stosuje poprawkę na ciągłość [@rcoreteam2025]; kurs stosuje wersję klasyczną (`correct = FALSE`), którą @pemburysmith2020 dopuszczają do rutynowego użycia, ponieważ wersja z poprawką ma błąd I rodzaju wyraźnie poniżej nominalnego i mniejszą moc; jako wersję preferowaną autorzy zalecają test mid-P.
+$b$ — liczba osób z sukcesem tylko w pierwszej próbie, $c$ — tylko w drugiej. Funkcja `mcnemar.test()` domyślnie odejmuje 1 od $|b - c|$, czyli stosuje poprawkę na ciągłość [@rcoreteam2025]; kurs stosuje wersję klasyczną (`correct = FALSE`), którą @pemburysmith2020 dopuszczają do rutynowego użycia, ponieważ wersja z poprawką ma błąd I rodzaju wyraźnie poniżej nominalnego i mniejszą moc; jako wersję preferowaną autorzy zalecają test mid-P, który do wartości *p* wlicza połowę prawdopodobieństwa wyniku obserwowanego zamiast całego.
 :::
 
 W S02 liczba osób z sukcesem tylko w drugiej próbie wynosi *c* = `r w4_c`, a tylko w pierwszej *b* = `r w4_b`: $\chi^2$(1) = `r .zi_pl(w4_mn$statistic)`, *p* `r .zi_p(w4_mn$p.value)`. Odsetek powodzeń wzrósł z `r .zi_pl(100 * mean(w4_dane$powodzenie == "tak"), 1)`% do `r .zi_pl(100 * mean(w4_dane$powodzenie_po == "tak"), 1)`%. Test McNemara jest dla wyniku 0/1 odpowiednikiem testu *t* dla par: obie procedury porównują każdą osobę z nią samą.

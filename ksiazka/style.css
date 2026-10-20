@@ -1,5 +1,5 @@
-/* Ramki książki kursu: start zajęć, lektura, wzór, wzorzec zapisu i przejście do zadań. */
-.start, .lektura, .wzor, .apa, .challenge, .uwaga {
+/* Ramki książki kursu: start zajęć, lektura, wzór, przykład ze scenariusza, wzorzec zapisu i przejście do zadań. */
+.start, .lektura, .wzor, .przyklad, .apa, .challenge, .uwaga {
   border-left: 4px solid;
   border-radius: 4px;
   padding: 0.7rem 1rem;
@@ -8,10 +8,11 @@
 .start { border-color: #0072B2; background: #eef5fb; }
 .lektura { border-color: #56B4E9; background: #f0f8fd; }
 .wzor { border-color: #6c757d; background: #f5f6f7; }
+.przyklad { border-color: #D55E00; background: #fdf3ee; }
 .apa { border-color: #009E73; background: #ecf7f2; }
 .challenge { border-color: #E69F00; background: #fdf5e6; }
 .uwaga { border-color: #CC79A7; background: #fbf0f6; }
-.start > :last-child, .lektura > :last-child, .wzor > :last-child, .apa > :last-child,
+.start > :last-child, .lektura > :last-child, .wzor > :last-child, .przyklad > :last-child, .apa > :last-child,
 .challenge > :last-child, .uwaga > :last-child { margin-bottom: 0; }
 .apa blockquote { border-left: none; margin: 0.4rem 0; padding: 0 0 0 0.6rem; font-style: normal; }
 table { font-size: 0.92rem; }
