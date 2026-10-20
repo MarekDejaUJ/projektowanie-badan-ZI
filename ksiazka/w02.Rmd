@@ -48,6 +48,8 @@ w2_z_p90 <- (w2_q[3] - w2_m) / w2_sd
 w2_sukces <- mean(w2_dane$powodzenie == "tak", na.rm = TRUE)
 w2_ind_pow <- tapply(w2_dane$indeks, w2_dane$powodzenie, mean, na.rm = TRUE)
 w2_ponad15 <- mean(w2_czas > w2_q[3])
+w2_sw <- shapiro.test(w2_czas)
+w2_sw_log <- shapiro.test(log(w2_czas))
 w2_kroki <- c(5, 10, 20, 40, 80, 160, w2_n)
 w2_sdse <- data.frame(n = w2_kroki,
                       SD = vapply(w2_kroki, function(k) sd(w2_czas[1:k]), 1),
@@ -163,6 +165,19 @@ $s$ — odchylenie standardowe z mianownikiem $n - 1$; $b_1 \approx 0$ — rozk�
 
 Czas zadania ma skośność $b_1$ = `r .zi_pl(w2_opis["czas", "skew"])` i kurtozę $b_2$ = `r .zi_pl(w2_opis["czas", "kurtosis"])`: rozkład ma długi prawy ogon i więcej wyników skrajnych niż rozkład normalny. Indeks oceny katalogu ma skośność `r .zi_pl(w2_opis["indeks", "skew"])` i kurtozę `r .zi_pl(w2_opis["indeks", "kurtosis"])`, więc jego rozkład jest prawie symetryczny i nieco spłaszczony. Średnia większa od mediany często towarzyszy skośności dodatniej, ale rozkłady dwumodalne i dyskretne łamią regułę średniej i mediany, więc opis kształtu łączy miary z wykresem.
 
+### Normalność rozkładu: test Shapiro–Wilka {#w02-normalnosc .unnumbered}
+
+Test *t* i analiza wariancji zakładają normalny rozkład wyników w populacji, więc opis kształtu zmiennej ilościowej obejmuje sprawdzenie normalności. Test Shapiro–Wilka sprawdza hipotezę $H_0$: rozkład w populacji jest normalny. Statystyka testu $W$ jest ilorazem dwóch oszacowań zróżnicowania: w liczniku stoi kwadrat ważonej sumy uporządkowanych wyników, a w mianowniku zwykła suma kwadratów odchyleń od średniej [@shapiro1965].
+
+::: {.wzor}
+$$W = \frac{\left(\sum_{i=1}^{n} a_i\, x_{(i)}\right)^2}{\sum_{i=1}^{n}(x_i - \bar{x})^2}$$
+$x_{(i)}$ — $i$-ty wynik po uporządkowaniu od najmniejszego $x_{(1)}$ do największego $x_{(n)}$; $a_i$ — waga $i$-tego miejsca, wyznaczona z wartości oczekiwanej na miejscu $i$ w uporządkowanej próbie z rozkładu normalnego (ujemna dla najmniejszych wyników, dodatnia dla największych); $\bar{x}$ — średnia. $W$ ma wartość najwyżej 1; $W$ bliskie 1 — uporządkowane wyniki rosną tak jak w rozkładzie normalnym; mniejsze $W$ — silniejsze odchylenie od rozkładu normalnego.
+:::
+
+Prostym językiem: licznik mierzy rozrzut wyników tak, jakby pochodziły z rozkładu normalnego, a mianownik mierzy rozrzut bez żadnego założenia o kształcie. Przy rozkładzie normalnym oba pomiary dają prawie równe liczby i iloraz $W$ zbliża się do 1; długi ogon albo skupienie wyników przy jednym końcu skali rozsuwa oba pomiary i obniża $W$. Mała wartość *p* oznacza, że tak niskie $W$ rzadko pojawia się w próbach z rozkładu normalnego, więc test odrzuca hipotezę normalności. Wagi $a_i$ i wartość *p* liczy funkcja `shapiro.test()` dla prób od 3 do 5000 obserwacji [@rcoreteam2025].
+
+Czas zadania ma $W$ = `r .zi_pl(w2_sw$statistic, 3)` (*p* `r .zi_p(w2_sw$p.value)`), więc test odrzuca normalność rozkładu czasu, zgodnie ze skośnością $b_1$ = `r .zi_pl(w2_opis["czas", "skew"])`. Logarytm czasu ma $W$ = `r .zi_pl(w2_sw_log$statistic, 3)` (*p* `r .zi_p(w2_sw_log$p.value)`), więc wynik dla logarytmu jest zgodny z hipotezą normalności. Przy kilkuset obserwacjach test wykrywa nawet niewielkie odchylenia od normalności [@ghasemi2012], więc wynik testu czyta się razem z wykresem kwantyl–kwantyl z ćwiczenia [C02](#c02-normalnosc).
+
 ## 6. Wykres odpowiada na pytanie {#w02-wykresy .unnumbered}
 
 Histogram dzieli oś wartości na przedziały równej szerokości $h$ i nad każdym przedziałem stawia słupek o wysokości równej liczbie wyników. Wąskie przedziały odsłaniają przypadkowe nierówności, a szerokie łączą sąsiednie skupienia. Punktem startowym jest reguła Freedmana–Diaconisa, którą R stosuje w funkcji `nclass.FD()` [@freedman1981; @rcoreteam2025]:
@@ -244,7 +259,7 @@ $$z_i = \frac{x_i - \bar{x}}{s} \qquad\qquad \text{POMP}_i = \frac{x_i - \min}{\
 $z_i$ — wynik osoby $i$ w odchyleniach standardowych od średniej; POMP — procent zakresu skali (*percent of maximum possible*), gdzie $\min$ i $\max$ to krańce skali odpowiedzi [@cohen1999].
 :::
 
-Czas równy percentylowi 90. (`r .zi_pl(w2_q[3])` min) leży `r .zi_pl(w2_z_p90)` odchylenia standardowego powyżej średniej. Średni indeks oceny katalogu `r .zi_pl(w2_ind_m)` odpowiada `r .zi_pl(w2_pomp, 1)`% zakresu skali 1–5: wynik opisuje położenie na skali odpowiedzi, a procent opanowanej umiejętności wymaga zadań z oceną poprawności. Logarytm skraca prawy ogon czasu i przybliża rozkład do symetrycznego [@bland1996]; ćwiczenie [C02](#c02-transformacje) zawiera histogram logarytmu czasu S02.
+Czas równy percentylowi 90. (`r .zi_pl(w2_q[3])` min) leży `r .zi_pl(w2_z_p90)` odchylenia standardowego powyżej średniej. Średni indeks oceny katalogu `r .zi_pl(w2_ind_m)` odpowiada `r .zi_pl(w2_pomp, 1)`% zakresu skali 1–5: wynik opisuje położenie na skali odpowiedzi, a procent opanowanej umiejętności wymaga zadań z oceną poprawności. Logarytm przybliża rozkład do normalnego, gdy odchylenie standardowe rośnie proporcjonalnie do średniej albo wynik powstaje jako iloczyn wielu czynników [@bland1996]; w danych S02 logarytm skraca prawy ogon czasu, a ćwiczenie [C02](#c02-transformacje) zawiera histogram logarytmu czasu.
 
 ## 8. Pomiar: od pozycji do indeksu {#w02-pomiar .unnumbered}
 

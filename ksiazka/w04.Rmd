@@ -239,7 +239,7 @@ $$\eta^2 = \frac{SS_B}{SS_B + SS_W} \qquad \omega^2 = \frac{SS_B - (k - 1)\,MS_W
 Umowne progi Cohena: 0,01 — efekt mały, 0,06 — średni, 0,14 — duży [@lakens2013].
 :::
 
-W S02 status wiąże się z `r .zi_pl(100 * w4_eta, 1)`% zróżnicowania czasu w próbie ($\eta^2$ = `r .zi_pl(w4_eta)`), a oszacowanie dla populacji wynosi $\omega^2$ = `r .zi_pl(w4_omega)`. Klasyczna analiza wariancji zakłada wspólną wariancję w grupach; test Welcha dla wielu grup uogólnia test Welcha na dowolną liczbę grup i dopuszcza różne wariancje [@welch1951; @rcoreteam2025]. W S02 daje *F*(`r w4_welch$parameter[1]`; `r .zi_pl(w4_welch$parameter[2], 1)`) = `r .zi_pl(w4_welch$statistic)`, *p* `r .zi_p(w4_welch$p.value)`.
+W S02 status wiąże się z `r .zi_pl(100 * w4_eta, 1)`% zróżnicowania czasu w próbie ($\eta^2$ = `r .zi_pl(w4_eta)`), a oszacowanie dla populacji wynosi $\omega^2$ = `r .zi_pl(w4_omega)`. Klasyczna analiza wariancji zakłada wspólną wariancję w grupach; test Welcha dla wielu grup uogólnia test Welcha na dowolną liczbę grup i dopuszcza różne wariancje [@welch1951; @winkler2014; @rcoreteam2025]. W S02 daje *F*(`r w4_welch$parameter[1]`; `r .zi_pl(w4_welch$parameter[2], 1)`) = `r .zi_pl(w4_welch$statistic)`, *p* `r .zi_p(w4_welch$p.value)`.
 
 Porównania post hoc sprawdzają wszystkie pary grup i kontrolują łączne ryzyko fałszywego alarmu. Test Tukeya korzysta z rozkładu rozstępu studentyzowanego i przy nierównych liczebnościach z poprawki Kramera; test Gamesa–Howella stosuje stopnie swobody Welcha i dopuszcza różne wariancje grup [@lee2018; @games1976]. W S02 test Tukeya wskazuje dłuższy czas studentów drugiego stopnia niż studentów pierwszego stopnia o `r .zi_pl(w4_tk["student II stopnia-student I stopnia", "diff"])` min (*p*~adj~ = `r .zi_pl(w4_tk["student II stopnia-student I stopnia", "p adj"], 3)`); różnica doktorantów i studentów drugiego stopnia (`r .zi_pl(w4_tk["doktorant-student II stopnia", "diff"])` min) ma *p*~adj~ = `r .zi_pl(w4_tk["doktorant-student II stopnia", "p adj"], 3)`.
 
@@ -309,7 +309,7 @@ Test Monte Carlo losuje tabele o sumach wierszy i kolumn równych sumom tabeli o
 
 ## 11. Siła i kierunek związku: V, RD, RR i OR {#w04-miary .unnumbered}
 
-Statystyka $\chi^2$ rośnie z liczbą osób przy stałych odsetkach, dlatego siłę związku opisuje miara niezależna od *N*. *V* Craméra [@cramer1946] przyjmuje wartości od 0 (niezależność) do 1 (pełna zależność); w tabeli 2 × 2 równa się modułowi współczynnika $\phi$. Kierunek i wielkość praktyczną opisują trzy miary porównujące odsetek powodzeń $p_1$ w pierwszej grupie z odsetkiem $p_2$ w drugiej [@ranganathan2015].
+Statystyka $\chi^2$ rośnie z liczbą osób przy stałych odsetkach, dlatego siłę związku opisuje miara niezależna od *N*. *V* Craméra [@cramer1946] przyjmuje wartości od 0 (niezależność) do 1 (pełna zależność); w tabeli 2 × 2 równa się modułowi współczynnika $\phi$. Kierunek i wielkość praktyczną opisują trzy miary: różnica proporcji $RD = p_1 - p_2$ oraz dwa ilorazy porównujące odsetek powodzeń $p_1$ w pierwszej grupie z odsetkiem $p_2$ w drugiej, iloraz ryzyka *RR* i iloraz szans *OR* [@ranganathan2015].
 
 ::: {.wzor}
 $$V = \sqrt{\frac{\chi^2}{N(\min(r, c) - 1)}} \qquad RD = p_1 - p_2 \qquad RR = \frac{p_1}{p_2} \qquad OR = \frac{p_1/(1 - p_1)}{p_2/(1 - p_2)}$$

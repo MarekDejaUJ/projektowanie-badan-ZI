@@ -108,6 +108,15 @@ Histogram logarytmu czasu jest prawie symetryczny. Standaryzacja zachowuje kszta
 
 Test *t* i analiza wariancji zakładają normalny rozkład wyników w populacji; przy dużych próbach rozkład średniej z próby zbliża się do normalnego niezależnie od kształtu danych [@ghasemi2012], a test *t* w dużych próbach jest odporny nawet na silną skośność [@fagerland2012]. Wykres kwantyl–kwantyl (Q–Q) porównuje uporządkowane wyniki z kwantylami rozkładu normalnego [@wilk1968]: punkty blisko prostej oznaczają zgodność z rozkładem normalnym [@gosssampson2025, s. 34]. Wyniki próby leżą na osi pionowej, więc punkty nad prostą na prawym końcu oznaczają kwantyle próby wyższe od kwantyli rozkładu normalnego, czyli dłuższy prawy ogon. Test Shapiro–Wilka sprawdza hipotezę $H_0$: rozkład w populacji jest normalny [@shapiro1965].
 
+Statystyka testu $W$ porównuje dwa oszacowania zróżnicowania jednego zbioru wyników: w liczniku stoi kwadrat ważonej sumy uporządkowanych wyników, a w mianowniku zwykła suma kwadratów odchyleń od średniej [@shapiro1965].
+
+::: {.wzor}
+$$W = \frac{\left(\sum_{i=1}^{n} a_i\, x_{(i)}\right)^2}{\sum_{i=1}^{n}(x_i - \bar{x})^2}$$
+$x_{(i)}$ — $i$-ty wynik po uporządkowaniu od najmniejszego $x_{(1)}$ do największego $x_{(n)}$; $a_i$ — waga $i$-tego miejsca, wyznaczona z wartości oczekiwanej na miejscu $i$ w uporządkowanej próbie z rozkładu normalnego (ujemna dla najmniejszych wyników, dodatnia dla największych); $\bar{x}$ — średnia. $W$ ma wartość najwyżej 1; $W$ bliskie 1 — uporządkowane wyniki rosną tak jak w rozkładzie normalnym; mniejsze $W$ — silniejsze odchylenie od rozkładu normalnego.
+:::
+
+Prostym językiem: licznik mierzy rozrzut tak, jakby wyniki pochodziły z rozkładu normalnego, a mianownik mierzy rozrzut bez założenia o kształcie. Gdy rozkład jest normalny, oba pomiary prawie się zgadzają i $W$ jest bliskie 1; na wykresie Q–Q punkty leżą wtedy blisko prostej. Długi ogon odsuwa punkty od prostej i obniża $W$. Wartość *p* mniejsza od 0,05 oznacza, że tak niskie $W$ rzadko pojawia się w próbach z rozkładu normalnego, więc test odrzuca hipotezę normalności. Funkcja `shapiro.test()` liczy wagi $a_i$, $W$ i *p* dla prób od 3 do 5000 obserwacji [@rcoreteam2025]; funkcja `rstatix::shapiro_test()` podaje identyczne wyniki osobno w każdej grupie.
+
 ```{r c02-qq, fig.height=3}
 ggplot(dane, aes(sample = czas)) +
   stat_qq(alpha = 0.5) +
