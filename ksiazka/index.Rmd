@@ -52,10 +52,10 @@ Wykłady są rozdziałami książki: każdy prowadzi przez pojęcia, wzory i wyk
 | Wykład | Termin | Treść | Ćwiczenia |
 |:--|:--|:--|:--|
 | [W01](#w01) Projekt badania i pomiar | 06.10.2026 | pytanie badawcze, konstrukt i wskaźnik, skale, próba, projekty badań, estymanda, moc i liczebność próby | C01, C09 |
-| [W02](#w02) Język danych, rozkład i pomiar | 13.10.2026 | rozkład, miary położenia i rozproszenia, wykresy, przygotowanie danych, skale postaw, trafność i rzetelność | C02, C03 |
+| [W02](#w02) Język danych, rozkład i pomiar | 13.10.2026 | rozkład, miary położenia i rozproszenia, wykresy rozkładu i częstości, przygotowanie danych, skale postaw, trafność i rzetelność | C02, C03 |
 | [W03](#w03) Losowość, estymacja i dwa tory wnioskowania | 20.10.2026 | rozkład estymatora, błąd standardowy, przedział ufności, test *t*, wartość *p*, bootstrap i permutacje | C04 |
 | [W04](#w04) Porównania grup i tabele krzyżowe | 27.10.2026 | test Welcha, efekty, rangi, analiza wariancji, test $\chi^2$, miary związku i ryzyka | C05–C07 |
-| [W05](#w05) Korelacja, regresja i raport ilościowy | 03.11.2026 | korelacja, regresja, reszty i predykcja, od wyniku do argumentu, generatywna SI | C08, C10 |
+| [W05](#w05) Korelacja, regresja i raport ilościowy | 03.11.2026 | korelacja, regresja i rozkład sum kwadratów, reszty i predykcja, diagram przyczynowy i ważenie, rodzaje regresji, od wyniku do argumentu, generatywna SI | C08, C10 |
 
 ## Plan zajęć {-}
 
@@ -67,7 +67,7 @@ Wykłady są rozdziałami książki: każdy prowadzi przez pojęcia, wzory i wyk
 | [C04](#c04) Estymacja i test jednej próby | błąd standardowy, przedział ufności, bootstrap, test *t* i test permutacyjny jednej średniej, *d* Cohena | [W03](#w03) |
 | [C05](#c05) Dwie grupy i pomiar powtórzony | test Welcha, *g* Hedgesa, permutacja, test Manna–Whitneya, test *t* i Wilcoxona dla par | [W04](#w04) |
 | [C06](#c06) Wiele grup | analiza wariancji, test Welcha dla wielu grup, porównania post hoc, test Kruskala–Wallisa, $\eta^2$ i $\omega^2$ | [W04](#w04) |
-| [C07](#c07) Tabele krzyżowe | procenty warunkowe, test $\chi^2$, test Fishera i Monte Carlo, reszty, *V* Craméra, różnica i iloraz ryzyka, test McNemara | [W04](#w04) |
+| [C07](#c07) Tabele krzyżowe | procenty warunkowe, test $\chi^2$, test Fishera i Monte Carlo, reszty, *V* Craméra, różnica i iloraz ryzyka, test McNemara, opis rysunku według APA | [W04](#w04) |
 | [C08](#c08) Korelacja i regresja | wykres punktowy, *r* Pearsona i $\rho$ Spearmana, permutacja i bootstrap, regresja liniowa, reszty i predykcja | [W05](#w05) |
 | [C09](#c09) Projekt: plan i opis danych | wybór scenariusza, pytania i hipotezy, plan badania, przygotowanie i opis własnych danych | [W01](#w01), [W05](#w05) |
 | [C10](#c10) Projekt: analizy i interpretacja | dwie analizy, interpretacja, ograniczenia, generatywna SI w argumentacji | [W05](#w05) |

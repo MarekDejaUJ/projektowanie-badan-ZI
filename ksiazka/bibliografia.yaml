@@ -124,6 +124,20 @@ references:
   original-date: '2016'
   ISBN: 978-83-01-24311-1
   language: pl-PL
+- id: bang2005
+  type: article-journal
+  author:
+  - family: Bang
+    given: Heejung
+  - family: Robins
+    given: James M.
+  title: Doubly robust estimation in missing data and causal inference models
+  container-title: Biometrics
+  volume: '61'
+  issue: '4'
+  page: 962-973
+  issued: '2005'
+  DOI: 10.1111/j.1541-0420.2005.00377.x
 - id: benshachar2020
   type: article-journal
   author:
@@ -612,6 +626,22 @@ references:
   issued: '2025'
   URL: https://gala.gre.ac.uk/id/eprint/50811/
   language: en-GB
+- id: greenland1999
+  type: article-journal
+  author:
+  - family: Greenland
+    given: Sander
+  - family: Pearl
+    given: Judea
+  - family: Robins
+    given: James M.
+  title: Causal diagrams for epidemiologic research
+  container-title: Epidemiology
+  volume: '10'
+  issue: '1'
+  page: 37-48
+  issued: '1999'
+  DOI: 10.1097/00001648-199901000-00008
 - id: greenland2016
   type: article-journal
   author:
@@ -721,6 +751,20 @@ references:
   page: 371-386
   issued: '2015'
   DOI: 10.1080/00031305.2015.1089789
+- id: hidalgo2013
+  type: article-journal
+  author:
+  - family: Hidalgo
+    given: Bertha
+  - family: Goodman
+    given: Melody
+  title: Multivariate or multivariable regression?
+  container-title: American Journal of Public Health
+  volume: '103'
+  issue: '1'
+  page: 39-40
+  issued: '2013'
+  DOI: 10.2105/AJPH.2012.300897
 - id: hintze1998
   type: article-journal
   author:
@@ -735,6 +779,26 @@ references:
   page: 181-184
   issued: '1998'
   DOI: 10.1080/00031305.1998.10480559
+- id: hirano2004
+  type: chapter
+  author:
+  - family: Hirano
+    given: Keisuke
+  - family: Imbens
+    given: Guido W.
+  title: The propensity score with continuous treatments
+  container-title: Applied Bayesian modeling and causal inference from incomplete-data
+    perspectives
+  editor:
+  - family: Gelman
+    given: Andrew
+  - family: Meng
+    given: Xiao-Li
+  publisher: Wiley
+  ISBN: '9780470090435'
+  page: 73-84
+  issued: '2004'
+  DOI: 10.1002/0470090456.ch7
 - id: hoekstra2014
   type: article-journal
   author:
@@ -778,6 +842,20 @@ references:
   page: 582-598
   issued: '1968'
   DOI: 10.1111/j.2517-6161.1968.tb00759.x
+- id: horvitz1952
+  type: article-journal
+  author:
+  - family: Horvitz
+    given: D. G.
+  - family: Thompson
+    given: D. J.
+  title: A generalization of sampling without replacement from a finite universe
+  container-title: Journal of the American Statistical Association
+  volume: '47'
+  issue: '260'
+  page: 663-685
+  issued: '1952'
+  DOI: 10.1080/01621459.1952.10483446
 - id: hyndman1996
   type: article-journal
   author:
@@ -792,6 +870,18 @@ references:
   page: 361-365
   issued: '1996'
   DOI: 10.1080/00031305.1996.10473566
+- id: imbens2000
+  type: article-journal
+  author:
+  - family: Imbens
+    given: Guido W.
+  title: The role of the propensity score in estimating dose-response functions
+  container-title: Biometrika
+  volume: '87'
+  issue: '3'
+  page: 706-710
+  issued: '2000'
+  DOI: 10.1093/biomet/87.3.706
 - id: ismay2025
   type: book
   author:
@@ -1207,6 +1297,18 @@ references:
   page: 625-632
   issued: '2010'
   DOI: 10.1007/s10459-010-9222-y
+- id: pearl1995
+  type: article-journal
+  author:
+  - family: Pearl
+    given: Judea
+  title: Causal diagrams for empirical research
+  container-title: Biometrika
+  volume: '82'
+  issue: '4'
+  page: 669-688
+  issued: '1995'
+  DOI: 10.1093/biomet/82.4.669
 - id: pearson1896
   type: article-journal
   author:
@@ -1313,6 +1415,39 @@ references:
   publisher-place: Evanston, IL
   issued: '2026'
   URL: https://CRAN.R-project.org/package=psych
+- id: robins1994
+  type: article-journal
+  author:
+  - family: Robins
+    given: James M.
+  - family: Rotnitzky
+    given: Andrea
+  - family: Zhao
+    given: Lue Ping
+  title: Estimation of regression coefficients when some regressors are not always
+    observed
+  container-title: Journal of the American Statistical Association
+  volume: '89'
+  issue: '427'
+  page: 846-866
+  issued: '1994'
+  DOI: 10.1080/01621459.1994.10476818
+- id: robins2000
+  type: article-journal
+  author:
+  - family: Robins
+    given: James M.
+  - family: Hernán
+    given: Miguel Ángel
+  - family: Brumback
+    given: Babette
+  title: Marginal structural models and causal inference in epidemiology
+  container-title: Epidemiology
+  volume: '11'
+  issue: '5'
+  page: 550-560
+  issued: '2000'
+  DOI: 10.1097/00001648-200009000-00011
 - id: rohrer2018
   type: article-journal
   author:
@@ -1326,6 +1461,33 @@ references:
   page: 27-42
   issued: '2018'
   DOI: 10.1177/2515245917745629
+- id: rosenbaum1983
+  type: article-journal
+  author:
+  - family: Rosenbaum
+    given: Paul R.
+  - family: Rubin
+    given: Donald B.
+  title: The central role of the propensity score in observational studies for causal
+    effects
+  container-title: Biometrika
+  volume: '70'
+  issue: '1'
+  page: 41-55
+  issued: '1983'
+  DOI: 10.1093/biomet/70.1.41
+- id: rubin1974
+  type: article-journal
+  author:
+  - family: Rubin
+    given: Donald B.
+  title: Estimating causal effects of treatments in randomized and nonrandomized studies
+  container-title: Journal of Educational Psychology
+  volume: '66'
+  issue: '5'
+  page: 688-701
+  issued: '1974'
+  DOI: 10.1037/h0037350
 - id: sandve2013
   type: article-journal
   author:
@@ -1452,6 +1614,18 @@ references:
   page: '72'
   issued: '1904'
   DOI: 10.2307/1412159
+- id: sperandei2014
+  type: article-journal
+  author:
+  - family: Sperandei
+    given: Sandro
+  title: Understanding logistic regression analysis
+  container-title: Biochemia Medica
+  volume: '24'
+  issue: '1'
+  page: 12-18
+  issued: '2014'
+  DOI: 10.11613/BM.2014.003
 - id: stefaniak2016
   type: chapter
   author:

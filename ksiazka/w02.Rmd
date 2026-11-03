@@ -59,6 +59,23 @@ w2_Fn <- stats::ecdf(w2_dane$czas[w2_dane$grupa == "nowi" & !is.na(w2_dane$czas)
 w2_Fd <- stats::ecdf(w2_dane$czas[w2_dane$grupa == "doświadczeni" & !is.na(w2_dane$czas)])
 w2_siatka <- seq(min(w2_czas), max(w2_czas), by = 0.05)
 w2_roznica <- w2_Fd(w2_siatka) - w2_Fn(w2_siatka)
+# Wykresy z sylabusu: wiolinowy (czas w grupach), krzywa ukończenia (czas i powodzenie), Pareto (kanały), kołowy (status).
+w2_ogd <- opis_grup(w2_dane, czas, grupa)
+w2_czasg <- w2_dane[!is.na(w2_dane$czas), ]
+w2_krzywa <- do.call(rbind, lapply(levels(w2_czasg$grupa), function(g) {
+  d <- w2_czasg[w2_czasg$grupa == g, ]
+  t <- seq(0, 30, by = 0.25)
+  data.frame(grupa = g, czas = t, procent = 100 * sapply(t, function(u) mean(d$powodzenie == "tak" & d$czas <= u)))
+}))
+w2_ukonczenie <- function(g, u) {
+  d <- w2_czasg[w2_czasg$grupa == g, ]
+  100 * mean(d$powodzenie == "tak" & d$czas <= u)
+}
+w2_kan <- kanaly_zi(w2_dane)
+w2_kan <- w2_kan[order(-w2_kan$wskazania), ]
+w2_kan$skum <- 100 * cumsum(w2_kan$wskazania) / sum(w2_kan$wskazania)
+w2_kat <- as.data.frame(table(status = w2_dane$kategoria))
+w2_kat$procent <- 100 * w2_kat$Freq / sum(w2_kat$Freq)
 ```
 
 Zespół biblioteki otrzymuje zdanie: „średni czas zadania w katalogu wynosi `r .zi_pl(w2_m, 1)` min”. Jedna osoba odczytuje komunikat jako czas typowego użytkownika, druga jako granicę, poniżej której kończy połowa osób, trzecia jako nakład pracy w przeliczeniu na jedno zadanie. Każde odczytanie dotyczy innej wielkości: średnia opisuje łączny czas w przeliczeniu na zadanie, mediana środek uporządkowanych wyników, a miary rozproszenia i kształtu różnice między osobami. Wykład W02 buduje język opisu danych: od rozkładu i przygotowania danych przez miary położenia, rozproszenia i kształtu do pomiaru deklaracji w ankiecie i jego jakości. Liczby pochodzą ze zbioru S02 po przygotowaniu: `r nrow(w2_dane)` osób, z których `r w2_n` ma ważny czas zadania.
@@ -215,6 +232,15 @@ ggplot(data.frame(czas = w2_czas), aes(x = czas, y = "")) +
   labs(x = "Czas zadania [min]", y = NULL)
 ```
 
+Wykres wiolinowy łączy wykres pudełkowy z oszacowaniem gęstości rozkładu [@hintze1998]: szerokie miejsce oznacza skupienie obserwacji, a pudełko w środku medianę i kwartyle. Czas nowych użytkowników ma medianę `r .zi_pl(w2_ogd$Mdn[1], 1)` minuty i długi górny ogon do `r .zi_pl(w2_ogd$max[1], 1)` minuty; czas doświadczonych ma medianę `r .zi_pl(w2_ogd$Mdn[2], 1)` minuty i maksimum `r .zi_pl(w2_ogd$max[2], 1)` minuty (rysunek \@ref(fig:w02-wiolina)). Kształt wioliny zależy od szerokości wygładzania, tak jak kształt histogramu od szerokości przedziału, dlatego wypukłości w małej grupie wymagają potwierdzenia w większych danych.
+
+```{r w02-wiolina, echo=FALSE, fig.height=3, fig.cap=paste0("Wykres wiolinowy czasu zadania w dwóch grupach S02 (nowi: n = ", w2_ogd$n[1], ", doświadczeni: n = ", w2_ogd$n[2], "). Oś pozioma: grupa; oś pionowa: czas w minutach. Wiolina nowych użytkowników jest wyższa i ma długi górny ogon; wiolina doświadczonych jest skupiona niżej; wąskie pudełka w środku podają medianę i kwartyle.")}
+ggplot(w2_czasg, aes(grupa, czas)) +
+  geom_violin(fill = "#56B4E9", alpha = 0.5) +
+  geom_boxplot(width = 0.12, outlier.shape = NA) +
+  labs(x = NULL, y = "Czas zadania [min]")
+```
+
 Dystrybuanta empiryczna odpowiada na pytanie, jaka część wyników leży na progu albo poniżej progu. Próg 10 minut może być normą obsługi: zadanie powinno kończyć się w ciągu dziesięciu minut.
 
 ::: {.wzor}
@@ -232,14 +258,54 @@ ggplot(w2_dane[!is.na(w2_dane$czas), ], aes(x = czas, colour = grupa)) +
 
 Dystrybuanta wszystkich czasów przy progu 10 minut wynosi $\widehat{F}(10)$ = `r .zi_pl(w2_F10)`: `r .zi_pl(100 * w2_F10, 0)`% osób kończy zadanie w ciągu dziesięciu minut. Różnica `r .zi_pl(100 * (w2_F10_gr[["doświadczeni"]] - w2_F10_gr[["nowi"]]), 0)` punktów procentowych między grupami odpowiada wprost na pytanie o normę obsługi; średnie grup dają odpowiedź pośrednią.
 
+Krzywa ukończenia zadania łączy dystrybuantę czasu z powodzeniem: dla każdej minuty podaje odsetek osób grupy, które znalazły dokument do danej chwili, więc licznikiem są osoby z powodzeniem i czasem do progu włącznie, a mianownikiem wszystkie osoby grupy z zapisanym czasem. Do 5 minut zadanie z powodzeniem kończy `r .zi_pl(w2_ukonczenie("nowi", 5), 1)`% nowych i `r .zi_pl(w2_ukonczenie("doświadczeni", 5), 1)`% doświadczonych użytkowników, a do 10 minut `r .zi_pl(w2_ukonczenie("nowi", 10), 1)`% i `r .zi_pl(w2_ukonczenie("doświadczeni", 10), 1)`%; po 30 minutach krzywe osiągają `r .zi_pl(w2_ukonczenie("nowi", 30), 1)`% i `r .zi_pl(w2_ukonczenie("doświadczeni", 30), 1)`% (rysunek \@ref(fig:w02-ukonczenie)). Krzywa łączy oba wskaźniki wykonania, więc różnica grup wynika zarówno z czasu, jak i z odsetka powodzeń; sylabus nazywa krzywą ukończenia wykresem wydajności usługi.
+
+```{r w02-ukonczenie, echo=FALSE, fig.height=3, fig.cap="Krzywa ukończenia zadania z powodzeniem w dwóch grupach S02. Oś pozioma: czas od początku zadania w minutach; oś pionowa: odsetek osób grupy, które znalazły dokument do danej chwili. Krzywa doświadczonych rośnie szybciej i kończy wyżej niż krzywa nowych użytkowników."}
+ggplot(w2_krzywa, aes(czas, procent, colour = grupa)) +
+  geom_step(linewidth = 0.9) +
+  scale_colour_manual(values = c("nowi" = "#D55E00", "doświadczeni" = "#0072B2")) +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = "Czas od początku zadania [min]", y = "Ukończone z powodzeniem [%]", colour = NULL)
+```
+
 Słupki kategorii przedstawiają liczebności albo odsetki. Porównanie grup o różnej liczebności używa odsetków, a podpis wykresu podaje mianownik każdej grupy, tak jak wykres powodzenia w [C01](#c01-odsetki).
+
+Wykres Pareto porządkuje kategorie od najczęstszej i dodaje udział skumulowany, czyli częstość skumulowaną $F_j$ z części 1 liczoną w kolejności malejących liczebności. Kanały informacji w S02 zebrały `r sum(w2_kan$wskazania)` wskazań: `r w2_kan$kanal[1]` `r .zi_pl(w2_kan$proc_wskazan[1], 1)`%, `r w2_kan$kanal[2]` `r .zi_pl(w2_kan$proc_wskazan[2], 1)`%, `r w2_kan$kanal[3]` `r .zi_pl(w2_kan$proc_wskazan[3], 1)`% i `r w2_kan$kanal[4]` `r .zi_pl(w2_kan$proc_wskazan[4], 1)`%; dwa pierwsze kanały obejmują `r .zi_pl(w2_kan$skum[2], 1)`% wskazań (rysunek \@ref(fig:w02-pareto)). Mianownikiem są wskazania, a odsetki osób korzystających z każdego kanału podaje ćwiczenie [C03](#c03-wielokrotne).
+
+```{r w02-pareto, echo=FALSE, fig.height=3, fig.cap=paste0("Wykres Pareto kanałów informacji w S02, ", sum(w2_kan$wskazania), " wskazań. Oś pozioma: kanał od najczęstszego; oś pionowa: odsetek wskazań. Słupki maleją od ", .zi_pl(w2_kan$proc_wskazan[1], 1), "% do ", .zi_pl(w2_kan$proc_wskazan[4], 1), "%; punkty połączone linią przerywaną podają udział skumulowany: ", paste(.zi_pl(w2_kan$skum, 1), collapse = "; "), "%.")}
+w2_kan$kanal <- factor(w2_kan$kanal, levels = w2_kan$kanal)
+ggplot(w2_kan, aes(kanal)) +
+  geom_col(aes(y = proc_wskazan), fill = "#0072B2", width = 0.6) +
+  geom_line(aes(y = skum, group = 1), linetype = "dashed", colour = "#D55E00") +
+  geom_point(aes(y = skum), colour = "#D55E00", size = 2) +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = NULL, y = "Odsetek wskazań [%]")
+```
+
+Wykres kołowy przedstawia podział całości na rozłączne części. Status `r sum(w2_kat$Freq)` uczestników S02 tworzy cztery wycinki: `r paste0(w2_kat$status, " ", .zi_pl(w2_kat$procent, 1), "%", collapse = ", ")` (rysunek \@ref(fig:w02-kolo)). Porównanie kątów i pól jest mniej dokładne od porównania położenia na wspólnej osi, dlatego podobne udziały łatwiej odczytać z wykresu słupkowego albo punktowego [@cleveland1984].
+
+```{r w02-kolo, echo=FALSE, fig.height=3, out.width="60%", fig.cap=paste0("Status uczestników S02, ", sum(w2_kat$Freq), " osób. Koło podzielone na cztery wycinki z odsetkami: ", paste0(w2_kat$status, " ", .zi_pl(w2_kat$procent, 1), "%", collapse = "; "), ".")}
+ggplot(w2_kat, aes(x = "", y = Freq, fill = status)) +
+  geom_col(width = 1, colour = "white") +
+  coord_polar(theta = "y") +
+  geom_text(aes(label = paste0(.zi_pl(procent, 1), "%")), position = position_stack(vjust = 0.5), size = 3.4) +
+  scale_fill_manual(values = c("#0072B2", "#E69F00", "#009E73", "#CC79A7")) +
+  labs(fill = NULL) +
+  theme_void()
+```
+
+Odczyt każdego wykresu zaczyna się od jednostki obserwacji, licznika i mianownika, potem przechodzi do wielkości zakodowanej położeniem, polem lub kolorem, a kończy na wzorcu i jego ograniczeniu. Zapis opisu rysunku w raporcie (numer, tytuł, nota i odwołanie w tekście) ćwiczy [C07](#c07-rysunek).
 
 | Wykres | Pytanie | Warunek poprawnego odczytu |
 |:--|:--|:--|
 | histogram | gdzie skupiają się wyniki i jaki mają kształt? | kształt stały przy sąsiednich szerokościach przedziału |
 | wykres pudełkowy | jak różnią się położenie i rozrzut grup? | sprawdzenie rekordów poza wąsami przed decyzją o błędzie |
+| wykres wiolinowy | gdzie skupiają się wyniki w każdej grupie? | kształt stały przy sąsiednich szerokościach wygładzania; liczebność grupy w podpisie |
 | dystrybuanta empiryczna | jaki odsetek wyników leży na progu albo poniżej? | próg ustalony przed spojrzeniem na dane |
+| krzywa ukończenia | jaki odsetek grupy wykonał zadanie z powodzeniem do danej chwili? | mianownik: wszystkie osoby grupy, także bez powodzenia |
 | słupki kategorii | ile osób albo jaki odsetek wybrał odpowiedź? | odsetki z nazwanym mianownikiem przy grupach różnej wielkości |
+| wykres Pareto | które kategorie obejmują większość wskazań? | mianownik: wskazania albo osoby, nazwany w podpisie |
+| wykres kołowy | jaki udział całości ma każda kategoria? | kategorie rozłączne sumujące się do 100%; podobne udziały na słupkach |
 | wykres punktowy | jak współwystępują dwie cechy jednej osoby? | opis współwystępowania; wniosek przyczynowy wymaga projektu ([C08](#c08)) |
 
 Table: Wykresy, pytania i warunki poprawnego odczytu.

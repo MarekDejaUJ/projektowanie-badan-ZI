@@ -70,6 +70,43 @@ w3_ci_md <- unname(quantile(w3_boot_md, c(0.025, 0.975)))
 # Test zmiany znaków dla indeksu względem 3.
 w3_zn <- test_znakow(w3_dane$indeks, mu0 = 3)
 w3_rozklad <- attr(w3_zn, "rozklad")
+w3_cyfry_znaki <- floor(w3_n * log10(2)) + 1
+
+# Wnioskowanie nieparametryczne dla indeksu względem 3: test znaków (dwumianowy) i test rang znakowanych Wilcoxona.
+w3_o <- w3_ix - 3
+w3_m_nz <- sum(w3_o != 0)
+w3_s_plus <- sum(w3_o > 0)
+w3_binom <- binom.test(w3_s_plus, w3_m_nz, p = 0.5)
+w3_wilc <- suppressWarnings(wilcox.test(w3_ix, mu = 3, exact = FALSE, conf.int = TRUE))
+w3_wplus <- unname(w3_wilc$statistic)
+w3_ew <- w3_m_nz * (w3_m_nz + 1) / 4
+w3_skos_ix <- psych::skew(w3_ix)
+# Cztery osoby z indeksami 4,2; 2,5; 3,4 i 3,0: odchylenia od 3, znaki i rangi modułów odchyleń.
+w3_o4 <- c(4.2, 2.5, 3.4, 3.0) - 3
+w3_o4_nz <- w3_o4[w3_o4 != 0]
+w3_r4 <- rank(abs(w3_o4_nz))
+w3_w4 <- sum(w3_r4[w3_o4_nz > 0])
+
+# Dwie grupy: różnica średnich czasu nowi − doświadczeni, test Welcha i rozkład permutacyjny (B = 2000 podziałów).
+w3_gr <- w3_dane[!is.na(w3_dane$czas), c("czas", "grupa")]
+w3_n_gr <- table(w3_gr$grupa)
+w3_roz_fun <- function(y, g) mean(y[g == "nowi"]) - mean(y[g == "doświadczeni"])
+w3_roz_obs <- w3_roz_fun(w3_gr$czas, w3_gr$grupa)
+w3_tw <- t.test(czas ~ grupa, data = w3_gr)
+w3_B_perm <- 2000
+set.seed(2029)
+w3_perm <- replicate(w3_B_perm, w3_roz_fun(w3_gr$czas, sample(w3_gr$grupa)))
+w3_k_perm <- sum(abs(w3_perm) >= abs(w3_roz_obs))
+w3_p_perm <- (w3_k_perm + 1) / (w3_B_perm + 1)
+w3_cyfry_podz <- floor(lchoose(sum(w3_n_gr), w3_n_gr[["nowi"]]) / log(10)) + 1
+# Cztery osoby (dwie pierwsze nowe i dwie pierwsze doświadczone z czasem): wszystkie 6 podziałów na dwie pary.
+w3_cztery <- c(head(w3_gr$czas[w3_gr$grupa == "nowi"], 2), head(w3_gr$czas[w3_gr$grupa == "doświadczeni"], 2))
+w3_uklady <- combn(4, 2)
+w3_podzialy <- apply(w3_uklady, 2, function(i) mean(w3_cztery[i]) - mean(w3_cztery[-i]))
+w3_skrajne4 <- sum(abs(w3_podzialy) >= abs(w3_podzialy[1]))
+
+# Bootstrap mediany: obciążenie bootstrapowe (średnia median bootstrapowych minus mediana próby).
+w3_md <- median(w3_czas)
 
 # Moc i liczebność próby.
 w3_moc <- function(d, n) power.t.test(n = n, delta = d, sd = 1, type = "one.sample")$power
@@ -134,6 +171,14 @@ w3_cap_znaki <- paste0(
   "po losowej zmianie znaków; oś pionowa: liczba losowań. Histogram jest symetryczny wokół zera i leży między ",
   .zi_pl(min(w3_rozklad), 3), " a ", .zi_pl(max(w3_rozklad), 3), ". Czerwone linie przy ", .zi_pl(w3_zn$roznica, 3),
   " (obserwowana średnia odchyleń) i jej odbiciu leżą poza całym histogramem.")
+w3_cap_perm <- paste0(
+  "Rozkład permutacyjny różnicy średnich czasu nowi − doświadczeni w S02 (B = ", w3_B_perm, " losowych podziałów ",
+  sum(w3_n_gr), " osób na grupy liczące ", w3_n_gr[["nowi"]], " i ", w3_n_gr[["doświadczeni"]], " osób). ",
+  "Oś pozioma: różnica średnich w minutach po przestawieniu etykiet; oś pionowa: liczba losowań. Histogram skupia się ",
+  "symetrycznie wokół zera i leży między ", .zi_pl(min(w3_perm)), " a ", .zi_pl(max(w3_perm)), " min. Pomarańczowa linia ",
+  "ciągła przy ", .zi_pl(w3_roz_obs), " min oznacza różnicę obserwowaną, linia przerywana jej odbicie; ",
+  if (w3_k_perm == 0) "żadne losowanie nie sięga obu linii." else
+    paste0(w3_k_perm, " z ", w3_B_perm, " losowań dało różnicę co najmniej tak dużą co do modułu."))
 ```
 
 Badanie S02 obejmuje jedną próbę: `r nrow(w3_dane)` osób oceniło katalog biblioteki i wykonało zadanie wyszukiwawcze. Na podstawie jednej próby biblioteka pyta o wszystkich użytkowników katalogu: ile przeciętnie trwa zadanie, czy średnia ocena katalogu przewyższa neutralny środek skali i jak dokładnie da się oba wyniki oszacować. Wykład W03 opisuje niepewność wyniku jednej próby dwoma torami: klasycznym, opartym na wzorach i rozkładzie *t*, oraz obliczeniowym, opartym na losowaniu z danych (bootstrap i test permutacyjny). Ćwiczenie [C04](#c04) wykonuje analizy obu torów w R.
@@ -162,6 +207,11 @@ Statystyka jest funkcją danych z próby. Średnia szacuje parametr, odchylenie 
 | $H_0$, $H_1$, $\mu_0$ | hipoteza zerowa i alternatywna; wartość parametru w hipotezie zerowej |
 | $\Delta$, $d$ | różnica w populacji; różnica wyrażona w odchyleniach standardowych osób |
 | $p$, $\alpha$, $\beta$ | wartość *p*; poziom istotności; prawdopodobieństwo błędu II rodzaju |
+| $o_i$, $\varepsilon_i$ | odchylenie wyniku osoby $i$ od $\mu_0$; losowy znak $+1$ albo $-1$ w teście zmiany znaków |
+| $S$, $W^{+}$, $m$ | liczba odchyleń dodatnich; suma rang odchyleń dodatnich; liczba odchyleń różnych od zera |
+| $D$ | różnica średnich dwóch grup (nowi − doświadczeni) |
+| $x^{*}$, $\hat{F}$ | obserwacja próby bootstrapowej; rozkład empiryczny próby |
+| $M$ | liczba wszystkich jednakowo prawdopodobnych układów danych przy $H_0$ (podziałów na grupy albo układów znaków) |
 | $B$ | liczba losowań w bootstrapie lub teście permutacyjnym |
 
 ## 2. Prawdopodobieństwo: model dwumianowy i rozkład normalny {#w03-prawdopodobienstwo .unnumbered}
@@ -406,14 +456,50 @@ ggplot(data.frame(m = 1:20, p = 1 - 0.95^(1:20)), aes(m, p)) +
 
 Elastyczność analizy, czyli wybór podziałów grup, progów czasu i reguł braków po obejrzeniu danych oraz raportowanie najkorzystniejszego wariantu, podnosi rzeczywisty odsetek wyników fałszywie pozytywnych wysoko ponad nominalne $\alpha$ [@simmons2011]. Raport opisuje więc wszystkie wykonane warianty analizy i oddziela pytania zaplanowane od eksploracji. Wyniki *p* = 0,049 i *p* = 0,051 niosą prawie identyczną informację, a różnica między wynikiem istotnym i nieistotnym bywa sama nieistotna statystycznie [@gelman2006]. Dwa badania z wartościami *p* po przeciwnych stronach 0,05 mogą w pełni zgadzać się co do wielkości efektu [@greenland2016].
 
-## 8. Drugi tor: bootstrap i test permutacyjny {#w03-losowanie .unnumbered}
+## 8. Cztery rodzaje wnioskowania: parametryczne, nieparametryczne, bootstrapowe i permutacyjne {#w03-losowanie .unnumbered}
 
-Tor klasyczny opiera niepewność średniej na wzorach i rozkładzie *t*. Tor obliczeniowy zastępuje wzory losowaniem z danych: komputer tysiące razy tworzy nowe próby, liczy w każdej statystykę, a rozrzut wyników zastępuje tablicę rozkładu. Dwa pytania biblioteki o katalog prowadzą do dwóch procedur: bootstrap odpowiada na pytanie o dokładność oszacowania, test permutacyjny na pytanie o zgodność danych z hipotezą zerową.
+Tor klasyczny opiera niepewność średniej na wzorach i rozkładzie *t*. Tor obliczeniowy zastępuje wzory losowaniem z danych: komputer tysiące razy tworzy nowe próby, liczy w każdej statystykę, a rozrzut wyników zastępuje tablicę rozkładu. Każdy tor obejmuje dwa rodzaje procedur, więc kurs rozróżnia cztery rodzaje wnioskowania. Wnioskowanie parametryczne zakłada model rozkładu w populacji opisany skończoną liczbą parametrów, np. rozkład normalny o parametrach $\mu$ i $\sigma$, i wyprowadza z modelu rozkład odniesienia statystyki; przedział *t* z części 4 i test *t* z części 5 są procedurami parametrycznymi. Wnioskowanie nieparametryczne pomija założenie o rodzinie rozkładów w populacji, np. o rozkładzie normalnym: zastępuje wartości znakami albo rangami, a rozkład odniesienia wynika z przeliczenia wszystkich jednakowo prawdopodobnych przy $H_0$ układów znaków [@fisher1925, rozdz. V, przykład 19] lub rang [@ernst2004, s. 680; @wilcoxon1945]. Wnioskowanie bootstrapowe losuje z próby ze zwracaniem i z rozrzutu wyników losowań szacuje rozkład estymatora, bez modelu rozkładu i bez hipotezy zerowej [@efron1979]. Wnioskowanie permutacyjne przestawia dane w sposób, w którym przy prawdziwej $H_0$ każdy układ jest jednakowo prawdopodobny, i z przestawień buduje rozkład odniesienia testu [@ernst2004]. Dwa pytania biblioteki o katalog prowadzą do dwóch celów: bootstrap odpowiada na pytanie o dokładność oszacowania, a testy parametryczny, nieparametryczny i permutacyjny odpowiadają na pytanie o zgodność danych z hipotezą zerową.
 
-| Pytanie | Procedura | Wynik |
-|:--|:--|:--|
-| Jak zmieniałaby się estymata w kolejnych próbach? | bootstrap: losowanie obserwacji ze zwracaniem | przybliżenie rozkładu estymatora, błąd standardowy, przedział |
-| Jak skrajna jest statystyka przy modelu zerowym? | test permutacyjny: przestawienia etykiet albo zmiany znaków | rozkład odniesienia testu i wartość *p* |
+| Rodzaj wnioskowania | Pytanie i wynik | Założenie o populacji | Rozkład odniesienia | Przykład S02 (ćwiczenie) |
+|:--|:--|:--|:--|:--|
+| parametryczne | zgodność z $H_0$ o parametrze i przedział parametru: *p*, 95% CI średniej | niezależne obserwacje; średnia z próby o rozkładzie normalnym (rozkład normalny osób albo duże $n$) | rozkład *t* o $n - 1$ stopniach swobody, z tablicy | test *t* oceny katalogu wobec 3 ([C04](#c04-test-t)) |
+| nieparametryczne | zgodność z $H_0$ o medianie albo środku symetrii: *p*, 95% CI pseudomediany | niezależne obserwacje; dla rang symetria odchyleń od $\mu_0$ | rozkład dwumianowy liczby znaków albo rozkład sumy rang ze wszystkich $2^m$ układów znaków, z tablicy | test znaków i test rang znakowanych Wilcoxona dla oceny katalogu wobec 3; dla dwóch grup test Manna–Whitneya ([C05](#c05-permutacja)) |
+| bootstrapowe | dokładność oszacowania: $SE$ i 95% CI dowolnej statystyki | próba reprezentuje populację (losowy dobór) | rozkład $B$ statystyk z prób losowanych ze zwracaniem | przedział średniej i mediany czasu ([C04](#c04-bootstrap)) |
+| permutacyjne | zgodność z $H_0$: $p_{\text{perm}}$ dla dowolnej statystyki | wymienialność danych przy $H_0$ (etykiety grup albo znaki odchyleń) | rozkład statystyki w $B$ losowych przestawieniach danych | zmiana znaków dla oceny katalogu ([C04](#c04-permutacja)); przestawianie etykiet grup dla czasu ([C05](#c05-permutacja)) |
+
+Cztery rodzaje wnioskowania łączą się ze sobą. Testy rangowe są testami permutacyjnymi wykonanymi na rangach [@ernst2004, s. 680]. W teście rang znakowanych Wilcoxona prawdopodobieństwo sumy rang jest liczbą układów znaków dających daną sumę podzieloną przez $2^m$, więc rozkład zależy wyłącznie od $m$, a Wilcoxon podał go w tablicy [@wilcoxon1945, s. 81–82]; identyczne $2^m$ układów znaków tworzy rozkład testu zmiany znaków. Test permutacyjny na wartościach zachowuje informację o odległościach między wynikami, a test rangowy zachowuje wyłącznie porządek wyników. Test *t* jest przybliżeniem testu permutacyjnego, dostępnym obliczeniowo przed erą komputerów; oba testy dają bliskie wartości *p* przy zbliżonych liczebnościach grup i umiarkowanej skośności, a przy silnej skośności i bardzo nierównych grupach wyniki się rozchodzą [@hesterberg2015]; w S02 test Welcha dla różnicy czasu między nowymi a doświadczonymi daje *p* `r .zi_p(w3_tw$p.value)`, a test permutacyjny *p*~perm~ = `r .zi_pl(w3_p_perm, 3)`. Bootstrap i test permutacyjny różnią się celem: bootstrap losuje ze zwracaniem z danych w ich obserwowanej postaci, więc opisuje rozkład estymatora wokół wartości obserwowanej; test permutacyjny losuje w sposób zgodny z $H_0$, więc rozkład różnicy średnich skupia się wokół zera [@hesterberg2015].
+
+### Wnioskowanie parametryczne: założenia testu *t* {#w03-parametryczne .unnumbered}
+
+Procedury parametryczne z części 4 i 5 opierają się na trzech założeniach. Pierwsze: obserwacje są niezależne i pochodzą z jednej populacji, więc każda osoba wnosi jeden wynik, a wynik jednej osoby pozostaje bez wpływu na wynik innej. Drugie: średnia z próby ma rozkład zbliżony do normalnego, co zachodzi przy rozkładzie normalnym wyników osób albo, na mocy centralnego twierdzenia granicznego (część 3), przy dużej liczebności próby. Trzecie: próba pochodzi z losowego doboru, bo obciążenie doboru pozostaje poza błędem standardowym (część 3). Rozkład *t* z tablicy jest rozkładem odniesienia wyprowadzonym z modelu: Student wyprowadził go dla prób z populacji o rozkładzie normalnym [@student1908], a przy spełnionych założeniach statystyka $t$ ma przy $H_0$ rozkład *t* o $n - 1$ stopniach swobody [@fisher1925, rozdz. V]. Naruszenie drugiego założenia zmienia rzeczywisty poziom testu i pokrycie przedziału: w symulacji z części 4 przedziały *t* dla prawoskośnego czasu zadania objęły parametr w `r .zi_pl(100 * w3_pokrycie, 1)`% prób wobec nominalnych 95%.
+
+::: {.przyklad}
+**Przykład S02.** Indeks oceny katalogu ma skośność `r .zi_pl(w3_skos_ix)`, czyli rozkład niemal symetryczny, a próba liczy `r w3_n` osób, więc rozkład średniej oceny jest bardzo bliski normalnemu i test *t* jest dla oceny katalogu procedurą trafną. Czas zadania ma skośność `r .zi_pl(w3_skos)`: przy `r w3_n_cz` osobach rozkład średniego czasu jest bliski normalnemu (skośność średnich `r .zi_pl(w3_skos_sr["40"])` już przy 40 osobach), a w próbach po 5 osób średnie zachowują skośność `r .zi_pl(w3_skos_sr["5"])` (część 3), więc przedział *t* dla czasu w tak małej próbie obejmowałby parametr rzadziej niż w 95% prób.
+:::
+
+### Wnioskowanie nieparametryczne: znaki i rangi {#w03-nieparametryczne .unnumbered}
+
+Procedury nieparametryczne zastępują wartości wyników prostszą informacją: znakiem odchylenia od wartości odniesienia albo rangą, czyli numerem miejsca wyniku w uporządkowanej próbie (ćwiczenie [C02](#c02)). Test znaków odpowiada na pytanie, czy oceny wyższe i niższe od 3 są w populacji jednakowo częste, czyli czy 3 jest medianą ocen. Przy $H_0$, że oceny wyższe i niższe od 3 są w populacji jednakowo częste, każde odchylenie różne od zera jest dodatnie z prawdopodobieństwem $\tfrac{1}{2}$, więc liczba odchyleń dodatnich $S$ wśród $m$ odchyleń różnych od zera ma rozkład dwumianowy z części 2 o parametrach $m$ i $\pi = \tfrac{1}{2}$ [@fisher1925, rozdz. V, przykład 19; @guthrie2020, sekcja 1.3.6.6.18]; odchylenia równe zeru pozostają poza testem.
+
+::: {.wzor}
+$$S = \#\{i : o_i > 0\} \qquad S \sim \text{Bin}\!\left(m, \tfrac{1}{2}\right) \text{ przy } H_0 \qquad P(S = s) = \binom{m}{s}\left(\tfrac{1}{2}\right)^{m} \qquad p = 2\,P(S \geq s_{\text{obs}})$$
+$o_i = x_i - \mu_0$ — odchylenie oceny osoby $i$ od 3, $m$ — liczba odchyleń różnych od zera, $s_{\text{obs}}$ — liczba odchyleń dodatnich w danych; wzór na $p$ dotyczy $s_{\text{obs}} > m/2$, a dla $s_{\text{obs}} < m/2$ liczy się $2\,P(S \leq s_{\text{obs}})$. Test zakłada niezależność obserwacji, a $H_0$ mówi o jednakowej częstości ocen po obu stronach wartości odniesienia.
+:::
+
+W S02 `r w3_m_nz` osób ma ocenę różną od 3, a `r w3_s_plus` z nich ma ocenę wyższą od 3; przy medianie równej 3 oczekiwana liczba ocen wyższych wynosi `r .zi_pl(w3_m_nz / 2, 0)`, a test daje *p* `r .zi_p(w3_binom$p.value)`.
+
+Test rang znakowanych Wilcoxona wykorzystuje więcej informacji: porządkuje moduły odchyleń $|o_i|$, nadaje im rangi od 1 do $m$ i sumuje rangi odchyleń dodatnich [@wilcoxon1945]. Przy $H_0$ i symetrycznym rozkładzie odchyleń każda ranga trafia do sumy z prawdopodobieństwem $\tfrac{1}{2}$, więc wartość oczekiwana sumy wynosi połowę sumy wszystkich rang, a rozkład odniesienia powstaje z $2^m$ jednakowo prawdopodobnych układów znaków.
+
+::: {.wzor}
+$$W^{+} = \sum_{i:\ o_i > 0} R_i \qquad\qquad E(W^{+} \mid H_0) = \frac{1}{2}\sum_{i=1}^{m} R_i = \frac{m(m+1)}{4}$$
+$R_i$ — ranga modułu odchylenia $|o_i|$ wśród $m$ odchyleń różnych od zera, $W^{+}$ — suma rang odchyleń dodatnich (w wydruku R: `V`). Wartość $W^{+}$ bliska $m(m+1)/4$ zgadza się z $H_0$, a wartość bliska 0 albo bliska $m(m+1)/2$ świadczy przeciw $H_0$. R liczy dokładny rozkład przy $m < 50$, gdy wśród odchyleń brak rang wiązanych i odchyleń równych zeru, a w pozostałych przypadkach korzysta z przybliżenia normalnego [@rcoreteam2025].
+:::
+
+::: {.przyklad}
+**Przykład S02.** Cztery osoby z indeksami 4,2; 2,5; 3,4 i 3,0 mają odchylenia od 3 równe `r paste(.zi_pl(w3_o4, 1), collapse = "; ")`. Odchylenie równe zeru odpada, więc $m$ = `r length(w3_o4_nz)`. Test znaków liczy odchylenia dodatnie: $S$ = `r sum(w3_o4_nz > 0)` z `r length(w3_o4_nz)`. Test Wilcoxona porządkuje moduły `r paste(.zi_pl(abs(w3_o4_nz), 1), collapse = "; ")`: rangi wynoszą kolejno `r paste(w3_r4, collapse = ", ")` (najmniejszy moduł 0,4 ma rangę 1), a suma rang odchyleń dodatnich $W^{+}$ = `r paste(w3_r4[w3_o4_nz > 0], collapse = " + ")` = `r w3_w4` przy sumie wszystkich rang `r length(w3_o4_nz) * (length(w3_o4_nz) + 1) / 2` i wartości oczekiwanej `r .zi_pl(length(w3_o4_nz) * (length(w3_o4_nz) + 1) / 4, 1)` przy $H_0$.
+:::
+
+W S02 suma rang odchyleń dodatnich wynosi $W^{+}$ = `r format(w3_wplus, big.mark = " ")` przy wartości oczekiwanej `r format(w3_ew, big.mark = " ")`, *p* `r .zi_p(w3_wilc$p.value)`. Oszacowanie i przedział z testu rang znakowanych dotyczą pseudomediany, czyli mediany rozkładu średniej $(u + v)/2$ dwóch niezależnych wyników z populacji, równej medianie przy rozkładzie symetrycznym [@rcoreteam2025]: w S02 pseudomediana wynosi `r .zi_pl(w3_wilc$estimate)` z przedziałem 95% [`r .zi_pl(w3_wilc$conf.int[1])`; `r .zi_pl(w3_wilc$conf.int[2])`], blisko przedziału *t* dla średniej [`r .zi_pl(w3_tt$conf.int[1])`; `r .zi_pl(w3_tt$conf.int[2])`]. Test znaków, test Wilcoxona i test *t* prowadzą dla oceny katalogu do jednego wniosku, bo rozkład indeksu jest niemal symetryczny. Procedury nieparametryczne zyskują przewagę przy wartościach odstających i rozkładach skośnych: ranga najdłuższego czasu wynosi $n$ zarówno przy czasie 20, jak i 200 minut, więc pojedyncza skrajna osoba przesuwa średnią, a rang pozostałych osób zmienić już nie może. Rangowym odpowiednikiem testu *t* dla dwóch grup jest test Manna–Whitneya, który opisuje wykład [W04](#w04-rangi).
 
 ### Bootstrap: próba jako przybliżenie populacji {#w03-bootstrap .unnumbered}
 
@@ -421,14 +507,15 @@ Tor klasyczny opiera niepewność średniej na wzorach i rozkładzie *t*. Tor ob
 **Przykład S02.** Lista `r w3_n_cz` czasów z S02 jest całą informacją biblioteki o użytkownikach katalogu, więc bootstrap traktuje próbę jak populację. Komputer losuje z listy `r w3_n_cz` osób ze zwracaniem: wylosowana osoba wraca na listę i może trafić do nowej próby po raz drugi, a inna osoba może do niej nie trafić wcale. Dla każdej nowej próby komputer liczy średni czas, a rozrzut 2000 średnich z nowych prób opisuje, jak bardzo wynik zależy od składu próby. Z czasów pięciu osób 3, 5, 6, 8 i 20 min jedna próba bootstrapowa może wyglądać tak: 5, 5, 8, 20, 3 — osoba z czasem 5 min trafiła do niej dwa razy, a osoba z czasem 6 min wcale.
 :::
 
-Bootstrap losuje z $n$ obserwacji próbę $n$ elementów ze zwracaniem i liczy statystykę dla każdej wylosowanej próby; po $B$ losowaniach odchylenie standardowe statystyk przybliża błąd standardowy, a kwantyle 2,5% i 97,5% wyznaczają przedział percentylowy [@efron1979; @hesterberg2015].
+Bootstrap opiera się na zasadzie podstawienia: nieznany rozkład populacji $F$ zastępuje rozkład empiryczny próby $\hat{F}$, który każdej z $n$ obserwacji przypisuje prawdopodobieństwo $1/n$ [@efron1979]. Losowanie ze zwracaniem jest losowaniem z $\hat{F}$, więc próba bootstrapowa jest próbą z najlepszego dostępnego przybliżenia populacji, a rozrzut statystyki między próbami bootstrapowymi przybliża rozrzut statystyki między próbami z populacji. Procedura ma trzy kroki. Bootstrap losuje z $n$ obserwacji próbę $n$ elementów ze zwracaniem i liczy statystykę dla każdej wylosowanej próby; po $B$ losowaniach odchylenie standardowe statystyk przybliża błąd standardowy, a kwantyle 2,5% i 97,5% wyznaczają przedział percentylowy [@efron1979; @hesterberg2015]. Statystyką może być średnia, mediana, odsetek, różnica średnich dwóch grup albo współczynnik korelacji, bo procedura w żadnym kroku ze wzoru na błąd standardowy nie korzysta.
 
 ::: {.wzor}
-$$x^{*}_1, \dots, x^{*}_n \ \text{losowane ze zwracaniem z} \ \{x_1, \dots, x_n\} \qquad SE_{\text{boot}} = \text{SD}\left(\bar{x}^{*}_1, \dots, \bar{x}^{*}_B\right) \qquad 95\%\ CI = \left[Q^{*}_{0{,}025};\ Q^{*}_{0{,}975}\right]$$
-$x^{*}$ — obserwacje próby bootstrapowej (jedna osoba może pojawić się kilka razy, inna wcale), $\bar{x}^{*}_b$ — średnia próby bootstrapowej $b$, $Q^{*}$ — kwantyle rozkładu bootstrapowego, $B$ — liczba losowań.
+$$\hat{F}: \ P(X^{*} = x_i) = \frac{1}{n} \qquad x^{*}_1, \dots, x^{*}_n \ \text{losowane ze zwracaniem z} \ \{x_1, \dots, x_n\} \qquad \hat\theta^{*}_b = \hat\theta\!\left(x^{*}_1, \dots, x^{*}_n\right)$$
+$$SE_{\text{boot}} = \text{SD}\left(\hat\theta^{*}_1, \dots, \hat\theta^{*}_B\right) \qquad 95\%\ CI = \left[Q^{*}_{0{,}025};\ Q^{*}_{0{,}975}\right] \qquad \widehat{\text{obc}} = \frac{1}{B}\sum_{b=1}^{B}\hat\theta^{*}_b - \hat\theta$$
+$\hat{F}$ — rozkład empiryczny próby, $x^{*}$ — obserwacje próby bootstrapowej (jedna osoba może pojawić się kilka razy, inna wcale), $\hat\theta$ — statystyka w danych (np. średnia $\bar{x}$ albo mediana), $\hat\theta^{*}_b$ — statystyka $\hat\theta$ obliczona w próbie bootstrapowej $b$, $Q^{*}$ — kwantyle rozkładu bootstrapowego, $B$ — liczba losowań, $\widehat{\text{obc}}$ — obciążenie bootstrapowe: różnica między średnią statystyk bootstrapowych a statystyką w danych [@efron1979; @hesterberg2015].
 :::
 
-Dla czasu w S02 bootstrapowy błąd standardowy średniej wynosi `r .zi_pl(sd(w3_boot_m), 3)` min wobec `r .zi_pl(w3_s_cz / sqrt(w3_n_cz), 3)` min ze wzoru, a przedział percentylowy [`r .zi_pl(w3_ci_m[1])`; `r .zi_pl(w3_ci_m[2])`] min leży blisko przedziału *t* [`r .zi_pl(w3_tci[1])`; `r .zi_pl(w3_tci[2])`] min. Bootstrap daje także przedział dla mediany, [`r .zi_pl(w3_ci_md[1])`; `r .zi_pl(w3_ci_md[2])`] min, dla której prosty wzór na błąd standardowy jest niedostępny (Rysunek \@ref(fig:w03-bootstrap)). Liczba $B$ wyznacza dokładność obliczenia komputerowego, a ilość informacji wyznacza $n$. Przy małych próbach przedział percentylowy obejmuje parametr rzadziej niż przedział *t*, a przy większych bywa od niego dokładniejszy [@hesterberg2015].
+Dla czasu w S02 bootstrapowy błąd standardowy średniej wynosi `r .zi_pl(sd(w3_boot_m), 3)` min wobec `r .zi_pl(w3_s_cz / sqrt(w3_n_cz), 3)` min ze wzoru, a przedział percentylowy [`r .zi_pl(w3_ci_m[1])`; `r .zi_pl(w3_ci_m[2])`] min leży blisko przedziału *t* [`r .zi_pl(w3_tci[1])`; `r .zi_pl(w3_tci[2])`] min. Bootstrap daje także przedział dla mediany, [`r .zi_pl(w3_ci_md[1])`; `r .zi_pl(w3_ci_md[2])`] min, dla której prosty wzór na błąd standardowy jest niedostępny (Rysunek \@ref(fig:w03-bootstrap)); średnia `r length(w3_boot_md)` median bootstrapowych wynosi `r .zi_pl(mean(w3_boot_md))` min wobec mediany próby `r .zi_pl(w3_md)` min, więc obciążenie bootstrapowe mediany wynosi `r .zi_pl(mean(w3_boot_md) - w3_md)` min. Liczba $B$ wyznacza dokładność obliczenia komputerowego, a ilość informacji wyznacza $n$: bootstrap z 2000 losowań na próbie 10 osób daje gładki histogram, a wiedza o populacji pochodzi nadal z 10 osób. Przy małych próbach przedział percentylowy obejmuje parametr rzadziej niż przedział *t*, a przy większych bywa od niego dokładniejszy [@hesterberg2015].
 
 ```{r w03-bootstrap, echo=FALSE, fig.height=3.8, fig.cap=w3_cap_bootstrap}
 w3_bt <- rbind(data.frame(wartosc = w3_boot_m, statystyka = "Średnia"),
@@ -451,7 +538,40 @@ Bootstrap odpowiada na pytanie, jak zmieniałby się wynik w kolejnych próbach.
 **Przykład S02.** W porównaniu czasu zadania doświadczonych i początkujących użytkowników hipoteza zerowa mówi, że doświadczenie nie zmienia czasu. Przy prawdziwej $H_0$ etykieta grupy przy każdej osobie jest przypadkowym dopiskiem, więc komputer może przestawiać etykiety między osobami bez zmiany rozkładu czasów. Po każdym przestawieniu komputer liczy różnicę średnich obu grup, a 2000 przestawień daje rozkład różnic powstających z samego przypadku. Wartość *p* jest udziałem przestawień, które dały różnicę co najmniej tak dużą jak różnica obserwowana. Przy czterech osobach, dwóch nowych i dwóch doświadczonych, możliwych podziałów na grupy jest sześć; przy `r w3_n_cz` osobach S02 liczba podziałów przekracza możliwości wyliczenia wszystkich, więc komputer losuje 2000 z nich.
 :::
 
-Wykład [W04](#w04-permutacja) opisuje porównanie grup, a ćwiczenie [C05](#c05-permutacja) wykonuje je w R.
+Rozkład odniesienia testu permutacyjnego ma dwie postaci. Dokładny rozkład permutacyjny obejmuje wszystkie $M$ jednakowo prawdopodobnych układów danych przy $H_0$: dla dwóch grup układem jest podział $n$ osób na grupy liczące $n_N$ i $n_D$ osób, a liczba podziałów wynosi $M = \binom{n}{n_N}$ (symbol dwumianowy z części 2). Rozkład Monte Carlo powstaje z $B$ podziałów wylosowanych spośród $M$ i przybliża rozkład dokładny; wartość *p* ma wtedy w liczniku i mianowniku poprawkę +1, która liczy podział obserwowany jako jedno z losowań [@phipson2010; @ernst2004, s. 682]. Statystyką testu jest różnica średnich $D$, a przestawienie etykiet zmienia skład grup i wartość różnicy, podczas gdy zbiór `r sum(w3_n_gr)` czasów pozostaje bez zmian.
+
+::: {.wzor}
+$$D_{\text{obs}} = \bar{x}_N - \bar{x}_D \qquad\qquad D^{*}_b = \bar{x}^{*}_{N,b} - \bar{x}^{*}_{D,b} \qquad\qquad M = \binom{n}{n_N} = \frac{n!}{n_N!\, n_D!}$$
+$$p_{\text{dokł}} = \frac{\#\{\text{podziały} : |D^{*}| \geq |D_{\text{obs}}|\}}{M} \qquad\qquad p_{\text{perm}} = \frac{1 + \#\{b : |D^{*}_b| \geq |D_{\text{obs}}|\}}{B + 1}$$
+$\bar{x}_N$, $\bar{x}_D$ — średnie czasu nowych i doświadczonych w danych, $\bar{x}^{*}_{N,b}$, $\bar{x}^{*}_{D,b}$ — średnie obu grup po $b$-tym przestawieniu etykiet, $n_N$, $n_D$ — liczebności grup, $M$ — liczba wszystkich podziałów, $B$ — liczba wylosowanych podziałów, $\#$ — liczba układów spełniających warunek. Licznik $p_{\text{perm}}$ odpowiada liczbie $k + 1$ ze wzoru w ćwiczeniu [C04](#c04-permutacja).
+:::
+
+Tabela \@ref(tab:w03-podzialy) wypisuje dokładny rozkład permutacyjny dla czterech pierwszych osób z czasem w S02: dwóch nowych (osoby 1 i 2) i dwóch doświadczonych (osoby 3 i 4). Etykietę „nowi” da się przypisać dwóm z czterech osób na $M = \binom{4}{2}$ = 6 sposobów, a podział obserwowany jest pierwszym z nich. Różnica co najmniej tak duża co do modułu jak obserwowana (`r .zi_pl(w3_podzialy[1])` min) występuje w `r w3_skrajne4` z 6 podziałów, więc $p_{\text{dokł}}$ = `r w3_skrajne4`/6 ≈ `r .zi_pl(w3_skrajne4 / 6)`: cztery osoby dostarczają zbyt mało układów, by jakikolwiek wynik osiągnął *p* < 0,05, bo najmniejsza możliwa wartość wynosi 2/6.
+
+```{r w03-podzialy, echo=FALSE}
+w3_tab4 <- data.frame(
+  podzial = 1:6,
+  nowi = apply(w3_uklady, 2, function(i) paste(i, collapse = " i ")),
+  czasy_n = apply(w3_uklady, 2, function(i) paste(.zi_pl(w3_cztery[i], 1), collapse = "; ")),
+  czasy_d = apply(w3_uklady, 2, function(i) paste(.zi_pl(w3_cztery[-i], 1), collapse = "; ")),
+  roznica = .zi_pl(w3_podzialy),
+  skrajny = ifelse(abs(w3_podzialy) >= abs(w3_podzialy[1]), "tak", "nie"))
+names(w3_tab4) <- c("Podział", "Osoby z etykietą „nowi”", "Czasy nowych [min]", "Czasy doświadczonych [min]",
+                    "$D^{*}$ [min]", "$|D^{*}| \\geq |D_{\\text{obs}}|$")
+knitr::kable(w3_tab4, align = "clllrc",
+  caption = sprintf("Wszystkie podziały czterech pierwszych osób z czasem w S02 na dwie grupy po dwie osoby. Podział 1 jest podziałem obserwowanym (D obs = %s min); kolumna ostatnia zaznacza podziały z różnicą co najmniej tak dużą co do modułu.", .zi_pl(w3_podzialy[1])))
+```
+
+Dla `r sum(w3_n_gr)` osób S02 z czasem liczba podziałów na grupy liczące `r w3_n_gr[["nowi"]]` i `r w3_n_gr[["doświadczeni"]]` osób ma `r w3_cyfry_podz` cyfr, dlatego komputer losuje $B$ = `r w3_B_perm` podziałów. Obserwowana różnica średnich wynosi `r .zi_pl(w3_roz_obs)` min, a różnicę co najmniej tak dużą co do modułu dało `r w3_k_perm` z `r w3_B_perm` losowań, więc $p_{\text{perm}}$ = (`r w3_k_perm` + 1)/(`r w3_B_perm` + 1) = `r .zi_pl(w3_p_perm, 3)` (Rysunek \@ref(fig:w03-perm)). Test Welcha dla czasu w S02 daje *p* `r .zi_p(w3_tw$p.value)`, więc oba tory prowadzą do jednego wniosku o różnicy czasu między nowymi a doświadczonymi użytkownikami.
+
+```{r w03-perm, echo=FALSE, fig.height=2.8, fig.cap=w3_cap_perm}
+ggplot(data.frame(d = w3_perm), aes(x = d)) +
+  geom_histogram(bins = 50, fill = "grey70", colour = "white") +
+  geom_vline(xintercept = c(1, -1) * w3_roz_obs, colour = "#D55E00", linewidth = 1, linetype = c("solid", "dashed")) +
+  labs(x = "Różnica średnich nowi − doświadczeni po przestawieniu etykiet [min]", y = "Liczba losowań")
+```
+
+Wykład [W04](#w04-permutacja) rozwija porównanie grup: opisuje statystykę studentyzowaną, czyli różnicę podzieloną przez własny błąd standardowy, która zachowuje poziom testu przy różnych wariancjach grup, oraz granice wniosku w grupach obserwacyjnych. Ćwiczenie [C05](#c05-permutacja) wykonuje test permutacyjny dwóch grup w R.
 
 ### Test zmiany znaków: wersja dla jednej próby {#w03-znaki .unnumbered}
 
@@ -459,7 +579,7 @@ Wykład [W04](#w04-permutacja) opisuje porównanie grup, a ćwiczenie [C05](#c05
 **Przykład S02.** Pytanie o ocenę katalogu dotyczy jednej próby, więc zamiast etykiet grup komputer przestawia znaki. Przy prawdziwej $H_0$: $\mu$ = 3 odchylenie oceny każdej osoby od 3 jest równie często dodatnie jak ujemne, więc losowa zmiana znaku odchylenia tworzy próbę, jaka mogłaby powstać przy neutralnej ocenie katalogu. Osoba z indeksem 4,2 ma odchylenie +1,2 od środka skali; po losowaniu znaku liczy się jako +1,2 albo −1,2, a osoba z indeksem 2,5 jako −0,5 albo +0,5.
 :::
 
-Test zmiany znaków dla jednej próby analizuje odchylenia od wartości odniesienia, $o_i = x_i - \mu_0$ (litera $d$ pozostaje zarezerwowana dla efektu standaryzowanego z części 6). Przy $H_0$ oraz niezależnych i symetrycznych odchyleniach znak każdego odchylenia jest równie prawdopodobny, więc losowe zmiany znaków dają rozkład statystyki przy $H_0$ [@winkler2014]. Wartość *p* liczy się z wylosowanego rozkładu z poprawką, dzięki której jest zawsze dodatnia [@phipson2010]:
+Test zmiany znaków dla jednej próby analizuje odchylenia od wartości odniesienia, $o_i = x_i - \mu_0$ (litera $d$ pozostaje zarezerwowana dla efektu standaryzowanego z części 6). Przy $H_0$ oraz niezależnych i symetrycznych odchyleniach znak każdego odchylenia jest równie prawdopodobny, więc losowe zmiany znaków dają rozkład statystyki przy $H_0$ [@winkler2014]. Układem danych jest wektor $n$ znaków, a liczba układów wynosi $M = 2^n$: dla `r w3_n` ocen w S02 liczba ma `r w3_cyfry_znaki` cyfr, więc komputer losuje $B$ układów, tak jak przy podziałach na grupy. Test rang znakowanych Wilcoxona z części o wnioskowaniu nieparametrycznym jest identycznym rozumowaniem zastosowanym do rang modułów odchyleń; test zmiany znaków zachowuje wartości odchyleń i dlatego ocenia średnią, a test Wilcoxona ocenia środek symetrii rozkładu. Wartość *p* liczy się z wylosowanego rozkładu z poprawką, dzięki której jest zawsze dodatnia [@phipson2010]:
 
 ::: {.wzor}
 $$T^{*}_b = \frac{1}{n}\sum_{i=1}^{n} \varepsilon_i o_i \qquad\qquad p_{\text{perm}} = \frac{1 + \#\{b : |T^{*}_b| \geq |T_{\text{obs}}|\}}{B + 1}$$
@@ -489,4 +609,4 @@ Czytanie raportu polega na odszukaniu kolejno estymandy, liczebności, efektu z 
 
 ## Podsumowanie {#w03-podsumowanie .unnumbered}
 
-Jedna próba daje estymatę, a jej niepewność opisuje rozkład estymatora: błąd standardowy maleje proporcjonalnie do $1/\sqrt{n}$, a centralne twierdzenie graniczne przybliża rozkład średniej rozkładem normalnym nawet przy skośnych danych, np. przy czasie zadania. Przedział ufności jest procedurą, która przy spełnionych założeniach w 95% powtórzeń obejmuje parametr, a wartość *p* mierzy zgodność danych z hipotezą zerową przy założeniach modelu. Efekt i przedział odpowiadają na pytanie, jak duża jest różnica i jak dokładnie ją znamy; o znaczeniu praktycznym decyduje próg ustalony przy planowaniu badania. Bootstrap i test permutacyjny odpowiadają na identyczne pytania drogą losowania z danych i sprawdzają, czy wniosek zależy od założeń klasycznego toru. Błąd systematyczny doboru próby pozostaje poza błędem standardowym, dlatego raport opisuje zawsze także sposób zebrania danych.
+Jedna próba daje estymatę, a jej niepewność opisuje rozkład estymatora: błąd standardowy maleje proporcjonalnie do $1/\sqrt{n}$, a centralne twierdzenie graniczne przybliża rozkład średniej rozkładem normalnym nawet przy skośnych danych, np. przy czasie zadania. Przedział ufności jest procedurą, która przy spełnionych założeniach w 95% powtórzeń obejmuje parametr, a wartość *p* mierzy zgodność danych z hipotezą zerową przy założeniach modelu. Efekt i przedział odpowiadają na pytanie, jak duża jest różnica i jak dokładnie ją znamy; o znaczeniu praktycznym decyduje próg ustalony przy planowaniu badania. Kurs rozróżnia cztery rodzaje wnioskowania: parametryczne wyprowadza rozkład odniesienia z modelu rozkładu (rozkład *t*), nieparametryczne z przeliczenia układów znaków lub rang (test znaków, test Wilcoxona), bootstrapowe z losowania ze zwracaniem (błąd standardowy i przedział dowolnej statystyki), a permutacyjne z przestawień danych przy prawdziwej $H_0$ (przestawianie etykiet grup, zmiana znaków). Bootstrap i test permutacyjny odpowiadają na identyczne pytania co tor klasyczny drogą losowania z danych i sprawdzają, czy wniosek zależy od założeń klasycznego toru; dla oceny katalogu i dla różnicy czasu między grupami wszystkie rodzaje wnioskowania prowadzą w S02 do jednego wniosku. Błąd systematyczny doboru próby pozostaje poza błędem standardowym, dlatego raport opisuje zawsze także sposób zebrania danych.

@@ -47,4 +47,5 @@ Zasady zapisu stosują styl APA 7 [@apa2020; @apa2024] z polską notacją liczb:
 - Dwa miejsca po przecinku dla średnich, odchyleń, korelacji, proporcji i statystyk testu, dwa lub trzy dla *p* [@apa2024]; w kursie *p* ma trzy miejsca, a procenty jedno. Średnie i odchylenia wyników na skalach całkowitoliczbowych, np. odpowiedzi ankietowych, APA zaokrągla do jednego miejsca [@apa2024]; kurs podaje dwa miejsca dla wszystkich średnich i odchyleń.
 - Przedział ufności w nawiasie kwadratowym ze średnikiem: 95% CI [0,17; 0,41].
 - Po statystyce testu stopnie swobody w nawiasie: *t*(193,89) = 2,81; *F*(3, 226) = 4,49; $\chi^2$(1, *N* = 237) = 13,29.
+- Rysunek w raporcie: numer pogrubiony nad rysunkiem, tytuł kursywą pod numerem, legenda, nota pod rysunkiem, odwołanie w tekście przez numer [@apa2020, rozdz. 7]; w kursie nota podaje mianownik i liczebności ([C07](#c07-rysunek)).
 - Wniosek wynika z *p*, przedziału i efektu łącznie. Przy *p* ≥ 0,05 piszesz o braku podstaw do odrzucenia $H_0$ i podajesz przedział; przy badaniu obserwacyjnym opisujesz współwystępowanie; wniosek przyczynowy wymaga eksperymentu.

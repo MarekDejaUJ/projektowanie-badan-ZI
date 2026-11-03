@@ -31,7 +31,7 @@ karta_zi("S18")
 
 Dane: ID `r params$id`, `r nrow(dane)` osób.
 
-## Zadanie 7.1. Tabela i procenty warunkowe (2 pkt)
+## Zadanie 7.1. Tabela i procenty warunkowe (1 pkt)
 
 **Polecenie:** Podaj liczbę i odsetek osób, które uzyskały dostęp do zasobu, w grupach „zdalni” i „lokalni”. Wyjaśnij, dlaczego mianownikiem procentu jest liczba osób w wierszu.
 
@@ -47,7 +47,7 @@ ggplot(dane, aes(x = grupa, fill = powodzenie)) +
 
 **Odpowiedź:**
 
-## Zadanie 7.2. Test chi-kwadrat i V Craméra (2 pkt)
+## Zadanie 7.2. Test chi-kwadrat i V Craméra (1 pkt)
 
 **Polecenie:** Zapisz *H*~0~. Sprawdź liczebności oczekiwane i podaj wynik testu: $\chi^2$, *df*, *N*, *p* oraz *V* Craméra z oceną siły związku.
 
@@ -95,5 +95,29 @@ pary <- table(przed = dane$powodzenie, po = dane$powodzenie_po)
 pary
 mcnemar.test(pary, correct = FALSE)
 ```
+
+**Odpowiedź:**
+
+## Zadanie 7.6. Opis rysunku według APA (2 pkt)
+
+**Polecenie:** Nadaj wykresowi odsetka udanych prób dostępu w grupach tytuł i notę według APA: uzupełnij tytuł kursywą pod numerem rysunku i notę pod blokiem kodu (mianownik odsetków, liczebności grup, źródło danych). W odpowiedzi napisz 2–3 zdania, które odwołują się do rysunku przez numer: co przedstawia, jaki jest mianownik odsetków i jakie ograniczenie ma odczyt.
+
+**Rysunek 1**
+
+*[Tytuł: zmienne i grupy, bez liczb]*
+
+```{r z7-6, fig.height=2.8}
+powodzenia <- as.data.frame.matrix(table(dane$grupa, dane$powodzenie))
+powodzenia$grupa <- factor(rownames(powodzenia), levels = rownames(powodzenia))
+powodzenia$n <- powodzenia$tak + powodzenia$nie
+powodzenia$procent <- 100 * powodzenia$tak / powodzenia$n
+ggplot(powodzenia, aes(x = grupa, y = procent)) +
+  geom_col(fill = "#0072B2", width = 0.6) +
+  geom_text(aes(label = paste0(tak, " z ", n)), vjust = -0.4, size = 3.4) +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = NULL, y = "Odsetek udanych prób dostępu [%]")
+```
+
+*Nota.* [mianownik odsetków, liczebności grup, źródło danych: scenariusz S18, Twoje ID]
 
 **Odpowiedź:**

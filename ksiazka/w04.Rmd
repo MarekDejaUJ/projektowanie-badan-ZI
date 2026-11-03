@@ -96,6 +96,12 @@ w4_sz_d <- w4_t2["doświadczeni", "tak"] / w4_t2["doświadczeni", "nie"]
 
 # Tabela 4 × 2 (status i powodzenie) oraz pary wyników 0/1 (test McNemara).
 w4_t3 <- table(w4_dane$kategoria, w4_dane$powodzenie)
+# Mapa cieplna: odsetek powodzeń w komórkach grupa × status z liczebnością komórki.
+w4_mapa <- as.data.frame(table(grupa = w4_dane$grupa, status = w4_dane$kategoria, powodzenie = w4_dane$powodzenie))
+w4_mapa <- merge(w4_mapa[w4_mapa$powodzenie == "tak", c("grupa", "status", "Freq")],
+                 aggregate(Freq ~ grupa + status, data = w4_mapa, FUN = sum), by = c("grupa", "status"))
+names(w4_mapa) <- c("grupa", "status", "k", "n")
+w4_mapa$procent <- 100 * w4_mapa$k / w4_mapa$n
 w4_ch3 <- chisq.test(w4_t3)
 set.seed(2026)
 w4_mc3 <- chisq.test(w4_t3, simulate.p.value = TRUE, B = 4999)
@@ -269,6 +275,16 @@ Table: (\#tab:w04-liczebnosci) Powodzenie zadania w grupach S02: liczebności ob
 | razem | `r sum(w4_t2[, "nie"])` | `r w4_razem_tak` | `r sum(w4_t2)` |
 
 Odsetek w wierszu odpowiada na pytanie o skuteczność grupy: dokument znalazło `r .zi_pl(w4_proc["nowi", "tak"], 1)`% nowych i `r .zi_pl(w4_proc["doświadczeni", "tak"], 1)`% doświadczonych użytkowników. Odsetek w kolumnie odpowiada na pytanie o skład osób z powodzeniem: nowi stanowią `r .zi_pl(100 * w4_t2["nowi", "tak"] / w4_razem_tak, 1)`% wszystkich osób, które znalazły dokument. Mianownik wynika z pytania postawionego w raporcie.
+
+Tabela z trzema zmiennymi, na przykład grupą, statusem i powodzeniem, ma za dużo komórek na jeden rząd słupków; mapa cieplna koduje odsetek powodzeń każdej komórki kolorem, a liczebność komórki podaje napisem, dlatego każda komórka zachowuje mianownik. Odsetek powodzeń w ośmiu komórkach grupy i statusu waha się od `r .zi_pl(min(w4_mapa$procent), 1)`% do `r .zi_pl(max(w4_mapa$procent), 1)`%; komórki o podobnym kolorze mają różne liczebności, a więc różną precyzję odsetka (rysunek \@ref(fig:w04-mapa)). Porównanie jasności i nasycenia koloru jest mniej dokładne od porównania położenia na wspólnej osi [@cleveland1984], więc mapa cieplna służy do przeglądu wzorca, a liczby do raportu.
+
+```{r w04-mapa, echo=FALSE, fig.height=2.8, fig.cap=paste0("Mapa cieplna odsetka powodzeń w grupach i statusach S02. Kolumny: status; wiersze: nowi i doświadczeni; kolor odpowiada odsetkowi na skali 0–100%, a napis podaje liczbę powodzeń i liczebność komórki. Najjaśniejsza komórka ma ", .zi_pl(min(w4_mapa$procent), 1), "%, najciemniejsza ", .zi_pl(max(w4_mapa$procent), 1), "%.")}
+ggplot(w4_mapa, aes(status, grupa, fill = procent)) +
+  geom_tile(colour = "white") +
+  geom_text(aes(label = paste0(k, "/", n)), size = 3.4, colour = ifelse(w4_mapa$procent > 70, "white", "black")) +
+  scale_fill_gradient(low = "#eef5fb", high = "#0072B2", limits = c(0, 100), name = "% powodzeń") +
+  labs(x = NULL, y = NULL)
+```
 
 ## 9. Test χ²: liczebności obserwowane i oczekiwane {#w04-chi .unnumbered}
 

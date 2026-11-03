@@ -8,7 +8,7 @@
 **Lektura:** @king2009 [rozdz. 19]; @gosssampson2025 [s. 145–152].
 :::
 
-Powodzenie zadania jest zmienną kategorialną: dokument znaleziono albo nie. Ćwiczenie C07 sprawdza, czy odsetek powodzeń zależy od doświadczenia użytkownika i od jego statusu, oraz czy zmienia się w drugiej próbie po instrukcji. Narzędziem jest tabela krzyżowa: procenty warunkowe, test $\chi^2$, miary siły i kierunku związku oraz test McNemara dla par.
+Powodzenie zadania jest zmienną kategorialną: dokument znaleziono albo nie. Ćwiczenie C07 sprawdza, czy odsetek powodzeń zależy od doświadczenia użytkownika i od jego statusu, oraz czy zmienia się w drugiej próbie po instrukcji. Narzędziem jest tabela krzyżowa: procenty warunkowe, test $\chi^2$, miary siły i kierunku związku oraz test McNemara dla par. Ostatnia część zapisuje wykres odsetków jako rysunek raportu według APA: numer, tytuł, nota i odwołanie w tekście.
 
 ```{r c07-dane, include=FALSE}
 dane <- dane_zi("S02", id = "wzor")
@@ -107,9 +107,46 @@ mcnemar.test(pary, correct = FALSE)
 
 W parach pomiarów zmiana z „nie” na „tak” wystąpiła `r tab3["nie", "tak"]` razy (*c*), a zmiana z „tak” na „nie” `r tab3["tak", "nie"]` razy (*b*). Przewaga zmian na lepsze jest istotna: $\chi^2$(1) = `r .zi_pl(mn$statistic)`, *p* `r .zi_p(mn$p.value)`. Odsetek powodzeń wzrósł z `r .zi_pl(100 * mean(dane$powodzenie == "tak"), 1)`% do `r .zi_pl(100 * mean(dane$powodzenie_po == "tak"), 1)`%.
 
+## LEARN 6. Opis rysunku według APA {#c07-rysunek .unnumbered}
+
+Rysunek w raporcie ma pięć elementów: numer (pogrubiony, nad rysunkiem), tytuł (kursywą, pod numerem, krótki i opisowy), obraz, legendę objaśniającą symbole i kolory oraz notę pod rysunkiem (*Nota.* kursywą) ze skrótami i objaśnieniami potrzebnymi do odczytu [@apa2020, rozdz. 7]. Tekst odwołuje się do rysunku przez numer („rysunek 1 przedstawia…”), a każdy rysunek ma co najmniej jedno odwołanie w tekście [@apa2020, rozdz. 7]. Kurs wymaga dodatkowo, aby nota podawała mianownik odsetków i liczebności grup, a podpisy osi jednostki. Odczyt wykresu w tekście zaczyna się od jednostki obserwacji, licznika i mianownika, potem podaje wielkość zakodowaną położeniem, polem lub kolorem, a kończy na wzorcu i jego ograniczeniu ([W02](#w02-wykresy)). Rysunek 1 ma gotowy układ dla wykresu powodzeń w grupach S02, a blok Markdown po nocie podaje zapis, który daje identyczny układ w pliku zadania.
+
+**Rysunek 1**
+
+*Odsetek osób, które znalazły dokument, w dwóch grupach użytkowników katalogu*
+
+```{r c07-rysunek, fig.height=2.8}
+powodzenia <- as.data.frame.matrix(table(dane$grupa, dane$powodzenie))
+powodzenia$grupa <- factor(rownames(powodzenia), levels = rownames(powodzenia))
+powodzenia$n <- powodzenia$tak + powodzenia$nie
+powodzenia$procent <- 100 * powodzenia$tak / powodzenia$n
+ggplot(powodzenia, aes(x = grupa, y = procent)) +
+  geom_col(fill = "#0072B2", width = 0.6) +
+  geom_text(aes(label = paste0(tak, " z ", n)), vjust = -0.4, size = 3.4) +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = NULL, y = "Odsetek osób z powodzeniem [%]")
+```
+
+*Nota.* Nad słupkami liczba osób z powodzeniem i liczebność grupy (nowi: *n* = `r sum(tab[1, ])`, doświadczeni: *n* = `r sum(tab[2, ])`); mianownikiem odsetka są wszystkie osoby grupy, także osoby bez powodzenia. Dane S02, ID `wzor`.
+
+```markdown
+**Rysunek 1**
+
+*Odsetek osób, które znalazły dokument, w dwóch grupach użytkowników katalogu*
+
+[blok kodu z wykresem]
+
+*Nota.* Nad słupkami liczba osób z powodzeniem i liczebność grupy (nowi: *n* = 105,
+doświadczeni: *n* = 125); mianownikiem odsetka są wszystkie osoby grupy. Dane S02, ID `wzor`.
+```
+
+Tytuł nazywa zmienne i grupy, a liczby należą do noty i do tekstu. Zdanie w tekście odwołuje się do rysunku przez numer i podaje odczyt: rysunek 1 przedstawia odsetek osób z powodzeniem w dwóch grupach; dokument znalazło `r .zi_pl(100 * proc[1, "tak"], 1)`% nowych i `r .zi_pl(100 * proc[2, "tak"], 1)`% doświadczonych użytkowników, a różnica `r .zi_pl(100 * (proc[2, "tak"] - proc[1, "tak"]), 1)` punktu procentowego odpowiada wynikowi testu z LEARN 2. Ograniczenie odczytu należy do zdania: odsetki opisują współwystępowanie doświadczenia z powodzeniem w badaniu obserwacyjnym.
+
 ## Wzorce zapisu {#c07-apa .unnumbered}
 
 ::: {.apa}
+**Opis rysunku.** Rysunek 1 przedstawia odsetek osób, które znalazły dokument, w dwóch grupach użytkowników: `r .zi_pl(100 * proc[1, "tak"], 1)`% nowych (`r tab[1, "tak"]` z `r sum(tab[1, ])`) i `r .zi_pl(100 * proc[2, "tak"], 1)`% doświadczonych (`r tab[2, "tak"]` z `r sum(tab[2, ])`). Mianownikiem każdego słupka była liczebność grupy, a różnica `r .zi_pl(100 * (proc[2, "tak"] - proc[1, "tak"]), 1)` punktu procentowego opisywała współwystępowanie doświadczenia z powodzeniem w badaniu obserwacyjnym.
+
 **Związek dwóch zmiennych.** Dokument znalazło `r .zi_pl(100 * proc[1, "tak"], 1)`% nowych (`r tab[1, "tak"]` z `r sum(tab[1, ])`) i `r .zi_pl(100 * proc[2, "tak"], 1)`% doświadczonych użytkowników (`r tab[2, "tak"]` z `r sum(tab[2, ])`); różnica była istotna, $\chi^2$(`r ch$parameter`, *N* = `r sum(tab)`) = `r .zi_pl(ch$statistic)`, *p* `r .zi_p(ch$p.value)`, *V* = `r .zi_pl(v$Cramers_v)`. Odsetek powodzeń nowych był niższy o `r .zi_pl(-100 * mr$wartosc[3], 1)` punktu procentowego, 95% CI [`r .zi_pl(-100 * mr$gorna_95[3], 1)`; `r .zi_pl(-100 * mr$dolna_95[3], 1)`], *RR* = `r .zi_pl(mr$wartosc[4])`.
 
 **Wynik nieistotny.** Odsetek powodzeń był zbliżony w grupach statusu, a różnice były nieistotne statystycznie, $\chi^2$(`r ch2$parameter`, *N* = `r sum(tab2)`) = `r .zi_pl(ch2$statistic)`, *p* `r .zi_p(ch2$p.value)` (Monte Carlo: *p* `r .zi_p(mc2$p.value)`).
@@ -120,5 +157,5 @@ W parach pomiarów zmiana z „nie” na „tak” wystąpiła `r tab3["nie", "t
 ## CHALLENGE {-}
 
 ::: {.challenge}
-**Plik `zadanie-07.Rmd`**, scenariusz S18: dostęp do zasobów biblioteki z sieci lokalnej i zdalnie, dane według Twojego ID. Pięć poleceń: tabela i procenty, test $\chi^2$ z *V*, miary ryzyka, rodzaj zasobu z resztami i testem Monte Carlo, test McNemara i akapit dla biblioteki. Oddanie: `oddaj_zadanie(7)`.
+**Plik `zadanie-07.Rmd`**, scenariusz S18: dostęp do zasobów biblioteki z sieci lokalnej i zdalnie, dane według Twojego ID. Sześć poleceń: tabela i procenty, test $\chi^2$ z *V*, miary ryzyka, rodzaj zasobu z resztami i testem Monte Carlo, test McNemara i akapit dla biblioteki, opis rysunku według APA. Oddanie: `oddaj_zadanie(7)`.
 :::

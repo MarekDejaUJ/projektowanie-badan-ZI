@@ -8,7 +8,7 @@
 **Lektura obowiązkowa:** @francuz2007 [rozdz. 8–9]; @gosssampson2025 [s. 69–87]. **Lektura uzupełniająca:** @king2009 [rozdz. 8–10, 17].
 :::
 
-Biblioteka pyta, czy osoby, które lepiej oceniają katalog, szybciej wykonują w nim zadanie wyszukiwawcze. Odpowiedź łączy dwa wyniki jednej osoby: deklarowaną ocenę z ankiety i czas zadania z obserwacji. Wykład W05 prowadzi od wykresu punktowego przez współczynniki korelacji i model regresji prostej do akapitu raportu; ćwiczenie C08 przeprowadza analizę danych S02 w R, a ćwiczenie C10 przenosi analizę do projektu.
+Biblioteka pyta, czy osoby, które lepiej oceniają katalog, szybciej wykonują w nim zadanie wyszukiwawcze. Odpowiedź łączy dwa wyniki jednej osoby: deklarowaną ocenę z ankiety i czas zadania z obserwacji. Wykład W05 prowadzi od wykresu punktowego przez współczynniki korelacji, model regresji prostej z rozkładem sum kwadratów, diagram przyczynowy z ważeniem i rodzaje regresji do akapitu raportu; ćwiczenie C08 przeprowadza analizę danych S02 w R, a ćwiczenie C10 przenosi analizę do projektu.
 
 ```{r w05-dane, include=FALSE}
 w5_dane <- dane_zi("S02", id = "wzor")
@@ -106,34 +106,89 @@ w5_dek$poziom <- cut(w5_dek$indeks, c(0, 2.5, 3.5, 5), labels = c("do 2,5", "2,5
 w5_sukces <- aggregate(cbind(tak = powodzenie == "tak") ~ poziom, data = w5_dek, FUN = function(v) c(k = sum(v), n = length(v)))
 w5_sukces <- data.frame(poziom = w5_sukces$poziom, k = w5_sukces$tak[, "k"], n = w5_sukces$tak[, "n"])
 w5_sukces$procent <- 100 * w5_sukces$k / w5_sukces$n
-# Regresja wieloraka z grupą.
+# Rozkład sum kwadratów SST = SSR + SSE i trzy osoby do rysunku odległości.
+w5_ssr <- sum((fitted(w5_m) - mean(w5_pary$czas))^2)
+w5_trzy <- c(which(abs(w5_pary$indeks - 1.8) < 0.35)[which.max(abs(w5_e[abs(w5_pary$indeks - 1.8) < 0.35]))],
+             which(abs(w5_pary$indeks - 3.2) < 0.35)[which.min(w5_e[abs(w5_pary$indeks - 3.2) < 0.35])],
+             which(abs(w5_pary$indeks - 4.5) < 0.35)[which.max(abs(w5_e[abs(w5_pary$indeks - 4.5) < 0.35]))])
+w5_odl <- data.frame(indeks = w5_pary$indeks[w5_trzy], czas = w5_pary$czas[w5_trzy], fit = fitted(w5_m)[w5_trzy])
+w5_odl_dl <- rbind(
+  data.frame(skladnik = "SST: y − ȳ", x = w5_odl$indeks + 0.06, od = w5_my, do = w5_odl$czas),
+  data.frame(skladnik = "SSR: ŷ − ȳ", x = w5_odl$indeks - 0.06, od = w5_my, do = w5_odl$fit),
+  data.frame(skladnik = "SSE: y − ŷ", x = w5_odl$indeks, od = w5_odl$fit, do = w5_odl$czas))
+w5_odl_dl$skladnik <- factor(w5_odl_dl$skladnik, levels = c("SST: y − ȳ", "SSR: ŷ − ȳ", "SSE: y − ŷ"))
+# Regresja wielokrotna (jedna zmienna wynikowa, dwa predyktory): czas względem oceny i grupy.
 w5_mm <- lm(czas ~ indeks + grupa, data = w5_pary)
 w5_smm <- summary(w5_mm)
 w5_bm <- coef(w5_mm)
 w5_vif <- car::vif(w5_mm)
-# Rozszerzenia: kanały, status, mapa powodzeń, krzywa ukończenia, reszty cząstkowe.
-w5_kan <- kanaly_zi(w5_dane)
-w5_kan <- w5_kan[order(-w5_kan$wskazania), ]
-w5_kan$skum <- 100 * cumsum(w5_kan$wskazania) / sum(w5_kan$wskazania)
-w5_kat <- as.data.frame(table(status = w5_dane$kategoria))
-w5_kat$procent <- 100 * w5_kat$Freq / sum(w5_kat$Freq)
-w5_mapa <- as.data.frame(table(grupa = w5_dane$grupa, status = w5_dane$kategoria, powodzenie = w5_dane$powodzenie))
-w5_mapa <- merge(w5_mapa[w5_mapa$powodzenie == "tak", c("grupa", "status", "Freq")],
-                 aggregate(Freq ~ grupa + status, data = w5_mapa, FUN = sum), by = c("grupa", "status"))
-names(w5_mapa) <- c("grupa", "status", "k", "n")
-w5_mapa$procent <- 100 * w5_mapa$k / w5_mapa$n
-w5_ogd <- opis_grup(w5_dane, czas, grupa)
-w5_czas <- w5_dane[!is.na(w5_dane$czas), ]
-w5_krzywa <- do.call(rbind, lapply(levels(w5_czas$grupa), function(g) {
-  d <- w5_czas[w5_czas$grupa == g, ]
-  t <- seq(0, 30, by = 0.25)
-  data.frame(grupa = g, czas = t, procent = 100 * sapply(t, function(u) mean(d$powodzenie == "tak" & d$czas <= u)))
-}))
-w5_ukonczenie <- function(g, u) {
-  d <- w5_czas[w5_czas$grupa == g, ]
-  100 * mean(d$powodzenie == "tak" & d$czas <= u)
-}
 w5_czastkowe <- data.frame(indeks = w5_pary$indeks, reszta = residuals(w5_mm) + w5_bm["indeks"] * w5_pary$indeks)
+# Diagram przyczynowy (DAG): trzy struktury na zmiennych S02.
+w5_dag_w <- data.frame(
+  panel = rep(c("A. Wspólna przyczyna", "B. Mediator", "C. Wspólny skutek"), each = 3),
+  nazwa = c("Doświadczenie (G)", "Ocena katalogu (X)", "Czas zadania (Y)",
+            "Ocena katalogu (X)", "Sposób wyszukiwania (M)", "Czas zadania (Y)",
+            "Ocena katalogu (X)", "Powodzenie zadania (C)", "Czas zadania (Y)"),
+  x = c(1, 0, 2, 0, 1, 2, 0, 1, 2), y = c(1, 0, 0, 0, 1, 0, 1, 0, 1))
+w5_dag_k <- data.frame(
+  panel = c(rep("A. Wspólna przyczyna", 3), rep("B. Mediator", 3), rep("C. Wspólny skutek", 2)),
+  x = c(1, 1, 0, 0, 1, 0, 0, 2), y = c(1, 1, 0, 0, 1, 0, 1, 1),
+  xend = c(0, 2, 2, 1, 2, 2, 1, 1), yend = c(0, 0, 0, 1, 0, 0, 0, 0),
+  pytanie = c(FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE))
+w5_dag_skroc <- function(k) {
+  dx <- k$xend - k$x; dy <- k$yend - k$y; d <- sqrt(dx^2 + dy^2)
+  u <- ifelse(dy == 0, 0.62, 0.17)
+  k$x <- k$x + u * dx / d; k$y <- k$y + u * dy / d
+  k$xend <- k$xend - u * dx / d; k$yend <- k$yend - u * dy / d
+  k
+}
+w5_dag_k <- w5_dag_skroc(w5_dag_k)
+# Ważenie we wnioskowaniu przyczynowym: ekspozycja A (wysoka ocena, indeks >= 3,5), wynik czas,
+# zmienne L (grupa, częstość korzystania, wiek); wskaźnik skłonności, wagi IPW, standaryzacja, AIPW, GPS.
+w5_w <- w5_dane[!is.na(w5_dane$indeks) & !is.na(w5_dane$czas) & !is.na(w5_dane$czestosc) & !is.na(w5_dane$wiek), ]
+w5_w$A <- as.integer(w5_w$indeks >= 3.5)
+w5_naiw <- mean(w5_w$czas[w5_w$A == 1]) - mean(w5_w$czas[w5_w$A == 0])
+w5_ps <- glm(A ~ grupa + czestosc + wiek, family = binomial, data = w5_w)
+w5_w$e <- fitted(w5_ps)
+w5_w$waga <- ifelse(w5_w$A == 1, 1 / w5_w$e, 1 / (1 - w5_w$e))
+w5_ipw <- with(w5_w, sum(A * czas * waga) / sum(A * waga) - sum((1 - A) * czas * waga) / sum((1 - A) * waga))
+w5_m1 <- lm(czas ~ grupa + czestosc + wiek, data = w5_w[w5_w$A == 1, ])
+w5_m0 <- lm(czas ~ grupa + czestosc + wiek, data = w5_w[w5_w$A == 0, ])
+w5_w$m1 <- predict(w5_m1, w5_w)
+w5_w$m0 <- predict(w5_m0, w5_w)
+w5_std <- mean(w5_w$m1) - mean(w5_w$m0)
+w5_aipw <- with(w5_w, mean(A * (czas - m1) / e + m1) - mean((1 - A) * (czas - m0) / (1 - e) + m0))
+w5_rown <- function(z) c(mean(z[w5_w$A == 1]), mean(z[w5_w$A == 0]),
+                         weighted.mean(z[w5_w$A == 1], w5_w$waga[w5_w$A == 1]), weighted.mean(z[w5_w$A == 0], w5_w$waga[w5_w$A == 0]))
+w5_rownowaga <- rbind(w5_rown(as.numeric(w5_w$grupa == "doświadczeni")) * 100, w5_rown(w5_w$czestosc), w5_rown(w5_w$wiek))
+set.seed(2027)
+w5_boot_ipw <- replicate(1000, {
+  i <- sample(nrow(w5_w), replace = TRUE)
+  d <- w5_w[i, ]
+  e <- fitted(glm(A ~ grupa + czestosc + wiek, family = binomial, data = d))
+  wg <- ifelse(d$A == 1, 1 / e, 1 / (1 - e))
+  sum(d$A * d$czas * wg) / sum(d$A * wg) - sum((1 - d$A) * d$czas * wg) / sum((1 - d$A) * wg)
+})
+w5_ci_ipw <- unname(quantile(w5_boot_ipw, c(0.025, 0.975)))
+w5_gm <- lm(indeks ~ grupa + czestosc + wiek, data = w5_w)
+w5_w$gps <- dnorm(w5_w$indeks, fitted(w5_gm), sigma(w5_gm))
+w5_w$gps_st <- dnorm(w5_w$indeks, mean(w5_w$indeks), sd(w5_w$indeks)) / w5_w$gps
+w5_msm <- lm(czas ~ indeks, data = w5_w, weights = gps_st)
+w5_b_surowe <- coef(lm(czas ~ indeks, data = w5_w))[2]
+# Regresja wieloraka (dwie zmienne wynikowe naraz): czas pierwszej i drugiej próby.
+w5_mv_dane <- w5_dane[!is.na(w5_dane$czas) & !is.na(w5_dane$czas_po) & !is.na(w5_dane$indeks), ]
+w5_mv <- lm(cbind(czas, czas_po) ~ indeks + grupa, data = w5_mv_dane)
+w5_mv_b <- coef(w5_mv)
+w5_mv_an <- anova(w5_mv)
+# Regresja logistyczna: powodzenie względem oceny i grupy.
+w5_lg <- glm(powodzenie ~ indeks + grupa, family = binomial, data = w5_dek)
+w5_lg_b <- coef(w5_lg)
+w5_lg_or <- exp(cbind(w5_lg_b, confint.default(w5_lg)))
+w5_lg_p <- summary(w5_lg)$coefficients[, 4]
+w5_lg_nowi <- predict(w5_lg, data.frame(indeks = c(2, 4), grupa = "nowi"), type = "response")
+w5_lg_siatka <- expand.grid(indeks = seq(1, 5, by = 0.05), grupa = levels(w5_dek$grupa))
+w5_lg_siatka$p <- predict(w5_lg, w5_lg_siatka, type = "response")
+w5_sukces$srodek <- c(1.75, 3, 4.25)
 ```
 
 ## 1. Dwa rodzaje dowodów: deklaracja i wykonanie {#w05-dowody .unnumbered}
@@ -160,7 +215,11 @@ Estymandą korelacji Pearsona jest korelacja liniowa w populacji $\rho_P$, a est
 | $b_0$, $b_1$; $\beta_0$, $\beta_1$ | wyraz wolny i nachylenie: estymaty i parametry populacji |
 | $\hat{y}_i$, $e_i$, $s_e$ | wartość przewidywana, reszta $y_i - \hat{y}_i$, odchylenie standardowe reszt |
 | $R^2$ | współczynnik determinacji |
+| $SST$, $SSR$, $SSE$ | suma kwadratów całkowita, regresji i reszt: $SST = SSR + SSE$ |
 | $B$ | liczba losowań w permutacji lub bootstrapie |
+| $Y_i(1)$, $Y_i(0)$; $A_i$; $L_i$ | wyniki potencjalne osoby $i$ przy ekspozycji i bez niej; ekspozycja (1 albo 0); mierzone wspólne przyczyny |
+| $e(L)$, $w_i$ | wskaźnik skłonności $P(A = 1 \mid L)$ i waga odwrotności prawdopodobieństwa |
+| $\pi(x)$, $OR$ | prawdopodobieństwo powodzenia przy ocenie $x$ w regresji logistycznej i iloraz szans $e^{\beta_1}$ |
 
 ## 3. Wykres przed współczynnikiem {#w05-wykres .unnumbered}
 
@@ -278,6 +337,27 @@ $SSE$ — suma kwadratów reszt (błąd modelu), $SST$ — suma kwadratów odchy
 
 $R^2$ porównuje błąd modelu z błędem przewidywania wszystkich osób jedną średnią. W S02 $SSE$ = `r .zi_pl(w5_sse, 1)`, a $SST$ = `r .zi_pl(w5_sst, 1)`, więc $R^2$ = `r .zi_pl(w5_sm$r.squared)`: model przypisuje ocenie `r .zi_pl(100 * w5_sm$r.squared, 0)`% zmienności czasu. W regresji prostej $R^2 = r^2$ [@schneider2010, s. 778; @gosssampson2025, s. 72], a odchylenie standardowe reszt $s_e$ = `r .zi_pl(w5_sm$sigma)` minuty opisuje typową odległość punktu od prostej.
 
+Całkowita suma kwadratów odchyleń od średniej rozkłada się na sumę kwadratów modelu (odległości prostej od średniej) i sumę kwadratów reszt, a $R^2$ jest udziałem sumy kwadratów modelu w sumie całkowitej [@gosssampson2025, s. 76–77]. Odległość każdej osoby od średniej $y_i - \bar{y}$ jest sumą odległości prostej od średniej $\hat{y}_i - \bar{y}$ i reszty $y_i - \hat{y}_i$; po podniesieniu do kwadratu i zsumowaniu iloczyn mieszany znika, ponieważ reszty prostej najmniejszych kwadratów z wyrazem wolnym sumują się do zera i są nieskorelowane z wartościami przewidywanymi. Oznaczenia różnią się między podręcznikami: część z nich oznacza sumę kwadratów reszt symbolem $SSR$ [@gosssampson2025, s. 76], a W05 używa $SSE$ dla reszt i $SSR$ dla regresji.
+
+::: {.wzor}
+$$\sum_{i=1}^{n}(y_i - \bar{y})^2 = \sum_{i=1}^{n}(\hat{y}_i - \bar{y})^2 + \sum_{i=1}^{n}(y_i - \hat{y}_i)^2 \qquad\qquad SST = SSR + SSE \qquad R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$$
+$SST$ — całkowita suma kwadratów (zmienność czasu wokół średniej), $SSR$ — suma kwadratów regresji (część zmienności, którą prosta przypisuje ocenie), $SSE$ — suma kwadratów reszt (część pozostająca poza modelem). W S02: `r .zi_pl(w5_sst, 1)` = `r .zi_pl(w5_ssr, 1)` + `r .zi_pl(w5_sse, 1)`, a $R^2$ = `r .zi_pl(w5_ssr, 1)` / `r .zi_pl(w5_sst, 1)` = `r .zi_pl(w5_ssr / w5_sst)`.
+:::
+
+Rysunek \@ref(fig:w05-sumy) przedstawia trzy składniki jako odcinki pionowe u trzech osób S02. Osoba z indeksem `r .zi_pl(w5_odl$indeks[1], 1)` i czasem `r .zi_pl(w5_odl$czas[1], 1)` minuty leży `r .zi_pl(w5_odl$czas[1] - w5_my, 1)` minuty nad średnią czasu `r .zi_pl(w5_my, 1)`: prosta regresji wyjaśnia z odległości osoby od średniej `r .zi_pl(w5_odl$fit[1] - w5_my, 1)` minuty (niska ocena przewiduje dłuższy czas), a reszta `r .zi_pl(w5_odl$czas[1] - w5_odl$fit[1], 1)` minuty pozostaje poza modelem. Osoba z indeksem `r .zi_pl(w5_odl$indeks[2], 1)` ma czas krótszy od przewidywanego: jej reszta `r .zi_pl(w5_odl$czas[2] - w5_odl$fit[2], 1)` minuty jest ujemna. Kwadraty odcinków $SSR$ wszystkich `r w5_n` osób sumują się do `r .zi_pl(w5_ssr, 1)`, a kwadraty reszt do `r .zi_pl(w5_sse, 1)`; mały udział odcinków $SSR$ w odcinkach $SST$ odpowiada niskiemu $R^2$.
+
+```{r w05-sumy, echo=FALSE, fig.height=3.6, fig.cap=paste0("Rozkład odległości od średniej u trzech osób S02 na wykresie oceny i czasu. Oś pozioma: indeks 1–5; oś pionowa: czas w minutach; linia przerywana oznacza średni czas ", .zi_pl(w5_my, 1), " minuty, a pomarańczowa prosta model regresji. Przy każdej z trzech osób szary odcinek pokazuje odległość czasu od średniej (składnik SST), zielony odległość prostej od średniej (składnik SSR), a pomarańczowy resztę (składnik SSE); odcinek SST jest sumą dwóch pozostałych. Osoba z indeksem ", .zi_pl(w5_odl$indeks[2], 1), " ma resztę ujemną: jej czas leży pod prostą.")}
+ggplot() +
+  geom_point(data = w5_pary, aes(indeks, czas), alpha = 0.15, colour = "#0072B2") +
+  geom_hline(yintercept = w5_my, linetype = "dashed") +
+  geom_abline(intercept = w5_b[1], slope = w5_b[2], colour = "#D55E00", linewidth = 0.9) +
+  geom_segment(data = w5_odl_dl, aes(x = x, xend = x, y = od, yend = do, colour = skladnik), linewidth = 1.3) +
+  geom_point(data = w5_odl, aes(indeks, czas), size = 2.6, colour = "black") +
+  scale_colour_manual(values = c("SST: y − ȳ" = "grey45", "SSR: ŷ − ȳ" = "#009E73", "SSE: y − ŷ" = "#E69F00"), name = NULL) +
+  labs(x = "Ocena użyteczności katalogu (indeks 1–5)", y = "Czas zadania [min]") +
+  theme(legend.position = "top")
+```
+
 Wykres reszt wobec wartości przewidywanych sprawdza dwa założenia modelu: liniową średnią (reszty bez łuku) i stały rozrzut (reszty bez lejka). W S02 reszty są prawoskośne (skośność `r .zi_pl(w5_skos)`): `r sum(w5_e > 10)` osób ma czas dłuższy od przewidywanego o ponad 10 minut, a najniższa reszta wynosi `r .zi_pl(min(w5_e), 1)` minuty (rysunek \@ref(fig:w05-reszty)). Wykres kwantyl–kwantyl (Q–Q) reszt (rysunek \@ref(fig:w05-qq)) potwierdza długi prawy ogon.
 
 ```{r w05-reszty, echo=FALSE, fig.height=2.8, fig.cap="Reszty wobec wartości przewidywanych w modelu czasu względem oceny (S02). Oś pozioma: przewidywany czas w minutach; oś pionowa: reszta w minutach; linia przerywana oznacza zero, a pomarańczowa krzywa wygładza reszty. Duże reszty dodatnie, do około 19 minut, występują częściej niż ujemne, a wygładzona krzywa leży blisko zera."}
@@ -359,18 +439,100 @@ ggplot(w5_sukces, aes(poziom, procent)) +
   labs(x = "Indeks użyteczności katalogu", y = "Odsetek powodzeń [%]")
 ```
 
-## 11. Korelacja a przyczynowość {#w05-przyczynowosc .unnumbered}
+## 11. Korelacja a przyczynowość: diagram i ważenie {#w05-przyczynowosc .unnumbered}
 
 Korelacja i regresja w badaniu obserwacyjnym opisują współwystępowanie. Związek oceny z czasem zgadza się z kilkoma wyjaśnieniami: łatwy katalog skraca czas, sprawne wyszukiwanie podnosi ocenę katalogu, a wspólna przyczyna, na przykład doświadczenie użytkownika, wpływa na obie zmienne [@rohrer2018; @gosssampson2025, s. 74]. Kontrola statystyczna trzeciej zmiennej wymaga założeń o strukturze przyczynowej: kontrola mediatora albo zmiennej będącej wspólnym skutkiem obu zmiennych może oddalić oszacowanie od efektu przyczynowego [@rohrer2018].
+
+Diagram przyczynowy (skierowany graf acykliczny, DAG) zapisuje założenia o strukturze przyczynowej strzałkami od przyczyny do skutku [@pearl1995; @greenland1999]. Rysunek \@ref(fig:w05-dag) przedstawia trzy struktury na zmiennych S02. W strukturze A doświadczenie $G$ jest wspólną przyczyną oceny $X$ i czasu $Y$: ścieżka $X \leftarrow G \rightarrow Y$ wytwarza związek oceny z czasem bez strzałki $X \rightarrow Y$, dlatego oszacowanie efektu oceny wymaga kontroli $G$. W strukturze B sposób wyszukiwania $M$ leży na ścieżce od oceny do czasu: kontrola $M$ usuwa część efektu, która przechodzi przez mediatora, i zostawia wyłącznie efekt bezpośredni. W strukturze C powodzenie zadania $C$ jest wspólnym skutkiem oceny i czasu: analiza ograniczona do osób z powodzeniem (kontrola $C$) wytwarza związek oceny z czasem, którego w populacji brak [@rohrer2018; @greenland1999]. Reguła tylnych drzwi mówi, które zmienne zamykają ścieżki wspólnych przyczyn bez otwierania ścieżek przez wspólne skutki: zbiór zmiennych kontrolnych blokuje każdą ścieżkę ze strzałką wchodzącą do ekspozycji i zawiera wyłącznie zmienne spoza potomków ekspozycji, czyli bez mediatorów i skutków [@pearl1995], a wybór zmiennych kontrolnych wynika z diagramu.
+
+```{r w05-dag, echo=FALSE, fig.height=2.6, fig.width=7.5, fig.cap="Trzy struktury przyczynowe na zmiennych S02 jako diagramy DAG. Panel A: doświadczenie G jest wspólną przyczyną oceny X i czasu Y; panel B: sposób wyszukiwania M pośredniczy między oceną a czasem; panel C: powodzenie zadania C jest wspólnym skutkiem oceny i czasu. Niebieskie strzałki oznaczają założone zależności przyczynowe, a pomarańczowa strzałka X → Y pytanie badania. W panelu A kontrola G zamyka ścieżkę X ← G → Y; w panelu B kontrola M usuwa efekt pośredni; w panelu C kontrola C otwiera ścieżkę X → C ← Y."}
+ggplot() +
+  geom_segment(data = w5_dag_k, aes(x = x, y = y, xend = xend, yend = yend, colour = pytanie),
+               arrow = arrow(length = unit(0.22, "cm"), type = "closed"), linewidth = 0.8) +
+  geom_label(data = w5_dag_w, aes(x, y, label = nazwa), size = 3, label.padding = unit(0.25, "lines")) +
+  scale_colour_manual(values = c("FALSE" = "#0072B2", "TRUE" = "#D55E00"), guide = "none") +
+  facet_wrap(~ panel, nrow = 1) +
+  coord_cartesian(xlim = c(-0.55, 2.55), ylim = c(-0.35, 1.35)) +
+  theme_void() +
+  theme(strip.text = element_text(hjust = 0, face = "bold", size = 10, margin = margin(b = 4)))
+```
+
+Pytanie przyczynowe wymaga najpierw nazwania wielkości. Każda osoba ma dwa wyniki potencjalne: czas $Y_i(1)$ przy ekspozycji i czas $Y_i(0)$ bez ekspozycji; badanie obserwuje jeden z nich [@rubin1974; @hernan2020, rozdz. 1]. Estymandą przyczynową jest przeciętny efekt $\tau = E[Y(1)] - E[Y(0)]$, a trzy odczyty wyniku rosną w wymaganiach: odczyt opisowy dotyczy próby, odczyt inferencyjny wielkości w populacji przy projekcie próby, a odczyt przyczynowy dodaje założenia identyfikacji [@lundberg2021; @hernan2020, rozdz. 1–3]. Identyfikacja efektu z danych obserwacyjnych wymaga trzech warunków: wymienialności warunkowej (po uwzględnieniu zmiennych $L$ brak niemierzonych wspólnych przyczyn ekspozycji i wyniku), dodatniości (każda osoba ma dodatnie prawdopodobieństwo obu wartości ekspozycji przy swoim $L$) i spójności (ekspozycja jest dobrze określoną interwencją, a obserwowany wynik równa się wynikowi potencjalnemu przy otrzymanej ekspozycji) [@hernan2020, rozdz. 3].
+
+::: {.wzor}
+$$\tau = E[Y(1)] - E[Y(0)] \qquad\qquad \hat{\tau}_{\text{std}} = \frac{1}{n}\sum_{i=1}^{n}\hat{m}_1(L_i) - \frac{1}{n}\sum_{i=1}^{n}\hat{m}_0(L_i)$$
+$Y_i(1)$, $Y_i(0)$ — wyniki potencjalne osoby $i$ przy ekspozycji $A_i = 1$ i bez niej, $\tau$ — przeciętny efekt przyczynowy, $L_i$ — mierzone wspólne przyczyny, $\hat{m}_a(L)$ — model średniego wyniku przy ekspozycji $a$ i zmiennych $L$. Standaryzacja uśrednia przewidywania obu modeli po rozkładzie $L$ w całej próbie [@hernan2020, rozdz. 13].
+:::
+
+Ważenie odwraca kolejność rachunku: modeluje ekspozycję, a wynik uśrednia z wagami. Wskaźnik skłonności $e(L) = P(A = 1 \mid L)$ podaje prawdopodobieństwo ekspozycji przy zmiennych $L$; osoby o równym wskaźniku mają jednakowy rozkład $L$ w obu grupach ekspozycji, więc wskaźnik streszcza wiele zmiennych jedną liczbą [@rosenbaum1983; @hernan2020, rozdz. 15]. Waga odwrotności prawdopodobieństwa $w_i = 1/e(L_i)$ dla osób z ekspozycją i $w_i = 1/(1 - e(L_i))$ dla pozostałych tworzy pseudopopulację, w której ekspozycja jest niezależna od $L$ [@horvitz1952; @robins2000; @hernan2020, rozdz. 12]: osoba, która przy swoim $L$ miała małe prawdopodobieństwo ekspozycji, a ją otrzymała, reprezentuje wiele podobnych osób bez ekspozycji i dostaje dużą wagę.
+
+::: {.wzor}
+$$e(L) = P(A = 1 \mid L) \qquad w_i = \frac{A_i}{e(L_i)} + \frac{1 - A_i}{1 - e(L_i)} \qquad\qquad \hat{\tau}_{\text{IPW}} = \frac{\sum_i w_i A_i Y_i}{\sum_i w_i A_i} - \frac{\sum_i w_i (1 - A_i) Y_i}{\sum_i w_i (1 - A_i)}$$
+$$\hat{\tau}_{\text{AIPW}} = \frac{1}{n}\sum_{i=1}^{n}\left[\frac{A_i\,(Y_i - \hat{m}_1(L_i))}{\hat{e}(L_i)} + \hat{m}_1(L_i)\right] - \frac{1}{n}\sum_{i=1}^{n}\left[\frac{(1 - A_i)\,(Y_i - \hat{m}_0(L_i))}{1 - \hat{e}(L_i)} + \hat{m}_0(L_i)\right]$$
+$e(L)$ — wskaźnik skłonności, w praktyce estymowany regresją logistyczną ekspozycji względem $L$ [@rosenbaum1983; @hernan2020, rozdz. 15], $w_i$ — waga odwrotności prawdopodobieństwa (IPW, ang. *inverse probability weighting*) [@horvitz1952; @robins2000; @hernan2020, rozdz. 12], $\hat{\tau}_{\text{IPW}}$ — różnica ważonych średnich wyniku, $\hat{\tau}_{\text{AIPW}}$ — estymator wzmocniony (ang. *augmented IPW*), który łączy wagi z modelem wyniku i jest podwójnie odporny: daje zgodne oszacowanie, gdy poprawny jest model skłonności albo model wyniku [@robins1994; @bang2005; @hernan2020, rozdz. 13].
+:::
+
+Ekspozycja ciągła, na przykład ocena na skali 1–5, zastępuje wskaźnik skłonności uogólnionym wskaźnikiem skłonności (GPS, ang. *generalized propensity score*): prawdopodobieństwem otrzymanej wartości ekspozycji przy zmiennych $L$ [@imbens2000], które dla ekspozycji ciągłej ma postać gęstości warunkowej $r(a, L) = f(A = a \mid L)$ [@hirano2004]. Waga ustabilizowana $w_i = f(A_i) / r(A_i, L_i)$ dzieli gęstość brzegową przez gęstość warunkową, a regresja wyniku względem ekspozycji z takimi wagami, czyli brzegowy model strukturalny, szacuje zależność dawka–odpowiedź po wyrównaniu rozkładu $L$ [@robins2000; @hernan2020, rozdz. 12]. Wszystkie trzy procedury, standaryzacja, ważenie i estymator wzmocniony, zakładają wspólny diagram: zbiór $L$ zamyka ścieżki wspólnych przyczyn, a każda zmienna w $L$ leży poza ścieżkami mediatorów i poza wspólnymi skutkami [@hernan2020, rozdz. 7, 12–13].
+
+::: {.przyklad}
+**Przykład S02.** Ekspozycją jest wysoka ocena katalogu ($A = 1$ przy indeksie co najmniej 3,5: `r sum(w5_w$A)` ze `r nrow(w5_w)` osób z kompletem zmiennych), wynikiem czas zadania, a zmiennymi $L$ grupa, częstość korzystania i wiek. Naiwna różnica średnich czasu między osobami z wysoką i niższą oceną wynosi `r .zi_pl(w5_naiw)` minuty. Regresja logistyczna ekspozycji względem $L$ daje wskaźniki skłonności od `r .zi_pl(min(w5_w$e))` do `r .zi_pl(max(w5_w$e))` (częstość korzystania podnosi prawdopodobieństwo wysokiej oceny), a wagi od `r .zi_pl(min(w5_w$waga))` do `r .zi_pl(max(w5_w$waga))`. Po ważeniu obie grupy ekspozycji mają zbliżony skład (tabela \@ref(tab:w05-rownowaga)). Różnica ważona $\hat{\tau}_{\text{IPW}}$ = `r .zi_pl(w5_ipw)` minuty, 95% przedział bootstrapowy [`r .zi_pl(w5_ci_ipw[1])`; `r .zi_pl(w5_ci_ipw[2])`], standaryzacja daje `r .zi_pl(w5_std)`, a estymator wzmocniony `r .zi_pl(w5_aipw)` minuty. Dla oceny ciągłej wagi GPS (od `r .zi_pl(min(w5_w$gps_st))` do `r .zi_pl(max(w5_w$gps_st))`) zmieniają nachylenie czasu względem indeksu z `r .zi_pl(w5_b_surowe)` na `r .zi_pl(coef(w5_msm)[2])` minuty na punkt. Wyrównanie składu grup przesuwa oszacowanie o około `r .zi_pl(abs(w5_naiw - w5_ipw), 1)` minuty, więc mierzone wspólne przyczyny wyjaśniają małą część związku. Odczyt przyczynowy pozostaje poza zasięgiem danych S02: warunek spójności wymaga interwencji, którą da się wykonać, na przykład nowej wersji katalogu, a deklarowana ocena opisuje stan osoby. Wynik ważenia w S02 jest więc opisem współwystępowania po wyrównaniu składu grup.
+:::
+
+```{r w05-rownowaga, echo=FALSE}
+w5_tab_r <- data.frame(zmienna = c("Doświadczeni [%]", "Częstość korzystania (1–5)", "Wiek [lata]"),
+                       a1 = .zi_pl(w5_rownowaga[, 1], 1), a0 = .zi_pl(w5_rownowaga[, 2], 1),
+                       a1w = .zi_pl(w5_rownowaga[, 3], 1), a0w = .zi_pl(w5_rownowaga[, 4], 1))
+names(w5_tab_r) <- c("Zmienna L", "Wysoka ocena, przed", "Niższa ocena, przed", "Wysoka ocena, po ważeniu", "Niższa ocena, po ważeniu")
+knitr::kable(w5_tab_r, align = "lrrrr",
+             caption = sprintf("Skład grup ekspozycji przed ważeniem i po ważeniu wagami odwrotności prawdopodobieństwa (S02, n = %d). Przed ważeniem osoby z wysoką oceną częściej korzystają z biblioteki i częściej są doświadczone; po ważeniu średnie trzech zmiennych L są w obu grupach prawie równe.", nrow(w5_w)))
+```
+
+## 12. Rodzaje regresji: wielokrotna, wieloraka i logistyczna {#w05-rodzaje .unnumbered}
+
+Model regresji wybiera się według liczby i rodzaju zmiennych wynikowych oraz liczby predyktorów (tabela \@ref(tab:w05-rodzaje)). Nazwy *multivariate* i *multivariable* bywają używane wymiennie, choć oznaczają różne modele: model *multivariable* (*multiple*) ma wiele predyktorów, a model *multivariate* wiele zmiennych wynikowych, dlatego raport podaje obok nazwy liczbę predyktorów i rodzaj zmiennej wynikowej [@hidalgo2013]. Polskie nazwy „regresja wielokrotna” i „regresja wieloraka” również bywają mylone, więc W05 przypisuje pierwszą modelowi z wieloma predyktorami, a drugą modelowi z wieloma zmiennymi wynikowymi.
+
+| Model | Zmienna wynikowa | Predyktory | Funkcja R | Miara efektu | Przykład S02 |
+|:--|:--|:--|:--|:--|:--|
+| regresja prosta | jedna liczbowa | jeden | `lm(y ~ x)` | nachylenie $b_1$ w jednostkach $y$ na jednostkę $x$ | czas względem oceny (część 7) |
+| regresja wielokrotna (ang. *multiple*) | jedna liczbowa | kilka | `lm(y ~ x1 + x2)` | $b_k$ przy ustalonych pozostałych predyktorach | czas względem oceny i grupy |
+| regresja wieloraka (ang. *multivariate*) | kilka liczbowych naraz | jeden lub kilka | `lm(cbind(y1, y2) ~ x)` | macierz współczynników, test łączny (ślad Pillaia) | czas pierwszej i drugiej próby względem oceny i grupy |
+| regresja logistyczna | dwudzielna (0/1) | jeden lub kilka | `glm(y ~ x, family = binomial)` | iloraz szans $e^{b_k}$ | powodzenie względem oceny i grupy |
+
+Table: (\#tab:w05-rodzaje) Rodzaje modeli regresji według zmiennej wynikowej i predyktorów.
 
 ::: {.wzor}
 $$Y_i = \beta_0 + \beta_1 x_i + \beta_2 g_i + \varepsilon_i$$
 $g_i$ — zmienna zero-jedynkowa: 1 dla doświadczonych, 0 dla nowych użytkowników (kategoria odniesienia), $\beta_1$ — różnica średniego czasu przy ocenie wyższej o 1 punkt w obrębie jednej grupy, $\beta_2$ — różnica średniego czasu między grupami przy równej ocenie.
 :::
 
-Regresja wieloraka uwzględnia kilka predyktorów (zmiennych objaśniających) naraz, a zmienną kategorialną koduje względem kategorii odniesienia [@schneider2010, s. 778]. Dodanie grupy zmienia nachylenie oceny z `r .zi_pl(w5_b[2])` do `r .zi_pl(w5_bm[2])` minuty na punkt; doświadczeni użytkownicy pracują przy równej ocenie przeciętnie o `r .zi_pl(-w5_bm[3])` minuty krócej (*p* `r .zi_p(w5_smm$coefficients[3, 4])`), a model wyjaśnia `r .zi_pl(100 * w5_smm$r.squared, 1)`% zmienności czasu. Predyktory słabo się pokrywają: współczynnik inflacji wariancji VIF, który podaje, ile razy wariancja estymaty nachylenia rośnie wskutek korelacji predyktora z pozostałymi predyktorami (wartość 1 oznacza brak korelacji), wynosi `r .zi_pl(w5_vif[1])` [@fox2019]. Niewielka zmiana nachylenia oznacza, że doświadczenie wyjaśnia małą część związku oceny z czasem; model z grupą pozostaje modelem obserwacyjnym.
+Regresja wielokrotna uwzględnia kilka predyktorów (zmiennych objaśniających) naraz, a zmienną kategorialną koduje względem kategorii odniesienia [@schneider2010, s. 778]. Dodanie grupy zmienia nachylenie oceny z `r .zi_pl(w5_b[2])` do `r .zi_pl(w5_bm[2])` minuty na punkt; doświadczeni użytkownicy pracują przy równej ocenie przeciętnie o `r .zi_pl(-w5_bm[3])` minuty krócej (*p* `r .zi_p(w5_smm$coefficients[3, 4])`), a model wyjaśnia `r .zi_pl(100 * w5_smm$r.squared, 1)`% zmienności czasu. Predyktory słabo się pokrywają: współczynnik inflacji wariancji VIF, który podaje, ile razy wariancja estymaty nachylenia rośnie wskutek korelacji predyktora z pozostałymi predyktorami (wartość 1 oznacza brak korelacji), wynosi `r .zi_pl(w5_vif[1])` [@fox2019]. Niewielka zmiana nachylenia oznacza, że doświadczenie wyjaśnia małą część związku oceny z czasem; model z grupą pozostaje modelem obserwacyjnym, a diagram z części 11 mówi, że grupa jest wspólną przyczyną, którą model zamyka.
 
-## 12. Od tabeli do argumentu {#w05-argument .unnumbered}
+::: {.wzor}
+$$\begin{pmatrix} Y_{i1} \\ Y_{i2} \end{pmatrix} = \begin{pmatrix} \beta_{01} \\ \beta_{02} \end{pmatrix} + \begin{pmatrix} \beta_{11} \\ \beta_{12} \end{pmatrix} x_i + \begin{pmatrix} \beta_{21} \\ \beta_{22} \end{pmatrix} g_i + \begin{pmatrix} \varepsilon_{i1} \\ \varepsilon_{i2} \end{pmatrix}$$
+$Y_{i1}$, $Y_{i2}$ — dwie zmienne wynikowe osoby $i$ (czas pierwszej i drugiej próby), $\beta_{k1}$, $\beta_{k2}$ — współczynnik predyktora $k$ dla każdej zmiennej wynikowej, $\varepsilon_{i1}$, $\varepsilon_{i2}$ — błędy skorelowane w obrębie osoby. Współczynniki równają się współczynnikom osobnych regresji, a test łączny sprawdza predyktor dla obu wyników naraz [@rcoreteam2025].
+:::
+
+Regresja wieloraka modeluje kilka zmiennych wynikowych jednym układem równań. W S02 czas pierwszej i drugiej próby u `r nrow(w5_mv_dane)` osób z kompletem danych zależy od oceny z nachyleniami `r .zi_pl(w5_mv_b["indeks", "czas"])` i `r .zi_pl(w5_mv_b["indeks", "czas_po"])` minuty na punkt, a od grupy z różnicami `r .zi_pl(w5_mv_b["grupadoświadczeni", "czas"])` i `r .zi_pl(w5_mv_b["grupadoświadczeni", "czas_po"])` minuty. Test łączny oceny dla obu czasów naraz daje ślad Pillaia `r .zi_pl(w5_mv_an["indeks", "Pillai"], 3)`, $F$(`r w5_mv_an["indeks", "num Df"]`, `r w5_mv_an["indeks", "den Df"]`) = `r .zi_pl(w5_mv_an["indeks", "approx F"])`, *p* `r .zi_p(w5_mv_an["indeks", "Pr(>F)"])`; dla grupy *p* `r .zi_p(w5_mv_an["grupa", "Pr(>F)"])`. Jeden test łączny zastępuje dwa osobne testy i uwzględnia korelację obu czasów u jednej osoby.
+
+::: {.wzor}
+$$\ln\frac{\pi_i}{1 - \pi_i} = \beta_0 + \beta_1 x_i + \beta_2 g_i \qquad\qquad \pi_i = \frac{e^{\beta_0 + \beta_1 x_i + \beta_2 g_i}}{1 + e^{\beta_0 + \beta_1 x_i + \beta_2 g_i}} \qquad OR_1 = e^{\beta_1}$$
+$\pi_i$ — prawdopodobieństwo powodzenia osoby $i$, $\ln[\pi/(1-\pi)]$ — logit, czyli logarytm szansy, $\beta_1$ — zmiana logitu na punkt oceny, $OR_1$ — iloraz szans powodzenia przy ocenie wyższej o 1 punkt w obrębie grupy [@sperandei2014]. Szansę i iloraz szans definiuje wykład [W04](#w04-miary).
+:::
+
+Regresja logistyczna modeluje zmienną dwudzielną: powodzenie zadania przyjmuje wartość 1 albo 0, a model opisuje logarytm szansy powodzenia jako funkcję liniową predyktorów; prawdopodobieństwo leży między 0 a 1, szansa między 0 a nieskończonością, a współczynniki po przekształceniu $e^{\beta}$ są ilorazami szans [@sperandei2014, s. 13–15]. W S02 każdy punkt oceny mnoży szansę powodzenia przez `r .zi_pl(w5_lg_or["indeks", 1])` (95% CI [`r .zi_pl(w5_lg_or["indeks", 2])`; `r .zi_pl(w5_lg_or["indeks", 3])`], *p* `r .zi_p(w5_lg_p["indeks"])`), a doświadczeni użytkownicy mają przy równej ocenie szansę `r .zi_pl(w5_lg_or["grupadoświadczeni", 1])` razy większą (*p* `r .zi_p(w5_lg_p["grupadoświadczeni"])`). Przewidywane prawdopodobieństwo powodzenia nowego użytkownika rośnie z `r .zi_pl(w5_lg_nowi[1])` przy ocenie 2 do `r .zi_pl(w5_lg_nowi[2])` przy ocenie 4 (rysunek \@ref(fig:w05-logit)); odsetki powodzeń w trzech przedziałach oceny z części 10 leżą blisko krzywych. Ćwiczenie [C07](#c07-ryzyko) liczy iloraz szans z tabeli 2 × 2, a regresja logistyczna uogólnia go na kilka predyktorów.
+
+```{r w05-logit, echo=FALSE, fig.height=3.2, fig.cap=paste0("Regresja logistyczna powodzenia względem oceny i grupy (S02, n = ", nrow(w5_dek), "). Oś pozioma: indeks 1–5; oś pionowa: prawdopodobieństwo powodzenia; punkty przy 0 i 1 to osoby (lekko rozsunięte), krzywe to przewidywania modelu dla nowych (pomarańczowa) i doświadczonych (niebieska), a czarne punkty to odsetki powodzeń w trzech przedziałach oceny ze wszystkich osób. Obie krzywe rosną w kształcie litery S, krzywa doświadczonych leży wyżej, a odsetki z przedziałów leżą między krzywymi.")}
+set.seed(2026)
+ggplot() +
+  geom_jitter(data = w5_dek, aes(indeks, as.numeric(powodzenie == "tak"), colour = grupa), width = 0.03, height = 0.03, alpha = 0.3, size = 1) +
+  geom_line(data = w5_lg_siatka, aes(indeks, p, colour = grupa), linewidth = 1) +
+  geom_point(data = w5_sukces, aes(srodek, procent / 100), size = 2.8, colour = "black") +
+  scale_colour_manual(values = c("nowi" = "#D55E00", "doświadczeni" = "#0072B2")) +
+  scale_y_continuous(limits = c(-0.05, 1.05), breaks = seq(0, 1, 0.25)) +
+  labs(x = "Ocena użyteczności katalogu (indeks 1–5)", y = "Prawdopodobieństwo powodzenia", colour = NULL)
+```
+
+## 13. Od tabeli do argumentu {#w05-argument .unnumbered}
 
 Akapit wyników podaje pytanie, liczbę par, wybraną miarę związku z przedziałem i nazwą metody, wynik testu oraz wynik permutacji z liczbą losowań; część regresyjna podaje nachylenie z jednostką i przedziałem, $R^2$ oraz ograniczenie wykryte w diagnostyce. Wielkość efektu i przedział należą do raportu obok wartości *p* [@wilkinson1999]. Brzmienie akapitów dla danych S02 podają wzorce zapisu w ćwiczeniu C08, a ćwiczenie C10 łączy wyniki w odpowiedź na pytanie badawcze projektu.
 
@@ -378,7 +540,7 @@ Czasownik odpowiada projektowi badania. Zdanie „wyższa ocena współwystępow
 
 Wybór najmniejszej wartości *p* spośród wielu sprawdzonych korelacji zwiększa ryzyko wyniku fałszywie dodatniego: swoboda w gromadzeniu, analizie i raportowaniu danych podnosi rzeczywisty odsetek wyników fałszywie dodatnich daleko ponad nominalne 5% [@simmons2011]. Pytania, reguły braków i metody zapisuje się przed analizą, a wynik eksploracyjny sprawdza się na nowych danych.
 
-## 13. Generatywna SI: kontrola argumentu {#w05-si .unnumbered}
+## 14. Generatywna SI: kontrola argumentu {#w05-si .unnumbered}
 
 Generatywna SI wspiera kontrolę argumentu, jeżeli pracuje na tekście i liczbach autora, a autor sprawdza każdą odpowiedź. Sylabus przedmiotu odsyła do Zarządzenia nr 115 Rektora UJ z 27 listopada 2025 r. [@uj2025]: student oznacza części pracy wygenerowane z użyciem SI, na przykład przypisem, komentarzem albo treścią polecenia (§ 6 pkt 3), a zarządzenie wyklucza powoływanie się na odpowiedzi modeli językowych jako źródło wiedzy naukowej (§ 7 ust. 2). Odpowiedzialność za treść, liczby i źródła ponosi autor pracy (strona startowa książki i część P10 projektu).
 
@@ -386,74 +548,11 @@ Przykład wadliwej interpretacji brzmi: „Ponieważ r = `r .zi_pl(w5_r)` i p `r
 
 Poprawione brzmienie: „Ocena katalogu i czas zadania korelowały ujemnie, r(`r w5_kt$parameter`) = `r .zi_pl(w5_r)`, 95% CI [`r .zi_pl(w5_kt$conf.int[1])`; `r .zi_pl(w5_kt$conf.int[2])`]; w badaniu obserwacyjnym wynik opisuje współwystępowanie wyższej oceny z krótszym czasem”. Model językowy podaje także nieistniejące publikacje: w badaniu 636 opisów bibliograficznych z krótkich przeglądów literatury zmyślonych było 55% cytowań GPT-3.5 i 18% cytowań GPT-4 [@walters2023]. Każde źródło wskazane przez model sprawdza się w katalogu lub bazie przed użyciem.
 
-## 14. Rozszerzenia: wykresy wymienione w sylabusie {#w05-rozszerzenia .unnumbered}
+## 15. Rozszerzenie: wykres reszt cząstkowych {#w05-rozszerzenia .unnumbered}
 
-Przykłady rozszerzeń należą do materiału nieocenianego i odpowiadają na wykresy wymienione w sylabusie przedmiotu: wiolinowy, Pareto, kołowy, mapę cieplną, wykres wydajności i wykres reszt cząstkowych. Każdy przykład korzysta z danych S02. Odczyt każdego wykresu zaczyna się od jednostki obserwacji, licznika i mianownika, potem przechodzi do wielkości zakodowanej położeniem, polem lub kolorem, a kończy na wzorcu i jego ograniczeniu.
+Wykresy wymienione w sylabusie przedmiotu omawiają wykłady o rozkładach i częstościach: wykres wiolinowy, wykres Pareto, wykres kołowy i krzywą ukończenia zadania wykład [W02](#w02-wykresy), a mapę cieplną wykład [W04](#w04-tabela). Odczyt każdego wykresu zaczyna się od jednostki obserwacji, licznika i mianownika, potem przechodzi do wielkości zakodowanej położeniem, polem lub kolorem, a kończy na wzorcu i jego ograniczeniu; zapis opisu rysunku według APA ćwiczy [C07](#c07-rysunek). Rozszerzeniem W05 jest wykres reszt cząstkowych dla modelu wielokrotnego.
 
-### Wykres wiolinowy {#w05-wiolina .unnumbered}
-
-Wykres wiolinowy łączy wykres pudełkowy z oszacowaniem gęstości rozkładu [@hintze1998]: szerokie miejsce oznacza skupienie obserwacji, a pudełko w środku medianę i kwartyle. Czas nowych użytkowników ma medianę `r .zi_pl(w5_ogd$Mdn[1], 1)` minuty i długi górny ogon do `r .zi_pl(w5_ogd$max[1], 1)` minuty; czas doświadczonych ma medianę `r .zi_pl(w5_ogd$Mdn[2], 1)` minuty i maksimum `r .zi_pl(w5_ogd$max[2], 1)` minuty. Kształt wioliny zależy od szerokości wygładzania, dlatego wypukłości w małej grupie wymagają potwierdzenia w większych danych.
-
-```{r w05-wiolina, echo=FALSE, fig.height=3, fig.cap=paste0("Wykres wiolinowy czasu zadania w dwóch grupach S02 (nowi: n = ", w5_ogd$n[1], ", doświadczeni: n = ", w5_ogd$n[2], "). Oś pozioma: grupa; oś pionowa: czas w minutach. Wiolina nowych użytkowników jest wyższa i ma długi górny ogon; wiolina doświadczonych jest skupiona niżej; wąskie pudełka w środku podają medianę i kwartyle.")}
-ggplot(w5_czas, aes(grupa, czas)) +
-  geom_violin(fill = "#56B4E9", alpha = 0.5) +
-  geom_boxplot(width = 0.12, outlier.shape = NA) +
-  labs(x = NULL, y = "Czas zadania [min]")
-```
-
-### Wykres Pareto {#w05-pareto .unnumbered}
-
-Wykres Pareto porządkuje kategorie od najczęstszej i dodaje udział skumulowany. Kanały informacji w S02 zebrały `r sum(w5_kan$wskazania)` wskazań: `r w5_kan$kanal[1]` `r .zi_pl(w5_kan$proc_wskazan[1], 1)`%, `r w5_kan$kanal[2]` `r .zi_pl(w5_kan$proc_wskazan[2], 1)`%, `r w5_kan$kanal[3]` `r .zi_pl(w5_kan$proc_wskazan[3], 1)`% i `r w5_kan$kanal[4]` `r .zi_pl(w5_kan$proc_wskazan[4], 1)`%; dwa pierwsze kanały obejmują `r .zi_pl(w5_kan$skum[2], 1)`% wskazań. Mianownikiem są wskazania, a odsetki osób korzystających z każdego kanału podaje ćwiczenie C03.
-
-```{r w05-pareto, echo=FALSE, fig.height=3, fig.cap=paste0("Wykres Pareto kanałów informacji w S02, ", sum(w5_kan$wskazania), " wskazań. Oś pozioma: kanał od najczęstszego; oś pionowa: odsetek wskazań. Słupki maleją od ", .zi_pl(w5_kan$proc_wskazan[1], 1), "% do ", .zi_pl(w5_kan$proc_wskazan[4], 1), "%; punkty połączone linią przerywaną podają udział skumulowany: ", paste(.zi_pl(w5_kan$skum, 1), collapse = "; "), "%.")}
-w5_kan$kanal <- factor(w5_kan$kanal, levels = w5_kan$kanal)
-ggplot(w5_kan, aes(kanal)) +
-  geom_col(aes(y = proc_wskazan), fill = "#0072B2", width = 0.6) +
-  geom_line(aes(y = skum, group = 1), linetype = "dashed", colour = "#D55E00") +
-  geom_point(aes(y = skum), colour = "#D55E00", size = 2) +
-  scale_y_continuous(limits = c(0, 100)) +
-  labs(x = NULL, y = "Odsetek wskazań [%]")
-```
-
-### Wykres kołowy {#w05-kolo .unnumbered}
-
-Wykres kołowy przedstawia podział całości na rozłączne części. Status `r sum(w5_kat$Freq)` uczestników S02 tworzy cztery wycinki: `r paste0(w5_kat$status, " ", .zi_pl(w5_kat$procent, 1), "%", collapse = ", ")`. Porównanie kątów i pól jest mniej dokładne od porównania położenia na wspólnej osi, dlatego podobne udziały łatwiej odczytać z wykresu słupkowego albo punktowego [@cleveland1984].
-
-```{r w05-kolo, echo=FALSE, fig.height=3, out.width="60%", fig.cap=paste0("Status uczestników S02, ", sum(w5_kat$Freq), " osób. Koło podzielone na cztery wycinki z odsetkami: ", paste0(w5_kat$status, " ", .zi_pl(w5_kat$procent, 1), "%", collapse = "; "), ".")}
-ggplot(w5_kat, aes(x = "", y = Freq, fill = status)) +
-  geom_col(width = 1, colour = "white") +
-  coord_polar(theta = "y") +
-  geom_text(aes(label = paste0(.zi_pl(procent, 1), "%")), position = position_stack(vjust = 0.5), size = 3.4) +
-  labs(fill = NULL) +
-  theme_void()
-```
-
-### Mapa cieplna {#w05-mapa .unnumbered}
-
-Mapa cieplna koduje odsetek kolorem, dlatego każda komórka potrzebuje mianownika. Odsetek powodzeń w ośmiu komórkach grupy i statusu waha się od `r .zi_pl(min(w5_mapa$procent), 1)`% do `r .zi_pl(max(w5_mapa$procent), 1)`%; komórki o podobnym kolorze mają różne liczebności, a więc różną precyzję odsetka (rysunek \@ref(fig:w05-mapa)).
-
-```{r w05-mapa, echo=FALSE, fig.height=2.8, fig.cap=paste0("Mapa cieplna odsetka powodzeń w grupach i statusach S02. Kolumny: status; wiersze: nowi i doświadczeni; kolor odpowiada odsetkowi na skali 0–100%, a napis podaje liczbę powodzeń i liczebność komórki. Najjaśniejsza komórka ma ", .zi_pl(min(w5_mapa$procent), 1), "%, najciemniejsza ", .zi_pl(max(w5_mapa$procent), 1), "%.")}
-ggplot(w5_mapa, aes(status, grupa, fill = procent)) +
-  geom_tile(colour = "white") +
-  geom_text(aes(label = paste0(k, "/", n)), size = 3.4, colour = ifelse(w5_mapa$procent > 70, "white", "black")) +
-  scale_fill_gradient(low = "#eef5fb", high = "#0072B2", limits = c(0, 100), name = "% powodzeń") +
-  labs(x = NULL, y = NULL)
-```
-
-### Wykres wydajności usługi {#w05-wydajnosc .unnumbered}
-
-Wykres wydajności usługi łączy czas i powodzenie: krzywa podaje odsetek osób z zapisanym czasem, które znalazły dokument do danej minuty. Do 5 minut zadanie z powodzeniem kończy `r .zi_pl(w5_ukonczenie("nowi", 5), 1)`% nowych i `r .zi_pl(w5_ukonczenie("doświadczeni", 5), 1)`% doświadczonych użytkowników, a do 10 minut `r .zi_pl(w5_ukonczenie("nowi", 10), 1)`% i `r .zi_pl(w5_ukonczenie("doświadczeni", 10), 1)`%; po 30 minutach krzywe osiągają `r .zi_pl(w5_ukonczenie("nowi", 30), 1)`% i `r .zi_pl(w5_ukonczenie("doświadczeni", 30), 1)`%. Krzywa łączy oba wskaźniki wykonania, więc różnica grup wynika zarówno z czasu, jak i z odsetka powodzeń.
-
-```{r w05-wydajnosc, echo=FALSE, fig.height=3, fig.cap="Krzywa ukończenia zadania z powodzeniem w dwóch grupach S02. Oś pozioma: czas od początku zadania w minutach; oś pionowa: odsetek osób grupy, które znalazły dokument do danej chwili. Krzywa doświadczonych rośnie szybciej i kończy wyżej niż krzywa nowych użytkowników."}
-ggplot(w5_krzywa, aes(czas, procent, colour = grupa)) +
-  geom_step(linewidth = 0.9) +
-  scale_y_continuous(limits = c(0, 100)) +
-  labs(x = "Czas od początku zadania [min]", y = "Ukończone z powodzeniem [%]", colour = NULL)
-```
-
-### Wykres reszt cząstkowych {#w05-czastkowe .unnumbered}
-
-Wykres reszt cząstkowych przedstawia składnik jednego predyktora w modelu wielorakim: oś pionowa podaje resztę powiększoną o składnik oceny, $e_i + b_1 x_i$, a prosta ma nachylenie $b_1$ [@larsen1972]. W modelu czasu z oceną i grupą punkty układają się wokół prostej o nachyleniu `r .zi_pl(w5_bm[2])` minuty na punkt, a długi ogon dodatnich reszt z części 8 pozostaje w modelu wielorakim (rysunek \@ref(fig:w05-czastkowe)).
+Wykres reszt cząstkowych przedstawia składnik jednego predyktora w modelu wielokrotnym: oś pionowa podaje resztę powiększoną o składnik oceny, $e_i + b_1 x_i$, a prosta ma nachylenie $b_1$ [@larsen1972]. W modelu czasu z oceną i grupą punkty układają się wokół prostej o nachyleniu `r .zi_pl(w5_bm[2])` minuty na punkt, a długi ogon dodatnich reszt z części 8 pozostaje w modelu wielokrotnym (rysunek \@ref(fig:w05-czastkowe)).
 
 ```{r w05-czastkowe, echo=FALSE, fig.height=3, fig.cap=paste0("Reszty cząstkowe dla oceny w modelu czasu z oceną i grupą (S02). Oś pozioma: indeks 1–5; oś pionowa: reszta z dodanym składnikiem oceny w minutach. Pomarańczowa prosta ma nachylenie ", .zi_pl(w5_bm[2]), " minuty na punkt; punkty rozkładają się wokół prostej z długim ogonem dodatnich wartości.")}
 ggplot(w5_czastkowe, aes(indeks, reszta)) +
@@ -464,4 +563,4 @@ ggplot(w5_czastkowe, aes(indeks, reszta)) +
 
 ## Podsumowanie {#w05-podsumowanie .unnumbered}
 
-Wykres punktowy poprzedza każdy współczynnik, ponieważ jedna wartość współczynnika opisuje różne układy punktów. W S02 wyższa ocena katalogu współwystępuje z krótszym czasem zadania: $r$ = `r .zi_pl(w5_r)`, a każdy punkt oceny wiąże się z czasem krótszym przeciętnie o `r .zi_pl(-w5_b[2])` minuty; test klasyczny, permutacja i bootstrap prowadzą do zgodnego wniosku. Model wyjaśnia `r .zi_pl(100 * w5_sm$r.squared, 0)`% zmienności czasu, dobrze opisuje średni czas grupy osób i przewiduje czas pojedynczej osoby z szerokim przedziałem, dlatego prawoskośny czas lepiej opisuje model dla logarytmu. Korelacja mierzy zgodność kolejności osób, a zgodność poziomów opisuje analiza różnic. Wniosek przyczynowy z danych obserwacyjnych wymaga jawnych założeń, a raport podaje efekt, przedział i ograniczenia.
+Wykres punktowy poprzedza każdy współczynnik, ponieważ jedna wartość współczynnika opisuje różne układy punktów. W S02 wyższa ocena katalogu współwystępuje z krótszym czasem zadania: $r$ = `r .zi_pl(w5_r)`, a każdy punkt oceny wiąże się z czasem krótszym przeciętnie o `r .zi_pl(-w5_b[2])` minuty; test klasyczny, permutacja i bootstrap prowadzą do zgodnego wniosku. Model wyjaśnia `r .zi_pl(100 * w5_sm$r.squared, 0)`% zmienności czasu, dobrze opisuje średni czas grupy osób i przewiduje czas pojedynczej osoby z szerokim przedziałem, dlatego prawoskośny czas lepiej opisuje model dla logarytmu. Korelacja mierzy zgodność kolejności osób, a zgodność poziomów opisuje analiza różnic. Całkowita suma kwadratów rozkłada się na część regresji i część reszt, a $R^2$ jest udziałem pierwszej z nich. Wniosek przyczynowy z danych obserwacyjnych wymaga jawnych założeń zapisanych w diagramie: ważenie odwrotnością prawdopodobieństwa, standaryzacja i estymator wzmocniony wyrównują skład grup według mierzonych wspólnych przyczyn, a w S02 przesuwają oszacowanie o około `r .zi_pl(abs(w5_naiw - w5_ipw), 1)` minuty. Regresja wielokrotna ma jedną zmienną wynikową i kilka predyktorów, regresja wieloraka kilka zmiennych wynikowych naraz, a regresja logistyczna zmienną dwudzielną i iloraz szans jako miarę efektu. Raport podaje efekt, przedział i ograniczenia.

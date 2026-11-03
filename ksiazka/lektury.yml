@@ -784,3 +784,75 @@ ziliak2008:
     typ: wydawca
     adres: https://doi.org/10.1257/jep.22.4.199
   adnotacja: Historia testu t — William Sealy Gosset i browar Guinness.
+bang2005:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1111/j.1541-0420.2005.00377.x
+  adnotacja: Estymator podwójnie odporny (AIPW) w modelach braków danych i wnioskowania przyczynowego.
+greenland1999:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1097/00001648-199901000-00008
+  adnotacja: Diagramy przyczynowe (DAG) w badaniach epidemiologicznych; wspólna przyczyna, mediator, wspólny skutek.
+hidalgo2013:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3518362/
+  adnotacja: Rozróżnienie regresji z wieloma predyktorami (multivariable) i z wieloma zmiennymi wynikowymi (multivariate).
+hirano2004:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1002/0470090456.ch7
+  adnotacja: Uogólniony wskaźnik skłonności (GPS) dla ekspozycji ciągłej.
+horvitz1952:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1080/01621459.1952.10483446
+  adnotacja: Estymator z wagami odwrotności prawdopodobieństwa (praca źródłowa).
+imbens2000:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1093/biomet/87.3.706
+  adnotacja: Wskaźnik skłonności przy ekspozycji wielowartościowej i funkcja dawka–odpowiedź.
+pearl1995:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1093/biomet/82.4.669
+  adnotacja: Diagramy przyczynowe w badaniach empirycznych (praca źródłowa).
+robins1994:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1080/01621459.1994.10476818
+  adnotacja: Estymator z wagami odwrotności prawdopodobieństwa wzmocniony modelem wyniku (AIPW; praca źródłowa).
+robins2000:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1097/00001648-200009000-00011
+  adnotacja: Brzegowe modele strukturalne i ważenie odwrotnością prawdopodobieństwa ekspozycji, wagi ustabilizowane.
+rosenbaum1983:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1093/biomet/70.1.41
+  adnotacja: Wskaźnik skłonności (propensity score) w badaniach obserwacyjnych (praca źródłowa).
+rubin1974:
+  poziom: metodyczna
+  dostep:
+    typ: wydawca
+    adres: https://doi.org/10.1037/h0037350
+  adnotacja: Wyniki potencjalne i efekt przyczynowy w badaniach eksperymentalnych i obserwacyjnych; omówienie otwarte w Hernán i Robins (2020), rozdz. 1.
+sperandei2014:
+  poziom: metodyczna
+  dostep:
+    typ: otwarty
+    adres: https://doi.org/10.11613/BM.2014.003
+  adnotacja: "Regresja logistyczna dla początkujących: logit, iloraz szans, odczyt współczynników."
